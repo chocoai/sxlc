@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="mngTeam">  
+    <resultMap type="cn.springmvc.model.MngTeamEntity" id="resultListMngTeam">
+        <id column="Team_ID" property="id" />
+		<result column="Mng_Name" property="mngName" />
+		<result column="Mng_Post" property="mngPost" />
+		<result column="Portrait_Url" property="portraitUrl" />
+		<result column="Profile" property="profile" />
+		<result column="Statu" property="statu" />
+		<result column="CreateTime" property="createTime" />
+		<result column="Opt_Date" property="optDate" />
+		<result column="Admin_ID" property="optId" /> 
+		<result column="adminName" property="adminName" />
+    </resultMap> 
+    <!-- 分页查询管理团队列表 -->  
+	<select id="selectMngTeamList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListMngTeam">
+	   select mt.Team_ID,mt.Mng_Name,mt.Mng_Post,mt.Portrait_Url,mt.Profile,mt.Statu,
+	   mt.Admin_ID,mt.CreateTime ,mt.Opt_Date,a.adminName 
+	   from  Mng_Team mt
+	   LEFT JOIN Admin a on a.Admin_ID=mt.Admin_ID 
+           <where>  
+	            <if test="map != null and map.mngName != null and map.mngName!= '' ">  
+	                mt.Mng_Name like  '%${map.mngName}%'  
+	            </if>  
+	            <if test="map != null and map.startTime != null and map.startTime != '' ">  
+	                and mt.CreateTime>=#{map.startTime}
+	            </if>  
+	             <if test="map != null and map.endTime != null and map.endTime != '' ">  
+	                and #{map.endTime}>= mt.CreateTime
+	            </if>  
+          </where>  
+           order by mt.CreateTime desc
+    </select>       
+	<!-- 新增管理团队 -->  
+	<insert id="insertMngTeam"  parameterType="cn.springmvc.model.MngTeamEntity">    
+		insert into 
+		Mng_Team(Team_ID,    Mng_Name,  Mng_Post,  Portrait_Url,  Profile,    Statu,  Admin_ID) 
+		values  (#{id},#{mngName},#{mngPost},#{portraitUrl},#{profile},#{statu},#{optId})    
+	</insert> 
+	<!-- 查询管理团队是否存在 -->  
+	<select id="selectMngTeamIsExistByNAme"  parameterType="cn.springmvc.model.MngTeamEntity" resultMap="resultListMngTeam" >
+	   select Team_ID,    Mng_Name,  Mng_Post,  Portrait_Url,   Profile,   Statu,  CreateTime,   Opt_Date,  Admin_ID 
+	   from  Mng_Team where  Mng_Name=#{mngName} and  Team_ID != #{id} 
+    </select> 
+    <!-- 修改管理团队信息 -->  
+	<update id="updateMngTeamByID"  parameterType="cn.springmvc.model.MngTeamEntity">
+	   update  Mng_Team 
+	   <set>
+		   <if test="mngName != null" >
+	         Mng_Name=#{mngName},
+	       </if> 
+	       <if test="mngPost != null" >
+	         Mng_Post=#{mngPost},
+	       </if> 
+	       <if test="portraitUrl != null and portraitUrl!='' " >
+	         Portrait_Url=#{portraitUrl},
+	       </if> 
+	       <if test="profile != null" >
+	         Profile=#{profile},
+	       </if>   
+	        <if test="optId != 0" >
+	          Admin_ID=#{optId},
+	        </if>  
+	          Opt_Date=now(), 
+	       </set>
+	   where Team_ID=#{id}   
+    </update>   
+    <!-- 删除管理团队信息 -->  
+	<delete id="deleteMngTeamByID"  parameterType="int">
+	   delete from  Mng_Team where Team_ID=#{id}   
+    </delete>    
+     <!-- 停用或启用管理团队 -->  
+	<update id="updateMngTeamStatuByID"  parameterType="cn.springmvc.model.MngTeamEntity">
+	   update  Mng_Team  set   Statu=#{statu} where Team_ID=#{id}   
+    </update>
+    <!--  根据id查询管理团队  -->  
+	<select id="selectMngTeamByID" parameterType="int"  resultMap="resultListMngTeam">
+	   select mt.Team_ID,mt.Mng_Name,mt.Mng_Post,mt.Portrait_Url,mt.Profile,mt.Statu,
+	   mt.Admin_ID,mt.CreateTime ,mt.Opt_Date 
+	   from  Mng_Team mt   where Team_ID= #{id} 
+    </select>              
+</mapper>   

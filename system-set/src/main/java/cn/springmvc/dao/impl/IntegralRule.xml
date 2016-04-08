@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IntegralRuleXML" >
+	<!-- 邀请注册积分规则 -->
+	 <resultMap id="IntegralRule" type="cn.springmvc.model.IntegralRuleEntity" >
+	    <result column="Sign_Points" property="signPoints"/>
+	    <result column="Reg_Points" property="regPoints"/>
+	    <result column="Statu" property="statu"/>
+	 </resultMap>
+	 <sql id="IntegralRule_Column_List" >
+	    Sign_Points,Reg_Points,Statu	
+	 </sql>
+	<!-- 项目投资积分规则 -->
+	<resultMap id="proIntegralRule" type="cn.springmvc.model.IntegralRuleEntity" >
+	    <result column="ID" property="proID"/>
+	    <result column="Invest_Amount" property="proinvest_Amount"/>
+	    <result column="Invest_Points" property="proinvest_Points"/>
+	    <result column="Statu" property="prostatu"/>
+	 </resultMap>
+	 <sql id="proIntegralRule_Column_List" >
+	    ID,Invest_Amount,Invest_Points,Statu
+	 </sql>
+	<!-- 债权转让投资积分规则 -->
+	<resultMap id="traIntegralRule" type="cn.springmvc.model.IntegralRuleEntity" >
+	    <result column="ID" property="traID"/>
+	    <result column="Invest_Amount" property="traInvestAmount"/>
+	    <result column="Invest_Points" property="traInvestPoints"/>
+	    <result column="Statu" property="traStatu"/>
+	 </resultMap>
+	 <sql id="traIntegralRule_Column_List" >
+	    ID,Invest_Amount,Invest_Points,Statu
+	 </sql>
+	<!-- 充值积分规则 -->
+  	<resultMap id="recIntegralRule" type="cn.springmvc.model.IntegralRuleEntity" >
+	    <result column="ID" property="recID"/>
+	    <result column="Recharge_Amount" property="recRechargeAmount"/>
+	    <result column="Recharge_Points" property="recRechargePoints"/>
+	    <result column="Statu" property="recStatu"/>
+	 </resultMap>
+	 <sql id="recIntegralRule_Column_List" >
+	    ID,Recharge_Amount,Recharge_Points,Statu
+	 </sql>
+  	<!-- 借款积分规则 -->
+  	 <resultMap id="loaIntegralRule" type="cn.springmvc.model.IntegralRuleEntity" >
+	    <result column="ID" property="loaID"/>
+	    <result column="Loan_Amount" property="loaLoan_Amount"/>
+	    <result column="Loan_Points" property="loaLoan_Points"/>
+	    <result column="Statu" property="loaStatu"/>
+	 </resultMap>
+	 <sql id="loaIntegralRule_Column_List" >
+	    ID,Loan_Amount,Loan_Points,Statu
+	 </sql>
+	 
+	 <!-- 查询所有  借款积分规则-->
+	  <select id="selectloaIntegralRule" resultMap="loaIntegralRule" parameterType="Map" >
+	  	<!-- 0:推荐达人  1:理财顾问 2:会员 -->
+	    <if test="membertype==0">
+	    	select <include refid="loaIntegralRule_Column_List"></include> from Planner_LoanPoints_Rule
+	    </if>
+	    <if test="membertype==1">
+	    	select <include refid="loaIntegralRule_Column_List"></include> from Service_LoanPoints_Rule
+	    </if>
+	    <if test="membertype==2">
+	    	select <include refid="loaIntegralRule_Column_List"></include> from Manager_LoanPoints_Rule
+	    </if>
+	    where Statu=1
+	  </select>
+	  
+  
+  	<!-- 查询所有  充值积分规则-->
+	  <select id="selectrecIntegralRule" resultMap="recIntegralRule" parameterType="Map" >
+	  	<!-- 0:推荐达人  1:理财顾问 2:会员 -->
+	    <if test="membertype==0">
+	    	select <include refid="recIntegralRule_Column_List"></include> from Planner_RechargePoints_Rule
+	    </if>
+	    <if test="membertype==1">
+	    	select <include refid="recIntegralRule_Column_List"></include> from Service_RechargePoints_Rule
+	    </if>
+	    <if test="membertype==2">
+	    	select <include refid="recIntegralRule_Column_List"></include> from Manager_RechargePoints_Rule
+	    </if>
+	    where Statu=1
+	  </select>
+  	<!-- 查询所有  债权转让投资积分规则-->
+	  <select id="selecttraIntegralRule" resultMap="traIntegralRule" parameterType="Map" >
+	  	<!-- 0:推荐达人  1:理财顾问 2:会员 -->
+	    <if test="membertype==0">
+	    	select <include refid="traIntegralRule_Column_List"></include> from Planner_TransInvestPoints_Rule
+	    </if>
+	    <if test="membertype==1">
+	    	select <include refid="traIntegralRule_Column_List"></include> from Service_TransInvestPoints_Rule
+	    </if>
+	    <if test="membertype==2">
+	    	select <include refid="traIntegralRule_Column_List"></include> from Manager_TransInvestPoints_Rule
+	    </if>
+	    where Statu=1
+	  </select>
+	  
+	  
+	  <!-- 查询所有  项目投资积分规则-->
+	  <select id="selectproIntegralRule" resultMap="proIntegralRule" parameterType="Map" >
+	  	<!-- 0:推荐达人  1:理财顾问 2:会员 -->
+	    <if test="membertype==0">
+	    	select <include refid="proIntegralRule_Column_List"></include> from Planner_ProInvestPoints_Rule
+	    </if>
+	    <if test="membertype==1">
+	    	select <include refid="proIntegralRule_Column_List"></include> from Service_ProInvestPoints_Rule
+	    </if>
+	    <if test="membertype==2">
+	    	select <include refid="proIntegralRule_Column_List"></include> from Manager_ProInvestPoints_Rule
+	    </if>
+	    where Statu=1
+	  </select>
+	  
+	  <!-- 查询所有  邀请注册积分规则-->
+	  <select id="selectIntegralRule" resultMap="IntegralRule" parameterType="Map" >
+	  	<!-- 0:推荐达人  1:理财顾问 2:会员 -->
+	    <if test="membertype==0">
+	    	select <include refid="IntegralRule_Column_List"></include> from Planner_RegPoints_Rule
+	    </if>
+	    <if test="membertype==1">
+	    	select <include refid="IntegralRule_Column_List"></include> from Service_RegPoints_Rule
+	    </if>
+	    <if test="membertype==2">
+	    	select <include refid="IntegralRule_Column_List"></include> from Manager_RegPoints_Rule
+	    </if>
+	  </select>
+  		
+  		<!-- 添加 项目投资 债权转让投资 充值积分  借款积分 -->
+  		<insert id="insertIntegralRule" parameterType="Map">
+  		<!-- membertype 0:推荐达人  1:理财顾问 2:会员 -->
+  			insert into 
+  			<if test="membertype==0">
+  				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
+  				<if test="type==2">
+  					Planner_ProInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  				</if>
+  				<if test="type==3">
+  					Planner_TransInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  				</if>
+  				<if test="type==4">
+  					Planner_RechargePoints_Rule(ID,Recharge_Amount,Recharge_Points)
+  				</if>
+  				<if test="type==5">
+  					Planner_LoanPoints_Rule(ID,Loan_Amount,Loan_Points)
+  				</if>
+  			</if>
+  			<if test="membertype==1">
+  				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
+  				<if test="type==2">
+  					Service_ProInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  				</if>
+  				<if test="type==3">
+  					Service_TransInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  				</if>
+  				<if test="type==4">
+  					Service_RechargePoints_Rule(ID,Recharge_Amount,Recharge_Points)
+  				</if>
+  				<if test="type==5">
+  					Service_LoanPoints_Rule(ID,Loan_Amount,Loan_Points)
+  				</if>
+  			</if>
+  			<if test="membertype==2">
+  				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
+  				<if test="type==2">
+  					Manager_ProInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  				</if>
+  				<if test="type==3">
+  					Manager_TransInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  				</if>
+  				<if test="type==4">
+  					Manager_RechargePoints_Rule(ID,Recharge_Amount,Recharge_Points)
+  				</if>
+  				<if test="type==5">
+  					Manager_LoanPoints_Rule(ID,Loan_Amount,Loan_Points)
+  				</if>
+  			</if>
+  			values(#{id},#{amount},#{points})
+  		</insert>
+  		<!-- 添加  邀请注册积分规则 -->
+  		<insert id="insetRegPointsIntegralRule" parameterType="Map">
+  			<!-- membertype 0:推荐达人  1:理财顾问 2:会员 -->
+  			insert into 
+  			<if test="membertype==0">Planner_RegPoints_Rule(Reg_Points) values(#{regPoints})</if>
+  			<if test="membertype==1">Service_RegPoints_Rule(Reg_Points) values(#{regPoints})</if>
+  			<if test="membertype==2">Manager_RegPoints_Rule(Reg_Points,Sign_Points) values(#{regPoints},#{signPoints})</if>
+  		</insert>
+  		
+  		<!-- 根据id删除积分规则 -->
+  		<update id="deleteIntegralRule" parameterType="Map">
+  			update
+  			<if test="membertype==0">
+  				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
+  				<if test="type==2">
+  					Planner_ProInvestPoints_Rule
+  				</if>
+  				<if test="type==3">
+  					Planner_TransInvestPoints_Rule
+  				</if>
+  				<if test="type==4">
+  					Planner_RechargePoints_Rule
+  				</if>
+  				<if test="type==5">
+  					Planner_LoanPoints_Rule
+  				</if>
+  			</if>
+  			<if test="membertype==1">
+  				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
+  				<if test="type==2">
+  					Service_ProInvestPoints_Rule
+  				</if>
+  				<if test="type==3">
+  					Service_TransInvestPoints_Rule
+  				</if>
+  				<if test="type==4">
+  					Service_RechargePoints_Rule
+  				</if>
+  				<if test="type==5">
+  					Service_LoanPoints_Rule
+  				</if>
+  			</if>
+  			<if test="membertype==2">
+  				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
+  				<if test="type==2">
+  					Manager_ProInvestPoints_Rule
+  				</if>
+  				<if test="type==3">
+  					Manager_TransInvestPoints_Rule
+  				</if>
+  				<if test="type==4">
+  					Manager_RechargePoints_Rule
+  				</if>
+  				<if test="type==5">
+  					Manager_LoanPoints_Rule
+  				</if>
+  			</if>
+  			<set>Statu=0</set> where ID=#{id}
+  		</update>
+  		
+  		<!-- 修改邀请注册积分规则 -->
+  		<update id="updateRegPointsIntegralRule" parameterType="Map">
+  			<!-- membertype 0:推荐达人  1:理财顾问 2:会员 -->
+  			update 
+  			<if test="membertype==0">Planner_RegPoints_Rule <set>Reg_Points=#{regPoints}</set></if>
+  			<if test="membertype==1">Service_RegPoints_Rule <set>Reg_Points=#{regPoints}</set></if>
+  			<if test="membertype==2">Manager_RegPoints_Rule <set>Reg_Points=#{regPoints},Sign_Points=#{signPoints}</set></if>
+  		</update>
+</mapper>

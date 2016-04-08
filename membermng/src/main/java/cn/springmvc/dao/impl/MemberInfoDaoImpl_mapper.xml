@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="memberInfoDaoImpl">     
+	
+	<!-- 查询结果封装 -->
+	<resultMap 	type="cn.membermng.model.MemberInfo" 	id="memberInfoResult">
+		<id		column="ID"								property="id"			/>
+		<result	column="Member_Type"					property="memberType"	/>
+		<result	column="Member_No"						property="memberNo"		/>
+		<result	column="Logname"						property="logname"		/>
+		<result	column="Member_Pwd"						property="memberPwd"	/>
+		<result	column="Safe_Pwd"						property="safePwd"		/>
+		<result	column="Company_ID"						property="companyId"	/>
+		<result	column="Personal_ID"					property="personalId"	/>
+		<result	column="Path"							property="path"			/>
+		<result	column="Reg_Date"						property="regDate"		/>
+		<result	column="InvitateCode"					property="invitateCode"	/>
+		<result	column="BeinvitateCode"					property="beinvitateCode"/>
+		<result	column="Province_Id"					property="provinceId"	/>
+		<result	column="City_Id"						property="cityId"		/>
+		<result	column="County_Id"						property="countyId"		/>
+		<result	column="Town_Id"						property="townId"		/>
+		<result	column="Integral"						property="integral"		/>
+		<result	column="Credit_Integral"				property="creditIntegral"/>
+	</resultMap>	
+	
+	
+	<!-- 注册个人会员 -->
+	<select id="individualMember" statementType="CALLABLE" parameterType="Map">
+		call individualMember(
+			#{skey,					mode=IN,					jdbcType=VARCHAR},
+			#{mid,					mode=IN,					jdbcType=BIGINT},
+			#{memberNo,				mode=IN,					jdbcType=VARCHAR},
+			#{memberType,			mode=IN,					jdbcType=INTEGER},
+			#{lognName,				mode=IN,					jdbcType=VARCHAR},
+			#{personalPhone,		mode=IN,					jdbcType=VARCHAR},
+			#{personalPwd,			mode=IN,					jdbcType=VARCHAR},
+			#{beinvitateCode,		mode=IN,					jdbcType=VARCHAR},
+			#{invitateCode,			mode=IN,					jdbcType=VARCHAR},
+			#{result,				mode=OUT,					jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 会员登录 -->
+	<select id="login" statementType="CALLABLE" parameterType="Map">
+		call memberLogin(
+			#{skey,					mode=IN,					jdbcType=VARCHAR},
+			#{userName,				mode=IN,					jdbcType=VARCHAR},
+			#{userPwd,				mode=IN,					jdbcType=VARCHAR},
+			#{userType,				mode=IN,					jdbcType=INTEGER},
+			#{ipaddress,			mode=IN,					jdbcType=VARCHAR},
+			#{scountry,				mode=IN,					jdbcType=VARCHAR},
+			#{sregion,				mode=IN,					jdbcType=VARCHAR},
+			#{sprovince,			mode=IN,					jdbcType=VARCHAR},
+			#{scity,				mode=IN,					jdbcType=VARCHAR},
+			#{sarea,				mode=IN,					jdbcType=VARCHAR},	
+			#{ISP,					mode=IN,					jdbcType=VARCHAR},
+			#{sourceUrl,			mode=IN,					jdbcType=VARCHAR},
+			#{result,				mode=OUT,					jdbcType=VARCHAR}	
+		)
+	</select>
+	
+	
+	<!-- 统计当前电话号码的个数 -->
+	<select id="countPhone" parameterType="Map" resultType="Integer">
+		select count(1) from Member_Info mi left join Personal_Base_Info pbi on pbi.id = mi.Personal_ID where pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}));
+	</select>
+	
+	
+	<!-- 统计会员名称的个数 -->
+	<select id="countName" parameterType="String" resultType="Integer">
+		select count(1) from Member_Info mi where mi.Logname = #{userName}
+	</select>
+	
+	
+	<!-- 统计邀请码的个数 -->
+	<select id="countInvitateCode" parameterType="String" resultType="Integer">
+		select count(1) from Member_Info mi where mi.InvitateCode = #{invitateCode}
+	</select>
+	
+	
+	
+	<!-- 个人会员信息 -->
+	<resultMap type="cn.membermng.model.MemberInfo" id="memberPersonalInfo">
+		<id column="member_id"				property="id"/>
+		<result	column="Personal_Name"		property="baseInfo.personalName"/>
+		<result	column="Nation_Id"			property="baseInfo.nationId"/>
+		<result	column="SexID"				property="baseInfo.sexID"/>
+		<result	column="Personal_IDCard"	property="baseInfo.personalIDCard"/>
+		<result	column="Education"			property="baseInfo.education"/>
+		<result	column="Marital_Status"		property="baseInfo.maritalStatus"/>
+		<result	column="Personal_Phone"		property="baseInfo.personalPhone"/>
+		<result	column="QQ"					property="baseInfo.qq"/>
+		<result	column="Personal_Email"		property="baseInfo.personalEmail"/>
+		<result	column="Census"				property="baseInfo.census"/>
+		<result	column="House_Address"		property="baseInfo.houseAddress"/>
+		<result	column="Province_Id"		property="provinceId"/>
+		<result	column="City_Id"			property="cityId"/>
+		<result	column="County_Id"			property="countyId"/>
+		<result	column="Town_Id"			property="townId"/>
+	</resultMap>
+	<!-- 获取个人会员信息 -->
+	<select id="memberPersonalInfo" parameterType="Map" resultMap="memberPersonalInfo">
+		select mi.member_id,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as Personal_Name,pbi.Nation_Id,pbi.SexID,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey}) using utf8) as Personal_IDCard,pbi.Education,pbi.Marital_Status,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) as Personal_Phone,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.QQ),#{skey}) using utf8) as QQ,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) as Personal_Email,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Census),#{skey}) using utf8) as Census,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.House_Address),#{skey}) using utf8) as House_Address,
+		mi.Province_Id,mi.City_Id,mi.County_Id,mi.Town_Id
+		from Member_Info mi
+		left join Personal_Base_Info pbi on mi.Personal_ID = pbi.Personal_Id
+		where mi.member_id = #{memberId} and mi.member_Type = 0
+	</select>
+	
+	<!-- 企业会员信息 -->
+	<resultMap type="cn.membermng.model.MemberInfo" id="memberComplanyInfo">
+		<id		column="Company_ID" 		property="id"/>
+		<result	column="Compang_Name"		property="companyInfo.compangName"/>
+		<result	column="Companye_BLN"		property="companyInfo.companyeBLN"/>
+		<result	column="Company_Address"	property="companyInfo.companyAddress"/>
+		<result	column="Company_OC"			property="companyInfo.companyOC"/>
+		<result	column="Tax_RegNo"			property="companyInfo.taxRegNo"/>
+		<result	column="Company_Business"	property="companyInfo.companyBusiness"/>
+		<result	column="Establishments"		property="companyInfo.establishments"/>
+		<result	column="Company_Source"		property="companyInfo.companySource"/>
+		<result	column="Company_Capital"	property="companyInfo.companyCapital"/>
+		<result	column="Personal_Phone"		property="baseInfo.personalPhone"/>
+		<result	column="QQ"					property="baseInfo.qq"/>
+		<result	column="Personal_Email"		property="baseInfo.personalEmail"/>
+		<result	column="Census"				property="baseInfo.census"/>
+		<result	column="House_Address"		property="baseInfo.houseAddress"/>
+		<result column="Personal_Name2"		property="companyInfo.baseInfo.personalName"/>
+		<result column="Personal_Phone2"	property="companyInfo.baseInfo.personalPhone"/>
+	</resultMap>
+	<!-- 获取企业会员信息 -->
+	<select id="memberComplanyInfo" parameterType="Map" resultMap="memberComplanyInfo">
+		select ci.Company_ID,ci.Compang_Name,ci.Companye_BLN,ci.Company_Address,
+		CONVERT(AES_DECRYPT(UNHEX(pbi2.Personal_Name),#{skey}) using utf8) as Personal_Name2,
+		CONVERT(AES_DECRYPT(UNHEX(pbi2.Personal_Phone),#{skey}) using utf8) as Personal_Phone2,
+		ci.Company_OC,ci.Tax_RegNo,ci.Company_Business,ci.Establishments,ci.Company_Source,ci.Company_Capital,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as Personal_Name, 
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey}) using utf8) as Personal_IDCard,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) as Personal_Phone,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.QQ),#{skey}) using utf8) as QQ,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) as Personal_Email,
+		mi.Province_Id,mi.City_Id,mi.County_Id,mi.Town_Id
+		from Member_Info mi
+		left join Company_Info ci on ci.Company_ID = mi.Company_ID
+		left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_ID
+		left join Personal_Base_Info pbi2 on pbi2.Personal_Id = ci.Legal_ID
+		where mi.member_id = #{memberId} and mi.member_Type = 1	
+	</select>
+	
+	
+	
+	<!-- 修改个人会员信息 -->
+	<select id="editMemberPersonalInfo" statementType="CALLABLE" parameterType="Map">
+		call editMemberPersonalInfo(
+			#{memberId,					mode=IN,			jdbcType=BIGINT},
+			#{sexId,					mode=IN,			jdbcType=INTEGER},
+			#{qqNumber,					mode=IN,			jdbcType=VARCHAR},
+			#{address,					mode=IN,			jdbcType=VARCHAR},
+			#{homeTown,					mode=IN,			jdbcType=VARCHAR},
+			#{provinceId,				mode=IN,			jdbcType=INTEGER},
+			#{cityId,					mode=IN,			jdbcType=INTEGER},
+			#{countyId,					mode=IN,			jdbcType=INTEGER},
+			#{skey,						mode=IN,			jdbcType=VARCHAR},
+			#{result,					mode=OUT,			jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 修改企业会员信息 -->
+	<select id="editMemberComplanyInfo" statementType="CALLABLE" parameterType="Map">
+		call editMemberComplanyInfo(
+			#{memberId,					mode=IN,			jdbcType=BIGINT},
+			#{provinceId,				mode=IN,			jdbcType=INTEGER},
+			#{cityId,					mode=IN,			jdbcType=INTEGER},
+			#{countyId,					mode=IN,			jdbcType=INTEGER},
+			#{contactsName,				mode=IN,			jdbcType=VARCHAR},
+			#{contactsPhone,			mode=IN,			jdbcType=VARCHAR},
+			#{contactsQQ,				mode=IN,			jdbcType=VARCHAR},
+			#{contactsEmail,			mode=IN,			jdbcType=VARCHAR},
+			#{companyProfile,			mode=IN,			jdbcType=VARCHAR},
+			#{skey,						mode=IN,			jdbcType=VARCHAR},
+			#{result,					mode=OUT,			jdbcType=INTEGER}
+			
+		)
+	</select>
+	
+	
+	<resultMap type="cn.membermng.model.MemberInfo" id="friendInvitation">
+		<result	column="Logname"			property="logname"/>
+		<result	column="Personal_Phone"		property="baseInfo.personalPhone"/>
+		<result	column="Reg_Date"			property="regDate"/>
+		<result	column="Record_Date"		property="recordDate"/>
+	</resultMap>
+	<!-- 会员邀请列表 -->
+	<select id="friendInvitation" parameterType="Map" resultMap="friendInvitation">
+		select Logname,Personal_Phone,Reg_Date,mti.Record_Date
+		from member_info mi
+		left join personal_base_info pbi on pbi.Personal_Id = mi.Personal_ID
+		left join Member_Third_Info mti on mti.Member_ID = mi.Member_ID and mti.Member_Type = mi.Member_Type
+		where BeinvitateCode = (select InvitateCode from member_info where member_id = #{memberId} and member_type = #{memberType})
+	</select>
+	
+	
+	<resultMap type="cn.membermng.model.IntegralRecords" id="addPoints">
+		<result		column="Quantity"					property="quantity"/>
+		<result		column="Integral_Event_ID"			property="integralEventId"/>
+		<result		column="Integral_Residue"			property="integralResidue"/>
+		<result		column="Integral_Direction"			property="integralDirection"/>
+	</resultMap>
+	<!-- 会员获取积分记录 -->
+	<select id="addPoints" parameterType="Map" resultMap="addPoints">
+		select Quantity,Integral_Event_ID,Integral_Residue,Integral_Direction from Integral_Records where member_id = #{memberId}
+	</select>
+	
+	<!-- 会员积分信息 -->
+	<select id="points" parameterType="Map" resultType="HashMap">
+		select 
+		(select sum(Quantity) from Integral_Records where Integral_Direction = 1 and member_id = mi.Member_ID) as sumPoint
+		,mi.Integral
+		,(select sum(Quantity) from Integral_Records where Integral_Direction = 1 and member_id = mi.Member_ID) as sumIntegral
+		from member_info mi where mi.member_id = #{memberId} and member_Type = #{memberType}
+	</select>
+	
+	<!-- 会员积分使用记录 -->
+	<select id="rePoints" parameterType="Map" resultMap="friendInvitation">
+		
+	</select>
+	
+	
+	
+	
+	
+	<!-- 我的红包 -->
+	<select id="myRedPackage" parameterType="Map" resultType="cn.membermng.model.MyRedPackage">
+		select 
+		(select sum(Gift_Amount) from Member_Redpackets where member_id = mi.member_id) as sRedPackageSum,
+		(select sum(Gift_Amount) from Member_Redpackets where member_id = mi.member_id and End_Date > now()) as sExpiredSum,
+		(select sum(mru.Gift_Amount) from Member_Redpackets_UseRecord mru left join Member_Redpackets mr on mr.Member_RP_ID = mru.Member_RP_ID where member_id = mi.member_id ) as sUseRedPackageSum 
+		from Member_Info mi where mi.member_id = #{memberId}
+	</select>
+	
+	
+	<!-- 红包记录 -->
+	<resultMap type="cn.membermng.model.RadPackage" id="redPackage">
+		<id		column="Member_RP_ID"			property="memberRpId"/>
+		<result	column="Gift_Amount"			property="giftAmount"/>
+		<result	column="Gift_Type"				property="giftType"/>
+		<result	column="Receive_Date"			property="receiveDate"/>
+		<result	column="Statu"					property="statu"/>
+	</resultMap>
+	<select id="redPackages" parameterType="Map" resultMap="redPackage">
+		select Gift_Amount,Gift_Type,Receive_Date,End_Date,Statu from Member_Redpackets mr where mr.Member_ID = #{member_id}		
+	</select>
+	
+	
+	<!--  获取我的代金券信息 -->
+	<select id="myVouchers" parameterType="Map" resultType="cn.membermng.model.MemberVouchers">
+		select sum(Gift_Amount) as sGiftAmount from Member_Vouchers where Member_ID = #{memberId}
+	</select>
+	
+	<!-- 获取我的代金券获取记录 -->
+	<select id="vouchers" parameterType="Map" resultType="cn.membermng.model.MemberVouchers">
+		select Gift_Amount as sgiftAmount,Gift_Type as giftType,Receive_Date as receiveDate from Member_Vouchers where Member_ID = #{memberId}
+	</select>
+	
+	<!-- 获取我的代金券使用记录 -->
+	<select id="addMyVouchers" parameterType="Map" resultType="cn.membermng.model.MemberVouchers">
+		select Gift_Amount as sgiftAmount,Invest_Typeas giftType,(select Invest_Date from Invest_Record ir where ir.Invest_Id = mvu.Invest_Id) as receiveDate ,statu from Member_Vouchers_UseRecord mvu 
+	</select>
+	
+	
+</mapper>

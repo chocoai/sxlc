@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="roleInfoDaoImpl">     
+
+ <!-- 角色 --> 
+	<resultMap 						type="cn.springmvc.model.RoleInfo" 	id="roleinfo"			>
+		<id							column="roleID"						property="id"			/>
+		<result						column="Role_No"					property="roleNo"		/>
+		<result 					column="Role_Name"					property="roleName"		/>
+		<result						column="Add_Date"					property="addDate"		/>
+		<result						column="Role_Remark"				property="roleRemark"	/>
+		<result						column="Role_Statu"					property="roleStatu"	/>
+	</resultMap>
+<!--模块 --> 
+	<resultMap 						type="cn.springmvc.model.Module" 	id="moduleinfo"			>
+		<id						column="moduleId"					property="moduleId"		/>
+		<result 					column="moduleLevel"				property="moduleLevel"	/>
+		<result 					column="moduleName"					property="moduleNamel"	/>
+		<result						column="prevModuleId"				property="prevModuleId"	/>
+		<result						column="modulePic1"					property="modulePic1"	/>
+		<result						column="modulePic2"					property="modulePic2"	/>
+		<result						column="moduleFunction"				property="moduleFunction"/>
+		<result						column="moduleindex"				property="moduleindex"	/>
+		<result						column="moduleType"					property="moduleType"	/>
+	</resultMap>
+<!--操作	--> 
+	<resultMap 						type="cn.springmvc.model.Operation" 	id="operationinfo"	>
+		<id						column="optID"						property="optID"		/>
+		<result						column="moduleID"					property="moduleID"		/>
+		<result 					column="optName"					property="optName"		/>
+		<result						column="optPic"						property="optPic"		/>
+		<result						column="optFunction"				property="optFunction"	/>
+		<result						column="optindex"					property="optindex"		/>
+		<result						column="auto"						property="auto"			/>
+		<result						column="moduleType"					property="moduleType"	/>
+	</resultMap>
+	
+<!--操作	--> 
+	<resultMap 						type="cn.springmvc.model.RoleAuth" 	id="roleAuthinfo"	>
+		<result						column="roleID"					 property="roleId"		/>
+		<result						column="moduleID"				 property="moduleId"			/>
+		<result						column="optID"					 property="optId"	/>
+	</resultMap>
+		
+	
+	
+	<!-- 获取模块列表 -->
+	<select id="getModule"  	resultMap="moduleinfo">
+		select moduleID,moduleLevel,moduleName,prevModuleID,modulePic1,modulePic2,
+		moduleFunction,moduleindex,moduleType from module ORDER BY moduleID ASC
+	</select>
+	
+	
+	<!-- 获取操作列表 -->
+	<select id="getOperation" 	resultMap="operationinfo">
+		select optID,moduleID,optName,optPic,optFunction,optindex,auto,moduleType	
+		from operation  ORDER BY moduleID ASC,optindex ASC
+	</select>
+	
+	<!-- 获取角色列表 -->
+	<select id="getListByParam" 	parameterType="product_p2p.kit.pageselect.PageEntity" 	resultMap="roleinfo">
+		select roleID,Role_No,Role_Name,Add_Date,Role_Remark,Role_Statu from Role_Info
+		<where>
+			<if test="map.roleNo != null">
+				Role_No = #{map.roleNo}
+			</if>
+			<if test="map.roleName != null">
+				Role_Name = #{map.roleName}
+			</if>
+			<if test="map.startTime != null">
+				Add_Date between #{map.startTime} and #{map.endTime}
+			</if>
+			<if test="map.statu != null">
+				Role_Statu = #{map.statu}
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- 添加角色信息 -->
+	<select id="saveRole" 	statementType="CALLABLE"	parameterType="Map" resultType="Map" >
+		call saveRole(
+			#{rid,					mode=IN,							jdbcType=BIGINT},
+			#{roleNo,				mode=IN,							jdbcType=VARCHAR},
+			#{roleName,				mode=IN,							jdbcType=VARCHAR},	
+			#{roleRemark,			mode=IN,							jdbcType=VARCHAR},
+			#{auths,				mode=IN,							jdbcType=VARCHAR},
+			#{result,				mode=OUT,							jdbcType=INTEGER}
+		)		
+	</select>
+	
+	
+	<!-- 修改角色信息 -->
+	<select id="editRole" 	statementType="CALLABLE"	parameterType="Map" resultType="Map">
+		call editRole(
+			#{rid,					mode=IN,							jdbcType=BIGINT},
+			#{roleName,				mode=IN,							jdbcType=VARCHAR},
+			#{roleRemark,			mode=IN,							jdbcType=VARCHAR},
+			#{auths,				mode=IN,							jdbcType=VARCHAR},
+			#{result,				mode=OUT,							jdbcType=INTEGER}
+		)		
+	</select>
+	
+	
+	<!-- 删除角色信息 -->
+	<select id="removeRole" 	statementType="CALLABLE"	parameterType="Map" 	resultType="Map">
+		call removeRole(
+			#{rid,					mode=IN,							jdbcType=BIGINT},
+			#{result,				mode=OUT,							jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 角色停用启用 -->
+	<select id="ofRole" 	statementType="CALLABLE"		parameterType="Map"		resultType="Map">
+		call ofRole(
+			#{rid,					mode=IN,							jdbcType=BIGINT},
+			#{statu,				mode=IN,							jdbcType=INTEGER},
+			#{result,				mode=OUT,							jdbcType=INTEGER}
+		)		
+	</select>
+	
+		<!-- 获取角色模块列表 -->
+	<select id="getModuleById"  parameterType="Long"	resultMap="moduleinfo">
+		select moduleID,moduleLevel,moduleName,prevModuleID,modulePic1,modulePic2,
+		moduleFunction,moduleindex,moduleType from module where moduleID   in (select moduleID from Role_Auth where roleID =#{roleId}) ORDER BY moduleID ASC
+	</select>
+	
+	
+	<!-- 获取角色操作列表 -->
+	<select id="getOperationById"  parameterType="Long"	resultMap="operationinfo">
+		select optID,moduleID,optName,optPic,optFunction,optindex,auto,moduleType	
+		from operation  where optID in (select optID from Role_Auth  where roleID=#{roleId}) ORDER BY moduleID ASC,optindex ASC
+	</select>
+	
+	<!-- 根据id获取角色信息 -->
+	<select id="getRoleInfoById" parameterType="Long"	resultMap="roleinfo">
+		select roleID,Role_No,Role_Name,Add_Date,Role_Remark,Role_Statu	from Role_Info  where roleID=#{roleId};
+	</select>
+	
+	<!-- 根据id获取角色权限列表 -->
+	<select id="getRoleAuthById" parameterType="Long"	resultMap="roleAuthinfo">
+		select roleID,moduleID,optID from Role_Auth  where roleID=#{roleId};
+	</select>
+</mapper>

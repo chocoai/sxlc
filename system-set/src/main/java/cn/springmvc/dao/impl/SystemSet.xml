@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SystemSetXML" >
+  <resultMap id="SystemSet" type="cn.springmvc.model.SystemSetEntity" >
+    <result column="Overdue_Instead_Day" property="overdueInsteadDay"/>
+    <result column="Auto_Back_Rate" property="autoBackRate"/>
+    <result column="EndDate_Remind" property="endDateRemind"/>
+    <result column="Expiration_ReminderSet" property="expirationReminderSet"/>
+    <result column="RiskMargin_RateMax" property="riskMarginRateMax"/>
+    <result column="Redpackets_RateMax" property="redpacketsRateMax"/>
+    <result column="RiskMargin_Type" property="riskMarginType"/>
+  </resultMap>
+  <sql id="SystemSet_Column_List" >
+    Overdue_Instead_Day,Auto_Back_Rate,EndDate_Remind,Expiration_ReminderSet,RiskMargin_RateMax
+    ,Redpackets_RateMax,RiskMargin_Type	
+  </sql>
+  <!-- 查询系统设置 -->
+  <select id="selectSystemSet" resultMap="SystemSet" parameterType="cn.springmvc.model.SystemSetEntity" >
+    select <include refid="SystemSet_Column_List"></include> from System_Set
+  </select>
+  <!-- 修改系统设置 -->
+  <update id="updateSystemSet" parameterType="cn.springmvc.model.SystemSetEntity">
+  	update System_Set 
+  	<set>
+  		<if test="overdueInsteadDay!=-1">Overdue_Instead_Day=#{overdueInsteadDay},</if>
+  		<if test="autoBackRate!=-1">Auto_Back_Rate=#{autoBackRate},</if>
+  		<if test="endDateRemind!=-1">EndDate_Remind=#{endDateRemind},</if>
+  		<if test="expirationReminderSet!=-1">Expiration_ReminderSet=#{expirationReminderSet},</if>
+  		<if test="riskMarginRateMax!=-1">RiskMargin_RateMax=#{riskMarginRateMax},</if>
+  		<if test="redpacketsRateMax!=-1">Redpackets_RateMax=#{redpacketsRateMax},</if>
+  		<if test="riskMarginType!=-1">RiskMargin_Type=#{riskMarginType},</if>
+  	</set>
+  </update>
+  <!-- 添加系统设置 -->
+  <insert id="insertSystemSet" parameterType="cn.springmvc.model.SystemSetEntity">
+  	insert into System_Set(Overdue_Instead_Day,Auto_Back_Rate,EndDate_Remind,Expiration_ReminderSet,RiskMargin_RateMax
+    ,Redpackets_RateMax,RiskMargin_Type) values(#{overdueInsteadDay},#{autoBackRate}
+    ,#{endDateRemind},#{expirationReminderSet},#{riskMarginRateMax},#{redpacketsRateMax},#{riskMarginType})
+  </insert>
+  
+  
+  
+  
+  
+  <resultMap id="SystemInfoSet" type="cn.springmvc.model.SystemInfoSetEntity" >
+    <result column="System_Name" property="systemName"/>
+    <result column="Background_Logo" property="backgroundLogo"/>
+    <result column="Forground_Logo" property="forgroundLogo"/>
+    <result column="System_Hotline" property="systemHotline"/>
+    <result column="System_OfficeHours" property="systemOfficeHours"/>
+    <result column="Weibo_Name" property="weiboName"/>
+    <result column="Weibo_QRCode" property="weiboQRCode"/>
+    <result column="QQGroup_Code" property="qQGroupCode"/>
+    <result column="QQGroup_QRCode" property="qQGroupQRCode"/>
+    <result column="WeChat_Code" property="weChatCode"/>
+    <result column="WeChat_QRCode" property="weChatQRCode"/>
+    <result column="Switch_Statu" property="switchStatu"/>
+    <result column="Risk_Reserve_Fund" property="riskReserveFund"/>
+    <result column="Expect_Year_Rate" property="expectYearRate"/>
+    <result column="Integral_Alias" property="integralAlias"/>
+    <result column="Welcome_Title" property="welcomeTitle"/>
+  </resultMap>
+  <sql id="SystemInfoSet_Column_List" >
+    System_Name,Background_Logo,Forground_Logo,System_Hotline,System_OfficeHours
+    ,Weibo_Name,Weibo_QRCode,QQGroup_Code,QQGroup_QRCode,WeChat_Code,WeChat_QRCode
+    ,Switch_Statu,Risk_Reserve_Fund,Expect_Year_Rate,Integral_Alias,Welcome_Title	
+  </sql>
+  <!-- 查询系统设置 -->
+  <select id="selectSystemInfoSet" resultMap="SystemInfoSet" parameterType="cn.springmvc.model.SystemInfoSetEntity" >
+    select <include refid="SystemInfoSet_Column_List"></include> from System_Info_Set
+  </select>
+  <!-- 修改系统设置 -->
+  <update id="updateSystemInfoSet" parameterType="cn.springmvc.model.SystemInfoSetEntity">
+  	update System_Info_Set 
+  	<set>
+  		<if test="systemName != null">System_Name=#{systemName},</if>
+  		<if test="backgroundLogo != null">Background_Logo=#{backgroundLogo},</if>
+  		<if test="forgroundLogo != null">Forground_Logo=#{forgroundLogo},</if>
+  		<if test="systemHotline != null">System_Hotline=#{systemHotline},</if>
+  		<if test="systemOfficeHours != null">System_OfficeHours=#{systemOfficeHours},</if>
+  		<if test="weiboName != null">Weibo_Name=#{weiboName},</if>
+  		<if test="weiboQRCode != null">Weibo_QRCode=#{weiboQRCode},</if>
+  		<if test="qQGroupCode != null">QQGroup_Code=#{qQGroupCode},</if>
+  		<if test="qQGroupQRCode != null">QQGroup_QRCode=#{qQGroupQRCode},</if>
+  		<if test="weChatCode != null">WeChat_Code=#{weChatCode},</if>
+  		<if test="weChatQRCode != null">WeChat_QRCode=#{weChatQRCode},</if>
+  		<if test="switchStatu != -1">Switch_Statu=#{switchStatu},</if>
+  		<if test="riskReserveFund != null">Risk_Reserve_Fund=#{riskReserveFund},</if>
+  		<if test="expectYearRate != null">Expect_Year_Rate=#{expectYearRate},</if>
+  		<if test="integralAlias != null">Integral_Alias=#{integralAlias},</if>
+  		<if test="welcomeTitle !=null">Welcome_Title=#{welcomeTitle},</if>
+  	</set>
+  </update>
+  <!-- 添加系统设置 -->
+  <insert id="insertSystemInfoSet" parameterType="cn.springmvc.model.SystemInfoSetEntity">
+  	insert into System_Info_Set(System_Name,Background_Logo,Forground_Logo,System_Hotline,System_OfficeHours
+    ,Weibo_Name,Weibo_QRCode,QQGroup_Code,QQGroup_QRCode,WeChat_Code,WeChat_QRCode
+    ,Switch_Statu,Risk_Reserve_Fund,Expect_Year_Rate,Integral_Alias,Welcome_Title) 
+    values(#{systemName},#{backgroundLogo},#{forgroundLogo},#{systemHotline},#{systemOfficeHours}
+    ,#{weiboName},#{weiboQRCode},#{qQGroupCode},#{qQGroupQRCode},#{weChatCode},#{weChatQRCode}
+    ,#{switchStatu},#{riskReserveFund},#{expectYearRate},#{integralAlias},#{welcomeTitle})
+  </insert>
+</mapper>

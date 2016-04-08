@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="processProject">
+    <resultMap type="cn.springmvc.model.ProcessProjectEntity" id="resultListProcessProject">
+        <id column="ID" property="id" />
+		<result column="AP_ID" property="apID" />
+		<result column="Batch" property="batch" />
+		<result column="Indexs" property="indexs" />
+		<result column="Statu" property="statu" />
+		<result column="AP_Name" property="apName" /> 
+    </resultMap>  
+	<!-- 分页查询的首页项目审批流程-->  
+	<select id="selectProcessProjectListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProcessProject" >
+	   select pp.ID, pp.AP_ID,pp.Batch,pp.Indexs,pp.Statu,pp.ID,ap.AP_Name
+	   from  Process_Project  pp
+	   LEFT JOIN Activities_Project ap   on ap.ID=pp.AP_ID  
+    </select> 
+     <!-- 新增首页项目审批流程 -->  
+	<insert id="insertProcessProject"  parameterType="cn.springmvc.model.ProcessProjectEntity" >    
+		insert into 
+		Process_Project( ID,  AP_ID,   Batch,   Indexs) 
+		    values    (#{id},#{apID},#{batch},#{indexs})    
+	</insert>   
+    <!-- 删除首页项目审批流程 -->  
+	<delete id="deleteProcessProjectByID"  parameterType="int">
+	   delete from  Process_Project where ID=#{id}   
+    </delete>  
+     <!-- 停用或启用首页项目审批流程 -->  
+	<update id="updateProcessProjectStatuByID"  parameterType="cn.springmvc.model.ProcessProjectEntity">
+	   update  Process_Project  set   Statu=#{statu} where ID=#{id}   
+    </update> 
+    <!--上移或下移首页项目审批流程 -->
+    <select id="moveAndDownProcessProject"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call moveAndDownProcessProject(
+				#{iid ,		 mode=IN,	jdbcType=INTEGER},
+				#{flag,		 mode=IN,	jdbcType=INTEGER},
+				#{result ,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+	</select>
+	<!-- 查询项目审批流程序号 -->  
+	<select id="selectProcessProjectindex"  resultType="cn.springmvc.model.ProcessProjectEntity" >
+	   select Indexs from  Process_Project  order by Indexs desc limit 1
+    </select>
+    <!-- 查询项目审批活动点是否有效 -->  
+	<select id="selectProcessProjectstatu"  resultType="cn.springmvc.model.ProcessProjectEntity" >
+	   select Statu from  Activities_Project  AP_ID=#{apID} and statu=1
+    </select>  
+    <!-- 根据id查询的首页项目审批流程-->  
+	<select id="selectProcessProjectbyid"  parameterType="id"  resultMap="resultListProcessProject" >
+	   select pp.ID, pp.AP_ID,pp.Batch,pp.Indexs,pp.Statu,pp.ID,ap.AP_Name
+	   from  Process_Project  pp
+	   LEFT JOIN Activities_Project ap   on ap.ID=pp.AP_ID  
+	   where pp.ID=#{id}
+    </select> 
+</mapper>

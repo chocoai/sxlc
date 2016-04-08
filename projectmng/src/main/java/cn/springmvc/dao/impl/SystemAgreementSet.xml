@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="systemAgreementSet">  
+   <resultMap type="cn.springmvc.model.SystemAgreementSetEntity" id="resultListSystemAgreementSet">
+		<result column="Agreement_Type" property="agreementType" />
+		<result column="Agreement_Detail" property="agreementDetail" /> 
+		<result column="Agreement_Statu" property="agreementStatu" />  
+    </resultMap> 
+    <!-- 分页系统协议列表 -->  
+	<select id="selectSystemAgreementSetList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListSystemAgreementSet">
+	   select Agreement_Type,Agreement_Detail,Agreement_Statu 
+	   from  System_Agreement_Set 
+           <where>    
+	            <if test="map.agreementType != -1">  
+	                and Agreement_Type=#{map.agreementType}
+	            </if>   
+           </where>  
+    </select>       
+	<!-- 新增系统协议 -->  
+	<insert id="insertSystemAgreementSet"  parameterType="cn.springmvc.model.SystemAgreementSetEntity">    
+		insert into System_Agreement_Set(Agreement_Type,  Agreement_Detail,  Agreement_Statu )
+		                         values(#{agreementType},#{agreementDetail},#{agreementStatu})    
+	</insert> 
+	<!-- 系统协议是否存在 -->  
+	<select id="selectSystemAgreementSetIsExistBytype"  parameterType="int" resultMap="resultListSystemAgreementSet" >
+	   select Agreement_Type from  System_Agreement_Set where  Agreement_Type=#{agreementType} ;  
+    </select>  
+    <!-- 修改系统协议信息 -->  
+	<update id="updateSystemAgreementSetByType"  parameterType="cn.springmvc.model.SystemAgreementSetEntity">
+	   update  System_Agreement_Set set  Agreement_Detail=#{agreementDetail} where Agreement_Type=#{agreementType} 
+    </update>   
+    <!-- 删除系统协议信息 -->  
+	<delete id="deleteSystemAgreementSetByType"  parameterType="int">
+	   delete from  System_Agreement_Set where Agreement_Type=#{agreementType}   
+    </delete>    
+     <!-- 停用或启用系统协议 -->  
+	<update id="updateSystemAgreementSetStatuByType"  parameterType="cn.springmvc.model.SystemAgreementSetEntity">
+	   update  System_Agreement_Set  set   Agreement_Statu=#{agreementStatu} where Agreement_Type=#{agreementType}  
+    </update> 
+    <!-- 查询系统协议  修改时用-->  
+	<select id="selectSystemAgreementSetBytype"  parameterType="int" resultMap="resultListSystemAgreementSet" >
+	   select Agreement_Type,Agreement_Detail,Agreement_Statu  from  System_Agreement_Set where  Agreement_Type=#{agreementType} ;  
+    </select>         
+</mapper>   

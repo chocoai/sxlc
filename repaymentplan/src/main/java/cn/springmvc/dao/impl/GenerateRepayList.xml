@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="GenerateRepay">
+    <!-- 根据项目申请ID查询项目详情 -->  
+	<select id="selectProjectdetail"  parameterType="map" resultMap="replayProjectDetail.resultProjectDetail" >
+	   select pbi.Repay_Way,pbi.Year_Rate,pbi.Amount,pbi.Deadline,
+	   pbi.Deadline_Type  ,par.Apply_Id
+       from  Project_App_Record par
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID 
+	   where  par.Apply_Id=#{id}
+    </select> 
+    <!-- 发布后生成还款计划 -->  
+    <select id="GenerateRepayList"  statementType="CALLABLE" parameterType="Map"> 
+	     {call GenerateRepayList(
+				#{iAppId ,	     mode=IN,	jdbcType=BIGINT},
+				#{sInfo ,	     mode=IN,	jdbcType=VARCHAR},
+				#{sKey,	         mode=IN,	jdbcType=VARCHAR}, 
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)}
+	</select>
+  
+</mapper>

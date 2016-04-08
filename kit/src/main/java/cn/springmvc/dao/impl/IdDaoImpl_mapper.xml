@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="IdWriteDao">     
+	
+	<!-- 查询结果封装 -->
+	<resultMap type="product_p2p.kit.id.IdEntity" id="idEntity">
+		<id column="ID" property="lId" />
+		<result column="Statu" property="sStatu"/>
+	</resultMap>	
+	
+	<!-- 获取列表 -->
+	<!-- <select id="getListByParam" parameterType="Map" resultMap="deptResult">
+		select * from dept_info
+		<where>
+			<if test="deptNo != null">
+				Dept_No = #{deptNo}
+			</if>
+			<if test="deptName != null">
+				Dept_Name = #{deptName}
+			</if>
+			<if test="principalName != null">
+				Principal_Name = #{principalName}
+			</if>
+			<if test="principalPhone != null">
+				Principal_Phone = #{principalPhone}
+			</if>
+			<if test="statu != null">
+				Dept_Statu = #{statu}
+			</if>
+		</where>
+	</select> -->
+	
+	
+	<!-- 设置id已用 -->
+	<update id="updateIdUsed" parameterType="Map">
+		update ID_List set Statu = 3 where ID= #{id}
+	</update>
+	
+	<!-- 获取id最大值 -->
+	<select id="getMaxId" parameterType="Map" resultType="Long">
+		select ID from ID_Builder_Even where stub='b'
+	</select>
+	
+	<!-- 设置id最大值 -->
+	<update id="setMaxId" parameterType="Map">
+		update ID_Builder_Even set id = #{id} where stub='b'
+	</update>
+	
+	<!-- 添加id信息 -->
+	<insert id="insertIdInfo" parameterType="Map">
+		insert into ID_List(ID) values(#{id})
+	</insert>
+	
+	<!-- 获取未使用的id列表 -->
+	<select id="getUnUseId" parameterType="Map" resultMap="idEntity">
+		select ID,Statu from ID_List where Statu=0 order by Record_Date asc limit 0,#{count}
+	</select>
+	
+	<!-- 批量设置id状态	-->
+	<update id="updateIdsStatu" parameterType="Map">
+		update ID_List set Statu = 2 
+		<where>
+			ID >=#{min}  and #{max} >= id
+		</where>
+	</update>
+	
+	<!-- 获取未使用id个数	-->
+	<select id="getUnUsedCount" parameterType="Map" resultType="Integer">
+		select count(1) from ID_List where Statu=0
+	</select>
+</mapper>

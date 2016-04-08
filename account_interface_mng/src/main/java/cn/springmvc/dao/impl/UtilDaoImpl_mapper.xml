@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="UtilDao">     
+	
+	<!-- 获取平台自有账户 -->
+	<select id="GetOwnAccountMark" parameterType="Map" resultType ="string">
+		select ThirdParty_Mark from Own_Account_Info where Account_ID = 1
+	</select>
+	
+	<!-- 获取平台风险保证金账户 -->
+	<select id="GetOwnRiskMarginAccountMark" parameterType="Map" resultType ="string">
+		select ThirdParty_Mark from Own_Account_Info where Account_ID = 2
+	</select>
+	
+	<!-- 获取接口url -->
+	<select id="GetInterfaceUrl" parameterType="Map" resultType ="string">
+		select Interface_Url from QianDuoDuo_Url_Set where Statu = 1 and Escrow_ID=1 and Interface_ID = #{typeId}
+	</select>
+	
+</mapper>

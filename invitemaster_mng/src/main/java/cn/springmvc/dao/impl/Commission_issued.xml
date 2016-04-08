@@ -1,0 +1,695 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="Commissionissued">     
+	
+	<!-- 查询结果封装 -->
+
+	<!-- 按月统计理财顾问佣金:
+		Personal_Name,姓名
+		Logname,用户名
+		Personal_Phone,联系电话
+		Personal_IDCard,身份证号
+		Award_Amount_Borrowing,推荐借款提奖
+		Award_Amount_Invest,推荐投资提奖
+		Award_Amount_VIP,推荐购买VIP提奖
+		Award_Amount_Repay,推荐还本提奖
+		Award_Amount,推荐提奖总额
+		Statu,佣金发放状态:1发放 0未发
+	--> 
+	<select id="getAward_Advisor" parameterType="Map" resultMap="CommissionIssuedMap.Award">
+		SELECT
+		 fa.Member_ID,
+		 CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
+		 mi.Logname,
+		 CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
+		 CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey})) using utf8) Personal_IDCard,
+		 fa.Award_Amount_Borrowing,
+		 fa.Award_Amount_Invest,
+		 fa.Award_Amount_VIP,
+		 fa.Award_Amount_Repay,
+		 fa.Award_Amount,
+		 #{Statu} Statu
+		 FROM
+			(SELECT 
+			  f.Member_ID,
+			  SUM(f.Award_Amount_Borrowing) Award_Amount_Borrowing,
+			  SUM(f.Award_Amount_Invest) Award_Amount_Invest,
+			  SUM(f.Award_Amount_VIP) Award_Amount_VIP,
+			  SUM(f.Award_Amount_Repay) Award_Amount_Repay,			  SUM(f.Award_Amount_Borrowing)+SUM(f.Award_Amount_Invest)+SUM(f.Award_Amount_VIP)+SUM(f.Award_Amount_Repay) Award_Amount
+			FROM
+				(SELECT	
+				  far.Member_ID,
+				  far.Award_Amount Award_Amount_Borrowing,
+				  0 Award_Amount_Invest,
+				  0 Award_Amount_VIP,
+				  0 Award_Amount_Repay
+				FROM FinancialAdvisor_Award_Record far
+				  JOIN member_info mi
+					ON far.Member_ID = mi.Member_ID
+				  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+					ON mi.Personal_Id = pbi.Personal_Id
+				WHERE Award_Type = 0 	<!--借款提奖-->
+					  AND IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+					  AND  IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+					  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+					  AND CASE #{Statu} 
+							WHEN 1 THEN far.Pay_Statu = 2
+							ELSE far.Pay_Statu between -1 and 1
+						  END 
+					  AND IF(#{Award_Date_Min} IS NULL OR #{Award_Date_Min} = '', 1=1, far.Award_Date>=#{Award_Date_Min})
+					  AND IF(#{Award_Date_Max} IS NULL OR #{Award_Date_Max} = '', 1=1, far.Award_Date&lt;=#{Award_Date_Max})
+				UNION ALL
+				SELECT	
+				  far.Member_ID,
+				  0 Award_Amount_Borrowing,
+				  far.Award_Amount Award_Amount_Invest,
+				  0 Award_Amount_VIP,
+				  0 Award_Amount_Repay
+				FROM FinancialAdvisor_Award_Record far
+				  JOIN member_info mi
+					ON far.Member_ID = mi.Member_ID
+				  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+					ON mi.Personal_Id = pbi.Personal_Id
+				WHERE Award_Type = 1 	<!--投资提奖-->
+					  AND IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+					  AND  IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+					  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+					  AND CASE #{Statu} 
+							WHEN 1 THEN far.Pay_Statu = 2
+							ELSE far.Pay_Statu between -1 and 1
+						  END 
+					  AND IF(#{Award_Date_Min} IS NULL OR #{Award_Date_Min} = '', 1=1, far.Award_Date>=#{Award_Date_Min})
+					  AND IF(#{Award_Date_Max} IS NULL OR #{Award_Date_Max} = '', 1=1, far.Award_Date&lt;=#{Award_Date_Max})
+				UNION ALL
+				SELECT	
+				  far.Member_ID,
+				  0 Award_Amount_Borrowing,
+				  0 Award_Amount_Invest,
+				  far.Award_Amount Award_Amount_VIP,
+				  0 Award_Amount_Repay
+				FROM FinancialAdvisor_Award_Record far
+				  JOIN member_info mi
+					ON far.Member_ID = mi.Member_ID
+				  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+					ON mi.Personal_Id = pbi.Personal_Id
+				WHERE Award_Type = 3 	<!--vip提奖-->
+					  AND IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+					  AND  IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+					  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+					  AND CASE #{Statu} 
+							WHEN 1 THEN far.Pay_Statu = 2
+							ELSE far.Pay_Statu between -1 and 1
+						  END 
+					  AND IF(#{Award_Date_Min} IS NULL OR #{Award_Date_Min} = '', 1=1, far.Award_Date>=#{Award_Date_Min})
+					  AND IF(#{Award_Date_Max} IS NULL OR #{Award_Date_Max} = '', 1=1, far.Award_Date&lt;=#{Award_Date_Max})
+				UNION ALL
+				SELECT	
+				  far.Member_ID,
+				  0 Award_Amount_Borrowing,
+				  0 Award_Amount_Invest,
+				  0 Award_Amount_VIP,
+				  far.Award_Amount Award_Amount_Repay
+				FROM FinancialAdvisor_Award_Record far
+				  JOIN member_info mi
+					ON far.Member_ID = mi.Member_ID
+				  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+					ON mi.Personal_Id = pbi.Personal_Id
+				WHERE Award_Type = 2 	<!--还本提奖-->
+					  AND IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+					  AND  IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+					  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+					  AND CASE #{Statu} 
+							WHEN 1 THEN far.Pay_Statu = 2
+							ELSE far.Pay_Statu between -1 and 1
+						  END 
+					  AND IF(#{Award_Date_Min} IS NULL OR #{Award_Date_Min} = '', 1=1, far.Award_Date>=#{Award_Date_Min})
+					  AND IF(#{Award_Date_Max} IS NULL OR #{Award_Date_Max} = '', 1=1, far.Award_Date&lt;=#{Award_Date_Max})) f
+			GROUP BY f.Member_ID) fa
+		JOIN Member_info mi
+		  ON fa.Member_ID = mi.Member_ID
+		JOIN personal_base_info pbi	
+		  ON mi.Personal_Id = pbi.Personal_Id
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'AWARD_AMOUNT' then fa.Award_Amount
+				WHEN 'AWARD_AMOUNT_BORROWING' then fa.Award_Amount_Borrowing
+				WHEN 'AWARD_AMOUNT_INVEST' then fa.Award_Amount_Invest
+				WHEN 'AWARD_AMOUNT_VIP' then fa.Award_Amount_VIP
+				WHEN 'AWARD_AMOUNT_REPAY' then fa.Award_Amount_Repay
+				ELSE fa.Award_Amount
+			END)	
+	    <if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+		<if test="orderDsec==0">DESC</if>	  
+	</select>
+	
+		<!-- 按月统计推荐达人佣金:
+		Personal_Name,姓名
+		Logname,用户名
+		Personal_Phone,联系电话
+		Personal_IDCard,身份证号
+		Award_Amount_Borrowing,推荐借款提奖
+		Award_Amount_Invest,推荐投资提奖
+		Award_Amount_VIP,推荐购买VIP提奖
+		Award_Amount_Repay,推荐还本提奖
+		Award_Amount,推荐提奖总额
+		Statu,佣金发放状态:1发放 0未发
+	--> 
+	<select id="getAward_Invite" parameterType="Map" resultMap="CommissionIssuedMap.Award">
+		SELECT
+		 fa.Member_ID,
+		 CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
+		 mi.Logname,
+		 CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
+		 CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey})) using utf8) Personal_IDCard,
+		 fa.Award_Amount_Borrowing,
+		 fa.Award_Amount_Invest,
+		 fa.Award_Amount_VIP,
+		 fa.Award_Amount_Repay,
+		 fa.Award_Amount,
+		 #{Statu} Statu
+		 FROM
+			(SELECT 
+			  f.Member_ID,
+			  SUM(f.Award_Amount_Borrowing) Award_Amount_Borrowing,
+			  SUM(f.Award_Amount_Invest) Award_Amount_Invest,
+			  SUM(f.Award_Amount_VIP) Award_Amount_VIP,
+			  SUM(f.Award_Amount_Repay) Award_Amount_Repay,			  SUM(f.Award_Amount_Borrowing)+SUM(f.Award_Amount_Invest)+SUM(f.Award_Amount_VIP)+SUM(f.Award_Amount_Repay) Award_Amount
+			FROM
+				(SELECT	
+				  far.Member_ID,
+				  far.Award_Amount Award_Amount_Borrowing,
+				  0 Award_Amount_Invest,
+				  0 Award_Amount_VIP,
+				  0 Award_Amount_Repay
+				FROM InviteMaster_Award_Record far
+				  JOIN member_info mi
+					ON far.Member_ID = mi.Member_ID
+				  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+					ON mi.Personal_Id = pbi.Personal_Id
+				WHERE Award_Type = 0 	<!--借款提奖-->
+					  AND IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+					  AND  IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+					  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+					  AND CASE #{Statu} 
+							WHEN 1 THEN far.Pay_Statu = 2
+							ELSE far.Pay_Statu between -1 and 1
+						  END 
+					  AND IF(#{Award_Date_Min} IS NULL OR #{Award_Date_Min} = '', 1=1, far.Award_Date>=#{Award_Date_Min})
+					  AND IF(#{Award_Date_Max} IS NULL OR #{Award_Date_Max} = '', 1=1, far.Award_Date&lt;=#{Award_Date_Max})
+				UNION ALL
+				SELECT	
+				  far.Member_ID,
+				  0 Award_Amount_Borrowing,
+				  far.Award_Amount Award_Amount_Invest,
+				  0 Award_Amount_VIP,
+				  0 Award_Amount_Repay
+				FROM InviteMaster_Award_Record far
+				  JOIN member_info mi
+					ON far.Member_ID = mi.Member_ID
+				  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+					ON mi.Personal_Id = pbi.Personal_Id
+				WHERE Award_Type = 1 	<!--投资提奖-->
+					  AND IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+					  AND  IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+					  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+					  AND CASE #{Statu} 
+							WHEN 1 THEN far.Pay_Statu = 2
+							ELSE far.Pay_Statu between -1 and 1
+						  END 
+					  AND IF(#{Award_Date_Min} IS NULL OR #{Award_Date_Min} = '', 1=1, far.Award_Date>=#{Award_Date_Min})
+					  AND IF(#{Award_Date_Max} IS NULL OR #{Award_Date_Max} = '', 1=1, far.Award_Date&lt;=#{Award_Date_Max})
+				UNION ALL
+				SELECT	
+				  far.Member_ID,
+				  0 Award_Amount_Borrowing,
+				  0 Award_Amount_Invest,
+				  far.Award_Amount Award_Amount_VIP,
+				  0 Award_Amount_Repay
+				FROM InviteMaster_Award_Record far
+				  JOIN member_info mi
+					ON far.Member_ID = mi.Member_ID
+				  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+					ON mi.Personal_Id = pbi.Personal_Id
+				WHERE Award_Type = 3 	<!--vip提奖-->
+					  AND IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+					  AND  IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+					  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+					  AND CASE #{Statu} 
+							WHEN 1 THEN far.Pay_Statu = 2
+							ELSE far.Pay_Statu between -1 and 1
+						  END 
+					  AND IF(#{Award_Date_Min} IS NULL OR #{Award_Date_Min} = '', 1=1, far.Award_Date>=#{Award_Date_Min})
+					  AND IF(#{Award_Date_Max} IS NULL OR #{Award_Date_Max} = '', 1=1, far.Award_Date&lt;=#{Award_Date_Max})
+				UNION ALL
+				SELECT	
+				  far.Member_ID,
+				  0 Award_Amount_Borrowing,
+				  0 Award_Amount_Invest,
+				  0 Award_Amount_VIP,
+				  far.Award_Amount Award_Amount_Repay
+				FROM InviteMaster_Award_Record far
+				  JOIN member_info mi
+					ON far.Member_ID = mi.Member_ID
+				  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+					ON mi.Personal_Id = pbi.Personal_Id
+				WHERE Award_Type = 2 	<!--还本提奖-->
+					  AND IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+					  AND  IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+					  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+					  AND CASE #{Statu} 
+							WHEN 1 THEN far.Pay_Statu = 2
+							ELSE far.Pay_Statu between -1 and 1
+						  END 
+					  AND IF(#{Award_Date_Min} IS NULL OR #{Award_Date_Min} = '', 1=1, far.Award_Date>=#{Award_Date_Min})
+					  AND IF(#{Award_Date_Max} IS NULL OR #{Award_Date_Max} = '', 1=1, far.Award_Date&lt;=#{Award_Date_Max})) f
+			GROUP BY f.Member_ID) fa
+		JOIN Member_info mi
+		  ON fa.Member_ID = mi.Member_ID
+		JOIN personal_base_info pbi	
+		  ON mi.Personal_Id = pbi.Personal_Id
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'AWARD_AMOUNT' then fa.Award_Amount
+				WHEN 'AWARD_AMOUNT_BORROWING' then fa.Award_Amount_Borrowing
+				WHEN 'AWARD_AMOUNT_INVEST' then fa.Award_Amount_Invest
+				WHEN 'AWARD_AMOUNT_VIP' then fa.Award_Amount_VIP
+				WHEN 'AWARD_AMOUNT_REPAY' then fa.Award_Amount_Repay
+				ELSE fa.Award_Amount
+			END)	
+		<if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+		<if test="orderDsec==0">DESC</if>	  	  
+	</select>
+	
+	
+	<!-- 查询理财顾问推荐借款明细
+		Project_Title,借款名称
+		Amount,借款金额
+		Deadline,借款期限
+		name1,借款期限类型
+		Year_Rate,年化利率
+		Logname,借款人用户名
+		Personal_Name,会员名称
+		Hold_Date,放款时间
+	--> 
+	<select id="getBorrowing_Advisor" parameterType="Map" resultMap="CommissionIssuedMap.Borrowing">
+		SELECT
+		  pa.Apply_Id,
+		  prbi.Project_Title,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  pp.Deadline,
+		  (select d.name1 from dict d where d.code1 = pp.Deadline_Type AND d.tcode = 'DICT_QXLX') name1,
+		  pp.Amount,
+		  pp.Year_Rate,
+		  pap.Hold_Date
+		FROM project_app_record pa
+		  JOIN FinancialAdvisor_Award_Record far
+		    ON pa.Apply_Id = far.Project_Id AND far.Award_Type = 0
+		  JOIN project_base_info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		  JOIN project_purpose pp
+			ON pp.Purpose_ID = pa.Purpose_ID
+		  JOIN member_info mi
+			ON pp.Member_ID = mi.Member_ID
+		  JOIN Project_App_Process pap
+		    ON pa.Apply_Id = pap.Apply_Id
+		  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci
+			ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+			  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Hold_Date_Min} IS NULL OR #{Hold_Date_Min} = '', 1=1, pap.Hold_Date>=#{Hold_Date_Min})
+			  AND IF(#{Hold_Date_Max} IS NULL OR #{Hold_Date_Max} = '', 1=1, pap.Hold_Date&lt;=#{Hold_Date_Max})
+			  AND IF(#{Service_No} IS NULL OR #{Service_No} = '', 1=1, far.FA_ID=(SELECT fa.FA_ID FROM Financial_Advisor fa where fa.Service_No = #{Service_No}))
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'HOLD_DATE' THEN pap.Hold_Date
+				ELSE pap.Hold_Date
+			END)
+	    <if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+		<if test="orderDsec==0">DESC</if>	  
+	</select>
+	
+		<!-- 查询推荐达人推荐借款明细
+		Project_Title,借款名称
+		Amount,借款金额
+		Deadline,借款期限
+		name1,借款期限类型
+		Year_Rate,年化利率
+		Logname,借款人用户名
+		Personal_Name,会员名称
+		Hold_Date,放款时间
+	--> 
+	<select id="getBorrowing_Invite" parameterType="Map" resultMap="CommissionIssuedMap.Borrowing">
+		SELECT
+		  pa.Apply_Id,
+		  prbi.Project_Title,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  pp.Deadline,
+		  (select d.name1 from dict d where d.code1 = pp.Deadline_Type AND d.tcode = 'DICT_QXLX') name1,
+		  pp.Amount,
+		  pp.Year_Rate,
+		  pap.Hold_Date
+		FROM project_app_record pa
+		  JOIN InviteMaster_Award_Record far
+		    ON pa.Apply_Id = far.Project_Id AND far.Award_Type = 0
+		  JOIN project_base_info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		  JOIN project_purpose pp
+			ON pp.Purpose_ID = pa.Purpose_ID
+		  JOIN member_info mi
+			ON pp.Member_ID = mi.Member_ID
+		  JOIN Project_App_Process pap
+		    ON pa.Apply_Id = pap.Apply_Id
+		  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci
+			ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+			  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Hold_Date_Min} IS NULL OR #{Hold_Date_Min} = '', 1=1, pap.Hold_Date>=#{Hold_Date_Min})
+			  AND IF(#{Hold_Date_Max} IS NULL OR #{Hold_Date_Max} = '', 1=1, pap.Hold_Date&lt;=#{Hold_Date_Max})
+			  AND IF(#{Service_No} IS NULL OR #{Service_No} = '', 1=1, far.IM_ID=(SELECT fa.IM_ID FROM Invite_Master fa where fa.Im_No = #{Service_No}))
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'HOLD_DATE' THEN pap.Hold_Date
+				ELSE pap.Hold_Date
+			END)
+	    <if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+		<if test="orderDsec==0">DESC</if>	  
+	</select>
+	
+		
+		<!-- 查询理财顾问推荐投资明细
+		Project_Title,借款名称
+		Invest_Amount_Valid,投资金额
+		Logname,用户名
+		Personal_Name,会员名称
+		SDRecv_Principal,预期本金
+		SDRecv_Interest,预期收益
+		Hold_Date,投资成功时间
+	--> 
+	<select id="getInvest_Advisor" parameterType="Map" resultMap="CommissionIssuedMap.Invest">
+				SELECT
+		  ir.Invest_Id,
+		  prbi.Project_Title,
+		  CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) AS SIGNED) Invest_Amount_Valid,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  (SELECT SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{skey})) AS SIGNED)) FROM Invest_Income ii WHERE ii.Invest_Id = ir.Invest_Id) SDRecv_Principal,
+		  (SELECT SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{skey})) AS SIGNED)) FROM Invest_Income ii WHERE ii.Invest_Id = ir.Invest_Id) SDRecv_Interest,
+		  ir.Hold_Date
+		FROM Invest_Record ir
+		  JOIN FinancialAdvisor_Award_Record far
+		    ON ir.Invest_Id = far.Project_Id AND far.Award_Type = 1
+		  JOIN project_app_record Pa
+			ON ir.Apply_Id = pa.Apply_Id
+		  JOIN project_base_info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		  JOIN member_info mi
+			ON ir.Member_ID = mi.Member_ID
+		  JOIN Project_App_Process pap
+		    ON pa.Apply_Id = pap.Apply_Id
+		  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci
+			ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+			  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Hold_Date_Min} IS NULL OR #{Hold_Date_Min} = '', 1=1, ir.Hold_Date>=#{Hold_Date_Min})
+			  AND IF(#{Hold_Date_Max} IS NULL OR #{Hold_Date_Max} = '', 1=1, ir.Hold_Date&lt;=#{Hold_Date_Max})
+			  AND IF(#{Service_No} IS NULL OR #{Service_No} = '', 1=1, far.FA_ID=(SELECT fa.FA_ID FROM Financial_Advisor fa where fa.Service_No = #{Service_No}))
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'HOLD_DATE' THEN pap.Hold_Date
+				ELSE pap.Hold_Date
+			END)
+		 <if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+		 <if test="orderDsec==0">DESC</if>	  	
+	</select>
+	
+			<!-- 查询推荐达人推荐投资明细
+		Project_Title,借款名称
+		Invest_Amount_Valid,投资金额
+		Logname,用户名
+		Personal_Name,会员名称
+		SDRecv_Principal,预期本金
+		SDRecv_Interest,预期收益
+		Hold_Date,投资成功时间
+	--> 
+	<select id="getInvest_Invite" parameterType="Map" resultMap="CommissionIssuedMap.Invest">
+		SELECT
+		  ir.Invest_Id,
+		  prbi.Project_Title,
+		  CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) AS SIGNED) Invest_Amount_Valid,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  (SELECT SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{skey})) AS SIGNED)) FROM Invest_Income ii WHERE ii.Invest_Id = ir.Invest_Id) SDRecv_Principal,
+		  (SELECT SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{skey})) AS SIGNED)) FROM Invest_Income ii WHERE ii.Invest_Id = ir.Invest_Id) SDRecv_Interest,
+		  ir.Hold_Date
+		FROM Invest_Record ir
+		  JOIN InviteMaster_Award_Record far
+		    ON ir.Invest_Id = far.Project_Id AND far.Award_Type = 1
+		  JOIN project_app_record Pa
+			ON ir.Apply_Id = pa.Apply_Id
+		  JOIN project_base_info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		  JOIN member_info mi
+			ON ir.Member_ID = mi.Member_ID
+		  JOIN Project_App_Process pap
+		    ON pa.Apply_Id = pap.Apply_Id
+		  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci
+			ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+			  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Hold_Date_Min} IS NULL OR #{Hold_Date_Min} = '', 1=1, ir.Hold_Date>=#{Hold_Date_Min})
+			  AND IF(#{Hold_Date_Max} IS NULL OR #{Hold_Date_Max} = '', 1=1, ir.Hold_Date&lt;=#{Hold_Date_Max})
+			  AND IF(#{Service_No} IS NULL OR #{Service_No} = '', 1=1, far.IM_ID=(SELECT fa.IM_ID FROM Invite_Master fa where fa.Im_No = #{Service_No}))
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'HOLD_DATE' THEN pap.Hold_Date
+				ELSE pap.Hold_Date
+			END)
+	    <if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+		<if test="orderDsec==0">DESC</if>	  		
+	</select>
+	
+		<!-- 查询理财顾问推荐VIP购买明细
+		Logname,用户名
+		Personal_Name,会员名称
+		Certify_SDate,购买有效时间段起始时间
+		Certify_EDate,购买有效时间段终止时间
+		Amount,购买金额
+		Record_Date,支付时间
+	--> 
+	<select id="getBayVIP_Advisor" parameterType="Map" resultMap="CommissionIssuedMap.BayVIP">
+		SELECT
+		  mvp.MV_Pay_ID,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  mvr.Certify_SDate,
+		  mvr.Certify_EDate,
+		  mvp.Amount,
+		  mvp.Record_Date
+		FROM Member_VIP_Pay_Record mvp
+		  JOIN FinancialAdvisor_Award_Record far
+		    ON mvp.MV_Pay_ID = far.Project_Id AND far.Award_Type = 3
+		  JOIN Member_VIP_Record mvr
+			ON mvp.MV_Pay_ID = mvr.MV_Pay_ID
+		  JOIN member_info mi
+			ON mvp.Member_ID = mi.Member_ID
+		  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci
+			ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Record_Date_Min} IS NULL OR #{Record_Date_Min} = '', 1=1, mvp.Record_Date>=#{Record_Date_Min})
+			  AND IF(#{Record_Date_Max} IS NULL OR #{Record_Date_Max} = '', 1=1, mvp.Record_Date&lt;=#{Record_Date_Max})
+			  AND IF(#{Service_No} IS NULL OR #{Service_No} = '', 1=1, far.FA_ID=(SELECT fa.FA_ID FROM Financial_Advisor fa where fa.Service_No = #{Service_No}))
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'RECORD_DATE' THEN mvp.Record_Date
+				ELSE mvp.Record_Date
+			END)
+	    <if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+		<if test="orderDsec==0">DESC</if>			
+	</select>		
+
+		<!-- 查询推荐达人推荐VIP购买明细
+		Logname,用户名
+		Personal_Name,会员名称
+		Certify_SDate,购买有效时间段起始时间
+		Certify_EDate,购买有效时间段终止时间
+		Amount,购买金额
+		Record_Date,支付时间
+	--> 
+	<select id="getBayVIP_Invite" parameterType="Map" resultMap="CommissionIssuedMap.BayVIP">
+		SELECT
+		  mvp.MV_Pay_ID,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  mvr.Certify_SDate,
+		  mvr.Certify_EDate,
+		  mvp.Amount,
+		  mvp.Record_Date
+		FROM Member_VIP_Pay_Record mvp
+		  JOIN InviteMaster_Award_Record far
+		    ON mvp.MV_Pay_ID = far.Project_Id AND far.Award_Type = 3
+		  JOIN Member_VIP_Record mvr
+			ON mvp.MV_Pay_ID = mvr.MV_Pay_ID
+		  JOIN member_info mi
+			ON mvp.Member_ID = mi.Member_ID
+		  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci
+			ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Record_Date_Min} IS NULL OR #{Record_Date_Min} = '', 1=1, mvp.Record_Date>=#{Record_Date_Min})
+			  AND IF(#{Record_Date_Max} IS NULL OR #{Record_Date_Max} = '', 1=1, mvp.Record_Date&lt;=#{Record_Date_Max})
+			  AND IF(#{Service_No} IS NULL OR #{Service_No} = '', 1=1, far.IM_ID=(SELECT fa.IM_ID FROM Invite_Master fa where fa.Im_No = #{Service_No}))
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'RECORD_DATE' THEN mvp.Record_Date
+				ELSE mvp.Record_Date
+			END)
+	     <if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+		<if test="orderDsec==0">DESC</if>	
+	</select>	
+	
+		<!-- 查询理财顾问佣金发放记录
+		Personal_Name,姓名
+		Logname,用户名
+		Personal_Phone,联系电话
+		Personal_IDCard,身份证号
+		Start_Date,统计开始时间
+		End_Date,统计结束时间
+		Borrow_Award,推荐借款提奖
+		Invest_Award,推荐投资提奖
+		Vip_Award,推荐购买VIP提奖
+		Repay_Award,推荐还本提奖
+		Award_Amount,推荐提奖总额
+		Real_Amount,实际发放金额
+		Pay_Date,佣金发放时间
+	--> 
+	<select id="getAwardRecord_Advisor" parameterType="Map" resultMap="CommissionIssuedMap.AwardRecord">
+		  SELECT	
+		  fa.FA_ID,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
+		  mi.Logname,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey})) using utf8) Personal_IDCard,
+		  fap.Start_Date,
+		  fap.End_Date,
+		  fap.Borrow_Award,
+		  fap.Invest_Award,
+		  fap.Vip_Award,
+		  fap.Repay_Award,
+		  fap.Real_Amount,
+		  fap.Borrow_Award+fap.Invest_Award+fap.Vip_Award+fap.Real_Amount Award_Amount,
+		  fap.Pay_Date
+		FROM FinancialAdvisor_Award_PayRecord fap
+		  JOIN Financial_Advisor fa
+			ON fa.FA_ID = fap.FA_ID
+		  JOIN member_info mi
+			ON fa.Member_ID = mi.Member_ID
+		  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		WHERE IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+		  AND IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+		  AND IF(#{Pay_Date_Min} IS NULL OR #{Pay_Date_Min} = '', 1=1, fap.Pay_Date>=#{Pay_Date_Min})
+		  AND IF(#{Pay_Date_Max} IS NULL OR #{Pay_Date_Max} = '', 1=1, fap.Pay_Date&lt;=#{Pay_Date_Max})
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'PAY_DATE' THEN fap.Pay_Date
+				WHEN 'END_DATE' THEN fap.End_Date
+				WHEN 'AWARD_AMOUNT' THEN Award_Amount
+				WHEN 'REAL_AMOUNT' THEN fap.Real_Amount
+				WHEN 'BORROW_AWARD' THEN fap.Borrow_Award
+				WHEN 'INVEST_AWARD' THEN fap.Invest_Award
+				WHEN 'VIP_AWARD' THEN fap.Vip_Award
+				WHEN 'REPAY_AWARD' THEN fap.Repay_Award
+				ELSE fap.Pay_Date
+			END)
+		<if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+		<if test="orderDsec==0">DESC</if>		
+	</select>	
+		
+		<!-- 查询推荐达人佣金发放记录
+		Personal_Name,姓名
+		Logname,用户名
+		Personal_Phone,联系电话
+		Personal_IDCard,身份证号
+		Start_Date,统计开始时间
+		End_Date,统计结束时间
+		Borrow_Award,推荐借款提奖
+		Invest_Award,推荐投资提奖
+		Vip_Award,推荐购买VIP提奖
+		Repay_Award,推荐还本提奖
+		Award_Amount,推荐提奖总额
+		Real_Amount,实际发放金额
+		Pay_Date,佣金发放时间
+	--> 
+	<select id="getAwardRecord_Invite" parameterType="Map" resultMap="CommissionIssuedMap.AwardRecord">
+		 SELECT	
+		  fa.IM_ID,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
+		  mi.Logname,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey})) using utf8) Personal_IDCard,
+		  fap.Start_Date,
+		  fap.End_Date,
+		  fap.Borrow_Award,
+		  fap.Invest_Award,
+		  fap.Vip_Award,
+		  fap.Repay_Award,
+		  fap.Real_Amount,
+		  fap.Borrow_Award+fap.Invest_Award+fap.Vip_Award+fap.Real_Amount Award_Amount,
+		  fap.Pay_Date
+		FROM InviteMaster_Award_PayRecord fap
+		  JOIN Invite_Master fa
+			ON fa.IM_ID = fap.IM_ID
+		  JOIN member_info mi
+			ON fa.Member_ID = mi.Member_ID
+		  JOIN personal_base_info pbi	<!--推荐人都是个人会员-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		WHERE IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+		  AND IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8)= #{Personal_Phone})
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+		  AND IF(#{Pay_Date_Min} IS NULL OR #{Pay_Date_Min} = '', 1=1, fap.Pay_Date>=#{Pay_Date_Min})
+		  AND IF(#{Pay_Date_Max} IS NULL OR #{Pay_Date_Max} = '', 1=1, fap.Pay_Date&lt;=#{Pay_Date_Max})
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'PAY_DATE' THEN fap.Pay_Date
+				WHEN 'END_DATE' THEN fap.End_Date
+				WHEN 'AWARD_AMOUNT' THEN Award_Amount
+				WHEN 'REAL_AMOUNT' THEN fap.Real_Amount
+				WHEN 'BORROW_AWARD' THEN fap.Borrow_Award
+				WHEN 'INVEST_AWARD' THEN fap.Invest_Award
+				WHEN 'VIP_AWARD' THEN fap.Vip_Award
+				WHEN 'REPAY_AWARD' THEN fap.Repay_Award
+				ELSE fap.Pay_Date
+			END)
+	<if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+    <if test="orderDsec==0">DESC</if>	
+	</select>
+</mapper>

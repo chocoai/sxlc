@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="mobileBinding">   
+     <!-- 查询手机号是否已存在 -->  
+	<select id="selectPhoneIsExist" parameterType="Map"  resultType="int">
+	   select count(pbi.Personal_Phone)
+	   from  Personal_Base_Info  pbi  
+	   where   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{keys})) using utf8)=#{personalPhone}
+    </select> 
+    <!-- 修改个人会员手机号-->  
+	<update id="updatepersonPhone" parameterType="Map" >
+         UPDATE Personal_Base_Info set  Personal_Phone =HEX(AES_ENCRYPT(#{personalPhone},#{keys})) 
+         where Personal_ID=#{personalID}
+    </update>     
+    <!-- 修改企业会员手机号-->  
+	<update id="updatecompanyPhone" parameterType="Map" >
+         UPDATE Personal_Base_Info set  Personal_Phone =HEX(AES_ENCRYPT(#{personalPhone},#{keys})) 
+         where Personal_ID=(select Legal_ID from Company_Info where Company_ID=#{personalID} limit 1) 
+    </update>         
+</mapper>   

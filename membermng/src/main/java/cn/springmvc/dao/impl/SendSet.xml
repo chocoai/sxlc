@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="sendSet">
+    <!--     消息提醒配置实体-->
+    <resultMap type="cn.membermng.model.SendSetEntity" id="resultSendSet">
+        <id column="Member_ID" 				property="memberID" />
+		<result column="Type_ID" 			property="typeID" />
+		<result column="Statu" 		        property="statu" /> 
+		<result column="Type_Name" 		    property="typeName" /> 
+    </resultMap>
+    <!--            查询会员消息接收类型 列表 -->
+    <select id="selectMessageTypeList"   resultMap="resultSendSet">
+	    select MT.Type_Name,MT.Type_ID,MT.Statu
+        from Message_Type MT where  MT.Statu = 1 
+	</select> 
+     <!-- 	查询会员短信接收 设置 -->
+	<select id="selectMemberSmsSendSet" parameterType="long"  resultMap="resultSendSet">
+	   	select msss.Type_ID
+ 		from Member_SmsSend_Set msss
+ 		left join Message_Type mt on mt.Type_ID = msss.Type_ID 
+ 		where MT.Statu = 1  and msss.Statu =1 and msss.Member_ID=#{memberID}
+	</select>  
+     <!-- 	查询会员邮箱设置 -->
+	<select id="selectMemberEmailSendSet" parameterType="long"  resultMap="resultSendSet">
+	   	select mess.Type_ID
+ 		from Member_EmailSend_Set mess
+ 		left join Message_Type mt on mt.Type_ID = mess.Type_ID 
+ 		where MT.Statu = 1  and mess.Statu =1 and mess.Member_ID=#{memberID}
+	</select>  
+	 <!-- 	查询会员站内信设置 -->
+	<select id="selectMemberLetterSendSet" parameterType="long"  resultMap="resultSendSet">
+	   	select mlss.Type_ID
+ 		from  Member_LetterSend_Set mlss
+ 		left  join Message_Type mt on mt.Type_ID = mlss.Type_ID 
+ 		where MT.Statu = 1  and mlss.Statu =1 and mlss.Member_ID=#{memberID}
+	</select>  
+	 <!-- 	查询会员短信接收 设置是否存在 -->
+	<select id="selectMemberSmsSendSetIsExist" parameterType="Map"  resultType="int">
+	   	select count(msss.Type_ID)
+ 		from   Member_SmsSend_Set msss 
+ 	    where  msss.Member_ID=#{memberID} and msss.Type_ID =#{typeID}
+	</select>  
+	<!-- 	查询会员邮箱接收  设置 是否存在 -->
+	<select id="selectMemberEmailSendSetIsExist" parameterType="Map"  resultType="int">
+	   	select count(mess.Type_ID)
+ 		from   Member_EmailSend_Set mess 
+ 	    where  mess.Member_ID=#{memberID} and mess.Type_ID =#{typeID}
+	</select>
+	<!-- 	查询会员站内信接收  设置 是否存在 -->
+	<select id="selectMemberLetterSendSetsExist" parameterType="Map"  resultType="int">
+	   	select count(mlss.Type_ID)
+ 		from   Member_LetterSend_Set mlss 
+ 	    where  mlss.Member_ID=#{memberID} and mlss.Type_ID =#{typeID}
+	</select> 
+    <!-- 	插入会员短信接收 -->
+	<insert id="insertMemberSmsSendSet" parameterType="cn.membermng.model.SendSetEntity">
+	   insert into Member_SmsSend_Set (Member_ID  ,Type_ID)
+	                           values (#{memberID},#{typeID}) 
+	</insert> 
+    <!-- 	 插入会员邮箱接收 -->
+	<insert id="insertMemberEmailSendSet" parameterType="cn.membermng.model.SendSetEntity">
+	   insert into Member_EmailSend_Set (Member_ID    ,Type_ID)
+	                           values   (#{memberID},#{typeID}) 
+	</insert> 
+	 <!-- 	 插入会员站内信接收 -->
+	<insert id="insertMemberLetterSendSet" parameterType="cn.membermng.model.SendSetEntity">
+	   insert into Member_LetterSend_Set (Member_ID    ,Type_ID)
+	                           values   (#{memberID},#{typeID}) 
+	</insert>  
+	<!-- 	修改会员短信接收 状态-->
+	<update id="updateMemberSmsSendSet"  parameterType="cn.membermng.model.SendSetEntity">
+	   update Member_SmsSend_Set set Statu = #{statu} 
+	   where  Member_ID = #{memberID} and  Type_ID = #{typeID}  
+	</update>  
+    <!-- 	 修改会员邮箱接收 状态 -->
+	<update id="updateMemberEmailSendSet" parameterType="cn.membermng.model.SendSetEntity">
+	   update Member_EmailSend_Set set Statu = #{statu} 
+	   where  Member_ID = #{memberID} and  Type_ID = #{typeID}   
+	</update>  
+	<!-- 	 修改会员站内信接收 状态 -->
+	<update id="updateMemberLetterSendSet" parameterType="cn.membermng.model.SendSetEntity">
+	   update Member_LetterSend_Set set Statu = #{statu} 
+	   where  Member_ID = #{memberID} and  Type_ID = #{typeID}  
+	</update> 
+    <!-- 	查询平台是否开通短信发送 -->
+	<select id="selectIsOpenSms" parameterType="long" resultType="int">
+	   select count(Type_ID) from SmsSend_Set  where Type_ID = #{typeID}  and statu =1
+	</select>
+	<!-- 	查询平台是否开通邮件发送 -->
+	<select id="selectIsOpenEmail" parameterType="long" resultType="int">
+	   select count(Type_ID) from EmailSend_Set  where Type_ID = #{typeID}  and statu =1
+	</select>
+	<!-- 	查询平台是否开通站内信发送 -->
+	<select id="selectIsOpenLetter" parameterType="long" resultType="int">
+	   select count(Type_ID) from LetterSend_Set  where Type_ID = #{typeID}  and statu =1
+	</select>
+</mapper>   

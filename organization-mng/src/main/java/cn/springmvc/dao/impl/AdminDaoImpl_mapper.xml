@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="adminDaoImpl">     
+	
+	<!-- 查询结果封装 -->
+	<resultMap type="cn.springmvc.model.Admin" id="adminResult">
+		<id 		column="id" 			property="id" />
+		<result		column="Staff_Type"		property="staffType"/>
+		<result		column="Staff_Id"		property="staffId"/>
+		<result		column="adminName"		property="adminName"/>
+		<result		column="adminPwd"		property="adminPwd"/>
+		<result		column="adminRemark"	property="adminRemark"/>
+		<result		column="adminCure"		property="adminCure"/>
+		<result		column="admin_Statu"	property="adminStatu"/>
+		<association property="baseInfo" 	resultMap="personalBaseInfo"/>
+	</resultMap>	
+	
+	<resultMap type="cn.springmvc.model.PersonalBaseInfo" id="personalBaseInfo">
+		<id 	column="pid" 				property="id"/>
+		<result column="Personal_Name" 		property="personalName"/>
+		<result column="Personal_IDCard" 	property="personalIDCard"/>
+		<result column="SexID" 				property="sexId"/>
+		<result column="Marital_Status" 	property="maritalStatus"/>
+		<result column="Education" 			property="education"/>
+		<result column="Graduated_School" 	property="graduatedSchool"/>
+		<result column="Graduated_Professionals" property="graduatedProfessionals"/>
+		<result column="Graduated_DATE" 	property="graduatedDATE"/>
+		<result column="Nation_Id" 			property="nationId"/>
+		<result column="Home_Town" 			property="homeTown"/>
+		<result column="Census" 			property="census"/>
+		<result column="Monthly_Income" 	property="monthlyIncome"/>
+		<result column="Legal_IdCard_Url1" 	property="legalIdCardUrl1"/>
+		<result column="Legal_IdCard_Url2" 	property="legalIdCardUrl2"/>
+		<result column="Blood_Type" 		property="bloodType"/>
+		<result column="Height" 			property="height"/>
+		<result column="Weight" 			property="weight"/>
+		<result column="Religion_Id" 		property="religionId"/>
+		<result column="House_Address" 		property="houseAddress"/>
+		<result column="Mailing_Address" 	property="mailingAddress"/>
+		<result column="Zip_Code" 			property="zipCode"/>
+		<result column="Home_Address" 		property="homeAddress"/>
+		<result column="Personal_Phone" 	property="personalPhone"/>
+		<result column="Personal_FixPhone" 	property="personalFixPhone"/>
+		<result column="Personal_Emai" 		property="personalEmai"/>
+		<result column="QQ" 				property="qq"/>
+	</resultMap>
+	
+	<!-- 保存 -->
+	<select id="saveAdmin" statementType="CALLABLE" parameterType="Map">
+		call saveAdmin(
+			#{aid,				mode=IN,		jdbcType=BIGINT},
+			#{staffType,		mode=IN,		jdbcType=INTEGER},
+			#{staffId,			mode=IN,		jdbcType=BIGINT},
+			#{adminName,		mode=IN,		jdbcType=VARCHAR},
+			#{adminPwd,			mode=IN,		jdbcType=VARCHAR},
+			#{adminRemark,		mode=IN,		jdbcType=VARCHAR},
+			#{adminCure,		mode=IN,		jdbcType=INTEGER},
+			#{adminStatu,		mode=IN,		jdbcType=INTEGER},
+			#{roles,			mode=IN,		jdbcType=VARCHAR},
+			#{result,			mode=OUT,		jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 获取列表 -->
+	<select id="getListByParam" parameterType="Map" resultMap="adminResult">
+		select ID,Staff_Type,Staff_Id,adminName,adminPwd,adminRemark,adminCure,admin_Statu from Admin a
+		left join Staff_Info si on si.id = a.Staff_Id
+		left join Personal_Base_Info pbi on pbi.id = si.Personal_Id
+		<where>
+			<if test="adminName != null">
+				a.adminName = #{adminName}
+			</if>
+			<if test="userName != null">
+				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{sKey}))
+			</if>	
+			<if test="startTime != null">
+				add_Date bteween #{startTime} and #{endTime}
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- 修改 -->
+	<select id="editAdmin" statementType="CALLABLE" parameterType="Map">
+		call editAdmin(
+			#{aid,				mode=IN,		jdbcType=BIGINT},
+			#{roles,			mode=IN,		jdbcType=VARCHAR},
+			#{result,			mode=OUT,		jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	<!-- 修改管理员密码 -->
+	<select id="editAdminPassword" statementType="CALLABLE" parameterType="Map">
+		call editAdminPassword(
+			#{adminId,			mode=IN,		jdbcType=BIGINT},
+			#{passsword,		mode=IN,		jdbcType=VARCHAR},
+			#{result,			mode=OUT,		jdbcType=INTEGER}
+		)
+		
+	</select>
+	
+	
+	<!-- 停用启用 -->
+	<select id="ofAdmin" statementType="CALLABLE" parameterType="Map">
+		call ofDept(
+			#{id,				mode=IN,		jdbcType=BIGINT},
+			#{statu,			mode=IN,		jdbcType=INTEGER},
+			#{result,			mode=OUT,		jdbcType=INTEGER}
+		)
+	</select>
+
+	<!-- 所在部门 -->
+	<select id="detailsInfo" parameterType="Map" resultMap="adminResult">
+		select a.adminName,a.adminPwd,pbi.Personal_Name,pbi.SexID,pi.Personal_IDCard,pbi.Nation_Id,pi.Post_Name,pbi.Personal_Phone,
+		pbi.QQ,pbi.Personal_Email,pbi.Home_Town,pbi.House_Address,pbi.Education,pbi.Graduated_DATE,si.Emer_Name,si.Emer_Phone,sp.Dept_Id
+		from admin a 
+		left join Staff_Info si on si.id = a.Staff_Id 
+		left join Personal_Base_Info pbi on pbi.id = si.Personal_Id
+		left join Staff_Post sp on sp.Staff_Id = si.id
+		left join Post_Info pi on sp.Post_Id = pi.id
+		where a.id = #{id}
+	</select>
+
+</mapper>

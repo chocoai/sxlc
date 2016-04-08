@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="WithdrawalsFeeXml" >
+  <resultMap id="Withdrawal" type="cn.springmvc.model.WithdrawalsFeeEntity" >
+    <result column="Withdrawal_Fee_Third" property="withdrawal_Fee_Third"/>
+    <result column="Withdrawal_Type_Third" property="withdrawal_Type_Third"/>
+    <result column="Withdrawal_Fee_Pingtai" property="withdrawal_Fee_Pingtai" />
+    <result column="Check_Type" property="check_Type" />
+    <result column="Payment_Member_Type" property="payment_Member_Type" />
+  </resultMap>
+  <sql id="WithdrawalsFee_Column_List" >
+    Withdrawal_Fee_Third,Withdrawal_Type_Third,Check_Type,Withdrawal_Fee_Pingtai,Payment_Member_Type
+  </sql>
+  <select id="selectWithdrawalsFee" resultMap="Withdrawal" parameterType="cn.springmvc.model.WithdrawalsFeeEntity" >
+    select <include refid="WithdrawalsFee_Column_List"></include> from Withdrawal_Set
+  </select>
+  
+  <select id="countWithdrawalsFee" resultType="int" parameterType="Map" >
+    select count(*) from Withdrawal_Set where Payment_Member_Type=#{paymentMemberType}
+  </select>
+  
+  <insert id="insertWithdrawalsFee" parameterType="cn.springmvc.model.WithdrawalsFeeEntity" >
+  insert into Withdrawal_Set(Withdrawal_Fee_Third,Withdrawal_Type_Third,Check_Type,Withdrawal_Fee_Pingtai,Payment_Member_Type) 
+  values (#{withdrawal_Fee_Third},#{withdrawal_Type_Third},#{check_Type},#{withdrawal_Fee_Pingtai},#{payment_Member_Type})
+  </insert>
+  <update id="updateWithdrawalsFee" parameterType="cn.springmvc.model.WithdrawalsFeeEntity">
+  	update Withdrawal_Set 
+  	<set>
+  		<if test="withdrawal_Fee_Third!=null">
+  			Withdrawal_Fee_Third = #{withdrawal_Fee_Third},
+  		</if>
+  		<if test="withdrawal_Type_Third!=null">
+  			Withdrawal_Type_Third = #{withdrawal_Type_Third},
+  		</if>
+  		<if test="withdrawal_Fee_Pingtai!=null">
+  			Withdrawal_Fee_Pingtai = #{withdrawal_Fee_Pingtai},
+  		</if>
+  		<if test="check_Type!=null">
+  			Check_Type = #{check_Type}
+  		</if>
+  		<if test="payment_Member_Type !=null">
+  			Payment_Member_Type = #{payment_Member_Type}
+  		</if>
+  	</set> 
+  </update>
+  
+  
+</mapper>

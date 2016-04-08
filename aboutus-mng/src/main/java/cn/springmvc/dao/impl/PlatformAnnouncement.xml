@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="Mapper">
+    <resultMap type="cn.springmvc.model.PlatformAnnouncementEntity" id="resultListPlatformAnnouncement">
+        <id column="Platform_ID"    property="id" />
+		<result column="Title"      property="title" />
+		<result column="Content"    property="content" />
+		<result column="Statu"      property="statu" />
+		<result column="CreateTime" property="createTime" />
+		<result column="Opt_Date"   property="optDate" />
+		<result column="Admin_ID"   property="optId" />
+		<result column="adminName"  property="adminName" />
+    </resultMap> 
+	<!-- 分页查询平台公告 -->  
+	<select id="selectPlatformListpage"  parameterType="map" resultMap="resultListPlatformAnnouncement" >
+	   select pa.Platform_ID,   pa.Title,   pa.Content,   pa.Statu,   pa.CreateTime, 
+	    pa.Opt_Date, pa.Admin_ID,a.adminName 
+	    from  Platform_Announcement pa 
+	    LEFT JOIN Admin a on a.admin_ID=pa.Admin_ID  
+        <where>  
+            <if test="map !=null and map.title != null  and map.title != ''">  
+                pa.Title like  '%{map.title}%'  
+            </if>   
+            <if test="map !=null and map.statu != -1">  
+                and pa.Statu=#{map.statu}
+            </if>   
+        </where> 
+         order by pa.CreateTime desc
+    </select> 
+    <!-- 新增平台公告 -->  
+	<insert id="insertPlatform"  parameterType="cn.springmvc.model.PlatformAnnouncementEntity" >    
+		insert into 
+		Platform_Announcement( Platform_ID,   Title,   Content, Admin_ID) 
+		             values (#{id},#{title},#{content},#{optId})    
+	</insert> 
+	<!-- 查询该标题的平台公告是否存在 -->  
+	<select id="selectPlatformIsExistByNAme"  parameterType="cn.springmvc.model.PlatformAnnouncementEntity" resultMap="resultListPlatformAnnouncement" >
+	   select Platform_ID,   Title,   Content,   Statu,   CreateTime,  Opt_Date, Admin_ID
+	   from  Platform_Announcement where  Title=#{title}   and Platform_ID !=#{id}
+    </select> 
+    <!-- 修改平台公告信息 -->  
+	<update id="updatePlatformByID"  parameterType="cn.springmvc.model.PlatformAnnouncementEntity">
+	   update  Platform_Announcement  
+	    <set>
+		   <if test="title != null" >
+	         Title=#{title},
+	       </if>  
+	       <if test="content != null" >
+	        Content=#{content},
+	       </if>  
+	       <if test="optId != 0" >
+	        Admin_ID=#{optId},
+	       </if> 
+	        Opt_Date=now(), 
+	     </set>   
+	    where Platform_ID=#{id} 
+    </update>   
+    <!-- 删除平台公告 -->  
+	<delete id="deletePlatformByID"  parameterType="int">
+	   delete from  Platform_Announcement where Platform_ID=#{id}   
+    </delete> 
+    
+     <!-- 停用或启用平台公告 -->  
+	<update id="updatePlatformStatuByID"  parameterType="cn.springmvc.model.PlatformAnnouncementEntity">
+	   update  Platform_Announcement  set   Statu=#{statu} where Platform_ID=#{id}   
+    </update>  
+    <!-- 根据id查询平台公告 -->  
+	<select id="selectPlatformByID"  parameterType="int" resultMap="resultListPlatformAnnouncement" >
+	   select pa.Platform_ID,   pa.Title,   pa.Content,   pa.Statu,   pa.CreateTime, 
+	    pa.Opt_Date, pa.Admin_ID 
+	   from  Platform_Announcement pa   where  pa.Platform_ID =  #{id}
+    </select>      
+</mapper>

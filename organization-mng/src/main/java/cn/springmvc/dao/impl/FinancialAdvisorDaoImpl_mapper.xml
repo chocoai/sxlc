@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="financialAdvisorDaoImpl">     
+	
+	<resultMap type="cn.springmvc.model.FinancialAdvisor" id="FinancialAdvisor">
+		<id 		column="id" 					property="id"				/>
+		<result		column="Service_No"				property="serviceNo"		/>
+		<result		column="Service_QQ"				property="serviceQQ"		/>
+		<result		column="Service_Phone"			property="servicePhone"		/>
+		<result		column="Service_FixPhone"		property="serviceFixPhone"	/>
+		<result		column="Service_Nickname"		property="serviceNickname"	/>
+		<result		column="Service_HeadUrl"		property="serviceHeadUrl"	/>
+		<result		column="Service_Email"			property="serviceEmail"		/>
+		<result		column="Staff_Id"				property="staffId"			/>
+		<result		column="Service_Statu"			property="serviceStatu"		/>
+		<result		column="Integral_Num"			property="integralNum"		/>
+		<result		column="Member_Id"				property="memberId"			/>		
+	</resultMap>
+	
+	
+	<!-- 理财顾问列表 -->
+	<select id="getListByParam" parameterType="Map" resultMap="FinancialAdvisor">
+		select 
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),'abc12345678974456') using utf8) as Personal_Name,
+		Record_Date,mi.Member_No,mi.Logname,mi.Member_Type
+		from Financial_Advisor fa
+		left join Member_Info mi on mi.id  = fa.Member_Id
+		left join Staff_Info si on si.id = fa.Staff_Id
+		left join Personal_Base_Info pbi on pbi.id = si.Personal_Id
+		<where>
+			<if test="staffName != null">
+				Personal_Name = #{staffName}
+			</if>
+			<if test="memberNo != null">
+				mi.Member_No = #{memberNo}
+			</if>
+			<if test="memberName != null">
+				mi.Logname = #{memberName}
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- 添加理财顾问 -->
+	<select id="bind"	statementType="CALLABLE" parameterType="Map">
+		call saveFinancialAdvisor(
+			#{fid,					mode=IN,				jdbcType=BIGINT},
+			#{staffNo,				mode=IN,				jdbcType=BIGINT},
+			#{financialNo,			mode=IN,				jdbcType=VARCHAR},
+			#{memberNo,				mode=IN,				jdbcType=BIGINT},
+			#{result,				mode=OUT,				jdbcType=INTEGER}
+		);
+	</select>
+	
+	
+	<!-- 移除理财师 -->
+	<select id="removeFinancialAdvisor"		statementType="CALLABLE"	 parameterType="Map">
+		call removeFinancialAdvisor(
+			#{fid,					mode=IN,				jdbcType=BIGINT},
+			#{result,				mode=OUT,				jdbcType=INTEGER}
+		);
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

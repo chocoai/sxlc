@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="memberTradingMap">
+     <!--             交易记录 -->
+	<select id="selectMemberTradingRecords" parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="memberTradingRecordsMap.resultMemberTradingRecords">
+	 select mtr.Trade_ID,mtr.Trade_Type_Id,tradeType.name1 as tradeType,
+	 CAST((AES_DECRYPT(UNHEX(mtr.Amount),#{map.sKey})) as signed)                     Amount,
+	 CAST((AES_DECRYPT(UNHEX(otrb.Frozen_Balance),#{map.sKey})) as signed)            Frozen_Balance,
+ 	 CAST((AES_DECRYPT(UNHEX(mtra.WillRec_Principal),#{map.sKey})) as signed)         WillRec_Principal,
+ 	 CAST((AES_DECRYPT(UNHEX(mtra.WillRec_Interest),#{map.sKey})) as signed)          WillRec_Interest,
+ 	 CAST((AES_DECRYPT(UNHEX(otrb.User_Balance),#{map.sKey})) as signed)              User_Balance,
+ 	 CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Principal),#{map.sKey})) as signed)         WillPay_Principal,
+ 	 CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Interest),#{map.sKey})) as signed)          WillPay_Interest,
+ 	 CAST((AES_DECRYPT(UNHEX(mtra.WillPay_OverdueInterest),#{map.sKey})) as signed)   WillPay_OverdueInterest,
+ 	 CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Overdue),#{map.sKey})) as signed)           WillPay_Overdue,
+ 	 
+ 	( 
+	 ifnull(CAST((AES_DECRYPT(UNHEX(otrb.Frozen_Balance),#{map.sKey})) as signed),0) + 
+ 	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillRec_Principal),#{map.sKey})) as signed),0) + 
+ 	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillRec_Interest),#{map.sKey})) as signed),0)+
+ 	 ifnull(CAST((AES_DECRYPT(UNHEX(otrb.User_Balance),#{map.sKey})) as signed),0)+
+ 	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Principal),#{map.sKey})) as signed),0)-   
+ 	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Interest),#{map.sKey})) as signed),0)-    
+ 	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillPay_OverdueInterest),#{map.sKey})) as signed),0)-  
+ 	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Overdue),#{map.sKey})) as signed),0)) as totalAmount,
+ 	 mtr.Record_Date, mtr.Trade_Object_Type
+     from Member_Trading_Records mtr 
+     left join DICT  tradeType on mtr.Trade_Type_Id =  tradeType.code1 and  tradeType.tcode = 'DICT_JYLX'
+     join Member_Trading_Records_Account mtra on mtra.Trade_ID =  mtr.Trade_ID
+     join Own_Trading_Records_Balance otrb on otrb.Own_Trading_ID = mtr.Trade_ID 
+     <where>  
+            mtr.Member_ID =#{map.memberID} and mtr.Member_Type =#{map.memberType} and mtr.Account_Deal_Statu=1 
+	   <if test="map.tradeTypeId != -1"> 
+	      and mtr.Trade_Type_Id =  #{map.tradeTypeId}
+	   </if>
+	   <if test="map.startrecordDate != null"> 
+	      and mtr.Record_Date >=  #{map.startrecordDate}
+	   </if>
+	   <if test="map.endrecordDate != null"> 
+	      and #{map.endrecordDate} >= mtr.Record_Date  
+	   </if>
+	   <if test="map.recorddays != -1"> 
+	       and #{map.recorddays} >= DATEDIFF(now(), mtr.Record_Date) 
+	   </if>
+        <!-- 	        交易金额 -->
+	   <if test="map.order == 1"> 
+	       order by  Amount desc
+	   </if>
+	     <if test="map.order == -1"> 
+	       order by  Amount asc
+	   </if>
+         <!-- 	          冻结金额 -->
+	    <if test="map.order == 2"> 
+	       order by  Frozen_Balance desc
+	    </if>
+	     <if test="map.order == -2"> 
+	       order by  Frozen_Balance asc
+	    </if>
+          <!-- 	               待收本金 -->
+	    <if test="map.order == 3"> 
+	       order by  WillRec_Principal desc
+	    </if>
+	     <if test="map.order == -3"> 
+	       order by  WillRec_Principal asc
+	    </if>
+	     <!-- 	               待收利息 -->
+	    <if test="map.order == 4"> 
+	       order by  WillRec_Interest desc
+	    </if>
+	    <if test="map.order == -4"> 
+	       order by  WillRec_Interest asc
+	    </if>
+	     <!-- 	               账户可用金额 -->
+	    <if test="map.order == 5"> 
+	       order by  User_Balance desc
+	    </if>
+	     <if test="map.order == -5"> 
+	       order by  User_Balance asc
+	    </if>
+	     <!-- 	               待还本金 -->
+	    <if test="map.order == 6"> 
+	       order by  WillPay_Principal desc
+	    </if>
+	     <if test="map.order == -6"> 
+	       order by  WillPay_Principal asc
+	    </if>
+	    <!-- 	               待还利息-->
+	     <if test="map.order == 7"> 
+	       order by  WillPay_Interest desc
+	     </if>
+	     <if test="map.order == -7"> 
+	       order by  WillPay_Interest asc
+	     </if>
+	      <!-- 	               待还逾期利息-->
+	     <if test="map.order == 8"> 
+	       order by  WillPay_OverdueInterest desc
+	     </if>
+	     <if test="map.order == -8"> 
+	       order by  WillPay_OverdueInterest asc
+	     </if>
+	      <!-- 	               待还逾期罚息-->
+	     <if test="map.order == 9"> 
+	       order by  WillPay_Overdue desc
+	     </if>
+	       <if test="map.order == -9"> 
+	       order by  WillPay_Overdue asc
+	     </if>
+	       <!-- 	            总金额-->
+	     <if test="map.order == 10"> 
+	       order by  totalAmount desc
+	     </if>
+	       <if test="map.order == -10"> 
+	       order by  totalAmount asc
+	     </if>
+	 </where> 
+	</select>
+     <!-- 	  交易记录详情 -->
+	 <select id="selectTradingRecordsdetail" parameterType="Map" resultMap="memberTradingRecordsMap.resultMemberTradingRecords">
+		 select mtr.Trade_ID,mtr.Trade_Type_Id,tradeType.name1 as tradeType,
+		 CAST((AES_DECRYPT(UNHEX(mtr.Amount),#{sKey})) as signed)                     Amount,
+		 CAST((AES_DECRYPT(UNHEX(otrb.Frozen_Balance),#{sKey})) as signed)            Frozen_Balance,
+	 	 CAST((AES_DECRYPT(UNHEX(mtra.WillRec_Principal),#{sKey})) as signed)         WillRec_Principal,
+	 	 CAST((AES_DECRYPT(UNHEX(mtra.WillRec_Interest),#{sKey})) as signed)          WillRec_Interest,
+	 	 CAST((AES_DECRYPT(UNHEX(otrb.User_Balance),#{sKey})) as signed)              User_Balance,
+	 	 CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Principal),#{sKey})) as signed)         WillPay_Principal,
+	 	 CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Interest),#{sKey})) as signed)          WillPay_Interest,
+	 	 CAST((AES_DECRYPT(UNHEX(mtra.WillPay_OverdueInterest),#{sKey})) as signed)   WillPay_OverdueInterest,
+	 	 CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Overdue),#{sKey})) as signed)           WillPay_Overdue,
+	 	 mtr.Record_Date, mtr.Trade_Object_Type,
+	 	 case when mi.Member_Type=0 then  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{keys})) using utf8) 
+	 	 else  CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end as membername ,
+	 	 pd.Province_Name,cd.City_Name
+	     from Member_Trading_Records mtr 
+	     left join DICT  tradeType on mtr.Trade_Type_Id =  tradeType.code1 and  tradeType.tcode = 'DICT_JYLX'
+	     join Member_Trading_Records_Account mtra on mtra.Trade_ID =  mtr.Trade_ID
+	     join Own_Trading_Records_Balance otrb on otrb.Own_Trading_ID = mtr.Trade_ID
+	     left join member_info mi  on mi.member_ID =mtr.member_ID
+	     left join personal_base_info pbi on mi.Personal_ID =  pbi.Personal_Id and mi.Member_Type=0
+		 left join  company_info ci on mi.Company_ID =ci.Company_ID and mi.Member_Type=1
+	     left join Province_Dictionary pd on pd.Province_Id =   mi.Province_Id
+         left join City_Dictionary cd on cd.City_Id =   mi.City_Id
+	     where mtra.Trade_ID = #{tradeID}
+	 </select>
+        <!-- 	   充值记录 -->
+	  <select id="selectRechargeList" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="memberTradingRecordsMap.resultMemberWithdrawalRecharge">
+		select 
+		CAST((AES_DECRYPT(UNHEX(mwr.Withdrawal_Money),#{map.sKey})) as signed)  Withdrawal_Money,
+		CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee),#{map.sKey})) as signed)           Mng_Fee,
+		CAST((AES_DECRYPT(UNHEX(mwr.Third_Mng_Fee),#{map.sKey})) as signed)     Third_Mng_Fee,
+		CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee_Repay),#{map.sKey})) as signed)     Mng_Fee_Repay,
+		CAST((AES_DECRYPT(UNHEX(mwr.Real_Money),#{map.sKey})) as signed)        Real_Money,
+		mwr.Receive_Date,mwr.Third_Mer_Billno,Recharge_Type,mwr.Statu
+		from  Member_Withdrawal_Recharge mwr
+		<where>  
+		     mwr.Member_ID =#{map.memberID} and mwr.Member_Type =#{map.memberType} and mwr.Deal_Type=0
+		    <if test="map.thirdMerBillno != null">
+		      and mwr.Third_Mer_Billno like '%${map.thirdMerBillno}%'
+		    </if>
+		    <if test="map.startTime != null">
+		      and mwr.Receive_Date >= #{map.startTime}
+		    </if>
+		    <if test="map.endtimeTime != null">
+		      and #{map.startTime} >= mwr.Receive_Date
+		    </if>
+		    <if test="map.statu != -1">
+		      and mwr.Statu =  #{map.statu}
+		    </if> 
+		</where>
+		    <if test="map.order == 1"> 
+	          order by  Withdrawal_Money desc
+	         </if>
+	         <if test="map.order == -1"> 
+	          order by  Withdrawal_Money asc
+	         </if>
+		     <if test="map.order == 2"> 
+		       order by  Receive_Date desc
+		     </if>
+		      <if test="map.order == -2"> 
+		       order by  Receive_Date asc
+		     </if>
+		     <if test="map.order == 3"> 
+		       order by  Real_Money desc
+		     </if>
+		      <if test="map.order == -3"> 
+		       order by  Real_Money asc
+		     </if>
+	 </select>
+       <!-- 	     总的充值手续费 -->
+	  <select id="selectTotalRechargeFee" parameterType="Map" resultType="long">
+		select  
+		(ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee),#{sKey})) as signed)),0) +
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Third_Mng_Fee),#{sKey})) as signed)),0) ) as totalfee
+		from  Member_Withdrawal_Recharge mwr
+	    where mwr.Member_ID =#{memberID} and mwr.Member_Type =#{memberType} and mwr.Deal_Type=0 
+	  </select>
+       <!-- 	        充值实际到账总额 -->
+	  <select id="selectTotalRechargeReal" parameterType="Map" resultType="long">
+		select  
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Real_Money),#{sKey})) as signed)),0) as totalrecharge
+		from  Member_Withdrawal_Recharge mwr
+	    where mwr.Member_ID =#{memberID} and mwr.Member_Type =#{memberType} and mwr.Deal_Type=0 
+	  </select>
+        <!-- 	       提现记录列表 -->
+	   <select id="selectWithdrawalList" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="memberTradingRecordsMap.resultMemberWithdrawalRecharge">
+		select 
+		CAST((AES_DECRYPT(UNHEX(mwr.Withdrawal_Money),#{map.sKey})) as signed)  Withdrawal_Money,
+		CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee),#{map.sKey})) as signed)           Mng_Fee,
+		CAST((AES_DECRYPT(UNHEX(mwr.Third_Mng_Fee),#{map.sKey})) as signed)     Third_Mng_Fee,
+		CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee_Repay),#{map.sKey})) as signed)     Mng_Fee_Repay,
+		CAST((AES_DECRYPT(UNHEX(mwr.Real_Money),#{map.sKey})) as signed)        Real_Money,
+		mwr.Receive_Date,mwr.Third_Mer_Billno,Recharge_Type,mwr.Statu,mwr.Remark,
+		bi.BankName,checkStatu.name1 as checkstatu
+		from  Member_Withdrawal_Recharge mwr
+		left join Member_Withdrawal_Apply mwa on mwa.Withdrawal_ID = mwr.Withdrawal_ID
+		left join Member_Bank_Card mbc on mwr.Receive_Card = mbc.Receive_Card
+		left join Bank_Card_Info mci on  mci.Bank_Card_Id =  mbc.Bank_Card_Id
+		left join Bank_Code bc on mci.Bank_Id = bc.Bank_Id
+		left join Bank_Info bi on bi.Bank_ID = bc.Bank_ID
+		left join DICT  checkStatu on mwa.Statu =  checkStatu.code1 and  checkStatu.tcode = 'DICT_TXSQZT'
+		<where>  
+		     mwr.Member_ID =#{map.memberID} and mwr.Member_Type =#{map.memberType} and mwr.Deal_Type=1
+		   
+		    <if test="map.startTime != null">
+		      and  mwr.Receive_Date >= #{map.startTime}
+		    </if>
+		    <if test="map.endtimeTime != null">
+		      and  #{map.startTime} >= mwr.Receive_Date
+		    </if> 
+		 </where>
+		     <if test="map.order == 1"> 
+	          order by  Withdrawal_Money desc
+	         </if>
+	         <if test="map.order == -1"> 
+	          order by  Withdrawal_Money asc
+	         </if>
+		     <if test="map.order == 2"> 
+		       order by  Receive_Date desc
+		     </if>
+		      <if test="map.order == -2"> 
+		       order by  Receive_Date asc
+		     </if>
+		     <if test="map.order == 3"> 
+		       order by  Real_Money desc
+		     </if>
+		      <if test="map.order == -3"> 
+		       order by  Real_Money asc
+		     </if>
+	  </select>
+      <!-- 	  总的提现手续费 -->
+	  <select id="selectTotalWithdrawalFee" parameterType="Map" resultType="Long">
+		select  
+		(ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee),#{sKey})) as signed)),0) +
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Third_Mng_Fee),#{sKey})) as signed)),0) ) as totalfee
+		from  Member_Withdrawal_Recharge mwr
+	    where mwr.Member_ID =#{memberID} and mwr.Member_Type =#{memberType} and mwr.Deal_Type=1 
+	  </select>
+      <!-- 	     总的提现金额 -->
+	  <select id="selectTotalWithdrawalReal" parameterType="Map" resultType="long">
+		select  
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Real_Money),#{sKey})) as signed)),0) as totalrecharge
+		from  Member_Withdrawal_Recharge mwr
+	    where mwr.Member_ID =#{memberID} and mwr.Member_Type =#{memberType} and mwr.Deal_Type=1 
+	  </select>
+</mapper>   

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="activitiesProject">  
+   <resultMap type="cn.springmvc.model.ActivitiesProjectEntity" id="resultListActivitiesProject">
+        <id column="ID" property="id" />
+		<result column="AP_Name" property="apName" />
+		<result column="Role_ID" property="roleID" /> 
+		<result column="Statu" property="statu" /> 
+		<result column="optName" property="optName" />
+    </resultMap> 
+    <!-- 分页查询项目审批活动点列表 -->  
+	<select id="selectActivitiesProjectList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListActivitiesProject">
+	   select ap.ID,ap.AP_Name,ap.Role_ID,op.optName, 
+	   from  Activities_Project ap
+	   LEFT JOIN operation op on op.optID=ap.Role_ID
+           <where>  
+	            <if test="map.apName != null">  
+	                ap.Attest_TypeName like  '%{map.apName}%'  
+	            </if>   
+	            <if test="map.statu != -1">  
+	                and ap.Statu=#{map.statu}
+	            </if>   
+           </where>  
+    </select>       
+	<!-- 新增项目审批活动点 -->  
+	<insert id="insertActivitiesProject"  parameterType="cn.springmvc.model.ActivitiesProjectEntity">    
+		insert into Activities_Project(ID,  AP_Name, Role_ID )
+		                       values(#{id},#{apName},#{roleID})    
+	</insert> 
+	<!-- 查询项目审批活动点是否存在 -->  
+	<select id="selectActivitiesProjectIsExistByNAme"  parameterType="String" resultType="cn.springmvc.model.ActivitiesProjectEntity" >
+	   select ID from  Activities_Project where  AP_Name=#{apName}  and ID !=#{id};  
+    </select> 
+    <!-- 查询该权限是否已被其他项目审批活动绑定 -->  
+	<select id="selectActivitiesProjectRoleIsExist"  parameterType="cn.springmvc.model.ActivitiesProjectEntity" resultType="int" >
+	   select count(*) from  Activities_Project where  Role_ID=#{roleID}  and ID !=#{id};   
+    </select> 
+    <!-- 修改项目审批活动点信息 -->  
+	<update id="updateActivitiesProjectByID"  parameterType="cn.springmvc.model.ActivitiesProjectEntity">
+	   update  Activities_Project 
+	   <set>
+	       <if test="apName != 0" >
+	         AP_Name=#{apName},
+	       </if> 
+	       <if test="roleID != 0" >
+	         Role_ID=#{roleID},
+	       </if>
+	    </set>  
+	   where ID=#{id} 
+    </update>   
+    <!-- 删除项目审批活动点信息 -->  
+	<delete id="deleteActivitiesProjectByID"  parameterType="int">
+	   delete from  Activities_Project where ID=#{id}   
+    </delete>    
+     <!-- 停用或启用项目审批活动点 -->  
+	<update id="updateActivitiesProjectStatuByID"  parameterType="cn.springmvc.model.ActivitiesProjectEntity">
+	   update  Activities_Project  set   Statu=#{statu} where ID=#{id}  and ID not in ( select AP_ID from  Process_Project )  
+    </update> 
+    <!-- 根据ID查询审批活动点 -->  
+	<select id="selectActivitiesProjectByID"  parameterType="int" resultType="cn.springmvc.model.ActivitiesProjectEntity" >
+	   select ID,AP_Name,Role_ID,Statu,optName from  Activities_Project where ID !=#{id};  
+    </select>        
+</mapper>   

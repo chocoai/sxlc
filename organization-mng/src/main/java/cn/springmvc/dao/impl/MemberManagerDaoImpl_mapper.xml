@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="memberManagerDao">
+
+	<!-- 第三方信息 -->
+	<resultMap type="cn.springmvc.model.MemberThirdInfo" id="memberThirdInfo">
+		<id			column="id" 					property="id"/>
+		<result		column="member_Type"			property="memberType"/>
+		<result		column="Member_ID"				property="memberId"/>
+		<result		column="ThirdParty_Account"		property="thirdPartyAccount"/>
+		<result		column="ThirdParty_Mark"		property="thirdPartyMark"/>
+		<result		column="User_Balance"			property="userBalance"/>
+		<result		column="Frozen"					property="frozen"/>
+		<result		column="Gift_User_Balance"		property="giftUserBalance"/>
+		<result		column="Gift_Frozen"			property="giftFrozen"/>
+	</resultMap>
+	
+	
+	<!-- 认证信息 -->
+	<resultMap type="cn.springmvc.model.MemberAttestInfo" id="memberAttestInfo">
+		<id			column="Certification_ID" 		property="certificationId"/>
+		<result		column="Member_ID"				property="memberId"/>
+		<result		column="Admin_ID"				property="adminId"/>
+		<result		column="Member_Type"			property="memberType"/>
+		<result		column="Attest_Type"			property="attestType"/>
+		<result		column="Status"					property="status"/>
+		<result		column="Record_Date"			property="recordDate"/>
+		<result		column="End_Date"				property="endDate"/>
+		<result		column="Remark"					property="remark"/>
+		<result		column="Delete_Flag"			property="deleteFlag"/>
+		<association property="attach"				resultMap="personalAttestAttach"/>
+	</resultMap>
+	
+	
+	<!-- 认证附件信息 -->
+	<resultMap type="cn.springmvc.model.PersonalAttestAttach" id="personalAttestAttach">
+		<id			column="Attest_ID"						property="attestId"/>
+		<result		column="Attach_Name"					property="attachName"/>
+		<result		column="Attach_Type"					property="attachType"/>
+		<result		column="Upload_time"					property="uploadTime"/>
+		<result		column="Attach_Path"					property="attachPath"/>
+	</resultMap>
+	
+	
+	<!-- 会员银行卡信息 -->
+	<resultMap type="cn.springmvc.model.MemberBankCard" id="memberBankCard">
+	</resultMap>
+	
+
+	<!-- 获取全部会员 -->
+	<select id="members" parameterType="Map" resultType="cn.springmvc.model.MemberAll">
+		select 
+		mi.member_id 				as memberId,
+		mi.member_no 				as memberNo,
+		pbi.Personal_Name 			as personalName,
+		mi.Logname 					as memberName,
+		pbi.Personal_Phone			as personalPhone,
+		pd.Province_Name			as provinceName,
+		cd.City_Name				as cityName,
+		cod.County_Name				as countyName,
+		td.Town_Name				as townName,
+		mti.ThirdParty_Account 		as thirdPartyAccount,
+		mti.User_Balance			as userBalance,
+		mti.Frozen					as frozen,
+		(select sum(Withdrawal_Money) from Member_Withdrawal_Recharge mwr 
+			where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0
+		) as recharge,
+		(select sum(Invest_Amount_Valid) from Invest_Record ir left join Project_App_Record par on ir.Apply_Id = par.Apply_Id 
+			where ir.Member_ID = mi.member_id and par.Invest_Statu in (3,4)
+		) as investment,
+		(select count(Amount) from Project_App_Record par left join Project_Base_Info prbi on prbi.Project_Base_ID = par.Project_Base_ID 
+			where par.Invest_Statu in (3,4)
+		) as loan,
+		(select count(Withdrawal_Money) from Member_Withdrawal_Recharge mwr 
+			where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1
+		) as withdrawals,
+		(select count(Recv_Interest)+count(Repay_Overdue_Interest)+count(Repay_Overdue)+count(Repay_Penalty) from Invest_Income ii 
+			left join Invest_Real_Income iri on ii.Income_Id = iri.Income_Id 
+			where ii.Member_ID = mi.member_id
+		) as profit,
+		mi.Integral,
+		(select sum(Gift_Amount) from Member_Redpackets where Member_ID = mi.member_Id) as redPackageSum,
+		(select sum(mru.Gift_Amount) from Member_Redpackets_UseRecord mru left join Member_Redpackets mr on mr.Member_RP_ID = mru.Member_RP_ID where mr.member_id = mi.member_Id) as redPackageSy,
+		(select sum(Gift_Amount) from Member_Redpackets where Member_ID = mi.member_Id and End_Date &lt; now()) as redPackageGq,
+		mtai.Is_Auto_Invest as automaticBidding,
+		mtai.Open_Auto_Pay as automaticRepayment
+	</select>
+	
+	<!-- 获取某个会员信息 -->
+	<select id="memberInfoById" parameterType="Map" resultType="cn.springmvc.model.MemberDetaileInfo">
+		select 
+		mi.member_Id 																			as memberId,
+		mi.member_No 																			as memberNo,
+		mi.Logname   																			as memberName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) 						as userName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey}) using utf8)					 	as memberIdCard,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Home_Town),#{skey}) using utf8) 							as froms,
+		pbi.Nation_Id																			as nation,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Census),#{skey}) using utf8)								as permanentAddress,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Home_Town),#{skey}) using utf8)							as memberPhone,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8)						as memberEmail,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.qq),#{skey}) using utf8)									as memberQQ,
+		pbi.sexId																				as sexId,
+		pbi.Education																			as educationId,
+		pbi.Marital_Status																		as marriageStatu,
+		(select Monthly_Income from Personal_Job_Info 
+				where Personal_Id = mi.Personal_ID order by Start_Date desc limit 0,1)			as sMonthlyIncome,
+		pd.Province_Name																		as provinceName,
+		cd.City_Name																			as cityName,
+		cod.County_Name																			as countyName,
+		td.Town_Name																			as townName
+	</select>
+	
+	<!-- 获取会员的第三方开通状态 -->
+	<select id="memberThirdInfo" parameterType="Map" resultMap="memberThirdInfo">
+		select * from Member_Third_Info where member_Type = #{memberType} and member_id = #{memberId}
+	</select>
+	
+	
+	<!-- 会员认证资料信息 -->
+	<select id="memberConfInfo" parameterType="Map" resultMap="memberAttestInfo">
+		select * from Member_Attest_info mai 
+		left join Personal_Attest_Attach paa on mai.Certification_ID = paa.Attest_ID
+		where mai.member_Id = #{memberId} and mai.member_Id = #{memberType}
+	</select>
+	
+	
+	<!-- 会员借款统计 -->
+	<select id="borrowers" parameterType="Map" resultType="cn.springmvc.model.BorrowingStatistics">
+		select 
+		(
+			select count(1) from Project_App_Record par 
+			where par.Member_ID = mi.member_id and par.Invest_Statu in (3,4)
+		) as loanCount,
+		(
+			select count(lrr.Repay_Id) from Loan_Real_Repay lrr 
+			left join Project_App_Record par on par.Apply_Id = lrr.Apply_Id 
+			where par.member_id = mi.member_id
+		) as repaymentCount,
+		(
+			select count(ir.Merbill_No) from Invest_Record ir 
+			left join Project_App_Record par on par.Apply_Id = ir.Apply_Id 
+			where par.member_id = mi.member_id and par.Invest_Statu in (3,4) and ir.IsValid = 0
+		) as investmentCount,
+		(
+			select count(lrr.Repay_Id) from Loan_Real_Repay lrr 
+			left join Project_App_Record par on par.Apply_Id = lrr.Apply_Id 
+			where par.member_id = mi.member_id 
+			and lrr.Repay_Time > (select Repay_MaxTime from Loan_Repay lr where lr.Repay_ID = lrr.Repay_ID order by Repay_MaxTime desc limit 0,1)
+		) as overdueRepaymentCount,
+		(
+			select count(lrr.Repay_Id) from Loan_Real_Repay lrr 
+			left join Project_App_Record par on par.Apply_Id = lrr.Apply_Id 
+			where par.member_id = mi.member_id 
+			and TIMESTAMPDIFF(DAY,(select Repay_MaxTime from Loan_Repay lr where lr.Repay_ID = lrr.Repay_ID order by Repay_MaxTime desc limit 0,1),lrr.Repay_Time) > (select Overdue_Limit from overdue_set order by Overdue_Limit desc limit 0,1) 
+		) as yZOverdueRepaymentCount,
+		(
+			select  count(1) from Loan_Repay lr 
+	    	left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
+	   		where  par.Member_ID=#{memberId} and lr.IsValid=0  and  lr.Statu != 3 and  lr.Repay_MaxTime >now() 
+		),
+		(
+			select	count(1) from Project_App_Record par 
+	   	 	where	par.Member_ID=#{memberId} and par.Invest_Statu=4 
+	   	 	and (select count(1) from Loan_Repay lr where lr.Apply_Id=par.Apply_Id and lr.IsValid=1)>0
+	    )
+		from member_info mi where member_id = #{memberId}
+	</select>
+	
+	
+	<!-- 投资信息统计 -->
+	<select id="investment" parameterType="Map" resultType="cn.springmvc.model.MemberInvestmentInfo">
+		select 
+		(
+			select count(ir.Merbill_No) from Invest_Record ir 
+			left join Project_App_Record par on par.Apply_Id = ir.Apply_Id 
+			where par.member_id = mi.member_id and par.Invest_Statu in (3,4) and ir.IsValid = 0
+		) as investmentCount,
+		(
+			select sum(ir.Invest_Amount) from Invest_Record ir 
+			left join Project_App_Record par on par.Apply_Id = ir.Apply_Id 
+			where par.member_id = mi.member_id and par.Invest_Statu in (3,4) and ir.IsValid = 0
+		) as investmentSum,
+		(
+			select sum(iri.Recv_Principal) from Invest_Real_Income iri 
+			left join Invest_Income ii on ii.Income_Id = iri.Income_Id 
+			where ii.Member_ID = mi.member_id and ii.Statu in(1,2)
+		) as recvPrincipal,
+		(
+			select sum(iri.Recv_Interest) from Invest_Real_Income iri 
+			left join Invest_Income ii on ii.Income_Id = iri.Income_Id 
+			where ii.Member_ID = mi.member_id and ii.Statu in(1,2)
+		) as recvInterest,
+		(
+			(select sum(iri.Recv_Principal) from Invest_Real_Income iri 
+			left join Invest_Income ii on ii.Income_Id = iri.Income_Id 
+			where ii.Member_ID = mi.member_id and ii.Statu in(0,1))
+			-
+			(select sum(iri.Recv_Principal) from Invest_Real_Income iri 
+			left join Invest_Income ii on ii.Income_Id = iri.Income_Id 
+			where ii.Member_ID = mi.member_id and ii.Statu = 1)
+		) as expectRecvPrincipal ,
+		(
+			(select sum(iri.Recv_Interest) from Invest_Real_Income iri 
+			left join Invest_Income ii on ii.Income_Id = iri.Income_Id 
+			where ii.Member_ID = mi.member_id and ii.Statu in(0,1))	
+			-
+			(select sum(iri.Recv_Interest) from Invest_Real_Income iri 
+			left join Invest_Income ii on ii.Income_Id = iri.Income_Id 
+			where ii.Member_ID = mi.member_id and ii.Statu = 1)
+		) as incomeReceived
+		from member_info mi where member_id = #{memberId}
+	</select>
+	
+	
+	<!-- 查看会员银行卡信息 -->
+	<select id="bankCards" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.springmvc.model.MemberBankICardInfos">
+		select bi.BankName,bci.Branch,cd.City_Name as cityName,bci.Bank_No as bankNo
+		from member_bank_card mbc 
+		left join bank_card_info bci on bci.Bank_Card_Id = mbc.Bank_Card_Id
+		left join Bank_Code bc on bc.Bank_ID = bci.Bank_Id
+		left join Bank_Info bi on bi.Bank_ID = bc.Bank_ID
+		left join City_Dictionary cd on cd.City_Id = bci.Card_City
+		where mbc.member_type = #{map.memberType} and mbc.member_id = #{map.memberId} and Remove_Date = null	
+	</select>
+	
+	<!-- 查看会员邀请列表 -->
+	<select id="invitationsByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.springmvc.model.InvitationMembers">
+		select 
+		mi.member_no as memberNo,
+		mi.logName	 as logName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) using utf8) as userName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey}) using utf8) as memberPhone,
+		mi.Reg_Date as regDate,
+		(select sum(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount),#{map.skey})) as signed)) from Invest_Record ir left join Project_App_Record par on par.Apply_Id = ir.Apply_Id where par.Invest_Statu in (3,4)) as investmentSum,
+		(select sum(CAST((AES_DECRYPT(UNHEX(prbi.Amount),#{map.skey})) as signed)) from Project_App_Record par left join Project_Base_Info prbi on prbi.Project_Base_ID = par.Project_Base_ID ) as loanSum
+		from member_info mi 
+		left join personal_base_info pbi on pbi.Personal_Id = mi.Personal_ID
+		<where>
+			<if test="map.memberNo != null">
+				mi.member_no = #{map.memberNo}
+			</if>
+			<if test="map.personalName != null">
+				pbi.Personal_Name = HEX(AES_ENCRYPT(#{map.personalName},#{map.skey}))
+			</if>
+			<if test="map.personalPhone != null">
+				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{map.personalPhone},#{map.skey}))
+			</if>
+			<if test="map.startTime != null">
+				mi.Reg_Date between #{map.startTime} and #{map.endTime}				
+			</if>
+		</where>
+	</select>
+	
+	<!-- 会员拉黑 -->
+	<select id="pullBlack" parameterType="Map" statementType="CALLABLE">
+		call pullBlac(
+			#{aid,					mode=IN,				jdbcType=BIGINT},
+			#{mid,					mode=IN,				jdbcType=BIGINT},
+			#{memberId,				mode=IN,				jdbcType=BIGINT},
+			#{umac,					mode=IN,				jdbcType=VARCHAR},
+			#{ipaddress,			mode=IN,				jdbcType=VARCHAR},
+			#{linkUrl,				mode=IN,				jdbcType=VARCHAR},
+			#{sessionId,			mode=IN,				jdbcType=VARCHAR},
+			#{result,				mode=OUT,				jdbcType=VARCHAR}
+		)
+	</select>	
+	
+	<!-- VIP会员列表 -->
+	<select id="vipMembers" parameterType="Map" resultType="cn.springmvc.model.VIPMemberInfos">
+		select 
+		mi.member_Id 													 	as memberId,
+		mi.member_no 													  	as memberNo,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) 	as userName,
+		mi.logname														  	as memberName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8)	as memberPhone,
+		mti.ThirdParty_Account												as thirdPartyAccount,
+		mti.User_Balance													as userBalance,
+		mti.Frozen															as frozen,
+		(
+			select sum(Withdrawal_Money) from Member_Withdrawal_Recharge mwr 
+			where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0
+		) as recharge,
+		(
+			select sum(Invest_Amount_Valid) from Invest_Record ir 
+			left join Project_App_Record par on ir.Apply_Id = par.Apply_Id 
+			where ir.Member_ID = mi.member_id and par.Invest_Statu in (3,4)
+		) as investment,
+		(
+			select sum(Amount) from Project_App_Record par 
+			left join Project_Base_Info prbi on prbi.Project_Base_ID = par.Project_Base_ID 
+			where par.Invest_Statu in (3,4)
+		) as loan,
+		(
+			select sum(Withdrawal_Money) from Member_Withdrawal_Recharge mwr 
+			where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1
+		) as withdrawals
+		from Member_Info mi 
+		left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_ID 
+		left join Member_Third_Info  mti on mti.Member_ID = mi.Member_ID and mti.Member_Type = mi.Member_Type
+		<where>
+				(select count(1) from Member_VIP_App_Record mvar where Certify_EDate > now() and Member_ID = mi.Member_ID) >= 1	
+			<if test="userName != null">
+				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+			</if>
+			<if test="memberName != null">
+				mi.logname = #{memberName}
+			</if>
+			<if test="phone != null">
+				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			</if>
+		</where>
+	</select>
+	
+	
+	<resultMap type="cn.springmvc.model.MemberInfo" id="regMemberis">
+		<id 		column="member_id"				property="id"	/>
+		<result		column="member_no"				property="memberNo"	/>
+		<result		column="Personal_Name"			property="personalName"/>
+		<result		column="logname"				property="logname"/>
+		<result		column="Reg_Date"				property="regDate"/>
+		<result		column="personal_phone"			property="personalPhone"/>
+		<result		column="Personal_IDCard"		property="personalIdCard"/>
+		<result		column="Personal_Email"			property="personalEmail"/>
+		<result		column="InvitateCode"			property="invitateCode"/>
+		<result		column="Province_Name"			property="provinceName"/>
+		<result		column="City_Name"				property="cityName"/>
+		<result		column="County_Name"			property="countyName"/>
+		<result		column="Town_Name"				property="townName"/>
+	</resultMap>
+	<!-- 注册会员列表 -->
+	<select id="registers" parameterType="Map" resultMap="regMemberis">
+		select mi.member_Id,mi.member_No,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_name),#{skey}) using utf8) as personal_name,
+		mi.logname,
+		mi.Reg_Date,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{skey}) using utf8) as personal_phone,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey}) using utf8) as Personal_IDCard,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) as Personal_Email,
+		mi.InvitateCode,
+		pd.Province_Name,
+		cd.City_Name,
+		cod.County_Name,
+		td.Town_Name
+		from member_info mi
+		left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_ID
+		left join Province_Dictionary pd on mi.Province_Id = pd.province_Id
+		left join City_Dictionary cd on	cd.City_id = mi.City_id
+		left join County_Dictionary cod on cod.County_Id = mi.County_Id
+		left join Town_Dictionary td on td.Town_id = mi.Town_id
+		<where>
+			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 0) = 0
+			<if test="memberName != null">
+				mi.logname = #{memberName}
+			</if>
+			<if test="userName != null">
+				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+			</if>
+			<if test="phone != null">
+				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			</if>
+			<if test="idCard != null">
+				pbi.Personal_IDCard = HEX(AES_ENCRYPT(#{idCard},#{skey}))
+			</if>
+			<if test="regDate != null">
+				mi.Reg_Date betten #{regDate} and #{endDate} 
+			</if>
+		</where>
+		order by mi.Reg_Date desc
+	</select>
+	
+	<resultMap type="cn.springmvc.model.MemberInfo" id="authMembers">
+		<id 		column="member_id"				property="id"	/>
+		<result		column="member_no"				property="memberNo"	/>
+		<result		column="Personal_Name"			property="personalName"/>
+		<result		column="logname"				property="logname"/>
+		<result		column="Reg_Date"				property="regDate"/>
+		<result		column="personal_phone"			property="personalPhone"/>
+		<result		column="Personal_IDCard"		property="personalIdCard"/>
+		<result		column="Personal_Email"			property="personalEmail"/>
+		<result		column="InvitateCode"			property="invitateCode"/>
+		<result		column="Province_Name"			property="provinceName"/>
+		<result		column="City_Name"				property="cityName"/>
+		<result		column="County_Name"			property="countyName"/>
+		<result		column="Town_Name"				property="townName"/>
+	</resultMap>
+	<!-- 认证会员列表 -->
+	<select id="authenticationMember" parameterType="Map" resultMap="authMembers">
+		select 
+		mi.member_id,
+		mi.member_no,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_name),#{skey}) using utf8) as personal_name,
+		mi.logname,
+		mi.Reg_Date,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{skey}) using utf8) as personal_phone,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey}) using utf8) as Personal_IDCard,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) as Personal_Email,
+		mi.InvitateCode,
+		pd.Province_Name,
+		cd.City_Name,
+		cod.County_Name,
+		td.Town_Name
+		from member_info mi
+		left join personal_base_info pbi on pbi.Personal_Id = mi.Member_ID
+		left join Province_Dictionary pd on mi.Province_Id = pd.province_Id
+		left join City_Dictionary cd on	cd.City_id = mi.City_id
+		left join County_Dictionary cod on cod.County_Id = mi.County_Id
+		left join Town_Dictionary td on td.Town_id = mi.Town_id
+		<where>
+			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 0) > 0 and 
+			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id) = 0 and 
+			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id ) = 0
+			<if test="memberName != null">
+				mi.logname = #{memberName}
+			</if>
+			<if test="userName != null">
+				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+			</if>
+			<if test="phone != null">
+				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			</if>
+			<if test="idCard != null">
+				pbi.Personal_IDCard = HEX(AES_ENCRYPT(#{idCard},#{skey}))
+			</if>
+			<if test="regDate != null">
+				mi.Reg_Date betten #{regDate} and #{endDate} 
+			</if>
+		</where>
+		order by mi.Reg_Date desc
+	</select>
+	
+	
+	<resultMap type="cn.springmvc.model.MemberInfo" id="loanMembers">
+		<id 		column="member_id"				property="id"	/>
+		<result		column="member_no"				property="memberNo"	/>
+		<result		column="Personal_Name"			property="personalName"/>
+		<result		column="logname"				property="logname"/>
+		<result		column="personal_phone"			property="personalPhone"/>
+		<result		column="InvitateCode"			property="invitateCode"/>
+		<result		column="Province_Name"			property="provinceName"/>
+		<result		column="City_Name"				property="cityName"/>
+		<result		column="County_Name"			property="countyName"/>
+		<result		column="Town_Name"				property="townName"/>
+		<result		column="ThirdParty_Account"		property="thirdPartyAccount"/>
+		<result		column="User_Balance"			property="userBalance"/>
+		<result		column="Frozen"					property="frozen"/>
+		<result		column="borrow" 				property="borrow"/>
+		<result		column="settled" 				property="settled"/>
+		<result		column="overdue" 				property="overdue"/>
+		<result		column="recharge" 				property="recharge"/>
+		<result		column="cjplatform" 			property="cjplatform"/>
+		<result		column="cjmember" 				property="cjmember"/>
+		<result		column="loan" 					property="loan"/>
+		<result		column="loanManager" 			property="loanManager"/>
+		<result		column="withdrawals" 			property="withdrawals"/>
+		<result		column="txplatform" 			property="txplatform"/>
+		<result		column="txmember" 				property="txmember"/>
+	</resultMap>
+	<!-- 借款会员 -->
+	<select id="loanMember" parameterType="Map" resultMap="loanMembers">
+		select mi.member_id,
+		mi.member_no,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_Name),#{skey}) using utf8) as personal_Name,
+		mi.logname,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{skey}) using utf8) as personal_phone,
+		pd.Province_Name,cd.City_Name,cod.County_Name,td.Town_Name,
+		mti.ThirdParty_Account,mti.User_Balance,mti.Frozen,
+		((select sum(CAST((AES_DECRYPT(UNHEX(SDRepay_Principal),#{skey})) as signed)) from Loan_Repay lr left join Project_App_Record par on par.Apply_Id = lr.Apply_Id where par.Member_ID = mi.member_id)
+		-
+		(select sum(CAST((AES_DECRYPT(UNHEX(Repay_Principal),#{skey})) as signed)) from Loan_Real_Repay lrr left join Project_App_Record par on par.Apply_Id = lrr.Apply_Id where par.Member_ID = mi.member_id)) as borrow,
+		(select sum(CAST((AES_DECRYPT(UNHEX(SDRepay_Principal),#{skey})) as signed)) from Loan_Repay lr     left join Project_App_Record par on par.apply_id = lr.Apply_id where par.member_ID = mi.member_id and Statu = 3) as settled,
+		(select count(1) from Loan_Repay lr where lr.Repay_MaxTime &lt; (select Repay_Time from Loan_Real_Repay lrr where lrr.Real_Repay_ID = Repay_ID order by Repay_Time desc limit 0,1)) as overdue,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as recharge,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as cjplatform,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as cjmember,
+		(select count(Amount) from Project_App_Record par left join Project_Base_Info prbi on prbi.Project_Base_ID = par.Project_Base_ID where par.Invest_Statu in (3,4)) as loan,
+		(select sum(CAST((AES_DECRYPT(UNHEX(MngFee_Amount),#{skey})) as signed)) from Project_App_MngFee pam left join Project_App_Record par on par.Apply_Id = pam.Apply_Id where par.member_id = mi.member_id) as loanManager,
+		(select count(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawals,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txplatform,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txmember,
+		mi.InvitateCode
+		from member_info 				mi
+		left join personal_base_info 	pbi on pbi.Personal_Id = mi.Personal_ID
+		left join Province_Dictionary 	pd 	on mi.Province_Id = pd.province_Id
+		left join City_Dictionary 		cd 	on	cd.City_id = mi.City_id
+		left join County_Dictionary 	cod on cod.County_Id = mi.County_Id
+		left join Town_Dictionary 		td 	on td.Town_id = mi.Town_id
+		left join Member_Third_Info 	mti on mti.Member_ID = mi.Member_id and mti.Member_Type = mi.Member_Type
+		<where>
+				(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id) > 0
+			<if test="memberName != null">
+				mi.logname = #{memberName}
+			</if>
+			<if test="userName != null">
+				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+			</if>
+			<if test="phone != null">
+				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			</if>
+		</where>
+	</select>
+	
+	
+	<resultMap type="cn.springmvc.model.MemberInfo" id="inveMembers">
+		<id 		column="member_id"				property="id"	/>
+		<result		column="member_no"				property="memberNo"	/>
+		<result		column="Personal_Name"			property="personalName"/>
+		<result		column="logname"				property="logname"/>
+		<result		column="personal_phone"			property="personalPhone"/>
+		<result		column="ThirdParty_Account"		property="thirdPartyAccount"/>
+		<result		column="InvitateCode"			property="invitateCode"/>
+		<result		column="User_Balance"			property="userBalance"/>
+		<result		column="Frozen"					property="frozen"/>
+		<result		column="Province_Name"			property="provinceName"/>
+		<result		column="City_Name"				property="cityName"/>
+		<result		column="County_Name"			property="countyName"/>
+		<result		column="Town_Name"				property="townName"/>
+		<result 	column="recharge"				property="recharge"/>
+		<result 	column="cjplatform"				property="rechargefeept"/>
+		<result 	column="cjmember"				property="rechargefeehy"/>
+		<result 	column="investments"			property="investment"/>
+		<result 	column="managerFee"				property="managerFee"/>
+		<result 	column="withdrawals"			property="withdrawals"/>
+		<result 	column="withdrawalspt"			property="txplatform"/>
+		<result 	column="withdrawalshy"			property="txmember"/>
+	</resultMap>
+	<!-- 投资会员 -->
+	<select id="investmentMember" parameterType="Map" resultMap="inveMembers">
+		select mi.member_id,
+		mi.member_no,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_name),#{skey}) using utf8) as personal_name,
+		mi.logname,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{skey}) using utf8) as personal_phone,
+		mti.ThirdParty_Account,
+		mi.InvitateCode,
+		mti.User_Balance,
+		mti.Frozen,
+		pd.Province_Name,
+		cd.City_Name,
+		cod.County_Name,
+		td.Town_Name,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as recharge,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay   ),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeept,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr	where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeehy,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount	),	#{skey})) as signed)) from Invest_Record 				ir 	where ir.Member_ID 	= mi.Member_Id and IsValid = 0) as investments,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_MngFee	),	#{skey})) as signed)) from Invest_Real_Income 			iri left  join Invest_Income ii on ii.Income_Id = iri.Income_Id where ii.Member_ID = mi.member_id) as managerFee,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawals,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay	),	#{skey})) as signed)) from Member_Withdrawal_Recharge	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalspt,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalshy
+		from member_info mi 
+		left join personal_base_info 	pbi 	on pbi.Personal_Id 	= mi.Member_ID
+		left join Member_Third_Info 	mti 	on mti.member_type 	= mi.member_type and mti.member_id = mi.member_id
+		left join Province_Dictionary 	pd 		on mi.Province_Id 	= pd.province_Id
+		left join City_Dictionary 		cd 		on cd.City_id 		= mi.City_id
+		left join County_Dictionary 	cod 	on cod.County_Id 	= mi.County_Id
+		left join Town_Dictionary 		td 		on td.Town_id 		= mi.Town_id
+		<where>
+			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
+			<if test="memberName != null">
+				mi.logname = #{memberName}
+			</if>
+			<if test="userName != null">
+				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+			</if>
+			<if test="phone != null">
+				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			</if>
+		</where>
+	</select>
+	
+	
+	<resultMap type="cn.springmvc.model.MemberInfo" id="blackMembers">
+		<id 		column="member_id"				property="id"	/>
+		<result		column="member_no"				property="memberNo"	/>
+		<result		column="Personal_Name"			property="personalName"/>
+		<result		column="logname"				property="logname"/>
+		<result		column="Reg_Date"				property="regDate"/>
+		<result		column="personal_phone"			property="personalPhone"/>
+		<result		column="Personal_IDCard"		property="personalIdCard"/>
+		<result		column="count"					property="count"/>
+		<result		column="Personal_Email"			property="personalEmail"/>
+	</resultMap>
+	
+	<!-- 会员黑名单 -->
+	<select id="blackList" parameterType="Map" resultMap="blackMembers">
+		select mi.member_id,mi.member_no,pbi.Personal_Name,mi.logname,mi.Reg_Date,pbi.Personal_phone,pbi.Personal_IDCard,(select Record_Date from Member_BlackList where Member_ID = mi.member_id order by Record_Date desc limit 0,1) as latelyTime,(select count(1) from Member_BlackList where Member_ID = mi.member_id ) as count,pbi.Personal_Email
+		from member_info mi
+		left join personal_base_info pbi on pbi.personal_id = mi.Member_ID
+		where (select count(1) from Member_BlackList mb where mb.member_id = mi.member_id and Remove_Date is null) > 0
+ 	</select>
+	
+</mapper>

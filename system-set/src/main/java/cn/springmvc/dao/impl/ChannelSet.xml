@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 三方通道设置 -->
+<mapper namespace="ChannelSetXML" >
+	<!-- 消息类型设置 -->
+  <resultMap id="MessageType" type="cn.springmvc.model.MessageTypeEntity" >
+    <result column="Type_ID" property="typeID"/>
+    <result column="Type_Name" property="typeName"/>
+    <result column="Msg_Detail" property="msgDetail"/>
+    <result column="Statu" property="statu"/>
+    <result column="SmsSendStatu" property="iSSmsSend"/>
+    <result column="LetterSendStatu" property="iSLetterSend"/>
+    <result column="EmailSendStatu" property="iSEmailSend"/>
+  </resultMap>
+  <sql id="ChannelSet_Column_List" >
+    	
+  </sql>
+  <!-- 查看消息类型设置 -->
+  <select id="selectChannelSet" resultMap="MessageType" parameterType="cn.springmvc.model.MessageTypeEntity" >
+    select mt.Type_ID,mt.Type_Name,mt.Statu,mf.Msg_Detail,ss.Statu AS SmsSendStatu
+    ,ls.Statu AS LetterSendStatu,es.Statu AS EmailSendStatu  from Message_Type mt 
+left join Message_Format mf on mt.Type_ID=mf.Type_ID
+left JOIN SmsSend_Set ss ON mt.Type_ID=ss.Type_ID
+LEFT JOIN LetterSend_Set ls ON mt.Type_ID=ls.Type_ID
+LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
+  </select>
+  <!-- 设置是否发送该类型消息 -->
+  <select id="updateChannelSet" resultType="Map" statementType="CALLABLE">
+  <!-- type 1短信发送设置 2站内信发送设置 3邮件发送设置 -->
+  		<![CDATA[{call setMassage(
+				#{type,	 mode=IN,	jdbcType=INTEGER},
+				#{statu,	 mode=IN,	jdbcType=INTEGER},
+				#{messagetype,	 mode=IN,	jdbcType=INTEGER},
+				#{rulset,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+   <!-- 设置类型消息发送内容 -->
+  <select id="updateMessage" resultType="Map" statementType="CALLABLE">
+  
+  		<![CDATA[{call setMessageFormat(
+				#{typeID,	 mode=IN,	jdbcType=INTEGER},
+				#{statu,	 mode=IN,	jdbcType=INTEGER},
+				#{messageMsgDetail,	 mode=IN,	jdbcType=VARCHAR},
+				#{rulset,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  <!-- 短信接口设置 -->
+  <resultMap id="SmsSettings" type="cn.springmvc.model.SmsSettingsEntity" >
+    <result column="ID" property="id"/>
+    <result column="Sms_Interface" property="smsInterface"/>
+    <result column="Sms_SerialNumber" property="smsSerialNumber"/>
+    <result column="Sms_Password" property="smsPassword"/>
+    <result column="Record_Date" property="recordDate"/>
+    <result column="Opt_Date" property="optDate"/>
+    <result column="Opt_Id" property="optId"/>
+    <result column="Statu" property="statu"/>
+  </resultMap>
+  <sql id="SmsSettings_Column_List">
+  ID,Sms_Interface,Sms_SerialNumber,Sms_Password,Record_Date,Opt_Date,Opt_Id,Statu
+  </sql>
+  <!-- 分页查询短信通道设置 -->
+  <select id="selectSmsSettings" resultMap="SmsSettings" parameterType="product_p2p.kit.pageselect.PageEntity">
+  	select <include refid="SmsSettings_Column_List"></include> from Sms_Settings
+  </select>
+  <!-- 根据id查询单个短信通道设置 -->
+  <select id="findSmsSettingsById" resultMap="SmsSettings" parameterType="Map">
+  	select <include refid="SmsSettings_Column_List"></include> from Sms_Settings where ID=#{id}
+  </select>
+  <!-- 添加单个短信通道设置 -->
+  <insert id="insertSmsSettings" parameterType="cn.springmvc.model.SmsSettingsEntity">
+  	insert into Sms_Settings(ID,Sms_Interface
+  	,Sms_SerialNumber,Sms_Password,
+  	Opt_Id,Statu) values(#{id},#{smsInterface},#{smsSerialNumber},#{smsPassword},#{optId},#{statu})
+  </insert>
+  <!-- 根据id修改单个短信通道设置 -->
+  <update id="updateSmsSettingsById" parameterType="cn.springmvc.model.SmsSettingsEntity">
+  	update Sms_Settings
+  	<set>
+  		Sms_Interface=#{smsInterface},
+  		Sms_SerialNumber=#{smsSerialNumber},
+  		Sms_Password=#{smsPassword},
+  		Opt_Date=now(),
+  		Opt_Id=#{optId},
+  		Statu=#{statu},
+  	</set>
+  	where ID=#{id}
+  </update>
+  <!-- 启用禁用单个短信通道设置 -->
+  <update id="updteSmsSettingsStatu" parameterType="Map">
+  			update Sms_Settings <set>Statu=#{statu}</set> where ID=#{ID}
+  </update>
+  <!-- 查询已启用短信通道个数 -->
+  <select id="countSmsSettings" resultType="INT" parameterType="Map">
+  	select count(*) from Sms_Settings where Statu=1
+  </select>
+  
+  
+  
+  
+  <!-- 邮件接口设置 -->
+  <resultMap id="MailSettings" type="cn.springmvc.model.MailSettingsEntity" >
+    <result column="Smtpservice" property="smtpservice"/>
+    <result column="Port_Number" property="portNumber"/>
+    <result column="Email_Address" property="emailAddress"/>
+    <result column="Email_Password" property="emailPassword"/>
+  </resultMap>
+  <sql id="MailSettings_Column_List">
+  	Smtpservice,Port_Number,Email_Address,Email_Password	
+  </sql>
+  <!-- 查询邮件接口设置 -->
+  <select id="selectMailSettings" resultMap="MailSettings" parameterType="cn.springmvc.model.MailSettingsEntity">
+  	select <include refid="MailSettings_Column_List"></include> from Mail_Settings
+  </select>
+  <!-- 修改邮件接口设置 -->
+  <update id="updateMailSettings" parameterType="cn.springmvc.model.MailSettingsEntity">
+  	update Mail_Settings 
+  	<set>
+  		<if test="smtpservice!=null">Smtpservice=#{smtpservice},</if>
+  		<if test="portNumber!=null">Port_Number=#{portNumber},</if>
+  		<if test="emailAddress!=null">Email_Address=#{emailAddress},</if>
+  		<if test="emailPassword!=null">Email_Password=#{emailPassword},</if>
+  	</set>
+  </update>
+  <!-- 添加邮件接口设置 -->
+  <insert id="insertMailSettings" parameterType="cn.springmvc.model.MailSettingsEntity">
+  	insert into Mail_Settings(Smtpservice,Port_Number,Email_Address,Email_Password)
+  		values(#{smtpservice},#{portNumber},#{emailAddress},#{emailPassword});
+  </insert>
+  
+  
+  <!--三方接口设置 -->
+  <resultMap id="ThreeInterface" type="cn.springmvc.model.ThreeInterfaceEntity" >
+    <result column="Public_Key" property="publicKey"/>
+    <result column="Private_Key" property="privateKey"/>
+    <result column="Escrow_ID" property="escrowID"/>
+    <result column="Interface_ID" property="interfaceID"/>
+    <result column="Interface_Url" property="interfaceUrl"/>
+    <result column="Escrow_Name" property="escrowName"/>
+    <result column="Interface_Name" property="interfaceName"/>
+  </resultMap>
+  <sql id="ThreeInterface_Column_List">
+  	Public_Key,Private_Key,Escrow_ID,Interface_ID,Interface_Url,Escrow_Name,Interface_Name	
+  </sql>
+  <!-- 查询三方接口设置 -->
+  <select id="selectThreeInterface" resultMap="ThreeInterface" parameterType="cn.springmvc.model.ThreeInterfaceEntity">
+  	select qs.Public_Key,qs.Private_Key,qs.Escrow_ID,Interface_ID
+  	,Interface_Url,Escrow_Name,Interface_Name from QianDuoDuo_Url_Set qs
+  	left join Account_Escrow_Interface aei on qs.Interface_ID=aei.Interface_ID
+  	left join Account_Escrow ae on qs.Escrow_ID=ae.Escrow_ID
+  	left join QianDuoDuo_Set qds on qs.Escrow_ID=qds.Escrow_ID where qs.Statu=1
+  </select>
+  <!-- 修改第三方接口路径 -->
+  <update id="updateThreeInterface" parameterType="Map">
+  	update QianDuoDuo_Url_Set set Interface_Url=#{interfaceUrl},Statu=#{statu}
+  	where Escrow_ID=#{escrowID} and Interface_ID=#{interfaceID}
+  </update>
+  <!-- 添加第三方接口路径 -->
+  <insert id="insertThreeInterface" parameterType="Map">
+  	insert into QianDuoDuo_Url_Set(Escrow_ID,Interface_ID,Interface_Url)
+  		values(#{escrowID},#{interfaceID},#{interfaceUrl});
+  </insert>
+  
+  
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="Dictionaries">     
+	
+	<!-- 学历查询结果封装 -->
+	<resultMap type="cn.dictionaries.model.EducationInfoEntity" id="EducationInfo">
+		<id column="Education_ID" property="iId" />
+		<result column="EducationName" property="sEducationName"/>
+	</resultMap>	
+	<!-- 查询结果封装 -->
+	<resultMap type="cn.dictionaries.model.NationInfoEntity" id="NationInfo">
+		<id column="Nation_Id" property="iId" />
+		<result column="NationName" property="sName"/>
+	</resultMap>
+	
+	<!-- 获取有效学历 -->
+	<select id="GetEducationInfo" resultMap ="EducationInfo">
+		select Education_ID,EducationName from Education_Info where Type_Statu = 1
+	</select>
+	
+	<!-- 获取接口url -->
+	<select id="GetNationInfo" resultMap ="NationInfo">
+		select Nation_Id,NationName from Nation_Info where Type_Statu = 1
+	</select>
+	
+	<!-- 城市查询结果封装 -->
+	<resultMap type="cn.dictionaries.model.CityInfoEntity" id="CityInfo">
+		<id column="City_Id" property="iId" />
+		<result column="Province_Id" property="pId"/>
+		<result column="City_Name" property="cName"/>
+		<result column="City_No" property="cNo"/>
+		<result column="City_Code" property="cCode"/>
+	</resultMap>
+	
+	<!-- 获取城市 -->
+	<select id="GetCityInfo" parameterType="Map" resultMap ="CityInfo">
+		select City_Id,Province_Id,City_Name,City_No,City_Code from city_dictionary where Province_Id = #{pId} 
+	</select>
+	
+	<!-- 省份查询结果封装 -->
+	<resultMap type="cn.dictionaries.model.ProvinceInfoEntity" id="ProvinceInfo">
+		<id column="Province_Id" property="pId" />
+		<result column="Province_Name" property="pName"/>
+		<result column="Province_No" property="pNo"/>
+	</resultMap>
+	
+	<!-- 获取省份 -->
+	<select id="GetProvinceInfo" resultMap ="ProvinceInfo">
+		select Province_Id,Province_Name,Province_No from province_dictionary where 1 = 1 
+	</select>
+	
+	<!-- 县区查询结果封装 -->
+	<resultMap type="cn.dictionaries.model.CountyInfoEntity" id="CountyInfo">
+		<id column="County_Id" property="xId" />
+		<result column="City_Id" property="cId"/>
+		<result column="County_Name" property="xName"/>
+		<result column="County_No" property="xNo"/>
+	</resultMap>
+	
+	<!-- 获取县 -->
+	<select id="GetCountyInfo" parameterType="Map" resultMap ="CountyInfo">
+		select County_Id,City_Id,County_Name,County_No from county_dictionary where City_Id = #{cId} 
+	</select>
+	
+	<!-- 乡镇查询结果封装 -->
+	<resultMap type="cn.dictionaries.model.TownInfoEntity" id="TownInfo">
+		<id column="Town_Id" property="tId" />
+		<result column="County_Id" property="cId"/>
+		<result column="Town_Name" property="tName"/>
+		<result column="Town_No" property="tNo"/>
+	</resultMap>
+	
+	<!-- 获取乡镇 -->
+	<select id="GetTownInfo" parameterType="Map" resultMap ="TownInfo">
+		select Town_Id,County_Id,Town_Name,Town_No from town_dictionary where County_Id = #{xId} 
+	</select>
+	
+	<!-- 婚姻状况查询结果封装 -->
+	<resultMap type="cn.dictionaries.model.MaritalInfoEntity" id="MaritalInfo">
+		<id column="Marital_ID" property="mId" />
+		<result column="MaritalName" property="mName"/>
+	</resultMap>
+	
+	<!-- 获取婚姻状况 -->
+	<select id="GetMaritalInfo" resultMap ="MaritalInfo">
+		select Marital_ID,MaritalName from marital_info where Type_Statu = 1 
+	</select>
+	
+	<!-- 宗教信仰查询结果封装 -->
+	<resultMap type="cn.dictionaries.model.ReligionInfoEntity" id="ReligionInfo">
+		<id column="Religion_Id" property="rId" />
+		<result column="Type_Name" property="rName"/>
+	</resultMap>
+	
+	<!-- 获取宗教信仰 -->
+	<select id="GetReligionInfo" resultMap ="ReligionInfo">
+		select Religion_Id,Type_Name from religion_type where Type_Statu = 1 
+	</select>
+	
+</mapper>

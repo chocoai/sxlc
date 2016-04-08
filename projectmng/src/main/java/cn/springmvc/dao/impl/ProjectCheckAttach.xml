@@ -1,0 +1,93 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace = "projectCheckAttach">  
+   <resultMap type = "cn.springmvc.model.ProjectCheckAttachEntity" id = "resultProjectCheckAttach">
+        <id property = "appCheckId"				column = "App_Check_Id" />
+		<result property = "attachIndex"       	column = "Attach_Index" />
+		<result property = "attachTitle"    	column = "Attach_Title" />
+		<result property = "attachUrl"  	    column = "Attach_Url" />
+		<result property = "displayStatu" 	    column = "Display_Statu" />
+		<result property = "typeStatu"          column = "Type_Statu" />  
+		<result property = "dealType"    	    column = "Deal_Type" />
+		<result property = "deleteapName"  	    column = "deleteapName" />
+		<result property = "adminName" 	        column = "adminName" /> 
+		<result property = "dealDate"           column = "Deal_Date" /> 
+		<result property = "addapName"  	    column = "addapName" />
+		<result property = "dealRecord"  	    column = "Deal_Record" />
+    </resultMap> 
+    <!-- 根据项目申请id查询资质证照 -->  
+	<select id = "selectProjectCheckAttach" parameterType = "int"  resultMap = "resultProjectCheckAttach">
+	   select  pca.Attach_Index,pca.Attach_Title,pca.Attach_Url 
+	   from Project_Check_Attach pca 
+	   left join Project_Check_Record pcr on pca.App_Check_Id = pcr.App_Check_Id
+	   left join  Activities_Project ap on ap.Process_ID =  pcr.Process_ID  
+	   where  ap.Process_ID in (select Process_ID from  Process_Project pp where Indexs =(select Indexs from Process_Project order by Indexs desc limit 1) )
+	   and pca.Display_Statu = 1  and  pcr.Apply_Id = #{projectID} and pca.Type_Statu=1
+    </select>
+      <!-- 根据项目申请ID查询附件审核记录 -->  
+	<select id="selectCheckAttachDeal"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectCheckAttach" >
+	      SELECT PCA.App_Check_Id,pcr.Check_Date,apadd.AP_Name as addapName,ad.adminName,PCA.Attach_Title
+		  from  Project_Check_Attach PCA
+		  left join  Project_Check_Record pcr on pcr.App_Check_Id = PCA.App_Check_Id
+		  left join Admin ad on ad.Admin_ID = pcr.Admin_ID 
+		  left join  Activities_Project apadd on apadd.Process_ID = pcr.Process_ID 
+          where  Apply_Id=#{map.applyId} and PCA.Type_Statu=1
+   </select>
+    <!-- 根据项目申请ID查询删除审核附件记录 -->  
+	<select id="selectCheckAttachDealDelete"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectCheckAttach" >
+	   SELECT apdelete.AP_Name as deleteapName,apadd.AP_Name as addapName,
+		PCAD.Deal_Date,ad.adminName,PCAD.Deal_Record,PCA.Attach_Title
+		FROM  Project_Check_Attach_Deal PCAD 
+		left join Admin ad on ad.Admin_ID = PCAD.Admin_ID 
+		LEFT JOIN Project_Check_Record PCK ON PCK.App_Check_Id= PCAD.App_Check_Id
+		left join  Activities_Project apadd on apadd.Process_ID = PCK.Process_ID
+		left join  Activities_Project apdelete on apdelete.Process_ID = PCAD.Process_ID
+		LEFT JOIN Project_Check_Attach PCA ON PCA.Attach_Index = PCAD.Attach_Index  
+        and PCA.App_Check_Id = PCAD.App_Check_Id   
+        where  PCK.Apply_Id=#{map.applyId} and  PCAD.Deal_Type=1
+   </select>
+   	<!-- 批量新增审核附件-->  
+	<insert id="insertProjectCheckAttach"  parameterType="java.util.List">    
+		insert into Project_Check_Attach (App_Check_Id,Attach_Index,Attach_Title,Attach_Url,Display_Statu) 
+		values 
+	   <foreach collection="list" item="item" index="index" separator="," > 
+	       (#{item.appCheckId},#{item.attachIndex},#{item.attachTitle},#{item.attachUrl},#{item.displayStatu})  
+        </foreach>     
+	</insert> 
+  <!-- 	插入审核附件操作表   -->
+   <insert id="insertCheckAttach" parameterType="java.util.List" >
+        insert into  Project_Check_Attach_Deal(App_Check_Id,Attach_Index,Admin_ID,Deal_Type,Deal_Record,Process_ID)
+        values 
+        <foreach collection="list" item="item" index="index" separator="," >  
+         (#{item.appCheckId},#{item.attachIndex},#{item.adminID},#{item.dealType},#{item.dealRecord},#{item.processID})   
+        </foreach> 
+   </insert>
+     <!-- 批量删除审核附件-->  
+	<update id="deleteCheckAttach"  parameterType="java.util.List">
+	    update  Project_Check_Attach  set   Type_Statu=1 where Attach_Index in 
+	    <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	         #{item.attachIndex}
+        </foreach> 
+    </update> 
+    <!-- 根据项目申请id查询审核附件 -->  
+	<select id = "selectProjectCheckAttachTotal" parameterType = "int"  resultMap ="resultProjectCheckAttach">
+	   select  pca.Attach_Index,pca.Attach_Title,pca.Attach_Url 
+	   from Project_Check_Attach pca 
+	   left join Project_Check_Record pcr on pca.App_Check_Id = pcr.App_Check_Id
+	   where  pcr.Apply_Id = #{projectID} and pca.Type_Statu=1
+    </select> 
+    <!-- 附件最大序号 -->  
+	<select id="selectAttachindex"  resultType="int" >
+	   select ifnull(attachIndex,0) from  Project_Check_Attach  order by attachIndex desc limit 1
+    </select> 
+    <!-- 插入审核附件操作表   -->
+    <insert id="insertCheckAttachone" parameterType="cn.springmvc.model.ProjectCheckAttachDealEntity" >
+       insert into  Project_Check_Attach_Deal(App_Check_Id,Attach_Index,Admin_ID,Deal_Type,Deal_Record,Process_ID)
+           values(#{appCheckId},#{attachIndex},#{adminID},#{dealType},#{dealRecord},#{processID})    
+    </insert>
+     <!--  删除审核附件-->  
+	<update id="deleteCheckAttachont"  parameterType="map">
+	    update  Project_Check_Attach  set   Type_Statu=0 
+	    where Attach_Index = #{attachIndex} and App_Check_Id =#{appCheckId}
+    </update> 
+</mapper>   

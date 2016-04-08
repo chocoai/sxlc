@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="footNavBarType">   
+    <resultMap type="cn.springmvc.model.FootNavBarTypeEntity" id="resultListFootNavBarType">
+        <id column="ID" property="id" />
+		<result column="Name" property="name" /> 
+		<result column="URL" property="url" /> 
+		<result column="Statu" property="statu" />  
+    </resultMap> 
+     <!-- 查询底部导航条类型列表 -->  
+	<select id="selectFootNavBarTypeList"  resultMap="resultListFootNavBarType"  parameterType="product_p2p.kit.pageselect.PageEntity">
+	   select ID,Name,URL,Statu
+	   from  FootNavBar_Type 
+        <where>  
+            <if test="map.name != null">  
+                Name like  '%{map.name}%'  
+            </if>   
+            <if test="map.statu != -1">  
+                and Statu=#{map.statu}
+            </if>   
+        </where>  
+    </select>   
+	<!-- 新增底部导航条类型 -->  
+	<insert id="insertFootNavBarType"  parameterType="cn.springmvc.model.FootNavBarTypeEntity" >    
+		insert into 
+		FootNavBar_Type(ID,   Name,   URL) 
+		      values (#{id},#{name},#{url})    
+	</insert> 
+	<!-- 查询底部导航条类型是否存在 -->  
+	<select id="selectFootNavBarTypeIsExistByNAme"  parameterType="cn.springmvc.model.FootNavBarTypeEntity" resultMap="resultListFootNavBarType" >
+	   select ID,Name,URL,Statu
+	   from  FootNavBar_Type where  Name=#{name}   and  ID!=#{id}
+    </select> 
+    <!-- 修改底部导航条类型信息 -->  
+	<update id="updateFootNavBarTypeByID"  parameterType="cn.springmvc.model.FootNavBarTypeEntity">
+	   update  FootNavBar_Type  
+	    <set>
+		   <if test="name != null" >
+	         Name = #{name},
+	       </if>  
+	       <if test="url != null" >
+	         URL = #{url},
+	       </if>   
+	     </set> 
+	    where ID = #{id}   
+    </update>   
+    
+    <!-- 删除底部导航条类型信息 -->  
+	<delete id="deleteFootNavBarTypeByID"  parameterType="int">
+	   delete from  FootNavBar_Type where ID = #{id}   
+    </delete> 
+    
+     <!-- 停用或启用底部导航条类型信息 -->  
+	<update id="updateFootNavBarTypeStatuByID"  parameterType="cn.springmvc.model.FootNavBarTypeEntity">
+	   update  FootNavBar_Type  set   Statu = #{statu} where ID = #{id}   
+    </update>    
+     <!-- 根据id查询底部导航条类型  -->  
+	<select id="selectFootNavBarTypeByID"  resultMap="resultListFootNavBarType"  parameterType="int">
+	   select ID,Name,URL,Statu
+	   from  FootNavBar_Type  where ID = #{id} 
+    </select>   
+</mapper>   

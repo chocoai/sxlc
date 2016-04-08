@@ -1,0 +1,99 @@
+.nav-pills>li.active>a, 
+.nav-pills>li.active>a:focus, 
+.nav-pills>li.active>a:hover {
+    color: #555;
+    background-color: #fff;
+}
+.nav-pills>li.active{
+	border-width:1px;
+	border-color:#ddd transparent #ddd #ddd;
+	border-style:solid;
+	margin-right:-2px;
+	border-radius:5px 0 0 5px;
+}
+.checkbox-inline, .radio-inline{
+	padding-left:0;
+}
+.form-horizontal .form-group{
+	margin-left:0;
+	margin-right:0;
+	margin-bottom: 8px;
+}
+.form-horizontal .control-label {
+    /* text-align:left; */
+    padding-top:7px;
+    
+}
+fieldset{
+	padding:10px;
+	margin:10px 0 20px 0;
+	border:1px solid #D4D4D4;
+}
+legend{
+	padding:0 10px;
+	border:0;
+	width:auto;
+	font-size: 14px;
+    color: #0F741A;
+    font-weight: 600;
+}
+.config{
+	padding:15px;
+	width:100%;
+}
+.col3{
+	min-width: 200px;
+	padding-left:20px;
+}
+.offset-col3{
+	margin-left:200px;
+	margin-top:10px;
+}
+.form-control{
+	height:30px;
+	border-radius:0;
+}
+span.sign,
+.input-alert{
+	line-height: 30px;
+    height: 100%;
+    margin-left: 4px;
+}
+span.sign{
+    font-weight: bold;
+}
+.input-alert{
+    color:red;
+    float:left;
+}
+.radio-alert{
+	position:relative;
+	top:9px;
+	left:10px;
+	color:red;
+}
+span.sign>i{
+	color:red;
+	padding-left:2px;
+}
+.offset-col3 .btn{
+	padding:3px 12px;
+}
+.offset-col1{
+	margin-left:50px;
+}
+@media (max-width: 768px) {
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+

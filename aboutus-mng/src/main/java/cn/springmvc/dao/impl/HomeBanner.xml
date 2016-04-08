@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="homeBanner">
+    <resultMap type="cn.springmvc.model.HomeBannerEntity" id="resultListHomeBanner">
+        <id column="ID" property="id" />
+		<result column="Banner_Title" property="bannerTitle" />
+		<result column="Url" property="url" />
+		<result column="Links" property="links" />
+		<result column="Indexs" property="indexs" />
+		<result column="Statu" property="statu" />
+		<result column="CreateTime" property="createTime" /> 
+		<result column="Opt_Date" property="optDate" />
+		<result column="Opt_Id" property="optId" />
+		<result column="adminName" property="adminName" />
+    </resultMap>  
+	<!-- 分页查询的首页轮播图-->  
+	<select id="selectHomeBannerListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListHomeBanner" >
+	   select hb.ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
+	   hb.Statu,  hb.CreateTime,  hb.Opt_Date, hb.Opt_Id,a.adminName
+	   from  Home_Banner  hb
+	   LEFT JOIN Admin a on a.ID=hb.Opt_Id
+	    <where>  
+            <if test="map.bannerTitle != null">  
+                hb.Banner_Title like  '%${map.bannerTitle}%'  
+            </if>  
+            <if test="map.startTime != null">  
+                and hb.CreateTime>=#{map.startTime}
+            </if>  
+             <if test="map.endTime != null">  
+                and #{map.endTime}>= hb.CreateTime
+            </if>  
+            <if test="map.statu != -1">  
+                and hb.Statu=#{map.statu}
+            </if>  
+            order by hb.CreateTime desc
+        </where>   
+    </select> 
+     <!-- 新增首页轮播图 -->  
+	<insert id="insertHomeBanner"  parameterType="cn.springmvc.model.HomeBannerEntity" >    
+		insert into 
+		Home_Banner( ID,   Banner_Title,   Url,   Links,   Indexs,   Statu,  Opt_Id) 
+		    values (#{id},#{bannerTitle},#{url},#{links},#{indexs},#{statu}, #{optId})    
+	</insert> 
+	<!-- 查询该标题的首页轮播图是否存在 -->  
+	<select id="selectHomeBannerIsExistByNAme"  parameterType="cn.springmvc.model.HomeBannerEntity" resultMap="resultListHomeBanner" >
+	   select ID, Banner_Title,   Url,   Links,   Indexs,   Statu,  CreateTime,  Opt_Date, Opt_Id
+	   from  Home_Banner where  Banner_Title=#{bannerTitle}  and ID != #{id}
+    </select> 
+    <!-- 修改首页轮播图信息 -->  
+	<update id="updateHomeBannerByID"  parameterType="cn.springmvc.model.HomeBannerEntity">
+	   update  Home_Banner 
+	   <set>
+	       <if test="bannerTitle != null" >
+	         Banner_Title=#{bannerTitle},
+	       </if> 
+	       <if test="url != null" >
+	         Url=#{url},
+	       </if> 
+	       <if test="links != null" >
+	         Links=#{links},
+	       </if>    
+	       <if test="optId != 0" >
+	         Opt_Id=#{optId},
+	       </if>  
+	         Opt_Date=now() , 
+	   </set>
+	   where ID=#{id}   
+    </update>   
+    <!-- 删除首页轮播图 -->  
+	<delete id="deleteHomeBannerByID"  parameterType="int">
+	   delete from  Home_Banner where ID=#{id}   
+    </delete>  
+     <!-- 停用或启用首页轮播图 -->  
+	<update id="updateHomeBannerStatuByID"  parameterType="cn.springmvc.model.HomeBannerEntity">
+	   update  Home_Banner  set   Statu=#{statu} where ID=#{id}   
+    </update> 
+    <!--上移或下移首页轮播图 -->
+    <select id="moveAndDownHomeBanner"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call moveAndDownHomeBanner(
+				#{iid ,		 mode=IN,	jdbcType=INTEGER},
+				#{flag,		 mode=IN,	jdbcType=INTEGER},
+				#{result ,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+	</select>
+	<!-- 查询轮播图序号 -->  
+	<select id="selectHomeBannerindex"  resultType="Integer" >
+	   select ifnull(Indexs,0) from  Home_Banner  order by Indexs desc limit 1
+    </select> 
+    <!-- 根据id查询的首页轮播图-->  
+	<select id="selectHomeBannerByID"  parameterType="int"  resultMap="resultListHomeBanner" >
+	   select hb.ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
+	   hb.Statu,  hb.CreateTime,  hb.Opt_Date, hb.Opt_Id 
+	   from  Home_Banner  hb where  hb.ID=#{id} 
+    </select>  
+    <!-- 前台首页轮播图-->  
+	<select id="selectHomeBannerfront"   resultMap="resultListHomeBanner" >
+	   select hb.ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
+	   hb.Statu,  hb.CreateTime,  hb.Opt_Date, hb.Opt_Id 
+	   from  Home_Banner  hb 
+	   where hb.Statu = 1 
+    </select> 
+</mapper>

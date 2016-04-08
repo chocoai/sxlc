@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="borrowingCertificationDaoImpl">     
+	
+	
+	
+	<!-- 个人会员实名认证 -->
+	<select id="authRealName" statementType="CALLABLE" parameterType="Map">
+		call authRealName(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{realName,			mode=IN,				jdbcType=VARCHAR},
+			#{idCard,			mode=IN,				jdbcType=VARCHAR},
+			#{sex,				mode=IN,				jdbcType=INTEGER},
+			#{homeTown,			mode=IN,				jdbcType=VARCHAR},
+			#{nation,			mode=IN,				jdbcType=INTEGER},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{positive,			mode=IN,				jdbcType=VARCHAR},
+			#{reverse,			mode=IN,				jdbcType=VARCHAR},
+			#{skey,				mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=VARCHAR}
+		)
+	</select>
+	
+	<!-- 获取个人会员实名认证信息 -->
+	<select id="showAuthRealName" parameterType="Map" resultType="Map">
+		select 
+		CONVERT(AES_DECRYPT(UNHEX(prc.Real_Name),#{skey}) using utf8) as realName,
+		CONVERT(AES_DECRYPT(UNHEX(prc.Personal_IDCard),#{skey}) using utf8) as personalIDCard,prc.SexID,
+		CONVERT(AES_DECRYPT(UNHEX(prc.Home_Town),#{skey}) using utf8) as homeTown,prc.Nation,mai.End_Date as endDate,
+		(select Attach_Path from personal_attest_attach where Attest_ID = mai.Certification_ID limit 0,1) as positive,
+		(select Attach_Path from personal_attest_attach where Attest_ID = mai.Certification_ID limit 1,2) as reverse,
+		status
+		from Member_Attest_Info mai 
+		left join Personal_RealName_Check prc on prc.Certification_ID = mai.Certification_ID
+		where mai.Member_ID = #{memberId} and Member_Type = 0 and Attest_Type_ID = 1
+		order by mai.Record_Date desc limit 0,1
+	</select>
+	
+	<!-- 修改个人会员实名认证信息 -->
+	<select id="editAuthRealName" statementType="CALLABLE" parameterType="Map">
+		call editAuthRealName(
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{realName,			mode=IN,				jdbcType=VARCHAR},
+			#{idCard,			mode=IN,				jdbcType=VARCHAR},
+			#{sex,				mode=IN,				jdbcType=INTEGER},
+			#{homeTown,			mode=IN,				jdbcType=VARCHAR},
+			#{nation,			mode=IN,				jdbcType=INTEGER},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{positive,			mode=IN,				jdbcType=VARCHAR},
+			#{reverse,			mode=IN,				jdbcType=VARCHAR},
+			#{skey,				mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=VARCHAR}
+		)
+	</select>
+	
+	
+	
+	
+	<!-- 企业|个人通用认证 -->
+	<select id="currencyAuth" statementType="CALLABLE" parameterType="Map">
+		call currencyAuth(
+			#{cid,			mode=IN,				jdbcType=BIGINT},
+			#{mid,			mode=IN,				jdbcType=BIGINT},
+			#{memberType,	mode=IN,				jdbcType=INTEGER},
+			#{enclosure,	mode=IN,				jdbcType=VARCHAR},
+			#{endTime,		mode=IN,				jdbcType=VARCHAR},
+			#{typeId,		mode=IN,				jdbcType=INTEGER},
+			#{result,		mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 查看企业|个人通用认证 -->
+	<select id="showCurrencyAuth" parameterType="Map" resultType="Map">
+		select if(mai.End_Date is null,'',mai.End_Date) as endDate,group_concat(paa.Attach_Name) as attachName,paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath,status
+		from Member_Attest_Info mai 
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Member_ID = #{memberId} and mai.Member_Type = #{memberType} and Attest_Type_ID = #{typeId} 
+		order by mai.Record_Date desc limit 0,1
+	</select>
+	
+	<!-- 修改企业个人通用认证 -->
+	<select id="editCurrencyAuth" statementType="CALLABLE" parameterType="Map">
+		call editCurrencyAuth(
+			#{mid,			mode=IN,				jdbcType=BIGINT},
+			#{memberType,	mode=IN,				jdbcType=INTEGER},
+			#{enclosure,	mode=IN,				jdbcType=VARCHAR},
+			#{endTime,		mode=IN,				jdbcType=VARCHAR},
+			#{typeId,		mode=IN,				jdbcType=INTEGER},
+			#{result,		mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	
+	<!-- 个人会员住址认证 -->
+	<select id="authAddress" statementType="CALLABLE" parameterType="Map">
+		call authAddress(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{address,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{skey,				mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	 
+	<!-- 查看个人会员住在认证信息 -->
+	<select id="showAuthAddress" parameterType="Map" resultType="Map">
+		select if(mai.End_Date is null,'',mai.End_Date) as endDate,
+		group_concat(paa.Attach_Name) as attachName,paa.Attach_Type as attachType,
+		group_concat(paa.Attach_Path) as attachPath,
+		CONVERT(AES_DECRYPT(UNHEX(mac.Address),#{skey}) using utf8) as Address,status
+		from Member_Attest_Info mai 
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		left join Member_Address_Check mac on mac.Certification_ID = mai.Certification_ID
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 4
+		order by mai.Record_Date desc limit 0,1
+	</select>
+	 
+	<!-- 修改个人会员的住址认证信息 --> 
+	<select id="editAuthAddress" statementType="CALLABLE" parameterType="Map">
+		call editAuthAddress(
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{address,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{skey,				mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	 
+	 
+	 
+	 
+	<!-- 个人会员房产认证 -->
+	<select id="authHousing" statementType="CALLABLE" parameterType="Map">
+		call authHousing(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{iaddress,			mode=IN,				jdbcType=VARCHAR},
+			#{iArea,			mode=IN,				jdbcType=INTEGER},
+			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 个人会员房产认证查看 -->
+	<select id="showAuthHousing" parameterType="Map" resultType="Map">
+		select mai.Certification_ID as certificationId,if(mai.End_Date is null,'',mai.End_Date) as endDate,group_concat(paa.Attach_Name) as attachName,
+		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath, mec.Address,status 
+		from Member_Attest_Info mai 
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
+		left join Member_Estate_Check mec on mec.Certification_ID = mai.Certification_ID 
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 7 GROUP BY mai.Certification_ID
+	</select>
+	
+	<!-- 个人会员房产认证修改 -->
+	<select id="editAuthHousing" statementType="CALLABLE" parameterType="Map">
+		call editAuthHousing(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{iaddress,			mode=IN,				jdbcType=VARCHAR},
+			#{iArea,			mode=IN,				jdbcType=INTEGER},
+			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	
+	<!-- 个人会员车产认证 -->
+	<select id="authProduction" statementType="CALLABLE" parameterType="Map">
+		call authProduction(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{iBrand,			mode=IN,				jdbcType=VARCHAR},
+			#{iModel,			mode=IN,				jdbcType=VARCHAR},
+			#{iLicensePlate,	mode=IN,				jdbcType=VARCHAR},
+			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 个人会员车产认证查看 -->
+	<select id="showAuthProduction" parameterType="Long" resultType="Map">
+		select mai.Certification_ID as certificationId,if(mai.End_Date is null,'',mai.End_Date) as endDate,group_concat(paa.Attach_Name) as attachName,
+		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath, mcc.Brand,mcc.Model,mcc.License_Plate as licensePlate,mcc.Value,status 
+		from Member_Attest_Info mai 
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
+		left join Member_Car_Check mcc on mcc.Certification_ID = mai.Certification_ID 
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 8 GROUP BY mai.Certification_ID
+	</select>
+	
+	<!-- 个人会员车产认证修改 -->
+	<select id="editAuthProduction" statementType="CALLABLE" parameterType="Map" >
+		call editAuthProduction(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{memberId,			mode=IN,				jdbcType=BIGINT},
+			#{iBrand,			mode=IN,				jdbcType=VARCHAR},
+			#{iModel,			mode=IN,				jdbcType=VARCHAR},
+			#{iLicensePlate,	mode=IN,				jdbcType=VARCHAR},
+			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	
+	<!-- 个人会员婚姻认证 -->
+	<select id="authMarriage" statementType="CALLABLE" parameterType="Map">
+		call authMarriage(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{isMarried,		mode=IN,				jdbcType=INTEGER},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 查看个人会员婚姻认证信息 -->
+	<select id="showAuthMarriage" parameterType="Long" resultType="Map">
+		select if(mai.End_Date is null,'',mai.End_Date) as endDate,group_concat(paa.Attach_Name) as attachName,group_concat(paa.Attach_Path) as attachPath,mmc.Is_Married as isMarried,mai.status
+		from Member_Attest_Info mai
+		left join Member_Marriage_Check mmc on mmc.Certification_ID = mai.Certification_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Attest_Type_ID = 10 and mai.Member_ID = #{memberId} and Member_Type = 0 
+		order by mai.Record_Date desc limit 0,1
+	</select>
+	
+	<!-- 修改个人会员婚姻认证信息 -->
+	<select id="editAuthMarriage" statementType="CALLABLE" parameterType="Map">
+		call editAuthMarriage(
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{isMarried,		mode=IN,				jdbcType=INTEGER},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+
+	
+	
+	
+	<!-- 个人学历认证 -->
+	<select id="authEducation" statementType="CALLABLE"	parameterType="Map">
+		call authEducation(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{memberId,			mode=IN,				jdbcType=BIGINT},
+			#{education,		mode=IN,				jdbcType=INTEGER},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 查看个人会员学历认证信息 -->
+	<select id="showAuthEducation" parameterType="long" resultType="Map">
+		select group_concat(paa.Attach_Name) as attachName,group_concat(paa.Attach_Path) as attachPath,mai.status,mec.Education
+		from member_attest_info mai
+		left join Member_Education_Check mec on mai.Certification_ID = mec.Certification_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Attest_Type_ID = 11 and mai.Member_ID = #{memberId} and Member_Type = 0 
+		order by mai.Record_Date desc limit 0,1
+	</select>
+	
+	<!-- 修改个人会员学历认证信息 -->
+	<select id="editAuthEducation" statementType="CALLABLE" parameterType="Map">
+		call editAuthEducation(
+			#{memberId,			mode=IN,				jdbcType=BIGINT},
+			#{education,		mode=IN,				jdbcType=INTEGER},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	
+	
+	
+	
+<!--
+	
+/******************************************************************************************************************************************************************************************************************
+* 
+* 						a ha ha 我是华丽丽的分界线、下面的都是企业会员的了
+* 
+* 
+*******************************************************************************************************************************************************************************************************************/
+
+-->	
+	
+	
+	<!-- 企业会员营业执照认证 -->
+	<select id="businessLicense" statementType="CALLABLE" parameterType="Map">
+		call businessLicense(
+			#{cid,					mode=IN,					jdbcType=BIGINT},
+			#{memberId,				mode=IN,					jdbcType=BIGINT},
+			#{businessLicenseNumber,mode=IN,					jdbcType=VARCHAR},
+			#{regAddress,			mode=IN,					jdbcType=VARCHAR},
+			#{regPerson,			mode=IN,					jdbcType=VARCHAR},
+			#{regCapital,			mode=IN,					jdbcType=VARCHAR},
+			#{businessScope,		mode=IN,					jdbcType=VARCHAR},
+			#{companyType,			mode=IN,					jdbcType=VARCHAR},
+			#{regDate,				mode=IN,					jdbcType=VARCHAR},
+			#{endTime,				mode=IN,					jdbcType=VARCHAR},
+			#{enclosure,			mode=IN,					jdbcType=VARCHAR},
+			#{skey,					mode=IN,					jdbcType=VARCHAR},
+			#{result,				mode=OUT,					jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 查看企业会员营业执照认证 -->
+	<select id="showBusinessLicense" parameterType="Map" resultType="Map">
+		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,
+		CONVERT(AES_DECRYPT(UNHEX(Firm_BLN),#{skey}) using utf8) as Firm_BLN,
+		CONVERT(AES_DECRYPT(UNHEX(Firm_Address),#{skey}) using utf8) as Firm_Address,
+		CONVERT(AES_DECRYPT(UNHEX(Firm_Legal),#{skey}) using utf8) as Firm_Legal,Reg_Capital,
+		CONVERT(AES_DECRYPT(UNHEX(Reg_Business),#{skey}) using utf8) as Reg_Business,Firm_Type,Reg_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		from Member_Attest_Info mai
+		left join Enterprise_License_Attest ela on ela.Certification_ID = mai.Certification_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 1 and mai.Attest_Type_ID = 12 order by Record_Date desc limit 0,1
+	</select>
+	
+	<!-- 修改企业会员营业执照认证 -->
+	<select id="editBusinessLicense" statementType="CALLABLE" parameterType="Map">
+		call editBusinessLicense(
+			#{memberId,				mode=IN,					jdbcType=BIGINT},
+			#{businessLicenseNumber,mode=IN,					jdbcType=VARCHAR},
+			#{regAddress,			mode=IN,					jdbcType=VARCHAR},
+			#{regPerson,			mode=IN,					jdbcType=VARCHAR},
+			#{regCapital,			mode=IN,					jdbcType=VARCHAR},
+			#{businessScope,		mode=IN,					jdbcType=VARCHAR},
+			#{companyType,			mode=IN,					jdbcType=VARCHAR},
+			#{regDate,				mode=IN,					jdbcType=VARCHAR},
+			#{endTime,				mode=IN,					jdbcType=VARCHAR},
+			#{enclosure,			mode=IN,					jdbcType=VARCHAR},
+			#{skey,					mode=IN,					jdbcType=VARCHAR},
+			#{result,				mode=OUT,					jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	
+	
+	<!-- 企业会员工商执照认证 -->
+	<select id="commercialLicense"	statementType="CALLABLE" parameterType="Map">
+		call commercialLicense(
+			#{cid,				mode=IN,					jdbcType=BIGINT},
+			#{memberId,			mode=IN,					jdbcType=BIGINT},
+			#{address,			mode=IN,					jdbcType=VARCHAR},
+			#{regPerson,		mode=IN,					jdbcType=VARCHAR},
+			#{regCapital,		mode=IN,					jdbcType=VARCHAR},
+			#{businessScope,	mode=IN,					jdbcType=VARCHAR},
+			#{paidCapital,		mode=IN,					jdbcType=VARCHAR},
+			#{companyType,		mode=IN,					jdbcType=VARCHAR},
+			#{regDate,			mode=IN,					jdbcType=VARCHAR},
+			#{endTime,			mode=IN,					jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,					jdbcType=VARCHAR},
+			#{skey,				mode=IN,					jdbcType=VARCHAR},
+			#{result,			mode=OUT,					jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 查看企业会员工商执照认证 -->
+	<select id="showCommercialLicense" parameterType="Map" resultType="Map">
+		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,Residence,
+		CONVERT(AES_DECRYPT(UNHEX(Firm_Legal),#{skey}) using utf8) as Firm_Legal,
+		Reg_Capital,Firm_Type,Real_Capital,
+		CONVERT(AES_DECRYPT(UNHEX(Reg_Business),#{skey}) using utf8) as Reg_Business,SetUp_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		from member_attest_info mai
+		left join Enterprise_BsnLicense_Attest mba on mba.Certification_ID = mai.Certification_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 1 and mai.Attest_Type_ID = 13 order by Record_Date desc limit 0,1
+	</select>
+	
+	<!-- 修改企业会员工商执照认证 -->
+	<select id="editCommercialLicense" statementType="CALLABLE" parameterType="Map">
+		call editCommercialLicense(
+			#{memberId,			mode=IN,					jdbcType=BIGINT},
+			#{address,			mode=IN,					jdbcType=BIGINT},
+			#{regPerson,		mode=IN,					jdbcType=VARCHAR},
+			#{regCapital,		mode=IN,					jdbcType=VARCHAR},
+			#{businessScope,	mode=IN,					jdbcType=VARCHAR},
+			#{paidCapital,		mode=IN,					jdbcType=VARCHAR},
+			#{companyType,		mode=IN,					jdbcType=VARCHAR},
+			#{regDate,			mode=IN,					jdbcType=VARCHAR},
+			#{endTime,			mode=IN,					jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,					jdbcType=VARCHAR},
+			#{skey,				mode=IN,					jdbcType=VARCHAR},
+			#{result,			mode=OUT,					jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	<!-- 组织机构认证 -->
+	<select id="organizational" statementType="CALLABLE" parameterType="Map">
+		call organizational(
+			#{cid,					mode=IN,				jdbcType=BIGINT},
+			#{memberId,				mode=IN,				jdbcType=BIGINT},
+			#{organizationalCode,	mode=IN,				jdbcType=VARCHAR},
+			#{startTime,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,				mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,			mode=IN,				jdbcType=VARCHAR},
+			#{skey,					mode=IN,				jdbcType=VARCHAR},
+			#{result,				mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 查看组织机构认证 -->
+	<select id="showOrganizational" parameterType="Map" resultType="Map">
+		select status,CONVERT(AES_DECRYPT(UNHEX(eoa.Firm_OC),#{skey}) using utf8) as Firm_OC,eoa.Reg_Date,if(mai.End_Date is null,'',mai.End_Date) as End_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		from member_attest_info mai
+		left join Enterprise_OrgCode_Attest eoa on eoa.Certification_ID = mai.Certification_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 1 and mai.Attest_Type_ID = 14 order by Record_Date desc limit 0,1
+	</select>
+	
+	<!-- 修改组织机构认证 -->
+	<select id="editOrganizational" statementType="CALLABLE" parameterType="Map">
+		call editOrganizational(
+			#{memberId,				mode=IN,				jdbcType=BIGINT},
+			#{organizationalCode,	mode=IN,				jdbcType=VARCHAR},
+			#{startTime,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,				mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,			mode=IN,				jdbcType=VARCHAR},
+			#{skey,					mode=IN,				jdbcType=VARCHAR},
+			#{result,				mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	
+	
+	<!-- 开户许可认证 -->
+	<select id="accountOpening" statementType="CALLABLE" parameterType="Map">
+		call accountOpening(
+			#{cid,					mode=IN,			jdbcType=BIGINT},
+			#{memberId,				mode=IN,			jdbcType=BIGINT},
+			#{accountOpeningCode,	mode=IN,			jdbcType=VARCHAR},
+			#{opBank,				mode=IN,			jdbcType=VARCHAR},
+			#{bankAccount,			mode=IN,			jdbcType=VARCHAR},
+			#{enclosure,			mode=IN,			jdbcType=VARCHAR},
+			#{endTime,				mode=IN,			jdbcType=VARCHAR},
+			#{skey,					mode=IN,			jdbcType=VARCHAR},
+			#{result,				mode=OUT,			jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 查看开户许可认证 -->
+	<select id="showAccountOpening" parameterType="Map" resultType="Map">
+		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,mai.status,CONVERT(AES_DECRYPT(UNHEX(eaa.Permits_Code),#{skey}) using utf8) as Permits_Code,
+		CONVERT(AES_DECRYPT(UNHEX(eaa.Permits_Bank),#{skey}) using utf8) as Permits_Bank,
+		CONVERT(AES_DECRYPT(UNHEX(eaa.Bank_No),#{skey}) using utf8) as Bank_No,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		from member_attest_info mai
+		left join Enterprise_AccountPermits_Attest eaa on eaa.Certification_ID = mai.Certification_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Member_ID = 1 and mai.Member_Type = 1 and mai.Attest_Type_ID = 15 order by Record_Date desc limit 0,1 
+	</select>
+	
+	<!-- 修改开户许可认证 -->
+	<select id="editAccountOpening" statementType="CALLABLE" parameterType="Map">
+		call editAccountOpening(
+			#{memberId,				mode=IN,			jdbcType=BIGINT},
+			#{accountOpeningCode,	mode=IN,			jdbcType=VARCHAR},
+			#{opBank,				mode=IN,			jdbcType=VARCHAR},
+			#{bankAccount,			mode=IN,			jdbcType=VARCHAR},
+			#{enclosure,			mode=IN,			jdbcType=VARCHAR},
+			#{endTime,				mode=IN,			jdbcType=VARCHAR},
+			#{skey,					mode=IN,			jdbcType=VARCHAR},
+			#{result,				mode=OUT,			jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	<!-- 添加税务登记认证 -->
+	<select id="taxRegistration" statementType="CALLABLE" parameterType="Map">
+		call taxRegistration(
+			#{cid,					mode=IN,					jdbcType=BIGINT},
+			#{memberId,				mode=IN,					jdbcType=BIGINT},
+			#{credentialsNO,		mode=IN,					jdbcType=VARCHAR},
+			#{issueOrgan,			mode=IN,					jdbcType=VARCHAR},
+			#{enclosure,			mode=IN,					jdbcType=VARCHAR},
+			#{endTime,				mode=IN,					jdbcType=VARCHAR},
+			#{skey,					mode=IN,					jdbcType=VARCHAR},
+			#{result,				mode=OUT,					jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 查看税务登记认证 -->
+	<select id="showTaxRegistration" parameterType="Map" resultType="Map">
+		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,mai.status,Issue_Organ,
+		CONVERT(AES_DECRYPT(UNHEX(eta.Credentials_NO),#{skey}) using utf8) as Credentials_NO,
+		group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		from member_attest_info mai
+		left join Enterprise_Taxation_Attest eta on eta.Certification_ID = mai.Certification_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Member_ID = 1 and mai.Member_Type = 1 and mai.Attest_Type_ID = 18 order by Record_Date desc limit 0,1 
+	</select>
+	
+	<!-- 修改税务登记认证 -->
+	<select id="editTaxRegistration" statementType="CALLABLE" parameterType="Map">
+		call editTaxRegistration(
+			#{memberId,				mode=IN,					jdbcType=BIGINT},
+			#{credentialsNO,		mode=IN,					jdbcType=VARCHAR},
+			#{issueOrgan,			mode=IN,					jdbcType=VARCHAR},
+			#{enclosure,			mode=IN,					jdbcType=VARCHAR},
+			#{endTime,				mode=IN,					jdbcType=VARCHAR},
+			#{skey,					mode=IN,					jdbcType=VARCHAR},
+			#{result,				mode=OUT,					jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	
+	<!-- 批文认证 -->
+	<select id="authApproval" statementType="CALLABLE" parameterType="Map">
+		call authApproval(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{memberId,			mode=IN,				jdbcType=BIGINT},
+			#{fileSummary,		mode=IN,				jdbcType=VARCHAR},
+			#{issueOrgan,		mode=IN,				jdbcType=VARCHAR},
+			#{issueDate,		mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{skey,				mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 批文认证 -->
+	<select id="showAuthApproval" parameterType="Map" resultType="Map">
+		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,mai.status,Issue_Organ,File_Summary,Issue_Organ,Issue_Date,
+		group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		from member_attest_info mai
+		left join Enterprise_RedHead_Attest era on era.Certification_ID = mai.Certification_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Member_ID = 1 and mai.Member_Type = 1 and mai.Attest_Type_ID = 19 order by Record_Date desc limit 0,1 
+	</select>
+	
+	<!-- 批文认证 -->
+	<select id="editAuthApproval" statementType="CALLABLE" parameterType="Map">
+		call editAuthApproval(
+			#{memberId,			mode=IN,				jdbcType=BIGINT},
+			#{fileSummary,		mode=IN,				jdbcType=VARCHAR},
+			#{issueOrgan,		mode=IN,				jdbcType=VARCHAR},
+			#{issueDate,		mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{skey,				mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	 
+	 
+	<!-- 个人会员房产认证 -->
+	<select id="complayAuthHousing" statementType="CALLABLE" parameterType="Map">
+		call authHousing(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{iaddress,			mode=IN,				jdbcType=VARCHAR},
+			#{iArea,			mode=IN,				jdbcType=INTEGER},
+			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 个人会员房产认证查看 -->
+	<select id="complayShowAuthHousing" parameterType="Map" resultType="Map">
+		select mai.Certification_ID,if(mai.End_Date is null,'',mai.End_Date) as End_Date,group_concat(paa.Attach_Name) as Attach_Name,
+		paa.Attach_Type,group_concat(paa.Attach_Path) as Attach_Path, mec.Address,status 
+		from Member_Attest_Info mai 
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
+		left join Member_Estate_Check mec on mec.Certification_ID = mai.Certification_ID 
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 7 GROUP BY mai.Certification_ID
+	</select>
+	
+	<!-- 个人会员房产认证修改 -->
+	<select id="complayEditAuthHousing" statementType="CALLABLE" parameterType="Map">
+		call editAuthHousing(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{iaddress,			mode=IN,				jdbcType=VARCHAR},
+			#{iArea,			mode=IN,				jdbcType=INTEGER},
+			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	
+	
+	<!-- 个人会员车产认证 -->
+	<select id="complayAuthProduction" statementType="CALLABLE" parameterType="Map">
+		call authProduction(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{iBrand,			mode=IN,				jdbcType=VARCHAR},
+			#{iModel,			mode=IN,				jdbcType=VARCHAR},
+			#{iLicensePlate,	mode=IN,				jdbcType=VARCHAR},
+			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 个人会员车产认证查看 -->
+	<select id="complayShowAuthProduction" parameterType="Long" resultType="Map">
+		select mai.Certification_ID,if(mai.End_Date is null,'',mai.End_Date) as End_Date,group_concat(paa.Attach_Name) as Attach_Name,
+		paa.Attach_Type,group_concat(paa.Attach_Path) as Attach_Path, mcc.Brand,mcc.Model,mcc.License_Plate,mcc.Value,status 
+		from Member_Attest_Info mai 
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
+		left join Member_Car_Check mcc on mcc.Certification_ID = mai.Certification_ID 
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 8 GROUP BY mai.Certification_ID
+	</select>
+	
+	<!-- 个人会员车产认证修改 -->
+	<select id="complayEditAuthProduction" statementType="CALLABLE" parameterType="Map" >
+		call editAuthProduction(
+			#{cid,				mode=IN,				jdbcType=BIGINT},
+			#{memberId,			mode=IN,				jdbcType=BIGINT},
+			#{iBrand,			mode=IN,				jdbcType=VARCHAR},
+			#{iModel,			mode=IN,				jdbcType=VARCHAR},
+			#{iLicensePlate,	mode=IN,				jdbcType=VARCHAR},
+			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
+			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{result,			mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+</mapper>

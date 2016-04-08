@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="optRecord">     
+	
+	<!-- 添加后台操作日志 -->
+	<select id="insertAdminOptRecord"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call InsertLog(
+				#{adminId,		mode=IN,	jdbcType=BIGINT},
+				#{modId,		mode=IN,	jdbcType=BIGINT},
+				#{optId,		mode=IN,	jdbcType=BIGINT},
+				#{detail,		mode=IN,	jdbcType=VARCHAR},
+				#{ipv,			mode=IN,	jdbcType=VARCHAR},
+				#{macv,			mode=IN,	jdbcType=VARCHAR},
+				#{urlv,			mode=IN,	jdbcType=VARCHAR},
+				#{icountry,		mode=IN,	jdbcType=VARCHAR},
+				#{iregion,		mode=IN,	jdbcType=VARCHAR},
+				#{iprovince,	mode=IN,	jdbcType=VARCHAR},
+				#{icity,		mode=IN,	jdbcType=VARCHAR},
+				#{iarea,		mode=IN,	jdbcType=VARCHAR},
+				#{iISP,			mode=IN,	jdbcType=VARCHAR},
+				#{result,		mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+	</select>
+	
+	<!-- 添加前台操作日志 -->
+	<select id="insertMemberOptRecord"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call InsertForgroundLog(
+				#{sessionId,	mode=IN,	jdbcType=VARCHAR},
+				#{memberId,		mode=IN,	jdbcType=BIGINT},
+				#{ipv,			mode=IN,	jdbcType=VARCHAR},
+				#{macv,			mode=IN,	jdbcType=VARCHAR},
+				#{urlv,			mode=IN,	jdbcType=VARCHAR},
+				#{reurlv,		mode=IN,	jdbcType=VARCHAR},
+				#{sKeyWord,		mode=IN,	jdbcType=VARCHAR},
+				#{icountry,		mode=IN,	jdbcType=VARCHAR},
+				#{iregion,		mode=IN,	jdbcType=VARCHAR},
+				#{iprovince,	mode=IN,	jdbcType=VARCHAR},
+				#{icity,		mode=IN,	jdbcType=VARCHAR},
+				#{iarea,		mode=IN,	jdbcType=VARCHAR},
+				#{iISP,			mode=IN,	jdbcType=VARCHAR},
+				#{result,		mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+	</select>
+	
+	<!-- 前台session验证 -->
+	<select id="MemberSessionCheck"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call MemberSessionCheck(
+				#{sessionid,			mode=IN,	jdbcType=VARCHAR},
+				#{memberId,				mode=IN,	jdbcType=BIGINT},
+				#{isneedlogin,			mode=IN,	jdbcType=TINYINT},
+				#{iValidityPeriod,		mode=IN,	jdbcType=INTEGER},
+				#{ipv,					mode=IN,	jdbcType=VARCHAR},
+				#{icountry,				mode=IN,	jdbcType=VARCHAR},
+				#{iregion,				mode=IN,	jdbcType=VARCHAR},
+				#{iprovince,			mode=IN,	jdbcType=VARCHAR},
+				#{icity,				mode=IN,	jdbcType=VARCHAR},
+				#{iarea,				mode=IN,	jdbcType=VARCHAR},
+				#{iISP,					mode=IN,	jdbcType=VARCHAR},
+				#{result,				mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+	</select>
+	
+	<!-- 后台session验证 -->
+	<select id="AdminSessionCheck"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call AdminSessionCheck(
+				#{sessionid,			mode=IN,	jdbcType=VARCHAR},
+				#{adminId,				mode=IN,	jdbcType=BIGINT},
+				#{isneedlogin,			mode=IN,	jdbcType=TINYINT},
+				#{iValidityPeriod,		mode=IN,	jdbcType=INTEGER},
+				#{ipv,					mode=IN,	jdbcType=VARCHAR},
+				#{icountry,				mode=IN,	jdbcType=VARCHAR},
+				#{iregion,				mode=IN,	jdbcType=VARCHAR},
+				#{iprovince,			mode=IN,	jdbcType=VARCHAR},
+				#{icity,				mode=IN,	jdbcType=VARCHAR},
+				#{iarea,				mode=IN,	jdbcType=VARCHAR},
+				#{iISP,					mode=IN,	jdbcType=VARCHAR},
+				#{result,				mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+	</select>
+
+</mapper>

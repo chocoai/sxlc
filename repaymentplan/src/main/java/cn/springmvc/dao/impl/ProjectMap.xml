@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="replayProjectDetail"> 
+ <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetail">
+        <id property = "applyId"						column = "Apply_Id" />
+		<result property = "memberID"       	column = "Member_ID" />
+		<result property = "projectType"    	column = "Project_Type" />
+		<result property = "projectBaseID"  	column = "Project_Base_ID" />
+		<result property = "repayGuarantee" 	column = "Repay_Guarantee" />
+		<result property = "guarantyDescribe"   column = "Guaranty_Describe" />
+		<result property = "minStart" 			column = "MinStart" />
+		<result property = "increaseRange" 		column = "Increase_Range" />
+		<result property = "investMax" 			column = "Invest_Max" />
+		<result property = "checkStatu" 		column = "Check_Statu" />
+		<result property = "publishStatu" 		column = "Publish_Statu" />  
+		<result property = "investStatu" 		column = "Invest_Statu" />
+		<result property = "isDirect" 			column = "Is_Direct" />
+		<result property = "directPwd"		    column = "Direct_Pwd" />  
+        <result property = "assetManagerID" 	column = "Asset_Manager_ID" />
+		<result property = "guaranteeID" 		column = "Guarantee_ID" />
+		<result property = "rateAddRate" 		column = "Rate_Add_Rate" /> 
+		<result property = "rewardRate" 		column = "Reward_Rate" />
+		<result property = "rewardIcon" 		column = "Reward_Icon" /> 
+		<result property = "investCountMax" 	column = "Invest_Count_Max" />
+		<result property = "projectNo" 			column = "Project_No" /> 
+      	<result property = "merBillNo" 			column = "Mer_BillNo" /> 
+        <result property = "investRate" 		column = "Invest_Rate" /> 
+        <result property = "availableaAmount" 	column = "availableaAmount" /> 
+       <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
+	   </association>
+    </resultMap> 
+     <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
+            <id property = "ID" 				 column = "id" />
+			<result property = "projectTitle"    column = "Project_Title" /> 
+			<result property = "uses"            column = "Uses" />
+			<result property = "repaySource"     column = "Repay_Source" />
+			<result property = "amount" 		 column = "Amount" />
+			<result property = "projectDescript" column = "Project_Descript" />
+			<result property = "deadline" 		 column = "Deadline" />
+			<result property = "deadlineType"    column = "Deadline_Type" />
+			<result property = "repayWay"        column = "Repay_Way" />
+			<result property = "yearRate"        column = "Year_Rate" /> 
+			<result property = "creditIntegral"  column = "Credit_Integral" /> 
+     </resultMap> 
+</mapper>

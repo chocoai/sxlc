@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="adminLoginDaoImpl">     
+	
+	<!-- 查询结果封装 -->
+	<resultMap type="cn.springmvc.model.Admin" id="adminResult">
+		<id 		column="Admin_ID" 			property="id" />
+		<result		column="Staff_Type"		property="staffType"/>
+		<result		column="Staff_Id"		property="staffId"/>
+		<result		column="adminName"		property="adminName"/>
+		<result		column="adminPwd"		property="adminPwd"/>
+		<result		column="adminRemark"	property="adminRemark"/>
+		<result		column="adminCure"		property="adminCure"/>
+		<result		column="admin_Statu"	property="adminStatu"/>
+	</resultMap>
+	
+	<!-- 登录 -->
+	<select id="loginAdmin" statementType="CALLABLE" resultType="Map" parameterType="Map">
+		call LoginAdmin(
+			#{adminName,				mode=IN,		jdbcType=VARCHAR},
+			#{adminPwd,					mode=IN,		jdbcType=VARCHAR},
+			#{result,					mode=OUT,		jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	<!-- 管理员信息 -->
+	<select id="adminMessage" statementType="CALLABLE"  parameterType="Map" resultMap="adminResult">
+		SELECT Admin_ID,Staff_Type,Staff_Id,adminName,adminPwd,adminRemark,adminCure,admin_Statu FROM admin WHERE adminName= #{adminName} AND adminPwd= #{adminPwd} AND admin_Statu=0
+	</select>
+	<!-- 修改密码 -->
+	<select id="updatePwd" statementType="CALLABLE" parameterType="Map">
+		call updatePwd(
+			#{adminName,				mode=IN,		jdbcType=VARCHAR},
+			#{adminPwd,					mode=IN,		jdbcType=VARCHAR},
+			#{result,					mode=OUT,		jdbcType=INTEGER}
+		)
+	</select>
+
+</mapper>

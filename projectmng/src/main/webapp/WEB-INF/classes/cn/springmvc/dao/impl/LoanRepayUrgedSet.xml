@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="loanRepayUrgedSet">
+    <!-- 查询催收账单 -->  
+	<select id="selectLoanRepayUrgedSet"  parameterType="cn.springmvc.model.LoanRepayUrgedSetEntity" resultType="cn.springmvc.model.LoanRepayUrgedSetEntity" >
+	   select Content from  Loan_Repay_Urged_Set  
+    </select> 
+    <!-- 新增催收账单 -->  
+	<insert id="insertLoanRepayUrgedSet"  parameterType="cn.springmvc.model.LoanRepayUrgedSetEntity" >    
+		insert into Loan_Repay_Urged_Set (Content) values (#{content})     
+	</insert> 
+	<!-- 查询催收账单是否存在 -->  
+	<select id="selectLoanRepayUrgedSetsIsExist"  resultType="int" >
+	   select count(*) from  Loan_Repay_Urged_Set  
+    </select> 
+    <!-- 修改催收账单信息 -->  
+	<update id="updateLoanRepayUrgedSet"  parameterType="cn.springmvc.model.LoanRepayUrgedSetEntity">
+	   update  Loan_Repay_Urged_Set   set Content=#{content}
+    </update>   
+    <!-- 删除催收账单 -->  
+	<delete id="deleteLoanRepayUrgedSet"  parameterType="int">
+	   delete from  Loan_Repay_Urged_Set    
+    </delete>     
+</mapper>

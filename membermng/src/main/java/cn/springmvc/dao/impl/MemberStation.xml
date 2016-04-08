@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="memberStationLetter">   
+    <!-- 根据会员ID查询会员发件箱信息-->  
+	<select id="selectSendLetter"  parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="StationLetterMap.resultMemberStationLetter">
+	        select case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.keys})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
+            as membername, 
+			mi.Member_ID,mi.Member_Type ,mi.Logname,msl.Letter_ID,
+			msl.Title,msl.Read_Date
+			from Member_Station_Letter msl
+			left join member_info mi on mi.Member_ID = msl.Member_ID_Rec
+			left join personal_base_info pbi on mi.Personal_ID =  pbi.Personal_Id and mi.Member_Type=0
+			left join  company_info ci on mi.Company_ID =ci.Company_ID and mi.Member_Type=1
+	        where msl.Member_ID=#{map.memberID} and Delete_Flag_Send !=1
+    </select>   
+     <!-- 根据会员ID查询会员收件箱信息-->  
+	<select id="selectRecLetter"  parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="StationLetterMap.resultMemberStationLetter">
+	        select case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.keys})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
+            as membername, 
+			mi.Member_ID,mi.Member_Type ,mi.Logname,msl.Letter_ID,
+			msl.Title,msl.Read_Date
+			from Member_Station_Letter msl
+			left join member_info mi on mi.Member_ID = msl.Member_ID
+			left join personal_base_info pbi on mi.Personal_ID =  pbi.Personal_Id and mi.Member_Type=0
+			left join  company_info ci on mi.Company_ID =ci.Company_ID and mi.Member_Type=1
+            <where>
+	         msl.Member_ID_Rec=#{map.memberID} and Delete_Flag_Recieve !=1
+	          <if test="map.isRead != -1">  
+	             and  msl.Is_Read = #{map.isRead} 
+	          </if>
+	        </where>
+    </select> 
+     <!-- 根据会员ID查询会员发件箱信息详情-->  
+	<select id="selectSendLetterDetail"  parameterType="Map"   resultMap="StationLetterMap.resultMemberStationLetter">
+	        select case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{keys})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end 
+            as membername, 
+			mi.Member_ID,mi.Member_Type ,mi.Logname,msl.Detail,msl.Letter_ID,
+			msl.Title,msl.Read_Date
+			from Member_Station_Letter msl
+			left join member_info mi on mi.Member_ID = msl.Member_ID_Rec
+			left join personal_base_info pbi on mi.Personal_ID =  pbi.Personal_Id and mi.Member_Type=0
+			left join  company_info ci on mi.Company_ID =ci.Company_ID and mi.Member_Type=1
+	         where msl.Letter_ID = #{letterID}
+    </select>   
+     <!-- 根据站内信ID查询收件信息详情-->  
+	<select id="selectRecLetterDetail"  parameterType="Map"   resultMap="StationLetterMap.resultMemberStationLetter">
+	        select case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{keys})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end 
+            as membername, 
+			mi.Member_ID,mi.Member_Type ,mi.Logname,msl.Detail,msl.Letter_ID,
+			msl.Title,msl.Read_Date,msl.Detail
+			from Member_Station_Letter msl
+			left join member_info mi on mi.Member_ID = msl.Member_ID
+			left join personal_base_info pbi on mi.Personal_ID =  pbi.Personal_Id and mi.Member_Type=0
+			left join  company_info ci on mi.Company_ID =ci.Company_ID and mi.Member_Type=1
+            where msl.Letter_ID = #{letterID}
+    </select> 
+    <!--     发送方删除标识   -->
+    <update id="deleteSendStationLetter"  parameterType="java.util.List"  >
+      update Member_Station_Letter set Delete_Flag_Send = 1 
+      where  Letter_ID in
+       <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	         #{item}
+        </foreach> 
+    </update>
+    <!--     接收方删除标识   -->
+    <update id="deleteRecStationLetter"  parameterType="java.util.List"  >
+      update Member_Station_Letter set Delete_Flag_Recieve = 1 
+      where  Letter_ID in
+       <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	         #{item}
+        </foreach>  
+    </update>  
+     <!--     批量标记已读  -->
+    <update id="updateRecStationReadlist"  parameterType="java.util.List"  >
+      update Member_Station_Letter set Read_Date = now() ,Is_Read = 1
+      where  Letter_ID in
+       <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	         #{item}
+        </foreach> 
+    </update> 
+    <!--     批量标记未读 -->
+    <update id="updateRecStationNotReadlist"  parameterType="java.util.List"  >
+      update Member_Station_Letter set Read_Date = NULL ,Is_Read = 0
+      where  Letter_ID in
+      <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	         #{item}
+      </foreach> 
+    </update> 
+     <!--     查看  -->
+    <update id="updateRecStationRead"  parameterType="int"  >
+      update Member_Station_Letter set Read_Date = now() ,Is_Read = 1
+      where  Letter_ID = #{letterID} 
+    </update>  
+     <!--          添加站内信  -->
+    <insert id="addStationLetter" parameterType="cn.membermng.model.MemberStationLetterEntity">
+       insert into  Member_Station_Letter 
+       (Letter_ID,Member_ID,Member_ID_Rec,Pre_ID,Title,Detail)
+       values
+       (#{letterID},#{memberID},#{memberIDRec},#{preID},#{title},#{detail})
+    </insert>
+    <!--          根据用户名查询会员ID -->
+    <select id="selectMemberID"  parameterType="String"   resultType="Long">
+	  select ifnull(Member_ID,0) from member_info where Logname = #{logname}
+    </select>
+</mapper>   

@@ -1,0 +1,123 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace = "CreditorTransfer">  
+   <resultMap type = "cn.springmvc.model.CreditorTransferListEntity" id = "resultCreditorTransfer">
+        <id property = "ctaId"						column = "CTA_Id" />
+		<result property = "projectTitle"       	column = "Project_Title" />
+		<result property = "ProjectNo"    	        column = "Project_No" />
+		<result property = "transPrincipal"  	    column = "Trans_Principal" />
+		<result property = "surplusTime"  	        column = "Surplus_Time" />
+		<result property = "surplusTimeType" 	    column = "Surplus_Time_Type" />
+		<result property = "transDiscount"          column = "Trans_Discount" />
+		<result property = "ctaInvestRate" 			column = "Cta_Invest_Rate" />
+		<result property = "repalyways" 		    column = "repalyways" />
+		<result property = "transStatus" 			column = "transStatus" />
+		<result property = "applyId" 		        column = "Apply_Id" />
+		<result property = "transStatu" 		    column = "transStatu" />  
+		<result property = "endDate" 		        column = "End_Date" /> 
+		<result property = "levelMark" 	            column = "Level_Mark" /> 
+		<result property = "availableaAmount" 	    column = "availableaAmount" /> 
+		<result property = "rateAddRate" 		    column = "Rate_Add_Rate" /> 
+		<result property = "rewardRate" 		    column = "Reward_Rate" />
+		<result property = "rewardIcon" 		    column = "Reward_Icon" /> 
+		<result property = "investTotal" 		    column = "InvestTotal" /> 
+		<result property = "expectYearrate" 		column = "expectYearrate" /> 
+    </resultMap> 
+    <!-- 分页查询债权转让项目列表 -->  
+	<select id = "selectCreditorTransferList" parameterType = "product_p2p.kit.pageselect.PageEntity"  resultMap = "resultCreditorTransfer">
+	    select pbi.Project_Title,par.Project_No,cta.Surplus_Time,
+	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal,
+	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed) Trans_Discount,
+		cta.Surplus_Time_Type,cta.Cta_Invest_Rate,replayway.name1 as repalyways,
+		transStatu.name1  as transStatus,par.Apply_Id,cta.CTA_Id,cta.Statu as transStatu,cta.End_Date,
+		((par.Rate_Add_Rate + pbi.Year_Rate)*1000000/CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed)) as expectYearrate
+		from Creditor_Trans_App cta 
+		left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id 
+		left join Project_App_Record par  on par.Apply_Id = ir.Apply_Id
+		left join Project_Base_Info pbi   on par.Project_Base_ID=pbi.Project_Base_ID
+		left join ProjectBaseInfo pty     on par.Project_ID=pty.Project_ID  
+		left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
+		left join DICT transStatu on  transStatu.code1= cta.Statu  and transStatu.tcode = 'DICT_ZRZT' 
+           <where>  
+                 cta.Check_Statu = 1
+                 <!-- 项目编号或名称--> 
+	            <if test = "map.projectinfo != null">  
+	               and ( pbi.Project_Title   like '%${map.projectinfo}%' or par.Project_No  like '%${map.projectinfo}%' ) 
+	            </if> 
+                <!-- 项目状态 -->
+	            <if test = "map.investStatu !=  -1">  
+	                and  cta.Statu = #{map.investStatu} 
+	            </if> 
+	            <!-- 还款方式-->  
+	            <if test = "map.repayWay !=  -1">  
+	                and pbi.Repay_Way = #{map.repayWay}
+	            </if> 
+	            <!-- 借款类型-->  
+	            <if test = "map.projectType !=  -1">  
+	                and par.Project_Base_ID = #{map.projectType}
+	            </if> 
+	            <!-- 预期年化利率-->  
+	            <if test = "map.yearratemin !=  -1">  
+	                and ((par.Rate_Add_Rate + pbi.Year_Rate)*1000000/CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed)) > #{map.yearratemin}
+	            </if> 
+	            <!-- 预期年化利率-->  
+	            <if test = "map.yearratemax !=  -1">  
+	                and #{map.yearratemax} > ((par.Rate_Add_Rate + pbi.Year_Rate)*1000000/CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed))
+	            </if>     
+	            <!-- 借款期限  天标-->  
+	            <if test = "map.deadlineType  = 0  and map.deadlinemin != 0">  
+	                and cta.Surplus_Time > #{map.deadlinemin}  and cta.Surplus_Time_Type=0
+	            </if>
+	            <!-- 借款期限  天标-->  
+	            <if test = "map.deadlineType  = 0  and map.deadlinemax != 0">  
+	                and #{map.deadlinemin}>cta.Surplus_Time     and cta.Surplus_Time_Type=0
+	            </if> 
+	             <!-- 借款期限  月标-->  
+	            <if test = "map.deadlineType  = 1 and map.deadlinemin != 0">  
+	                and cta.Surplus_Time > #{map.deadlinemin}  and cta.Surplus_Time_Type=1
+	            </if> 
+	              <!-- 借款期限  月标-->  
+	            <if test = "map.deadlineType  = 1  and map.deadlinemax != 0">  
+	                and #{map.deadlinemin}>cta.Surplus_Time     and cta.Surplus_Time_Type=1
+	            </if> 
+	             <!-- 借款期限  年标-->  
+	            <if test = "map.deadlineType  = 2 and map.deadlinemin != 0">  
+	                and cta.Surplus_Time >= #{map.deadlinemin}  and cta.Surplus_Time_Type=2
+	            </if> 
+	              <!-- 借款期限  年标-->  
+	            <if test = "map.deadlineType  = 2  and map.deadlinemax != 0">  
+	                and #{map.deadlinemax}>= cta.Surplus_Time    and cta.Surplus_Time_Type=2
+	            </if>  
+	         </where>
+    </select>
+      <!-- 查询债权转让项目详情 -->  
+	<select id = "selectCreditorTransferDetail" parameterType = "Map"  resultMap = "resultCreditorTransfer"> 
+	select pbi.Project_Title,par.Project_No,cta.Trans_Principal,cta.Surplus_Time,
+	cta.Surplus_Time_Type,cta.Trans_Discount,cta.Cta_Invest_Rate,par.Reward_Rate,par.Rate_Add_Rate,par.Reward_Icon,
+	replayway.name1 as repalyways,par.Member_ID,mi.Credit_Integral,cta.End_Date,
+	CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal,
+	CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed) Trans_Discount,
+	(select Level_Mark from Credit_Level where  mi.Credit_Integral between Credit_Score_Min and Credit_Score_Max and statu =1) as  Level_Mark,
+	(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed)-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Principal),#{map.sKey})) as signed)),0) 
+	from Creditor_Trans  where CTA_Id=cta.CTA_Id   )) availableaAmount ,
+	((par.Rate_Add_Rate + pbi.Year_Rate)*1000000/CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed)) as expectYearrate
+	from Creditor_Trans_App cta 
+	left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id 
+	left join Project_App_Record par  on par.Apply_Id = ir.Apply_Id
+	left join Project_Base_Info pbi   on par.Project_Base_ID=pbi.Project_Base_ID
+	left join ProjectBaseInfo pty     on par.Project_ID=pty.Project_ID  
+	left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS' 
+	left join Member_Info mi on mi.Member_ID = par.Member_ID 
+	where  cta.CTA_Id= #{ctaId}
+	</select>
+	<!-- 查询债权转让剩余可投金额-已投资总额-转让本金-->  
+	<select id = "selectCreditorAvailableaAmount" parameterType = "Map"  resultMap = "resultCreditorTransfer"> 
+	select  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) as Trans_Principal,
+	(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Principal),#{map.sKey})) as signed)),0) 
+	from Creditor_Trans  where CTA_Id=cta.CTA_Id )  as  InvestTotal,
+	(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed)-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Principal),#{map.sKey})) as signed)),0) 
+	from Creditor_Trans  where CTA_Id=cta.CTA_Id   )) availableaAmount 
+	from Creditor_Trans_App cta  
+	where  cta.CTA_Id= #{ctaId}
+	</select> 
+</mapper>   

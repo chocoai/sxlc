@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="ProjectAfterLoanAttach">
+    <resultMap type="cn.springmvc.model.ProjectAfterLoanAttachmentEntity" id="resultProjectAfterLoanAttach">
+		<result column="Info_Id" property="apID" />
+		<result column="Attach_Title" property="batch" />
+		<result column="Attach_Url" property="indexs" /> 
+		<association property="projectAfterLoanInfoEntity" column="ID" 	resultMap="resultProjectAfterLoanInfo"/>
+    </resultMap>  
+    <resultMap type="cn.springmvc.model.ProjectAfterLoanInfoEntity" id="resultProjectAfterLoanInfo">
+        <id column="Info_Id" property="id" />
+		<result column="Apply_Id" property="apID" />
+		<result column="admin_ID" property="batch" />
+		<result column="Record_Date" property="indexs" /> 
+		<result column="Abstract" property="indexs" /> 
+		<result column="Abstract" property="indexs" />
+    </resultMap>
+	<!-- 查询贷后监管信息-->  
+	<select id="selectProjectAfterLoanAttach"  parameterType="int"  resultMap="resultProjectAfterLoanAttach" >
+	   select pali.Abstract,pali.Record_Date,pali.Detail,pala.Attach_Title,pala.Attach_Url,pala.Info_Id
+	   from  Project_After_Loan_Attachment  pala 
+	   LEFT JOIN Project_After_Loan_Info  pali   on pala.Info_Id=pali.Info_Id 
+	   where   pali.Apply_Id = #{projectID}
+    </select>  
+</mapper>

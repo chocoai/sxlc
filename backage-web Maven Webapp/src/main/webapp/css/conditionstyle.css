@@ -1,0 +1,102 @@
+/* 条件查询样式 */
+.i-mt{}
+.search{margin: 2px 0 0 0;}
+.search_title{color: #555;}
+.panel-success{
+	margin-bottom: 0;
+}
+.panel-heading{padding: 8px 10px;}
+.panel-body{padding: 8px 10px;}
+
+
+.search>.panel,
+.search .panel-heading,
+.data_display>.panel,
+.data_display .panel-heading{
+	border-radius:0;
+	/* background: #D9DEE4; */
+	background: none;
+}
+.search .panel-success,
+.data_display .panel-success,
+.search .panel-success .panel-heading,
+.data_display .panel-success .panel-heading{
+	/* border-color:#222; */
+	border: none;
+}
+.search .panel-heading,.data_display .panel-heading{
+	/* background-color:#eee; */
+	/* color:#fff; */
+	font-size:13px;
+	line-height:13px;
+}
+.panel-heading:after{
+	content:"";
+	display:table;
+	clear:both;
+}
+.search ul,.data_display ul{
+	margin-bottom:0;
+}
+.search ul>li,.data_display ul>li{
+	cursor:pointer;
+}
+.search .panel-body{
+	display:none;
+}
+.state{
+	/* color:#fff; */
+}
+
+
+.display th,
+.display td{
+	text-align:center;
+	white-space: nowrap;
+}
+.dataTables_wrapper .dataTables_scroll{
+	margin-bottom:10px;
+}
+
+/* 条件输入 */
+.con-item{margin-bottom:5px;}
+
+.con-item span{margin-right: 5px;}
+.con-item input{
+	padding: 2px;
+	margin-right: 10px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	border: 1px solid #ccc;
+}
+.con-item select{}
+/* 设置宽度组 */
+.con-item input.ipt-w1{}
+.con-item select.sel-w1{}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

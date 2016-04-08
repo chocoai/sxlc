@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="DeptInfoDaoImpl">     
+	
+	<!-- 查询结果封装 -->
+	<resultMap type="cn.springmvc.model.DeptInfo" id="deptResult">
+		<id column="Dept_Id" property="id" />
+		<result column="Dept_Name" property="deptName"/>
+		<result column="Dept_No" property="deptNo"/>
+		<result column="Principal_Name" property="principalName"/>
+		<result column="Principal_Phone" property="principalPhone"/>
+		<result column="PreDept_Id" property="preDeptId"/>
+		<result column="Dept_Remark" property="deptRemark"/>
+		<result column="Add_Date" property="addDate"/>
+		<result column="Dept_Level" property="deptLevel"/>
+		<result column="Dept_Statu" property="deptStatu"/>
+	</resultMap>	
+	
+	<!-- 保存  -->
+	<select id="saveDept" statementType="CALLABLE" parameterType="Map">
+		call saveDept(
+		#{id,				mode=IN,		jdbcType=BIGINT},
+		#{deptName,			mode=IN,		jdbcType=VARCHAR},
+		#{deptNo,			mode=IN,		jdbcType=VARCHAR},
+		#{principalName,	mode=IN,		jdbcType=VARCHAR},
+		#{principalPhone,	mode=IN,		jdbcType=VARCHAR},
+		#{preDeptId,		mode=IN,		jdbcType=BIGINT},
+		#{deptRemark,		mode=IN,		jdbcType=VARCHAR},
+		#{result,			mode=OUT,		jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 获取列表 -->
+	<select id="getListByParam" parameterType="Map" resultMap="deptResult">
+		select * from dept_info
+		<where>
+			<if test="deptNo != null">
+				Dept_No = #{deptNo}
+			</if>
+			<if test="deptName != null">
+				Dept_Name = #{deptName}
+			</if>
+			<if test="principalName != null">
+				Principal_Name = #{principalName}
+			</if>
+			<if test="principalPhone != null">
+				Principal_Phone = #{principalPhone}
+			</if>
+			<if test="statu != null">
+				Dept_Statu = #{statu}
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- 修改 -->
+	<select id="editDept" statementType="CALLABLE" parameterType="Map">
+		call editDept(
+			#{id,				mode=IN,		jdbcType=BIGINT},
+			#{deptName,			mode=IN,		jdbcType=VARCHAR},
+			#{principalName,	mode=IN,		jdbcType=VARCHAR},
+			#{principalPhone,	mode=IN,		jdbcType=VARCHAR},
+			#{deptRemark,		mode=IN,		jdbcType=VARCHAR},
+			#{result,			mode=OUT,		jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 停用启用 -->
+	<select id="ofDept" statementType="CALLABLE" parameterType="Map">
+		call ofDept(
+			#{id,				mode=IN,		jdbcType=BIGINT},
+			#{deptStatu,		mode=IN,		jdbcType=INTEGER},
+			#{result,			mode=OUT,		jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 删除 -->
+	<select id="delDept" statementType="CALLABLE" parameterType="Map" resultType="Integer">
+		call delDept(
+			#{id,				mode=IN,		jdbcType=BIGINT},
+			#{result,			mode=OUT,		jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 获取某个部门详细信息 -->
+	<select id="deptInfo" parameterType="Map"	resultMap="deptResult">
+		select * from dept_info where dept_id = #{deptId}
+	</select>
+	
+</mapper>

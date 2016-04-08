@@ -1,0 +1,242 @@
+/* 陈小花 */
+body{
+	min-width:320px;
+}
+.longinTop{
+	color:#2c2c2c;
+}
+.longinTopFont,
+.loginTopR{
+	display:inline-block;
+	
+}
+.loginTopR{
+	margin-top:23px;
+}
+.longinTop,
+.longinBottom{
+	background-color:#fff;
+}
+.loginTopContent{
+	height: 100%;
+    overflow: hidden;
+}
+.longinTopFont span{
+	font-size:30px;
+	color:#444;
+	font-weight:bold;
+	border-right: 1px solid #D8D8D8;
+    padding-right: 7%;
+}
+.longinTopStyle{
+	display:inline-block;
+}
+.longinTopFont.longinTopImage{
+	padding-left: 100px;
+    line-height: 8.5em;
+    width:40%;
+    margin-left:7%;
+}
+.longinTopStyle.longinTopImage{
+	padding-left:78px;
+}
+.productLogo{
+	background:url(../resources/img/productLogo.jpg) no-repeat left center;
+}
+.eXingLogo{
+	background:url(../resources/img/eXingLogo.jpg) no-repeat left center;
+}
+.longinTopStyle h2{
+	font-size:26px;
+	font-weight: 600;
+    font-family: "microsoft Yahei";
+    color:#CC3032;
+    margin-top:5px;
+}
+.longinTopStyle span{
+	font-size:10px;
+	color:#bcbcbc;
+}
+.longinContent{
+	height:600px;
+	background:#1e70c9;
+	position:relative;
+}
+.longinBottom {
+	height:100px;
+	text-align:center;
+	color:#222;
+}
+.longinBottom p {
+	color:#535353;
+}
+.longinBottom > p {
+	line-height:35px;
+	margin:0;
+}
+.longinBottom > p:first-child{
+	padding-top:15px;
+}
+.administratorLoginCunt{
+	background:#fff;
+	width:365px;
+	position:absolute;
+	z-index:2;
+	right:12%;
+	top:100px;
+	height:410px;
+	text-align:center;
+}
+.loginW{
+	width:287px;
+	margin:0 auto;
+}
+.administratorLogin{
+	margin-top:25px;
+	text-align:left;
+	font-size:18px;
+	color:#0670E5;
+	padding:8px 0;
+	border-bottom:1px solid #D5D5D5;
+}
+.admUser , .admPasword , .admPhoneCode {
+	border:1px solid #DADADA;
+}
+.admUser,
+.admPasword,
+.admPhoneCode{
+	width:100%;
+	margin-top:30px;
+}
+i.loginIcon{
+	display: inline-block;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 5px;
+    left: 5px;
+}
+.user{
+	background:url(../resources/img/loginUser.jpg) no-repeat center center;
+}
+.pwd{
+	background:url(../resources/img/loginPwd.jpg) no-repeat center center;
+}
+.phone{
+	background:url(../resources/img/loginPhone.jpg) no-repeat center center;
+	margin-left:2px;
+} 
+.admUser input, 
+.admPasword input 
+{
+	height: 40px;
+    width: 261px;
+    outline: none;
+    border: none;
+    font-size: 14px;
+    line-height: 40px;
+    color:#707070;
+}
+.admPhoneCode input 
+{
+	height:40px;
+	width:159px;
+	outline:none;
+	border:none;
+}
+.admPhoneCode span{
+	color:#4195F2;
+	float:right;
+	padding-left:5px;
+	background:#ECECEC;
+	padding:11px 15px;
+	width:100px;
+	cursor:pointer;
+}
+.admForgetPassword{
+	text-align:right;
+	margin: 10px 0 10px auto;
+}
+.admForgetPassword a {
+	color:#ff7d40;
+	text-decoration:none;
+}
+.admRest{
+	width:100%;
+	text-align:center;
+}
+.admRest button{
+	font-size:16px;
+	color:#fff;
+	background:#b4b4b4;
+	width:130px;
+	padding:8px 0;
+	display:inline-block;
+	border-radius:3px;
+}
+.admRestT{
+	margin-left:23px;
+}
+input[type=text]:focus, input[type=password]:focus{
+    border: none;
+}
+.admUser:hover ,
+.admPasword:hover ,
+.admPhoneCode:hover
+{
+	border:1px solid #0079FF ;
+}
+ @media(max-width:1030px){
+	.longinTopFont.longinTopImage {
+   		margin-left: 1%;
+    	background-size: 48px;
+    	padding-left: 50px;
+    	line-height: 4.5em;
+    	width: 100%;
+	}
+	.longinTopFont span {
+    	font-size: 22px;
+	}
+	.loginTopR {
+    	margin-left: 1%;
+    	margin-bottom: 11px;
+    	margin-top: 0px;
+	}
+	.longinTopFont, .loginTopR {
+    	display: block;
+    	float: none;
+	}
+	.longinTopStyle.longinTopImage {
+    	padding-left: 49px;
+    	background-size: 20%;
+    }
+    .longinTopStyle h2 {
+	    font-size: 15px;
+	    margin-top: 4px;
+	    margin-bottom: 3px;
+	}
+	.longinContent {
+    	height: 550px;
+    }
+    .administratorLoginCunt {
+    	top: 75px;
+    }
+	.longinContent .administratorLoginCunt{
+		background:#fff;
+		width:360px;
+		position:relative;
+		z-index:0;
+		right:inherit;
+		height: auto;
+		padding: 20px;
+		margin: 0 auto;
+	}
+	.longinBottom > p:last-child{
+		padding-bottom:10px;
+	}
+@media(min-width:1150px){
+	.longinTopFont.longinTopImage {
+    	width: 37%;
+    	margin-left:10%;
+	}
+}

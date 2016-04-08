@@ -1,0 +1,396 @@
+$(function() {
+	
+	$('#staffListTb').DataTable({
+		ajax: {  
+			"url": appPath+"/role/getAllStaff.do",   
+			"dataSrc": "results",   
+			"type": "POST",
+			"data": function ( d ) {  
+				var personalName = $("#personalName").val();
+				var personalPhone = $("#personalPhone").val();
+				var personalIDCard = $("#personalIDCard").val();
+				var postId = $("#postId").val();
+				d.personalName = personalName;
+				d.personalPhone = personalPhone;
+				d.personalIDCard = personalIDCard;
+				d.postId = postId;
+			}  
+		},
+		columns: [  
+		          {title:'<input type="checkbox" class="table-checkbox"  value="1" />',
+		        	  "mRender": function (data, type, full) {
+		        		  sReturn = '<input type="checkbox" value="1" />';
+		        		  return sReturn;
+		        	  }
+//		          "sClass": "table-checkbox"
+		          },
+		          { title:"pid","data": "baseInfo.id"},  
+		          { title:"sid","data": "id"},  
+		          { title:"姓名","data": "baseInfo.personalName"},  
+		          { title:"性别","data": "baseInfo.sexId" , 
+		        	  "mRender": function (data, type, full) {
+		        		  if(data==0){
+		        			  return "男";
+		        		  }else if(data ==1){
+		        			  return "女";
+		        		  }else{
+		        			  return data;
+		        		  }
+		        	  } 
+		          },  
+		          { title:"身份证号","data": "baseInfo.personalIDCard" },  
+		          { title:"出生日期","data": "baseInfo.personalIDCard" , 
+		        	  "mRender": function (data, type, full) {
+		        		  return  getBirthday(data);
+		        	  } 
+		          },  
+		          { title:"民族","data": "baseInfo.nationId", 
+		        	  "mRender": function (data, type, full) {
+		        		  $("#nationId").val(data);
+		        		  return $("#nationId").find("option:selected").text();
+		        	  } 
+		          },  
+		          { title:"职务","data": "postName"},  
+		          { title:"联系电话","data": "baseInfo.personalPhone" },  
+		          { title:"QQ","data": "baseInfo.qq" },  
+		          { title:"Email","data": "baseInfo.personalEmail" },  
+		          { title:"户籍","data": "baseInfo.homeTown" },  
+		          { title:"现居住地","data": "baseInfo.houseAddress" },  
+		          { title:"学历","data": "baseInfo.education" , 
+		        	  "mRender": function (data, type, full) {
+		        		  $("#education").val(data);
+		        		  return $("#education").find("option:selected").text();
+		        	  } 
+		          },  
+		          { title:"毕业时间","data": "baseInfo.graduatedDATE" , 
+		        	  "mRender": function (data, type, full) {
+		        		  return getDateByStr(data);
+
+		        	  } 
+		          },  
+		          { title:"紧急联系人姓名","data": "emerName" },  
+		          { title:"紧急联系人电话","data": "emerPhone" },  
+		          { title:"入职时间","data": "startDate" , 
+		        	  "mRender": function (data, type, full) {
+		        		  var date = new Date(data);
+		        		  return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+		        	  } 
+		          }
+
+		          ],
+		          pagingType: "simple_numbers",//设置分页控件的模式  
+		          processing: true, //打开数据加载时的等待效果  
+		          serverSide: true,//打开后台分页  
+		          info:false,
+		          aoColumnDefs : [
+		                          {"bVisible": false, "aTargets": [1,2]}, //控制列的隐藏显示
+		                          {
+		                        	  orderable : false,
+		                        	  aTargets : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+		                        	               13, 14, 15,16,17 ]
+		                          } // 制定列不参与排序
+		                          ],
+		                          rowCallback:function(row,data){//添加单击事件，改变行的样式      
+		                          }
+	 
+	});
+	
+	
+	 $('#staffListTb tbody').on( 'click', 'tr', function () {
+	        $(this).toggleClass('selected');
+	  });
+	 
+	 /**
+	  * 查询按钮
+	  */
+	 $("#queryBtn").on("click",function(){
+		$('#staffListTb').DataTable().ajax.reload();
+		
+	 });
+	 
+	 
+//	单击行，选中复选框 
+	   $("#staffListTb tr").slice(1).each(function(g){     
+		alert("1");     
+		var p=this; 
+		    $(this).children().slice(1).click(function(){ 
+			$($(p).children()[0]).children().each(function(){      
+			 if(this.type=="checkbox"){  
+				if(!this.checked){
+					this.checked=true; 
+		       }else{         
+					this.checked=false;       
+			 } 
+	      } 
+	     }); 
+	    }); 
+	   }); 
+	
+	
+	
+	
+	/**
+	 * 添加按钮
+	 */
+	$(".obtn-emp-add").on("click touchstart",function(){
+		document.getElementById("dataForm").reset();
+		
+		validform5(".layui-layer-btn0","dataForm",false,3);
+		
+		layer.open({
+		    type: 1,
+		    area: ['750px', '500px'], //高宽
+		    title: "添加员工",
+		    content: $(".emp-add"),//DOM或内容
+		    btn:['确定', '取消']
+			  ,yes: function(index, layero){ //或者使用btn1
+//				  $.post(appPath+"/role/addStaff.do",$("#dataForm").serialize(),function(data){
+//					  layer.alert("操作成功！",{icon:1});
+//				  });
+				  $("#dataForm").submit();
+			  },cancel: function(index){//或者使用btn2（concel）
+			  	//取消的回调
+			  }
+		});
+	});
+	
+	//选择职务按钮
+	$("#deptSelect").on("click",function(){
+		
+		$('#deptTbList').DataTable(
+				{
+					autoWidth : false,
+					scrollY : 500,
+					pagingType: "simple_numbers",//设置分页控件的模式  
+					searching : false,
+					bLengthChange: false,
+					colReorder : false,
+					scrollX : true,
+					sScrollX : "100%",
+					sScrollXInner : "100%",
+					bScrollCollapse : true,  
+					processing: true, //打开数据加载时的等待效果  
+			        serverSide: true,//打开后台分页  
+			        ajax: {  
+			            "url": "",   
+			            "dataSrc": "results",   
+			            "data": function ( d ) {  
+//			                var level1 = $('#level1').val();  
+//			                //添加额外的参数传给服务器  
+//			                d.extra_search = level1;  
+			            }  
+			        },
+			        columns: [  
+			                  {title:'<input type="checkbox" class="table-checkbox"  value="1" />',
+			                	  "mRender": function (data, type, full) {
+			                		  sReturn = '<input type="checkbox" value="1" />';
+			                		  return sReturn;
+			                	  }
+//			                	  "sClass": "table-checkbox"
+			                  },
+			                  { title:"部门","data": "baseInfo.id"},  
+			                  { title:"职位","data": "id"}  
+			        ],
+			        rowCallback:function(row,data){//添加单击事件，改变行的样式      
+//			        	if($.inArray(data.DT_RowId,selected)!==-1){
+//			        		$(row).addClass('selected'); 
+//			        	}
+			        },
+			        oTableTools:{"sRowSelect":"multi"}
+		 
+		});
+		
+		 var table = $('#deptTbList').DataTable();
+		
+		 $('#deptTbList tbody').on( 'click', 'tr', function () {
+		        $(this).toggleClass('selected');
+		  });
+		
+		
+		layer.open({
+			type: 1,
+			area: ['500px', '300px'], //高宽
+			title: "职务列表",
+			content: $(".dept-select"),//DOM或内容
+			btn:['添加', '关闭']
+		,yes: function(index, layero){ //或者使用btn1
+			
+		},cancel: function(index){//或者使用btn2（concel）
+			//取消的回调
+		}
+		});
+	});
+	
+	
+	/**
+	 * 修改按钮
+	 */
+	$(".obtn-emp-mod").on("click touchstart",function(){
+		//获得选取的对象
+		document.getElementById("dataForm").reset();
+		validform5(".layui-layer-btn0","dataForm",true,3);
+		var data = $('#staffListTb').DataTable().rows('.selected').data(); 
+		if(data.length<1){
+			layer.alert("请选择要修改的员工信息！",{icon:0});
+			return;
+		}
+		$(".emp-add #personalName").val(data[0].baseInfo.personalName);
+		$(".emp-add #personalIDCard").val(data[0].baseInfo.personalIDCard);
+		$(".emp-add #birthday").val(getBirthday(data[0].baseInfo.personalIDCard));
+		$(".emp-add #nationId").val(data[0].baseInfo.nationId);
+		$(".emp-add #personalPhone").val(data[0].baseInfo.personalPhone);
+		$(".emp-add #qq").val(data[0].baseInfo.qq);
+		$(".emp-add #personalEmail").val(data[0].baseInfo.personalEmail);
+		$(".emp-add #homeTown").val(data[0].baseInfo.homeTown);
+		$(".emp-add #houseAddress").val(data[0].baseInfo.houseAddress);
+		$(".emp-add #education").val(data[0].baseInfo.education);
+		$(".emp-add #graduatedDate").val( getDateByStr(data[0].baseInfo.graduatedDATE));
+		$(".emp-add #emerName").val(data[0].emerName);
+		$(".emp-add #emerPhone").val(data[0].emerPhone);
+		$(".emp-add #postName").val(data[0].postName);
+		$(".emp-add #staffId").val(data[0].id);
+		$(".emp-add #personalId").val(data[0].baseInfo.id);
+		
+		
+		//之后
+		layer.open({
+		    type: 1,
+		    area: ['700px', '420px'], //高宽
+		    title: "修改职务",
+		    content: $(".emp-add"),//DOM或内容
+		    btn:['确定', '取消']
+			  ,yes: function(index, layero){ //或者使用btn1
+				  $.ajax( {  
+					  url:appPath+"/role/editStaff.do",
+					  data: $("#dataForm").serialize(),  
+					  type:'post',  
+					  cache:false,  
+					  dataType:'json',  
+					  success:function(data) {  
+						  if(data ==0){  
+							  layer.alert("修改成功!",{icon:1});  
+							  $(".layui-layer-btn1").click();
+							  var table = $('#staffListTb').DataTable();
+							  table.ajax.reload();
+				         }else if(data==1){  
+				        	 layer.alert("修改失败!",{icon:2});  
+				         }  
+				      },  
+				      error : function() {  
+				           layer.alert("服务器异常!",{icon:2});  
+				      }  
+				 });
+				  
+			  },cancel: function(index){//或者使用btn2（concel）
+			  	//取消的回调
+			  }
+		});
+	});
+	
+	/**
+	 * 删除按钮
+	 */
+	$(".obtn-emp-del").on("click touchstart",function(){
+		document.getElementById("dataForm").reset();
+		var data = $('#staffListTb').DataTable().rows('.selected').data(); 
+		if(data.length<1){
+			layer.alert("请选择要删除的员工！",{icon:0});
+			return;
+		}
+		//删除某个职务，当有员工拥有改职务时，不能进行删除
+		layer.confirm('确定删除该员工？', {
+		  btn: ['确定', '取消']
+		}, function(index, layero){
+			$.ajax( {  
+				      url:appPath+"/role/delStaff.do",
+				      data:{  
+				               "id" :   data[0].id
+				      	},  
+				     type:'post',  
+				     cache:false,  
+				     dataType:'json',  
+				     success:function(data) {  
+				         if(data ==0){  
+				        	 layer.alert("删除成功!",{icon:1});
+				        	 var table = $('#staffListTb').DataTable();
+							 table.ajax.reload();
+				         }else if(data ==1){  
+				        	 layer.alert("删除失败!",{icon:2});  
+				         }  
+				      },  
+				      error : function() {  
+				           layer.alert("服务器异常!",{icon:2});  
+				      }  
+				 });
+			
+			//执行完关闭
+		  	layer.close(index);
+		}, function(index){
+		  //按钮【按钮二】的回调
+		});
+	});
+	
+	/**
+	 * 根据身份证抓取出生日期
+	 */
+	$(".idCard").on("change",function(){
+		var idCard = $(this).val();
+		$("#birthday").val(getBirthday(idCard));
+		$("#birthday").attr("disabled",true);
+		
+	});
+
+	
+	
+});
+	/**
+	 * 根据身份证抓取出生日期 
+	 * @param idCard 
+	 */
+	function getBirthday(idCard){
+		var birthday = "";  
+		if(idCard != null && idCard != ""){  
+			if(idCard.length == 15){  
+				birthday = "19"+idCard.substr(6,6);  
+			} else if(idCard.length == 18){  
+				birthday = idCard.substr(6,8);  
+			}  
+			birthday = birthday.replace(/(.{4})(.{2})/,"$1-$2-");  
+		}
+		return birthday;
+	}
+
+	function getDateByStr(data){
+		  var date = new Date(data);
+	      return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+	}
+	
+
+
+/**
+ * 添加员工 
+ */
+function addStaff(){
+		$.ajax( {  
+			url:appPath+"/role/addStaff.do",
+			data:$("#dataForm").serialize(),
+			type:'post',  
+			cache:false,  
+			dataType:'json',  
+			success:function(data) { 
+				if(data==0){
+					layer.alert("添加成功",{icon:1});
+					$(".layui-layer-btn1").click();
+					 var table = $('#staffListTb').DataTable();
+					 table.ajax.reload();
+				}else if(data==1){
+					layer.alert("服务器异常",{icon:2});  
+				}else if(data==-1){
+					layer.alert("身份证已存在",{icon:2});  
+				}
+			},  
+			error : function() {  
+				layer.alert("服务器异常",{icon:2});  
+			}  
+		});
+}

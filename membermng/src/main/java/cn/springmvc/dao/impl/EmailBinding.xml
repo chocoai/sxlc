@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="emailBinding">  
+    <!-- 查询原有邮箱是否输入正确 -->  
+	<select id="checkEmail" parameterType="Map"  resultType="int">
+	   select count(pbi.Personal_Email)
+	   from  Personal_Base_Info  pbi  
+	   where   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{keys})) using utf8)=#{personalEmail}
+	   and  Personal_ID=#{personalID}
+    </select>  
+    <!-- 查询邮箱是否已存在 -->  
+	<select id="selectEmailIsExist" parameterType="Map"  resultType="int">
+	   select count(pbi.Personal_Email)
+	   from  Personal_Base_Info  pbi  
+	   where   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{keys})) using utf8)=#{personalEmail}
+    </select> 
+    <!-- 修改个人会员邮箱-->  
+	<update id="updatepersonEmail" parameterType="Map" >
+         UPDATE Personal_Base_Info set  Personal_Email =HEX(AES_ENCRYPT(#{personalEmail},#{keys})) 
+         where Personal_ID=#{personalID}
+    </update>     
+    <!-- 修改企业会员邮箱-->  
+	<update id="updatecompanyEmail" parameterType="Map" >
+         UPDATE Personal_Base_Info set  Personal_Email =HEX(AES_ENCRYPT(#{personalEmail},#{keys})) 
+         where Personal_ID=(select Legal_ID from Company_Info where Company_ID=#{personalID} limit 1) 
+    </update>         
+</mapper>   

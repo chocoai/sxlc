@@ -1,0 +1,67 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace = "investJuge">  
+   <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultListProjectAppRecord">
+        <id property = "ID"						column = "id" />
+		<result property = "memberID"       	column = "Member_ID" />
+		<result property = "projectType"    	column = "Project_Type" />
+		<result property = "projectBaseID"  	column = "Project_Base_ID" />
+		<result property = "repayGuarantee" 	column = "Repay_Guarantee" />
+		<result property = "guarantyDescribe"   column = "Guaranty_Describe" />
+		<result property = "minStart" 			column = "MinStart" />
+		<result property = "increaseRange" 		column = "Increase_Range" />
+		<result property = "investMax" 			column = "Invest_Max" />
+		<result property = "checkStatu" 		column = "Check_Statu" />
+		<result property = "publishStatu" 		column = "Publish_Statu" />  
+		<result property = "investStatu" 		column = "Invest_Statu" />
+		<result property = "isDirect" 			column = "Is_Direct" />
+		<result property = "directPwd"		    column = "Direct_Pwd" />  
+        <result property = "assetManagerID" 	column = "Asset_Manager_ID" />
+		<result property = "guaranteeID" 		column = "Guarantee_ID" />
+		<result property = "rateAddRate" 		column = "Rate_Add_Rate" /> 
+		<result property = "rewardRate" 		column = "Reward_Rate" />
+		<result property = "rewardIcon" 		column = "Reward_Icon" /> 
+		<result property = "investCountMax" 	column = "Invest_Count_Max" />
+		<result property = "projectNo" 			column = "Project_No" /> 
+      	<result property = "merBillNo" 			column = "Mer_BillNo" /> 
+        <result property = "investRate" 		column = "Invest_Rate" /> 
+      <association property="projectBaseInfoentity" column="id"> 
+	        <id property = "ID" 				 column = "id" />
+			<result property = "projectTitle"    column = "Project_Title" /> 
+			<result property = "uses"            column = "Uses" />
+			<result property = "repaySource"     column = "Repay_Source" />
+			<result property = "amount" 		 column = "Amount" />
+			<result property = "projectDescript" column = "Project_Descript" />
+			<result property = "deadline" 		 column = "Deadline" />
+			<result property = "deadlineType"    column = "Deadline_Type" />
+			<result property = "repayWay"        column = "Repay_Way" />
+			<result property = "yearRate"        column = "Year_Rate" /> 
+			<result property = "startDate"        column = "Start_Date" /> 
+			<result property = "endDate"        column = "End_Date" /> 
+		</association> 
+    </resultMap> 
+     <!--该会员投资该项目的总金额 -->
+    <select id="selectInvestAmountByMemID"  parameterType="map" resultType="Long" >
+	   select   CAST((AES_DECRYPT(UNHEX(Invest_Amount),#{sKey})) as signed)  as investTotal  
+	   from Invest_Record_Tmp 
+	   where Project_Id=#{applyId} and Member_ID =#{memberID} and Statu !=1
+	</select>
+	 <!--该项目的总的已投资笔数-->
+    <select id="selectInvestCountByApplyID"  parameterType="long" resultType="Long" >
+	   select count(Invest_Id) as countID  
+	   from Invest_Record where Apply_Id=#{applyId} 
+	</select>
+	<!--查询红包的信息-->
+    <select id="selectGiftInfobyID"  parameterType="map" resultType="map" >
+	    select mrk.Gift_Amount as giftamount,ifnull(mru.Gift_Amount,0)  as useGiftAmount,
+	    (ifnull(mrk.Gift_Amount,0)-ifnull(mru.Gift_Amount,0)) as avalibleGiftAmount
+		from Member_Redpackets mrk
+		left join  Member_Redpackets_UseRecord mru on mru.Member_RP_ID = mrk.Member_RP_ID and mru.Statu !=-1 
+		where mru.Member_RP_ID=#{redID} and Member_ID =#{memberID}
+		and End_Date>now() and mrk.Statu !=2;
+	</select>
+   <!-- 查询红包使用比例 -->
+   <select id="selectRedpacketsRateMax" resultType="int">
+     select ifnull(Redpackets_RateMax,0) from System_Set
+   </select>
+</mapper>   

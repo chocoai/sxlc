@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OverdueXML" >
+  <resultMap id="Overdue" type="cn.springmvc.model.OverdueEntity" >
+    <result column="ID" property="id"/>
+    <result column="Overdue_Min" property="overdueMin"/>
+    <result column="Overdue_Max" property="overdueMax"/>
+    <result column="Price" property="price"/>
+    <result column="Statu" property="statu"/>
+  </resultMap>
+  <sql id="Overdue_Column_List" >
+    ID,Overdue_Min,Overdue_Max,Price,Statu	
+  </sql>
+  
+  <!--添加逾期程度 -->
+  <insert id="insertOverdueLimit" parameterType="Map" >
+	  insert into Overdue_Set(Overdue_Limit) 
+	  values (#{overdueLimit})
+  </insert>
+  <!-- 查询逾期程度 -->
+  <select id="findOverdueLimit" resultType="Integer">
+  	select Overdue_Limit from Overdue_Set limit 1
+  </select>
+  <!-- 修改逾期程度 -->
+  <update id="updateOverdueLimit" parameterType="Map">
+  	update Overdue_Set <set>
+  		Overdue_Limit=#{overdueLimit}
+  	</set>
+  </update>
+  
+  <!-- 查询所有的逾期设置 -->
+  <select id="selectOverdue" resultMap="Overdue" parameterType="cn.springmvc.model.OverdueEntity" >
+    select <include refid="Overdue_Column_List"></include> from Overdue_Fees order by Overdue_Min asc
+  </select>
+  <!-- 查询目前最大的逾期天数设置 -->
+  <select id="findMaxOverdue" resultType="Int">
+  	select Overdue_Max from Overdue_Fees order by Overdue_Max desc limit 1
+  </select>
+  <!--添加逾期设置 -->
+  <insert id="insertOverdue" parameterType="cn.springmvc.model.OverdueEntity" >
+	  insert into Overdue_Fees(ID,Overdue_Min,Overdue_Max,Price) 
+	  values (#{id},#{overdueMin},#{overdueMax},#{price})
+  </insert>
+  <!--删除逾期设置 会将大于它当前的天数的都删除 -->
+  <delete id="deleteOverdue" parameterType="Map">
+  	delete FROM Overdue_Fees where Overdue_Min>=#{overdueMin}
+  </delete>
+</mapper>

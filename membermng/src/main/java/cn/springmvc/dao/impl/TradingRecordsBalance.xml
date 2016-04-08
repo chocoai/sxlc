@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="tradingRecordsBalance">  
+    <resultMap type="cn.membermng.model.OwnTradingRecordsBalanceEntity" id="resultTradingRecordsBalance">
+        <id column="Trade_ID"            property="tradeID" />
+		<result column="User_Balance"    property="userBalance" />
+		<result column="Frozen_Balance"  property="frozenBalance" />
+		<result column="User_Gift"       property="userGift" />
+		<result column="Frozen_Gift"     property="frozenGift" /> 
+    </resultMap> 
+    <resultMap type="cn.membermng.model.MemberThirdAuthInfoEntity" id="resultMemberThirdAuthInfo">
+        <id column="Account_Id"             property="accountId" />
+		<result column="Open_Auto_Recharge" property="openAutoRecharge" />
+		<result column="Is_Auto_Recharge"   property="isAutoRecharge" />
+		<result column="Open_Auto_Pay"      property="openAutoPay" />
+		<result column="Is_Auto_Pay"        property="isAutoPay" />
+		<result column="Open_Auto_Invest"   property="openAutoInvest" />
+		<result column="Is_Auto_Invest"     property="isAutoInvest" />
+		<result column="Open_Second_Distribute" property="openSecondDistribute" /> 
+	   <association property="memberThirdInfoEntity"  	resultMap="resultMemberThirdInfo"/>
+    </resultMap>  
+    <resultMap type="cn.membermng.model.MemberThirdInfoEntity" id="resultMemberThirdInfo">
+        <id column="Account_Id" property="accountId" />
+		<result column="Member_Type" property="memberType" />
+		<result column="Member_ID" property="memberID" />
+		<result column="ThirdParty_Account" property="thirdPartyAccount" />
+		<result column="ThirdParty_Mark" property="thirdPartyMark" />
+		<result column="User_Balance" property="userBalance" />
+		<result column="Frozen" property="frozen" />
+		<result column="Gift_User_Balance" property="giftUserBalance" />  
+	    <result column="Gift_Frozen" property="giftFrozen" />  
+    </resultMap> 
+    <!-- 查询会员账户信息-->  
+	<select id="selectMemberBalance" parameterType="map"  resultMap="resultTradingRecordsBalance">
+       select  otrb.User_Balance,otrb.User_Gift
+	   from  Own_Trading_Records_Balance   otrb  
+	   left join Member_Trading_Records mtr on  otrb.Own_Trading_ID=mtr.Trade_ID
+       where mtr.Member_ID=#{memberID} and mtr.Member_Type=#{memberType}
+       order by  mtr.Member_ID  desc limit 1;
+    </select> 
+    <!-- 查询会员第三方账户信息 -->  
+	<select id = "selectMemberTradeInfo" parameterType = "Map"  resultMap = "resultMemberThirdAuthInfo">
+	 select ThirdParty_Account,ThirdParty_Mark,
+     CAST((AES_DECRYPT(UNHEX(Frozen),#{sKey})) as signed)  Frozen,
+	 CAST((AES_DECRYPT(UNHEX(Gift_Frozen),#{sKey})) as signed)	 Gift_Frozen,
+	 CAST((AES_DECRYPT(UNHEX(User_Balance),#{sKey})) as signed) as User_Balance,
+	 CAST((AES_DECRYPT(UNHEX(Gift_User_Balance),#{sKey})) as signed) as Gift_User_Balance,
+	 Open_Auto_Recharge,Is_Auto_Recharge,
+	 Open_Auto_Pay,Is_Auto_Pay,Open_Auto_Invest,Is_Auto_Invest,Open_Second_Distribute
+	 from  Member_Third_Auth_Info mtai
+	 left join Member_Third_Info mti on mtai.Account_Id=mti.Account_Id
+	 where  Member_ID =#{memberID} and Member_Type =#{memberType}
+    </select>       
+</mapper>   

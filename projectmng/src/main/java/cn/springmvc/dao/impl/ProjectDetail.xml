@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="projectDetail">
+  <resultMap type = "cn.springmvc.model.ProjectAppProcessEntity" id = "resultProjectAppProcess">
+     <id property = "projectID"				column = "Project_ID" />
+     <result property = "recordDate"       	column = "Record_Date" />
+     <result property = "releaseDate"       column = "Release_Date" />
+     <result property = "startDate"       	column = "Start_Date" />
+     <result property = "endDate"       	column = "End_Date" />
+     <result property = "realEndDate"       column = "Real_End_Date" />
+     <result property = "holdDate"       	column = "Hold_Date" />
+     <result property = "proEndDate"       	column = "ProEnd_Date" />
+     <association property="projectAppRecordEntity" 	resultMap="resultProjectDetail"/>
+ </resultMap>
+ <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetail">
+        <id property = "applyId"						column = "Apply_Id" />
+		<result property = "memberID"       	column = "Member_ID" />
+		<result property = "projectType"    	column = "Project_Type" />
+		<result property = "projectBaseID"  	column = "Project_Base_ID" />
+		<result property = "repayGuarantee" 	column = "Repay_Guarantee" />
+		<result property = "guarantyDescribe"   column = "Guaranty_Describe" />
+		<result property = "minStart" 			column = "MinStart" />
+		<result property = "increaseRange" 		column = "Increase_Range" />
+		<result property = "investMax" 			column = "Invest_Max" />
+		<result property = "checkStatu" 		column = "Check_Statu" />
+		<result property = "publishStatu" 		column = "Publish_Statu" />  
+		<result property = "investStatu" 		column = "Invest_Statu" />
+		<result property = "isDirect" 			column = "Is_Direct" />
+		<result property = "directPwd"		    column = "Direct_Pwd" />  
+        <result property = "assetManagerID" 	column = "Asset_Manager_ID" />
+		<result property = "guaranteeID" 		column = "Guarantee_ID" />
+		<result property = "rateAddRate" 		column = "Rate_Add_Rate" /> 
+		<result property = "rewardRate" 		column = "Reward_Rate" />
+		<result property = "rewardIcon" 		column = "Reward_Icon" /> 
+		<result property = "investCountMax" 	column = "Invest_Count_Max" />
+		<result property = "projectNo" 			column = "Project_No" /> 
+      	<result property = "merBillNo" 			column = "Mer_BillNo" /> 
+        <result property = "investRate" 		column = "Invest_Rate" /> 
+        <result property = "availableaAmount" 	column = "availableaAmount" /> 
+        <result property = "levelMark" 	column = "Level_Mark" /> 
+       <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
+	   </association>
+    </resultMap> 
+     <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
+            <id property = "ID" 				 column = "id" />
+			<result property = "projectTitle"    column = "Project_Title" /> 
+			<result property = "uses"            column = "Uses" />
+			<result property = "repaySource"     column = "Repay_Source" />
+			<result property = "amount" 		 column = "Amount" />
+			<result property = "projectDescript" column = "Project_Descript" />
+			<result property = "deadline" 		 column = "Deadline" />
+			<result property = "deadlineType"    column = "Deadline_Type" />
+			<result property = "repayWay"        column = "Repay_Way" />
+			<result property = "yearRate"        column = "Year_Rate" /> 
+			<result property = "creditIntegral"  column = "Credit_Integral" /> 
+     </resultMap>
+    <!-- 根据项目申请ID查询投资项目详情 -->  
+	<select id="selectProjectdetail"  parameterType="map" resultMap="resultProjectAppProcess" >
+	   select par.Increase_Range,par.MinStart,par.Invest_Rate,par.Invest_Max,par.Member_ID,par.Project_Base_ID,par.Project_ID,pbi.Project_Title,par.Project_No,pbi.Repay_Way,
+	   pbi.Year_Rate,pbi.Amount,pbi.Deadline,pbi.Deadline_Type, pap.Start_Date,pap.End_Date,par.Reward_Rate,par.Rate_Add_Rate,
+	   par.Reward_Icon,pap.Record_Date,pap.Real_End_Date,par.Reward_Rate,par.Reward_Icon,par.Invest_Statu,mi.Credit_Integral, 
+	   (pbi.Amount-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{sKey})) as signed)),0) 
+	   from Invest_Record  where Apply_Id=par.Apply_Id and IsValid=0 )) availableaAmount,
+	   (select Level_Mark from Credit_Level where  mi.Credit_Integral between Credit_Score_Min and Credit_Score_Max and statu =1) as  Level_Mark
+	   from  Project_App_Record par  
+	   left join Project_App_Process pap on  pap.Apply_Id=par.Apply_Id
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
+	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID  
+	   left join Member_Info mi on mi.Member_ID = par.Member_ID 
+	   where  par.Apply_Id=#{id}
+    </select>
+    <!--     已投资总额  -->
+    <select id="selectInvestAmount"  parameterType="map" resultType="Long" >
+	   select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{map.sKey})) as signed)),0)  as investTotal  from Invest_Record where Project_Id=#{projectid}
+	</select>
+  
+    <!-- 查询会员成功借款项目 -->  
+	<select id="selectMemberInfoByMemberID" parameterType="int"  resultType="int">
+	   select  count(1) from Project_App_Record par where  par.Member_ID=#{memberId} and par.Invest_Statu>=3
+    </select>
+ 
+     <!-- 查询项目所需认证项-->  
+	<select id="selectMemberAttestByProjectID" parameterType="int"  resultMap="memberAttestType.resultListMemberAttestType">
+	    select  mat.Attest_TypeName,ptd.Attest_Type_ID  from Project_App_Record par
+	    left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
+	    left join Project_Type_Datum ptd on ptd.Project_ID=pty.Project_ID
+	    left join Member_Attest_Type mat on  mat.Attest_Type_ID= ptd.Attest_Type_ID
+	    where   par.Apply_Id =#{id}
+    </select> 
+    <!--  根据项目申请ID查询项目历程 -->  
+	<select id="selectProjectAppProcess"  parameterType="int" resultMap="resultProjectAppProcess" >
+	   select pap.Start_Date,pap.End_Date,pap.Record_Date,pap.Real_End_Date,
+	   pap.Hold_Date,pap.ProEnd_Date,pap.Settle_Date
+	   from  Project_App_Process pap  
+	   where  pap.Apply_Id=#{ID} and pap.Hold_Date is not null 
+    </select> 
+     <!--  根据项目申请ID查询借款描述-->  
+	<select id="selectProjectDescript"  parameterType="int" resultType="String" >
+	   select  pbi.Project_Descript as projectDescript
+	   from  Project_App_Record par 
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID 
+	   where  par.Apply_Id=#{projectID}
+    </select>   
+</mapper>

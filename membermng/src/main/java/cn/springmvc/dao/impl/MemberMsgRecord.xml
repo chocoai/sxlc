@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="memberMsgRecord">
+ 
+    <!-- 根据会员ID查询会员发件箱信息-->  
+	<select id="selectMemberMsgList"  parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="memberMsgRecordMap.resultMemberMsgRecord">
+	 select msr.Msg_Detail,msr.Record_Date ,msr.Read_Statu,msr.Read_Date,msr.Msg_Type
+     from Member_MsgRecord msr
+      <where>
+         msr.Member_ID = #{map.memberID} and  msr.Msg_Type =2
+            <if test="map.readStatu != -1">  
+               and  msr.Read_Statu=#{map.readStatu}
+            </if>
+      </where>
+	</select>  
+	<update id="updateMemberMsgIsRead" parameterType="Map">
+	  update Member_MsgRecord set Read_Date =now(),Read_Statu=1 
+	  where Member_ID=#{memberID} and Record_Date = #{recordDate} and Msg_Type=#{msgType}
+	</update>
+</mapper>   

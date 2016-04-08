@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="newEvent">
+    <resultMap type="cn.springmvc.model.NewEventEntity" id="resultListNewEvent">
+        <id column="ID" property="id" />
+		<result column="Title" property="title" />
+		<result column="Content" property="content" />
+		<result column="Statu" property="statu" />
+		<result column="CreateTime" property="createTime" />
+		<result column="Opt_Date" property="optDate" />
+		<result column="admin_ID" property="optId" />
+		<result column="adminName" property="adminName" />
+    </resultMap> 
+	<!-- 分页查询最新动态 -->  
+	<select id="selectNewEventListpage"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultListNewEvent" >
+	   select ne.New_ID,   ne.TitleS,   ne.Content,   ne.Statu,   ne.CreateTime, 
+	    ne.Opt_Date, ne.admin_ID,a.adminName 
+	    from  New_Event ne
+	    LEFT JOIN Admin a on a.admin_ID=ne.admin_ID 
+        <where>  
+            <if test="map.title != null">  
+                ne.TitleS like  '%{map.title}%'  
+            </if>  
+            <if test="map.statu != -1">  
+                and ne.Statu=#{map.statu}
+            </if>
+            order by ne.CreateTime desc
+        </where>  
+    </select> 
+    <!-- 新增最新动态 -->  
+	<insert id="insertNewEvent"  parameterType="cn.springmvc.model.NewEventEntity" >    
+		insert into 
+		New_Event( New_ID,   TitleS,    Content,  Opt_Id) 
+		  values (#{id},#{title},#{content},#{optId})    
+	</insert> 
+	<!-- 查询该标题的最新动态是否存在 -->  
+	<select id="selectNewEventIsExistByNAme"  parameterType="cn.springmvc.model.NewEventEntity" resultMap="resultListNewEvent" >
+	   select New_ID,   TitleS,   Content,   Statu,   CreateTime,  Opt_Date, Opt_Id
+	   from  New_Event where  Title=#{title}  and New_ID != #{id} 
+    </select> 
+    <!-- 修改最新动态信息 -->  
+	<update id="updateNewEventByID"  parameterType="cn.springmvc.model.NewEventEntity">
+	   update  New_Event   
+	    <set>
+		   <if test="title != null" >
+	        TitleS=#{title},
+	       </if> 
+	       <if test="content != null" >
+	        Content=#{content},
+	       </if> 
+	       <if test="optId != 0" >
+	        admin_ID=#{optId},
+	       </if> 
+	        Opt_Date=now() 
+	       </set>   
+	   where New_ID=#{id}   
+    </update>   
+    <!-- 删除最新动态 -->  
+	<delete id="deleteNewEventByID"  parameterType="int">
+	   delete from  New_Event where New_ID=#{id}   
+    </delete> 
+    
+     <!-- 停用或启用最新动态 -->  
+	<update id="updateNewEventStatuByID"  parameterType="cn.springmvc.model.NewEventEntity">
+	   update  New_Event  set   Statu=#{statu} where New_ID=#{id}   
+    </update> 
+    <!-- 根据id查询最新动态 -->  
+	<select id="selectNewEventByID"  parameterType="int" resultMap="resultListNewEvent" >
+	    select ne.New_ID,   ne.TitleS,   ne.Content,   ne.Statu,   ne.CreateTime, 
+	    ne.Opt_Date, ne.admin_ID  
+	    from  New_Event ne   where ne.New_ID=#{id}
+    </select>       
+</mapper>

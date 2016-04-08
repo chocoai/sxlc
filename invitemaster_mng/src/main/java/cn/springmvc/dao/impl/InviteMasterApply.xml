@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="InviteMasterApply"> 
+    <resultMap type = "cn.invitemastermng.model.InviteMasterApplyEntity" id = "resultInviteMasterApply">
+        <id property = "imApplyID"				column = "Im_Apply_ID" />
+		<result property = "memberID"       	column = "Member_ID" />
+		<result property = "applyDate"    	    column = "Apply_Date" />
+		<result property = "checkStatu"  	    column = "Check_Statu" />
+		<result property = "checkDate" 	        column = "Check_Date" /> 
+    </resultMap> 
+    <insert id="insertInviteMasterApply" parameterType="Map">
+      insert InviteMaster_Apply (Im_Apply_ID , Member_ID)
+                         values (#{imApplyID},#{memberID})
+    </insert>
+    <select id="selectInviteMasterApplyIsExist" parameterType="long" resultType="int">
+       select count(Im_Apply_ID) from  InviteMaster_Apply where  Member_ID = #{memberID} and Check_Statu !=-1
+    </select>
+</mapper>

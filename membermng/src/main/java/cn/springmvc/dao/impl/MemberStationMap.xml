@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="StationLetterMap">
+     <!--     站内信记录实体 -->
+     <resultMap type="cn.membermng.model.MemberStationLetterEntity" id="resultMemberStationLetter">
+        <id column="Letter_ID" 				 property="letterID" />
+		<result column="Member_ID" 			 property="memberID" />
+		<result column="Member_ID_Rec" 		 property="memberIDRec" /> 
+		<result column="Pre_ID" 			 property="preID" />
+		<result column="Title" 				 property="title" /> 
+		<result column="Detail" 			 property="detail" />
+		<result column="Send_Date" 			 property="sendDate" /> 
+		<result column="Is_Read" 			 property="isRead" /> 
+	    <result column="Read_Date" 			 property="readDate" />  
+		<result column="Delete_Flag_Send" 	 property="deleteFlagSend" />
+		<result column="Delete_Flag_Recieve" property="deleteFlagRecieve" /> 
+		<result column="membername"          property="membername" />   
+    </resultMap>    
+  
+</mapper>   

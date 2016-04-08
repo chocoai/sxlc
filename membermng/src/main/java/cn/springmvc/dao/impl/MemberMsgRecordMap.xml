@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="memberMsgRecordMap">
+         <!--     站内信记录实体 -->
+     <resultMap type="cn.membermng.model.MemberMsgRecordEntity" id="resultMemberMsgRecord">
+        <id column="Member_ID" 				property="memberID" />
+		<result column="Msg_Type" 			property="msgType" />
+		<result column="Msg_Detail" 		property="msgDetail" /> 
+		<result column="Short_Phone" 		property="shortPhone" />
+		<result column="Record_Date" 		property="recordDate" /> 
+		<result column="Statu" 			    property="statu" /> 
+		<result column="Read_Date" 			property="readDate" /> 
+		<result column="Read_Statu" 	    property="readStatu" /> 
+    </resultMap> 
+</mapper>   

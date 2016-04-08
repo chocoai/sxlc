@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="EnterpriseCAXML">  
+	<!-- 会员认证类型 -->
+    <resultMap type="cn.membermng.model.MemberAttestTypeEntity" id="MemberAttestType">
+        <id column="Attest_Type_ID" property="attestTypeID" />
+		<result column="Attest_TypeName" property="attestTypeName" />
+    </resultMap>  
+    <!-- 分页查询企业或者个人会员所有需要后台审核的认证类型 -->
+    <select id="selectAllMemberAttestType" resultMap="MemberAttestType" parameterType="product_p2p.kit.pageselect.PageEntity">
+    	select Attest_Type_ID,Attest_TypeName from Member_Attest_Type 
+    	where Need_Check=1 and Member_Type=#{map.memberType}
+    </select>
+    
+    <resultMap type="cn.membermng.model.MemberAttestByTypeEntity" id="MemberAttestByType">
+    	<result column="Member_No" property="memberNo"/>
+    	<result column="Member_ID" property="memberID"/>
+    	<result column="Logname" property="logname"/>
+    	<result column="Certification_ID" property="certificationID"/>
+    	<result column="Record_Date" property="recordDate"/>
+    	<result column="Status" property="status"/>
+    	<result column="Attest_Type_ID" property="attestTypeID"/>
+    	<result column="Attest_TypeName" property="attestTypeName"/>
+    	<result column="Statuname" property="statuname"/>
+    </resultMap>
+    <!-- 根据认证类型id,会员类型分页查询当前认证所有会员信息 -->
+    <select id="selectMemberAttestByType" resultMap="MemberAttestByType" parameterType="product_p2p.kit.pageselect.PageEntity" >
+    	select mi.Member_No,mi.Member_ID,mi.Logname,mai.Certification_ID,mai.Record_Date,mai.Status,mai.Attest_Type_ID,mat.Attest_TypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS Statuname 
+			from Member_Attest_Info mai 
+			left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+			<where>
+				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
+			</where>  
+    </select>
+    
+    <!-- 认证附件信息 -->
+    <resultMap type="cn.membermng.model.PersonalAttestAttachEntity" id="sPersonalAttestAttach">
+    	<result column="Attest_ID" property="attestID"/>
+    	<result column="Attach_Name" property="attachName"/>
+    	<result column="Attach_Type" property="attachType"/>
+    	<result column="Upload_time" property="uploadtime"/>
+    	<result column="Attach_Path" property="attachPath"/>
+    	<result column="Statuname" property="attachTypeName"/>
+    </resultMap>
+    <!-- 根据认证记录id查看会员该认证项的认证附件信息 -->
+    <select id="selectAttestAttachList" parameterType="Map" resultMap="sPersonalAttestAttach">
+    	select Attest_ID,Attach_Name,Attach_Type,Upload_time,Attach_Path,
+    	(SELECT name1 from DICT where tcode='DICT_FJLX' and code1=Attach_Type LIMIT 1) AS Statuname
+    	 from Personal_Attest_Attach where Attest_ID=#{attestID}
+    </select>
+    <!-- 查看企业营业执照认证信息 -->
+    <resultMap type="cn.membermng.model.EnterpriseLicenseAttestEntity" id="sEnterpriseLicenseAttest">
+    	<result column="Certification_ID" property="certificationID"/>
+    	<result column="Firm_BLN" property="firmBLN"/>
+    	<result column="Firm_Address" property="firmAddress"/>
+    	<result column="Firm_Legal" property="firmLegal"/>
+    	<result column="Reg_Capital" property="regCapital"/>
+    	<result column="Reg_Business" property="regBusiness"/>
+    	<result column="Firm_Type" property="firmType"/>
+    	<result column="Reg_Date" property="regDate"/>
+    	<result column="Member_No" property="memberNo"/>
+    	<result column="Member_ID" property="memberID"/>
+    	<result column="Logname" property="logname"/>
+    	<result column="Record_Date" property="recordDate"/>
+    	<result column="Status" property="status"/>
+    	<result column="Attest_Type_ID" property="attestTypeID"/>
+    	<result column="Attest_TypeName" property="attestTypeName"/>
+    	<result column="Statuname" property="statuname"/>
+    </resultMap>
+    <!-- 根据认证记录id查看企业营业执照认证信息 -->
+    <select id="sEnterpriseLicenseAttestByID" resultMap="sEnterpriseLicenseAttest" parameterType="Map">
+    select mi.Member_No,mi.Member_ID,mi.Logname,mai.Certification_ID,mai.Record_Date,mai.Status,mai.Attest_Type_ID,
+	mat.Attest_TypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS Statuname,
+	 ela.Firm_BLN,ela.Firm_Address,ela.Firm_Legal,ela.Reg_Capital,ela.Reg_Business,ela.Firm_Type,ela.Reg_Date
+	from Member_Attest_Info mai 
+	left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+	LEFT JOIN Enterprise_License_Attest ela ON ela.Certification_ID=mai.Certification_ID
+	where mi.Member_Type=1 and mai.Certification_ID=#{certificationID} and mi.Member_ID=#{memberID};
+    </select>
+    <!-- 操作企业营业执照认证 -->
+    <select id="handleEnterpriseCerAudit" resultType="Map" statementType="CALLABLE">
+    <!-- statusT:2 通过审核 3：打回；rulest：1：操作成功 2：该认证项已认证 -->
+    	<![CDATA[{call handleEnterpriseCerAudit(
+				#{certificationID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{statusT,	 mode=IN,	jdbcType=INTEGER},
+				#{adminID,	 mode=IN,	jdbcType=BIGINT},
+				#{remark,	 mode=IN,	jdbcType=VARCHAR},
+				#{endDate,	 mode=IN,	jdbcType=DATE},
+				#{sfirmBLN,	 mode=IN,	jdbcType=VARCHAR},
+				#{sfirmAddress,	 mode=IN,	jdbcType=VARCHAR},
+				#{regCapital,	 mode=IN,	jdbcType=VARCHAR},
+				#{sregBusiness,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalId,	 mode=IN,	jdbcType=BIGINT},
+				#{spersonalName,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyID,	 mode=IN,	jdbcType=BIGINT},
+				#{creditIntegralID,	 mode=IN,	jdbcType=BIGINT},
+				#{skey,	 mode=IN,	jdbcType=VARCHAR},
+				#{rulest,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+    <!-- 操作企业会员工商执照认证信息 -->
+     <select id="handleEnterpriseBLAttest" resultType="Map" statementType="CALLABLE">
+    <!-- statusT:2 通过审核 3：打回；rulest：1：操作成功 2：该认证项已认证 -->
+    	<![CDATA[{call handleEnterpriseBLAttest(
+				#{certificationID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{statusT,	 mode=IN,	jdbcType=INTEGER},
+				#{adminID,	 mode=IN,	jdbcType=BIGINT},
+				#{remark,	 mode=IN,	jdbcType=VARCHAR},
+				#{endDate,	 mode=IN,	jdbcType=DATE},
+				#{regCapital,	 mode=IN,	jdbcType=VARCHAR},
+				#{sregBusiness,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalId,	 mode=IN,	jdbcType=BIGINT},
+				#{spersonalName,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyID,	 mode=IN,	jdbcType=BIGINT},
+				#{creditIntegralID,	 mode=IN,	jdbcType=BIGINT},
+				#{skey,	 mode=IN,	jdbcType=VARCHAR},
+				#{rulest,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+    <!-- 其他认证操作 -->
+     <select id="handleAttest" resultType="Map" statementType="CALLABLE">
+    <!-- statusT:2 通过审核 3：打回；rulest：1：操作成功 2：该认证项已认证 -->
+    	<![CDATA[{call handleAttest(
+				#{certificationID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberType,	 mode=IN,	jdbcType=INTEGER},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{statusT,	 mode=IN,	jdbcType=INTEGER},
+				#{adminID,	 mode=IN,	jdbcType=BIGINT},
+				#{remark,	 mode=IN,	jdbcType=VARCHAR},
+				#{endDate,	 mode=IN,	jdbcType=DATE},
+				#{creditIntegralID,	 mode=IN,	jdbcType=INTEGER},
+				#{rulest,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+    <!-- 个人会员最高学历认证操作 -->
+     <select id="handlequalification" resultType="Map" statementType="CALLABLE">
+    <!-- statusT:2 通过审核 3：打回；rulest：1：操作成功 2：该认证项已认证 -->
+    	<![CDATA[{call handlequalification(
+				#{certificationID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberType,	 mode=IN,	jdbcType=INTEGER},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{statusT,	 mode=IN,	jdbcType=INTEGER},
+				#{adminID,	 mode=IN,	jdbcType=BIGINT},
+				#{remark,	 mode=IN,	jdbcType=VARCHAR},
+				#{endDate,	 mode=IN,	jdbcType=DATE},
+				#{creditIntegralID,	 mode=IN,	jdbcType=BIGINT},
+				#{education,	 mode=IN,	jdbcType=INTEGER},
+				#{personalID,	 mode=IN,	jdbcType=BIGINT},
+				#{rulest,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+    <!-- 个人会员实名认证操作 -->
+    <select id="handlenameAuthentication" resultType="Map" statementType="CALLABLE">
+    <!-- statusT:2 通过审核 3：打回；rulest：1：操作成功 2：该认证项已认证 -->
+    	<![CDATA[{call handlenameAuthentication(
+				#{certificationID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberType,	 mode=IN,	jdbcType=INTEGER},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{statusT,	 mode=IN,	jdbcType=INTEGER},
+				#{adminID,	 mode=IN,	jdbcType=BIGINT},
+				#{remark,	 mode=IN,	jdbcType=VARCHAR},
+				#{endDate,	 mode=IN,	jdbcType=DATE},
+				#{creditIntegralID,	 mode=IN,	jdbcType=INTEGER},
+				#{personalID,	 mode=IN,	jdbcType=BIGINT},
+				#{spersonalIDCard,	 mode=IN,	jdbcType=VARCHAR},
+				#{spersonalName,	 mode=IN,	jdbcType=VARCHAR},
+				#{shomeTown,	 mode=IN,	jdbcType=VARCHAR},
+				#{sexIDs,	 mode=IN,	jdbcType=INTEGER},
+				#{nationId,	 mode=IN,	jdbcType=INTEGER},
+				#{skey,	 mode=IN,	jdbcType=VARCHAR},
+				#{rulest,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+    <!-- 个人会员婚姻认证操作 -->
+    <select id="handlemarriage" resultType="Map" statementType="CALLABLE">
+    <!-- statusT:2 通过审核 3：打回；rulest：1：操作成功 2：该认证项已认证 -->
+    	<![CDATA[{call handlemarriage(
+				#{certificationID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberType,	 mode=IN,	jdbcType=INTEGER},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{statusT,	 mode=IN,	jdbcType=INTEGER},
+				#{adminID,	 mode=IN,	jdbcType=BIGINT},
+				#{remark,	 mode=IN,	jdbcType=VARCHAR},
+				#{endDate,	 mode=IN,	jdbcType=DATE},
+				#{creditIntegralID,	 mode=IN,	jdbcType=BIGINT},
+				#{maritalStatus,	 mode=IN,	jdbcType=INTEGER},
+				#{personalID,	 mode=IN,	jdbcType=BIGINT},
+				#{rulest,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+    
+    <!-- 个人会员住址认证操作 -->
+     <select id="handleAddress" resultType="Map" statementType="CALLABLE">
+    <!-- statusT:2 通过审核 3：打回；rulest：1：操作成功 2：该认证项已认证 -->
+    	<![CDATA[{call handleAddress(
+				#{certificationID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberType,	 mode=IN,	jdbcType=INTEGER},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{statusT,	 mode=IN,	jdbcType=INTEGER},
+				#{adminID,	 mode=IN,	jdbcType=BIGINT},
+				#{remark,	 mode=IN,	jdbcType=VARCHAR},
+				#{endDate,	 mode=IN,	jdbcType=DATE},
+				#{creditIntegralID,	 mode=IN,	jdbcType=BIGINT},
+				#{shouseAddress,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalID,	 mode=IN,	jdbcType=BIGINT},
+				#{skey,	 mode=IN,	jdbcType=INTEGER},
+				#{rulest,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+</mapper>   

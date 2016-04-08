@@ -1,0 +1,158 @@
+/* 李丽梅 */
+/* 会员管理-个人会员-全部会员 */
+/* 2016-03-23 */
+.memberselect_a 
+{
+	border:1px solid #000;  
+	font-size:20px;
+	margin-top:30px;
+	color:blue;
+	margin-bottom:20px;
+}
+.memberselect_b 
+{
+	border:1px solid #ddd;
+	width:100%;
+	white-space:nowrap;
+}
+
+.memberselect_b th ,
+.memberselect_b td 
+{
+	border:1px solid #ddd;
+	padding:7px 10px;
+	text-align:center;
+}
+.memberselect_b th 
+{
+	text-align:center;
+	font-weight:bold;
+}
+.tScroll 
+{
+	overflow:scroll;
+}
+.allMembershipdetails{
+	width:100%;               
+	font-size:14px;
+	text-align:center;
+}
+.allMembershipdetails ul li {
+	list-style:none;
+	float:left;
+	width:14 0px;
+	margin:1px;
+	padding:5px 5px;
+	display:inline-block;
+}
+
+.sendMessageDetailsCu {
+	display:inline-block;
+	padding:5px 6px;
+	border:1px solid #000;
+	width:100%;
+	height:200px;
+}
+
+/* 表格字体颜色 */
+.panel-success>.panel-heading{
+	color:#7387A5 !important;
+}
+a:hover{text-decoration:none;}
+
+.memberDetails ,
+.memberPwd ,
+.membershipDetails ,
+.loanItemQuery ,
+.nvestmentProjectInquiry ,
+.transactionRecord ,
+.bankCardInquiry ,
+.inviteMembers ,
+.pullTheBlack ,
+.sendMessage
+{
+	display:none;
+}
+.sendMessage_Phone ,
+.sendMessage_Email ,
+.sendMessage_Letter
+{
+	padding-left:20px;
+	padding:10px 0  0 20px;
+}
+.sendMessage_Email {
+	letter-spacing:3px;
+}
+.sendMessage_Phone > input,
+.sendMessage_Email > input
+{
+	width:30%;
+	height:39px;
+	border-radius:5px;
+	
+}
+.sendMessage_Letter > textarea {
+	border-radius:5px;
+	margin-left:7px !important;
+}
+.sendMessage_sendOut{
+	text-align:center;
+	margin:10px auto;
+}
+.sendMessage_sendOut div{
+	display:inline-block;
+	width:100px;
+	height:45px;
+	border:1px solid #ddd;
+	margin:5px;
+	border-radius:5px;
+	text-align:center;
+}
+/* 李丽梅 */
+/* 会员管理-个人会员-查看会员详情 */
+/* 2016-03-23 */
+.membershipDetails{
+	width:100%;
+}
+fieldset{
+	width:80%;
+	height:500px;
+	border:1px solid #ddd;
+	margin:0 auto;
+	text-align:justify;
+	font-size:16px;
+}
+.fieldsetInput{
+	width:90% ;
+	height:30px;
+	border-radius:5px;
+	
+}
+.viewMembershipDetailsTr{
+	margin:15px 10px 10px 20px;
+	display:block;
+	width:600px;
+
+}
+.viewMembershipDetailsTr > td {
+	border-left:0;
+}
+.viewMembershipDetailsTd{
+	display:inline-flex;
+	width:107px;
+	height:44px;
+	position:absolute;
+	left:525px;
+	top:238px;
+	line-height:38px;
+}
+.viewMembershipDetailsPo{
+	position:relative;
+}
+
+.viewMembershipDetailsTable th {
+	width:100px;
+	text-align:right;
+}
+
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="SmsDao">     
+	
+	<!-- 查询结果封装 -->
+	<resultMap type="cn.springmvc.dao.impl.sms.SmsSetInfoEntity" id="sendSmsUtil">
+		<!-- <id column="Sms_Interface" property="lId" /> -->
+		<result column="Sms_Interface" property="sInterface"/>
+		<result column="Sms_SerialNumber" property="sSn"/>
+		<result column="Sms_Password" property="sPwd"/>
+	</resultMap>	
+	
+	<!-- 获取短信设置信息 -->
+	<select id="getSmsSetInfo" parameterType="Map" resultMap="sendSmsUtil">
+		select Sms_Interface,Sms_SerialNumber,Sms_Password from Sms_Settings where Statu = 1 order by Opt_Date desc limit 0,1
+	</select>
+	
+	<!-- 添加短信发送日志	-->
+	<select id="insertSmsRecord"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call SendMsgRecordDeal(
+				#{iType,			mode=IN,	jdbcType=TINYINT},
+				#{sDetail,			mode=IN,	jdbcType=VARCHAR},
+				#{sPhone,			mode=IN,	jdbcType=VARCHAR},
+				#{iSendType,		mode=IN,	jdbcType=TINYINT},
+				#{adminId,			mode=IN,	jdbcType=BIGINT},
+				#{istatu,			mode=IN,	jdbcType=TINYINT},
+				#{recordDate,		mode=IN,	jdbcType=VARCHAR},
+				#{result,			mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+	</select>
+	
+</mapper>

@@ -1,0 +1,20 @@
+/* 陈小花
+弹出层样式 */
+body{
+	background-color:#fff;
+	color:#575757;
+}
+textarea{
+	resize:none;
+}
+.add_type_contianer{
+	width:auto;
+	margin:20px 45px;
+}
+.guide{
+	margin-top:20px;
+}
+.guide a{
+	margin-right:10px;
+	margin-left:5px;
+}

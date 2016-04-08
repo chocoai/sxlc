@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 担保机构 -->
+<mapper namespace="GuaranteeInfoXML" >
+	<!-- 担保公司 -->
+  <resultMap id="GuaranteeInfo" type="cn.springmvc.model.GuaranteeInfoEntity" >
+    <id column="Guarantee_ID" property="guaranteeID"/>
+    <result column="Personal_Id" property="personalID"/>
+    <result column="Guarantee_NO" property="guaranteeNo"/>
+    <result column="Guarantee_Name" property="guaranteeName"/>
+    <result column="Companye_BLN" property="companyeBLN"/>
+    <result column="Company_OC" property="companyOC"/>
+    <result column="Tax_RegNo" property="taxRegNo"/>
+    <result column="Establishments" property="establishments"/>
+    <result column="Company_Capital" property="companyCapital"/>
+    <result column="Company_Address" property="companyAddress"/>
+    <result column="Company_Source" property="companySource"/>
+    <result column="Company_Business" property="companyBusiness"/>
+    <result column="Company_Profile" property="companyProfile"/>
+    <result column="Contact_Name" property="contactName"/>
+    <result column="Contact_Phone" property="contactPhone"/>
+    <result column="Contact_Email" property="contactEmail"/>
+    <result column="Add_Time" property="cddTime"/>
+    <result column="Record_Status" property="recordStatus"/>
+    <result column="Delete_Flag" property="deleteFlag"/>
+  </resultMap>
+  <sql id="GuaranteeInfo_Column_List" >
+    	Guarantee_ID,Personal_Id,Guarantee_NO,Guarantee_Name,
+    	Companye_BLN,Company_OC,Tax_RegNo,Establishments,
+    	Company_Capital,Company_Address,Company_Source,
+    	Company_Business,Company_Profile,Contact_Name,
+    	Contact_Phone,Contact_Email,Add_Time,Record_Status,Delete_Flag    	
+  </sql>
+  <!-- 根据担保机构id 查询担保机构信息 -->
+  <select id="selectGuaranteeInfoById" resultMap="GuaranteeInfo" parameterType="Map" >
+   	select <include refid="GuaranteeInfo_Column_List"></include> from Guarantee_Info where Guarantee_ID=#{guaranteeID};
+  </select>
+  
+  <!-- 分页查询所有担保机构信息 -->
+  <select id="selectAllGuaranteeInfo" resultMap="GuaranteeInfo" parameterType="product_p2p.kit.pageselect.PageEntity">
+  	select <include refid="GuaranteeInfo_Column_List"></include> 
+  	from Guarantee_Info 
+  	<where>
+  		<!-- 编号、担保机构名称、营业执照号、联系人姓名、联系人手机号、状态 -->
+  		Delete_Flag=1
+  		<if test="map.guaranteeNo!=null">and Guarantee_NO like '%{map.guaranteeNo}%'</if>
+  		<if test="map.guaranteeName != null">and Guarantee_Name like '%{map.guaranteeName}%'</if>
+  		<if test="map.companyeBLN != null">and Companye_BLN like '%{map.companyeBLN}%'</if>
+  		<if test="map.contactName != null ">and Contact_Name like '%{map.contactName}%'</if>
+  		<if test="map.contactPhone !=null">and Contact_Phone like '%{map.contactPhone}%'</if>
+  		<if test="map.recordStatus != -1">and Record_Status=#{map.recordStatus}</if>
+  	</where>
+  	 order by Add_Time #{orderKey}
+  </select>
+  
+  <!-- 添加或修改担保机构信息 -->
+  <select id="handleGuaranteeInfo" resultType="Map" statementType="CALLABLE">
+  <!--types 0:添加  1：修改 ;result 0:成功 -1：担保机构名称存在 -2：营业执照号已存在-->
+  		<![CDATA[{call handleGuaranteeInfo(
+				#{guaranteeID,	 mode=IN,	jdbcType=INTEGER},
+				#{guaranteeName,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyeBLN,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyOC,	 mode=IN,	jdbcType=VARCHAR},
+				#{taxRegNo,	 mode=IN,	jdbcType=VARCHAR},
+				#{establishments,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyCapital,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyAddress,	 mode=IN,	jdbcType=VARCHAR},
+				#{companySource,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyBusiness,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyProfile,	 mode=IN,	jdbcType=INTEGER},
+				#{contactName,	 mode=IN,	jdbcType=VARCHAR},
+				#{contactPhone,	 mode=IN,	jdbcType=VARCHAR},
+				#{contactEmail,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalPhone,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalName,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalIDCard,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalId,	 mode=IN,	jdbcType=INTEGER},
+				#{types,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER},
+    		)}
+    	]]>
+  </select>
+  <!-- 删除或启用停用 -->
+  <update id="deleteOrStopGuaranteeInfo" parameterType="Map">
+  		update Guarantee_Info 
+  		<set>
+  			<if test="recordStatus != -1">
+  				Record_Status=#{recordStatus},
+  			</if>
+  			<if test="deleteFlag != -1">
+  				Delete_Flag=#{deleteFlag}
+  			</if>
+  		</set>
+  		<where>
+  			Guarantee_ID=#{guaranteeID}
+  		</where> 
+  </update>
+  
+  <!-- 担保机构证件信息 -->
+  <resultMap id="GuaranteeCertificate" type="cn.springmvc.model.GuaranteeCertificateEntity" >
+  	<result column="Guarantee_ID" property="guaranteeID"/>
+  	<result column="Guarantee_Type" property="guaranteeType"/>
+  	<result column="Guarantee_Certificate_Name" property="guaranteeCertificateName"/>
+  	<result column="Guarantee_URL" property="guaranteeURL"/>
+  	<result column="guaranteeTypeName" property="guaranteeTypeName"/>
+  </resultMap>
+  <!-- 根据担保机构id查询证件信息 -->
+  <select id="selectGuaranteeCertificate" resultMap="GuaranteeCertificate" parameterType="Map">
+  	select Guarantee_ID,Guarantee_Type,Guarantee_Certificate_Name,Guarantee_URL from Guarantee_Certificate 
+  	<where>
+  		Guarantee_ID = #{guaranteeID}
+  	</where>
+  </select>
+  
+  <!-- 添加担保机构证件 -->
+  <insert id="insertGuaranteeCertificate" parameterType="java.util.List">
+  	insert into Guarantee_Certificate(Guarantee_ID,Guarantee_Type,Guarantee_Certificate_Name,Guarantee_URL)
+  	values
+	  	<foreach collection="list" item="item" index="index"
+	  separator=",">
+	  ( #{item.guaranteeID}, #{item.guaranteeType}, #{item.guaranteeCertificateName},
+	  #{item.guaranteeURL})
+	  </foreach>
+  </insert>
+  <!-- 根据担保机构id删除所有证件信息 -->
+  <delete id="deleteGuaranteeCertificate">
+  	delete from Guarantee_Certificate 
+  	<where>
+  		Guarantee_ID=#{guaranteeID}
+  	</where>
+  </delete>
+  
+  
+  
+  <!-- 资产管理方信息 -->
+  <resultMap id="ManagementInfo" type="cn.springmvc.model.ManagementInfoEntity" >
+    <id column="Management_ID" property="managementID"/>
+    <result column="Personal_Id" property="personalID"/>
+    <result column="Management_NO" property="managementNO"/>
+    <result column="Management_Name" property="managementName"/>
+     <result column="Companye_BLN" property="companyeBLN"/>
+    <result column="Company_OC" property="companyOC"/>
+    <result column="Tax_RegNo" property="taxRegNo"/>
+    <result column="Establishments" property="establishments"/>
+    <result column="Company_Capital" property="companyCapital"/>
+    <result column="Company_Address" property="companyAddress"/>
+    <result column="Company_Source" property="companySource"/>
+    <result column="Company_Business" property="companyBusiness"/>
+    <result column="Company_Profile" property="companyProfile"/>
+    <result column="Contact_Name" property="contactName"/>
+    <result column="Contact_Phone" property="contactPhone"/>
+    <result column="Contact_Email" property="contactEmail"/>
+    <result column="Add_Time" property="cddTime"/>
+    <result column="Record_Status" property="recordStatus"/>
+    <result column="Delete_Flag" property="deleteFlag"/>
+  </resultMap>
+  
+  
+  <!-- 根据资产管理方id 查询资产管理方信息 -->
+  <select id="selectManagementInfoById" resultMap="ManagementInfo" parameterType="Map" >
+   	select * from Management_Info where Management_ID=#{managementID};
+  </select>
+  
+  <!-- 分页查询所有资产管理方信息 -->
+  <select id="selectAllManagementInfo" resultMap="ManagementInfo" parameterType="product_p2p.kit.pageselect.PageEntity">
+  	select * 
+  	from Management_Info 
+  	<where>
+  		<!-- 编号、资产管理方名称、营业执照号、联系人姓名、联系人手机号、状态 -->
+  		Delete_Flag=1
+  		<if test="map.managementNo!=null">and Management_NO like '%{map.managementNo}%'</if>
+  		<if test="map.managementName != null">and Management_Name like '%{map.managementName}%'</if>
+  		<if test="map.companyeBLN != null">and Companye_BLN like '%{map.companyeBLN}%'</if>
+  		<if test="map.contactName != null ">and Contact_Name like '%{map.contactName}%'</if>
+  		<if test="map.contactPhone !=null">and Contact_Phone like '%{map.contactPhone}%'</if>
+  		<if test="map.recordStatus != -1">and Record_Status=#{map.recordStatus}</if>
+  	</where>
+  	 order by Add_Time #{orderKey}
+  </select>
+  <!--根据资产管理方id 删除或启用停用资产管理方 -->
+  <update id="deleteOrStopManagementInfo" parameterType="Map">
+  		update Management_Info 
+  		<set>
+  			<if test="recordStatus != -1">
+  				Record_Status=#{recordStatus},
+  			</if>
+  			<if test="deleteFlag != -1">
+  				Delete_Flag=#{deleteFlag}
+  			</if>
+  		</set>
+  		<where>
+  			Management_ID=#{managementID}
+  		</where> 
+  </update>
+  
+  
+  
+  <!-- 添加或修改资产管理方信息 -->
+  <select id="handleManagementInfo" resultType="Map" statementType="CALLABLE">
+  <!--types 0:添加  1：修改 ;result 0:成功 -1：资产管理方名称存在 -2：营业执照号已存在-->
+  		<![CDATA[{call handleManagementInfo(
+				#{managementID,	 mode=IN,	jdbcType=INTEGER},
+				#{managementName,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyeBLN,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyOC,	 mode=IN,	jdbcType=VARCHAR},
+				#{taxRegNo,	 mode=IN,	jdbcType=VARCHAR},
+				#{establishments,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyCapital,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyAddress,	 mode=IN,	jdbcType=VARCHAR},
+				#{companySource,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyBusiness,	 mode=IN,	jdbcType=VARCHAR},
+				#{companyProfile,	 mode=IN,	jdbcType=INTEGER},
+				#{contactName,	 mode=IN,	jdbcType=VARCHAR},
+				#{contactPhone,	 mode=IN,	jdbcType=VARCHAR},
+				#{contactEmail,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalPhone,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalName,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalIDCard,	 mode=IN,	jdbcType=VARCHAR},
+				#{personalId,	 mode=IN,	jdbcType=INTEGER},
+				#{types,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER},
+    		)}
+    	]]>
+  </select>
+  
+  
+    
+  <!-- 资产管理方证件信息 -->
+  <resultMap id="ManagementCertificate" type="cn.springmvc.model.ManagementCertificateEntity" >
+  	<result column="Management_ID" property="managementID"/>
+  	<result column="Management_Type" property="managementType"/>
+  	<result column="Management_Certificate_Name" property="managementCertificateName"/>
+  	<result column="Management_URL" property="managementURL"/>
+  	<result column="managementTypeName" property="managementTypeName"/>
+  </resultMap>
+  <!-- 根据资产管理方id查询证件信息 -->
+  <select id="selectManagementCertificate" parameterType="Map">
+  	select Management_ID,Management_Type,Management_Certificate_Name,Management_URL
+  	 from Management_Certificate 
+  	<where>
+  		Management_ID = #{managementID}
+  	</where>
+  </select>
+  
+  <!-- 添加资产管理方证件 -->
+  <insert id="insertManagementCertificate" parameterType="java.util.List">
+  	insert into Management_Certificate(Management_ID,Management_Type,Management_Certificate_Name,Management_URL)
+  	values
+	  	<foreach collection="list" item="item" index="index"
+	  separator=",">
+	  ( #{item.managementID}, #{item.managementType}, #{item.managementCertificateName},
+	  #{item.managementURL})
+	  </foreach>
+  </insert>
+  <!-- 根据资产管理方id删除所有证件信息 -->
+  <delete id="deleteManagementCertificate">
+  	delete from Management_Certificate 
+  	<where>
+  		Management_ID=#{managementID}
+  	</where>
+  </delete>
+  
+  
+  
+  
+  
+  <!-- 担保机构担保借款范围 -->
+  <resultMap id="GuaranteeBorrowing" type="cn.springmvc.model.GuaranteeBorrowingEntity" >
+  	<result column="Guarantee_ID" property="guaranteeID"/>
+  	<result column="Min_Amount" property="minAmount"/>
+  	<result column="Max_Amount" property="maxAmount"/>
+  </resultMap>
+  <!-- 根据保荐机构id查询担保机构担保借款范围 -->
+  <select id="selectGuaranteeBorrowing" resultType="GuaranteeBorrowing" parameterType="Map">
+  	select Guarantee_ID,Min_Amount,Max_Amount
+  	 from Guarantee_Borrowing 
+  	<where>
+  		Guarantee_ID = #{guaranteeID}
+  	</where>
+  </select>
+   <!-- 添加担保机构担保借款范围 -->
+  <insert id="insertGuaranteeBorrowing" parameterType="Map">
+  	insert into Guarantee_Borrowing(Guarantee_ID,Min_Amount,Max_Amount)
+  		values(#{guaranteeID},#{minAmount},#{maxAmount})
+  </insert>
+   <!-- 根据保荐机构id修改担保机构担保借款范围 -->
+  <update id="updateGuaranteeBorrowingByID" parameterType="Map">
+  	update Guarantee_Borrowing
+  		<set>
+  			Min_Amount=#{minAmount},Max_Amount=#{maxAmount}
+  		</set>
+  		where Guarantee_ID=#{guaranteeID}
+  </update>
+  
+  
+  
+  
+  
+  <!-- 担保机构期限范围设置 -->
+  <resultMap id="GuaranteePeriod" type="cn.springmvc.model.GuaranteePeriodEntity" >
+  	<result column="Guarantee_ID" property="guaranteeID"/>
+  	<result column="Min_Deadline" property="minDeadline"/>
+  	<result column="Max_Deadline" property="maxDeadline"/>
+  	<result column="Deadline_Type" property="deadlineType"/>
+  </resultMap>
+  <!-- 根据保荐机构id,期限类型查询担保机构期限范围 -->
+  <select id="selectGuaranteePeriod" resultType="GuaranteePeriod" parameterType="Map">
+  	select Guarantee_ID,Min_Deadline,Max_Deadline,Deadline_Type
+  	 from Guarantee_Period 
+  	<where>
+  		Guarantee_ID = #{guaranteeID} and Deadline_Type=#{deadlineType}
+  	</where>
+  </select>
+   <!-- 添加担保机构期限范围 -->
+  <insert id="insertGuaranteePeriod" parameterType="Map">
+  	insert into Guarantee_Period(Guarantee_ID,Min_Deadline,Max_Deadline,Deadline_Type)
+  		values(#{guaranteeID},#{minDeadline},#{maxDeadline},#{deadlineType})
+  </insert>
+   <!-- 根据保荐机构id,期限类型修改担保机构担保借款范围 -->
+  <update id="updateGuaranteePeriodByID" parameterType="Map">
+  	update Guarantee_Period
+  		<set>
+  			Min_Deadline=#{minDeadline},Max_Deadline=#{maxDeadline}
+  		</set>
+  		where Guarantee_ID=#{guaranteeID} and Deadline_Type=#{deadlineType}
+  </update>
+  
+  
+  
+  <!-- 担保机构担保项目类型设置 -->
+  <resultMap id="GuaranteeRelational" type="cn.springmvc.model.GuaranteeRelationalEntity" >
+  	<result column="Guarantee_ID" property="guaranteeID"/>
+  	<result column="Project_ID" property="projectID"/>
+  	<result column="Project_Name" property="projectName"/>
+  </resultMap>
+  <!-- 根据保荐机构id,查询担保项目类型 -->
+  <select id="selectGuaranteeRelational" resultType="GuaranteeRelational" parameterType="Map">
+  	select gr.Guarantee_ID,gr.Project_ID,pi.Project_Name
+  	 from Guarantee_Relational gr left join ProjectBaseInfo pi on pi.Project_ID=gr.Project_ID 
+  	<where>
+  		gr.Guarantee_ID = #{guaranteeID}
+  	</where>
+  </select>
+   <!-- 添加担保机构担保类型 -->
+  <insert id="insertGuaranteeRelational" parameterType="java.util.List">
+  	insert into Guarantee_Relational(Guarantee_ID,Project_ID)
+  		values
+  		<foreach collection="list" item="item" index="index"
+	  separator=",">
+	  ( #{item.guaranteeID}, #{item.projectID}})
+	  </foreach>
+  </insert>
+   <!-- 根据担保机构id删除担保机构担保类型 -->
+  <delete id="deleteGuaranteeRelationalByID" parameterType="Map">
+  	delete from Guarantee_Period
+  		where Guarantee_ID=#{guaranteeID}
+  </delete>
+  
+</mapper>

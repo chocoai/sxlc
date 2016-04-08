@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="memberAttestType">  
+   <resultMap type="cn.springmvc.model.MemberAttestTypeEntity" id="resultListMemberAttestType">
+        <id column="ID" property="id" />
+		<result column="Member_Type" property="memberType" />
+		<result column="Attest_TypeName" property="attestTypeName" />
+		<result column="Attach_Type" property="attachType" />
+		<result column="Picture_Url" property="pictureUrl" />
+		<result column="Need_Check" property="needCheck" />
+		<result column="Can_More" property="canMore" />
+		<result column="Type_Cure" property="typeCure" />
+		<result column="Credit_Score" property="creditScore" />
+		<result column="Statu" property="statu" />
+		<result column="Opt_Date" property="optDate" />
+		<result column="Opt_Id" property="optId" /> 
+		<result column="adminName" property="adminName" />
+    </resultMap> 
+    <!-- 分页查询会员认证类型列表 -->  
+	<select id="selectMemberAttestTypeList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListMemberAttestType">
+	   select mat.ID,mat.Member_Type,mat.Attest_TypeName,mat.Attach_Type,mat.Picture_Url,mat.Need_Check,
+	   mat.Can_More,mat.Can_More,mat.Type_Cure,mat.Credit_Score,mat.Statu,mat.Opt_Date,mat.Opt_Id, a.adminName 
+	   from  Member_Attest_Type mat
+	   LEFT JOIN Admin a on a.ID=mat.Opt_Id
+           <where>  
+	            <if test="map.mngName != null">  
+	                mat.Attest_TypeName like  '%{map.attestTypeName}%'  
+	            </if>   
+	            <if test="map.statu != -1">  
+	                and mat.Statu=#{map.statu}
+	            </if>   
+           </where>  
+    </select>       
+	<!-- 新增会员认证类型 -->  
+	<insert id="insertMemberAttestType"  parameterType="cn.springmvc.model.MemberAttestTypeEntity">    
+		insert into Member_Attest_Type
+		   (ID,  Member_Type, Attest_TypeName,  Attach_Type,  Picture_Url,  Need_Check,  Can_More,  Type_Cure, Opt_Id) 
+		values     
+		(#{id},#{memberType},#{attestTypeName},#{attachType},#{pictureUrl},#{needCheck},#{canMore},#{typeCure},#{optId})    
+	</insert> 
+	<!-- 查询会员认证类型是否存在 -->  
+	<select id="selectMemberAttestTypeIsExistByNAme"  parameterType="cn.springmvc.model.MemberAttestTypeEntity" resultType="cn.springmvc.model.MemberAttestTypeEntity" >
+	   select ID from  Member_Attest_Type where  Attest_TypeName=#{attestTypeName} and ID!=#{id} 
+    </select> 
+    <!-- 修改会员认证类型信息 -->  
+	<update id="updateMemberAttestTypeByID"  parameterType="cn.springmvc.model.MemberAttestTypeEntity">
+	   update  Member_Attest_Type 
+	   <set>
+	       <if test="memberType != 0" >
+	         Member_Type=#{memberType},
+	       </if> 
+	       <if test="attestTypeName != null" >
+	         Attest_TypeName=#{attestTypeName},
+	       </if> 
+	       <if test="attachType != null" >
+	         Attach_Type=#{attachType},
+	       </if> 
+	       <if test="pictureUrl != null" >
+	         Picture_Url=#{pictureUrl},
+	       </if>  
+	       <if test="needCheck != 0" >
+	         Need_Check=#{needCheck},
+	       </if>  
+	       <if test="canMore != 0" >
+	         Can_More=#{canMore},
+	       </if>  
+	       <if test="typeCure != 0" >
+	         Type_Cure=#{typeCure},
+	       </if>   
+	        <if test="optIds != 0" >
+	          Opt_Id=#{optId},
+	        </if>  
+	          Opt_Date=now(), 
+	       </set>
+	   where ID=#{id}   
+    </update>   
+    <!-- 删除会员认证类型信息 -->  
+	<delete id="deleteMemberAttestTypeByID"  parameterType="int">
+	   delete from  Member_Attest_Type where ID=#{id}   
+    </delete>    
+     <!-- 停用或启用会员认证类型 -->  
+	<update id="updateMemberAttestTypeStatuByID"  parameterType="cn.springmvc.model.MemberAttestTypeEntity">
+	   update  Member_Attest_Type  set   Statu=#{statu} where ID=#{id}   
+    </update>  
+    <!-- 根据id查询会员认证类型列表 -->  
+	<select id="selectMemberAttestentity" parameterType="int"  resultMap="resultListMemberAttestType">
+	   select mat.ID,mat.Member_Type,mat.Attest_TypeName,mat.Attach_Type,mat.Picture_Url,mat.Need_Check,
+	   mat.Can_More,mat.Can_More,mat.Type_Cure,mat.Credit_Score,mat.Statu,mat.Opt_Date,mat.Opt_Id
+	   from  Member_Attest_Type mat where ID=#{id}   
+    </select>              
+</mapper>   

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="memberTradingRecordsMap">
+         <!--     会员交易记录实体 -->
+     <resultMap type="cn.membermng.model.MemberTradingRecordsEntity" id="resultMemberTradingRecords">
+        <id column="Trade_ID" 								property="tradeID" />
+		<result column="Member_Type" 						property="memberType" />
+		<result column="Member_ID" 							property="memberID" /> 
+		<result column="Trade_Type_Id" 						property="tradeTypeId" />
+		<result column="tradeType" 						    property="tradeType" />
+		<result column="Project_ID" 						property="projectID" /> 
+		<result column="Abstract" 			   			    property="abstracts" /> 
+		<result column="Get_Pay" 							property="getPay" /> 
+		<result column="Amount" 	    					property="amount" /> 
+		<result column="Mng_Fee" 							property="mngFee" />
+		<result column="Third_Mng_Fee" 						property="thirdMngFee" /> 
+		<result column="Gift_Amount" 						property="giftAmount" />
+		<result column="Redpackets_Amount" 					property="redpacketsAmount" /> 
+		<result column="Record_Date" 			    		property="recordDate" /> 
+		<result column="Record_No" 							property="recordNo" /> 
+		<result column="Mer_BillNo" 	    				property="merBillNo" /> 
+		<result column="Statistics_Amount" 					property="statisticsAmount" />
+		<result column="Statistics_Frozen_Amount" 			property="statisticsFrozenAmount" /> 
+		<result column="Statistics_Gift_Amount" 		    property="statisticsGiftAmount" />
+		<result column="Statistics_GiftFrozen_Amount" 		property="statisticsGiftFrozenAmount" /> 
+		<result column="Deal_Statu" 			            property="dealStatu" /> 
+		<result column="Deal_Date" 							property="dealDate" /> 
+		<result column="Account_Deal_Statu" 	    		property="accountDealStatu" /> 
+		<result column="Trade_Object_Type" 					property="tradeObjectType" />
+		<result column="Trade_Object_Id" 					property="tradeObjectId" /> 
+		<result column="Statu" 								property="statu" />  
+		
+		<result column="WillRec_Principal" 	    		    property="willRecPrincipal" /> 
+		<result column="WillRec_Interest" 					property="willRecInterest" />
+		<result column="WillPay_Principal" 					property="willPayPrincipal" /> 
+		<result column="WillPay_Interest" 					property="willPayInterest" />  
+		<result column="WillPay_OverdueInterest" 	    	property="willPayOverdueInterest" /> 
+		<result column="WillPay_Overdue" 					property="willPayOverdue" />
+		
+		<result column="User_Balance" 						property="userBalance" />
+		<result column="Frozen_Balance" 					property="frozenBalance" />
+		<result column="User_Gift" 							property="userGift" />
+		<result column="Frozen_Gift" 						property="frozenGift" /> 
+		<result column="membername"                         property="membername" /> 
+		<result column="City_Name"                          property="cityName" />   
+		<result column="Province_Name"                      property="provinceName" /> 
+		<result column="totalAmount"                        property="totalAmount" /> 
+    </resultMap>
+      <!--            会员充值提现记录实体 -->
+    <resultMap type="cn.membermng.model.MemberWithdrawalRechargeEntity" id="resultMemberWithdrawalRecharge">
+        <id column="Trade_ID" 				 property="rechargeID" />
+		<result column="Third_Trade_Id" 	 property="thirdTradeId" />
+		<result column="Deal_Type" 			 property="dealType" /> 
+		<result column="Withdrawal_ID" 		 property="withdrawalID" />
+		<result column="Member_Type" 		 property="memberType" />
+		<result column="Member_ID" 			 property="memberID" /> 
+		<result column="Mer_Billno" 		 property="merBillno" /> 
+		<result column="Third_Mer_Billno" 	 property="thirdMerBillno" /> 
+		<result column="Withdrawal_Money" 	 property="withdrawalMoney" /> 
+		<result column="Mng_Fee" 			 property="mngFee" />
+		<result column="Third_Mng_Fee" 		 property="thirdMngFee" /> 
+		<result column="Mng_Fee_Repay" 		 property="mngFeeRepay" />
+		<result column="Real_Money" 		 property="realMoney" /> 
+		<result column="Receive_Date" 		 property="receiveDate" /> 
+		<result column="Receive_Card" 		 property="receiveCard" /> 
+		<result column="Statu" 	    		 property="statu" />   
+		<result column="Remark" 			 property="remark" /> 
+		<result column="totalfee" 			 property="totalfee" />  
+		<result column="bankName" 			 property="bankName" /> 
+		<result column="checkstatu" 	     property="checkstatu" /> 
+    </resultMap>  
+</mapper>   

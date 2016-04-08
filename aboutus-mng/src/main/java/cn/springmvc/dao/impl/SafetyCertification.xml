@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD footNavBar 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="safetyCertification">
+    <resultMap type="cn.springmvc.model.SafetyCertificationEntity" id="resultListSafetyCertification">
+        <id column="ID" property="id" /> 
+		<result column="Title" property="title" /> 
+		<result column="Logo" property="logo" />
+		<result column="URL" property="url" />
+		<result column="Statu" property="statu" />
+		<result column="CreateTime" property="createTime" />
+		<result column="Opt_Date" property="optDate" />
+		<result column="Opt_Id" property="optId" />
+		<result column="adminName" property="adminName" /> 
+    </resultMap> 
+	<!-- 分页查询底部网站认证-->  
+	<select id="selectSafetyCertificationList"  resultMap="resultListSafetyCertification" parameterType="product_p2p.kit.pageselect.PageEntity" >
+	    select fNB.ID,fNB.Title,fNB.URL,fNB.Statu ,
+	    fNB.CreateTime,fNB.Opt_Date,fNB.Opt_Id,a.adminName 
+	    from   Safety_Certification  fNB 
+		LEFT JOIN Admin a on a.ID=fNB.Opt_Id
+        <where>  
+            <if test="map.title != null">  
+                Title like  '%{map.title}%'  
+            </if>  
+            <if test="map.statu != -1">  
+                and fNB.Statu=#{map.statu}
+            </if> 
+        </where>  
+    </select> 
+    <!-- 新增底部网站认证-->  
+	<insert id="insertSafetyCertification"  parameterType="cn.springmvc.model.SafetyCertificationEntity" >    
+		insert into 
+		Safety_Certification( ID,   Logo,    Title,    URL, Opt_Id) 
+		             values (#{id},#{logo} ,#{title},#{url},#{optId})    
+	</insert> 
+	<!-- 查询该标题的底部网站认证是否存在 -->  
+	<select id="selectSafetyCertificationIsExistByNAme"  parameterType="cn.springmvc.model.SafetyCertificationEntity" resultMap="resultListSafetyCertification" >
+	   select ID from  Safety_Certification where  Title=#{title} and ID != #{id}  
+    </select> 
+    <!-- 修改底部网站认证-->  
+	<update id="updateSafetyCertificationByID"  parameterType="cn.springmvc.model.SafetyCertificationEntity">
+	   update  Safety_Certification   
+	    <set>
+		   <if test="title != null" >
+	        Title=#{title},
+	       </if> 
+	       <if test="url != null" >
+	        URL=#{url},
+	       </if> 
+	       <if test="optId != 0" >
+	       Opt_Id=#{optId},
+	       </if> 
+	       <if test="logo != null" >
+	         Logo=#{logo},
+	       </if> 
+	       Opt_Date=now() 
+	       </set>   
+	   where ID=#{id}   
+    </update>   
+    <!-- 删除底部网站认证-->  
+	<delete id="deleteSafetyCertificationByID"  parameterType="int">
+	   delete from  Safety_Certification where ID=#{id}   
+    </delete> 
+    
+     <!-- 停用或启用底部网站认证-->  
+	<update id="updateSafetyCertificationStatuByID"  parameterType="cn.springmvc.model.SafetyCertificationEntity">
+	   update  Safety_Certification  set   Statu=#{statu} where ID=#{id}   
+    </update>  
+    <!-- 根据id查询底部网站认证-->  
+	<select id="selectSafetyCertificationByID"  resultMap="resultListSafetyCertification" parameterType="int" >
+	    select fNB.ID,fNB.Title,fNB.URL,fNB.Statu ,
+	    fNB.CreateTime,fNB.Opt_Date,fNB.Opt_Id 
+	    from   Safety_Certification  fNB  wehre fNB.ID= #{id}
+    </select> 
+    
+    <!-- 前台查询底部网站认证-->  
+	<select id="selectSafetyCertificationfront"  resultMap="resultListSafetyCertification" >
+	    select fNB.ID,fNB.Title,fNB.URL,fNB.Statu ,
+	    fNB.CreateTime,fNB.Opt_Date,fNB.Opt_Id 
+	    from   Safety_Certification  fNB 
+	    where  fNB.Statu =1 
+    </select>      
+</mapper>

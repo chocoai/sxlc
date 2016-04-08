@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="CommissionIssuedMap"> 
+     <!--                提奖记录 -->
+    <resultMap type = "cn.invitemastermng.model.AwardRecordEntity" id = "Award">
+        <result property = "personalName"			column = "Personal_Name" />
+		<result property = "logname"       	        column = "Logname" />
+		<result property = "personalPhone"    	    column = "Personal_Phone" />
+		<result property = "personalIDCard"  	    column = "Personal_IDCard" />
+		<result property = "awardAmountBorrowing" 	column = "Award_Amount_Borrowing" />  
+		<result property = "awardAmountInvest"      column = "Award_Amount_Invest" />
+		<result property = "awardAmountVIP"    	    column = "Award_Amount_VIP" />
+		<result property = "awardAmountRepay"  	    column = "Award_Amount_Repay" />
+		<result property = "awardAmount" 	        column = "Award_Amount" /> 
+		<result property = "Statu" 	                column = "Statu" /> 
+    </resultMap>  
+    <!--           借款明细 -->
+     <resultMap type = "cn.invitemastermng.model.BorrowingDetailedEntity" id = "Borrowing">
+        <result property = "projectTitle"			column = "Project_Title" />
+		<result property = "amount"       	        column = "Amount" />
+		<result property = "deadline"    	        column = "Deadline" />
+		<result property = "name1"  	            column = "name1" />
+		<result property = "yearRate" 	            column = "Year_Rate" />  
+		<result property = "logname"                column = "Logname" />
+		<result property = "personalName"    	    column = "Personal_Name" />
+		<result property = "holdDate"  	            column = "Hold_Date" /> 
+    </resultMap>  
+     <!--           投资明细 -->
+     <resultMap type = "cn.invitemastermng.model.InvestDetailedEntity" id = "Invest">
+        <result property = "projectTitle"			column = "Project_Title" />
+		<result property = "investAmountValid"      column = "Invest_Amount_Valid" />
+		<result property = "logname"    	        column = "Logname" />
+		<result property = "personalName"  	        column = "Personal_Name" />
+		<result property = "sdRecvPrincipal" 	    column = "SDRecv_Principal" />  
+		<result property = "sdRecvInterest"         column = "SDRecv_Interest" />
+		<result property = "holdDate"    	        column = "Hold_Date" /> 
+    </resultMap>  
+     <!--           VIP购买明细 -->
+     <resultMap type = "cn.invitemastermng.model.BayVIPEntity" id = "BayVIP">
+        <result property = "logname"			    column = "Logname" />
+		<result property = "personalName"           column = "Personal_Name" />
+		<result property = "certifySDate"    	    column = "Certify_SDate" />
+		<result property = "certifyEDate"  	        column = "Certify_EDate" />
+		<result property = "amount" 	            column = "Amount" />  
+		<result property = "recordDate"             column = "Record_Date" /> 
+    </resultMap>  
+     <!--           佣金发放记录 -->
+     <resultMap type = "cn.invitemastermng.model.AwardPaymentRecordEntity" id = "AwardRecord">
+        <result property = "personalName"			    column = "Personal_Name" />
+		<result property = "logname"           column = "Logname" />
+		<result property = "personalPhone"    	    column = "Personal_Phone" />
+		<result property = "personalIDCard"  	        column = "Personal_IDCard" />
+		<result property = "startDate" 	            column = "Start_Date" />  
+		<result property = "endDate"             column = "End_Date" /> 
+		
+		<result property = "borrowAward"			    column = "Borrow_Award" />
+		<result property = "investAward"           column = "Invest_Award" />
+		<result property = "vipAward"    	    column = "Vip_Award" />
+		<result property = "repayAward"  	        column = "Repay_Award" />
+		<result property = "awardAmount" 	            column = "Award_Amount" />  
+		<result property = "realAmount"             column = "Real_Amount" /> 
+		<result property = "payDate"             column = "Pay_Date" /> 
+    </resultMap>  
+</mapper>

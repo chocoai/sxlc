@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="projectTypeDatum">  
+   <resultMap type="cn.springmvc.model.ProjectTypeDatumEntity" id="resultListProjectTypeDatum"> 
+		<result column="Project_Type" property="projectType" />
+		<result column="Attest_Type" property="attestType" />
+		<result column="Attest_Type_ID" property="attestTypeID" /> 
+    </resultMap> 
+    <!-- 项目类型申请条件-->  
+	<select id="selectProjectTypeDatumList"  parameterType="cn.springmvc.model.ProjectTypeDatumEntity" resultMap="resultListProjectTypeDatum">
+	   select Project_Type,Attest_Type,Attest_Type_ID  from Project_Type_Datum  
+	   <where>  
+            Project_Type=#{projectType}  
+            <if test="attestType != -1">  
+                and Attest_Type=#{attestType}
+            </if>   
+       </where>  
+    </select>       
+	<!-- 批量新增借款项目类型申请条件-->  
+	<insert id="insertProjectTypeDatum"  parameterType="java.util.List">    
+		insert into Project_Type_Datum (Project_Type,Attest_Type,Attest_Type_ID) 
+		values 
+	   <foreach collection="list" item="item" index="index" separator="," >  
+         (#{item.projectType},#{item.attestType},#{item.attestTypeID})  
+       </foreach>     
+	</insert>   
+    <!-- 批量修改借款项目类型申请条件状态-->  
+	<delete id="deleteProjectTypeDatumByOptionType"  parameterType="int">
+	    delete from   Project_Type_Datum  where  Project_Type=#{projectType} 
+    </delete>        
+</mapper>   

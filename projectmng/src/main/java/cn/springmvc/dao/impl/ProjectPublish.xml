@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="projectPublish">
+  <resultMap type = "cn.springmvc.model.ProjectAppProcessEntity" id = "resultProjectAppProcess">
+     <id property = "projectID"				column = "Project_ID" />
+     <result property = "recordDate"       	column = "Record_Date" />
+     <result property = "releaseDate"       column = "Release_Date" />
+     <result property = "startDate"       	column = "Start_Date" />
+     <result property = "endDate"       	column = "End_Date" />
+     <result property = "realEndDate"       column = "Real_End_Date" />
+     <result property = "holdDate"       	column = "Hold_Date" />
+     <result property = "proEndDate"       	column = "ProEnd_Date" />
+     <association property="projectAppRecordEntity" 	resultMap="resultProjectDetail"/>
+ </resultMap>
+ <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetail">
+        <id property = "ID"						column = "Apply_Id" />
+		<result property = "memberID"       	column = "Member_ID" />
+		<result property = "projectType"    	column = "Project_Type" />
+		<result property = "projectBaseID"  	column = "Project_Base_ID" />
+		<result property = "repayGuarantee" 	column = "Repay_Guarantee" />
+		<result property = "guarantyDescribe"   column = "Guaranty_Describe" />
+		<result property = "minStart" 			column = "MinStart" />
+		<result property = "increaseRange" 		column = "Increase_Range" />
+		<result property = "investMax" 			column = "Invest_Max" />
+		<result property = "checkStatu" 		column = "Check_Statu" />
+		<result property = "publishStatu" 		column = "Publish_Statu" />  
+		<result property = "investStatu" 		column = "Invest_Statu" />
+		<result property = "isDirect" 			column = "Is_Direct" />
+		<result property = "directPwd"		    column = "Direct_Pwd" />  
+        <result property = "assetManagerID" 	column = "Asset_Manager_ID" />
+		<result property = "guaranteeID" 		column = "Guarantee_ID" />
+		<result property = "rateAddRate" 		column = "Rate_Add_Rate" /> 
+		<result property = "rewardRate" 		column = "Reward_Rate" />
+		<result property = "rewardIcon" 		column = "Reward_Icon" /> 
+		<result property = "investCountMax" 	column = "Invest_Count_Max" />
+		<result property = "projectNo" 			column = "Project_No" /> 
+      	<result property = "merBillNo" 			column = "Mer_BillNo" /> 
+        <result property = "investRate" 		column = "Invest_Rate" />
+         <result property = "logname" 		    column = "Logname" />  
+        <result property = "memberType" 		column = "Member_Type" />  
+        <result property = "companyID" 		    column = "Company_ID" />
+        <result property = "personalID" 		column = "Personal_ID" />  
+        <result property = "memberNo" 		    column = "Member_No" />   
+        <result property = "personalName" 		column = "Personal_Name" />  
+        <result property = "compangName" 		column = "Compang_Name" />
+        <result property = "memberName" 		column = "memberName" />       
+        <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
+	    </association>
+    </resultMap> 
+    <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
+            <id property = "ID" 				 column = "id" />
+			<result property = "projectTitle"    column = "Project_Title" /> 
+			<result property = "uses"            column = "Uses" />
+			<result property = "repaySource"     column = "Repay_Source" />
+			<result property = "amount" 		 column = "Amount" />
+			<result property = "projectDescript" column = "Project_Descript" />
+			<result property = "deadline" 		 column = "Deadline" />
+			<result property = "deadlineType"    column = "Deadline_Type" />
+			<result property = "repayWay"        column = "Repay_Way" />
+			<result property = "yearRate"        column = "Year_Rate" /> 
+     </resultMap>
+    <!-- 根据项目申请ID查询发布项目列表 -->  
+	<select id="selectProjectPublishList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectAppProcess" >
+	   select pbi.Project_Title,pap.Release_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,pap.Record_Date,par.Project_ID,
+	   pty.Project_Name,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,pbi.Repay_Way,par.Invest_Statu,
+	   pbi.Amount, par.Project_Base_ID, replayway.name1,par.Check_Statu,par.Invest_Max,
+	   par.MinStart,par.Increase_Range,mi.Company_ID,mi.Personal_ID,
+	   CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.keys})) using utf8) Personal_Name,
+	   CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) Compang_Name, 
+	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.keys})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
+            as memberName
+	   from  Project_App_Process pap 
+	   left join Project_App_Record par on  pap.Apply_Id=par.Apply_Id  
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
+	   left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
+	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
+	   left join Member_Info mi on mi.Member_ID = par.Member_ID   
+	    left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id 
+	   left join Company_Info  ci  on ci.Company_ID=mi.Company_ID
+	    <where>  
+          and par.Publish_Statu=1
+	     <if test = "map.ProjectTitle !=  null"> 
+	       and pbi.Project_Title like '%${map.ProjectTitle}%'
+	     </if>
+	     <if test = "map.Logname !=  null"> 
+	        and mi.Logname like '%${map.Logname}%'
+	     </if>
+         <if test = "map.startTime !=  null"> 
+	       and pap.Record_Date > #{map.startTime} 
+	     </if>
+	     <if test = "map.endTime !=  null"> 
+	       and  #{map.endTime} > pap.Record_Date 
+	     </if>
+	      <if test = "map.pushstartTime !=  null"> 
+	       and pap.Release_Date > #{map.pushstartTime} 
+	     </if>
+	     <if test = "map.pushendTime !=  null"> 
+	       and  #{map.pushendTime} > pap.Release_Date 
+	     </if>
+	     <if test = "map.name !=  null"> 
+	       and ( mi.Company_ID in ( select Company_ID from Company_Info where Compang_Name like '%{map.name}%') 
+	       or mi.Personal_ID in (select Personal_Id from Personal_Base_Info where Personal_Name like  '%{map.name}%' )
+	       )
+	     </if> 
+	       <if test = "map.investStatu !=  -1"> 
+	       and par.Invest_Statu = #{map.investStatu}
+	       </if>
+	    </where> 
+	      <if test = "map.order ==  1"> 
+	        order by  pbi.Amount
+	      </if>
+	       <if test = "map.order ==  2"> 
+	        order by  pap.Release_Date
+	      </if>
+    </select>
+    
+    
+     <!-- 根据项目申请ID查询借款项目详情  resultProjectCheckRecord-->  
+	<select id="selectProjectdetail"  parameterType="int" resultMap="resultProjectAppProcess" >
+	   select par.Apply_Id, pap.Record_Date,par.Project_No,mi.Logname,mi.Member_Type,pbi.Project_Title,par.Project_ID,
+	   pty.Project_Name,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,pbi.Repay_Way,par.Invest_Statu,
+	   pbi.Amount, par.Project_Base_ID,replayway.name1,par.Check_Statu
+	   from  Project_App_Process pap 
+	   left join Project_App_Record par on  pap.Apply_Id=par.Apply_Id  
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
+	   left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
+	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
+	   left join Member_Info mi on mi.Member_ID = par.Member_ID  
+	   where  par.Apply_Id=#{ID}
+    </select>
+    <!-- 批量新增审核形象图-->  
+	<insert id="insertProjectImage"  parameterType="java.util.List">    
+		insert into Project_Image (Apply_Id,Image_Index,Image_Url) 
+		values 
+	   <foreach collection="list" item="item" index="index" separator="," >  
+         (#{item.applyId},#{item.imageIndex},#{item.imageUrl})   
+       </foreach>     
+	</insert> 
+     <!-- 	     查询借款结束日期 -->
+	  <select id="selectProjectEndtime" resultMap="resultProjectAppProcess" parameterType="long">
+         select Apply_Id,End_Date
+         from  Project_App_Process 
+         where Apply_Id=#{applyId}
+       </select>
+        <!--  修改借款结束时间 -->
+        <update id="updateEndDate" parameterType="cn.springmvc.model.ProjectAppProcessEntity">
+          update  Project_App_Process set  End_Date= #{endDate}  
+          where   Apply_Id=#{projectID} 
+         </update> 
+        <!--  查询项目形象图  -->
+       <select id="selectProjectImage" resultType="cn.springmvc.model.ProjectImageEntity" parameterType="long">
+         select Apply_Id as applyId,Image_Index as imageIndex,Image_Url as imageUrl
+         from  Project_Check_Attach
+         where Apply_Id=#{applyId}
+       </select>
+      
+       <!-- 项目发布-->  
+    <select id="publish"  statementType="CALLABLE" parameterType="Map"> 
+	     {call projectPublish(
+				#{ApplyId ,	     mode=IN,	jdbcType=BIGINT},
+				#{Indexs ,	     mode=IN,	jdbcType=INTEGER},
+				#{checkStatu,	 mode=IN,	jdbcType=INTEGER},
+				#{CheckRemark,	 mode=IN,	jdbcType=VARCHAR},
+				#{adminID,	     mode=IN,	jdbcType=INTEGER},
+				#{checkid,	     mode=IN,	jdbcType=INTEGER},
+				#{startDate,	 mode=IN,	jdbcType=VARCHAR},
+				#{endDate,	     mode=IN,	jdbcType=VARCHAR},
+				#{ProcessID,	 mode=IN,	jdbcType=INTEGER},
+				#{sIndexs ,	     mode=IN,	jdbcType=INTEGER},
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)} 
+	</select>
+</mapper>

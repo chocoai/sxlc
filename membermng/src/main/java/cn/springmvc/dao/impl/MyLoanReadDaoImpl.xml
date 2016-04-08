@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="myLoanReadDaoImpl">  
+   
+   <!-- 融资中 -->
+   <select id="financings" parameterType="Map" resultType="cn.membermng.model.Financing">
+   	select 
+   	
+   	par.Apply_Id as loanId, par.Project_No as projectNo,pbi.Project_Title as projectName,
+   	prbi.Project_Name as projectTypeName,pbi.Deadline,pbi.Deadline_Type as projectType,pbi.Amount as amount,
+   	pbi.Year_Rate as sYearRate,pap.Release_Date as releaseTime ,pap.Start_Date as startTime ,
+   	pap.End_Date as endTime,par.Invest_Rate as investRate
+   	
+	from Project_App_Record par 
+	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+	left join ProjectBaseInfo prbi on par.Project_ID = prbi.Project_ID
+	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+	where par.Member_ID = #{memberId} and par.Check_Statu = 1 and par.Publish_Statu = 2 and par.Invest_Statu = 0
+   </select>
+   
+   <!-- 融资结束 -->
+   <select id="endOfFinancing" parameterType="Map" resultType="cn.membermng.model.Financing">
+   	select 
+   	
+   	par.Apply_Id as loanId, par.Project_No as projectNo,pbi.Project_Title as projectName,
+   	prbi.Project_Name as projectTypeName,pbi.Deadline,pbi.Deadline_Type as projectType,
+   	pbi.Amount as amount,pbi.Year_Rate as sYearRate,pap.Release_Date as releaseTime ,
+   	pap.Start_Date as startTime ,pap.End_Date as endTime,par.Invest_Rate as investRate,
+   	pap.Real_End_Date as realEndDate
+   	
+	from Project_App_Record par 
+	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+	left join ProjectBaseInfo prbi on par.Project_ID = prbi.Project_ID
+	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+	where par.Member_ID = #{memberId}  and par.Invest_Statu = 2
+   </select>
+   
+   <!-- 还款中的借款 -->
+   <select id="repaymentIns" parameterType="Map" resultType="cn.membermng.model.RepaymentIn">
+   	select par.Project_No as projectNo,pbi.Project_Title as projectName,pbi.Amount,
+	(select sum(Invest_Amount) from Invest_Record where Apply_Id = par.Apply_Id and IsValid = 0) as sjAmount,
+	pbi.Year_Rate as yearRate, pap.End_Date as endTime, pap.Hold_Date as startTime,
+	(select sum(Repay_Principal) from Loan_Real_Repay where Apply_Id = par.Apply_Id) as sReturnedRrincipal,
+	(select sum(Repay_Interest) from Loan_Real_Repay where Apply_Id = par.Apply_Id) as sInterestPaid,
+	(select Repay_MaxTime from Loan_Repay where Apply_Id = par.Apply_Id and Statu in (0,1) order by Repay_MaxTime asc limit 0,1) as releaseTime,
+	(select SDRepay_Principal from Loan_Repay where Apply_Id = par.Apply_Id and Statu in (0,1) order by Repay_MaxTime asc limit 0,1) as nextTeturnedRrincipal,
+	(select SDRepay_Interest from Loan_Repay where Apply_Id = par.Apply_Id and Statu in (0,1) order by Repay_MaxTime asc limit 0,1) as nextInterestPaid
+	from Project_App_Record par
+	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+	where par.Member_ID = #{memberId}  and par.Invest_Statu = 3
+   </select>
+   
+   <!-- 投资记录 -->
+   <select id="investRecord"	parameterType="Map" resultType="cn.membermng.model.InvestmentRecord">
+   	select ir.Invest_Date as investDate,mi.logname as memberName ,pbi.personal_name as userName,ir.Invest_Amount as investmentAmount
+	from Invest_Record ir
+	left join member_info mi on mi.member_id = ir.Member_ID
+	left join personal_base_info pbi on pbi.personal_id = mi.personal_id
+	where Apply_Id = #{applyId} and IsValid = 0
+   </select>
+   
+   <!-- 还款计划查询 -->
+   <select id="loanRepay"	parameterType="Map" resultType="cn.membermng.model.LoanRepay">
+	select lr.Repay_ID as lid,lr.indexs,lr.SDRepay_Principal as loanAmount,lr.SDRepay_Interest as loanInterest,lr.Repay_MaxTime as loanTime,
+	lr.Statu as statu,lr.IsCompensatory as isCompensatory,
+	(select sum(Repay_Principal) from Loan_Real_Repay lrr where lrr.Loa_Repay_ID =lr.Repay_ID) as paidAmount,
+	(select sum(Repay_Interest) from Loan_Real_Repay lrr where lrr.Loa_Repay_ID =lr.Repay_ID) as paidInterest,
+	(select sum(Repay_Overdue_Interest) from Loan_Real_Repay lrr where lrr.Loa_Repay_ID =lr.Repay_ID) as paidOverdueInterest,
+	(select sum(Repay_Overdue) from Loan_Real_Repay lrr where lrr.Loa_Repay_ID =lr.Repay_ID) as paidOberdueFine 
+	from Loan_Repay lr where Apply_Id = #{applyId} and IsValid = 0
+   </select>
+   
+   
+   <!-- 已流标 -->
+   <select id="flowLabelS" parameterType="Map" resultType="cn.membermng.model.FlowLabel">
+   	select 
+	par.Apply_Id as loanId, 
+	par.Project_No as projectNo, 
+	par.Project_ID as projectType,
+	prbi.Project_Name as projectTypeName,
+	pbi.Deadline as deadline,
+	pbi.Deadline_Type as deadlineType,
+	pbi.Amount as amount,
+	prbi.Min_Amount as minAmount,
+	par.Invest_Rate as investRate,
+	pap.Release_Date as releaseTime,
+	pap.Start_Date as startTime,
+	pap.End_Date as endTime,
+	pbi.Year_Rate as yearRate,
+	pap.Hold_Date as holdDate
+	from Project_App_Record par 
+	left join ProjectBaseInfo prbi on prbi.Project_ID = par.Project_ID
+	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+	where par.Invest_Statu = 1 and par.Member_ID = #{memberId}
+   </select>
+   
+   
+   
+   
+   
+</mapper>

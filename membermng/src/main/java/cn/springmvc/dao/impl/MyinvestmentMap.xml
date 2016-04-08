@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="MyInvestMap">
+     <!--     我的投资 -->
+     <resultMap type="cn.membermng.model.MyinvestEntity" id="resultMyInvest">
+        <id column="Invest_Id" 				     property="investId" />
+		<result column="Project_Title" 			 property="projectTitle" />
+		<result column="Project_No" 		     property="projectNo" /> 
+		<result column="membername" 		     property="membername" /> 
+		<result column="Invest_Amount" 			 property="investAmount" />
+		<result column="remianindex" 			 property="remianindex" /> 
+		<result column="remaimPrincipal" 		 property="remaimPrincipal" />
+		<result column="remaimInterest" 		 property="remaimInterest" /> 
+		<result column="nextReplayDay" 			 property="nextReplayDay" /> 
+	    <result column="nextPrincipal" 			 property="nextPrincipal" />  
+		<result column="nextInterest" 	         property="nextInterest" /> 
+		
+		<result column="Year_Rate" 			     property="yearRate" /> 
+	    <result column="Hold_Date" 			     property="holdDate" />  
+		<result column="Settle_Date" 	         property="settleDate" /> 
+		<result column="totalincome" 	         property="totalincome" /> 
+		
+		<result column="Start_Date" 			 property="startDate" /> 
+	    <result column="End_Date" 			     property="endDate" />  
+		<result column="replayways" 	         property="replayways" /> 
+		<result column="Invest_Rate" 	         property="investRate" /> 
+     </resultMap>     
+       <!--     收益 -->
+     <resultMap type="cn.membermng.model.InvestIncomeEntity" id="resultMyInome"> 
+		<result column="Indexs" 			         property="projectTitle" />
+		<result column="SDRecv_MaxTime" 		     property="projectNo" /> 
+		<result column="SDRecv_Principal" 		     property="membername" /> 
+		<result column="SDRecv_Principal" 			 property="investAmount" />
+		<result column="totalOver" 			         property="remianindex" /> 
+		<result column="totalincome" 		         property="remaimPrincipal" /> 
+		<result column="Recv_Time" 		             property="remaimInterest" />  
+		<result column="replaystatu" 		         property="replaystatu" />  
+     </resultMap>     
+</mapper>   

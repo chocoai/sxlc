@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="platformIntroduce">
+    <!-- 查询平台简介 -->  
+	<select id="selectPlatformIntroduce"  parameterType="cn.springmvc.model.PlatformIntroduceEntity" resultType="cn.springmvc.model.PlatformIntroduceEntity" >
+	   select Content as content from  Platform_Introduce  
+    </select> 
+    <!-- 新增平台简介 -->  
+	<insert id="insertPlatformIntroduce"  parameterType="cn.springmvc.model.PlatformIntroduceEntity" >    
+		insert into Platform_Introduce (Content) values (#{content})     
+	</insert> 
+	<!-- 查询平台简介是否存在 -->  
+	<select id="selectplatformIntroducesIsExist"  resultType="int" >
+	   select count(*) from  Platform_Introduce  
+    </select> 
+    <!-- 修改平台简介信息 -->  
+	<update id="updateplatformIntroduce"  parameterType="cn.springmvc.model.PlatformIntroduceEntity">
+	   update  Platform_Introduce   set Content=#{content}
+    </update>   
+    <!-- 删除平台简介 -->  
+	<delete id="deleteplatformIntroduce"  parameterType="int">
+	   delete from  Platform_Introduce    
+    </delete>     
+</mapper>

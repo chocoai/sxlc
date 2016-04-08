@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="MyInvest">   
+    <!-- 查询我的投资回收中 -->  
+	<select id="selectMyinvestCollect" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="MyInvestMap.resultMyInvest">
+		select pbi.Project_Title,par.Project_No,ir.Invest_Id ,
+		case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.sKey})) using utf8)  
+		when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.sKey})) using utf8) end 
+		as membername,
+
+		CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.sKey})) as signed) Invest_Amount, 
+		 
+		(select count(iic.Income_Id)  from  invest_income iic where iic.Statu !=2 and iic.IsValid = 0 and ir.Invest_Id = iic.Invest_Id ) as remianindex,
+		
+		(select((select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iic.SDRecv_Principal),#{map.sKey})) as signed)),0) from  invest_income iic where   ir.Invest_Id = iic.Invest_Id) -
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iric.Recv_Principal),#{map.sKey}))  as signed)) ,0)  from  invest_real_income iric 
+		left join invest_income ii on iric.Income_Id=ii.Income_Id
+		where   ir.Invest_Id = ii.Invest_Id)  ) )as remaimPrincipal,
+		
+		(select((select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iid.SDRecv_Interest),#{map.sKey})) as signed)),0) from invest_income iid where ir.Invest_Id = iid.Invest_Id) -
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iric.Recv_Interest),#{map.sKey}))as signed)),0)  from  invest_real_income iric 
+		left join invest_income ii on iric.Income_Id=ii.Income_Id
+		where   ir.Invest_Id = ii.Invest_Id)  ) )as remaimInterest,
+		
+		(select iic.SDRecv_MaxTime  from  invest_income iic
+		 where   ir.Invest_Id = iic.Invest_Id  and iic.SDRecv_MaxTime>=now() and iic.Statu =0 order by iic.SDRecv_MaxTime asc limit 1) as nextReplayDay,
+		
+		(select CAST((AES_DECRYPT(UNHEX(iic.SDRecv_Principal),#{map.sKey})) as signed)   from  invest_income iic
+		 where   ir.Invest_Id = iic.Invest_Id  and iic.SDRecv_MaxTime>=now() and iic.Statu =0 order by iic.SDRecv_MaxTime asc limit 1) as nextPrincipal,
+		
+		(select CAST((AES_DECRYPT(UNHEX(iic.SDRecv_Interest),#{map.sKey})) as signed)    from  invest_income iic
+		 where   ir.Invest_Id = iic.Invest_Id  and iic.SDRecv_MaxTime>=now() and iic.Statu =0 order by iic.SDRecv_MaxTime asc limit 1) as nextInterest
+		
+		from invest_record ir  
+		left join Project_App_Record par on par.Apply_Id= ir.Apply_Id
+		left join project_base_info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+		left join member_info mi on par.Member_ID =mi.Member_ID 
+		left join personal_base_info pbiper on mi.Personal_ID =  pbiper.Personal_Id and mi.Member_Type=0
+		left join  company_info ci on mi.Company_ID =ci.Company_ID and mi.Member_Type=1
+	    <where>  
+		   ir.IsValid =0 and par.Invest_Statu=3 and ir.Member_ID = #{map.memberID}
+           <!-- 		       根据剩余期数升序 -->
+	       <if test = "map.order ==  1">
+	          order by remianindex asc
+	       </if>
+	       <!-- 		       根据剩余期数降序 -->
+	       <if test = "map.order ==  -1">
+	          order by remianindex desc
+	       </if>
+	       <!-- 		       根据下期回款时间升序 -->
+	       <if test = "map.order ==  2">
+	          order by nextReplayDay asc
+	       </if>
+	       <!-- 		       根据下期回款时间降序 -->
+	       <if test = "map.order ==  -2">
+	          order by nextReplayDay desc
+	       </if> 
+	    </where>
+    </select>  
+    <!-- 查询我的投资已结清 -->  
+	<select id="selectMyinvestSettled" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="MyInvestMap.resultMyInvest">
+		select pbi.Project_Title,par.Project_No,ir.Invest_Id,pbi.Year_Rate, pap.Hold_Date,pap.Settle_Date,
+		case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.sKey})) using utf8)  
+		when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.sKey})) using utf8) end 
+		as membername,
+		
+		CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.sKey})) as signed) Invest_Amount,  
+		 
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iric.Recv_Interest),#{map.sKey}))as signed)),0)+ 
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(iric.Repay_Overdue_Interest),#{map.sKey}))as signed)),0)+
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(iric.Repay_Overdue),#{map.sKey}))as signed)),0)  
+		from  invest_real_income iric 
+		left join invest_income ii on iric.Income_Id=ii.Income_Id
+		where   ir.Invest_Id = ii.Invest_Id )   as totalincome  
+		
+		from invest_record ir  
+		left join Project_App_Record par on par.Apply_Id= ir.Apply_Id
+		left join project_base_info pbi on pbi.Project_Base_ID = par.Project_Base_ID 
+		left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+		left join member_info mi on par.Member_ID =mi.Member_ID 
+		left join personal_base_info pbiper on mi.Personal_ID =  pbiper.Personal_Id and mi.Member_Type=0
+		left join  company_info ci on mi.Company_ID =ci.Company_ID and mi.Member_Type=1
+		 <where>  
+		   ir.IsValid =0 and par.Invest_Statu=4 and ir.Member_ID = #{map.memberID}
+           <!-- 		       根据投资金额升序 -->
+	       <if test = "map.order ==  1">
+	          order by Invest_Amount asc
+	       </if>
+	       <!-- 		       根据投资金额降序 -->
+	       <if test = "map.order ==  -1">
+	          order by Invest_Amount desc
+	       </if>
+	       
+	       <!-- 		       根据收益总额升序 -->
+	       <if test = "map.order ==  2">
+	          order by totalincome asc
+	       </if>
+	       <!-- 		       根据收益总额降序 -->
+	       <if test = "map.order ==  -2">
+	          order by totalincome desc
+	       </if> 
+	       
+	       <!-- 		       根据放款时间升序 -->
+	       <if test = "map.order ==  3">
+	          order by Hold_Date asc
+	       </if>
+	       <!-- 		       根据放款时间降序 -->
+	       <if test = "map.order ==  -3">
+	          order by Hold_Date desc
+	       </if> 
+	       
+	        <!-- 		       根据结清时间时间升序 -->
+	       <if test = "map.order ==  4">
+	          order by Settle_Date asc
+	       </if>
+	       <!-- 		       根据结清时间降序 -->
+	       <if test = "map.order ==  -4">
+	          order by Settle_Date desc
+	       </if> 
+	    </where>
+    </select>  
+     <!-- 查询我的投资投标中-已流标-投标结束 -->  
+	<select id="selectMyinvesting" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="MyInvestMap.resultMyInvest">
+		select pbi.Project_Title,par.Project_No,ir.Invest_Id,pbi.Year_Rate, pbi.Deadline,pbi.Deadline_Type, 
+		pap.Start_Date,pap.End_Date,replayway.name1 as replayways,par.Invest_Rate,
+		
+		case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.sKey})) using utf8)  
+		when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.sKey})) using utf8) end 
+		as membername,
+		
+		CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.sKey})) as signed) Invest_Amount 
+		
+		from invest_record ir  
+		left join Project_App_Record par on par.Apply_Id= ir.Apply_Id 
+		left join project_base_info pbi on pbi.Project_Base_ID = par.Project_Base_ID 
+		 left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
+		left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+		left join member_info mi on par.Member_ID =mi.Member_ID 
+		left join personal_base_info pbiper on mi.Personal_ID =  pbiper.Personal_Id and mi.Member_Type=0
+		left join  company_info ci on mi.Company_ID =ci.Company_ID and mi.Member_Type=1
+		<where>  
+            <!-- 		       投标中 -->
+	       <if test = "map.statu ==  0">  
+	         ir.IsValid =0 and par.Invest_Statu=0 and ir.Member_ID = #{map.memberID}
+		     and now() > pap.End_Date and pap.Start_Date > now()
+	       </if>
+            <!-- 	       已流标 -->
+	       <if test = "map.statu ==  1">  
+	         and par.Invest_Statu=1 and ir.Member_ID = #{map.memberID} 
+	       </if>
+           <!-- 	                     投标完成 -->
+	       <if test = "map.statu ==  2">  
+	         and ir.Member_ID = #{map.memberID} and ( par.Invest_Statu=2 or (pap.End_Date>now() and  par.Invest_Statu=0))
+	       </if> 
+	     </where> 
+	      <!-- 		       根据投资金额升序 -->
+	       <if test = "map.order ==  1">
+	          order by Invest_Amount asc
+	       </if>
+	       <!-- 		       根据投资金额降序 -->
+	       <if test = "map.order ==  -1">
+	          order by Invest_Amount desc
+	       </if>
+	       <!-- 		       根据投资进度升序 -->
+	       <if test = "map.order ==  2">
+	          order by Invest_Rate asc
+	       </if>
+	       <!-- 		       根据投资进度降序 -->
+	       <if test = "map.order ==  -2">
+	          order by Invest_Rate desc
+	       </if>
+	       <!-- 		       根据投标时间升序 -->
+	       <if test = "map.order ==  3">
+	          order by Start_Date asc
+	       </if>
+	       <!-- 		       根据投标时间降序 -->
+	       <if test = "map.order ==  -3">
+	          order by Start_Date desc
+	       </if>
+	       <!-- 		       根据结束时间升序 -->
+	       <if test = "map.order ==  4">
+	          order by End_Date asc
+	       </if>
+	       <!-- 		       根据结束时间降序 -->
+	       <if test = "map.order ==  -4">
+	          order by End_Date desc
+	       </if>
+	         <!-- 		       根据流标时间升序 -->
+	       <if test = "map.order ==  5">
+	          order by Hold_Date asc
+	       </if>
+	       <!-- 		       根据流标时间降序 -->
+	       <if test = "map.order ==  -5">
+	          order by Hold_Date desc
+	       </if> 
+    </select>  
+     <!-- 查询已结清的收益记录-->  
+	<select id="selectRealincome" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="MyInvestMap.resultMyInome">
+		select lr.Indexs,ii.SDRecv_MaxTime,
+		CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{map.sKey})) as signed) SDRecv_Principal,
+		CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{map.sKey})) as signed) SDRecv_Interest,
+		
+		
+		(select  (ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{map.sKey})) as signed)),0)
+		+ ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{map.sKey})) as signed)),0)) 
+		from invest_real_income iri where iri.Income_Id =  ii.Income_Id) as totalOver,
+		
+		(select  (ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{map.sKey})) as signed)),0)
+		+ ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{map.sKey})) as signed)),0)) 
+		from invest_real_income iri where iri.Income_Id =  ii.Income_Id) as totalincome,
+		
+		(select iri.Recv_Time from invest_real_income iri order by iri.Recv_Time desc limit 1) Recv_Time
+		from invest_income ii
+		left join  loan_repay lr on lr.Repay_ID = ii.Repay_ID 
+		where ii.Invest_Id = #{map.investID} and ii.Statu = 2
+    </select>  
+     <!-- 查询回收中的收益记录-->  
+	<select id="selectInvestIncome" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="MyInvestMap.resultMyInome">
+		select lr.Indexs,ii.SDRecv_MaxTime,ii.Statu,replaystatu.name1 as replaystatu,
+		CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{map.sKey})) as signed) SDRecv_Principal,
+		CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{map.sKey})) as signed) SDRecv_Interest,
+		
+		 
+		(select  (ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{map.sKey})) as signed)),0)
+		+ ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{map.sKey})) as signed)),0)) 
+		from invest_real_income iri where iri.Income_Id =  ii.Income_Id) as totalincome,
+		
+		(select iri.Recv_Time from invest_real_income iri order by iri.Recv_Time desc limit 1) Recv_Time
+		
+		from invest_income ii
+		left join  loan_repay lr on lr.Repay_ID = ii.Repay_ID 
+		left join DICT replaystatu on   replaystatu.code1= ii.Statu  and replaystatu.tcode = 'DICT_HKJD'
+		where ii.Invest_Id = #{map.investID} and ii.Statu != 2
+    </select>  
+</mapper>   

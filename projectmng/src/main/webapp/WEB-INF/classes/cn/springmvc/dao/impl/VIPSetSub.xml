@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="vipSetSub">
+    <!-- 查询VIP会员设置 -->  
+	<select id="selectVIPSetSub"  parameterType="cn.springmvc.model.VIPSetSubEntity" resultType="cn.springmvc.model.VIPSetSubEntity" >
+	   select Content from  VIP_Set_Sub  
+    </select> 
+    <!-- 新增VIP会员设置 -->  
+	<insert id="insertVIPSetSub"  parameterType="cn.springmvc.model.VIPSetSubEntity" >    
+		insert into VIP_Set_Sub (Content) values (#{content})     
+	</insert> 
+	<!-- 查询VIP会员设置是否存在 -->  
+	<select id="selectVIPSetSubsIsExist"  resultType="int" >
+	   select count(*) from  VIP_Set_Sub  
+    </select> 
+    <!-- 修改VIP会员设置信息 -->  
+	<update id="updateVIPSetSub"  parameterType="cn.springmvc.model.VIPSetSubEntity">
+	   update  VIP_Set_Sub   set Content=#{content}
+    </update>   
+    <!-- 删除VIP会员设置 -->  
+	<delete id="deleteVIPSetSub"  parameterType="int">
+	   delete from  VIP_Set_Sub    
+    </delete>   
+</mapper>

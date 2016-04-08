@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="lawsRegulations">
+    <resultMap type="cn.springmvc.model.LawsRegulationsEntity" id="resultListLawsRegulations">
+        <id column="ID" property="id" /> 
+		<result column="Content" property="content" />
+		<result column="Statu" property="statu" />
+		<result column="CreateTime" property="createTime" />
+		<result column="Opt_Date" property="optDate" />
+		<result column="Opt_Id" property="optId" />
+    </resultMap> 
+	<!-- 查询法律法规 -->  
+	<select id="selectLawsRegulations"  parameterType="int" resultMap="resultListLawsRegulations" >
+	   select ID,   Content,   Statu,   CreateTime,  Opt_Date, Opt_Id
+	   from  Laws_Regulations  
+	   <where>  
+            <if test="statu != -1">  
+                Statu=1
+            </if>  
+	   </where>
+    </select> 
+    <!-- 新增法律法规 -->  
+	<insert id="insertLawsRegulations"  parameterType="cn.springmvc.model.LawsRegulationsEntity" >    
+		insert into 
+		Laws_Regulations( ID,   Content,     Opt_Id) 
+		          values (#{id},#{content},#{optId})    
+	</insert> 
+	<!-- 查询法律法规是否存在 -->  
+	<select id="selectLawsRegulationsIsExist"  resultType="int" >
+	   select count(*) from  Laws_Regulations
+    </select> 
+    <!-- 修改法律法规信息 -->  
+	<update id="updateLawsRegulationsByID"  parameterType="cn.springmvc.model.LawsRegulationsEntity">
+	   update  Laws_Regulations 
+	     <set>
+		   <if test="content != null" >
+	        Content=#{content},
+	       </if> 
+	       <if test="optId != 0" >
+	         Opt_Id=#{optId},
+	       </if>  
+	         Opt_Date=now(), 
+	     </set>   
+	   where ID=#{id}   
+    </update>   
+    <!-- 删除法律法规 -->  
+	<delete id="deleteLawsRegulationsByID"  parameterType="int">
+	   delete from  Laws_Regulations where ID=#{id}   
+    </delete>  
+     <!-- 停用或启用法律法规 -->  
+	<update id="updateLawsRegulationsStatuByID"  parameterType="cn.springmvc.model.LawsRegulationsEntity">
+	   update  Laws_Regulations  set   Statu=#{statu} where ID=#{id}   
+    </update>       
+</mapper>

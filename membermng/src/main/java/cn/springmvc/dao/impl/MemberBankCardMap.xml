@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="bankInfoMap">
+    <!--     银行表   -->
+    <resultMap type="cn.membermng.model.BankCodeEntity" id="resultBankInfo">
+        <id column="Bank_ID"      property="bankID" />
+		<result column="BankCode" property="bankCode" />
+		<result column="BankName" property="bankName" /> 
+    </resultMap>  
+      <!--     会员银行卡信息 -->
+     <resultMap type="cn.membermng.model.MemberBankCardEntity" id="resultMemberBankCard">
+        <id column="Receive_Card"     property="receiveCard" />
+		<result column="Member_Type"  property="memberType" />
+		<result column="Member_ID"    property="memberID" /> 
+		<result column="Bank_Card_Id" property="bankCardId" />
+		<result column="Record_Date"  property="recordDate" /> 
+		<result column="Remove_Date"  property="removeDate" />
+		<result column="Statu"        property="statu" />  
+		<association property="bankCardInfoEntity" resultMap="resultBankCardInfo"></association>
+    </resultMap>   
+     <!--     银行卡信息 -->
+     <resultMap type="cn.membermng.model.BankCardInfoEntity" id="resultBankCardInfo">
+        <id column="Bank_Card_Id"       property="bankCardId" />
+		<result column="Bank_Id"        property="bankId" />
+		<result column="Card_Province"  property="cardProvince" /> 
+		<result column="Card_City"      property="cardCity" />
+		<result column="Branch"         property="branch" /> 
+		<result column="Branch_Address" property="branchAddress" />
+		<result column="Bank_No"        property="bankNo" /> 
+		<result column="Bank_Phone"     property="bankPhone" /> 
+    </resultMap>    
+   
+     <!--     市信息 -->
+     <resultMap type="cn.membermng.model.CityDictionaryEntity" id="resultCityDictionary">
+        <id column="City_Id"         property="cityId" />
+		<result column="Province_Id" property="provinceId" />
+		<result column="City_Name"   property="cityName" /> 
+		<result column="City_No"     property="cityNo" />
+		<result column="City_Code"   property="cityCode" />  
+     </resultMap>  
+      <!--     省信息 -->
+     <resultMap type="cn.membermng.model.ProvinceDictionaryEntity" id="resultProvinceDictionary">
+        <id column="Province_Id"       property="provinceId" />
+		<result column="Province_Name" property="provinceName" />
+		<result column="Province_No"   property="provinceNo" />   
+     </resultMap>     
+</mapper>   

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+ <mapper namespace="frequentlyAskedQuestions"> 
+    <resultMap type="cn.springmvc.model.FrequentlyAskedQuestionsEntity" id="resultListFrequentlyAskedQuestionsAnnouncement">
+        <id column="ID" property="id" /> 
+		<result column="Content" property="content" />
+		<result column="Statu" property="statu" />
+		<result column="CreateTime" property="createTime" />
+		<result column="Opt_Date" property="optDate" />
+		<result column="Opt_Id" property="optId" />
+    </resultMap> 
+	<!-- 查询常见问题-->  
+	<select id="selectFrequentlyAskedQuestions"  parameterType="int" resultMap="resultListFrequentlyAskedQuestionsAnnouncement" >
+	   select ID,   Content,   Statu,   CreateTime,  Opt_Date, Opt_Id
+	   from  Frequently_Asked_Questions
+       <where>  
+            <if test="statu != -1">  
+                Statu=1
+            </if>  
+	   </where>
+    </select> 
+    <!-- 新增常见问题-->  
+	<insert id="insertFrequentlyAskedQuestions"  parameterType="cn.springmvc.model.FrequentlyAskedQuestionsEntity" >    
+		insert into 
+		Frequently_Asked_Questions( ID,    Content,  Opt_Id) 
+		                   values (#{id},#{content},#{optId})    
+	</insert> 
+	<!-- 查询常见问题是否存在 -->  
+	<select id="selectFrequentlyAskedQuestionsIsExist"  resultType="int" >
+	   select count(*) from  Frequently_Asked_Questions
+    </select> 
+    <!-- 修改常见问题信息 -->  
+	<update id="updateFrequentlyAskedQuestionsByID"  parameterType="cn.springmvc.model.FrequentlyAskedQuestionsEntity">
+	   update  Frequently_Asked_Questions 
+	    <set>
+		   <if test="content != null" >
+	        Content=#{content},
+	       </if> 
+	       <if test="optId != 0" >
+	         Opt_Id=#{optId},
+	       </if>  
+	         Opt_Date=now(), 
+	       </set>   
+	   where ID=#{id}   
+    </update>   
+    <!-- 删除常见问题-->  
+	<delete id="deleteFrequentlyAskedQuestionsByID"  parameterType="int">
+	   delete from  Frequently_Asked_Questions where ID=#{id}   
+    </delete>  
+     <!-- 停用或启用常见问题-->  
+	<update id="updateFrequentlyAskedQuestionsStatuByID"  parameterType="cn.springmvc.model.FrequentlyAskedQuestionsEntity">
+	   update  Frequently_Asked_Questions  set   Statu=#{statu} where ID=#{id}   
+    </update>  
+</mapper>

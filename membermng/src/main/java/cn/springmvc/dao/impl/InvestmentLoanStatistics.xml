@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="statistic">   
+    <!--会员资总额  -->
+    <select id="selectMemberInvestTotal"  parameterType="Map" resultType="Long" >
+	   select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{sKey})) as signed)),0) as investTotal  
+	   from Invest_Record 
+	    where Member_ID=#{memberID} and Hold_Date is not null 
+	</select>
+    <!-- 累计已收本金 -->
+    <select id="selectRecvPrincipalTotal"  parameterType="Map" resultType="Long" >
+	   select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Principal),#{sKey})) as signed)),0) as RecvPrincipalTotal  
+	   from Invest_Real_Income lri
+	   left join Invest_Income ii on  ii.Income_Id=lri.Income_Id
+	    where Member_ID=#{memberID} and ii.IsValid = 0
+	</select>
+	 <!-- 累计已收收益 -->
+    <select id="selectMemberReIncomeTotal"  parameterType="Map" resultType="Long" >
+	   select (ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Principal),#{sKey})) as signed)),0) + 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Interest),#{sKey})) as signed)),0)+ 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Overdue),#{sKey})) as signed)),0)+ 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Overdue_Interest),#{sKey})) as signed)),0)+ 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Penalty),#{sKey})) as signed)),0)) as IncomeTotal  
+	   from Invest_Real_Income lri
+	   left join Invest_Income ii on  ii.Income_Id=lri.Income_Id 
+	    where Member_ID=#{memberID} and ii.IsValid = 0
+	</select>
+	 <!-- 应收本金-->
+    <select id="selectSDRecvPrincipalTotal"  parameterType="Map" resultType="Long" >
+	    select ifnull(sum(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{sKey})) as signed)),0) 
+		from Invest_Income ii 
+		where  ii.Member_ID=#{memberID} and ii.IsValid = 0
+	</select>
+	 <!-- 应收收益-->
+    <select id="selectMemberSDIncomeTotal"  parameterType="Map" resultType="Long" >
+	    select (ifnull(sum(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{sKey})) as signed)),0) 
+	            +ifnull(sum(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{sKey})) as signed)),0))  as SDRecvIncome
+	 	from Invest_Income ii 
+		where  ii.Member_ID=#{memberID} and ii.IsValid = 0
+	</select>
+	<!-- 查询会员成功借款项目 -->  
+	<select id="selectMemberInfoByMemberID" parameterType="int"  resultType="int">
+	   select  count(1) from Project_App_Record par where  par.Member_ID=#{membereID} and par.Invest_Statu>=3
+    </select>
+    <!-- 查询会员成功还款笔数 -->  
+	<select id="selectTotalreplay" parameterType="int"  resultType="int">
+	    select  count(1) from  Loan_Repay lr 
+	    left join  Project_App_Record par on par.Apply_Id=lr.Apply_Id
+	    where  par.Member_ID=#{membereID} and lr.Statu=3  and lr.IsValid=0
+    </select>
+     <!-- 查询会员提前还款笔数 -->  
+	<select id="selectAdvanceReplay" parameterType="int"  resultType="int">
+	    select  count(1) from Project_App_Record par 
+	    where   par.Member_ID=#{membereID} and par.Invest_Statu=4 and  
+	    (select count(1) from Loan_Repay lr where lr.Apply_Id=par.Apply_Id and lr.IsValid=1)>0
+    </select>
+    <!-- 查询会员逾期还款笔数 -->  
+	<select id="selectTotalReplayOver" parameterType="int"  resultType="int">
+	    select  count(1) from Loan_Repay lr 
+	    left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
+	    where  par.Member_ID=#{membereID} and lr.IsValid=0 and lr.Statu=3
+	    and (select count(1) from Loan_Real_Repay lrr where lr.Repay_Id=lrr.Repay_Id and lrr.Repay_Time>lr.Repay_MaxTime  )>0
+    </select>
+    <!-- 查询会员成功投资笔数-->  
+	<select id="selectTotalInvest" parameterType="int"  resultType="int">
+	   select  count(1) from Invest_Record ir 
+	   left join Project_App_Record par on par.Apply_Id=ir.Apply_Id
+	   where  ir.Member_ID=#{membereID} and par.Invest_Statu>=3 and ir.IsValid=0
+    </select> 
+    <!-- 查询会员严重逾期还款笔数 -->  
+	<select id="selectReplayOverLimit" parameterType="int"  resultType="int">
+	    select  count(*) from Loan_Repay lr
+	    left join Project_App_Record par on  par.Apply_Id=lr.Apply_Id
+	    where  par.Member_ID=#{membereID} and lr.Statu=3 and lr.IsValid=1
+	    and (
+	     select count(*) from Loan_Real_Repay lrr where 
+	     lr.Repay_Id=lrr.Repay_Id and lrr.Repay_Time>lr.Repay_MaxTime  
+	     and datediff(lrr.Repay_Time,lr.Repay_MaxTime)>(select Overdue_Limit from  Overdue_Set limit 1) 
+	     )>0 
+    </select> 
+    <!-- 查询会员逾期未还款笔数 -->  
+	<select id="selectTotalOverNotReplay" parameterType="int"  resultType="int">
+	    select  count(1) from Loan_Repay lr 
+	    left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
+	    where  par.Member_ID=#{membereID} and lr.IsValid=0  and  lr.Statu != 3
+	    and  lr.Repay_MaxTime >now() 
+    </select>
+</mapper>

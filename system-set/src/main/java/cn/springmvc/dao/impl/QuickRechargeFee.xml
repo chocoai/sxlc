@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="QuickRechargeFeeXML" >
+  <resultMap id="QuickRechargeFee" type="cn.springmvc.model.QuickRechargeFeeEntity" >
+    <result column="Payment_Member_Type" property="paymentMemberType"/>
+    <result column="Fee_Payment_Method" property="feePaymentMethod"/>
+    <result column="Recharge_Type_Third" property="rechargeTypeThird"/>
+    <result column="Recharge_Fee_Third" property="rechargeFeeThird"/>
+  </resultMap>
+  <sql id="QuickRechargeFee_Column_List" >
+    Payment_Member_Type,Fee_Payment_Method,Recharge_Type_Third,Recharge_Fee_Third
+  </sql>
+  <select id="selectQuickRechargeFee" resultMap="QuickRechargeFee" parameterType="cn.springmvc.model.QuickRechargeFeeEntity" >
+    select <include refid="QuickRechargeFee_Column_List"></include> from Recharge_Set
+  </select>
+  
+ 
+  <select id="updateQuickRechargeFee" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call updateQuickRechargeFee(
+				#{paymentMemberType,	 mode=IN,	jdbcType=INTEGER},
+				#{feePaymentMethod,	 mode=IN,	jdbcType=INTEGER},
+				#{rechargeTypeThird,	 mode=IN,	jdbcType=INTEGER},
+				#{rechargeFeeThird,	 mode=IN,	jdbcType=INTEGER},
+				#{rev,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  
+</mapper>

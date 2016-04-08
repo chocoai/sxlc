@@ -1,0 +1,74 @@
+*{
+	margin£º0;
+	padding£º0;
+	font-family:"microsoft yahei",Î¢ÈíÑÅºÚ,Arial,sans-serif;
+}
+body{
+	width:100%;
+	height:100%;
+	background:#202020;
+	position:relative;
+}
+.content{
+	width:32%;
+	height:auto;
+	position:absolute;
+	top:30%;
+	left:34%;
+	background:#333333;
+	padding:2%;
+	border-radius:5px;
+}
+#forgetpwd{
+	float:right;
+}
+.btn-lg{
+	font-size:12px !important;
+	padding:5px 8px !important;
+	color:#555555 !important;
+}
+.btn-primary {
+	background:#eeeeee !important;
+	border-color:#cccccc !important;
+	outline:none!important;
+	color:#333 !important;
+}
+.modal-header{
+	text-align:center;
+}
+.btn-default{
+	outline:none!important;
+}
+.modal-body .input-group:nth-of-type(2){
+	width:100%;
+}
+.modal-body .input-group:nth-of-type(2) input{
+	width:83%;
+}
+.modal-body .input-group:nth-of-type(2) button{
+	position:absolute;
+	border-left:none!important;
+}
+.modal-body .input-group:nth-of-type(2) button:link{
+	border-color:#cccccc !important;
+}
+.modal-body .input-group:nth-of-type(2) .btn{
+	border-radius:0 4px 4px 0;
+}
+@media (min-width: 768px){
+	.modal-dialog {
+		margin:10% auto !important;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+

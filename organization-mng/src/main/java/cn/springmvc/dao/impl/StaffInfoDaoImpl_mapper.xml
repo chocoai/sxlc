@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="StaffInfoDaoImpl">     
+	
+	<!-- 查询结果封装 -->
+	<resultMap type="cn.springmvc.model.StaffInfo" id="deptResult">
+		<id 	column="Staff_Id" 				property="id"/>
+		<result column="Staff_No"			property="staffNo"/>
+		<result column="Personal_Id"		property="personalId"/>
+		<result column="Emer_Name"			property="emerName"/>
+		<result column="Emer_Phone"			property="emerPhone"/>
+		<result column="Start_Date"			property="startDate"/>
+		<result column="End_Date"			property="endDate"/>
+		<result column="Staff_Statu"		property="staffStatu"/>
+		<result column="Post_Id"		property="postId"/>
+		<result column="Post_Name"		property="postName"/>
+		<association property="baseInfo" 	resultMap="personalBaseInfo"/>
+	</resultMap>
+	
+	<resultMap type="cn.springmvc.model.PersonalBaseInfo" id="personalBaseInfo">
+		<id 	column="pid" 				property="id"/>
+		<result column="Personal_Name" 		property="personalName"/>
+		<result column="Personal_IDCard" 	property="personalIDCard"/>
+		<result column="SexID" 				property="sexId"/>
+		<result column="Marital_Status" 	property="maritalStatus"/>
+		<result column="Education" 			property="education"/>
+		<result column="Graduated_School" 	property="graduatedSchool"/>
+		<result column="Graduated_Professionals" property="graduatedProfessionals"/>
+		<result column="Graduated_DATE" 	property="graduatedDATE"/>
+		<result column="Nation_Id" 			property="nationId"/>
+		<result column="Home_Town" 			property="homeTown"/>
+		<result column="Census" 			property="census"/>
+		<result column="Monthly_Income" 	property="monthlyIncome"/>
+		<result column="Legal_IdCard_Url1" 	property="legalIdCardUrl1"/>
+		<result column="Legal_IdCard_Url2" 	property="legalIdCardUrl2"/>
+		<result column="Blood_Type" 		property="bloodType"/>
+		<result column="Height" 			property="height"/>
+		<result column="Weight" 			property="weight"/>
+		<result column="Religion_Id" 		property="religionId"/>
+		<result column="House_Address" 		property="houseAddress"/>
+		<result column="Mailing_Address" 	property="mailingAddress"/>
+		<result column="Zip_Code" 			property="zipCode"/>
+		<result column="Home_Address" 		property="homeAddress"/>
+		<result column="Personal_Phone" 	property="personalPhone"/>
+		<result column="Personal_FixPhone" 	property="personalFixPhone"/>
+		<result column="Personal_Email" 		property="personalEmail"/>
+		<result column="QQ" 				property="qq"/>
+	</resultMap>
+	
+	
+	<!-- 员工列表 -->
+	<select id="getListByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="deptResult">
+		select si.Staff_Id,CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey})) using utf8) as Personal_Name,
+		pbi.SexID,pbi.Personal_Id pid,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.sKey})) using utf8) as Personal_IDCard,
+		pbi.Nation_Id,pi.Post_Id,pi.Post_Name,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.sKey})) using utf8) as Personal_Phone,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.qq),#{map.sKey})) using utf8) as qq,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{map.sKey})) using utf8) as Personal_Email,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Home_Town),#{map.sKey})) using utf8) as Home_Town,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.House_Address),#{map.sKey})) using utf8) as House_Address,
+		pbi.Education,pbi.Graduated_DATE,
+		CONVERT((AES_DECRYPT(UNHEX(si.Emer_Name),#{map.sKey})) using utf8) as Emer_Name,
+		CONVERT((AES_DECRYPT(UNHEX(si.Emer_Phone),#{map.sKey})) using utf8) as Emer_Phone,si.Start_Date
+		from Staff_Info si 
+		left join Personal_Base_Info pbi on pbi.Personal_Id = si.Personal_Id
+		left join Staff_Post sp on sp.Staff_Id = si.Staff_Id
+		left join post_info pi on pi.Post_Id = sp.Post_Id
+		where si.Staff_Statu != 1
+		<if test="map != null and map.personalName != null and map.personalName !='' ">
+			and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey})) using utf8) like '%${map.personalName}%'
+		</if>
+		<if test="map != null and map.personalPhone != null and map.personalPhone !=''">
+			and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.sKey})) using utf8) = #{map.personalPhone}
+		</if>
+		<if test="map != null and map.personalIDCard != null and map.personalIDCard !=''">
+			and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.sKey})) using utf8) = #{map.personalIDCard}
+		</if>
+		<if test="map != null and map.postId != null and map.postId !='' ">
+			and sp.Post_Id = #{map.postId}
+		</if>
+		order by si.Start_Date desc
+	</select>
+	
+	
+	<!-- 添加员工 -->
+	<select id="saveStaff" statementType="CALLABLE" parameterType="Map">
+		call saveStaff(
+			#{sKey,										mode=IN,							jdbcType=VARCHAR},
+			#{id,										mode=IN,							jdbcType=BIGINT},
+			#{sexId,									mode=IN,							jdbcType=BIGINT},
+			#{personalName,								mode=IN,							jdbcType=VARCHAR},
+			#{personalIdCard,							mode=IN,							jdbcType=VARCHAR},
+			#{nationId,									mode=IN,							jdbcType=INTEGER},
+			#{personalPhone,							mode=IN,							jdbcType=VARCHAR},
+			#{qq,										mode=IN,							jdbcType=VARCHAR},
+			#{personalEmail,							mode=IN,							jdbcType=VARCHAR},
+			#{homeTown,									mode=IN,							jdbcType=VARCHAR},
+			#{houseAddress,								mode=IN,							jdbcType=VARCHAR},
+			#{education,								mode=IN,							jdbcType=INTEGER},
+			#{graduatedDATE,							mode=IN,							jdbcType=VARCHAR},
+			#{emerName,									mode=IN,							jdbcType=VARCHAR},
+			#{emerPhone,								mode=IN,							jdbcType=VARCHAR},
+			#{staffNo,									mode=IN,							jdbcType=VARCHAR},
+			#{startDate,								mode=IN,							jdbcType=VARCHAR},
+			#{endDate,									mode=IN,							jdbcType=VARCHAR},
+			
+			#{deptId,									mode=IN,							jdbcType=BIGINT},
+			#{postId,									mode=IN,							jdbcType=BIGINT},
+			#{joinDate,									mode=IN,							jdbcType=VARCHAR},
+			#{result,									mode=OUT,							jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	<!-- 修改员工 -->
+	<select id="editStaff" statementType="CALLABLE" parameterType="Map">
+		call editStaf(
+			#{sKey,										mode=IN,							jdbcType=VARCHAR},
+			#{id,										mode=IN,							jdbcType=BIGINT},
+			#{personalName,								mode=IN,							jdbcType=VARCHAR},
+			#{personalIdCard,							mode=IN,							jdbcType=VARCHAR},
+			#{nationId,									mode=IN,							jdbcType=INTEGER},
+			#{personalPhone,							mode=IN,							jdbcType=VARCHAR},
+			#{qq,										mode=IN,							jdbcType=VARCHAR},
+			#{personalEmail,							mode=IN,							jdbcType=VARCHAR},
+			#{homeTown,									mode=IN,							jdbcType=VARCHAR},
+			#{houseAddress,								mode=IN,							jdbcType=VARCHAR},
+			#{education,								mode=IN,							jdbcType=INTEGER},
+			#{graduatedDATE,							mode=IN,							jdbcType=VARCHAR},
+			#{emerName,									mode=IN,							jdbcType=VARCHAR},
+			#{emerPhone,								mode=IN,							jdbcType=VARCHAR},
+			#{staffNo,									mode=IN,							jdbcType=VARCHAR},
+			#{startDate,								mode=IN,							jdbcType=VARCHAR},
+			#{endDate,									mode=IN,							jdbcType=VARCHAR},
+			
+			#{deptId,									mode=IN,							jdbcType=BIGINT},
+			#{postId,								 	mode=IN,							jdbcType=BIGINT},
+			#{joinDate,									mode=IN,							jdbcType=VARCHAR},
+			#{result,									mode=OUT,							jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	<!-- 员工离职 -->
+	<select id="staffQuit" statementType="CALLABLE" parameterType="Map">
+		call staffQuit(
+			#{sid,										mode=IN,							jdbcType=BIGINT},
+			#{result,									mode=OUT,							jdbcType=INTEGER}	
+		)
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

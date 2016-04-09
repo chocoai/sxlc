@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.DeptInfo;
-import cn.springmvc.service.impl.DeptInfoServer;
+import cn.springmvc.service.IDeptInfoServer;
 
 /**
  * 
@@ -30,7 +30,7 @@ import cn.springmvc.service.impl.DeptInfoServer;
 public class DeptController {
 	
 	@Autowired
-	private DeptInfoServer deptInfoServer;
+	private IDeptInfoServer deptInfoServer;
 	
 	//日志信息
 	Log logger = LogFactory.getLog(DeptController.class);

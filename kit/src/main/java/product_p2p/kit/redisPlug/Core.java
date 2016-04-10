@@ -8,7 +8,7 @@ public class Core {
 	private static Jedis jedis;
 	
 	static{
-		jedis = new Jedis("192.168.2.8");
+		jedis = new Jedis("localhost");
 	}
 	/****
 	 * 写入一个字符串

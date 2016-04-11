@@ -230,7 +230,15 @@ $(function() {
                   { title:"添加时间","data": "createTime" },  
                   { title:"标题","data": "title" },  
                   { title:"内容","data": "content" },  
-                  { title:"状态","data": "statu" },  
+                  { title:"状态","data": "statu", 
+                	  "mRender": function (data, type, full) {
+                		 if (data == 0) {
+                			 return "<font color='red'>无效</font>";
+                		 }else if (data == 1){
+                			 return "有效";
+                		 }
+                	  } 
+                  },  
                   { title:"最后一次操作管理员","data": "adminName" },
                   { title:"操作","data": "statu",
                   	"mRender": function (data, type, full) {
@@ -244,11 +252,11 @@ $(function() {
         					sDefaultContent: '',
         					orderable : false,
         					aTargets: [ '_all' ]
-        				}
-        				/* {  
+        				},
+        				{  
                             "aTargets":[1],  
                             "visible":false  
-                        } */
+                        }
         				],
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
 //        	if($.inArray(data.DT_RowId,selected)!==-1){

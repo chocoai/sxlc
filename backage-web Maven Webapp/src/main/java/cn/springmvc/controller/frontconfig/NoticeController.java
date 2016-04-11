@@ -53,7 +53,7 @@ public class NoticeController {
 	 */
 	@RequestMapping("/list")
 	@ResponseBody
-	public PageEntity list(Map<String, Object> req, Integer pageNum, Integer pageSize, String title, String statu) {
+	public PageEntity list(Map<String, Object> req, int start, int length, String title, String statu) {
 		
 		//日志信息
 		logger.info("查询网站公告列表");
@@ -66,8 +66,8 @@ public class NoticeController {
 		if (statu != null && statu != "") {
 			req.put("statu", statu);
 		}
-			pager.setPageNum(1);
-			pager.setPageSize(10);
+			pager.setPageNum(start / length + 1);
+			pager.setPageSize(length);
 		pager.setMap(req);
 		
 		logger.info("开始查询网站公告列表......req=" + req);

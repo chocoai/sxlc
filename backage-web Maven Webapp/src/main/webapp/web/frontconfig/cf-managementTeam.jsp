@@ -83,9 +83,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											    <div class="" id="fileList"></div>
 											    <div id="filePicker">选择头像</div>
 											    <span class="rec-dimensions">建议尺寸：100*100</span>
-											    <img id="portrait" src="">
+											     <img id="portrait" src="">
 											     <input type="hidden" name="portraitUrl" id="portraitUrl" />
-											     <input type="hidden" name="id" id="teamId" />
+											     <input type="hidden" name="teamId" id="teamId" />
 											</div>
 										</td>
 									</tr>
@@ -99,6 +99,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</form>
 							</div>
 							<div class="w-content pic-view">
+								<div class="w-content hideHtml">暂无头像</div>
 								<img id="picView" src="">
 							</div>
 					</div>
@@ -109,8 +110,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-manage-add" onclick="manageAdd(1)">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-manage-mod" onclick="manageAdd(2)">修改</button>
+								<button class="obtn glyphicon glyphicon-plus obtn-manage-add" onclick="addOrUpdate(1)" type="button">添加</button>
+								<button class="obtn glyphicon glyphicon-pencil obtn-manage-mod" onclick="addOrUpdate(2)" type="button">修改</button>
 							</div>
 						</div>
 						

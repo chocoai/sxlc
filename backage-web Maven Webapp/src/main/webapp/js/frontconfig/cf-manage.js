@@ -35,7 +35,7 @@ $(function() {
 				          { title:"职务","data": "mngPost"},  
 				          { title:"头像","data": "头像", 
 				        	  "mRender": function (data, type, full) {
-				        		  return '<button onclick="viewPic(this)">查看头像</button>';
+				        		  return '<a href="javascript:void(0);" class="btn-det" onclick="viewPic(this)">查看头像</a>';
 				        	  }
 				          },  
 				          { title:"简介","data": "profile" },  
@@ -43,18 +43,18 @@ $(function() {
 				          { title:"状态","data": "statu", 
 				        	  "mRender": function (data, type, full) {
 				        		  if(data==0){
-				        			  return "<font color='red'>已停用</font>";
+				        			  return "<font color='red'>无效</font>";
 				        		  }else if(data==1){
-				        			  return "已启用";
+				        			  return "有效";
 				        		  }
 				        	  }
 				          },  
 				          { title:"操作","data": "baseInfo.nationId", 
 				        	  "mRender": function (data, type, full) {
 				        		  if(full.statu==0){
-				        			  return "<a onclick=\"enableMngTeam(1,'"+full.id+"');\" href=\"javascript:void(0);\">启用</a>" ;
+				        			  return "<a onclick=\"enableOrDisable(1,'"+full.id+"');\" href=\"javascript:void(0);\">启用</a>" ;
 				        		  }else if(full.statu==1){
-				        			  return "<a onclick=\"enableMngTeam(0,'"+full.id+"');\" href=\"javascript:void(0);\">停用</a>";
+				        			  return "<a onclick=\"enableOrDisable(0,'"+full.id+"');\" href=\"javascript:void(0);\">停用</a>";
 				        		  }
 				        	  }
 				          }
@@ -89,8 +89,8 @@ $(function() {
 //              }
 	 
 	});
-	
-	
+	 
+	//选中
 	 $('#teamTb tbody').on( 'click', 'tr', function () {
 	        $(this).toggleClass('selected');
 	  });
@@ -112,7 +112,7 @@ $(".glyphicon-search").on("click",function(){
  * @param type 1：增加 2：修改
  * @returns
  */
-function manageAdd(type){
+function addOrUpdate(type){
 	//清除数据
 	document.getElementById("dataForm").reset();
 	$("#portrait").attr("src","");
@@ -194,17 +194,12 @@ function addOrModify(type){
 }
 
 /**
- * 启用/停用管理团队
+ * 启用/停用功能
  * @param type 1：启用 0：停用
  * @param id 管理团队id
  * @returns
  */
-function enableMngTeam(type,id){
-//	var data = $('#teamTb').DataTable().rows('.selected').data(); 
-//	if(data.length<1){
-//		layer.alert("请选择要修改的员工信息！",{icon:0});
-//		return;
-//	}
+function enableOrDisable(type,id){
 	$.ajax( {  
 		url:appPath+"/front/enableMngTeam.do",
 		data:{"statu":type,"id":id},
@@ -234,8 +229,10 @@ function viewPic(btn){
     var data = $('#teamTb').DataTable().row($(btn).parents('tr')).data();
     if(data.portraitUrl !=""){
     	$("#picView").attr("src",$("#hostPath").val()+data.portraitUrl);
+    	$(".hideHtml").hide();
     }else{
-    	$(".pic-view").html("暂无头像");
+    	$(".hideHtml").show();
+    	$("#picView").attr("src","");
     }
 	layer.open({
 	    type: 1,

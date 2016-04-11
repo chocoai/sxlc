@@ -17,6 +17,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
+	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
+	<link rel="stylesheet" href="css/upload.css" />
+	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
 </head>
 
 <body class="nav-md">
@@ -68,59 +73,65 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-hotNews-add" onclick="mediaReportAdd('添加最新动态','web/frontconfig/mediaReport-add.jsp','1')">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-hotNews-mod" onclick="mediaReportMod('修改最新动态','web/frontconfig/mediaReport-mod.jsp','1')">修改</button>
+								<button class="obtn glyphicon glyphicon-plus obtn-hotNews-add" onclick="addOrUpdate(1)">添加</button>
+								<button class="obtn glyphicon glyphicon-pencil obtn-hotNews-mod" onclick="addOrUpdate(2)">修改</button>
+								<input type="hidden" id="hostPath" value="${hostPath}"/>
 							</div>
 						</div>
 						
 						<div class="panel-body">
-							<table id="table_id" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>添加时间</th>
-										<th>图标</th>
-										<th>标题</th>
-										<th>来源</th>
-										<th>内容</th>
-										<th>状态</th>
-										<th>最后一次操作管理员</th>
-										<th>操作</th>
-									</tr>
-								</thead>
+							<table id="mediaTb" class="display">
 								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>2016-04-08</td>
-										<td>img</td>
-										<td>标题1</td>
-										<td>来源1</td>
-										<td><a href="javascript:;" class="btn-det" onclick="reportDet()">查看详情</a></td>
-										<td>已启用</td>
-										<td>张三</td>
-										<td>
-											<a href="javascript:;" class="btn-enable" onclick="enable()">启用</a>
-											<a href="javascript:;" class="btn-disable" onclick="disable()">停用</a>
-										</td>
-									</tr>
-									<%
-										}
-									%>
 								</tbody>
 							</table>
 						</div>
 						
 					</div>
 				</div>
-				
+				<div class="w-content pic-add">
+				  <form action="" id="dataForm" method="post">
+					<table>
+						<tr>
+							<td class="tt">标题</td>
+							<td class="con"><input type="text" name="title"  id="title" class="" /></td>
+						</tr>
+						<tr>
+							<td class="tt">来源</td>
+							<td class="con"><input type="text" name="source" id="source"  class="" /></td>
+						</tr>
+						<tr>
+							<td class="tt">图标</td>
+							<td class="con">
+								<!--dom结构部分-->
+								<div id="uploader">
+								    <!--用来存放item-->
+								    <div class="" id="fileList"></div>
+								    <div id="filePicker">选择图片</div>
+								    <span class="rec-dimensions">建议尺寸：100*100</span>
+								    <img id="showImg" src="">
+								    <input type="hidden" name="logo" id="pictureUrl" />
+								    <input type="hidden" name="reportId" id="reportId" />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="tt">内容</td>
+							<td class="con">
+								<input type="hidden" name="content" id="content" />
+								<script id="editor" type="text/plain" style="height:300px;width:98%;"></script>
+							</td>
+						</tr>
+					</table>
+					</form>
+				</div>
 				
 				<div class="w-content report-det">
 					详情
 				</div>
-				
+				<div class="w-content pic-view">
+								<div class="w-content hideHtml">暂无头像</div>
+								<img id="picView" src="">
+				</div>
 				
 				
 			</div>
@@ -134,24 +145,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
+	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
+	<script type="text/javascript" src="js/valid.js"></script>
 	<script type="text/javascript" src="js/frontconfig/fc-mediaReport.js"></script>
 	
-	
-	<script type="text/javascript">
-		
-		$(function(){
-			$('#table_id').DataTable({
-				"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,1,2,3,4,5,6,7,8]
-				} // 制定列不参与排序
-				],
-			});
-		});
-	</script>
 </body>
 
 </html>

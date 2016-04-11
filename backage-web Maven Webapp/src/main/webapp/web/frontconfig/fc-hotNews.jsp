@@ -62,50 +62,51 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 					</div>
 				</div> -->
-			
+				<div class="w-content pic-add">
+					<form id="saveNews" action="javascript:addNews()" method="post" >
+						<table>
+							<tr>
+								<td class="tt">标题</td>
+								<td class="con"><input type="text" datatype="entername" id="title" class="" /></td>
+							</tr>
+							<tr>
+								<td class="tt">内容</td>
+								<td class="con">
+									<script id="editor" type="text/plain" style="height:300px;width:98%;"></script>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				
+				<div class="w-content pic-mod">
+					<form id="updateNews" action="javascript:modNews()" method="post" >
+						<table>
+							<tr>
+								<td class="tt">标题</td>
+								<td class="con"><input type="text" datatype="entername" id="mtitle" class="" /></td>
+							</tr>
+							<tr>
+								<td class="tt">内容</td>
+								<td class="con">
+									<script id="meditor" type="text/plain" style="height:300px;width:98%;"></script>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
 			
 				<div class="data_display">
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-hotNews-add" onclick="hotNewsAdd('添加最新动态','web/frontconfig/hotNews-add.jsp','1')">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-hotNews-mod" onclick="hotNewsMod('修改最新动态','web/frontconfig/hotNews-mod.jsp','1')">修改</button>
+								<button class="obtn glyphicon glyphicon-plus obtn-hotNews-add">添加</button>
+								<button class="obtn glyphicon glyphicon-pencil obtn-hotNews-mod">修改</button>
 							</div>
 						</div>
 						
 						<div class="panel-body">
 							<table id="table_id" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>添加时间</th>
-										<th>标题</th>
-										<th>内容</th>
-										<th>状态</th>
-										<th>最后一次操作管理员</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>2016-04-06</td>
-										<td>平台维护</td>
-										<td><a href="javascript:;" class="btn-det" onclick="newsDet()">查看详情</a></td>
-										<td>已启用</td>
-										<td>李四</td>
-										<td>
-											<a href="javascript:;" class="btn-enable" onclick="enable()">启用</a>
-											<a href="javascript:;" class="btn-disable" onclick="disable()">停用</a>
-										</td>
-									</tr>
-									<%
-										}
-									%>
-								</tbody>
 							</table>
 						</div>
 						
@@ -131,11 +132,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/frontconfig/fc-hotNews.js"></script>
-	
+	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript" src="js/frontconfig/cf-notice.js"></script>
+	<script type="text/javascript" src="js/news/new.js"></script>
 	
 	<script type="text/javascript">
 		
-		$(function(){
+		/* $(function(){
 			$('#table_id').DataTable({
 				"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
 				"aoColumnDefs" : [
@@ -146,7 +151,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				} // 制定列不参与排序
 				],
 			});
-		});
+		}); */
+	</script>
+	<script>
+		
+		
+		
 	</script>
 </body>
 

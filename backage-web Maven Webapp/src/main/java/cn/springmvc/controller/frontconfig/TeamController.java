@@ -99,8 +99,9 @@ public class TeamController {
 	*/
 	@RequestMapping("/editMngTeam")
 	@ResponseBody
-	public int editMngTeam( MngTeamEntity entity,HttpServletRequest req,HttpServletResponse res){
+	public int editMngTeam(Long teamId,MngTeamEntity entity,HttpServletRequest req,HttpServletResponse res){
 		int result=0;
+		entity.setId(teamId);
 		entity.setStatu(1);
 		entity.setOptId(1);
 		result = mngTeamService.updateMngTeamByID(entity);

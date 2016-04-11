@@ -56,7 +56,7 @@ public class DeptController {
 	 */
 	@RequestMapping("/role-dept")
 	@ResponseBody
-	public PageEntity list(Map<String, Object> req, Integer pageNum, Integer pageSize,
+	public PageEntity list(Map<String, Object> req, Integer start, Integer length,
 			String deptNo, String deptName, String principalName,
 			String principalPhone, Integer deptStatu) {
 		
@@ -82,11 +82,11 @@ public class DeptController {
 			req.put("deptStatu", deptStatu);
 		}
 		
-		if (deptName != null) {
-			pager.setPageNum(pageNum);
+		if (start != null) {
+			pager.setPageNum(start / length + 1);
 		}
-		if (pageSize != null) {
-			pager.setPageSize(pageSize);
+		if (length != null) {
+			pager.setPageSize(length);
 		}
 		pager.setMap(req);
 		

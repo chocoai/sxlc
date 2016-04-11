@@ -36,6 +36,7 @@
 	    <artifactId>spring-web</artifactId>
 	    <version>${spring.version}</version>
 	</dependency>
+	
 	<dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-oxm</artifactId>
@@ -181,5 +182,15 @@
   </dependencies>
   <build>
     <finalName>backage-web</finalName>
+    <plugins>  
+    <plugin>  
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-compiler-plugin</artifactId>  
+        <configuration>  
+            <source>1.7</source>  
+            <target>1.7</target>  
+        </configuration>  
+    </plugin>  
+</plugins> 
   </build>
 </project>

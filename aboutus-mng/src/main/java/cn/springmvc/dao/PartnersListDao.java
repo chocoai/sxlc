@@ -31,4 +31,9 @@ public interface PartnersListDao {
 	 * @return  PartnersEntity 
 	 */
 	public  PartnersEntity  selectPartnerByID(int id);
+	/**
+	 * 首页查询合作伙伴 
+	 * @return
+	 */
+	public List<PartnersEntity> selectPartnersListIndex(); 
 }

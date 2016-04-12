@@ -101,12 +101,14 @@ $(function(){
 							//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
 							if(data == 0){
 								//执行完关闭
-								alert("添加成功。");
+								layer.alert("添加成功。",{icon:1});  
 							  	layer.close(index);
-							  	setTimeout('location.reload()',2000);
+							  	setTimeout('location.reload()',500);
 							}else if(data == -1){
-								alert('部门名称已存在！');
+								layer.alert("角色名称已存在！",{icon:0});  
 							}
+						},complete:function(){	//完成过后清空数据
+							clearCheck("moduleCls","checkAutoCls");
 						}
 		 			});
 			  },cancel: function(index){//或者使用btn2（concel）
@@ -126,7 +128,7 @@ $(function(){
 		if(!isEmptyObject(rowdata[0])){ //判断是否选择
 			roleId=rowdata[0].id;
 		}else{
-			alert("请选择要处理的事务！");
+			layer.alert("请选择要处理的事务！",{icon:0});  
 			return;
 		}
 		$.ajax({
@@ -175,10 +177,11 @@ $(function(){
 						});
 						
 					});
-				
 				}
+			},complete:function(){	//完成过后清空数据
+				clearCheck("moduleCls","checkAutoCls");
 			}
-			});
+		});
 		
 		//之后
 		layer.open({
@@ -212,10 +215,11 @@ $(function(){
 							if(data == 0){
 								//执行完关闭
 								alert("修改成功。");
+								layer.alert("修改成功。",{icon:1});  
 							  	layer.close(index);
-							  	setTimeout('location.reload()',2000);
+							  	setTimeout('location.reload()',500);
 							}else if(data == -1){
-								alert('部门名称已存在！');
+								layer.alert("角色名称已存在！",{icon:0});  
 							}
 						}
 		 			});
@@ -233,7 +237,7 @@ $(function(){
 		if(!isEmptyObject(rowdata[0])){ //判断是否选择
 			roleId=rowdata[0].id;
 		}else{
-			alert("请选择要处理的事务！");
+			layer.alert("请选择要处理的事务！",{icon:0});  
 			return;
 		}
 		layer.confirm('确定删除该条信息？', {
@@ -255,11 +259,11 @@ $(function(){
 					//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
 					if(data == 0){
 						//执行完关闭
-						alert("删除成功。");
+						layer.alert("删除成功！",{icon:1});
 					  	layer.close(index);
-						setTimeout('location.reload()',2000);
+						setTimeout('location.reload()',500);
 					}else if(data == -1){
-						alert('删除失败！改角色已被管理员使用！');
+						layer.alert("删除失败！改角色已被管理员使用！",{icon:1});
 					}
 				}
  			});
@@ -267,8 +271,6 @@ $(function(){
 		  //按钮【按钮二】的回调
 		});
 	});
-	
-	
 });
 
 //function
@@ -314,18 +316,41 @@ function checkboxStr(moduName,checkName){
 }
 
 /**
+ * 清空选择中的数据
+ * @param moduleCls 	//模块
+ * @param checkAutoCls  //操作
+ */
+function clearCheck(moduleCls,checkAutoCls){
+	var moduleList = document.getElementsByName(moduleCls);	//模块
+	$.each(moduleList,function(i,obj){
+		 if($(this).attr("checked")){
+			 $(this).removeAttr("checked");
+		 }
+	});
+	var operationList = document.getElementsByName(checkAutoCls);	//操作
+	$.each(moduleList,function(i,obj){
+		 if($(this).attr("checked")){
+			 $(this).removeAttr("checked");
+		 }
+	});
+}
+
+/**
  * 显示角色列表
  */
 function showRoleList(){
 	$('#table_id').DataTable(
 			{	autoWidth : false,
 				scrollY : 500,
+				serverSide:true,
 				pagingType: "simple_numbers",//设置分页控件的模式  
 				paging : true,//分页
-//				searching : false,
-				info : false,// 左下角信息
+				searching : true,
+	/*			processing:true,
+				displayStart:0,*/
+				info : true,// 左下角信息
 //				ordering: false,//排序
-				lengthMenu:[[5,10,25,50],[5,10,25,50]],
+				lengthMenu:[10,25,50,100],
 //				aaSorting : [ [ 16, "desc" ] ],// 默认第几个排序
 				colReorder : false,
 				scrollX : true,
@@ -359,26 +384,37 @@ function showRoleList(){
 		                		  return sReturn;
 		                	  }
 		                  }, 
+		                  { title:"状态","mRender":function(data, type, full){
+		                	  var sReturn ="";
+		                	  if(full.roleStatu==0){
+		                		  sReturn = "<font color='red'>无效</font>";
+		                	  }else{
+		                		  sReturn = "<font >有效</font>";
+		                	  }
+		                  		return sReturn;
+		                  	}
+		                  }, 
 		                  { title:"操作","mRender": function(data, type, full){
 		                	  var sReturn ="";
 		                	  if(full.roleStatu==0){
-		                		  sReturn = "<a href='javascript:stopOrStart("+full.id+",1);' class='btn-enable'>启用</a>";
+		                		  sReturn = "<a href=\"javascript:stopOrStart("+full.id+",1);\" class='btn-enable'>启用</a>";
 		                	  }else{
-		                		  sReturn = "<a href='javascript:stopOrStart("+full.id+",0);' class='btn-disable'>停用</a>";
+		                		  sReturn = "<a href=\"javascript:stopOrStart("+full.id+",0);\" class='btn-disable'>停用</a>";
 		                	  }
-		                  	
-		                		  return sReturn;
+		                  		return sReturn;
 		                  	}
 		                }, 
 		        ],
 		        aoColumnDefs : [
 		        				// {"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 		        				{
-		        					orderable : false,
+		        						"orderable" : false,
+		        						"aTargets" : [0,1,2,3]
 		        					/* aTargets : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 		        							13, 14, 15 ] */
 		        				} // 制定列不参与排序
 		        				],
+		        
 		        rowCallback:function(row,data,index){//添加单击事件，改变行的样式      
 		        },
 		        oTableTools:{"sRowSelect":"multi"}
@@ -464,23 +500,22 @@ function stopOrStart(id,statu){
 				if(data == 0){
 					//执行完关闭
 					if(statu==0){
-						alert("停用成功。");
+						layer.alert("停用成功。",{icon:1});  
 					}else{
-						alert("启用成功。");
+						layer.alert("启用成功。",{icon:1});
 					}
 				  	layer.close(index);
-				  	setTimeout('location.reload()',2000);
+				  	setTimeout('location.reload()',500);
 				}else if(data == -1){
 					if(statu==0){
-						alert("停用失败！");
+						layer.alert("停用失败!",{icon:0});  
 					}else{
-						alert("启用失败！");
+						layer.alert("启用失败!",{icon:0});
 					}
 				}
 			}
 			});
 			//执行完关闭
-		  	layer.close(index);
 		}, function(index){
 		  //按钮【按钮二】的回调
 		});

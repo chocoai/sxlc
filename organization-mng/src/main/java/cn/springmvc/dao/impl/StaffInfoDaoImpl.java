@@ -28,8 +28,10 @@ public class StaffInfoDaoImpl extends SqlSessionDaoSupport implements IStaffInfo
 	
 	
 	@Override
+
 	public List<StaffInfo> getListByParam(PageEntity pageEntity) {
 		return getSqlSession().selectList("StaffInfoDaoImpl.getListByParam",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+
 	}
 	
 
@@ -57,7 +59,7 @@ public class StaffInfoDaoImpl extends SqlSessionDaoSupport implements IStaffInfo
 		param.put("emerPhone", 			info.getEmerPhone());
 		param.put("staffNo", 			"123456");
 		param.put("startDate", 			StringUtils.fromtDate(null, info.getStartDate()));
-		param.put("endDate", 			"2015-12-2");
+		param.put("endDate", 			null);
 		param.put("result", 			1);
 		
 		//职务信息

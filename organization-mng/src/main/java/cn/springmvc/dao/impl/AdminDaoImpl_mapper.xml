@@ -13,11 +13,14 @@
 		<result		column="adminRemark"	property="adminRemark"/>
 		<result		column="adminCure"		property="adminCure"/>
 		<result		column="admin_Statu"	property="adminStatu"/>
-		<association property="baseInfo" 	resultMap="personalBaseInfo"/>
+		<result		column="roleID"			property="roleId"/>
+		<result		column="Role_Name"		property="roleName"/>
+		<result		column="Add_Date"		property="addDate"/>
+		<association property="personalBaseInfo" 	resultMap="personalBaseInfo"/>
 	</resultMap>	
 	
 	<resultMap type="cn.springmvc.model.PersonalBaseInfo" id="personalBaseInfo">
-		<id 	column="pid" 				property="id"/>
+		<id 	column="Personal_Id" 		property="id"/>
 		<result column="Personal_Name" 		property="personalName"/>
 		<result column="Personal_IDCard" 	property="personalIDCard"/>
 		<result column="SexID" 				property="sexId"/>
@@ -27,6 +30,8 @@
 		<result column="Graduated_Professionals" property="graduatedProfessionals"/>
 		<result column="Graduated_DATE" 	property="graduatedDATE"/>
 		<result column="Nation_Id" 			property="nationId"/>
+		<result column="EducationName" 		property="sEducation"/>
+		<result column="NationName" 		property="sNation"/>
 		<result column="Home_Town" 			property="homeTown"/>
 		<result column="Census" 			property="census"/>
 		<result column="Monthly_Income" 	property="monthlyIncome"/>
@@ -63,19 +68,34 @@
 	</select>
 	
 	<!-- 获取列表 -->
-	<select id="getListByParam" parameterType="Map" resultMap="adminResult">
-		select ID,Staff_Type,Staff_Id,adminName,adminPwd,adminRemark,adminCure,admin_Statu from Admin a
-		left join Staff_Info si on si.id = a.Staff_Id
-		left join Personal_Base_Info pbi on pbi.id = si.Personal_Id
+	<select id="getListByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="adminResult">
+		SELECT a.Admin_ID as id,a.Staff_Type,a.Staff_Id,a.Add_Date,a.adminName,a.adminPwd,a.adminRemark,a.adminCure,a.admin_Statu,ri.roleID,ri.Role_Name,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey})) using utf8) as Personal_Name,
+		pbi.SexID,pbi.Personal_Id AS Personal_Id,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.sKey})) using utf8) as Personal_IDCard,
+		pbi.Nation_Id,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.sKey})) using utf8) as Personal_Phone,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.qq),#{map.sKey})) using utf8) as qq,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{map.sKey})) using utf8) as Personal_Email,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Home_Town),#{map.sKey})) using utf8) as Home_Town,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.House_Address),#{map.sKey})) using utf8) as House_Address,
+		pbi.Education,pbi.Graduated_DATE,EI.EducationName,NI.NationName
+		 FROM Admin a
+		LEFT JOIN Staff_Info si ON si.staff_Id = a.Staff_Id
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id = si.Personal_Id
+		LEFT JOIN Education_Info EI ON EI.Education_ID = pbi.Education
+		LEFT JOIN Nation_Info NI ON NI.Nation_ID= pbi.Nation_Id
+		LEFT JOIN Admin_Role ar ON ar.Admin_ID=a.Admin_ID
+		LEFT JOIN Role_Info ri ON  ri.roleId =ar.Role_ID
 		<where>
-			<if test="adminName != null">
-				a.adminName = #{adminName}
+			<if test="map.adminName != null">
+				a.adminName = #{map.adminName}
 			</if>
-			<if test="userName != null">
-				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{sKey}))
+			<if test="map.userName != null">
+				pbi.Personal_Name = HEX(AES_ENCRYPT(#{map.userName},#{sKey}))
 			</if>	
-			<if test="startTime != null">
-				add_Date bteween #{startTime} and #{endTime}
+			<if test="map.startTime != null">
+				add_Date bteween #{map.startTime} and #{map.endTime}
 			</if>
 		</where>
 	</select>
@@ -85,6 +105,8 @@
 	<select id="editAdmin" statementType="CALLABLE" parameterType="Map">
 		call editAdmin(
 			#{aid,				mode=IN,		jdbcType=BIGINT},
+			#{adminPwd,			mode=IN,		jdbcType=VARCHAR},
+			#{adminRemark,		mode=IN,		jdbcType=VARCHAR},
 			#{roles,			mode=IN,		jdbcType=VARCHAR},
 			#{result,			mode=OUT,		jdbcType=INTEGER}
 		)
@@ -104,8 +126,8 @@
 	
 	<!-- 停用启用 -->
 	<select id="ofAdmin" statementType="CALLABLE" parameterType="Map">
-		call ofDept(
-			#{id,				mode=IN,		jdbcType=BIGINT},
+		call ofAdmin(
+			#{id,			mode=IN,			jdbcType=BIGINT},
 			#{statu,			mode=IN,		jdbcType=INTEGER},
 			#{result,			mode=OUT,		jdbcType=INTEGER}
 		)

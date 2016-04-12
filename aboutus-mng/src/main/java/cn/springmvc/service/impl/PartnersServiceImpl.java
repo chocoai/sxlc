@@ -77,6 +77,11 @@ public class PartnersServiceImpl implements PartnersService {
 		if(entity == null) {
 			return 0;
 		}
+		if(entity.isStatu()){
+			entity.setStatu(false);
+		}else{
+			entity.setStatu(true);
+		}
 		int result = partnerDaoImpl.updatePartnerStatuByID(entity);
 		return result;
 		
@@ -96,6 +101,12 @@ public class PartnersServiceImpl implements PartnersService {
 		 
 	    PartnersEntity partnersEntity = partnerListDaoImpl.selectPartnerByID(id);
 		return partnersEntity;
+		
+	}
+	@Override
+	public List<PartnersEntity> selectPartnersListIndex() {
+		
+		return partnerListDaoImpl.selectPartnersListIndex();
 		
 	} 
 }

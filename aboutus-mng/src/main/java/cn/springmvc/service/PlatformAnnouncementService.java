@@ -54,4 +54,10 @@ public interface PlatformAnnouncementService {
 	 * @return  PlatformAnnouncementEntity 
 	 */
 	public  PlatformAnnouncementEntity  selectPlatformByID(int id);
+	/**
+	 * 首页显示平台公告
+	 * @param   
+	 * @return
+	 */
+	public List<PlatformAnnouncementEntity> selectPlatformListIndex(); 
 }

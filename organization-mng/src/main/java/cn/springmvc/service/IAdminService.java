@@ -30,7 +30,7 @@ public interface IAdminService {
 	 * @param roles			权限
 	 * @return -1该员工已是管理员、-2管理员名称已被使用、0成功
 	 */
-	public int saveAdmin(Admin admin,String roles);
+	public int saveAdmin(Admin admin,long roles);
 	
 	
 	
@@ -41,7 +41,7 @@ public interface IAdminService {
 	 * @param admin				条件信息		
 	 * @return
 	 */
-	public List<Admin> adminsByParam(PageEntity entity);
+	public void adminsByParam(PageEntity entity);
 	
 	
 	/***
@@ -51,7 +51,7 @@ public interface IAdminService {
 	 * @param admin				管理员信息
 	 * @return		0修改成功过  -1修改失败
 	 */
-	public int editAdmin(Admin admin,String roles);
+	public int editAdmin(Admin admin,long roles);
 	
 	
 	/***

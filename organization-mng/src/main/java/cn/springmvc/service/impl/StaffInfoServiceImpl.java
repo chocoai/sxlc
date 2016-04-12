@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
+
+import product_p2p.kit.pageselect.PageUtil;
+
 
 import cn.springmvc.Util.StringUtils;
 import cn.springmvc.dao.IStaffInfoDao;
@@ -33,8 +35,10 @@ public class StaffInfoServiceImpl implements IStaffInfoService{
 
 
 	@Override
-	public List<StaffInfo> StaffInfosByParam(PageEntity pageEntity) {
-		return staffInfoDao.getListByParam(pageEntity);
+
+	public void  StaffInfosByParam(PageEntity pageEntity) {
+		List<StaffInfo> list=  staffInfoDao.getListByParam(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
 	}
 
 

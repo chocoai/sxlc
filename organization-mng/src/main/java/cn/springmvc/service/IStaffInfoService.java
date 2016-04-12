@@ -39,9 +39,12 @@ public interface IStaffInfoService {
 	 * @param contactPhone		联系电话
 	 * @param idCard			身份证号码
 	 * @param postId			职务
+	 * @param sType				非员工中的管理yuan
 	 * @return
 	 */
-	public List<StaffInfo> StaffInfosByParam(PageEntity pageEntity);
+
+	public void StaffInfosByParam(PageEntity pageEntity);
+
 	
 	
 	

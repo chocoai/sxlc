@@ -1,5 +1,5 @@
 $(function() {
-	
+	//表格初始化
 	$('#staffListTb').DataTable({
 		ajax: {  
 			"url": appPath+"/role/getAllStaff.do",   
@@ -81,7 +81,7 @@ $(function() {
 		          pagingType: "simple_numbers",//设置分页控件的模式  
 		          processing: true, //打开数据加载时的等待效果  
 		          serverSide: true,//打开后台分页  
-		          info:false,
+//		          info:false,
 		          aoColumnDefs : [
 		                          {"bVisible": false, "aTargets": [1,2]}, //控制列的隐藏显示
 		                          {
@@ -94,8 +94,7 @@ $(function() {
 		                          }
 	 
 	});
-	
-	
+	//选中新式
 	 $('#staffListTb tbody').on( 'click', 'tr', function () {
 	        $(this).toggleClass('selected');
 	  });
@@ -109,26 +108,6 @@ $(function() {
 	 });
 	 
 	 
-//	单击行，选中复选框 
-	   $("#staffListTb tr").slice(1).each(function(g){     
-		alert("1");     
-		var p=this; 
-		    $(this).children().slice(1).click(function(){ 
-			$($(p).children()[0]).children().each(function(){      
-			 if(this.type=="checkbox"){  
-				if(!this.checked){
-					this.checked=true; 
-		       }else{         
-					this.checked=false;       
-			 } 
-	      } 
-	     }); 
-	    }); 
-	   }); 
-	
-	
-	
-	
 	/**
 	 * 添加按钮
 	 */
@@ -155,8 +134,7 @@ $(function() {
 	});
 	
 	//选择职务按钮
-	$("#deptSelect").on("click",function(){
-		
+	$(".deptSelect").on("click",function(){
 		$('#deptTbList').DataTable(
 				{
 					autoWidth : false,
@@ -359,14 +337,15 @@ $(function() {
 		}
 		return birthday;
 	}
-
-	function getDateByStr(data){
-		  var date = new Date(data);
-	      return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-	}
 	
-
-
+/**
+ * 转换毫秒值字符串为日期
+ */
+function getDateByStr(data){
+	  var date = new Date(data);
+      return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+}
+	
 /**
  * 添加员工 
  */

@@ -1,6 +1,5 @@
 package cn.springmvc.controller.organizationmng;
 
-import java.io.PrintWriter;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -15,15 +14,18 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.RSA.RSAPlugn;
+import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
+import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.Module;
 import cn.springmvc.model.Operation;
+import cn.springmvc.model.RoleInfo;
 import cn.springmvc.service.IAdminLoginService;
 import cn.springmvc.service.IAdminService;
 import cn.springmvc.service.IRoleInfoServer;
@@ -102,18 +104,108 @@ public class AdminController {
 	
 	/**
 	 * 保存admin
-	 * 创建日期：2016-3-29下午8:33:28
+	 * 创建日期：2016-4-8下午3:10:05
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param adminName adminPwd adminRole
+	 * return int
+	 */
+	@RequestMapping("/saveOrEditAdmin")
+	@ResponseBody
+	public int saveAdmin(HttpServletRequest request,String adminName,String adminPwd,String adminRole,String adminRemark,String staffId){
+		
+		Admin admin = new Admin();
+		admin.setAdminName(adminName);
+		admin.setAdminPwd(adminPwd);
+		admin.setAdminRemark(adminRemark);
+		admin.setStaffType(0);
+		admin.setAdminCure(0);
+		long staff_Id = IntegerAndString.StringToLong(staffId, 0);
+		admin.setStaffId(staff_Id);
+		admin.setAdminStatu(1);
+		int addOrUpdate = IntegerAndString.StringToInt(request.getParameter("type"), 0);
+		int iResult = 0;
+		long roleId = IntegerAndString.StringToLong(adminRole, 0);
+		if(addOrUpdate ==0 ){ //添加
+			iResult = adminService.saveAdmin(admin, roleId);
+		}else{//修改
+			long adminId= IntegerAndString.StringToLong(request.getParameter("adminId"), 0);
+			admin.setId(adminId);
+			iResult = adminService.editAdmin(admin, roleId);
+		}
+		return  iResult;
+	}
+	
+	/**
+	 * TODO 角色列表
+	 * 创建日期：2016-3-31下午7:30:22
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return pageEntity
+	 */
+	@RequestMapping(value ="/getRoleListToReq", method = RequestMethod.GET)
+	public String showRoleList(HttpServletRequest request){
+		List<RoleInfo>  list  = roleInfoServer.getRoleList();
+		request.setAttribute("roleList", list);
+		//return new ModelAndView("web/role/role.jsp");
+		return "role/role-manage-in";
+	}
+	
+	
+	/**
+	 * TODO 获取管理员列表
+	 * 创建日期：2016-4-7下午3:44:00
 	 * 修改日期：
 	 * 作者：pengran
 	 * @param
 	 * return int
 	 */
-	@RequestMapping("/saveAdmin")
+	@RequestMapping(value ="/getAdminList", method = RequestMethod.GET)
 	@ResponseBody
-	public int saveAdmin(String roles){
-		Admin admin = new Admin();
-		
-		int result = adminService.saveAdmin(admin, roles);
-		return 0;
+	public PageEntity getAdminList(String adminName,String userName,String startTime,String endTime,HttpServletRequest request){
+		Map<String ,Object> param = new HashMap<String, Object>();
+		if(adminName!=null && adminName!=""){
+			param.put("adminName", adminName);
+		}
+		if(userName!=null&& userName!=""){
+			param.put("userName", userName);
+		}
+		if(startTime!=null && startTime!=""){
+			param.put("startTime", startTime);
+		}
+		if(endTime!=null && endTime!=""){
+			param.put("endTime", endTime);
+		}
+		String sKey = DbKeyUtil.GetDbCodeKey();
+		param.put("sKey", sKey);
+		int pageSize = IntegerAndString.StringToInt(request.getParameter("length"), 10) ;//每页显示行数
+		int page = IntegerAndString.StringToInt(request.getParameter("start"), 1) ;
+		page = page/pageSize + 1;	//当前页数
+		PageEntity pageEntity = new PageEntity();
+		pageEntity.setMap(param);
+		pageEntity.setPageNum(page);
+		pageEntity.setPageSize(pageSize);
+		adminService.adminsByParam(pageEntity);
+		pageEntity.setDraw(Integer.parseInt(request.getParameter("draw") == null ? "0"
+                : request.getParameter("draw")) + 1);
+		return pageEntity;
+	}
+	
+	/**
+	 * TODO 停用启用管理员
+	 * 创建日期：2016-4-7下午7:32:43
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	@RequestMapping(value ="/ofAdmin", method = RequestMethod.POST)
+	@ResponseBody
+	public int ofRole(HttpServletRequest request){
+		long id =IntegerAndString.StringToLong(request.getParameter("adminId"),0);
+		int statu = IntegerAndString.StringToInt(request.getParameter("statu"), 0);
+		int result = adminService.ofAdmin(id, statu);
+		return result;
 	}
 }

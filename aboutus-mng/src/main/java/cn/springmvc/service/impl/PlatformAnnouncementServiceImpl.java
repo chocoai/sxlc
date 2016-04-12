@@ -80,6 +80,11 @@ public class PlatformAnnouncementServiceImpl implements PlatformAnnouncementServ
 		if(entity == null) {
 			return 0;
 		}
+		if(entity.getStatu() == 1) {
+			entity.setStatu(0);
+		}else{
+			entity.setStatu(1);
+		}
 		int result = platformAnnouncementDaoImpl.updatePlatformStatuByID(entity);
 		return result;
 	}
@@ -99,6 +104,13 @@ public class PlatformAnnouncementServiceImpl implements PlatformAnnouncementServ
 		
 		PlatformAnnouncementEntity platformAnnouncementEntity = platformAnnouncementListDaoImpl.selectPlatformByID(id);
 		return platformAnnouncementEntity;
+		
+	}
+
+	@Override
+	public List<PlatformAnnouncementEntity> selectPlatformListIndex() {
+		
+		return platformAnnouncementListDaoImpl.selectPlatformListIndex();
 		
 	}
 

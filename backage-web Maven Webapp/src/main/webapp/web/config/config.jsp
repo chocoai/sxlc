@@ -39,12 +39,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	<!-- 提现手续费设置 -->
 			 	<div class="config">
 			 		<fieldset>
-			 			<legend>提现手续费设置</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<legend>会员</legend>
+			 			<form class="form-horizontal config-form" role="form" name="" action="" id="">
 			 				<div class="form-group">
 			 					<label for="firstname" class="i-fl control-label col3">提现手续费费率：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+			 						<input type="text" class="form-control" id="" datatype="" placeholder="提现手续费费率">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i>*</i></span>
@@ -54,9 +54,77 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
-			 					<label for="lastname" class="i-fl control-label col3">提现手续费支付比例：</label>
+			 					<label for="lastname" class="i-fl control-label col3">平台代付比例：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+			 						<input type="text" class="form-control" id="" datatype="*" placeholder="平台代付比例">
+			 					</div>
+			 					<div class="i-fl">
+			 						<span class="sign i-fl">%<i>*</i></span>
+			 					</div>
+			 					<div class="input-alert">
+			 						<span>错误提示</span>
+			 					</div>
+			 				</div>
+			 				<div class="form-group">
+			 					<div class="offset-col3">
+			 						<button type="submit" class="btn btn-default">保存</button>
+			 					</div>
+			 				</div>
+			 			</form>		
+			 		</fieldset>
+			 		<fieldset>
+			 			<legend>第三方合作机构</legend>
+			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 				<div class="form-group">
+			 					<label for="firstname" class="i-fl control-label col3">提现手续费费率：</label>
+			 					<div class="i-fl">
+			 						<input type="text" class="form-control" id="firstname" placeholder="提现手续费费率">
+			 					</div>
+			 					<div class="i-fl">
+			 						<span class="sign i-fl">%<i>*</i></span>
+			 					</div>
+			 					<div class="input-alert">
+			 						<span>错误提示</span>
+			 					</div>
+			 				</div>
+			 				<div class="form-group">
+			 					<label for="lastname" class="i-fl control-label col3">平台代付比例：</label>
+			 					<div class="i-fl">
+			 						<input type="text" class="form-control" id="lastname" placeholder="平台代付比例">
+			 					</div>
+			 					<div class="i-fl">
+			 						<span class="sign i-fl">%<i>*</i></span>
+			 					</div>
+			 					<div class="input-alert">
+			 						<span>错误提示</span>
+			 					</div>
+			 				</div>
+			 				<div class="form-group">
+			 					<div class="offset-col3">
+			 						<button type="submit" class="btn btn-default">保存</button>
+			 					</div>
+			 				</div>
+			 			</form>		
+			 		</fieldset>
+			 		<fieldset>
+			 			<legend>平台</legend>
+			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 				<div class="form-group">
+			 					<label for="firstname" class="i-fl control-label col3">提现手续费费率：</label>
+			 					<div class="i-fl">
+			 						<input type="text" class="form-control" id="firstname" placeholder="提现手续费费率">
+			 					</div>
+			 					<div class="i-fl">
+			 						<span class="sign i-fl">%<i>*</i></span>
+			 					</div>
+			 					<div class="input-alert">
+			 						<span>错误提示</span>
+			 					</div>
+			 				</div>
+			 				<div class="form-group">
+			 					<label for="lastname" class="i-fl control-label col3">平台代付比例：</label>
+			 					<div class="i-fl">
+			 						<input type="text" class="form-control" id="lastname" datatype="" placeholder="平台代付比例">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i>*</i></span>

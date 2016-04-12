@@ -99,7 +99,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</table>
 					</form>
 				</div>
-			
+				<div class="w-content report-det">
+					详情
+				</div>
 				<div class="data_display">
 					<div class="panel panel-success">
 						<div class="panel-heading">
@@ -135,7 +137,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script type="text/javascript" src="js/announce/announce.js"></script>
+	<script type="text/javascript" src="js/frontconfig/cf-notice.js"></script>
 	<!-- 私用js -->
 	
 	

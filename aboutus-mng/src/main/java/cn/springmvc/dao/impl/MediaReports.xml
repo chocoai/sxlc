@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="mediaReports">
     <resultMap type="cn.springmvc.model.MediaReportsEntity" id="resultListMediaReports">
-        <id column="ID" property="id" />
+        <id column="Report_ID" property="id" />
 		<result column="Title" property="title" />
 		<result column="Logo" property="logo" />
 		<result column="Source" property="source" />
@@ -10,35 +10,35 @@
 		<result column="Statu" property="statu" />
 		<result column="CreateTime" property="createTime" /> 
 		<result column="Opt_Date" property="optDate" />
-		<result column="Opt_Id" property="optId" />
+		<result column="Admin_ID" property="optId" />
 		<result column="adminName" property="adminName" />
     </resultMap>  
 	<!-- 分页媒体报道-->  
 	<select id="selectMediaReportsListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListMediaReports" >
-	   select mr.ID,   mr.Title,   mr.Logo,   mr.Source,  
-	   mr.Content,   mr.Statu,  mr.CreateTime,  mr.Opt_Date, mr.Opt_Id,a.adminName 
+	   select mr.Report_ID,   mr.Title,   mr.Logo,   mr.Source,  
+	   mr.Content,   mr.Statu,  mr.CreateTime,  mr.Opt_Date, mr.Admin_ID,a.adminName 
 	   from  Media_Reports mr
-	   LEFT JOIN Admin a on a.ID=mr.Opt_Id 
+	   LEFT JOIN Admin a on a.Admin_ID=mr.Admin_ID
 	    <where>  
-            <if test="map.title != null">  
+            <if test="map !=null and map.title != null and map.title!=''">  
                 mr.Title like  '%{map.title}%'  
             </if>   
-            <if test="map.statu != -1">  
+            <if test="map !=null and map.statu != null and map.statu != '' ">  
                 and mr.Statu=#{map.statu}
             </if>  
-            order by mr.CreateTime desc
         </where>   
+       order by mr.CreateTime desc
     </select> 
      <!-- 新增媒体报道 -->  
 	<insert id="insertMediaReports"  parameterType="cn.springmvc.model.MediaReportsEntity" >    
 		insert into 
-		Media_Reports( ID,   Title,   Logo,   Source,   Content,   Statu,  CreateTime,  Opt_Date, Opt_Id) 
+		Media_Reports( Report_ID,   Title,   Logo,   Source,   Content,   Statu,  CreateTime,  Opt_Date, Admin_ID) 
 		      values (#{id},#{title},#{logo},#{source},#{content},#{statu},now(),        now(),  #{optId})    
 	</insert> 
 	<!-- 查询该标题的媒体报道是否存在 -->  
 	<select id="selectMediaReportsIsExistByNAme"  parameterType="cn.springmvc.model.MediaReportsEntity" resultMap="resultListMediaReports" >
-	   select ID,   Title,   Logo,   Source,   Content,   Statu,  CreateTime,  Opt_Date, Opt_Id
-	   from  Media_Reports where  Title=#{title}   and  ID!=#{id}
+	   select Report_ID,   Title,   Logo,   Source,   Content,   Statu,  CreateTime,  Opt_Date, Admin_ID
+	   from  Media_Reports where  Title=#{title}   and  Report_ID!=#{id}
     </select> 
     <!-- 修改媒体报道信息 -->  
 	<update id="updateMediaReportsByID"  parameterType="cn.springmvc.model.MediaReportsEntity">
@@ -57,24 +57,24 @@
 	         Content=#{content},
 	       </if>  
 	        <if test="optId != 0" >
-	        Opt_Id=#{optId},
+	        Admin_ID=#{optId},
 	        </if>   
 	         Opt_Date=now(), 
 	       </set>
-	   where ID=#{id}   
+	   where Report_ID=#{id}   
     </update>   
     <!-- 删除媒体报道 -->  
 	<delete id="deleteMediaReportsByID"  parameterType="int">
-	   delete from  Media_Reports where ID=#{id}   
+	   delete from  Media_Reports where Report_ID=#{id}   
     </delete>  
      <!-- 停用或启用媒体报道 -->  
 	<update id="updateMediaReportsStatuByID"  parameterType="cn.springmvc.model.MediaReportsEntity">
-	   update  Media_Reports  set   Statu=#{statu} where ID=#{id}   
+	   update  Media_Reports  set   Statu=#{statu} where Report_ID=#{id}   
     </update>
     <!-- 根据id查询媒体报道-->  
 	<select id="selectMediaReportsByID"  parameterType="int"  resultMap="resultListMediaReports" >
-	   select mr.ID,   mr.Title,   mr.Logo,   mr.Source,  
-	   mr.Content,   mr.Statu,  mr.CreateTime,  mr.Opt_Date, mr.Opt_Id 
-	   from  Media_Reports mr where mr.ID = #{id}
+	   select mr.Report_ID,   mr.Title,   mr.Logo,   mr.Source,  
+	   mr.Content,   mr.Statu,  mr.CreateTime,  mr.Opt_Date, mr.Admin_ID 
+	   from  Media_Reports mr where mr.Report_ID = #{id}
     </select>     
 </mapper>

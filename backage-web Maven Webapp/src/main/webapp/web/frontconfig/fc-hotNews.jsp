@@ -95,7 +95,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</table>
 					</form>
 				</div>
-			
+				<div class="w-content report-det">
+					详情
+				</div>
 				<div class="data_display">
 					<div class="panel panel-success">
 						<div class="panel-heading">
@@ -135,23 +137,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
-	<script type="text/javascript" src="js/frontconfig/cf-notice.js"></script>
-	<script type="text/javascript" src="js/news/new.js"></script>
 	
 	<script type="text/javascript">
 		
-		/* $(function(){
-			$('#table_id').DataTable({
-				"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,2,3,4,5,6]
-				} // 制定列不参与排序
-				],
-			});
-		}); */
 	</script>
 	<script>
 		

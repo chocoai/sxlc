@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 <li data-tag="role-2"><a href="role/emp.do"><i class="fa fa-edit"></i>员工管理</a> </li>
                                 <li data-tag="role-3"><a href="web/role/role-adviser.jsp"><i class="fa fa-edit"></i>理财顾问管理</a> </li>
                                 <li data-tag="role-4"><a href="getModuleAndOperation.do"><i class="fa fa-edit"></i>角色管理</a> </li>
-                                <li data-tag="role-5"><a href="web/role/role-manage-in.jsp"><i class="fa fa-edit"></i>管理员管理</a> </li>
+                                <li data-tag="role-5"><a href="getRoleListToReq.do"><i class="fa fa-edit"></i>管理员管理</a> </li>
                             </ul>
                         </div>
                     </div>

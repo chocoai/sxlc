@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.dictionaries.model.EducationInfoEntity;
@@ -82,6 +83,11 @@ public class StaffController {
 	@ResponseBody
 	public PageEntity getStaffList(int start,int length,String personalName,String personalPhone,String personalIDCard,Long postId,
 			HttpServletRequest request,HttpServletResponse res){
+
+		//获取前台额外传递过来的查询条件  
+//		String extra_search = request.getParameter("extra_search");
+		int sType = IntegerAndString.StringToInt(request.getParameter("sType"), 0);		// 非员工中的管理员  1
+
 		PageEntity pager = new PageEntity();
 		Map<String,Object> param=new HashMap<String,Object>();
 		String sKey = DbKeyUtil.GetDbCodeKey();
@@ -89,14 +95,12 @@ public class StaffController {
 		param.put("personalPhone", personalPhone);
 		param.put("personalIDCard", personalIDCard);
 		param.put("postId", postId);
+		param.put("sType", sType);
 		param.put("sKey", sKey);
 		pager.setMap(param);
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
-		List<StaffInfo> staffs= iStaffInfoService.StaffInfosByParam(pager);
-		pager.setResults(staffs);
-//		pager.setiTotalDisplayRecords(staffs.size());  
-//		pager.setiTotalRecords(staffs.size());
+		iStaffInfoService.StaffInfosByParam(pager);
 		return pager;
 	}
 	

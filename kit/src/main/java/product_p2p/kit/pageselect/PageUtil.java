@@ -24,7 +24,8 @@ public class PageUtil{
 	public static  void ObjectToPage(PageEntity pageEntity,List list){
 		pageEntity.setResults(list);
 		Page page=(Page)pageEntity.getResults();
-		pageEntity.setTatalNum(page.getTotal());
+		pageEntity.setRecordsTotal(page.getTotal());
+		pageEntity.setRecordsFiltered(page.getTotal());
 	}
 	/**
 	 * 

@@ -10,38 +10,17 @@ import java.util.List;
  * @param <T>
  */
 public class PageEntity {
-	/**
-	 * 
-	 */
+	
+	
 	private static final long serialVersionUID = 1L;
-	/**
-	 * 当前页
-	 */
-	private int pageNum=1;
-	/**
-	 * 当前页大小
-	 */
-	private int pageSize=15;
-	/**
-	 * 总条数
-	 */
-	private long tatalNum;
-	/**
-	 * 总页数
-	 */
-	private long tatalPage;
-	/**
-	 * 条件查询
-	 */
-	private Map map;
-	/**
-	 * 返回结果集
-	 */
-	private List results;
-	/**
-	 * 排序关键字
-	 */
-	private String orderKey;
+	private int pageNum=1;		//当前页
+	private int pageSize=10;	//当前页大小
+	private Map map;			// 条件查询
+	private List results;		//返回结果集
+	private String orderKey;	// 排序关键字
+	private int draw;				//datatable传参所需
+	private long recordsFiltered ;	//过滤总数据
+	private long recordsTotal; 		//对应datatable返回参数总数据
 	
 	/**
 	 * 当前页行数
@@ -103,8 +82,6 @@ public class PageEntity {
 	}
 	public void setResults(List results) {
 		this.results = results;
-		this.tatalNum = results.size();
-		this.tatalPage = this.tatalNum%pageSize==0?this.tatalNum/pageSize:this.tatalNum/pageSize+1;
 	}
 	public Map getMap() {
 		return map;
@@ -124,38 +101,34 @@ public class PageEntity {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-	public long getTatalNum() {
-		return tatalNum;
-	}
-	
 	public int getLength() {
 		return length;
 	}
 	public void setLength(int length) {
 		this.length = length;
 	}
-	/**
-	 * 赋值总条数 并计算总页数
-	 * 2016-1-7
-	 * @author lsf
-	 * @description
-	 * @param l void
-	 */
-	public void setTatalNum(long l) {
-		this.tatalNum = l;
-		setTatalPage(l%pageSize==0?l/pageSize:l/pageSize+1);
+	public int getDraw() {
+		return draw;
 	}
-	
-	public long getTatalPage() {
-		return tatalPage;
+	public void setDraw(int draw) {
+		this.draw = draw;
 	}
-	public void setTatalPage(long tatalPage) {
-		this.tatalPage = tatalPage;
+	public long getRecordsFiltered() {
+		return recordsFiltered;
+	}
+	public void setRecordsFiltered(long recordsFiltered) {
+		this.recordsFiltered = recordsFiltered;
+	}
+	public long getRecordsTotal() {
+		return recordsTotal;
+	}
+	public void setRecordsTotal(long recordsTotal) {
+		this.recordsTotal = recordsTotal;
 	}
 	//	@Override
 	public String toString() {
 		return "PageEntity [pageNum=" + pageNum + ", pageSize=" + pageSize
-				+ ", tatalNum=" + tatalNum + ", tatalPage=" + tatalPage
+				+ ", recordsTotal=" + recordsTotal + ", recordsFiltered=" + recordsFiltered
 				+ ", map=" + map + ", results=" + results + ", orderKey="
 				+ orderKey + ", enumOrder=" + enumOrder + "]";
 	}

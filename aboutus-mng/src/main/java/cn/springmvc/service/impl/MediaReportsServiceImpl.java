@@ -1,6 +1,5 @@
 package cn.springmvc.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,17 +7,10 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.pageselect.PageEntity;
-
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.MediaReportsDao;
 import cn.springmvc.dao.MediaReportsListDao;
-import cn.springmvc.dao.impl.FriendshipLinkDaoImpl;
-import cn.springmvc.dao.impl.FriendshipLinkListDaoImpl;
-import cn.springmvc.dao.impl.MediaReportsDaoImpl;
-import cn.springmvc.dao.impl.MediaReportsListDaoImpl;
-import cn.springmvc.model.FriendshipUnitEntity;
+import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.model.MediaReportsEntity;
 import cn.springmvc.service.MediaReportsService;
 @Service("mediaReportsServiceImpl")
@@ -38,7 +30,16 @@ public class MediaReportsServiceImpl implements MediaReportsService {
 		if(mediaReportsEntity != null){
 			return -1;
 		} 
-		return mediaReportsDaoImpl.insertMediaReports(entity); 
+		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+		long id = generatorUtil.GetId();
+		entity.setId(id);
+		int result = mediaReportsDaoImpl.insertMediaReports(entity); 
+		if(result == 0) {
+			generatorUtil.SetIdUsedFail(id);
+		}else{
+			generatorUtil.SetIdUsed(id);
+		}
+		return result;
 	}
 
 	@Override
@@ -73,10 +74,9 @@ public class MediaReportsServiceImpl implements MediaReportsService {
 	@Override
 	public List<MediaReportsEntity> selectMediaReportsListpage(
 			PageEntity pageEntity) {
-		
-		List<MediaReportsEntity> mediaReportsList = null;    
-	 	mediaReportsList = mediaReportsListDaoImpl.selectMediaReportsAllpage(pageEntity);  
-		return mediaReportsList; 
+		List<MediaReportsEntity> list  = mediaReportsListDaoImpl.selectMediaReportsAllpage(pageEntity);  
+	 	PageUtil.ObjectToPage(pageEntity, list);
+		return list; 
 	}
 
 	

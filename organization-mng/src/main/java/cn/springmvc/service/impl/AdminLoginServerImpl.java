@@ -2,17 +2,20 @@ package cn.springmvc.service.impl;
 
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import cn.springmvc.dao.IAdminLoginDao;
+import cn.springmvc.dao.impl.AdminLoginDaoImpl;
 import cn.springmvc.model.Admin;
 import cn.springmvc.service.IAdminLoginService;
 
 @Service
 public class AdminLoginServerImpl implements IAdminLoginService {
 	
-	//@Resource(name="adminLoginImpl")
-	private IAdminLoginDao adminLoginDao;
+	@Resource(name="AdminLoginDaoImpl")
+	private AdminLoginDaoImpl adminLoginDao;
 
 	public int adminLogin(Map<String,Object> param) {
 		return adminLoginDao.Login(param);

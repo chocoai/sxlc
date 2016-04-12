@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="newEvent">
     <resultMap type="cn.springmvc.model.NewEventEntity" id="resultListNewEvent">
-        <id column="ID" property="id" />
-		<result column="Title" property="title" />
+        <id column="New_ID" property="id" />
+		<result column="TitleS" property="title" />
 		<result column="Content" property="content" />
 		<result column="Statu" property="statu" />
 		<result column="CreateTime" property="createTime" />
@@ -24,8 +24,8 @@
             <if test="map.statu != -1">  
                 and ne.Statu=#{map.statu}
             </if>
-            order by ne.CreateTime desc
         </where>  
+            order by ne.CreateTime desc
     </select> 
     <!-- 新增最新动态 -->  
 	<insert id="insertNewEvent"  parameterType="cn.springmvc.model.NewEventEntity" >    

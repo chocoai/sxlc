@@ -36,87 +36,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				
-			 	
+			 	<ul class="nav nav-tabs">
+			 		<li role="presentation" class="active"><a href="web/config/late-allocation.jsp">逾期严重程度配置</a>
+			 		</li>
+					<li role="presentation" class=""><a href="web/config/late-fee.jsp">逾期费用设置</a>
+					</li>
+				</ul>
 			 	<!-- 逾期配置 -->
-			 	<div class="config">
-			 		<fieldset>
-			 			<legend>逾期严重程度配置</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
-			 				<div class="form-group">
-			 					<label for="firstname" class="col3 i-fl control-label">一般逾期时间：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
-			 					</div>
-			 					<div class="i-fl">
-									<span class="sign i-fl">天<i>*</i></span>
-								</div>
-								<div class="input-alert">
-									<span>错误提示</span>
-								</div>
-			 				</div>
-			 				<div class="form-group">
-			 					<label for="lastname" class="i-fl control-label col3">严重逾期时间：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
-			 					</div>
-			 					<div class="i-fl">
-									<span class="sign i-fl">天<i>*</i></span>
-								</div>
-								<div class="input-alert">
-									<span>错误提示</span>
-								</div>
-			 				</div>
-			 				<div class="form-group">
-			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
-			 					</div>
-			 				</div>
-			 			</form>		
-			 		</fieldset>
-			 		<fieldset>
-			 			<legend>逾期费用设置</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
-			 				<div class="form-group">
-			 					<label for="firstname" class="col3 i-fl control-label">逾期起算天数：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
-			 					</div>
-			 					<div class="i-fl">
-									<span class="sign i-fl">天<i>*</i></span>
-								</div>
-								<div class="input-alert">
-									<span>错误提示</span>
-								</div>
-			 				</div>
-			 				<div class="form-group">
-			 					<label for="lastname" class="i-fl control-label col3">逾期截止天数：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
-			 					</div>
-			 					<div class="i-fl">
-									<span class="sign i-fl">天<i>*</i></span>
-								</div>
-			 				</div>
-			 				<div class="form-group">
-			 					<label for="firstname" class="col3 i-fl control-label">逾期罚息日利率：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
-			 					</div>
-			 					<div class="i-fl">
-									<span class="sign i-fl">天<i>*</i></span>
-								</div>
-								<div class="input-alert">
-									<span>错误提示</span>
-								</div>
-			 				</div>
-			 				<div class="form-group">
-			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
-			 					</div>
-			 				</div>
-			 			</form>		
-			 		</fieldset>
-			 	</div>
+			 	<div class="nav-tabs-con active">
+				 	<div class="config">
+				 		<fieldset>
+				 			<legend>逾期严重程度配置</legend>
+				 			<form class="form-horizontal" role="form" name="" action="" id="">
+				 				<div class="form-group">
+				 					<label for="lastname" class="i-fl control-label col3">逾期期限：</label>
+				 					<div class="i-fl">
+				 						<input type="text" class="form-control" id="lastname" placeholder="逾期期限">
+				 					</div>
+				 					<div class="i-fl">
+										<span class="sign i-fl">天<i>*</i></span>
+									</div>
+				 				</div>
+				 				<div class="form-group">
+				 					<div class="offset-col3">
+				 						<button type="submit" class="btn btn-default">保存</button>
+				 					</div>
+				 				</div>
+				 			</form>		
+				 		</fieldset>
+				 	</div>
+				 </div>
 			 </div>
 		</div>
 	</div>

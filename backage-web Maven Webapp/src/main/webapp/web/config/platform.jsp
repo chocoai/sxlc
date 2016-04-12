@@ -46,11 +46,11 @@
 				<div class="config">
 					<fieldset>
 			 			<legend>平台设置</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<form class="form-horizontal" role="form" name="" action="" id="platform">
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">平台名称设置：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="平台名称设置">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -76,20 +76,20 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">平台客服热线设置：</label>
 			 					<div class="i-fl">
-			 						<input type="tel" class="form-control" id="firstname" placeholder="">
+			 						<input type="tel" class="form-control" id="firstname" placeholder="平台客服热线设置">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">法定工作时间设置：</label>
 			 					<div class="i-fl">
-			 						<input type="date" class="form-control" id="lastname" placeholder="">
+			 						<input type="date" class="form-control" id="lastname" placeholder="法定工作时间设置">
 			 					</div>
 			 				</div>
 			 				<!-- 新浪微博 -->
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">新浪微博：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="新浪微博">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -105,7 +105,10 @@
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">投资QQ群：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder=""/>
+			 						<input type="text" class="form-control" id="firstname" datatype="qq" placeholder="投资QQ群"/>
+			 					</div>
+			 					<div class="input-alert">
+			 						<span>错误提示</span>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -121,7 +124,7 @@
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">微信公众号：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="微信公众号">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -149,13 +152,13 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">风险备付金金额设置：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="风险备付金金额设置">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">平台预期年化设置：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="平台预期年化设置">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign">%<i>*</i></span>
@@ -164,7 +167,7 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">即将到期还款限制：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="即将到期还款限制">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign">天内<i>*</i></span>
@@ -173,7 +176,7 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">借款项目风险保证金比例上限：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="借款项目风险保证金比例上限">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign">%<i>*</i></span>
@@ -182,7 +185,7 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">红包使用比例配置：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="红包使用比例配置">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign">%<i>*</i></span>
@@ -191,13 +194,13 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">签到送积分：</label>
 			 					<div class="i-fl">
-			 						<input type="num" class="form-control" id="firstname" placeholder="">
+			 						<input type="num" class="form-control" id="firstname" placeholder="签到送积分">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">积分别名：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="积分别名">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -217,12 +220,12 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">网站top欢迎语设置：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="网站top欢迎语设置">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
+			 						<button type="submit" id="btn" class="btn btn-default">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		
@@ -236,7 +239,11 @@
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 	<script type="text/javascript" src="js/config/upload.js"></script>
+	<script type="text/javascript" src="js/valid.js"></script>
 	<!-- 私用js -->
+	<script type="text/javascript">
+		validform5('#btn','platform',false,3);
+	</script>
 </body>
 
 </html>

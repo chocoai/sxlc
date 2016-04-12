@@ -167,6 +167,7 @@ function openDept () {
 	  	data : "deptId=" + rowdata[0].id + "&deptStatu=" + rowdata[0].deptStatu,
 	  	success : function (msg) {
 	  		layer.alert("操作成功!",{icon:1});
+	  		setTimeout('location.reload()',2000);
 	  	},
 	  	error : function() {  
 	           layer.alert("操作失败!",{icon:2});  
@@ -193,7 +194,9 @@ function ofDept () {
 	  	url : appPath + "/role/ofOrOpenDept.do",
 	  	data : "deptId=" + rowdata[0].id + "&deptStatu=" + rowdata[0].deptStatu,
 	  	success : function (msg) {
+	  		alert(msg);
 	  		layer.alert("操作成功!",{icon:1});
+	  		setTimeout('location.reload()',2000);
 	  	},
 	  	error : function() {  
 	          layer.alert("操作失败!",{icon:2});  
@@ -255,7 +258,15 @@ $(function() {
                   { title:"负责人电话","data": "principalPhone" },
                   { title:"上级部门编号","data": "preDeptId" },
                   { title:"部门等级","data": "deptLevel" },    
-                  { title:"状态","data": "deptStatu" },
+                  { title:"状态","data": "deptStatu", 
+                	  "mRender": function (data, type, full) {
+                		 if (data == 0) {
+                			 return "<font color='red'>无效</font>";
+                		 }else if (data == 1){
+                			 return "有效";
+                		 }
+                	  } 
+                  }, 
                   { title:"操作","data": "deptStatu",
                   	"mRender": function (data, type, full) {
                 		  return "<a onclick=\"openDept();\" href=\"javascript:void(0);\">启用</a>" + "<a onclick=\"ofDept();\" href=\"javascript:void(0);\">停用</a>";

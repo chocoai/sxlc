@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="Mapper">
     <resultMap type="cn.springmvc.model.RecruitmentEntity" id="resultListRecruitment">
-        <id column="ID" property="id" />
+        <id column="Recruitment_ID" property="id" />
 		<result column="Name" property="name" />
 		<result column="Area" property="area" />
 		<result column="Job_Responsibilities" property="jobResponsibilities" /> 
@@ -10,15 +10,15 @@
 		<result column="Statu" property="statu" />
 		<result column="CreateTime" property="createTime" />
 		<result column="Opt_Date" property="optDate" />
-		<result column="Opt_Id" property="optId" />
+		<result column="Admin_ID" property="optId" />
 		<result column="adminName" property="adminName" />
     </resultMap> 
 	<!-- 分页查询招贤纳士 -->  
 	<select id="selectRecruitmentsList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultListRecruitment" >
-	   select rt.ID,   rt.Name,   rt.Area, rt.Job_Responsibilities, rt.Job_Requirements,  
-	   rt.Statu, rt.CreateTime,rt.Opt_Date,rt.Opt_Id,a.adminName 
+	   select rt.Recruitment_ID,   rt.Name,   rt.Area, rt.Job_Responsibilities, rt.Job_Requirements,  
+	   rt.Statu, rt.CreateTime,rt.Opt_Date,rt.Admin_ID,a.adminName 
 	   from  Recruitment rt
-	   LEFT JOIN Admin a on a.ID=rt.Opt_Id
+	   LEFT JOIN Admin a on a.Admin_ID=rt.Admin_ID
          <where>  
             <if test="map.name != null">  
                 rt.Name like  '%{map.name}%'  
@@ -26,19 +26,19 @@
             <if test="map.statu != -1">  
                 and rt.Statu=#{map.statu}
             </if>  
-            order by rt.CreateTime desc
         </where> 
+            order by rt.CreateTime desc
     </select> 
     <!-- 新增招贤纳士 -->  
 	<insert id="insertRecruitment"  parameterType="cn.springmvc.model.RecruitmentEntity" >    
 		insert into 
-		Recruitment(ID,   Name,   Area,   Job_Responsibilities,   Job_Requirements,  Opt_Id) 
+		Recruitment(Recruitment_ID,   Name,   Area,   Job_Responsibilities,   Job_Requirements,  Admin_ID) 
 		     values(#{id},#{name},#{area},#{jobResponsibilities},#{jobRequirements},#{optId})    
 	</insert> 
 	<!-- 查询该标题的招贤纳士是否存在 -->  
 	<select id="selectRecruitmentIsExistByNAme"  parameterType="cn.springmvc.model.RecruitmentEntity" resultMap="resultListRecruitment" >
-	   select ID,   Name,   Area,   Job_Responsibilities,   Job_Requirements,  Statu, CreateTime,Opt_Date,Opt_Id
-	   from  Recruitment where  Name=#{name}   and  ID !=#{id}
+	   select Recruitment_ID,   Name,   Area,   Job_Responsibilities,   Job_Requirements,  Statu, CreateTime,Opt_Date,Admin_ID
+	   from  Recruitment where  Name=#{name}   and  Recruitment_ID !=#{id}
     </select> 
     <!-- 修改招贤纳士信息 -->  
 	<update id="updateRecruitmentByID"  parameterType="cn.springmvc.model.RecruitmentEntity">
@@ -57,25 +57,25 @@
 	        Job_Responsibilities=#{jobResponsibilities},
 	       </if> 
 	        <if test="optId != 0" >
-	           Opt_Id=#{optId},
+	           Admin_ID=#{optId},
 	       </if> 
 	        Opt_Date=now(), 
 	      </set>   
-	   where ID=#{id}   
+	   where Recruitment_ID=#{id}   
     </update>   
     <!-- 删除招贤纳士 -->  
 	<delete id="deleteRecruitmentByID"  parameterType="int">
-	   delete from  Recruitment where ID=#{id}   
+	   delete from  Recruitment where Recruitment_ID=#{id}   
     </delete> 
     
      <!-- 停用或启用招贤纳士 -->  
 	<update id="updateRecruitmentStatuByID"  parameterType="cn.springmvc.model.RecruitmentEntity">
-	   update  Recruitment  set   Statu=#{statu} where ID=#{id}   
+	   update  Recruitment  set   Statu=#{statu} where Recruitment_ID=#{id}   
     </update>  
     <!-- 根据id查询招贤纳士 -->  
 	<select id="selectRecruitmentsByID"  parameterType="int" resultMap="resultListRecruitment" >
-	   select rt.ID,   rt.Name,   rt.Area, rt.Job_Responsibilities, rt.Job_Requirements,  
-	   rt.Statu, rt.CreateTime,rt.Opt_Date,rt.Opt_Id 
-	   from  Recruitment rt  where ID=#{id}  
+	   select rt.Recruitment_ID,   rt.Name,   rt.Area, rt.Job_Responsibilities, rt.Job_Requirements,  
+	   rt.Statu, rt.CreateTime,rt.Opt_Date,rt.Admin_ID 
+	   from  Recruitment rt  where Recruitment_ID=#{id}  
     </select>      
 </mapper>

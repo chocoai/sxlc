@@ -6,13 +6,14 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.dao.IAdminReadDao;
 import cn.springmvc.model.Admin;
 
-@Repository
+@Component("adminReadDaoImpl")
 public class AdminReadDaoImpl extends SqlSessionDaoSupport implements IAdminReadDao {
 
 	

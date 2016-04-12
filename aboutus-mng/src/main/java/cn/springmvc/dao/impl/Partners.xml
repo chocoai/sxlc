@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="Mapper">   
     <resultMap type="cn.springmvc.model.PartnersEntity" id="resultListPartner">
-        <id column="ID" property="id" />
+        <id column="Partner_ID" property="id" />
 		<result column="Name" property="name" />
 		<result column="Logo" property="logo" />
 		<result column="URL" property="url" />
@@ -10,36 +10,37 @@
 		<result column="Statu" property="statu" />
 		<result column="CreateTime" property="createTime" />
 		<result column="Indexs" property="indexs" />
-		<result column="Opt_Id" property="optId" />
+		<result column="Admin_ID" property="optId" />
 		<result column="Opt_Date" property="optDate" />
 		<result column="adminName" property="adminName" />
     </resultMap> 
      <!-- 查询合作伙伴列表 -->  
 	<select id="selectPartnersList"  resultMap="resultListPartner"  parameterType="product_p2p.kit.pageselect.PageEntity">
-	   select pt.ID,pt.Name,pt.Logo,pt.URL,pt.Introduction,pt.Statu,pt.Indexs,pt.Opt_Id,
+	   select pt.Partner_ID,pt.Name,pt.Logo,pt.URL,pt.Introduction,pt.Statu,pt.Indexs,pt.Admin_ID,
 	   pt.CreateTime ,pt.Opt_Date,a.adminName 
 	   from  Partners  pt
-	   LEFT JOIN Admin a on a.ID=pt.Opt_Id 
+	   LEFT JOIN Admin a on a.Admin_ID=pt.Admin_ID 
         <where>  
             <if test="map.name != null">  
-                pt.Name like  '%{map.name}%'  
+                pt.Name like  '%${map.name}%'  
             </if>   
             <if test="map.statu != -1">  
                 and pt.Statu=#{map.statu}
             </if>  
-            order by pt.CreateTime desc
-        </where>  
+ 
+        </where>
+        order by pt.CreateTime desc
     </select>   
 	<!-- 新增合作伙伴 -->  
 	<insert id="insertPartner"  parameterType="cn.springmvc.model.PartnersEntity" >    
 		insert into 
-		Partners(ID,    Name,   Logo,   URL,    Introduction,  Indexs,  Opt_Id) 
+		Partners(Partner_ID,    Name,   Logo,   URL,    Introduction,  Indexs,  Admin_ID) 
 		values (#{id},#{name},#{logo},#{url},#{introduction},#{indexs},#{optId})    
 	</insert> 
 	<!-- 查询合作伙伴是否存在 -->  
 	<select id="selectPartnerIsExistByNAme"  parameterType="cn.springmvc.model.PartnersEntity" resultMap="resultListPartner" >
-	   select ID,Name,Logo,URL,Introduction,Statu,Indexs,Opt_Id,CreateTime ,Opt_Date
-	   from  Partners where  Name=#{name}   and ID != #{id}
+	   select Partner_ID,Name,Logo,URL,Introduction,Statu,Indexs,Admin_ID,CreateTime ,Opt_Date
+	   from  Partners where  Name=#{name}   and Partner_ID != #{id}
     </select> 
     <!-- 修改合作伙伴信息 -->  
 	<update id="updatePartnerByID"  parameterType="cn.springmvc.model.PartnersEntity">
@@ -61,24 +62,32 @@
 	         Indexs=#{indexs},
 	       </if> 
 	       <if test="optId != 0" >
-	         Opt_Id=#{optId},
+	         Admin_ID=#{optId},
 	       </if> 
 	         Opt_Date=now(),   
 	       </set> 
-	    where ID=#{id}   
+	    where Partner_ID=#{id}   
     </update>   
     <!-- 删除合作伙伴信息 -->  
 	<delete id="deletePartnerByID"  parameterType="int">
-	   delete from  Partners where ID=#{id}   
+	   delete from  Partners where Partner_ID=#{id}   
     </delete>  
     <!-- 停用或启用合作伙伴信息 -->  
 	<update id="updatePartnerStatuByID"  parameterType="cn.springmvc.model.PartnersEntity">
-	   update  Partners  set   Statu=#{statu} where ID=#{id}   
+	   update  Partners  set   Statu=#{statu} where Partner_ID=#{id}   
     </update>  
      <!-- 根据id查询合作伙伴 -->  
 	<select id="selectPartnersByID"  resultMap="resultListPartner"  parameterType="int">
-	   select pt.ID,pt.Name,pt.Logo,pt.URL,pt.Introduction,pt.Statu,pt.Indexs,pt.Opt_Id,
+	   select pt.Partner_ID,pt.Name,pt.Logo,pt.URL,pt.Introduction,pt.Statu,pt.Indexs,pt.Admin_ID,
 	   pt.CreateTime ,pt.Opt_Date 
-	   from  Partners  pt  where ID=#{id} 
-    </select>     
+	   from  Partners  pt  where Partner_ID=#{id} 
+    </select> 
+      <!-- 查询合作伙伴列表 -->  
+	<select id="selectPartnersListIndex"  resultMap="resultListPartner">
+	   select pt.Partner_ID,pt.Name,pt.Logo,pt.URL,pt.Introduction,pt.Statu,pt.Indexs,
+	   pt.CreateTime ,pt.Opt_Date 
+	   from  Partners  pt 
+	   where  pt.Statu =  1
+	   order by pt.CreateTime desc
+	 </select>   
 </mapper>   

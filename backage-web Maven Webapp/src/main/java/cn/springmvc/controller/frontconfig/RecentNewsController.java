@@ -54,6 +54,8 @@ public class RecentNewsController {
 		}
 		if (statu != null && statu != "") {
 			req.put("statu", statu);
+		}else {
+			req.put("statu", -1);
 		}
 		pager.setPageNum(start / length + 1);
 		pager.setPageSize(length);
@@ -92,9 +94,7 @@ public class RecentNewsController {
 		if (content != null && content != "") {
 			entity.setContent(content);
 		}
-		if (optId != null && optId != "") {
-			entity.setOptId(Long.valueOf(optId));
-		}
+			entity.setOptId(Long.valueOf(1));
 		
 		int num = newEventService.insertNewEvent(entity);
 		return num;
@@ -163,7 +163,7 @@ public class RecentNewsController {
 			entity.setId(Long.valueOf(newsId));
 		}
 		if (statu != null && statu != "") {
-			entity.setStatu(statu);
+			entity.setStatu(Integer.valueOf(statu));
 		}
 		
 		int num = newEventService.updateNewEventStatuByID(entity);
@@ -185,16 +185,11 @@ public class RecentNewsController {
 	 */
 	@RequestMapping("/query4update")
 	@ResponseBody
-	public int query4update(String newsId) {
+	public NewEventEntity query4update(String newsId) {
 		
-		NewEventEntity entity = new NewEventEntity();
-		
-		if (newsId != null && newsId != "") {
-			entity.setId(Long.valueOf(newsId));
-		}
-		
-		int num = newEventService.updateNewEventByID(entity);
-		return num;
+		NewEventEntity event = newEventService.
+				selectNewEventByID(Integer.valueOf(newsId));
+		return event;
 	}
 	
 }

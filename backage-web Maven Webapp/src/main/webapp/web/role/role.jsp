@@ -317,7 +317,7 @@
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script type="text/javascript" src="js/role.js"></script>
+	<script type="text/javascript" src="js/valid.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/role/role_role-manage.js"></script>
 </body>

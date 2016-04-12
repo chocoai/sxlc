@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.pageselect.PageEntity;
-
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.IAdminReadDao;
 import cn.springmvc.dao.IAdminWriteDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
@@ -26,7 +26,7 @@ public class AdminServiceImpl implements IAdminService {
 	private IAdminReadDao adminReadDao;
 
 	@Override
-	public int saveAdmin(Admin admin, String roles) {
+	public int saveAdmin(Admin admin, long roles) {
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
 		Map<String,Object> param = new HashMap<String, Object>();
@@ -50,15 +50,18 @@ public class AdminServiceImpl implements IAdminService {
 	}
 
 	@Override
-	public List<Admin> adminsByParam(PageEntity entity) {
-		
-		return adminReadDao.getAdminsByParam(entity);
+	public void adminsByParam(PageEntity entity) {
+		List<Admin> list = adminReadDao.getAdminsByParam(entity);
+		PageUtil.ObjectToPage(entity, list);
+//		return 
 	}
 
 	@Override
-	public int editAdmin(Admin admin, String roles) {
+	public int editAdmin(Admin admin, long roles) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("aid", admin.getId());
+		param.put("adminPwd", admin.getAdminPwd());
+		param.put("adminRemark", admin.getAdminRemark());
 		param.put("roles", roles);
 		return adminDao.editAdmin(param);
 	}

@@ -78,6 +78,12 @@ public class NewEventServiceImpl implements NewEventService {
 		if(entity == null) {
 			return 0;
 		} 
+		if(entity.getStatu() == 1) {
+			
+			entity.setStatu(0);
+		}else {
+			entity.setStatu(1);
+		}
 		int result = newEventDaoImpl.updateNewEventStatuByID(entity); 
 		return result;
 	}

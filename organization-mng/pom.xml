@@ -154,9 +154,13 @@
 		<version>1.1.0.Final</version>
 	</dependency>
     
-    
-    
-    
+    <!-- 工具模块 -->
+    <dependency>
+      <groupId>product_p2p</groupId>
+      <artifactId>kit</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
 	
     <dependency>
       <groupId>junit</groupId>
@@ -164,5 +168,13 @@
       <version>4.8</version>
       <scope>test</scope>
     </dependency>
+    
+    <dependency> 
+	   <groupId>javax.servlet</groupId> 
+	   <artifactId>servlet-api</artifactId> 
+	   <version>2.5</version> 
+	   <scope>provided</scope> 
+	</dependency>
+    
   </dependencies>
 </project>

@@ -45,8 +45,20 @@ public interface IRoleInfoServer {
 	 * endTime						结束日期
 	 * @return
 	 */
-	public List<RoleInfo> getListByParam(Map<String,Object> param,PageEntity pageEntity);
+	public void getListByParam(Map<String,Object> param,PageEntity pageEntity);
 	
+	
+	/***
+	 * 根据条件查询角色列表
+	 * 
+	 * @param param
+	 * roleNo						角色编号
+	 * roleName						角色名称
+	 * startTime					创建日期
+	 * endTime						结束日期
+	 * @return
+	 */
+	public List<RoleInfo> getRoleList();
 	
 	
 	/****

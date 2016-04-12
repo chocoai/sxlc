@@ -116,6 +116,8 @@ function addOrUpdate(type){
 	//清除数据
 	document.getElementById("dataForm").reset();
 	$("#portrait").attr("src","");
+	$("#fileList").html("");
+	$("#filePicker").html("选择图片");//清除样式
 	//操作
 	var title="";
 	if(type==1){
@@ -145,15 +147,14 @@ function addOrUpdate(type){
 	    content: $(".pic-add"),//DOM或内容
 	    btn:['确定', '取消']
 		  ,yes: function(index, layero){ //或者使用btn1
-		    //确定的回调
-		  	//判断执行不同方法
+//			  $("#portraitUrl").val(uploadUrl);
 			  $("#dataForm").submit();
 		  },cancel: function(index){//或者使用btn2（concel）
 		  	//取消的回调
 		  }
 	});
 	//上传插件初始化
-	uploadPic();
+	expUpload("portraitUrl");
 }
 
 

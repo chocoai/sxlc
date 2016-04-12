@@ -134,7 +134,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 	<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
-	<!-- <script type="text/javascript" src="js/exp-upload.js"></script> -->
+	<script type="text/javascript" src="js/exp-upload.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/frontconfig/cf-manage.js"></script>
 </body>

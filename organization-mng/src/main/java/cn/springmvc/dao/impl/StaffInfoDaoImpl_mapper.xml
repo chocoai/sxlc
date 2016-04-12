@@ -80,7 +80,14 @@
 		<if test="map != null and map.postId != null and map.postId !='' ">
 			and sp.Post_Id = #{map.postId}
 		</if>
+		<if test="map.sType ==1 "> <!-- 添加员工为管理员排除已成为管理员的员工 -->
+			and	si.Staff_Id  not in (select Staff_Id from Admin)
+		</if>
+		<if test="map.sType ==2 "> <!-- 添加理财顾问已成为理财顾问的员工 -->
+			and	si.Staff_Id  not in (select Staff_Id from Financial_Advisor)
+		</if>
 		order by si.Start_Date desc
+
 	</select>
 	
 	
@@ -105,7 +112,6 @@
 			#{staffNo,									mode=IN,							jdbcType=VARCHAR},
 			#{startDate,								mode=IN,							jdbcType=VARCHAR},
 			#{endDate,									mode=IN,							jdbcType=VARCHAR},
-			
 			#{deptId,									mode=IN,							jdbcType=BIGINT},
 			#{postId,									mode=IN,							jdbcType=BIGINT},
 			#{joinDate,									mode=IN,							jdbcType=VARCHAR},

@@ -17,6 +17,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
+	<link rel="stylesheet" href="css/upload.css" />
+	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
 </head>
 
 <body class="nav-md">
@@ -34,82 +36,97 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				
-				<!-- <div class="search">
-					<div class="panel panel-success">
-						<div class="panel-heading">
-							<div class="i-fl search_title">条件查询</div>
-							<div class="i-fr action_item">
-								<ul class="list_item list-inline">
-									<li><a class="state">展开&nbsp;<span
-											class="glyphicon glyphicon-chevron-down"></span> </a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="panel-body">
-							<form id="" class="" action="">
-								<span class="con-item">
-									<span>添加时间</span><input type="text" class="" placeholder="" />
-								</span>
-								<span class="con-item">
-									<span>图片标题</span><input type="text" class="" placeholder="" />
-								</span>
-								<span class="con-item">
-									<span>状态</span><input type="text" class="" placeholder="" />
-								</span>
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-							</form>
-						</div>
-					</div>
-				</div> -->
 			
 			
 				<div class="data_display">
 					<div class="panel panel-success">
+					
+					<div class="w-content pic-add">
+							<form action="javascript:addMngTeam()" id="dataForm" method="post">
+								<table>
+									<tr>
+										<td class="tt">姓名</td>
+										<td class="con"><input type="text" name="mngName" id="mngName" class="" datatype="z2_8" /></td>
+									</tr>
+									<tr>
+										<td class="tt">职务</td>
+										<td class="con"><input type="text" name="mngPost" id="mngPost" class="" /></td>
+									</tr>
+									<tr>
+										<td class="tt">头像</td>
+										<td class="con portrait-box">
+											<!--dom结构部分-->
+											<div id="uploader">
+											    <!--用来存放item-->
+											    <div class="" id="fileList"></div>
+											    <div id="filePicker">选择头像</div>
+											    <span class="rec-dimensions">建议尺寸：100*100</span>
+											    <img id="portrait" src="">
+											     <input type="hidden" name="portraitUrl" id="portraitUrl" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="tt" valign="top">简介</td>
+										<td class="con">
+											<textarea rows="6" cols="" name="profile" id="profile" class="ta-noresize w500">测试</textarea>
+										</td>
+									</tr>
+								</table>
+								</form>
+							</div>
+							<div class="w-content pic-view">
+								<img id="picView" src="">
+							</div>
+					
+					
+					<div class="w-content pic-mod">
+							<form action="javascript:updateExpertTeamByID()" id="dataFor" method="post">
+								<table>
+									<tr>
+										<td class="tt">专家姓名</td>
+										<td class="con"><input type="text" name="mngName" id="mngNam" class="" datatype="z2_8" /></td>
+									</tr>
+									<tr>
+										<td class="tt">职务</td>
+										<td class="con"><input type="text" name="mngPost" id="mngPos" class="" /></td>
+									</tr>
+									<tr>
+										<td class="tt">头像</td>
+										<td class="con portrait-box">
+											<!--dom结构部分-->
+											<div id="uploader">
+											    <!--用来存放item-->
+											    <div class="" id="fileList"></div>
+											    <div id="filePickers">选择头像</div>
+											    <span class="rec-dimensions">建议尺寸：100*100</span>
+											    <img id="portrait" src="">
+											     <input type="hidden" name="portraitUrl" id="portraitUr" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="tt" valign="top">简介</td>
+										<td class="con">
+											<textarea rows="6" cols="" name="profile" id="profil" class="ta-noresize w500">测试</textarea>
+										</td>
+									</tr>
+								</table>
+								</form>
+							</div>
+							<div class="w-content pic-view">
+								<img id="picView" src="">
+							</div>
+					
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-experts-add" onclick="expAdd('添加专家顾问','web/common/picture/exp-add.jsp','1')">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-experts-mod" onclick="expMod('修改专家顾问','web/common/picture/exp-mod.jsp','1','id')">修改</button>
+								<button class="obtn glyphicon glyphicon-plus obtn-experts-add" onclick="expAdd()">添加</button>
+								<button class="obtn glyphicon glyphicon-pencil obtn-experts-mod" onclick="expMod()">修改</button>
 							</div>
 						</div>
 						
 						<div class="panel-body">
-							<table id="table_id" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>添加时间</th>
-										<th>专家姓名</th>
-										<th>职称</th>
-										<th>头像</th>
-										<th>状态</th>
-										<th>简介</th>
-										<th>最后一次操作管理员</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>2016-04-06</td>
-										<td>张三</td>
-										<td>高级工程师</td>
-										<td>img</td>
-										<td>已启用</td>
-										<td>简介</td>
-										<td>李四</td>
-										<td>
-											<a href="javascript:;" class="btn-enable">启用</a>
-											<a href="javascript:;" class="btn-disable">停用</a>
-										</td>
-									</tr>
-									<%
-										}
-									%>
-								</tbody>
+							<table id="teamTb" class="display">
 							</table>
 						</div>
 						
@@ -130,18 +147,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/frontconfig/cf-experts.js"></script>
-	<script type="text/javascript">
-		$('#table_id').DataTable({
-			"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,2,3,4,5,6,7]
-			} // 制定列不参与排序
-			],
-		});
-	</script>
+	<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
+	<script type="text/javascript" src="js/exp-upload.js"></script>
+	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
+	<script type="text/javascript" src="js/exper/exper.js"></script>
+
 </body>
 
 </html>

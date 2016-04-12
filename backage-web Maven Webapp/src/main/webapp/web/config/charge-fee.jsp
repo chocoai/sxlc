@@ -18,7 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用css -->
 	<link href="css/config.css" rel="stylesheet" />
 </head>
-<!-- 配置中心-------------------财务设置  充值手续费设置-->
+<!-- 配置中心-------------------财务设置 -->
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
@@ -36,34 +36,81 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				
-			 	<!-- 提现充值费设置 -->
+			 	<!-- 快捷充值手续费设置 -->
 			 	<div class="config">
 			 		<fieldset>
-			 			<legend>充值手续费设置</legend>
+			 			<legend>会员</legend>
 			 			<form class="form-horizontal" role="form" name="" action="" id="">
 			 				<div class="form-group">
-			 					<label for="firstname" class="i-fl control-label col3">充值手续费费率：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="请输入名字">
-			 					</div>
-			 					<div class="i-fl">
-			 						<span class="sign i-fl">%<i>*</i></span>
-			 					</div>
-			 					<div class="input-alert">
-			 						<span>错误提示</span>
-			 					</div>
+			 					<label for="lastname" class="i-fl control-label col3">充值手续费支付比例：</label>
+				 				<div class="i-fl">	
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之三
+				 					</label>
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value=""> 扣除平台千分之三
+				 					</label>
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之一
+				 					</label>
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value="" checked> 扣除平台千分之一
+				 					</label>
+				 				</div>
 			 				</div>
 			 				<div class="form-group">
+			 					<div class="offset-col3">
+			 						<button type="submit" class="btn btn-default">保存</button>
+			 					</div>
+			 				</div>
+			 			</form>		
+			 		</fieldset>
+			 		<fieldset>
+			 			<legend>第三方合作机构</legend>
+			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">充值手续费支付比例：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+				 				<div class="i-fl">	
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之三
+				 					</label>
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value=""> 扣除平台千分之三
+				 					</label>
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之一
+				 					</label>
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value="" checked> 扣除平台千分之一
+				 					</label>
+				 				</div>
+			 				</div>
+			 				<div class="form-group">
+			 					<div class="offset-col3">
+			 						<button type="submit" class="btn btn-default">保存</button>
 			 					</div>
-			 					<div class="i-fl">
-			 						<span class="sign i-fl">%<i>*</i></span>
-			 					</div>
-			 					<div class="input-alert">
-			 						<span>错误提示</span>
-			 					</div>
+			 				</div>
+			 			</form>		
+			 		</fieldset>
+			 		<fieldset>
+			 			<legend>平台</legend>
+			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 				<div class="form-group">
+			 					<label for="lastname" class="i-fl control-label col3">充值手续费支付比例：</label>
+				 				<div class="i-fl">	
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之三
+				 					</label>
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value=""> 扣除平台千分之三
+				 					</label>
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之一
+				 					</label>
+				 					<label class="checkbox-inline">
+				 						<input type="radio" name="" id="" value="" checked> 扣除平台千分之一
+				 					</label>
+				 				</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">

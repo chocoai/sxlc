@@ -36,21 +36,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				
-			 	
-			 	<!-- 红包、代金券到期提醒 -->
+			 	<!-- 提现手续费设置 -->
 			 	<div class="config">
 			 		<fieldset>
 			 			<legend>红包、代金券到期提醒</legend>
 			 			<form class="form-horizontal" role="form" name="" action="" id="">
 			 				<div class="form-group">
-			 					<div class="offset-col1">
-			 						<button type="button" class="btn btn-default station">站内信</button>
-			 						<button type="button" class="btn btn-default email">邮件提醒</button>
+			 					<label for="lastname" class="i-fl control-label col3">到期前N提醒：</label>
+			 					<div class="i-fl">
+			 						<input type="text" class="form-control" id="lastname" placeholder="到期前N提醒">
+			 					</div>
+			 					<div class="i-fl">
+			 						<span class="sign i-fl">天<i>*</i></span>
+			 					</div>
+			 					<div class="input-alert">
+			 						<span>错误提示</span>
+			 					</div>
+			 				</div>
+			 				<div class="form-group">
+			 					<div class="offset-col3">
+			 						<button type="submit" class="btn btn-default">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		
 			 		</fieldset>
-			 	</div>
+			 	</div>	
 			 </div>
 		</div>
 	</div>

@@ -48,104 +48,104 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">注册成功：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="注册成功">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">开户成功：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="开户成功">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">充值成功：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="充值成功">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">提现成功：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="提现成功">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">投资成功：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="投资成功">
 			 					</div>
 			 				</div>
 			 				<!-- 新浪微博 -->
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">投资失败：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="投资失败">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">借款申请审核失败：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder=""/>
+			 						<input type="text" class="form-control" id="firstname" placeholder="借款申请审核失败"/>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">借款失败：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder=""/>
+			 						<input type="text" class="form-control" id="firstname" placeholder="借款失败"/>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">借款成功：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="借款成功">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">还款提醒：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="还款提醒">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">当期还款成功：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="当期还款成功">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">项目回款：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="项目回款">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">修改登录密码通知：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="修改登录密码通知">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">注册手机验证码通知：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="注册手机验证码通知">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">修改手机验证码通知：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="修改手机验证码通知">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">提现手机验证码通知：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="提现手机验证码通知">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">登录手机验证码通知：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="登录手机验证码通知">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">

@@ -16,9 +16,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
 	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
 	<link rel="stylesheet" href="css/upload.css" />
+	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
 	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
@@ -73,8 +73,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-hotNews-add" onclick="addOrUpdate(1)">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-hotNews-mod" onclick="addOrUpdate(2)">修改</button>
+								<button class="obtn glyphicon glyphicon-plus obtn-hotNews-add" onclick="addOrUpdate(1)" type="button">添加</button>
+								<button class="obtn glyphicon glyphicon-pencil obtn-hotNews-mod" onclick="addOrUpdate(2)" type="button">修改</button>
 								<input type="hidden" id="hostPath" value="${hostPath}"/>
 							</div>
 						</div>
@@ -148,6 +148,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 	<script type="text/javascript" src="js/valid.js"></script>
 	<script type="text/javascript" src="js/frontconfig/fc-mediaReport.js"></script>
+	<script type="text/javascript" src="js/exp-upload.js"></script>
 	
 </body>
 

@@ -59,8 +59,9 @@
 								<span class="con-item"><span>职务</span>
 <!-- 									<input type="text" class="" id="postId" placeholder="职务" /> -->
 									<input type="text" disabled="disabled" style="width:130px" name="" id="postId" class="" />
-									<button id="deptSelect" type="button">选择</button>
+									<button class="btn btn-primary btn-xs deptSelect" type="button">选择</button>
 								</span>
+								&nbsp;&nbsp;&nbsp;
 								<span class="con-item"><span>联系电话</span><input type="text" class="" id="personalPhone" placeholder="联系电话" /></span>
 								<button class="obtn obtn-query glyphicon" id="queryBtn" type="button">查询</button>
 							</form>
@@ -166,7 +167,7 @@
 										<td class="tt"><label class="">职务：</label></td>
 										<td class="con">
 											<input type="text" disabled="disabled" style="width:130px" name="" id="postName" class="" />
-											<button id="deptSelect" type="button">选择</button>
+											<button class="btn btn-primary btn-xs deptSelect" type="button">选择</button>
 											<%-- <select name="" class="" id="nationId">
 												<c:forEach var="dept" items="${depts}">
 													<option value="${dept.id}">${dept.deptName}</option>
@@ -191,7 +192,7 @@
 								&nbsp;
 								职务名称：<input class="w4" />
 								&nbsp;
-								<button type="button">查询</button>
+								<button class="obtn obtn-query" type="button">查询</button>
 								<br>
 							</div>
 							<div class="panel-body">
@@ -206,7 +207,6 @@
 			<!-- 公用js -->
 			<jsp:include page="../common/cm-js.jsp"></jsp:include>
 			<script type="text/javascript" src="js/role.js"></script>
-			<script type="text/javascript" src="js/valid.js"></script>
 			<!-- 私用js -->
 			<script type="text/javascript" src="js/role/role-emp.js"></script>
 		</div>

@@ -83,8 +83,9 @@ public class RoleController {
 		PageEntity pageEntity = new PageEntity();
 		pageEntity.setPageNum(page);
 		pageEntity.setPageSize(pageSize);
-		List<RoleInfo>  list  = roleInfoServer.getListByParam(param,pageEntity);
-		pageEntity.setResults(list);
+		pageEntity.setDraw(Integer.parseInt(request.getParameter("draw") == null ? "0"
+                : request.getParameter("draw")) + 1);
+		 roleInfoServer.getListByParam(param,pageEntity);
 		return pageEntity;
 	}
 	

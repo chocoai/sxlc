@@ -33,80 +33,72 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-				
-				<!-- <div class="search">
-					<div class="panel panel-success">
-						<div class="panel-heading">
-							<div class="i-fl search_title">条件查询</div>
-							<div class="i-fr action_item">
-								<ul class="list_item list-inline">
-									<li><a class="state">展开&nbsp;<span
-											class="glyphicon glyphicon-chevron-down"></span> </a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="panel-body">
-							<form id="" class="" action="">
-								<span class="con-item">
-									<span>添加时间</span><input type="text" class="" placeholder="" />
-								</span>
-								<span class="con-item">
-									<span>姓名</span><input type="text" class="" placeholder="" />
-								</span>
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-							</form>
-						</div>
-					</div>
-				</div> -->
-			
 			
 				<div class="data_display">
 					<div class="panel panel-success">
+					
+						<div class="w-content  pic-add">
+						<form action="javascript:addMngTeam()" id="dataForm" method="post">
+								<table>
+									<tr>
+										<td class="tt">招聘职位</td>
+										<td class="con"><input type="text" class="" id="name"  datatype="z2_8" /></td>
+										<td class="tt">工作地区</td>
+										<td class="con"><input type="text" class=""  id="area"  datatype="z2_8"/></td>
+									</tr>
+									<tr>
+										<td class="tt">岗位职责</td>
+										<td class="con" colspan="3">
+											<script id="duty" type="text/plain" style="height:300px;width:98%;"></script>
+										</td>
+									</tr>
+									<tr>
+										<td class="tt">任职要求</td>
+										<td class="con" colspan="3">
+											<script id="demand" type="text/plain" style="height:300px;width:98%;"></script>
+										</td>
+									</tr>
+								</table>
+								</form>
+							</div>
+					
+						<div class="w-content  pic-mod">
+						<form action="javascript:updateRecruitments()" id="dataFor" method="post">
+							<table>
+								<tr>
+									<td class="tt">招聘职位</td>
+									<td class="con"><input type="text" class=""  id="nam"  datatype="z2_8" /></td>
+								</tr>
+								<tr>
+									<td class="tt">工作地区</td>
+										<td class="con"><input type="text" class=""  id="are"  datatype="z2_8"/></td>
+								</tr>
+								<tr>
+									<td class="tt">岗位职责</td>
+									<td class="con" colspan="3">
+											<script id="dutys" type="text/plain" style="height:300px;width:98%;"></script>
+										</td>
+								</tr>
+								<tr>
+									<td class="tt">任职要求</td>
+								<td class="con" colspan="3">
+											<script id="demands" type="text/plain" style="height:300px;width:98%;"></script>
+										</td>
+								</tr>
+							</table>
+							</form>
+						</div>
+					
+					
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-invite-add" onclick="inviteAdd('添加招贤纳士信息','web/frontconfig/invite-add.jsp','1')">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-invite-mod" onclick="inviteMod('修改招贤纳士信息','web/frontconfig/invite-mod.jsp','1','id')">修改</button>
+								<button class="obtn glyphicon glyphicon-plus obtn-invite-add" onclick="inviteAdd()">添加</button>
+								<button class="obtn glyphicon glyphicon-pencil obtn-invite-mod" onclick="inviteMod()">修改</button>
 							</div>
 						</div>
 						
 						<div class="panel-body">
-							<table id="table_id" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>添加时间</th>
-										<th>招聘职位</th>
-										<th>工作地区</th>
-										<th>岗位职责</th>
-										<th>任职要求</th>
-										<th>状态</th>
-										<th>最近一次操作管理员</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>2016-04-08</td>
-										<td>招聘职位1</td>
-										<td>工作地区1</td>
-										<td>岗位职责1</td>
-										<td>任职要求1</td>
-										<td>已启用</td>
-										<td>张三</td>
-										<td>
-											<a href="javascript:;" class="btn-enable" onclick="enable()">启用</a>
-											<a href="javascript:;" class="btn-disable"onclick="disable()">停用</a>
-										</td>
-									</tr>
-									<%
-										}
-									%>
-								</tbody>
+							<table id="teamTb" class="display">
 							</table>
 						</div>
 						
@@ -127,17 +119,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/frontconfig/fc-invite.js"></script>
+	<script type="text/javascript" src="js/frontconfig/invite.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<!-- 私用js -->
 	<script type="text/javascript">
-		$('#table_id').DataTable({
-			"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,2,3,4,5,6,7]
-			} // 制定列不参与排序
-			],
+		$(function(){
+			//编辑器实例化
+			var ue1 = UE.getEditor('duty');
+			var ue2 = UE.getEditor('demand');
 		});
+	</script>
+		 <script type="text/javascript">
+		$(function(){
+			//编辑器实例化
+			var ue4 = UE.getEditor('dutys');
+			var ue5 = UE.getEditor('demands');
+		}); 
 	</script>
 </body>
 

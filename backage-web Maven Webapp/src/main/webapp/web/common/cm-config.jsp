@@ -27,7 +27,7 @@
                             			<li><a href="web/config/late-allocation.jsp">逾期配置</a></li>
                             			<li><a href="web/config/integral-rule.jsp">积分规则设置</a></li>
                             			<li><a href="web/config/award-rule.jsp">提奖规则设置</a></li>
-                            			<li><a href="web/config/imfee-day.jsp">投资管理费设置</a></li>
+                            			<li><a href="web/config/invest-fee.jsp">投资管理费设置</a></li>
                             			<li><a href="web/config/auto-bid.jsp">自动投标奖励设置</a></li>
                             			<li><a href="web/config/red-voucher.jsp">红包、代金券提醒设置</a></li>
                             		</ul>
@@ -42,10 +42,10 @@
                             			<li><a href="web/config/msg-interface.jsp">消息接口配置</a></li>
                             		</ul>
                             	</li>
-                               	<li id="admin" class="li_level_one"><a><i class="fa fa-edit"></i>托管平台设置</a></li>
-                                <li id="work"><a><i class="fa fa-edit"></i>会员等级配置</a></li>       
-                                <li id="employee"><a><i class="fa fa-edit"></i>会员信用等级配置</a></li>
-                                <li id="work"><a><i class="fa fa-edit"></i>前台借款信息填写配置</a></li>
+                               	<li id="admin" class="li_level_one"><a href="web/config/test-interface.jsp"><i class="fa fa-edit"></i>托管平台设置</a></li>
+                                <li id="work"><a href="web/config/member-grade.jsp"><i class="fa fa-edit"></i>会员等级配置</a></li>       
+                                <li id="employee"><a href="web/config/member-credit-grade.jsp"><i class="fa fa-edit"></i>会员信用等级配置</a></li>
+                                <li id="work"><a href="web/config/frontloan-msg.jsp"><i class="fa fa-edit"></i>前台借款信息填写配置</a></li>
                                 <li id="admin" class="li_level_one"><a><i class="fa fa-edit"></i>项目审批流程配置</a></li>
                                 <li id="admin" class="li_level_one"><a><i class="fa fa-edit"></i>VIP配置</a></li>
                                 <li id="work"><a><i class="fa fa-edit"></i>协议配置</a></li>       

@@ -433,6 +433,7 @@ button.obtn.obtn-query{background: #5191D4;color: #fff;padding-bottom: 7px;}
 /* ============表格========== */
 
 textarea{
+	width:100%;            /* 陈小花       配置中心---会员等级配置--添加*/
 	padding: 5px 10px;
 }
 .ta-noresize{

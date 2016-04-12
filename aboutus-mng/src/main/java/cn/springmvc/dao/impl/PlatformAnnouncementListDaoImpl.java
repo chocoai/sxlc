@@ -44,5 +44,11 @@ public class PlatformAnnouncementListDaoImpl extends SqlSessionDaoSupport implem
 		platformAnnouncementEntity = (PlatformAnnouncementEntity) getSqlSession().selectOne("Mapper.selectPlatformByID",id);
 	    return platformAnnouncementEntity;
 	    
+	}
+	@Override
+	public List<PlatformAnnouncementEntity> selectPlatformListIndex() {
+		
+		return getSqlSession().selectList("Mapper.selectPlatformListIndex");
+		
 	} 
 }

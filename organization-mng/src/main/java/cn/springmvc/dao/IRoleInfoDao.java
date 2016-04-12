@@ -133,4 +133,14 @@ public interface IRoleInfoDao {
 	 * return List<RoleAuth>
 	 */
 	public List<RoleAuth> getRoleAuthById(long roleId);
+
+	/**
+	 * TODO
+	 * 创建日期：2016-4-8下午2:38:14
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<RoleInfo>
+	 */
+	public List<RoleInfo> getRoleList();
 }

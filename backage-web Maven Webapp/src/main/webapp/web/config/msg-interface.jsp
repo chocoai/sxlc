@@ -94,42 +94,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<tr>
 								<td class="tt"><label class="ineed">短信接口地址：</label></td>
 								<td class="con">
-									<input type="text" class="" placeholder="" />
+									<input type="text" class="" placeholder="短信接口地址" />
 								</td>
 							</tr>
 							<tr>
 								<td class="tt"><label>序列号：</label></td>
 								<td class="con">
-									<input type="text" class="" placeholder="" />
+									<input type="text" class="" placeholder="序列号" />
 								</td>
 							</tr>
 							<tr>
 								<td class="tt"><label>密码：</label></td>
 								<td class="con">
-									<input type="text" class="" placeholder="" />
+									<input type="text" class="" placeholder="密码" />
 								</td>
 							</tr>
 						</table>
 					</div>
-					<!-- 短信接口地址添加 -->
+					<!-- 短信接口地址修改 -->
 					<div class="w-content msgp-modify">
 						<table>
 							<tr>
 								<td class="tt"><label class="ineed">短信接口地址：</label></td>
 								<td class="con">
-									<input type="text" class="" placeholder="" />
+									<input type="text" class="" placeholder="短信接口地址" />
 								</td>
 							</tr>
 							<tr>
 								<td class="tt"><label>序列号：</label></td>
 								<td class="con">
-									<input type="text" class="" placeholder="" />
+									<input type="text" class="" placeholder="序列号" />
 								</td>
 							</tr>
 							<tr>
 								<td class="tt"><label>密码：</label></td>
 								<td class="con">
-									<input type="text" class="" placeholder="" />
+									<input type="text" class="" placeholder="密码" />
 								</td>
 							</tr>
 						</table>
@@ -144,7 +144,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 				<div class="form-group">
 				 					<label for="firstname" class="i-fl control-label col3">SMTP服务器：</label>
 				 					<div class="i-fl">
-				 						<input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+				 						<input type="text" class="form-control" id="firstname" placeholder="SMTP服务器">
 				 					</div>
 				 					<div class="input-alert">
 				 						<span>错误提示</span>
@@ -153,7 +153,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 				<div class="form-group">
 				 					<label for="lastname" class="i-fl control-label col3">端口号：</label>
 				 					<div class="i-fl">
-				 						<input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+				 						<input type="text" class="form-control" id="lastname" placeholder="端口号">
 				 					</div>
 				 					<div class="input-alert">
 				 						<span>错误提示</span>
@@ -162,7 +162,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 				<div class="form-group">
 				 					<label for="firstname" class="i-fl control-label col3">邮箱地址：</label>
 				 					<div class="i-fl">
-				 						<input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+				 						<input type="text" class="form-control" id="firstname" placeholder="邮箱地址">
 				 					</div>
 				 					<div class="input-alert">
 				 						<span>错误提示</span>
@@ -171,7 +171,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 				<div class="form-group">
 				 					<label for="lastname" class="i-fl control-label col3">邮箱密码：</label>
 				 					<div class="i-fl">
-				 						<input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+				 						<input type="text" class="form-control" id="lastname" placeholder="邮箱密码">
 				 					</div>
 				 					<div class="input-alert">
 				 						<span>错误提示</span>

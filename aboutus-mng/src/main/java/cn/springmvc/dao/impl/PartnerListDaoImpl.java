@@ -41,5 +41,11 @@ public class PartnerListDaoImpl extends SqlSessionDaoSupport implements Partners
 		partnersEntity = (PartnersEntity) getSqlSession().selectOne("Mapper.selectPartnersByID",id);
 		return partnersEntity;
 		
+	}
+	@Override
+	public List<PartnersEntity> selectPartnersListIndex() {
+		
+		return getSqlSession().selectList("Mapper.selectPartnersListIndex");
+		
 	} 
 }

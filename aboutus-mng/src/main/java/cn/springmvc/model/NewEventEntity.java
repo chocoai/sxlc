@@ -20,7 +20,7 @@ public class NewEventEntity {
 	/**
 	 * 是否有效 0:无效 1：有效
 	 */
-	private String statu;
+	private int statu;
 	/**
 	 * 添加时间
 	 */
@@ -67,12 +67,7 @@ public class NewEventEntity {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getStatu() {
-		return statu;
-	}
-	public void setStatu(String statu) {
-		this.statu = statu;
-	}
+ 
 	public String getCreateTime() {
 		return createTime;
 	}
@@ -84,5 +79,11 @@ public class NewEventEntity {
 	}
 	public void setOptDate(String optDate) {
 		this.optDate = optDate;
+	}
+	public int getStatu() {
+		return statu;
+	}
+	public void setStatu(int statu) {
+		this.statu = statu;
 	}  
 }

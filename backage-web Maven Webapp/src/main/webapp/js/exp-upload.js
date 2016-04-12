@@ -1,9 +1,14 @@
-$(function(){
+var uploadUrl = "";//服务器图片保存路径,全局变量
+/**
+ * 图片上传公共方法
+ * @param urlBtn 服务器返回路径保存的隐藏input元素
+ */
+function expUpload(urlBtn) {
 			//上传初始化
 			var uploader = WebUploader.create({
 				auto: true,														//选完文件后，是否自动上传。
 			    swf: 'plugs/webuploader/0.1.5/Uploader.swf',					//swf文件路径
-			    server: '',	//文件接收服务端。
+			    server: appPath+'/UpdateBsnLicense',	//文件接收服务端。
 			    // 选择文件的按钮。可选。
 			    pick: '#filePicker',											//内部根据当前运行是创建，可能是input元素，也可能是flash.
 			    fileNumLimit: 1,												//个数限制
@@ -90,7 +95,13 @@ $(function(){
 			});
 			
 			// 文件上传成功，给item添加成功class, 用样式标记上传成功。
-			uploader.on( 'uploadSuccess', function( file ) {
+			uploader.on( 'uploadSuccess', function( file,json ) {
+				var result = json._raw;
+				uploadUrl=result.split(",")[1];
+				//如果传了input元素id，就将值写进input
+				if(urlBtn != null && urlBtn != ''){
+					$(urlBtn).val(uploadUrl);
+				}
 			    $( '#'+file.id ).addClass('upload-state-done');
 			});
 			
@@ -112,5 +123,4 @@ $(function(){
 			    $( '#'+file.id ).find('.progress').remove();
 			});
 			
-			
-		});
+};

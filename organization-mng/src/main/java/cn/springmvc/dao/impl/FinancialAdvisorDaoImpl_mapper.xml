@@ -4,7 +4,7 @@
 <mapper namespace="financialAdvisorDaoImpl">     
 	
 	<resultMap type="cn.springmvc.model.FinancialAdvisor" id="FinancialAdvisor">
-		<id 		column="id" 					property="id"				/>
+		<id 		column="FA_ID" 					property="id"				/>
 		<result		column="Service_No"				property="serviceNo"		/>
 		<result		column="Service_QQ"				property="serviceQQ"		/>
 		<result		column="Service_Phone"			property="servicePhone"		/>
@@ -13,42 +13,57 @@
 		<result		column="Service_HeadUrl"		property="serviceHeadUrl"	/>
 		<result		column="Service_Email"			property="serviceEmail"		/>
 		<result		column="Staff_Id"				property="staffId"			/>
+		<result		column="Personal_Name"			property="staffName"		/>
 		<result		column="Service_Statu"			property="serviceStatu"		/>
 		<result		column="Integral_Num"			property="integralNum"		/>
-		<result		column="Member_Id"				property="memberId"			/>		
+		<result		column="Record_Date"			property="recordDate"		/>			
+		<result		column="Member_Id"				property="memberId"			/>	
+		<result		column="Member_No"			    property="memberNo"			/>
+		<result		column="Member_Type"			property="memberType"		/>	
+		<result		column="Logname"				property="logName"			/>	
+		<result		column="lPersonal_Name"			property="realName"			/>	
+		
 	</resultMap>
 	
 	
 	<!-- 理财顾问列表 -->
-	<select id="getListByParam" parameterType="Map" resultMap="FinancialAdvisor">
-		select 
-		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),'abc12345678974456') using utf8) as Personal_Name,
-		Record_Date,mi.Member_No,mi.Logname,mi.Member_Type
-		from Financial_Advisor fa
-		left join Member_Info mi on mi.id  = fa.Member_Id
-		left join Staff_Info si on si.id = fa.Staff_Id
-		left join Personal_Base_Info pbi on pbi.id = si.Personal_Id
+	<select id="getListByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="FinancialAdvisor">
+		select fa.FA_ID,fa.Service_No,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey}) using utf8) as Personal_Name,
+		CONVERT(AES_DECRYPT(UNHEX(fa.Service_QQ),#{map.sKey}) using utf8) as Service_QQ,
+		CONVERT(AES_DECRYPT(UNHEX(fa.Service_Phone),#{map.sKey}) using utf8) as Service_Phone,
+		CONVERT(AES_DECRYPT(UNHEX(fa.Service_FixPhone),#{map.sKey}) using utf8) as Service_FixPhone,
+		fa.Service_Nickname,fa.Service_Email,fa.Service_HeadUrl,
+		CONVERT(AES_DECRYPT(UNHEX(lpbi.Personal_Name),#{map.sKey}) using utf8) as lPersonal_Name,
+		fa.Record_Date,mi.Member_Id,mi.Member_No,mi.Logname,mi.Member_Type
+		FROM Financial_Advisor fa
+		LEFT JOIN Member_Info mi ON mi.Member_Id  = fa.Member_Id
+		LEFT JOIN Personal_Base_Info lpbi ON lpbi.Personal_Id=mi.Personal_ID
+		LEFT JOIN Staff_Info si ON si.Staff_Id = fa.Staff_Id
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id = si.Personal_Id
+		where 1=1 
 		<where>
-			<if test="staffName != null">
-				Personal_Name = #{staffName}
+			<if test="map!=null and map.staffName != null and map.staffName !=''">		
+				and	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey}) using utf8)  like  CONCAT(CONCAT('%', #{map.staffName}), '%')
 			</if>
-			<if test="memberNo != null">
-				mi.Member_No = #{memberNo}
+			<if test="map!=null and map.memberNo != null and map.memberNo !=''">
+				and	mi.Member_No like  CONCAT(CONCAT('%', #{map.memberNo}), '%')
 			</if>
-			<if test="memberName != null">
-				mi.Logname = #{memberName}
+			<if test="map!=null and map.logName != null and map.logName != ''">
+				and	mi.Logname like  CONCAT(CONCAT('%', #{map.logName}), '%')
+			</if>
+			<if test="map!=null and map.realName != null and  map.realName !=''">
+				and	CONVERT(AES_DECRYPT(UNHEX(lpbi.Personal_Name),#{map.sKey}) using utf8) like  CONCAT(CONCAT('%', #{map.realName}), '%')
 			</if>
 		</where>
 	</select>
-	
 	
 	<!-- 添加理财顾问 -->
 	<select id="bind"	statementType="CALLABLE" parameterType="Map">
 		call saveFinancialAdvisor(
 			#{fid,					mode=IN,				jdbcType=BIGINT},
-			#{staffNo,				mode=IN,				jdbcType=BIGINT},
+			#{staffId,				mode=IN,				jdbcType=BIGINT},
 			#{financialNo,			mode=IN,				jdbcType=VARCHAR},
-			#{memberNo,				mode=IN,				jdbcType=BIGINT},
 			#{result,				mode=OUT,				jdbcType=INTEGER}
 		);
 	</select>

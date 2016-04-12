@@ -64,8 +64,7 @@ public class MediaReportController {
 		pager.setMap(param);
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
-		List<MediaReportsEntity>  teams = mediaReportsService.selectMediaReportsListpage(pager);
-		pager.setResults(teams);
+		mediaReportsService.selectMediaReportsListpage(pager);
 		return pager;
 	}
 	

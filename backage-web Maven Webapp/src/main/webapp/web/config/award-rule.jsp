@@ -102,61 +102,61 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<tr>
 											<td class="tt"><label class="ineed">推荐达人成功邀请有效投资最小总额：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="推荐达人成功邀请有效投资最小总额" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>推荐达人成功邀请有效投资最大总额：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="推荐达人成功邀请有效投资最大总额" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>投资返现百分比加点：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="投资返现百分比加点" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>借款返现百分比加点：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="借款返现百分比加点" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>推荐购买VIP提奖加百分点：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="推荐购买VIP提奖加百分点" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>推荐还本提奖百分比加点：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="推荐还本提奖百分比加点" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>邀请人投资管理费百分点折扣：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="邀请人投资管理费百分点折扣" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>邀请人借款管理费百分点折扣：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="邀请人借款管理费百分点折扣" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>等级：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="等级" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>等级描述：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="等级描述" />
 											</td>
 										</tr>
 									</table>
@@ -215,49 +215,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<tr>
 											<td class="tt"><label class="ineed">理财顾问成功邀请有效投资最小总额：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="理财顾问成功邀请有效投资最小总额" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>理财顾问成功邀请有效投资最大总额：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="理财顾问成功邀请有效投资最大总额" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>投资返现百分比加点：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="投资返现百分比加点" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>借款返现百分比加点：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="借款返现百分比加点" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>推荐购买VIP提奖加百分点：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="推荐购买VIP提奖加百分点" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>推荐还本提奖百分比加点：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="推荐还本提奖百分比加点" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>邀请人投资管理费百分点折扣：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="邀请人投资管理费百分点折扣" />
 											</td>
 										</tr>
 										<tr>
 											<td class="tt"><label>邀请人借款管理费百分点折扣：</label></td>
 											<td class="con">
-												<input type="text" class="" placeholder="" />
+												<input type="text" class="" placeholder="邀请人借款管理费百分点折扣" />
 											</td>
 										</tr>
 									</table>

@@ -151,7 +151,7 @@ $(function(){
 	*/
 	
 	//==============理财顾问
-	$(".obtn-adviser-add").on("click touchstart",function(){
+/*	$(".obtn-adviser-add").on("click touchstart",function(){
 		layer.open({
 		    type: 1,
 		    area: ['480px', '320px'], //高宽
@@ -179,7 +179,7 @@ $(function(){
 		}, function(index){
 		  //按钮【按钮二】的回调
 		});
-	});
+	});*/
 	
 	//添加职务
 	$(".obtn-post-add").on("click touchstart",function(){

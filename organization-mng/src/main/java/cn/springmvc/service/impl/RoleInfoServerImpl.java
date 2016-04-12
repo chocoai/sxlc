@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.IRoleInfoDao;
 import cn.springmvc.model.Module;
 import cn.springmvc.model.Operation;
@@ -39,8 +40,9 @@ public class RoleInfoServerImpl implements IRoleInfoServer{
 	}
 	
 	@Override
-	public List<RoleInfo> getListByParam(Map<String, Object> param,PageEntity pageEntity) {
-		return infoDao.getListByParam(param,pageEntity);
+	public void getListByParam(Map<String, Object> param,PageEntity pageEntity) {
+		List<RoleInfo> list =  infoDao.getListByParam(param,pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
 	}
 	
 	
@@ -77,6 +79,11 @@ public class RoleInfoServerImpl implements IRoleInfoServer{
 	@Override
 	public List<RoleAuth> getRoleAuthById(long roleId) {
 		return infoDao.getRoleAuthById(roleId);
+	}
+
+	@Override
+	public List<RoleInfo> getRoleList() {
+		return infoDao.getRoleList();
 	}
 	
 }

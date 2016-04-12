@@ -78,6 +78,11 @@
 	</select>
 	
 	
+	<!-- 获取角色列表 -->
+	<select id="getRoleList" 	resultMap="roleinfo">
+		select roleID,Role_No,Role_Name,Add_Date,Role_Remark,Role_Statu from Role_Info
+	</select>
+	
 	<!-- 添加角色信息 -->
 	<select id="saveRole" 	statementType="CALLABLE"	parameterType="Map" resultType="Map" >
 		call saveRole(

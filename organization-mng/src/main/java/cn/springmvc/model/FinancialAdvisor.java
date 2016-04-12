@@ -1,5 +1,9 @@
 package cn.springmvc.model;
 
+import java.util.Date;
+
+import product_p2p.kit.datatrans.TimestampAndString;
+
 
 /***
  * 理财顾问实体
@@ -17,24 +21,26 @@ public class FinancialAdvisor {
 	private	String				serviceHeadUrl;		//理财顾问头像
 	private String				serviceEmail;		//理财顾问邮箱
 	private Long				staffId;			//理财顾问员工编号
+	private String              staffName;			//员工姓名
 	private Integer				serviceStatu;		//理财顾问状态
 	private Integer				integralNum;		//当前积分
+	private Date				recordDate;			//任职时间
+	private String				sRecordDate;		//任职时间
+	
 	private Long				memberId;			//前台会员的编号
-	
-	
+	private String 				memberNo;			//前台会员编号
+	private int                 memberType;			//前台会员类型
+	private String              logName;			//前台会员登录名
+	private String              realName;			//前台会员姓名
 	public FinancialAdvisor() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-	
 	public FinancialAdvisor(Long id, String serviceNo, String serviceQQ,
 			String servicePhone, String serviceFixPhone,
 			String serviceNickname, String serviceHeadUrl, String serviceEmail,
-			Long staffId, Integer serviceStatu, Integer integralNum,
-			Long memberId) {
-		super();
+			Long staffId, String staffName, Integer serviceStatu,
+			Integer integralNum, Long memberId, int memberType, String logName,
+			String realName) {
 		this.id = id;
 		this.serviceNo = serviceNo;
 		this.serviceQQ = serviceQQ;
@@ -44,10 +50,23 @@ public class FinancialAdvisor {
 		this.serviceHeadUrl = serviceHeadUrl;
 		this.serviceEmail = serviceEmail;
 		this.staffId = staffId;
+		this.staffName = staffName;
 		this.serviceStatu = serviceStatu;
 		this.integralNum = integralNum;
 		this.memberId = memberId;
+		this.memberType = memberType;
+		this.logName = logName;
+		this.realName = realName;
 	}
+
+	public String getStaffName() {
+		return staffName;
+	}
+
+	public void setStaffName(String staffName) {
+		this.staffName = staffName;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -120,11 +139,38 @@ public class FinancialAdvisor {
 	public void setMemberId(Long memberId) {
 		this.memberId = memberId;
 	}
-	
-	
-	
-	
-	
-	
-
+	public int getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(int memberType) {
+		this.memberType = memberType;
+	}
+	public String getLogName() {
+		return logName;
+	}
+	public void setLogName(String logName) {
+		this.logName = logName;
+	}
+	public String getRealName() {
+		return realName;
+	}
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+	public Date getRecordDate() {
+		return recordDate;
+	}
+	public void setRecordDate(Date recordDate) {
+		this.recordDate = recordDate;
+		this.sRecordDate = TimestampAndString.DateToString2(recordDate);
+	}
+	public String getsRecordDate() {
+		return sRecordDate;
+	}
+	public String getMemberNo() {
+		return memberNo;
+	}
+	public void setMemberNo(String memberNo) {
+		this.memberNo = memberNo;
+	}
 }

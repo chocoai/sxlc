@@ -4,6 +4,8 @@ package cn.springmvc.dao;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.pageselect.PageEntity;
+
 import cn.springmvc.model.FinancialAdvisor;
 
 /***
@@ -23,7 +25,7 @@ public interface IFinancialAdvisorReadDao {
 	 * memberUserName				前台会员用户名<br>
 	 * @return
 	 */
-	public List<FinancialAdvisor> getListByParam(Map<String,Object> param);
+	public List<FinancialAdvisor> getListByParam(PageEntity entity);
 	
 	
 

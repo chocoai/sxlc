@@ -82,11 +82,17 @@ span.sign>i{
 .offset-col1{
 	margin-left:50px;
 }
-@media (max-width: 768px) {
-	
+/* 搜索条件中的下拉框 */
+.search select{
+	height:25px;
 }
-
-
+/* 复选框 */
+.morecheck{
+	margin-left:20px;
+}
+.morecheck>label{
+	margin-right:15px;
+}
 
 
 

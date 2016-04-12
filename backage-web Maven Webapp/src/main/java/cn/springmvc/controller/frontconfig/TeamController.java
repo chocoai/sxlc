@@ -1,22 +1,18 @@
 package cn.springmvc.controller.frontconfig; 
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.Upload.FtpClientUtil;
 import product_p2p.kit.pageselect.PageEntity;
-import cn.springmvc.controller.organizationmng.DeptController;
 import cn.springmvc.model.MngTeamEntity;
 import cn.springmvc.service.MngTeamService;
 
@@ -66,8 +62,7 @@ public class TeamController {
 		pager.setMap(param);
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
-		List<MngTeamEntity> teams = mngTeamService.selectMngTeamListpage(pager);
-		pager.setResults(teams);
+		mngTeamService.selectMngTeamListpage(pager);
 		return pager;
 	}
 	

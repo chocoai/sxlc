@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo; 
@@ -86,10 +87,9 @@ public class MngTeamServiceImpl implements MngTeamService {
 
 	@Override
 	public List<MngTeamEntity> selectMngTeamListpage(PageEntity pageEntity) {
-		
-		List<MngTeamEntity> mngTeamList = null;    
-	 	mngTeamList = mngTeamListDaoImpl.selectMngTeamAllpage(pageEntity);   
-		return mngTeamList; 
+		List<MngTeamEntity> list = mngTeamListDaoImpl.selectMngTeamAllpage(pageEntity);
+	 	PageUtil.ObjectToPage(pageEntity, list);
+		return list; 
 	}
  
 	

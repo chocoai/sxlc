@@ -35,20 +35,20 @@
 	<select id="getListByParam" parameterType="Map" resultMap="deptResult">
 		select * from dept_info
 		<where>
-			<if test="deptNo != null">
-				Dept_No = #{deptNo}
+			<if test="deptNo != null and deptNo !=''">
+				and	Dept_No = #{deptNo}
 			</if>
-			<if test="deptName != null">
-				Dept_Name = #{deptName}
+			<if test="deptName != null and deptName !=''">
+				and	Dept_Name = #{deptName}
 			</if>
-			<if test="principalName != null">
-				Principal_Name = #{principalName}
+			<if test="principalName != null and principalName != ''">
+				and	Principal_Name = #{principalName}
 			</if>
-			<if test="principalPhone != null">
-				Principal_Phone = #{principalPhone}
+			<if test="principalPhone != null and principalPhone !='' ">
+				and	Principal_Phone = #{principalPhone}
 			</if>
-			<if test="statu != null">
-				Dept_Statu = #{statu}
+			<if test="statu != 0 and statu !='' and staut != null ">
+				and	 Dept_Statu = #{statu}
 			</if>
 		</where>
 	</select>

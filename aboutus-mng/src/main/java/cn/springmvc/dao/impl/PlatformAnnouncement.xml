@@ -31,7 +31,7 @@
 	<insert id="insertPlatform"  parameterType="cn.springmvc.model.PlatformAnnouncementEntity" >    
 		insert into 
 		Platform_Announcement( Platform_ID,   Title,   Content, Admin_ID) 
-		             values (#{id},#{title},#{content},#{optId})    
+		             values  (#{id},#{title},#{content},#{optId})    
 	</insert> 
 	<!-- 查询该标题的平台公告是否存在 -->  
 	<select id="selectPlatformIsExistByNAme"  parameterType="cn.springmvc.model.PlatformAnnouncementEntity" resultMap="resultListPlatformAnnouncement" >
@@ -69,5 +69,13 @@
 	   select pa.Platform_ID,   pa.Title,   pa.Content,   pa.Statu,   pa.CreateTime, 
 	    pa.Opt_Date, pa.Admin_ID 
 	   from  Platform_Announcement pa   where  pa.Platform_ID =  #{id}
-    </select>      
+    </select>  
+    <!-- 首页显示平台公告 -->  
+	<select id="selectPlatformListIndex"  resultMap="resultListPlatformAnnouncement" >
+	    select pa.Platform_ID,   pa.Title,   pa.Content,   pa.Statu,   pa.CreateTime, 
+	    pa.Opt_Date, pa.Admin_ID
+	    from  Platform_Announcement pa  
+	    where pa.Statu = 1 
+        order by pa.CreateTime desc limit 5
+    </select>     
 </mapper>

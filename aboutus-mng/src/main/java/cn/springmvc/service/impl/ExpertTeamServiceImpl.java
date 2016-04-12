@@ -22,7 +22,7 @@ import cn.springmvc.service.ExpertTeamService;
 * @since 
 * @date 2016-3-19 下午7:32:30
  */
-@Service("expertTeamServiceImpl")
+@Service
 public class ExpertTeamServiceImpl implements ExpertTeamService {
 	@Resource(name="expertTeamDaoImpl")
 	private ExpertTeamDao expertTeamDaoImpl;  

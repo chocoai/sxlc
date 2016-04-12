@@ -1,5 +1,7 @@
 package product_p2p.kit.datatrans;
 
+import java.util.Random;
+
 public class IntegerAndString {
 	
 	/**
@@ -60,6 +62,33 @@ public class IntegerAndString {
     	lDiv = l / 10000;
     	String sMod = String.valueOf(lMod);
     	while(sMod.length()<4){
+    		sMod ="0" + sMod ;
+    	}
+    	String sDiv = String.valueOf(lDiv);
+    	sResult = sPre + sDiv + "." + sMod;
+    	return sResult;
+    }
+    
+    /**
+     * 长整形转化为 string 已经除了10000  4位小数
+     * @author zhy
+     * @param l
+     * @return
+     */
+    public static String LongToString2(long l){
+    	l = l /100;
+    	String sResult = "0.00";
+    	String sPre = "";
+    	if(l<0){
+    		l = 0- l;
+    		sPre = "-";
+    	}
+    	long lDiv = 0;
+    	long lMod = 0;
+    	lMod = l % 10000;
+    	lDiv = l / 10000;
+    	String sMod = String.valueOf(lMod);
+    	while(sMod.length()<2){
     		sMod ="0" + sMod ;
     	}
     	String sDiv = String.valueOf(lDiv);
@@ -185,4 +214,31 @@ public class IntegerAndString {
     	}
     	return endStr;
     }
+
+    
+    /**
+	  * 随机码
+	  * @param length  位数（6位）
+	  * @return
+	  * @author panchangqin
+	  */
+	public static String getRandomNum(int length){
+		try{
+			if (length <= 0){
+				return "";
+			}
+			Random r = new Random();
+			StringBuffer result = new StringBuffer();
+			for (int i = 0; i < length; i++){
+				result.append(Integer.toString(r.nextInt(10)));
+			}
+			return result.toString();
+		}
+		catch (Exception ex){
+			ex.printStackTrace();
+			return null;
+		}
+	}	
+	   
+    
 }

@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">债权持有时间大于：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+			 						<input type="text" class="form-control" id="firstname" placeholder="债权持有时间大于">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">天<i>*</i></span>
@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">债权距到期时间大于：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+			 						<input type="text" class="form-control" id="lastname" placeholder="债权距到期时间大于">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">天<i>*</i></span>
@@ -68,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">债权日在还款日前：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+			 						<input type="text" class="form-control" id="firstname" placeholder="债权日在还款日前">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">天<i>*</i></span>
@@ -80,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">债权转让手续费费率：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+			 						<input type="text" class="form-control" id="lastname" placeholder="债权转让手续费费率">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">%<i>*</i></span>
@@ -93,13 +93,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 					<label for="lastname" class="i-fl control-label col3">债权转让手续费收取方向：</label>
 			 					<div class="i-fl">
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 转让人
+				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="转让人"> 转让人
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="option1"> 购买人
+				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="购买人"> 购买人
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="option1" checked> 全部
+				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="全部" checked> 全部
 				 					</label>
 				 				</div>
 			 				</div>
@@ -117,10 +117,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 					<label for="lastname" class="i-fl control-label col3">债权转让审核是否需要审核：</label>
 				 				<div class="i-fl">
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="option1" checked> 否
+				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="否" checked> 否
 				 					</label>
 				 				</div>
 				 				<div class="radio-alert">
@@ -141,10 +141,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 					<label for="lastname" class="i-fl control-label col3">债权转让放款是否需要手动放款：</label>
 			 					<div class="i-fl">
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="option1" checked> 否
+				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="否" checked> 否
 				 					</label>
 				 				</div>
 				 				<div class="i-fl">
@@ -165,10 +165,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 					<label for="lastname" class="i-fl control-label col3">债权转让利息生成方式：</label>
 				 				<div class="i-fl">
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 方式1
+				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="按期分配"> 按期分配
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="option1" checked> 方式2
+				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="按实际转让时间分配" checked> 按实际转让时间分配
 				 					</label>
 				 				</div>
 				 				<div class="i-fl">

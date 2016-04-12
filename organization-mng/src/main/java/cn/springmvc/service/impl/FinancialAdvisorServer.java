@@ -8,6 +8,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.IFinancialAdvisorReadDao;
 import cn.springmvc.dao.IFinancialAdvisorWriteDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
@@ -27,8 +30,9 @@ public class FinancialAdvisorServer implements IFinancialAdvisorServer{
 	
 	
 	@Override
-	public List<FinancialAdvisor> getListByParam(Map<String, Object> param) {
-		return financialAdvisorReadDao.getListByParam(param);
+	public void getListByParam(PageEntity entity) {
+		 List<FinancialAdvisor> list =  financialAdvisorReadDao.getListByParam(entity);
+		 PageUtil.ObjectToPage(entity, list);
 	}
 	
 	
@@ -46,9 +50,8 @@ public class FinancialAdvisorServer implements IFinancialAdvisorServer{
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
 		param.put("fid", id);
-		param.put("staffNo", advisor.getStaffId());
-		param.put("financialNo", advisor.getServiceNo());
-		param.put("memberNo", advisor.getMemberId());
+		param.put("staffId",advisor.getStaffId());
+		param.put("financialNo", id+ IntegerAndString.getRandomNum(6));
 		
 		int result = financialAdvisorDaol.saveFinancialAdvisor(param);
 		if(result == 0){

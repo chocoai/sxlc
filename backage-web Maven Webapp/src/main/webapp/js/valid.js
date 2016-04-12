@@ -45,9 +45,6 @@ var logname = function(gets,obj,curform,datatype) {
 				else if(!logName.test(gets)){  
 				    return "请输入1~10位中文、英文或数字的任意组合";
 				}
-				else if(gets!=name){
-					return "用户名不存在";		
-				}
 				else{
 					return true;
 				}
@@ -59,9 +56,6 @@ var regpass = function(gets,obj,curform,datatype) {
 					}
 				else if(!logPass.test(gets)){  
 				    return "请输入6~16位除特殊字符外的任意字符组合";  
-					}
-				else if(gets!=pwd){
-					return "密码不正确";
 					}
 					else{
 						return true;
@@ -104,7 +98,7 @@ var Z6 = function (gets,obj,curform,datatype) {
 					return "验证码不可为空";
 				}
 				else if(!z6.test(gets)){  
-				    return "请输入验证码";  
+				    return "验证码格式错误";  
 					}
 				else if(gets!=z){  
 				    return "验证码输入错误";  
@@ -346,6 +340,7 @@ var rolemark = function(gets,obj,curform,datatype) {
 		return true;
 	}
 };
+
 /**======================2015122添加输入验证end========================**/						
 				
 /**
@@ -359,6 +354,7 @@ var rolemark = function(gets,obj,curform,datatype) {
  * 调用： validform5(btn,formId,postonce,tipsType,fun);
  */
 function validform5(btn,formId,postonce,tipsType) {
+	console.log(btn);
 	$("#"+formId).Validform({
 		btnSubmit:btn,//提交按钮
 		tiptype:tipsType,//提示信息类型
@@ -390,7 +386,6 @@ function validform5(btn,formId,postonce,tipsType) {
 			"rolemark" : rolemark,
 			"z2_8":z2_8,
 			"enterAddress":enterAddress
-			
 		},
 		beforeSubmit:function(curform){//提交借款申请时添加家庭成员和家庭成员信息拼接
 				        //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。  

@@ -60,10 +60,10 @@
 				 					<label for="lastname" class="i-fl control-label col3">注册成功：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -71,10 +71,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">开户成功：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -82,10 +82,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">充值成功：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -93,10 +93,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">提现成功：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -104,10 +104,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">投资成功：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -115,10 +115,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">投资失败：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -126,10 +126,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">借款申请审核失败：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -137,10 +137,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">借款失败：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -148,10 +148,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">借款成功：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -159,10 +159,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">还款提醒：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -170,10 +170,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">当期还款成功：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -181,10 +181,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">项目回款：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 					 			</div>
@@ -192,10 +192,10 @@
 					 				<label for="lastname" class="i-fl control-label col3">修改登录密码通知：</label>
 					 				<div class="i-fl">
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 是
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
 					 					</label>
 					 					<label class="checkbox-inline">
-					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> 否
+					 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="否"> 否
 					 					</label>
 					 				</div>
 				 				</div>

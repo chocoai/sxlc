@@ -148,11 +148,13 @@ function openAnnoce () {
 	  	url : appPath + "/frontconfig/ofOrOpenNotice.do",
 	  	data : "annoceId=" + rowdata[0].id + "&statu=" + rowdata[0].statu,
 	  	success : function (msg) {
-	  		layer.alert("操作成功!",{icon:1});
-	  	},
-	  	error : function() {  
-	           layer.alert("操作失败!",{icon:2});  
-	    }
+	  		if (msg == 1) {
+	  			layer.alert("操作成功!",{icon:1});
+	  			setTimeout('location.reload()',2000);
+	  		}else {
+	  			layer.alert("操作失败!",{icon:2});  
+	  		}
+	  	}
 	  });
 		
 		//执行完关闭
@@ -175,11 +177,13 @@ function ofAnnoce () {
 	  	url : appPath + "/frontconfig/ofOrOpenNotice.do",
 	  	data : "annoceId=" + rowdata[0].id + "&statu=" + rowdata[0].statu,
 	  	success : function (msg) {
-	  		layer.alert("操作成功!",{icon:1});
-	  	},
-	  	error : function() {  
-	          layer.alert("操作失败!",{icon:2});  
-	    }
+	  		if (msg == 1) {
+	  			layer.alert("操作成功!",{icon:1});
+	  			setTimeout('location.reload()',2000);
+	  		}else {
+	  			layer.alert("操作失败!",{icon:2});  
+	  		}
+	  	}
 	  });
 		
 		//执行完关闭

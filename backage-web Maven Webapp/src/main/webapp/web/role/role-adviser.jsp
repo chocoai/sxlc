@@ -74,71 +74,80 @@
 							<table id="table_id" class="display">
 								<thead>
 									<tr>
-										<th class="table-checkbox"></th>
-										<th>员工名称</th>
-										<th>成为理财顾问时间</th>
-										<th>前台会员编号</th>
-										<th>前台会员用户名</th>
-										<th>前台会员类型</th>
-										<th>前台会员名称</th>
 									</tr>
 								</thead>
 								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>员工名称1</td>
-										<td>成为理财顾问时间1</td>
-										<td>前台会员编号1</td>
-										<td>前台会员用户名1</td>
-										<td>前台会员类型1</td>
-										<td>前台会员名称1</td>
-									</tr>
-									<%
-										}
-									%>
 								</tbody>
 							</table>
 						</div>
 
 						<div class="w-content adviser-add">
-							测试
+							<table id="staffListTb" class="display">
+								<thead>
+									<tr>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
 						</div>
-					</div>
+						
+						
+						<!-- 添加管理员 -->
+				
+				<div class="w-content" id="manage-add-staff">
+					<table id="staffListTb" class="display">
+						<thead>
+							<tr>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				
+				<div class="w-content" id="add-adviser" >
+					<form id="form-admin"  method="post" action="javascript:sumitAddAdviser()">
+						<table>
+							<tr>
+								<td class="tt"><label class="ineed">员工姓名:</label></td>
+								<td class="con">
+									<input type="hidden" class="" name="staffId" id="staffId" readonly="readonly"   value="" />
+									<input type="text" class="" name="staffName" id="staffName" readonly="readonly"   value="" />
+								</td>
+								
+							</tr>
+							<tr>
+								<td class="tt"><label class="ineed">管理员名称:</label></td>
+								<td class="con">
+									<input type="text" class="" name="adminName" id="adminName" datatype="logname" placeholder="登录名" />
+								</td>
+								<td class="tt"><label>密码:</label></td>
+								<td class="con"> 
+									<input type="password" class="" name="adminPwd"  title="newpass" datatype="regpass" value="" />
+								</td>
+							</tr>
+							<tr>
+								<td class="tt"><label>再次输入密码:</label></td>
+								<td class="con"> 
+									<input type="password" class="" name="adminPwd1" datatype="repass" value="" />
+								</td>
+							</tr>
+							<tr>
+								<td class="tt"><label>备注:</label></td>
+								<td class="con"> 
+									<textarea style="width:182px;height: 70px;" id="adminRemark" name="adminRemark" ></textarea>
+								</td>
+							</tr>
+					    </table>
+					</form>
 				</div>
 
 			</div>
 			<!-- 公用js -->
 			<jsp:include page="../common/cm-js.jsp"></jsp:include>
 			<script type="text/javascript" src="js/role.js"></script>
-			<!-- 私用js -->
-			<script type="text/javascript">
-				$(function() {
-					$('#table_id').DataTable({
-						"autoWidth" : false,
-						scrollY : 500,
-						//paging : false,//分页
-						//"searching" : false,
-						//"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [ [ 2, "desc" ] ],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [0,1,3,4,5,6]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+			<script type="text/javascript" src="js/role/role-financial.js"></script>
 		</div>
 	</div>
 </body>

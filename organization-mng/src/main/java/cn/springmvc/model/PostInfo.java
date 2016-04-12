@@ -24,14 +24,14 @@ public class PostInfo {
 	private String				addDate;	//职务添加时间
 	private int					postStatu;	//状态 0无效、1有效
 	
-	
+	private String deptName;//部门 
 	
 	
 	public PostInfo() {}
 	
 	
 	public PostInfo(Long iD, Long deptId, String postNo, String postName,
-			String postRemark, String addDate, int postStatu) {
+			String postRemark, String addDate, int postStatu,String  deptName) {
 		super();
 		this.id = iD;
 		this.deptId = deptId;
@@ -40,6 +40,7 @@ public class PostInfo {
 		this.postRemark = postRemark;
 		this.addDate = addDate;
 		this.postStatu = postStatu;
+		this.deptName =deptName;
 	}
 	
 	public Long getId() {
@@ -49,6 +50,16 @@ public class PostInfo {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
 	}
 
 

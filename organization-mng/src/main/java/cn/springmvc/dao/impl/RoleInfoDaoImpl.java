@@ -76,9 +76,12 @@ public class RoleInfoDaoImpl extends SqlSessionDaoSupport implements IRoleInfoDa
 		param.put("auths", 		auths				);
 		param.put("result", 1);
 		getSqlSession().selectOne("roleInfoDaoImpl.editRole", param);
-		int result = IntegerAndString.StringToInt(param.get("result").toString(),1);
+		int result =0;
+		Object obj = param.get("result");
+		if(obj!=null){
+			result = IntegerAndString.StringToInt(obj.toString(),1);
+		}
 		return result;
-				
 	}
 
 	@Override
@@ -127,6 +130,11 @@ public class RoleInfoDaoImpl extends SqlSessionDaoSupport implements IRoleInfoDa
 	@Override
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		super.setSqlSessionFactory(sqlSessionFactory);
+	}
+
+	@Override
+	public List<RoleInfo> getRoleList() {
+		return getSqlSession().selectList("roleInfoDaoImpl.getRoleList");
 	}
 
 

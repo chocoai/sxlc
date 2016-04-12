@@ -17,6 +17,7 @@
 <jsp:include page="../common/top-meta.jsp"></jsp:include>
 <!-- 公用css -->
 <jsp:include page="../common/cm-css.jsp"></jsp:include>
+
 <!-- 私用css -->
 <link rel="stylesheet" href="css/role.css" />
 <link rel="stylesheet" href="plugs/zTree/v3/css/zTreeStyle/zTreeStyle.css" />
@@ -44,7 +45,7 @@
 					<tr>
 						<td class="ztree v-top w4">
 							<div class="zTree-box">
-								<ul id="treeDemo" class="ztree"></ul>
+								<ul id="dleft_tab1" class="ztree"></ul>
 							</div>
 						</td>
 						<td class="v-top">
@@ -74,46 +75,23 @@
 								<div class="panel panel-success">
 									<div class="panel-heading">
 										<div class="action_item">
-											<button class="obtn glyphicon glyphicon-plus obtn-post-add">添加</button>
-											<button class="obtn glyphicon glyphicon-pencil obtn-post-mod">修改</button>
+											<button class="obtn glyphicon glyphicon-plus obtn-post-add" onclick="postAdd()">添加</button>
+											<button class="obtn glyphicon glyphicon-pencil obtn-post-mod" onclick="expMod()">修改</button>
 											<button class="obtn glyphicon glyphicon-trash obtn-post-del">删除</button>
 										</div>
 									</div>
 									<div class="panel-body">
-										<table id="table_id" class="display">
-											<thead>
-												<tr>
-													<th class="table-checkbox"></th>
-													<th>职务名称</th>
-													<th>所属部门</th>
-													<th>职务描述</th>
-													<th>添加时间</th>
-												</tr>
-											</thead>
-											<tbody>
-												<%
-													for (int i = 0; i < 15; i++) {
-												%>
-												<tr>
-													<td><input type="checkbox" /></td>
-													<td>职务名称1</td>
-													<td>所属部门1</td>
-													<td>职务描述1</td>
-													<td>添加时间1</td>
-												</tr>
-												<%
-													}
-												%>
-											</tbody>
+										<table id="post_id" class="display">
 										</table>
 									</div>
 			
-									<div class="w-content post-add">
+									<div class="w-content pic-add">
+									<form action="javascript:savePost()" id="dataForm" method="post" >
 										<table>
 											<tr>
 												<td class="tt"><label class="ineed">职务名称：</label></td>
 												<td class="con">
-													<input type="text" class="" placeholder="" />
+													<input type="text" class="" placeholder=""  datatype="z2_8"  id="mngName"/>
 												</td>
 											</tr>
 											<tr>
@@ -129,17 +107,20 @@
 												</td>
 											</tr>
 										</table>
+										</form>
 									</div>
 									
-									<div class="w-content post-mod">
-										<table>
-											<tr>
-												<td class="tt"><label class="ineed">职务名称：</label></td>
-												<td class="con">
-													<input type="text" class="" placeholder="" />
-												</td>
-											</tr>
-										</table>
+									<div class="w-content pic-mod">
+									<form action="javascript:test()" id=dataFor method="post">
+											<table>
+												<tr>
+													<td class="tt"><label class="ineed">职务名称：</label></td>
+													<td class="con">
+														<input type="text" class="" placeholder="" id ="postN" datatype="z2_8"/>
+													</td>
+												</tr>
+											</table>
+										</form>
 									</div>
 								</div>
 							</div>
@@ -151,88 +132,63 @@
 			</div>
 		</div>
 	</div>
-	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="js/role.js"></script>
 	<script type="text/javascript" src="plugs/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+	<script type="text/javascript" src="js/role/role-post.js"></script>
+	<script type="text/javascript" src="js/role/jquery.form.js"></script>
+	<script type="text/javascript" src="js/role/myZtree.js"></script>
+	<script type="text/javascript">
+	
+	</script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-		$(function() {
-			$('#table_id').DataTable({
-				"autoWidth" : false,
-				scrollY : 500,
-				//paging : false,//分页
-				//"searching" : false,
-				"info" : false,//左下角信息
-				//"ordering": false,//排序
-				"aaSorting" : [ [ 4, "desc" ] ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,1,2,3]
-				} // 制定列不参与排序
-				],
-				colReorder : false,
-				"scrollX": true,
-				"sScrollX" : "100%",
-				"sScrollXInner" : "100%",
-				"bScrollCollapse" : true
-			});
-		});
-	</script>
-	<script type="text/javascript">
-		var setting = {
-			view: {
-				showIcon: showIconForTree
-			},
-			data: {
-				simpleData: {
-					enable: true
-				}
-			}
-		};
-
-		var zNodes =[
-			{ id:1, pId:0, name:"父节点1 - 展开", open:true},
-			{ id:11, pId:1, name:"父节点11 - 折叠"},
-			{ id:111, pId:11, name:"叶子节点111"},
-			{ id:112, pId:11, name:"叶子节点112"},
-			{ id:113, pId:11, name:"叶子节点113"},
-			{ id:114, pId:11, name:"叶子节点114"},
-			{ id:12, pId:1, name:"父节点12 - 折叠"},
-			{ id:121, pId:12, name:"叶子节点121"},
-			{ id:122, pId:12, name:"叶子节点122"},
-			{ id:123, pId:12, name:"叶子节点123"},
-			{ id:124, pId:12, name:"叶子节点124"},
-			{ id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
-			{ id:2, pId:0, name:"父节点2 - 折叠"},
-			{ id:21, pId:2, name:"父节点21 - 展开", open:true},
-			{ id:211, pId:21, name:"叶子节点211"},
-			{ id:212, pId:21, name:"叶子节点212"},
-			{ id:213, pId:21, name:"叶子节点213"},
-			{ id:214, pId:21, name:"叶子节点214"},
-			{ id:22, pId:2, name:"父节点22 - 折叠"},
-			{ id:221, pId:22, name:"叶子节点221"},
-			{ id:222, pId:22, name:"叶子节点222"},
-			{ id:223, pId:22, name:"叶子节点223"},
-			{ id:224, pId:22, name:"叶子节点224"},
-			{ id:23, pId:2, name:"父节点23 - 折叠"},
-			{ id:231, pId:23, name:"叶子节点231"},
-			{ id:232, pId:23, name:"叶子节点232"},
-			{ id:233, pId:23, name:"叶子节点233"},
-			{ id:234, pId:23, name:"叶子节点234"},
-			{ id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
-		];
-
-		function showIconForTree(treeId, treeNode) {
-			return !treeNode.isParent;
-		};
-
-		$(document).ready(function(){
-			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-		});
-	</script>
+					<%-- url :"getDepartmentList.action?moduleId=<%=moduleId %>", --%> 
+		 		<%-- var depId = <%=depId %>;  --%>
+	 <script type="text/javascript">
+			 var depId =1;
+				$(document).ready(function(){
+					$(document).ajaxStart(onStart).ajaxSuccess(onStop);
+					loadMenu("dleft_tab1");
+				});
+				function loadMenu(treeObj){
+						$.ajax({
+							type:"POST",
+							async : false,
+							cache:false,
+							url: "../backage-web/PostController/finddapt.do",
+							dataType:"json",
+							success:function(data){
+								// 如果返回数据不为空，加载"业务模块"目录
+								if(data != null){
+									// 将返回的数据赋给zTree
+								 	$.fn.zTree.init($("#"+treeObj), setting, data);
+									var	zTree = $.fn.zTree.getZTreeObj(treeObj); 
+									//点击事件
+									TheSelectedNode(depId);
+									
+					                if( zTree ){
+										// 默认展开所有节点
+										zTree.expandAll(true);
+									}
+								}
+							}
+						});
+					}
+				//点击事件
+				function TheSelectedNode(id){
+				alert(id)
+					 var node = zTree.getNodeByParam('parentID',id);//获取id为1的点   设置默认点击第几级
+					 alert(node+"水淀粉及地方");
+			         zTree.selectNode(node);//选择点  
+			         zTree.setting.callback.onClick(null,zTree.setting.treeId,node);//调用事件  
+				}	
+				
+				//刷新
+				function updateTable(prevId,moduleId){
+					window.location.href= '<%=basePath %>' + "web/OrganizationMng/dep/Dep.jsp?depId="+prevId+"&moduleId="+moduleId;
+				} 
+				
+			</script>
 </body>
 
 </html>

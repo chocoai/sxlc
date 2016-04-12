@@ -6,6 +6,9 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
+import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
+
 
 
 /***
@@ -24,10 +27,13 @@ public class PersonalBaseInfo {
 	private Integer		sexId;					//性别
 	private Integer		maritalStatus;			//婚姻状况
 	private Integer		education;				//最高学历
+	private String      sEducation;				//最高学历 增加
 	private String		graduatedSchool;		//毕业学校
-	private	String		graduatedProfessionals;	//毕业专业
+	private	String		graduatedProfessionals;	//毕业专业 
 	private Date		graduatedDATE;			//毕业时间
-	private Integer		nationId;				//名族
+	private String      sGraduatedDate;			//毕业时间  增加
+	private Integer		nationId;				//民族
+	private String      sNation;				//民族   增加
 	private String		homeTown;				//籍贯
 	private String		census;					//户口所在地
 	private String		monthlyIncome;			//月均收入
@@ -97,6 +103,27 @@ public class PersonalBaseInfo {
 	}
 
 
+	public String getsEducation() {
+		return sEducation;
+	}
+
+	public void setsEducation(String sEducation) {
+		this.sEducation = sEducation;
+	}
+
+	public String getsGraduatedDate() {
+		return sGraduatedDate;
+	}
+
+	public String getsNation() {
+		return sNation;
+	}
+
+	public void setsNation(String sNation) {
+		this.sNation = sNation;
+	}
+
+
 	public Long getId() {
 		return id;
 	}
@@ -150,6 +177,7 @@ public class PersonalBaseInfo {
 	}
 	public void setGraduatedDATE(Date graduatedDATE) {
 		this.graduatedDATE = graduatedDATE;
+		this.sGraduatedDate = TimestampAndString.DateToString(graduatedDATE);
 	}
 	public Integer getNationId() {
 		return nationId;

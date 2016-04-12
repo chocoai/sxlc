@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">积分换算方式：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="">
+			 						<input type="text" class="form-control" id="firstname" placeholder="积分换算方式">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">*N%(N是期限，年)<i>*</i></span>
@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">积分有效期：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="">
+			 						<input type="text" class="form-control" id="lastname" placeholder="积分有效期">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">年<i>*</i></span>

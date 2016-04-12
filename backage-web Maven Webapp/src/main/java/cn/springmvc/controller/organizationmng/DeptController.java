@@ -80,6 +80,8 @@ public class DeptController {
 		
 		if (deptStatu != null) {
 			req.put("deptStatu", deptStatu);
+		}else {
+			req.put("deptStatu", -1);
 		}
 		
 		if (start != null) {
@@ -250,7 +252,7 @@ public class DeptController {
 	 */
 	@RequestMapping("/ofOrOpenDept")
 	@ResponseBody
-	public void ofOrOpenDept(String deptId, String deptStatu) {
+	public int ofOrOpenDept(String deptId, String deptStatu) {
 		
 		//日志信息
 		logger.info("启用停用部门");
@@ -259,7 +261,8 @@ public class DeptController {
 		deptInfo.setId(Long.valueOf(deptId));
 		deptInfo.setDeptStatu(Integer.valueOf(deptStatu));
 		
-		deptInfoServer.ofDept(deptInfo);
+		int num = deptInfoServer.ofDept(deptInfo);
+		return num;
 	}
 }
 

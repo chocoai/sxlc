@@ -1,6 +1,10 @@
 package cn.springmvc.model;
 
+import java.util.Date;
+
 import org.hibernate.validator.constraints.Length;
+
+import product_p2p.kit.datatrans.TimestampAndString;
 
 
 /***
@@ -19,16 +23,20 @@ public class Admin {
 	@Length(min=6,max=16,message="密码为6~16个任意字符")
 	private String		adminPwd;			//管理员密码
 	private String		adminRemark;		//管理员描述
+	private Date        addDate;			//生成日期
+	private String      sAddDate;			//生成日期
 	private Integer		adminCure;			//是否固化，固化后只能修改密码，不能进行删除等操作，默认0；0：不固化，非0：固化
 	private Integer		adminStatu;			//是否失效，默认0；0：有效，非0：失效
+	private long        roleId;				//角色id
+	private String      roleName;			//角色名称
 	
-	
+	private PersonalBaseInfo personalBaseInfo;	//
 	public Admin() {}
 
 
 	public Admin(Long id, Integer staffType, Long staffId, String adminName,
 			String adminPwd, String adminRemark, Integer adminCure,
-			Integer adminStatu) {
+			Integer adminStatu,String  roleName ) {
 		super();
 		this.id = id;
 		this.staffType = staffType;
@@ -38,6 +46,14 @@ public class Admin {
 		this.adminRemark = adminRemark;
 		this.adminCure = adminCure;
 		this.adminStatu = adminStatu;
+	}
+
+	public PersonalBaseInfo getPersonalBaseInfo() {
+		return personalBaseInfo;
+	}
+
+	public void setPersonalBaseInfo(PersonalBaseInfo personalBaseInfo) {
+		this.personalBaseInfo = personalBaseInfo;
 	}
 
 
@@ -69,6 +85,7 @@ public class Admin {
 	public void setStaffId(Long staffId) {
 		this.staffId = staffId;
 	}
+
 
 
 	public String getAdminName() {
@@ -129,7 +146,39 @@ public class Admin {
 	public void setBaseInfo(PersonalBaseInfo baseInfo) {
 		this.baseInfo = baseInfo;
 	}
-	
-	
+
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+
+	public Date getAddDate() {
+		return addDate;
+	}
+
+	public void setAddDate(Date addDate) {
+		this.addDate = addDate;
+		this.sAddDate = TimestampAndString.DateToString(addDate);
+	}
+
+
+	public long getRoleId() {
+		return roleId;
+	}
+
+
+	public void setRoleId(long roleId) {
+		this.roleId = roleId;
+	}
+
+
+	public String getsAddDate() {
+		return sAddDate;
+	}
 	
 }

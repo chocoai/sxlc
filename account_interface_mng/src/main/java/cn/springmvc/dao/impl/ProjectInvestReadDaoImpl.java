@@ -283,17 +283,17 @@ public class ProjectInvestReadDaoImpl extends SqlSessionDaoSupport implements Pr
 			beanEntity.setOrderNo(sOrderNo+i+"");
 			i++;
 			beanEntity.setBatchNo(feeEntity.getsProjectNo());
-			beanEntity.setAmount(IntegerAndString.LongToString(l));
-			beanEntity.setFullAmount(IntegerAndString.LongToString(feeEntity.getlAmountTotal()));
+			beanEntity.setAmount(IntegerAndString.LongToString2(l));
+			beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
 			beanEntity.setTransferName("平台支付给借款人");
-			beanEntity.setRemark("A,平台支付给借款人，金额:" + IntegerAndString.LongToString(l));
+			beanEntity.setRemark("A,平台支付给借款人，金额:" + IntegerAndString.LongToString2(l));
 			secondList = new ArrayList<>();
 			
 			// 平台支付给风险保证金：红包R(风险保证金) + 代金券R(风险保证金)
 			l = lRedpacketsRFee + lVouchersRFee;
 			if(l>0){
 				secondaryEntity = new LoanInfoSecondaryBean();
-				secondaryEntity.setAmount(IntegerAndString.LongToString(l));
+				secondaryEntity.setAmount(IntegerAndString.LongToString2(l));
 				secondaryEntity.setLoanInMoneymoremore(sRiskMarginAccount);
 				secondaryEntity.setRemark("平台支付红包及代金券部分风险保证金");
 				secondList.add(secondaryEntity);
@@ -303,7 +303,7 @@ public class ProjectInvestReadDaoImpl extends SqlSessionDaoSupport implements Pr
 			l = lRedpacketsGFee + lVouchersGFee;
 			if(l >0){
 				secondaryEntity = new LoanInfoSecondaryBean();
-				secondaryEntity.setAmount(IntegerAndString.LongToString(l));
+				secondaryEntity.setAmount(IntegerAndString.LongToString2(l));
 				secondaryEntity.setLoanInMoneymoremore(feeEntity.getsGuaranteeMark());
 				secondaryEntity.setRemark("平台支付红包及代金券部分担保费");
 				secondList.add(secondaryEntity);
@@ -354,10 +354,10 @@ public class ProjectInvestReadDaoImpl extends SqlSessionDaoSupport implements Pr
 			beanEntity.setOrderNo(sOrderNo+i+"");
 			i++;
 			beanEntity.setBatchNo(feeEntity.getsProjectNo());
-			beanEntity.setAmount(IntegerAndString.LongToString(l));
-			beanEntity.setFullAmount(IntegerAndString.LongToString(feeEntity.getlAmountTotal()));
+			beanEntity.setAmount(IntegerAndString.LongToString2(l));
+			beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
 			beanEntity.setTransferName("投资人支付给借款人");
-			beanEntity.setRemark("B,投资人支付给借款人，金额:" + IntegerAndString.LongToString(l));
+			beanEntity.setRemark("B,投资人支付给借款人，金额:" + IntegerAndString.LongToString2(l));
 			
 			secondList = new ArrayList<>();
 			
@@ -365,7 +365,7 @@ public class ProjectInvestReadDaoImpl extends SqlSessionDaoSupport implements Pr
 			l = lRedpacketsRFee + lVouchersRFee;
 			if(l>0){
 				secondaryEntity = new LoanInfoSecondaryBean();
-				secondaryEntity.setAmount(IntegerAndString.LongToString(l));
+				secondaryEntity.setAmount(IntegerAndString.LongToString2(l));
 				secondaryEntity.setLoanInMoneymoremore(feeEntity.getsGuaranteeMark());
 				secondaryEntity.setRemark("投资人支付担保费用");
 				secondList.add(secondaryEntity);
@@ -375,7 +375,7 @@ public class ProjectInvestReadDaoImpl extends SqlSessionDaoSupport implements Pr
 			l = lAmountRFee;
 			if(l >0){
 				secondaryEntity = new LoanInfoSecondaryBean();
-				secondaryEntity.setAmount(IntegerAndString.LongToString(l));
+				secondaryEntity.setAmount(IntegerAndString.LongToString2(l));
 				secondaryEntity.setLoanInMoneymoremore(sRiskMarginAccount);
 				secondaryEntity.setRemark("投资人支付风险保证金");
 				secondList.add(secondaryEntity);
@@ -385,7 +385,7 @@ public class ProjectInvestReadDaoImpl extends SqlSessionDaoSupport implements Pr
 			l = lAmountMFee;
 			if(l >0){
 				secondaryEntity = new LoanInfoSecondaryBean();
-				secondaryEntity.setAmount(IntegerAndString.LongToString(l));
+				secondaryEntity.setAmount(IntegerAndString.LongToString2(l));
 				secondaryEntity.setLoanInMoneymoremore(entity.getPlatformMoneymoremore());
 				secondaryEntity.setRemark("投资人支付管理费");
 				secondList.add(secondaryEntity);

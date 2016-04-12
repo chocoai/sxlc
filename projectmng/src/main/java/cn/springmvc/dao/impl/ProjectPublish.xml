@@ -43,7 +43,7 @@
         <result property = "memberNo" 		    column = "Member_No" />   
         <result property = "personalName" 		column = "Personal_Name" />  
         <result property = "compangName" 		column = "Compang_Name" />
-        <result property = "memberName" 		column = "memberName" />       
+        <result property = "memberName" 		column = "memberName" />  
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	    </association>
     </resultMap> 
@@ -58,6 +58,7 @@
 			<result property = "deadlineType"    column = "Deadline_Type" />
 			<result property = "repayWay"        column = "Repay_Way" />
 			<result property = "yearRate"        column = "Year_Rate" /> 
+			<result property = "replayWays" 	 column = "name1" />      
      </resultMap>
     <!-- 根据项目申请ID查询发布项目列表 -->  
 	<select id="selectProjectPublishList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectAppProcess" >

@@ -37,10 +37,10 @@ public class HandleSystemSetDaoImpl extends SqlSessionDaoSupport implements Hand
 	}
 
 	@Override
-	public int updateSystemInfoSet(SystemInfoSetEntity systemSetInfoEntity) {
+	public int updateSystemInfoSet() {
 		
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().update("SystemSetXML.updateSystemInfoSet",systemSetInfoEntity);
+		return getSqlSession().delete("SystemSetXML.updateSystemInfoSet");
 	}
 
 	@Override

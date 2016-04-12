@@ -13,6 +13,8 @@ import cn.springmvc.model.WithdrawalsFeeEntity;
 * @date 2016-3-14 上午11:46:59  */
 public interface FinancialSettingDao {	
 	
+
+	
 	/** 
 	* findWithdrawalsFee 查看是否存在手续费配置 
 	* TODO(这里描述这个方法适用条件 – 可选) 

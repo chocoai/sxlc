@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
 
+import cn.membermng.model.InvestmentstatisticsEntity;
+import cn.membermng.model.LoanCreditStatisticsEntity;
 import cn.membermng.model.MemberRedpacketsEntity;
 import cn.membermng.model.MemberThirdAuthInfoEntity;
 import cn.membermng.model.OwnTradingRecordsBalanceEntity;
@@ -176,6 +178,23 @@ public class RecordsBalanceServiceImpl implements RecordsBalanceService {
 			Map<String, Object> map) { 
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
 		return recordsBalanceDaoImpl.selectMemberThirdAuthInfo(map); 
+	}
+
+
+	@Override
+	public LoanCreditStatisticsEntity selectLoanCreditStatistics(long membereID) {
+		
+		return recordsBalanceDaoImpl.selectLoanCreditStatistics(membereID);
+		
+	}
+
+
+	@Override
+	public InvestmentstatisticsEntity selectInvestmentstatistics(long membereID) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		return recordsBalanceDaoImpl.selectInvestmentstatistics(map);
 	}
 
  

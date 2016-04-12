@@ -1,30 +1,22 @@
 
 package cn.springmvc.service.impl; 
 
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
-import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
-import cn.springmvc.dao.impl.HandleQuickRechargeFeeDaoImpl;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.dao.impl.HandleSystemSetDaoImpl;
-import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
-import cn.springmvc.dao.impl.SelectQuickRechargeFeeDaoImpl;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectSystemSetDaoImpl;
-import cn.springmvc.model.CreditorEntity;
-import cn.springmvc.model.QuickRechargeFeeEntity;
 import cn.springmvc.model.SystemInfoSetEntity;
 import cn.springmvc.model.SystemSetEntity;
-import cn.springmvc.service.CreditorService;
-import cn.springmvc.service.QuickRechargeFeeService;
 import cn.springmvc.service.SystemSetService;
 
 /** 
- * 债权转让设置 接口实现
+ * 系统、平台设置 接口实现
 * @author ZZY 
 * @Description: TODO 
 * @since 
@@ -38,6 +30,9 @@ public class SystemSetServiceImpl implements
 	@Resource(name="handleSystemSetDaoImpl")
 	private HandleSystemSetDaoImpl  handleSystemSetDaoImpl;
 
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
+	
 	@Override
 	public SystemSetEntity findSystemSet() {
 		
@@ -67,15 +62,16 @@ public class SystemSetServiceImpl implements
 	}
 
 	@Override
-	public int updateSystemInfoSet(SystemInfoSetEntity systemSetInfoEntity) {
+	public int updateSystemInfoSet() {
 		
 		// TODO Auto-generated method stub return 0;
-		return handleSystemSetDaoImpl.updateSystemInfoSet(systemSetInfoEntity);
+		return handleSystemSetDaoImpl.updateSystemInfoSet();
 	}
 
 	@Override
-	public int insertSystemInfoSet(SystemInfoSetEntity systemInfoSetEntity) {
-		
+	public int insertSystemInfoSet(SystemInfoSetEntity systemInfoSetEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("操作平台设置 :"+systemInfoSetEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleSystemSetDaoImpl.insertSystemInfoSet(systemInfoSetEntity);
 	}

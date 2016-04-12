@@ -215,6 +215,10 @@ public class ProjectAppRecordEntity {
 	 * 借款会员名称
 	 */
 	private String memberName;
+	/**
+	 * 项目类型小图标
+	 */
+	private String picIcon;
 	public String getLogname() {
 		return logname;
 	}
@@ -512,6 +516,12 @@ public class ProjectAppRecordEntity {
 	}
 	public void setMemberName(String memberName) {
 		this.memberName = memberName;
+	}
+	public String getPicIcon() {
+		return picIcon;
+	}
+	public void setPicIcon(String picIcon) {
+		this.picIcon = picIcon;
 	}
 }
 

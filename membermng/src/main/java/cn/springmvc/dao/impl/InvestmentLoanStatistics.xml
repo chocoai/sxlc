@@ -5,7 +5,7 @@
     <select id="selectMemberInvestTotal"  parameterType="Map" resultType="Long" >
 	   select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{sKey})) as signed)),0) as investTotal  
 	   from Invest_Record 
-	    where Member_ID=#{memberID} and Hold_Date is not null 
+	   where Member_ID=#{memberID} and Hold_Date is not null 
 	</select>
     <!-- 累计已收本金 -->
     <select id="selectRecvPrincipalTotal"  parameterType="Map" resultType="Long" >
@@ -84,5 +84,122 @@
 	    left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
 	    where  par.Member_ID=#{membereID} and lr.IsValid=0  and  lr.Statu != 3
 	    and  lr.Repay_MaxTime >now() 
+    </select>
+     <!-- 查询会员逾期未还款笔数 -->  
+<!--      successLoan成功借款N笔、 -->
+<!--      successReplay 成功还款N笔、 -->
+<!--      successInvest成功投资N笔、 -->
+<!--      overReplay 逾期还款N笔、 -->
+<!--      overlimitReplay 严重逾期还款N笔、 -->
+<!--      overnotreplay逾期未还N笔、 -->
+<!--      successAdvance 提前还款N笔 -->
+     <resultMap type = "cn.membermng.model.LoanCreditStatisticsEntity" id ="resultLoanCreditStatistics"> 
+			<result property = "successLoan"     column = "successLoan" /> 
+			<result property = "successReplay"   column = "successReplay" />
+			<result property = "successInvest"   column = "successInvest" />
+			<result property = "overReplay"      column = "overReplay" />
+			<result property = "overlimitReplay" column = "overlimitReplay" />
+			<result property = "overnotreplay"   column = "overnotreplay" />
+			<result property = "successAdvance"  column = "successAdvance" /> 
+     </resultMap>  
+	<select id="selectLoanCreditStatistics" parameterType="long"  resultMap="resultLoanCreditStatistics">
+	   select 
+	    (select  count(1) from Project_App_Record par where  par.Member_ID=#{membereID}
+	    and par.Invest_Statu>=3) as successLoan,
+	    
+	    (select  count(1) from  Loan_Repay lr 
+	    left join  Project_App_Record par on par.Apply_Id=lr.Apply_Id
+	    where  par.Member_ID=#{membereID} and lr.Statu=3  and lr.IsValid=0) as successReplay,
+	    
+	    (select  count(1) from Invest_Record ir 
+	    left join Project_App_Record par on par.Apply_Id=ir.Apply_Id
+	    where  ir.Member_ID=#{membereID} and par.Invest_Statu>=3 and ir.IsValid=0 ) as successInvest,
+	    
+	    (select  count(1) from Project_App_Record par 
+	    where   par.Member_ID=#{membereID} and par.Invest_Statu=4 and  
+	    (select count(1) from Loan_Repay lr where lr.Apply_Id=par.Apply_Id and lr.IsValid=1)>0 ) as successAdvance,
+	    
+	    (select  count(1) from Loan_Repay lr 
+	    left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
+	    where  par.Member_ID=#{membereID} and lr.IsValid=0 and lr.Statu=3
+	    and (select count(1) from Loan_Real_Repay lrr where lr.Repay_Id=lrr.Repay_Id and lrr.Repay_Time>lr.Repay_MaxTime  )>0
+	    ) as overReplay,
+         
+        (select  count(*) from Loan_Repay lr
+	    left join Project_App_Record par on  par.Apply_Id=lr.Apply_Id
+	    where  par.Member_ID=#{membereID} and lr.Statu=3 and lr.IsValid=1
+	    and (
+	     select count(*) from Loan_Real_Repay lrr where 
+	     lr.Repay_Id=lrr.Repay_Id and lrr.Repay_Time>lr.Repay_MaxTime  
+	     and datediff(lrr.Repay_Time,lr.Repay_MaxTime)>(select Overdue_Limit from  Overdue_Set limit 1) 
+	     )>0  ) as overlimitReplay,
+	     
+	     (select  count(1) from Loan_Repay lr 
+	     left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
+	     where  par.Member_ID=#{membereID} and lr.IsValid=0  and  lr.Statu != 3
+	     and  lr.Repay_MaxTime >now() ) as overnotreplay
+    </select>
+     <resultMap type = "cn.membermng.model.InvestmentstatisticsEntity" id ="resultInvestmentstatistics"> 
+			<result property = "successInvest"               column = "successInvest" /> 
+			<result property = "successInvestAmount"         column = "successInvestAmount" />
+			<result property = "successRecvPrincipalTotal"   column = "successRecvPrincipalTotal" />
+			<result property = "incomeTotal"           column = "IncomeTotal" />
+			<result property = "notSDRecvPrincipal"    column = "NotSDRecvPrincipal" />
+			<result property = "notSDRecvPrincipal"    column = "NotSDRecvPrincipal" />
+			<result property = "notSDRecvInterest"     column = "NotSDRecvInterest" /> 
+     </resultMap>  
+    <!--           投资统计信息 -->
+<!--      successInvest 成功投资笔数、 -->
+<!--      successInvestAmount 成功投资金额、 -->
+<!--      successRecvPrincipalTotal 累计已收本金、 -->
+<!--      IncomeTotal 累计已收收益、 -->
+<!--      NotSDRecvPrincipal 待收本金、 -->
+<!--      NotSDRecvInterest 待收收益 --> 
+    
+    <select id="selectInvestmentstatistics" parameterType="map"  resultMap="resultInvestmentstatistics">
+       select 
+       (select  count(1) from Invest_Record ir 
+	    left join Project_App_Record par on par.Apply_Id=ir.Apply_Id
+	    where  ir.Member_ID=#{membereID} and par.Invest_Statu>=3 and ir.IsValid=0 ) as successInvest,
+	    
+	   (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{sKey})) as signed)),0)  
+	   from Invest_Record 
+	   where Member_ID=#{memberID} and Hold_Date is not null ) as successInvestAmount,
+	   
+	   (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Principal),#{sKey})) as signed)),0)   
+	   from Invest_Real_Income lri
+	   left join Invest_Income ii on  ii.Income_Id=lri.Income_Id
+	   where Member_ID=#{memberID} and ii.IsValid = 0 ) as successRecvPrincipalTotal,
+	   
+	  (select (ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Interest),#{sKey})) as signed)),0)+ 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Overdue),#{sKey})) as signed)),0)+ 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Overdue_Interest),#{sKey})) as signed)),0)+ 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Penalty),#{sKey})) as signed)),0))  
+	   from Invest_Real_Income lri
+	   left join Invest_Income ii on  ii.Income_Id=lri.Income_Id 
+	   where Member_ID=#{memberID} and ii.IsValid = 0 ) as IncomeTotal,
+	  
+	  (  
+	   (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{sKey})) as signed)),0) 
+		from Invest_Income ii 
+		where  ii.Member_ID=#{memberID} and ii.IsValid = 0 ) -
+		
+	   (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Principal),#{sKey})) as signed)),0)   
+	   from Invest_Real_Income lri
+	   left join Invest_Income ii on  ii.Income_Id=lri.Income_Id
+	   where Member_ID=#{memberID} and ii.IsValid = 0 )
+	   ) as NotSDRecvPrincipal,
+	 
+	  ( 
+	   ( select ifnull(sum(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{sKey})) as signed)),0)  
+	 	from Invest_Income ii 
+		where  ii.Member_ID=#{memberID} and ii.IsValid = 0 )-
+		
+	  (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Interest),#{sKey})) as signed)),0) 
+	   from Invest_Real_Income lri
+	   left join Invest_Income ii on  ii.Income_Id=lri.Income_Id 
+	   where Member_ID=#{memberID} and ii.IsValid = 0 )  
+	   ) as NotSDRecvInterest
+	     
     </select>
 </mapper>

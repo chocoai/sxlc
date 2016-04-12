@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="memberInfoProject"> 
     <resultMap type="cn.springmvc.model.MemberInfoEntity" id="resultListMemberInfo">
-        <id column="ID" 					property="id" />
+        <id column="Member_ID" 					property="id" />
 		<result column="Member_Type" 		property="memberType" />
 		<result column="Member_No" 			property="memberNo" />
 		<result column="Logname" 			property="logname" />
@@ -24,7 +24,7 @@
         <association property="personalBaseInfoEntity"  resultMap="personalBaseInfo"></association>
      </resultMap> 
     <resultMap type="cn.springmvc.model.PersonalBaseInfoEntity" id="personalBaseInfo">
-		<id 	column="ID" 				property="id"/>
+		<id 	column="Personal_ID" 				property="id"/>
 		<result column="Personal_Name" 		property="personalName"/>
 		<result column="Personal_IDCard" 	property="personalIDCard"/>
 		<result column="SexID" 				property="sexID"/>
@@ -72,7 +72,7 @@
 		<result column="Start_Date" 		property="sStartDate"/>   
 	</resultMap> 
 	<resultMap type="cn.springmvc.model.CompanyInfoEntity" id="companyInfoEntity">
-		<id 	column="ID" 				property="personalID"/>
+		<id 	column="Company_ID" 				property="id"/>
 		<result column="Compang_Name" 		property="compangName"/> 
 		<result column="Companye_BLN" 		property="companyeBLN"/>
 		<result column="Company_OC" 		property="companyOC"/> 

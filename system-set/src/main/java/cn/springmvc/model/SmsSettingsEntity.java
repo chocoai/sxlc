@@ -64,6 +64,12 @@ public class SmsSettingsEntity {
 	public void setStatu(int statu) {
 		this.statu = statu;
 	}
+	@Override
+	public String toString() {
+		return "SmsSettingsEntity [id=" + id + ", smsInterface(短信接口地址)=" + smsInterface
+				+ ", smsSerialNumber(短信序列号)=" + smsSerialNumber + ", smsPassword(密码)="
+				+ smsPassword + ", optId(最后一次操作员id)=" + optId+"]";
+	}
 
 }
 

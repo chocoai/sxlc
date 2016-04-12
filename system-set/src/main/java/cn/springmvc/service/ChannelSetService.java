@@ -4,6 +4,7 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.model.MailSettingsEntity;
 import cn.springmvc.model.MessageTypeEntity;
@@ -98,7 +99,7 @@ public interface ChannelSetService {
 	* @return List<Object> 返回类型 
 	* @throws 
 	*/
-	public List<Object> updateChannelSet(Map<String, Object> map);
+	public List<Object> updateChannelSet(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -114,7 +115,7 @@ public interface ChannelSetService {
 	* @return List<Object> 返回类型 
 	* @throws 
 	*/
-	public List<Object> updateMessage(Map<String, Object> map);
+	public List<Object> updateMessage(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -130,7 +131,7 @@ public interface ChannelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertSmsSettings(SmsSettingsEntity settingsEntity);
+	public int insertSmsSettings(SmsSettingsEntity settingsEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -146,7 +147,7 @@ public interface ChannelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateSmsSettingsById(SmsSettingsEntity settingsEntity);
+	public int updateSmsSettingsById(SmsSettingsEntity settingsEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -162,7 +163,7 @@ public interface ChannelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updteSmsSettingsStatu(Map<String, Object> map);
+	public int updteSmsSettingsStatu(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* selectMailSettings 查询邮件接口设置 
@@ -191,7 +192,7 @@ public interface ChannelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateMailSettings(MailSettingsEntity mailSettingsEntity);
+	public int updateMailSettings(MailSettingsEntity mailSettingsEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -207,7 +208,7 @@ public interface ChannelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertMailSettings(MailSettingsEntity mailSettingsEntity);
+	public int insertMailSettings(MailSettingsEntity mailSettingsEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* selectThreeInterface 查询第三方接口路径设置信息 

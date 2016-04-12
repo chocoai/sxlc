@@ -2,6 +2,8 @@ package cn.springmvc.service;
 
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.model.WithdrawalsFeeEntity;
 
 
@@ -26,7 +28,7 @@ public interface FinancialSettingService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity);
+	public int updateWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -73,6 +75,6 @@ public interface FinancialSettingService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity);
+	public int insertWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 

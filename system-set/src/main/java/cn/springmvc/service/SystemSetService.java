@@ -3,6 +3,8 @@ package cn.springmvc.service;
 
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.SystemInfoSetEntity;
 import cn.springmvc.model.SystemSetEntity;
@@ -78,7 +80,7 @@ public interface SystemSetService {
 	public SystemInfoSetEntity findSystemInfoSet();
 	
 	/** 
-	* updateSystemInfoSet 修改平台设置 
+	* updateSystemInfoSet 删除平台设置 
 	* TODO(这里描述这个方法适用条件 – 可选) 
 	* TODO(这里描述这个方法的执行流程 – 可选) 
 	* TODO(这里描述这个方法的使用方法 – 可选) 
@@ -90,7 +92,7 @@ public interface SystemSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateSystemInfoSet(SystemInfoSetEntity systemSetInfoEntity);
+	public int updateSystemInfoSet();
 	
 	/** 
 	* insertSystemInfoSet 添加平台设置 
@@ -105,7 +107,7 @@ public interface SystemSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertSystemInfoSet(SystemInfoSetEntity systemInfoSetEntity);
+	public int insertSystemInfoSet(SystemInfoSetEntity systemInfoSetEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 
 

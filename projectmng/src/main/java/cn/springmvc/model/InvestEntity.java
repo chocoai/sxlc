@@ -147,6 +147,10 @@ public class InvestEntity {
 	 * 借款会员
 	 */
 	private String membername;
+	/**
+	 * 登录用户名
+	 */
+	private String logname;
 	public String getInvestTypes() {
 		return investTypes;
 	}
@@ -340,6 +344,12 @@ public class InvestEntity {
 	}
 	public void setMemberNo(String memberNo) {
 		this.memberNo = memberNo;
+	}
+	public String getLogname() {
+		return logname;
+	}
+	public void setLogname(String logname) {
+		this.logname = logname;
 	} 	
 
 

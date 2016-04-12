@@ -37,7 +37,7 @@
       	<result property = "merBillNo" 			column = "Mer_BillNo" /> 
         <result property = "investRate" 		column = "Invest_Rate" /> 
         <result property = "availableaAmount" 	column = "availableaAmount" /> 
-        <result property = "levelMark" 	column = "Level_Mark" /> 
+        <result property = "levelMark" 	        column = "Level_Mark" /> 
        <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	   </association>
     </resultMap> 
@@ -53,19 +53,28 @@
 			<result property = "repayWay"        column = "Repay_Way" />
 			<result property = "yearRate"        column = "Year_Rate" /> 
 			<result property = "creditIntegral"  column = "Credit_Integral" /> 
+			<result property = "replayWays" 	 column = "name1" />  
      </resultMap>
     <!-- 根据项目申请ID查询投资项目详情 -->  
 	<select id="selectProjectdetail"  parameterType="map" resultMap="resultProjectAppProcess" >
-	   select par.Increase_Range,par.MinStart,par.Invest_Rate,par.Invest_Max,par.Member_ID,par.Project_Base_ID,par.Project_ID,pbi.Project_Title,par.Project_No,pbi.Repay_Way,
-	   pbi.Year_Rate,pbi.Amount,pbi.Deadline,pbi.Deadline_Type, pap.Start_Date,pap.End_Date,par.Reward_Rate,par.Rate_Add_Rate,
-	   par.Reward_Icon,pap.Record_Date,pap.Real_End_Date,par.Reward_Rate,par.Reward_Icon,par.Invest_Statu,mi.Credit_Integral, 
+	   select pty.Pic_Icon,pbi.Project_Title,par.Project_No,pbi.Year_Rate,pbi.Amount,
+	   pbi.Deadline,pbi.Deadline_Type,par.Reward_Rate,par.Rate_Add_Rate, par.Reward_Icon,
+	   par.Invest_Rate,replayway.name1,par.Member_ID,pap.Start_Date,pap.End_Date,
+	   par.Invest_Statu,
+	   par.Increase_Range,par.MinStart,par.Invest_Max,
+	   
+	   pap.Record_Date,pap.Real_End_Date, 
+	   
 	   (pbi.Amount-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{sKey})) as signed)),0) 
 	   from Invest_Record  where Apply_Id=par.Apply_Id and IsValid=0 )) availableaAmount,
+	   
 	   (select Level_Mark from Credit_Level where  mi.Credit_Integral between Credit_Score_Min and Credit_Score_Max and statu =1) as  Level_Mark
+	   
 	   from  Project_App_Record par  
 	   left join Project_App_Process pap on  pap.Apply_Id=par.Apply_Id
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
-	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID  
+	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
+	   left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS' 
 	   left join Member_Info mi on mi.Member_ID = par.Member_ID 
 	   where  par.Apply_Id=#{id}
     </select>

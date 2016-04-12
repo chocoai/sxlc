@@ -43,6 +43,14 @@ public class WithdrawalsFeeEntity {
 	public void setPayment_Member_Type(int payment_Member_Type) {
 		this.payment_Member_Type = payment_Member_Type;
 	}
+	@Override
+	public String toString() {
+		return "提现手续费设置[payment_Member_Type(手续费支付会员类型)="
+				+ payment_Member_Type + ", withdrawal_Fee_Third(第三方提现管理费)="
+				+ withdrawal_Fee_Third + ", withdrawal_Type_Third(第三方提现管理费类型)="
+				+ withdrawal_Type_Third + ", withdrawal_Fee_Pingtai(提现手续费平台代付百分比)="
+				+ withdrawal_Fee_Pingtai + ", check_Type(提现是否需要审核)=" + check_Type + "]";
+	}
 	
 }
 

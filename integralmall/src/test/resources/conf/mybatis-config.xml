@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <!-- <typeAlias alias="partnersEntity" type="cn.springmvc.model.PartnersEntity"/>
+        <typeAlias alias="friendshipUnitEntity" type="cn.springmvc.model.FriendshipUnitEntity"/>
+        <typeAlias alias="platformAnnouncementEntity" type="cn.springmvc.model.PlatformAnnouncementEntity"/>
+        <typeAlias alias="mediaReportsEntity" type="cn.springmvc.model.MediaReportsEntity"/>
+        <typeAlias alias="mngTeamEntity" type="cn.springmvc.model.MngTeamEntity"/>
+        <typeAlias alias="newEventEntity" type="cn.springmvc.model.NewEventEntity"/>
+        <typeAlias alias="commodityTypeEntity" type="cn.springmvc.model.CommodityTypeEntityity"/>
+        <typeAlias alias="homeBannerEntity" type="cn.springmvc.model.HomeBannerEntity"/>
+        <typeAlias alias="recruitmentEntity" type="cn.springmvc.model.RecruitmentEntity"/>
+        <typeAlias alias="productIntroduceEntity" type="cn.springmvc.model.ProductIntroduceEntity"/>
+        <typeAlias alias="loginBannerEntity" type="cn.springmvc.model.LoginBannerEntity"/>
+        <typeAlias alias="registerBannerEntity" type="cn.springmvc.model.RegisterBannerEntity"/>
+        <typeAlias alias="integralMallBannerEntity" type="cn.springmvc.model.IntegralMallBannerEntity"/>   -->
+    </typeAliases>
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="dialect" value="mysql"/>
+            <!-- 该参数默认为false -->
+            <!-- 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 -->
+            <!-- 和startPage中的pageNum效果一样-->
+            <property name="offsetAsPageNum" value="true"/>
+            <!-- 该参数默认为false -->
+            <!-- 设置为true时，使用RowBounds分页会进行count查询 -->
+            <property name="rowBoundsWithCount" value="true"/>
+        </plugin>
+    </plugins>
+</configuration> 
+ 

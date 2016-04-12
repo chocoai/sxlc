@@ -32,7 +32,7 @@ public interface InvestListService {
 	 * @Title: selectInvestList 
 	 * @Description: TODO 
 	 * @param pageEntity 分页实体
-	 * <p>map{projectinfo(项目编号或名称),investStatu(项目状态),repayWay(还款方式),projectType(借款类型)
+	 * <p>map{projectinfo(项目编号或名称),investStatu(项目状态),repayWay(还款方式),reward(1加息标2返现3无奖励)projectType(借款类型)
 	 *         yearratemin,yearratemax,deadlineType(期限类型 0：天标 1：月标 2：年标)，deadlinemin,deadlinemax}
 	 * <p>  
 	 * @param @return 设定文件 

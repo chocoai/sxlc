@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.membermng.model.InvestmentstatisticsEntity;
+import cn.membermng.model.LoanCreditStatisticsEntity;
 import cn.membermng.model.MemberRedpacketsEntity;
 import cn.membermng.model.MemberThirdAuthInfoEntity;
 import cn.membermng.model.OwnTradingRecordsBalanceEntity;
@@ -163,5 +165,25 @@ public interface RecordsBalanceService {
 	     * @date 2016-3-25 上午11:59:16
 	     */
 	    public MemberThirdAuthInfoEntity selectMemberThirdAuthInfo(Map<String,Object> map);
+	    /**
+	     * 会员借款信用统计
+	     * @author 刘利   
+	     * @Description: TODO 
+	     * @param  membereID
+	     * @param @return 设定文件 
+	     * @return LoanCreditStatisticsEntity 返回类型 
+	     * @date 2016-4-9 下午4:05:33
+	     */
+	    public LoanCreditStatisticsEntity selectLoanCreditStatistics(long membereID);
+	    /**
+	     * 投资统计信息
+	     * @author 刘利   
+	     * @Description: TODO 
+	     * @param  membereID
+	     * @param @return 设定文件 
+	     * @return InvestmentstatisticsEntity 返回类型 
+	     * @date 2016-4-9 下午4:05:33
+	     */
+	    public InvestmentstatisticsEntity selectInvestmentstatistics(long membereID);
 }
 

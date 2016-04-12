@@ -146,7 +146,7 @@ LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
   </sql>
   <!-- 查询三方接口设置 -->
   <select id="selectThreeInterface" resultMap="ThreeInterface" parameterType="cn.springmvc.model.ThreeInterfaceEntity">
-  	select qs.Public_Key,qs.Private_Key,qs.Escrow_ID,Interface_ID
+  	select qds.Public_Key,qds.Private_Key,qs.Escrow_ID,qs.Interface_ID
   	,Interface_Url,Escrow_Name,Interface_Name from QianDuoDuo_Url_Set qs
   	left join Account_Escrow_Interface aei on qs.Interface_ID=aei.Interface_ID
   	left join Account_Escrow ae on qs.Escrow_ID=ae.Escrow_ID

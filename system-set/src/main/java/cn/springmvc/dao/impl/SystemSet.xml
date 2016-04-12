@@ -70,27 +70,31 @@
     select <include refid="SystemInfoSet_Column_List"></include> from System_Info_Set
   </select>
   <!-- 修改系统设置 -->
-  <update id="updateSystemInfoSet" parameterType="cn.springmvc.model.SystemInfoSetEntity">
-  	update System_Info_Set 
-  	<set>
-  		<if test="systemName != null">System_Name=#{systemName},</if>
-  		<if test="backgroundLogo != null">Background_Logo=#{backgroundLogo},</if>
-  		<if test="forgroundLogo != null">Forground_Logo=#{forgroundLogo},</if>
-  		<if test="systemHotline != null">System_Hotline=#{systemHotline},</if>
-  		<if test="systemOfficeHours != null">System_OfficeHours=#{systemOfficeHours},</if>
-  		<if test="weiboName != null">Weibo_Name=#{weiboName},</if>
-  		<if test="weiboQRCode != null">Weibo_QRCode=#{weiboQRCode},</if>
-  		<if test="qQGroupCode != null">QQGroup_Code=#{qQGroupCode},</if>
-  		<if test="qQGroupQRCode != null">QQGroup_QRCode=#{qQGroupQRCode},</if>
-  		<if test="weChatCode != null">WeChat_Code=#{weChatCode},</if>
-  		<if test="weChatQRCode != null">WeChat_QRCode=#{weChatQRCode},</if>
-  		<if test="switchStatu != -1">Switch_Statu=#{switchStatu},</if>
-  		<if test="riskReserveFund != null">Risk_Reserve_Fund=#{riskReserveFund},</if>
-  		<if test="expectYearRate != null">Expect_Year_Rate=#{expectYearRate},</if>
-  		<if test="integralAlias != null">Integral_Alias=#{integralAlias},</if>
-  		<if test="welcomeTitle !=null">Welcome_Title=#{welcomeTitle},</if>
-  	</set>
-  </update>
+<!--   <update id="updateSystemInfoSet" parameterType="cn.springmvc.model.SystemInfoSetEntity"> -->
+<!--   	update System_Info_Set  -->
+<!--   	<set> -->
+<!--   		<if test="systemName != null">System_Name=#{systemName},</if> -->
+<!--   		<if test="backgroundLogo != null">Background_Logo=#{backgroundLogo},</if> -->
+<!--   		<if test="forgroundLogo != null">Forground_Logo=#{forgroundLogo},</if> -->
+<!--   		<if test="systemHotline != null">System_Hotline=#{systemHotline},</if> -->
+<!--   		<if test="systemOfficeHours != null">System_OfficeHours=#{systemOfficeHours},</if> -->
+<!--   		<if test="weiboName != null">Weibo_Name=#{weiboName},</if> -->
+<!--   		<if test="weiboQRCode != null">Weibo_QRCode=#{weiboQRCode},</if> -->
+<!--   		<if test="qQGroupCode != null">QQGroup_Code=#{qQGroupCode},</if> -->
+<!--   		<if test="qQGroupQRCode != null">QQGroup_QRCode=#{qQGroupQRCode},</if> -->
+<!--   		<if test="weChatCode != null">WeChat_Code=#{weChatCode},</if> -->
+<!--   		<if test="weChatQRCode != null">WeChat_QRCode=#{weChatQRCode},</if> -->
+<!--   		<if test="switchStatu != -1">Switch_Statu=#{switchStatu},</if> -->
+<!--   		<if test="riskReserveFund != null">Risk_Reserve_Fund=#{riskReserveFund},</if> -->
+<!--   		<if test="expectYearRate != null">Expect_Year_Rate=#{expectYearRate},</if> -->
+<!--   		<if test="integralAlias != null">Integral_Alias=#{integralAlias},</if> -->
+<!--   		<if test="welcomeTitle !=null">Welcome_Title=#{welcomeTitle},</if> -->
+<!--   	</set> -->
+<!--   </update> -->
+<delete id="updateSystemInfoSet">
+delete from System_Info_Set
+</delete>
+
   <!-- 添加系统设置 -->
   <insert id="insertSystemInfoSet" parameterType="cn.springmvc.model.SystemInfoSetEntity">
   	insert into System_Info_Set(System_Name,Background_Logo,Forground_Logo,System_Hotline,System_OfficeHours

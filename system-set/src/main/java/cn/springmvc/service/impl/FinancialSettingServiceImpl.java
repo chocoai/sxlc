@@ -7,15 +7,26 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.dao.impl.FinancialSettingDaoImpl;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.WithdrawalsFeeEntity;
 import cn.springmvc.service.FinancialSettingService;
 
+
+/** 
+ * 
+* @author 朱祖轶 
+* @Description: TODO 
+* @since 
+* @date 2016-4-12 上午10:30:02  */
 @Service("financialSettingServiceImpl")
 public class FinancialSettingServiceImpl implements FinancialSettingService{
 	@Resource(name="financialSettingDaoImpl")
 	private FinancialSettingDaoImpl financialSettingDaoImpl;
-	
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	
 	/* * 
 	 * 修改提现手续费
@@ -23,8 +34,9 @@ public class FinancialSettingServiceImpl implements FinancialSettingService{
 	 */
 	/* *  *  * @return * @see cn.springmvc.service.FinancialSettingService#updateWithdrawalsFee(cn.springmvc.model.WithdrawalsFeeEntity) */
 	@Override
-	public int updateWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity) {
-		
+	public int updateWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("修改提现手续费："+withdrawalsFeeEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return financialSettingDaoImpl.updateWithdrawalsFee(withdrawalsFeeEntity);
 	}
@@ -53,8 +65,9 @@ public class FinancialSettingServiceImpl implements FinancialSettingService{
 	 * 如果不存在提现手续费 则添加
 	 *  *  * @return * @see cn.springmvc.service.FinancialSettingService#insertWithdrawalsFee() */
 	@Override
-	public int insertWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity) {
-		
+	public int insertWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("添加提现手续费："+withdrawalsFeeEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return financialSettingDaoImpl.insertWithdrawalsFee(withdrawalsFeeEntity);
 	}

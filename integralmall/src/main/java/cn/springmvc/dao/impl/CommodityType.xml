@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommodityType">
+    <resultMap id="resultListCommodityType" type="cn.springmvc.model.CommodityTypeEntity">
+        <id column="Commodity_Type_ID" property="commodityTypeID"/>
+        <result column="Admin_ID" property="adminID"/>
+        <result column="Commodity_Type" property="commodityType"/>
+        <result column="Super_ID" property="superID"/>
+        <result column="Commodity_Classify" property="commodityClassify"/>
+        <result column="Commodity_Classify_Des" property="commodityClassifyDes"/>
+        <result column="Commodity_Classify_Pic" property="commodityClassifyPic"/>
+        <result column="Status" property="status"/>
+        <result column="Add_Time" property="addTime"/>
+        <result column="Delete_Flag" property="deleteFlag"/>
+    </resultMap>
+    <!-- 分页查询商品分类类型列表 -->
+    <select id="selectCommodityTypeList" parameterType="product_p2p.kit.pageselect.PageEntity"
+            resultMap="resultListCommodityType">
+        select
+        ct.Commodity_Type_ID,ct.Commodity_Type,ct.Commodity_Classify,ct.Commodity_Classify_Des,ct.Commodity_Classify_Pic,ct.Status,ct.Delete_Flag,
+        ct.Super_ID,ct.Add_Time, a.adminName
+        from commodity_type ct
+        LEFT JOIN Admin a on a.Admin_ID=ct.Admin_ID
+        <where>
+            <if test="map.Commodity_Classify != null">
+                ct.Commodity_Classify like '%{map.Commodity_Classify}%'
+            </if>
+            <if test="map.status != -1">
+                and ct.Status=#{map.status}
+            </if>
+        </where>
+        order by ct.Add_Time desc
+    </select>
+    <!-- 新增商品分类类型 -->
+    <insert id="insertCommodityType" parameterType="cn.springmvc.model.CommodityTypeEntity">
+        insert into
+        commodity_type(Commodity_Type_ID, Admin_ID, Commodity_Type, Super_ID, Commodity_Classify, Commodity_Classify_Des, Commodity_Classify_Pic, Status, Delete_Flag)
+        values (#{commodityTypeID},#{adminID},#{commodityType},#{superID},#{commodityClassify},#{commodityClassifyDes},#{commodityClassifyPic},#{status},#{deleteFlag})
+    </insert>
+
+    <!-- 查询商品分类类型是否存在 -->
+    <select id="selectCommodityTypeIsExistByName" parameterType="cn.springmvc.model.CommodityTypeEntity"
+            resultMap="resultListCommodityType">
+        select Commodity_Type_ID,Commodity_Type,Commodity_Classify,Commodity_Classify_Des,Commodity_Classify_Pic,Status,Delete_Flag
+        Super_ID,Add_Time
+        from  commodity_type where  Commodity_Classify=#{commodityClassify}  and Commodity_Type_ID!=#{commodityTypeID}
+    </select>
+    <!-- 修改商品分类类型信息 -->
+    <update id="updateCommodityTypeByID" parameterType="cn.springmvc.model.CommodityTypeEntity">
+        update commodity_type
+        <set>
+            <if test="commodityType != null">
+                Commodity_Type=#{commodityType},
+            </if>
+            <if test="commodityClassify != null">
+                Commodity_Classify=#{commodityClassify},
+            </if>
+            <if test="commodityClassifyDes != null">
+                Commodity_Classify_Des=#{commodityClassifyDes},
+            </if>
+            <if test="commodityClassifyPic != null">
+                Commodity_Classify_Pic=#{commodityClassifyPic},
+            </if>
+            <if test="status != null">
+                Status=#{status},
+            </if>
+        </set>
+        where Commodity_Type_ID=#{commodityTypeID}
+    </update>
+    <!-- 删除商品分类类型信息 -->
+    <delete id="deleteCommodityTypeByID" parameterType="int">
+	   delete from  commodity_type where Commodity_Type_ID=#{commodityTypeID}
+    </delete>
+    <!-- 停用或启用商品分类类型 -->
+    <update id="updateCommodityTypeStatusByID" parameterType="cn.springmvc.model.CommodityTypeEntity">
+	   update  commodity_type  set   Status=#{status} where Commodity_Type_ID=#{commodityTypeID}
+    </update>
+    <!-- 根据ID查询商品分类类型 -->
+    <select id="selectCommodityTypeByID" parameterType="int" resultMap="resultListCommodityType">
+	    select ct.Commodity_Type_ID,ct.Commodity_Type,ct.Commodity_Classify,ct.Commodity_Classify_Des,ct.Commodity_Classify_Pic,ct.Status,ct.Delete_Flag
+	    ct.Super_ID,ct.Add_Time
+	    from  commodity_type ct  where  ct.Commodity_Type_ID=#{commodityTypeID}
+    </select>
+    <!-- 前台查询商品分类类型列表 -->
+    <select id="selectCommodityTypeFront" resultMap="resultListCommodityType">
+	   select ct.Commodity_Type_ID,ct.Commodity_Type,ct.Commodity_Classify,ct.Commodity_Classify_Des,ct.Commodity_Classify_Pic,ct.Status,ct.Delete_Flag
+	    ct.Super_ID,ct.Add_Time
+	    from  commodity_type ct 
+	    where ct.Status = 1 
+    </select>
+</mapper>   

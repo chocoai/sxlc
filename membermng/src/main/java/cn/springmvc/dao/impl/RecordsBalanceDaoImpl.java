@@ -22,6 +22,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import cn.membermng.model.InvestmentstatisticsEntity;
+import cn.membermng.model.LoanCreditStatisticsEntity;
 import cn.membermng.model.MemberRedpacketsEntity;
 import cn.membermng.model.MemberThirdAuthInfoEntity;
 import cn.membermng.model.OwnTradingRecordsBalanceEntity;
@@ -162,8 +164,24 @@ public class RecordsBalanceDaoImpl extends SqlSessionDaoSupport implements Recor
 	@Override
 	public MemberThirdAuthInfoEntity selectMemberThirdAuthInfo(
 			Map<String, Object> map) {
-		
+		// tradingRecordsBalance: TradingRecordsBalance.xml
 		return getSqlSession().selectOne("tradingRecordsBalance.selectMemberTradeInfo",map);
+		
+	}
+
+	@Override
+	public LoanCreditStatisticsEntity selectLoanCreditStatistics(
+			long membereID) {
+		//statistic : InvestmentLoanStatistics.xml
+		return getSqlSession().selectOne("statistic.selectLoanCreditStatistics",membereID);
+		
+	}
+
+	@Override
+	public InvestmentstatisticsEntity selectInvestmentstatistics(
+			Map<String, Object> map) {
+		
+		return getSqlSession().selectOne("statistic.selectInvestmentstatistics",map);
 		
 	}
 

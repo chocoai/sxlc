@@ -54,6 +54,7 @@ public class FinancialSettingDaoImpl extends SqlSessionDaoSupport implements Fin
 		
 		// TODO Auto-generated method stub return 0;
 		return getSqlSession().insert("WithdrawalsFeeXml.insertWithdrawalsFee",withdrawalsFeeEntity);
+	
 	}
 	
 	/* * 

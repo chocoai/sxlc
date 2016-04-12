@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="Index">
+<resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetailIndex">
+        <id property = "applyId"						column = "Apply_Id" />  
+		<result property = "investStatu" 		column = "Invest_Statu" /> 
+		<result property = "rateAddRate" 		column = "Rate_Add_Rate" /> 
+		<result property = "rewardRate" 		column = "Reward_Rate" />
+		<result property = "rewardIcon" 		column = "Reward_Icon" />  
+		<result property = "projectNo" 			column = "Project_No" />  
+        <result property = "investRate" 		column = "Invest_Rate" />   
+        <result property = "picIcon"            column = "Pic_Icon" />  
+	    <result property = "startDate"       	column = "Start_Date" />
+	    <result property = "endDate"         	column = "End_Date" />  
+       <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentityIndex"> 
+	   </association>
+    </resultMap> 
+     <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentityIndex">
+            <id property = "ID" 				 column = "id" />
+			<result property = "projectTitle"    column = "Project_Title" />  
+			<result property = "amount" 		 column = "Amount" /> 
+			<result property = "deadline" 		 column = "Deadline" />
+			<result property = "deadlineType"    column = "Deadline_Type" />
+			<result property = "repayWay"        column = "Repay_Way" />
+			<result property = "yearRate"        column = "Year_Rate" />  
+			<result property = "replayWays" 	 column = "name1" />  
+   </resultMap>	
+    <resultMap type = "cn.springmvc.model.CreditorTransferListEntity" id = "resultCreditorTransfer">
+        <id property = "ctaId"						column = "CTA_Id" />
+		<result property = "projectTitle"       	column = "Project_Title" />
+		<result property = "ProjectNo"    	        column = "Project_No" />
+		<result property = "transPrincipal"  	    column = "Trans_Principal" />
+		<result property = "surplusTime"  	        column = "Surplus_Time" />
+		<result property = "surplusTimeType" 	    column = "Surplus_Time_Type" />
+		<result property = "transDiscount"          column = "Trans_Discount" />
+		<result property = "ctaInvestRate" 			column = "Cta_Invest_Rate" />
+		<result property = "repalyways" 		    column = "repalyways" />
+		<result property = "transStatus" 			column = "transStatus" /> 
+		<result property = "transStatu" 		    column = "transStatu" />  
+		<result property = "endDate" 		        column = "End_Date" /> 
+		<result property = "levelMark" 	            column = "Level_Mark" /> 
+		<result property = "availableaAmount" 	    column = "availableaAmount" /> 
+		<result property = "rateAddRate" 		    column = "Rate_Add_Rate" /> 
+		<result property = "rewardRate" 		    column = "Reward_Rate" />
+		<result property = "rewardIcon" 		    column = "Reward_Icon" /> 
+		<result property = "investTotal" 		    column = "InvestTotal" /> 
+		<result property = "expectYearrate" 		column = "expectYearrate" /> 
+    </resultMap> 
+    <resultMap type = "cn.springmvc.model.InvestEntity" id = "resultListInvestRecord"> 
+		<result property = "logname"          	column = "Logname" />
+		<result property = "investAmount"    	column = "Invest_Amount" /> 
+    </resultMap>  											
+	 <!-- 查询首页统计 -->
+    <select id="selectIndexStatistic"  parameterType="Map" resultType="Map" >
+	   select (select (ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Principal),#{sKey})) as signed)),0) + 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Interest),#{sKey})) as signed)),0)+ 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Overdue),#{sKey})) as signed)),0)+ 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Overdue_Interest),#{sKey})) as signed)),0)+ 
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Penalty),#{sKey})) as signed)),0))  
+	   from Invest_Real_Income lri  )  as IncomeTotal, 
+	   (select count(Member_ID) from member_info ) as countmember, 
+	   (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(pbi.Amount),#{sKey})) as signed)),0)  
+	   from project_base_info pbi 
+       left join project_app_record par on  par.Project_Base_ID =pbi.Project_Base_ID
+       where   par.Invest_Statu>=3 ) as totalLoanAmount ,
+       (select Risk_Reserve_Fund from System_Info_Set limit 1) as  RiskReserveFund
+	</select>
+	 <!-- 首页预热投资项目列表 -->  
+	<select id = "selectInvestListIndex"   resultMap = "resultProjectDetailIndex">
+       select pty.Pic_Icon,par.Reward_Icon,pbi.Project_Title,pbi.Amount,pbi.Deadline,pbi.Deadline_Type,
+       pbi.Year_Rate,par.Reward_Rate, par.Rate_Add_Rate,replayway.name1,pap.Start_Date,pap.End_Date,
+       par.Project_No, par.Apply_Id, par.Invest_Statu , par.Invest_Rate 
+       
+	   from Project_App_Record par 
+	   left join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id
+	   left join Project_Base_Info pbi    on  par.Project_Base_ID=pbi.Project_Base_ID
+	   left join ProjectBaseInfo pty      on  par.Project_ID=pty.Project_ID 
+	   left join DICT replayway           on  replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS' 
+	   order by  par.Invest_Statu asc ,pap.Start_Date desc limit 3
+    </select>  
+     <!-- 首页查询债权转让项目列表 -->  
+	<select id = "selectCreditorTransferListIndex"   resultMap = "resultCreditorTransfer">
+	    select pbi.Project_Title,par.Project_No,cta.Surplus_Time,
+	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal,
+	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed) Trans_Discount,
+		cta.Surplus_Time_Type,cta.Cta_Invest_Rate,replayway.name1 as repalyways,
+		transStatu.name1  as transStatus,cta.CTA_Id,cta.Statu as transStatu,cta.End_Date,
+		((par.Rate_Add_Rate + pbi.Year_Rate)*1000000/CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed)) as expectYearrate
+		from Creditor_Trans_App cta 
+		left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id 
+		left join Project_App_Record par  on par.Apply_Id = ir.Apply_Id
+		left join Project_Base_Info pbi   on par.Project_Base_ID=pbi.Project_Base_ID
+		left join ProjectBaseInfo pty     on par.Project_ID=pty.Project_ID  
+		left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
+		left join DICT transStatu on  transStatu.code1= cta.Statu  and transStatu.tcode = 'DICT_ZRZT'
+		 order by  cta.Statu asc 
+	</select>
+	  <!-- 查询项目直投投资记录-->  
+	<select id="selectInvestRecordIndex" parameterType="map"  resultMap="resultListInvestRecord">
+	    select   mi.Logname,
+	    CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{sKey})) as signed) Invest_Amount
+	    from Invest_Record ir 
+	    left join Member_Info mi on  mi.Member_ID = ir.Member_ID 
+	     <where>  
+	         ir.IsValid=0 
+             <!--  本月 -->
+	        <if test = "nowMonthOrweek == 1"> 
+	          and  dateformat(ir.Invest_Date,'%Y-%m')=dateformat(now(),'%Y-%m')
+	        </if>
+	         <!--  本周 -->
+	        <if test = "nowMonthOrweek == 2"> 
+	          and  YEARWEEK(date_format(ir.Invest_Date,'%Y-%m-%d')) = YEARWEEK(now());
+	        </if> 
+	     </where>
+    </select>    
+</mapper>

@@ -53,7 +53,7 @@ public interface HandleSystemSetDao {
 	
 	
 	/** 
-	* updateSystemInfoSet 修改平台设置 
+	* updateSystemInfoSet 删除平台设置 
 	* TODO(这里描述这个方法适用条件 – 可选) 
 	* TODO(这里描述这个方法的执行流程 – 可选) 
 	* TODO(这里描述这个方法的使用方法 – 可选) 
@@ -65,7 +65,7 @@ public interface HandleSystemSetDao {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateSystemInfoSet(SystemInfoSetEntity systemSetInfoEntity);
+	public int updateSystemInfoSet();
 	
 	/** 
 	* insertSystemInfoSet 添加平台设置 

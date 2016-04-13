@@ -4,6 +4,8 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.pageselect.PageEntity;
+
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.OverdueEntity;
 
@@ -28,7 +30,7 @@ public interface OverdueService {
 	* @return List<OverdueEntity> 返回类型 
 	* @throws 
 	*/
-	public List<OverdueEntity> findAllOverdue();
+	public List<OverdueEntity> findAllOverdue(PageEntity pageEntity);
 	
 	/** 
 	* findOverdueLimit 逾期程度界限查询

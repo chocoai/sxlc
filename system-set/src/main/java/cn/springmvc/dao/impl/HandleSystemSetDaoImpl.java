@@ -1,11 +1,15 @@
 
 package cn.springmvc.dao.impl; 
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
+
+import product_p2p.kit.datatrans.IntegerAndString;
 
 import cn.springmvc.dao.FinancialSettingDao;
 import cn.springmvc.dao.HandleSystemSetDao;
@@ -26,7 +30,9 @@ public class HandleSystemSetDaoImpl extends SqlSessionDaoSupport implements Hand
 	public int updateSystemSet(SystemSetEntity systemSetEntity) {
 		
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().update("SystemSetXML.updateSystemSet",systemSetEntity);
+		Map<String,Object> map =getSqlSession().selectOne("SystemSetXML.updateSystemSet",systemSetEntity);
+		int i=IntegerAndString.StringToInt(map.get("rulet").toString(), -1);
+		return i;
 	}
 
 	@Override
@@ -51,6 +57,11 @@ public class HandleSystemSetDaoImpl extends SqlSessionDaoSupport implements Hand
 	}
 
 	
-	
+	@Override
+	public Map<String, Object> setInterestMngFee(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectOne("SystemSetXML.setInterestMngFee",map);
+	}
 }
 

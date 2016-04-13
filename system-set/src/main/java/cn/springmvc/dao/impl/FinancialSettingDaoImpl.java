@@ -1,6 +1,7 @@
 
 package cn.springmvc.dao.impl; 
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -61,9 +62,9 @@ public class FinancialSettingDaoImpl extends SqlSessionDaoSupport implements Fin
 	 * 查询提现手续费设置
 	 *  *  * @return * @see cn.springmvc.dao.FinancialSettingDao#selectWithdrawalsFeeEntity() */
 	@Override
-	public WithdrawalsFeeEntity selectWithdrawalsFeeEntity() {
+	public List<WithdrawalsFeeEntity> selectWithdrawalsFeeEntity() {
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("WithdrawalsFeeXml.selectWithdrawalsFee");
+		return getSqlSession().selectList("WithdrawalsFeeXml.selectWithdrawalsFee");
 	}
 }
 

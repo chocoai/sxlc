@@ -34,7 +34,12 @@ public class SelectSystemSetDaoImpl extends SqlSessionDaoSupport implements Sele
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectOne("SystemSetXML.selectSystemInfoSet");
 	}
-	
+	@Override
+	public Integer findInterestMngFee() {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectOne("SystemSetXML.findInterestMngFee");
+	}
 	
 }
 

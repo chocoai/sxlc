@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
+
+import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.SelectOverdueDao;
 import cn.springmvc.dao.SelectCreditorDao;
@@ -34,10 +37,8 @@ public class SelectOverdueDaoImpl extends SqlSessionDaoSupport implements Select
 	 * 查询所有逾期费率时间设置
 	 *  *  * @return * @see cn.springmvc.dao.SelectOverdueDao#findAllOverdue() */
 	@Override
-	public List<OverdueEntity> findAllOverdue() {
-		
-		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectList("OverdueXML.selectOverdue");
+	public List<OverdueEntity> findAllOverdue(PageEntity pageEntity) {
+		return getSqlSession().selectList("OverdueXML.selectOverdue",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 	}
 	
 	/* * 

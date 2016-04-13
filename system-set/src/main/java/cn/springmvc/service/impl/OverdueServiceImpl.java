@@ -9,9 +9,13 @@ import javax.annotation.Resource;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
+
 import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
 import cn.springmvc.dao.impl.HandleOverdueDaoImpl;
 import cn.springmvc.dao.impl.HandleQuickRechargeFeeDaoImpl;
+import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
 import cn.springmvc.dao.impl.SelectOverdueDaoImpl;
 import cn.springmvc.dao.impl.SelectQuickRechargeFeeDaoImpl;
@@ -39,10 +43,10 @@ public class OverdueServiceImpl implements OverdueService {
 	 * 查询所有的逾期天数设置
 	 *  *  * @return * @see cn.springmvc.service.OverdueService#findAllOverdue() */
 	@Override
-	public List<OverdueEntity> findAllOverdue() {
-		
-		// TODO Auto-generated method stub return null;
-		return selectOverdueDaoImpl.findAllOverdue();
+	public List<OverdueEntity> findAllOverdue(PageEntity pageEntity) {
+		List<OverdueEntity> list = selectOverdueDaoImpl.findAllOverdue(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	
@@ -99,9 +103,16 @@ public class OverdueServiceImpl implements OverdueService {
 	/* *  *  * @return * @see cn.springmvc.service.OverdueService#insertOverdue(cn.springmvc.model.OverdueEntity) */
 	@Override
 	public int insertOverdue(OverdueEntity overdueEntity) {
-		
-		// TODO Auto-generated method stub return 0;
-		return handleOverdueDaoImpl.insertOverdue(overdueEntity);
+		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+		long id = generatorUtil.GetId();
+		overdueEntity.setId((int)id);
+		int result =  handleOverdueDaoImpl.insertOverdue(overdueEntity);
+		if(result == 0) {
+			generatorUtil.SetIdUsedFail(id);
+		}else{
+			generatorUtil.SetIdUsed(id);
+		}
+		return result;
 	}
 
 	

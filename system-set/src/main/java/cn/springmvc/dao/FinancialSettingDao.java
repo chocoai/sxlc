@@ -1,6 +1,7 @@
 
 package cn.springmvc.dao; 
 
+import java.util.List;
 import java.util.Map;
 
 import cn.springmvc.model.WithdrawalsFeeEntity;
@@ -44,7 +45,7 @@ public interface FinancialSettingDao {
 	* @return WithdrawalsFeeEntity 返回类型 
 	* @throws 
 	*/
-	public WithdrawalsFeeEntity selectWithdrawalsFeeEntity();
+	public List<WithdrawalsFeeEntity> selectWithdrawalsFeeEntity();
 	
 	
 	/** 

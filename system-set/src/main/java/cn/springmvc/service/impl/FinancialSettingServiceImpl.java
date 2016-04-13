@@ -1,6 +1,7 @@
 
 package cn.springmvc.service.impl; 
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -45,7 +46,7 @@ public class FinancialSettingServiceImpl implements FinancialSettingService{
 	 * 查询提现手续费
 	 *  *  * @return * @see cn.springmvc.service.FinancialSettingService#selectWithdrawalsFee() */
 	@Override
-	public WithdrawalsFeeEntity selectWithdrawalsFee() {
+	public List<WithdrawalsFeeEntity> selectWithdrawalsFee() {
 		
 		// TODO Auto-generated method stub return null;
 		return financialSettingDaoImpl.selectWithdrawalsFeeEntity();

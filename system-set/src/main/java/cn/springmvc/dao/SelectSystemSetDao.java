@@ -44,5 +44,19 @@ public interface SelectSystemSetDao {
 	*/
 	public SystemInfoSetEntity findSystemInfoSet();
 	
+	
+	/** 
+	* findSystemInfoSet 查询利息管理费
+	* TODO(这里描述这个方法适用条件 – 可选) 
+	* TODO(这里描述这个方法的执行流程 – 可选) 
+	* TODO(这里描述这个方法的使用方法 – 可选) 
+	* TODO(这里描述这个方法的注意事项 – 可选) 
+	* * @Title: findSystemSet 
+	* @Description: TODO 
+	* @param @return 设定文件 
+	* @return SystemSetEntity 返回类型 
+	* @throws 
+	*/
+	public Integer findInterestMngFee();
 }
 

@@ -1,5 +1,6 @@
 package cn.springmvc.service;
 
+import java.util.List;
 import java.util.Map;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
@@ -44,7 +45,7 @@ public interface FinancialSettingService {
 	* @return WithdrawalsFeeEntity 返回类型 
 	* @throws 
 	*/
-	public WithdrawalsFeeEntity selectWithdrawalsFee();
+	public List<WithdrawalsFeeEntity> selectWithdrawalsFee();
 	
 	
 	

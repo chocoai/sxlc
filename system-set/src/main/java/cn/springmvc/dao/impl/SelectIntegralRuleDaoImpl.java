@@ -10,6 +10,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 import cn.springmvc.dao.SelectIntegralRuleDao;
 import cn.springmvc.dao.SelectOverdueDao;
 import cn.springmvc.dao.SelectCreditorDao;
@@ -43,16 +45,17 @@ public class SelectIntegralRuleDaoImpl extends SqlSessionDaoSupport implements S
 	@Override
 	public List<IntegralRuleEntity> findAllIntegralRule(Map<String, Object> map) {
 		
+		int iType = IntegerAndString.StringToInt(map.get("type").toString(), 0);
 		// TODO Auto-generated method stub return null;
-		if((int)map.get("type")==1){
+		if(iType==1){
 			return getSqlSession().selectList("IntegralRuleXML.selectIntegralRule", map);
-		}else if ((int)map.get("type")==2) {
+		}else if (iType==2) {
 			return getSqlSession().selectList("IntegralRuleXML.selectproIntegralRule", map);
-		}else if ((int)map.get("type")==3) {
+		}else if (iType==3) {
 			return getSqlSession().selectList("IntegralRuleXML.selecttraIntegralRule", map);
-		}else if ((int)map.get("type")==4) {
+		}else if (iType==4) {
 			return getSqlSession().selectList("IntegralRuleXML.selectrecIntegralRule", map);
-		}else if ((int)map.get("type")==5) {
+		}else if (iType==5) {
 			return getSqlSession().selectList("IntegralRuleXML.selectloaIntegralRule", map);
 		}else {
 			return null;

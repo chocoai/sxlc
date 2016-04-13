@@ -48,7 +48,7 @@ public interface SystemSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateSystemSet(SystemSetEntity systemSetEntity);
+	public int updateSystemSet(SystemSetEntity systemSetEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* insertSystemSet 添加系统设置 
@@ -108,6 +108,35 @@ public interface SystemSetService {
 	* @throws 
 	*/
 	public int insertSystemInfoSet(SystemInfoSetEntity systemInfoSetEntity,InsertAdminLogEntity entity,String[] sIpInfo);
+	
+	
+	/** 
+	* findInterestMngFee 查询利息管理费
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findInterestMngFee 
+	* @Description: TODO 
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-4-13 下午4:08:18
+	* @throws 
+	*/
+	public String findInterestMngFee();
+	
+	
+	/** 
+	* setInterestMngFee 设置利息管理费 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: setInterestMngFee 
+	* @Description: TODO 
+	* @param @param PriceDatum
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-4-13 下午4:13:30
+	* @throws 
+	*/
+	public int setInterestMngFee(String PriceDatum,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 
 

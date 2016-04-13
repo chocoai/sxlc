@@ -1,6 +1,8 @@
 
 package cn.springmvc.dao; 
 
+import java.util.Map;
+
 import cn.springmvc.model.SystemInfoSetEntity;
 import cn.springmvc.model.SystemSetEntity;
 
@@ -82,5 +84,19 @@ public interface HandleSystemSetDao {
 	*/
 	public int insertSystemInfoSet(SystemInfoSetEntity systemInfoSetEntity);
 	
+	
+	/** 
+	* setInterestMngFee 设置利息管理费 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: setInterestMngFee 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return Map<String,Object> 返回类型 
+	* @date 2016-4-13 下午4:11:59
+	* @throws 
+	*/
+	public Map<String, Object> setInterestMngFee(Map<String, Object> map);
 }
 

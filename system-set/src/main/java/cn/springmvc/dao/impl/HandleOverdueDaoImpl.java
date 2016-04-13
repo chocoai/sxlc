@@ -1,7 +1,6 @@
 
 package cn.springmvc.dao.impl; 
 
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -11,12 +10,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
 import cn.springmvc.dao.HandleOverdueDao;
-import cn.springmvc.dao.SelectOverdueDao;
-import cn.springmvc.dao.SelectCreditorDao;
-import cn.springmvc.dao.SelectQuickRechargeFeeDao;
-import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.OverdueEntity;
-import cn.springmvc.model.QuickRechargeFeeEntity;
 
 /** 
  * 债权转让设置查询

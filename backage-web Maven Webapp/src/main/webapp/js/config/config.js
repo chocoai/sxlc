@@ -59,21 +59,6 @@ $(function(){
 		  //按钮【按钮二】的回调
 		});
 	});
-//	修改---逾期费用设置
-	$(".obtn-invest-fee-modify").on("click touchstart",function(){
-		layer.open({
-		    type: 1,
-		    area: ['420px', '280px'], //高宽
-		    title: "添加",
-		    content: $(".invest-fee-modify"),//DOM或内容
-		    btn:['确定', '取消']
-			  ,yes: function(index, layero){ //或者使用btn1
-			    //确定的回调
-			  },cancel: function(index){//或者使用btn2（concel）
-			  	//取消的回调
-			  }
-		});
-	});
 //	删除--当前逾期费用设置记录
 	$(".invest-fee-del").on("click touchstart",function(){
 		//获得选取的对象

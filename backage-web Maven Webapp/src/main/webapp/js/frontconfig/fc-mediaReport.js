@@ -85,11 +85,12 @@ $(function() {
  * @returns
  */
 var ue = UE.getEditor('editor');
+var num=0;
 function addOrUpdate(type){
-	console.log($("#editor"));
 	//初始化
 	//清空数据
 	document.getElementById("dataForm").reset();
+//	ue.reset();
 	$("#showImg").attr("src","");
 	$("#fileList").html("");
 	$("#filePicker").html("选择图片");//清除样式
@@ -99,13 +100,18 @@ function addOrUpdate(type){
 	if(type==1){
 		title="添加最新动态";
 		url="/front/addMediaReport.do";
-		ue.addListener("ready", function () {
-        	ue.setContent("");
-	    });
+		if(num==0){
+			ue.addListener("ready", function () {
+	        	ue.setContent("");
+		    });
+			num += 1;
+		}else{
+			ue.setContent("");
+		}
 	}else if(type==2){
 		title="修改最新动态";
 		url="/front/editMediaReport.do";
-		var data = $('#mediaTb').DataTable().rows('.selected').data(); 
+		var data = $('#mediaTb').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的数据！",{icon:0});
 			return;
@@ -114,9 +120,14 @@ function addOrUpdate(type){
 		$("#title").val(data[0].title);	
 		$("#source").val(data[0].source);
 		$("#pictureUrl").val(data[0].logo);
-		ue.addListener("ready", function () {
-        	ue.setContent(data[0].content);
-	    });
+		if(num==0){
+			ue.addListener("ready", function () {
+	        	ue.setContent(data[0].content);
+		    });
+			num += 1;
+		}else{
+			ue.setContent(data[0].content);
+		}
 		$("#showImg").attr("src",$("#hostPath").val()+data[0].logo);
 			
 	}
@@ -129,9 +140,7 @@ function addOrUpdate(type){
 		  ,yes: function(index, layero){ //或者使用btn1
 			    var content = ue.getContent();
 				$("#content").val(content);
-				ue.destroy();
-//				$("#editor").html("");//清除样式
-				ue = UE.getEditor('editor');
+//				ue.destroy();
 				$.ajax( {  
 					url:appPath+url,
 					data:$("#dataForm").serialize(),
@@ -156,9 +165,7 @@ function addOrUpdate(type){
 				});
 			  
 		  },cancel: function(index){//或者使用btn2（concel）
-			  ue.destroy();
-//			  $("#editor").html("");//清除样式
-			  ue = UE.getEditor('editor');
+//			  ue.destroy();
 		  }
 	});
 	//上传插件初始化

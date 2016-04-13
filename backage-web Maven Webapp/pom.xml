@@ -177,12 +177,18 @@
   		 <artifactId>aboutus-mng</artifactId>
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency> 
-
+    <!--配置中心  -->
+    <dependency> 
+	     <groupId>product_p2p</groupId>
+	     <artifactId>system-set</artifactId>
+	     <version>0.0.1-SNAPSHOT</version> 
+    </dependency> 
+	
     
   </dependencies>
   <build>
     <finalName>backage-web</finalName>
-    <plugins>  
+     <plugins>  
     <plugin>  
         <groupId>org.apache.maven.plugins</groupId>  
         <artifactId>maven-compiler-plugin</artifactId>  

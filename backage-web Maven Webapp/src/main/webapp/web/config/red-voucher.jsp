@@ -40,17 +40,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	<div class="config">
 			 		<fieldset>
 			 			<legend>红包、代金券到期提醒</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<form class="form-horizontal" role="form" name="" action="javascript:addRedV()" type="post" id="red">
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">到期前N提醒：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="到期前N提醒">
+			 						<input id="days" type="text" class="form-control" datatype="nNum1" name="endDateRemind" placeholder="到期前N提醒">
 			 					</div>
 			 					<div class="i-fl">
-			 						<span class="sign i-fl">天<i>*</i></span>
+			 						<span class="sign i-fl">天<i></i></span>
 			 					</div>
 			 					<div class="input-alert">
-			 						<span>错误提示</span>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -68,6 +67,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 尾部 -->
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<script type="text/javascript" src="js/valid.js"></script>
+	<script type="text/javascript" src="js/config/red-voucher.js"></script>
 	<!-- 私用js -->
 	<script src="js/config/config.js"></script>
 </body>

@@ -20,9 +20,9 @@ import org.apache.commons.net.ftp.FTPReply;
  * @date 2016-03-10
  */
 public class FtpClientUtil {
-	private final static String sFtpIpAddr = "cdsxlc.com";
+	private final static String sFtpIpAddr = "localhost";
 	private final static int iFtpPort = 21;
-	private final static int iHttpPort = 21000;
+	private final static int iHttpPort = 8080;
 	private final static String sUserName = "xieqiang";
 	private final static String sPwd = "xieqiang@qq.com";
 	public final static short sFtpServer = 0;		//0：windows 1:linux

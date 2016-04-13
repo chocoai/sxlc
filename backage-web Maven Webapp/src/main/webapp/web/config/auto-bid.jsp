@@ -41,11 +41,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	<div class="config">
 			 		<fieldset>
 			 			<legend>自动投标奖励设置</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<form class="form-horizontal" role="form" name="" type="post" action="javascript:updateAuto()" id="auto">
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">自动投标奖励：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="自动投标奖励">
+			 						<input type="text" name="autoBackRate" class="form-control" id="firstname" placeholder="自动投标奖励">
 				 				</div>
 				 				<div class="i-fl">
 				 					<span class="sign">*N%<i>*</i></span><!-- 放款时返还自动投资总金额的N% -->
@@ -66,6 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 尾部 -->
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<script type="text/javascript" src="js/config/auto-bid.js"></script>
 	<!-- 私用js -->
 </body>
 

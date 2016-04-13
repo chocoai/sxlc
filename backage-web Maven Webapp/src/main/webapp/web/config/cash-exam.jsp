@@ -43,22 +43,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 			<legend>提现审核</legend>
 			 			<form class="form-horizontal" role="form" name="" action="" id="">
 			 				<div class="form-group">
-			 					<label for="lastname" class="i-fl control-label col3">债权转让审核是否需要审核：</label>
+			 					<input type="hidden" id="check_Type" value="${result.check_Type}">	
+			 					<label for="lastname" class="i-fl control-label col3">提现是否需要审核：</label>
 				 				<div class="i-fl">	
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
+				 						<input type="radio" name="checkType" id="optionsRadios1" value="1"> 是
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="否" checked> 否
+				 						<input type="radio" name="checkType" id="optionsRadios2" value="0" checked> 否
 				 					</label>
 				 				</div>
 				 				<div class="radio-alert">
-			 						<span>错误提示</span>
+			 						<span></span>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
+			 						<button type="button" onclick="submitBtn()" class="btn btn-default">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		
@@ -72,6 +73,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
+	<script type="text/javascript">
+			$(function(){
+				//页面初始化
+				var checkType = $("#check_Type").val();
+				$("input[name='checkType'][value="+checkType+"]").attr('checked','true');
+			});
+	
+			//保存按钮
+			function submitBtn(){
+					var checkType =$("input[name='checkType']:checked").val();
+					
+					$.ajax( {  
+						url:appPath+"/config/addCashExam.do",
+						data:{"check_Type":checkType},
+						type:'post',  
+						cache:false,  
+						dataType:'json',  
+						success:function(data) { 
+							if(data > 0){
+								layer.alert("操作成功",{icon:1});
+							}else if(data==0){
+								layer.alert("操作失败",{icon:2});  
+							}
+						},  
+						error : function() {  
+							layer.alert("服务器异常",{icon:2});  
+						}  
+					});
+			};
+	
+	</script>
+	
+	
 </body>
 
 </html>

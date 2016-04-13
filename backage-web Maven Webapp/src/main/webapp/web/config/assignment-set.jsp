@@ -42,70 +42,71 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 			<legend>债权转让设置手续费设置</legend>
 			 			<form class="form-horizontal" role="form" name="" action="" id="">
 			 				<div class="form-group">
-			 					<label for="firstname" class="col3 i-fl control-label">债权持有时间大于：</label>
+			 					<label for="holdDay" class="col3 i-fl control-label">债权持有时间大于：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="债权持有时间大于">
+			 						<input type="text"  class="form-control" id="holdDay" value="${creditorEntity.holdDay}" placeholder="债权持有时间大于">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">天<i>*</i></span>
 								</div>
 								<div class="input-alert">
-									<span>错误提示</span>
+									<span></span>
 								</div>
 			 				</div>
 			 				<div class="form-group">
-			 					<label for="lastname" class="i-fl control-label col3">债权距到期时间大于：</label>
+			 					<label for="rangeDay" class="i-fl control-label col3">债权距到期时间大于：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="债权距到期时间大于">
+			 						<input type="text"  class="form-control" value="${creditorEntity.rangeDay}" id="rangeDay" placeholder="债权距到期时间大于">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">天<i>*</i></span>
 								</div>
 								<div class="input-alert">
-									<span>错误提示</span>
+									<span></span>
 								</div>
 			 				</div>
 			 				<div class="form-group">
-			 					<label for="firstname" class="col3 i-fl control-label">债权日在还款日前：</label>
+			 					<label for="interestDay" class="col3 i-fl control-label">债权日在还款日前：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="债权日在还款日前">
+			 						<input type="text"  class="form-control" value="${creditorEntity.interestDay}" id="interestDay" placeholder="债权日在还款日前">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">天<i>*</i></span>
 								</div>
 								<div class="input-alert">
-									<span>错误提示</span>
+									<span></span>
 								</div>
 			 				</div>
 			 				<div class="form-group">
-			 					<label for="lastname" class="i-fl control-label col3">债权转让手续费费率：</label>
+			 					<label for="mngFee" class="i-fl control-label col3">债权转让手续费费率：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="债权转让手续费费率">
+			 						<input type="text"  class="form-control" value="${creditorEntity.mngFee}" id="mngFee" placeholder="债权转让手续费费率">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">%<i>*</i></span>
 								</div>
 								<div class="input-alert">
-									<span>错误提示</span>
+									<span></span>
 								</div>
 			 				</div>
 			 				<div class="form-group">
+			 					<input type="hidden" id="mngType" value="${creditorEntity.mngType}">
 			 					<label for="lastname" class="i-fl control-label col3">债权转让手续费收取方向：</label>
 			 					<div class="i-fl">
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="转让人"> 转让人
+				 						<input type="radio" name="mngType" id="optionsRadios1" value="0"> 转让人
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="购买人"> 购买人
+				 						<input type="radio" name="mngType" id="optionsRadios2" value="1"> 购买人
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="全部" checked> 全部
+				 						<input type="radio" name="mngType" id="optionsRadios2" value="2" checked> 全部
 				 					</label>
 				 				</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
+			 						<button type="button" onclick="submitBtn(0)" class="btn btn-default">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		
@@ -114,22 +115,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 			<legend>债权转让审核是否需要审核</legend>
 			 			<form class="form-horizontal" role="form" name="" action="" id="">
 			 				<div class="form-group">
+			 					<input type="hidden" id="checkType" value="${creditorEntity.checkType}">
 			 					<label for="lastname" class="i-fl control-label col3">债权转让审核是否需要审核：</label>
 				 				<div class="i-fl">
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
+				 						<input type="radio" name="checkType" id="optionsRadios1" value="1"> 是
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="否" checked> 否
+				 						<input type="radio" name="checkType" id="optionsRadios2" value="0" checked> 否
 				 					</label>
 				 				</div>
 				 				<div class="radio-alert">
-				 					<span>错误提示</span>
+				 					<span></span>
 				 				</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
+			 						<button type="button" onclick="submitBtn(1)" class="btn btn-default">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		
@@ -138,22 +140,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 			<legend>债权转让放款是否需要手动放款</legend>
 			 			<form class="form-horizontal" role="form" name="" action="" id="">
 			 				<div class="form-group">
+			 					<input type="hidden" id="loanType" value="${creditorEntity.loanType}">
 			 					<label for="lastname" class="i-fl control-label col3">债权转让放款是否需要手动放款：</label>
 			 					<div class="i-fl">
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="是"> 是
+				 						<input type="radio" name="loanType" id="optionsRadios1" value="1"> 是
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="否" checked> 否
+				 						<input type="radio" name="loanType" id="optionsRadios2" value="0" checked> 否
 				 					</label>
 				 				</div>
 				 				<div class="i-fl">
-				 					<span class="radio-alert">错误提示</span>
+				 					<span class="radio-alert"></span>
 				 				</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
+			 						<button type="button" onclick="submitBtn(2)" class="btn btn-default">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		
@@ -162,22 +165,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 			<legend>债权转让利息生成方式</legend>
 			 			<form class="form-horizontal" role="form" name="" action="" id="">
 			 				<div class="form-group">
+			 					<input type="hidden" id="interestType" value="${creditorEntity.interestType}">
 			 					<label for="lastname" class="i-fl control-label col3">债权转让利息生成方式：</label>
 				 				<div class="i-fl">
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios1" value="按期分配"> 按期分配
+				 						<input type="radio" name="interestType" id="optionsRadios1" value="0"> 按期分配
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="optionsRadios" id="optionsRadios2" value="按实际转让时间分配" checked> 按实际转让时间分配
+				 						<input type="radio" name="interestType" id="optionsRadios2" value="1" checked> 按实际转让时间分配
 				 					</label>
 				 				</div>
 				 				<div class="i-fl">
-				 					<span class="radio-alert">错误提示</span>
+				 					<span class="radio-alert"></span>
 				 				</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
+			 						<button type="button" onclick="submitBtn(3)" class="btn btn-default">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		
@@ -191,6 +195,62 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
+	<script type="text/javascript">
+			$(function(){
+				//页面初始化
+				var mngType = $("#mngType").val();
+				var checkType = $("#checkType").val();
+				var loanType = $("#loanType").val();
+				var interestType = $("#interestType").val();
+				$("input[name='mngType'][value="+mngType+"]").attr('checked','true');
+				$("input[name='checkType'][value="+checkType+"]").attr('checked','true');
+				$("input[name='loanType'][value="+loanType+"]").attr('checked','true');
+				$("input[name='interestType'][value="+interestType+"]").attr('checked','true');
+			});
+	
+			//保存按钮
+			function submitBtn(type){
+					var data;//参数对象
+					if(type==0){
+						var holdDay =$("#holdDay").val();
+						var rangeDay =$("#rangeDay").val();
+						var interestDay =$("#interestDay").val();
+						var mngFee =$("#mngFee").val();
+						var mngType =$("input[name='mngType']:checked").val();
+						data = {"holdDay":holdDay,"rangeDay":rangeDay,"interestDay":interestDay,"mngFee":mngFee,"mngType":mngType,"type":type};
+					}else if(type==1){
+						var checkType = $("input[name='checkType']:checked").val();
+						data={"type":type,"checkType":checkType};
+					}else if(type==2){
+						var loanType = $("input[name='loanType']:checked").val();
+						data={"type":type,"loanType":loanType};
+					}else if(type==3){
+						var interestType = $("input[name='interestType']:checked").val();
+						data={"type":type,"interestType":interestType};
+					}
+					
+					$.ajax( {  
+						url:appPath+"/config/addCreditor.do",
+						data:data,
+						type:'post',  
+						cache:false,  
+						dataType:'json',  
+						success:function(data) { 
+							if(data > 0){
+								layer.alert("操作成功",{icon:1});
+							}else if(data==0){
+								layer.alert("操作失败",{icon:2});  
+							}
+						},  
+						error : function() {  
+							layer.alert("服务器异常",{icon:2});  
+						}  
+					});
+			};
+	
+	</script>
+	
+	
 </body>
 
 </html>

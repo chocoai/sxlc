@@ -36,6 +36,8 @@ var QQ= /^\d{5,12}$/;  //QQ验证，可为空，5~12位数字
 var roleName= /^[\u4E00-\u9FA5]{0,10}$/;  //角色名称，10字以下
 var roleMark= /^[\u4E00-\u9FA5]{0,125}$/;  //角色描述 ，125字以下
 //var orgcodefmt = /^([0-9A-Z]){8}-[0-9|X]$/;//组织机构代码格式
+var days = /^[0-9]*[1-9][0-9]{1,3}$/;//天数：大于0的整数，最大3位数字
+
 var logname = function(gets,obj,curform,datatype) {
 				var name="chen";    //模拟已存在的用户名 
 				console.log("chulai");
@@ -385,7 +387,9 @@ function validform5(btn,formId,postonce,tipsType) {
 			"rolename" : rolename,
 			"rolemark" : rolemark,
 			"z2_8":z2_8,
-			"enterAddress":enterAddress
+			"enterAddress":enterAddress,
+			"nNum1" : nNum1,
+			"days":days
 		},
 		beforeSubmit:function(curform){//提交借款申请时添加家庭成员和家庭成员信息拼接
 				        //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。  

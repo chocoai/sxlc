@@ -280,7 +280,11 @@ $(function() {
         					sDefaultContent: '',
         					orderable : false,
         					aTargets: [ '_all' ]
-        				}
+        				},
+        				{  
+                            "aTargets":[1],  
+                            "visible":false  
+                        }
         				],
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
 //        	if($.inArray(data.DT_RowId,selected)!==-1){

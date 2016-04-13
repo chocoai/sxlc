@@ -36,7 +36,7 @@
   			Withdrawal_Fee_Pingtai = #{withdrawal_Fee_Pingtai},
   		</if>
   		<if test="check_Type!=null">
-  			Check_Type = #{check_Type}
+  			Check_Type = #{check_Type},
   		</if>
   		<if test="payment_Member_Type !=null">
   			Payment_Member_Type = #{payment_Member_Type}

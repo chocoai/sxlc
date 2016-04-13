@@ -16,21 +16,21 @@
   </sql>
   <!-- 查询系统设置 -->
   <select id="selectSystemSet" resultMap="SystemSet" parameterType="cn.springmvc.model.SystemSetEntity" >
-    select <include refid="SystemSet_Column_List"></include> from System_Set
+    select <include refid="SystemSet_Column_List"></include> from System_Set limit 1
   </select>
   <!-- 修改系统设置 -->
-  <update id="updateSystemSet" parameterType="cn.springmvc.model.SystemSetEntity">
-  	update System_Set 
-  	<set>
-  		<if test="overdueInsteadDay!=-1">Overdue_Instead_Day=#{overdueInsteadDay},</if>
-  		<if test="autoBackRate!=-1">Auto_Back_Rate=#{autoBackRate},</if>
-  		<if test="endDateRemind!=-1">EndDate_Remind=#{endDateRemind},</if>
-  		<if test="expirationReminderSet!=-1">Expiration_ReminderSet=#{expirationReminderSet},</if>
-  		<if test="riskMarginRateMax!=-1">RiskMargin_RateMax=#{riskMarginRateMax},</if>
-  		<if test="redpacketsRateMax!=-1">Redpackets_RateMax=#{redpacketsRateMax},</if>
-  		<if test="riskMarginType!=-1">RiskMargin_Type=#{riskMarginType},</if>
-  	</set>
-  </update>
+  <select id="updateSystemSet"  resultType="Map" parameterType="cn.springmvc.model.SystemSetEntity">
+  	<![CDATA[{call updateSystemSet(
+				#{overdueInsteadDay,	 mode=IN,	jdbcType=INTEGER},
+				#{autoBackRate,	 mode=IN,	jdbcType=INTEGER},
+				#{expirationReminderSet,	 mode=IN,	jdbcType=INTEGER},
+				#{riskMarginRateMax,	 mode=IN,	jdbcType=INTEGER},
+				#{redpacketsRateMax,	 mode=IN,	jdbcType=INTEGER},
+				#{riskMarginType,	 mode=IN,	jdbcType=INTEGER},
+				#{rulet,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
   <!-- 添加系统设置 -->
   <insert id="insertSystemSet" parameterType="cn.springmvc.model.SystemSetEntity">
   	insert into System_Set(Overdue_Instead_Day,Auto_Back_Rate,EndDate_Remind,Expiration_ReminderSet,RiskMargin_RateMax
@@ -38,9 +38,18 @@
     ,#{endDateRemind},#{expirationReminderSet},#{riskMarginRateMax},#{redpacketsRateMax},#{riskMarginType})
   </insert>
   
-  
-  
-  
+  <!-- 设置利息管理费-->
+  <select id="setInterestMngFee"  resultType="Map" parameterType="Map">
+  	<![CDATA[{call setInterestMngFee(
+				#{PriceDatum,	 mode=IN,	jdbcType=INTEGER},
+				#{rulet,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  <!-- 查询利息管理费 -->
+  <select id="findInterestMngFee" resultType="INTEGER">
+  	select Price_Datum from  Interest_Mng_Fee limit 1
+  </select>
   
   <resultMap id="SystemInfoSet" type="cn.springmvc.model.SystemInfoSetEntity" >
     <result column="System_Name" property="systemName"/>
@@ -104,4 +113,7 @@ delete from System_Info_Set
     ,#{weiboName},#{weiboQRCode},#{qQGroupCode},#{qQGroupQRCode},#{weChatCode},#{weChatQRCode}
     ,#{switchStatu},#{riskReserveFund},#{expectYearRate},#{integralAlias},#{welcomeTitle})
   </insert>
+  
+  
+  
 </mapper>

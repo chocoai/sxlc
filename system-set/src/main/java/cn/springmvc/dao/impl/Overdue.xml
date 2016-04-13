@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="OverdueXML" >
   <resultMap id="Overdue" type="cn.springmvc.model.OverdueEntity" >
-    <result column="ID" property="id"/>
+    <result column="Overdue_ID" property="id"/>
     <result column="Overdue_Min" property="overdueMin"/>
     <result column="Overdue_Max" property="overdueMax"/>
     <result column="Price" property="price"/>
     <result column="Statu" property="statu"/>
   </resultMap>
   <sql id="Overdue_Column_List" >
-    ID,Overdue_Min,Overdue_Max,Price,Statu	
+    Overdue_ID,Overdue_Min,Overdue_Max,Price,Statu	
   </sql>
   
   <!--添加逾期程度 -->
@@ -38,7 +38,7 @@
   </select>
   <!--添加逾期设置 -->
   <insert id="insertOverdue" parameterType="cn.springmvc.model.OverdueEntity" >
-	  insert into Overdue_Fees(ID,Overdue_Min,Overdue_Max,Price) 
+	  insert into Overdue_Fees(Overdue_ID,Overdue_Min,Overdue_Max,Price) 
 	  values (#{id},#{overdueMin},#{overdueMax},#{price})
   </insert>
   <!--删除逾期设置 会将大于它当前的天数的都删除 -->

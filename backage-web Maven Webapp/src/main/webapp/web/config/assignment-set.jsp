@@ -206,6 +206,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("input[name='checkType'][value="+checkType+"]").attr('checked','true');
 				$("input[name='loanType'][value="+loanType+"]").attr('checked','true');
 				$("input[name='interestType'][value="+interestType+"]").attr('checked','true');
+				
+				//天数有有效性检验
+				$(".form-control").on("change",function(){
+					var $this = $(this);
+				    var reg = new RegExp("^[1-9][0-9]{0,2}$");  
+					var value = $this.val();
+				    if(!reg.test(value)){  
+				    	$this.parent().nextAll(".input-alert").html("qqq");
+				    }  
+				});
+				
+				var checkType = $("#checkType").val();
+				var loanType = $("#loanType").val();
+				var interestType = $("#interestType").val();
+				
+				
+				
+				
+				
 			});
 	
 			//保存按钮

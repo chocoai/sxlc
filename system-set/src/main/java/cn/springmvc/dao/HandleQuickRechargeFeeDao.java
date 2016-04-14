@@ -29,7 +29,7 @@ public interface HandleQuickRechargeFeeDao {
 	* @return int 返回类型  1：成功 0：失败
 	* @throws 
 	*/
-	public List<Object> updateQuickRechargeFee(Map<String, Object> map);
+	public Map<String, Object> updateQuickRechargeFee(Map<String, Object> map);
 	
 	
 	

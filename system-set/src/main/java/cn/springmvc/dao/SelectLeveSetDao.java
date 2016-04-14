@@ -85,5 +85,15 @@ public interface SelectLeveSetDao {
 	* @throws 
 	*/
 	public CreditLevelEntity findCreditLevelById(Map<String, Object> map);
+	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 查询数据库中最大的结束分数
+	 * @param map
+	 * @return int  
+	 * @date 2016-4-14 下午4:29:19
+	 * @throws 
+	 */
+	public int selectMaxScore();
 }
 

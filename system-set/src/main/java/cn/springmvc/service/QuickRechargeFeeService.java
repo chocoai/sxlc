@@ -4,6 +4,8 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.model.QuickRechargeFeeEntity;
 
 /** 
@@ -14,6 +16,6 @@ import cn.springmvc.model.QuickRechargeFeeEntity;
 * @date 2016-3-14 下午5:25:37  */
 public interface QuickRechargeFeeService {
 	public List<QuickRechargeFeeEntity> findAllQuickRechargeFee();
-	public List<Object>  updateQuickRechargeFee(Map<String, Object> map);
+	public int  updateQuickRechargeFee(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 

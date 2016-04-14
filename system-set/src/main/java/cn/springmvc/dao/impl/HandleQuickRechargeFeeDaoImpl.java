@@ -35,7 +35,7 @@ public class HandleQuickRechargeFeeDaoImpl extends SqlSessionDaoSupport implemen
 	 */
 	/* *  *  * @return * @see cn.springmvc.dao.HandleQuickRechargeFeeDao#updateQuickRechargeFee(cn.springmvc.model.QuickRechargeFeeEntity) */
 	@Override
-	public List<Object> updateQuickRechargeFee(Map<String, Object> map) {
+	public Map<String, Object> updateQuickRechargeFee(Map<String, Object> map) {
 		// TODO Auto-generated method stub return 0;
 		return getSqlSession().selectOne("QuickRechargeFeeXML.updateQuickRechargeFee", map);
 	}

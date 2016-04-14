@@ -1,5 +1,7 @@
 package cn.springmvc.controller.organizationmng;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -9,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
@@ -64,9 +68,10 @@ public class AdminController {
 	
 	@RequestMapping(value = "/adminLogin", method = RequestMethod.POST)
 	@ResponseBody
-	public int  adminLogin(HttpServletRequest request){
+	public int  adminLogin(HttpServletRequest request,HttpServletResponse response){
 		String adminName = request.getParameter("adminName"); 
 		String adminPwd = request.getParameter("adminPwd");
+		String vCode = request.getParameter("code");//输入验证码
 		HttpSession session = request.getSession();
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("adminName", adminName);
@@ -74,30 +79,40 @@ public class AdminController {
 		int iResult = adminLoginService.adminLogin(param);
 		//登录成功
 		Admin admin = new Admin();
-		
-		List<Module> moduleList = new ArrayList<Module>();
-		List<Operation> operationList = new ArrayList<Operation>();
-		if(iResult ==0 ){
-			//登录人信息
-			admin = adminLoginService.adminMess(param);
-			KeyPair keyPair = RSAPlugn.GetKeyPair();
-			PublicKey publicK = keyPair.getPublic();
-			PrivateKey privatek =   keyPair.getPrivate();
-			String publicKey=new  String(Base64.encodeBase64((publicK.getEncoded())));
-			String privatekey=new  String(Base64.encodeBase64((privatek.getEncoded())));
-			session.setAttribute("publicKey", publicKey);
-			session.setAttribute("privatekey", privatekey);
-			
-			 moduleList = roleInfoServer.getModuleList();	//模块权限
-			 operationList = roleInfoServer.getOperationList(); //操作权限
+		String cookieName="UserName"; 
+		String cUserName =null;
+		try {
+			cUserName = URLEncoder.encode(adminName,"utf-8");
+			Cookie cookie=new Cookie(cookieName, cUserName); 
+			cookie.setMaxAge(365*24*60*60);
+			response.addCookie(cookie); 
+			List<Module> moduleList = new ArrayList<Module>();
+			List<Operation> operationList = new ArrayList<Operation>();
+			if(iResult ==0 ){
+				//登录人信息
+				
+				admin = adminLoginService.adminMess(param);
+				KeyPair keyPair = RSAPlugn.GetKeyPair();
+				PublicKey publicK = keyPair.getPublic();
+				PrivateKey privatek =   keyPair.getPrivate();
+				String publicKey=new  String(Base64.encodeBase64((publicK.getEncoded())));
+				String privatekey=new  String(Base64.encodeBase64((privatek.getEncoded())));
+				session.setAttribute("publicKey", publicKey);
+				session.setAttribute("privatekey", privatekey);
+				
+				 moduleList = roleInfoServer.getModuleList();	//模块权限
+				 operationList = roleInfoServer.getOperationList(); //操作权限
+			}
+			//设置session
+			//session.setAttribute("", );
+			//map.put("result", iResult);
+			session.setAttribute("LoginPerson", admin);
+			session.setAttribute("modulelist", moduleList);
+			session.setAttribute("operationList",operationList );
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			System.out.println("登录:"+e.getLocalizedMessage());
 		}
-		//设置session
-		//session.setAttribute("", );
-		Map<String, Object> map = new HashMap<String, Object>();
-		//map.put("result", iResult);
-		session.setAttribute("LoginPerson", admin);
-		session.setAttribute("modulelist", moduleList);
-		session.setAttribute("operationList",operationList );
 		return iResult;
 	}
 

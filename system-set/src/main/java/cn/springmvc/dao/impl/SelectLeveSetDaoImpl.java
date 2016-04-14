@@ -63,6 +63,11 @@ public class SelectLeveSetDaoImpl extends SqlSessionDaoSupport implements Select
 		return getSqlSession().selectOne("LevelSetXML.findCreditLevelById", map);
 	}
 
+	@Override
+	public int selectMaxScore() {
+		return getSqlSession().selectOne("LevelSetXML.selectMaxScore");
+	}
+
 	
 	
 	

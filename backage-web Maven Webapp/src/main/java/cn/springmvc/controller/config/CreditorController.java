@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.WithdrawalsFeeEntity;
 import cn.springmvc.service.CreditorService;
@@ -107,9 +108,11 @@ public class CreditorController {
 		InsertAdminLogEntity log = new InsertAdminLogEntity();
 		String[] sIpInfo={"",""};
 		int result=0;
-		if(null != entity){
-			entity.get(0).setCheck_Type(param.getCheck_Type());
-			result = financialSettingService.updateWithdrawalsFee(entity.get(0),log,sIpInfo);
+		if(entity.size()>0){
+			for(WithdrawalsFeeEntity item:entity){
+				item.setCheck_Type(param.getCheck_Type());
+				result = financialSettingService.updateWithdrawalsFee(item,log,sIpInfo);
+			}
 		}else{
 			result = financialSettingService.insertWithdrawalsFee(param,log,sIpInfo);
 		}

@@ -10,10 +10,12 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 
 import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
 import cn.springmvc.dao.impl.HandleLeveSetDaoImpl;
 import cn.springmvc.dao.impl.HandleQuickRechargeFeeDaoImpl;
+import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
 import cn.springmvc.dao.impl.SelectLeveSetDaoImpl;
 import cn.springmvc.dao.impl.SelectQuickRechargeFeeDaoImpl;
@@ -43,8 +45,9 @@ LevelSetService {
 	@Override
 	public List<MemberLevelEntity> selectAllMemberLevel(PageEntity pageEntity) {
 		
-		// TODO Auto-generated method stub return null;
-		return selectLeveSetDaoImpl.selectAllMemberLevel(pageEntity);
+		List<MemberLevelEntity> list = selectLeveSetDaoImpl.selectAllMemberLevel(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	@Override
@@ -56,9 +59,9 @@ LevelSetService {
 
 	@Override
 	public List<CreditLevelEntity> selectAllCreditLevel(PageEntity pageEntity) {
-		
-		// TODO Auto-generated method stub return null;
-		return selectLeveSetDaoImpl.selectAllCreditLevel(pageEntity);
+		List<CreditLevelEntity> list =  selectLeveSetDaoImpl.selectAllCreditLevel(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	@Override
@@ -70,9 +73,16 @@ LevelSetService {
 
 	@Override
 	public int insertMemberLevel(MemberLevelEntity memberLevelEntity) {
-		
-		// TODO Auto-generated method stub return 0;
-		return handleLeveSetDaoImpl.insertMemberLevel(memberLevelEntity);
+		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+		long id = generatorUtil.GetId();
+		memberLevelEntity.setId(id);
+		int result =  handleLeveSetDaoImpl.insertMemberLevel(memberLevelEntity);
+		if(result == 0) {
+			generatorUtil.SetIdUsedFail(id);
+		}else{
+			generatorUtil.SetIdUsed(id);
+		}
+		return result;
 	}
 
 	@Override
@@ -91,9 +101,16 @@ LevelSetService {
 
 	@Override
 	public int insertCreditLevel(CreditLevelEntity creditLevelEntity) {
-		
-		// TODO Auto-generated method stub return 0;
-		return handleLeveSetDaoImpl.insertCreditLevel(creditLevelEntity);
+		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+		long id = generatorUtil.GetId();
+		creditLevelEntity.setId(id);
+		int result =  handleLeveSetDaoImpl.insertCreditLevel(creditLevelEntity);
+		if(result == 0) {
+			generatorUtil.SetIdUsedFail(id);
+		}else{
+			generatorUtil.SetIdUsed(id);
+		}
+		return result;
 	}
 
 	@Override
@@ -108,6 +125,12 @@ LevelSetService {
 		
 		// TODO Auto-generated method stub return 0;
 		return handleLeveSetDaoImpl.deleteCreditLevelById(map);
+	}
+
+	@Override
+	public int selectMaxScore() {
+		return selectLeveSetDaoImpl.selectMaxScore();
+		
 	}
 }
 

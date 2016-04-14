@@ -44,7 +44,7 @@
 	</bean>
    	<!-- 对模型视图添加前后缀 -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-	 p:prefix="/web/" p:suffix=".jsp"/>
+	 p:prefix="/WEB-INF/web/" p:suffix=".jsp"/>
 
 	<mvc:default-servlet-handler/>
 	<mvc:annotation-driven></mvc:annotation-driven>

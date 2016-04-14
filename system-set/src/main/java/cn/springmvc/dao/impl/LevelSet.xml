@@ -4,7 +4,7 @@
 <mapper namespace="LevelSetXML" >
 	<!-- 会员等级设置 -->
   <resultMap id="MemberLevelEntity" type="cn.springmvc.model.MemberLevelEntity" >
-    <result column="ID" property="id"/>
+    <result column="Level_ID" property="id"/>
     <result column="Score_Min" property="scoreMin"/>
     <result column="Score_Max" property="scoreMax"/>
     <result column="Level_Mark" property="levelMark"/>
@@ -12,20 +12,20 @@
     <result column="Statu" property="statu"/>
   </resultMap>
   <sql id="MemberLevelEntity_Column_List" >
-    ID,Score_Min,Score_Max,Level_Mark,Level_Detail,Statu
+    Level_ID,Score_Min,Score_Max,Level_Mark,Level_Detail,Statu
   </sql>
   <!-- 分页查询会员等级设置 -->
   <select id="selectAllMemberLevel" resultMap="MemberLevelEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
-  	select <include refid="MemberLevelEntity_Column_List"></include> from Member_Level
+  	select <include refid="MemberLevelEntity_Column_List"></include> from Member_Level where Statu=1
   </select>
   <!-- 根据会员等级id查询单个等级信息 -->
   <select id="findMemberLevelById" resultMap="MemberLevelEntity" parameterType="Map">
   	select <include refid="MemberLevelEntity_Column_List"></include> 
-  	from Member_Level <where> ID=#{id} </where>
+  	from Member_Level <where> Level_ID=#{id} </where>
   </select>
   <!-- 添加单个会员等级信息设置 -->
   <insert id="insertMemberLevel" parameterType="cn.springmvc.model.MemberLevelEntity">
-  	insert into Member_Level(ID,Score_Min,Score_Max,Level_Mark,Level_Detail)
+  	insert into Member_Level(Level_ID,Score_Min,Score_Max,Level_Mark,Level_Detail)
   		values(#{id},#{scoreMin},#{scoreMax},#{levelMark},#{levelDetail})
   </insert>
   <!-- 根据id修改单个会员信息设置 -->
@@ -44,19 +44,13 @@
   		Level_Detail=#{levelDetail},
   	</set>
   	<where>
-  		ID = #{id}
+  		Level_ID = #{id}
   	</where>
   </update>
   <!-- 根据id删除单个会员等级设置 -->
-   <update id="deleteMemberLevelById" parameterType="Map">
-  	update Member_Level 
-  	<set>
-  		Statu=#{statu}
-  	</set>
-  	<where>
-  		ID = #{id}
-  	</where>
-  </update>
+  <delete id="deleteMemberLevelById"  parameterType="Map">
+  		delete from  Member_Level where Level_ID=#{id}  
+  </delete>
   
   
   
@@ -65,7 +59,7 @@
   
   	<!-- 会员信用等级设置 -->
   <resultMap id="CreditLevelEntity" type="cn.springmvc.model.CreditLevelEntity" >
-    <result column="ID" property="id"/>
+    <result column="Credit_ID" property="id"/>
     <result column="Credit_Score_Min" property="creditScoreMin"/>
     <result column="Credit_Score_Max" property="creditScoreMax"/>
     <result column="Level_Mark" property="levelMark"/>
@@ -73,7 +67,7 @@
     <result column="Statu" property="statu"/>
   </resultMap>
   <sql id="CreditLevelEntity_Column_List" >
-    ID,Credit_Score_Min,Credit_Score_Max,Level_Mark,Level_Detail,Statu
+    Credit_ID,Credit_Score_Min,Credit_Score_Max,Level_Mark,Level_Detail,Statu
   </sql>
   <!-- 分页查询会员信用等级设置 -->
   <select id="selectAllCreditLevel" resultMap="CreditLevelEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
@@ -82,11 +76,11 @@
   <!-- 根据会员等级id查询单个信用等级信息 -->
   <select id="findCreditLevelById" resultMap="CreditLevelEntity" parameterType="Map">
   	select <include refid="CreditLevelEntity_Column_List"></include> 
-  	from Credit_Level <where> ID=#{id} </where>
+  	from Credit_Level <where> Credit_ID=#{id} </where>
   </select>
   <!-- 添加单个会员信用等级信息设置 -->
   <insert id="insertCreditLevel" parameterType="cn.springmvc.model.CreditLevelEntity">
-  	insert into Credit_Level(ID,Credit_Score_Min,Credit_Score_Max,Level_Mark,Level_Detail)
+  	insert into Credit_Level(Credit_ID,Credit_Score_Min,Credit_Score_Max,Level_Mark,Level_Detail)
   		values(#{id},#{creditScoreMin},#{creditScoreMax},#{levelMark},#{levelDetail})
   </insert>
   <!-- 根据id修改单个会员信用信息设置 -->
@@ -105,18 +99,18 @@
   		Level_Detail=#{levelDetail},
   	</set>
   	<where>
-  		ID = #{id}
+  		Credit_ID = #{id}
   	</where>
   </update>
   <!-- 根据id删除单个会员信用等级设置 -->
-   <update id="deleteCreditLevelById" parameterType="Map">
-  	update Credit_Level 
-  	<set>
-  		Statu=#{statu}
-  	</set>
-  	<where>
-  		ID = #{id}
-  	</where>
-  </update>
+  
+   <delete id="deleteCreditLevelById"  parameterType="Map">
+  		delete from  Credit_Level where Credit_ID=#{id}  
+   </delete>
+   
+   <!-- 查询数据库中最大的结束分数 added by 唐国峰 -->
+  <select id="selectMaxScore" resultType="int">
+  	SELECT MAX(Credit_Score_Max) FROM credit_level
+  </select>
   
 </mapper>

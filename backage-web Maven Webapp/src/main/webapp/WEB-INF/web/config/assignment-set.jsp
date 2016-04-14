@@ -100,13 +100,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 						<input type="radio" name="mngType" id="optionsRadios2" value="1"> 购买人
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="mngType" id="optionsRadios2" value="2" checked> 全部
+				 						<input type="radio" name="mngType" id="optionsRadios2" value="2" > 全部
 				 					</label>
 				 				</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">
-			 						<button type="button" onclick="submitBtn(0)" class="btn btn-default">保存</button>
+			 						<button type="button" id="saveBtn" onclick="submitBtn(0)" class="btn btn-default">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		
@@ -122,7 +122,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 						<input type="radio" name="checkType" id="optionsRadios1" value="1"> 是
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="checkType" id="optionsRadios2" value="0" checked> 否
+				 						<input type="radio" name="checkType" id="optionsRadios2" value="0" > 否
 				 					</label>
 				 				</div>
 				 				<div class="radio-alert">
@@ -147,7 +147,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 						<input type="radio" name="loanType" id="optionsRadios1" value="1"> 是
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="loanType" id="optionsRadios2" value="0" checked> 否
+				 						<input type="radio" name="loanType" id="optionsRadios2" value="0" > 否
 				 					</label>
 				 				</div>
 				 				<div class="i-fl">
@@ -172,7 +172,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 						<input type="radio" name="interestType" id="optionsRadios1" value="0"> 按期分配
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="interestType" id="optionsRadios2" value="1" checked> 按实际转让时间分配
+				 						<input type="radio" name="interestType" id="optionsRadios2" value="1" > 按实际转让时间分配
 				 					</label>
 				 				</div>
 				 				<div class="i-fl">
@@ -213,18 +213,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    var reg = new RegExp("^[1-9][0-9]{0,2}$");  
 					var value = $this.val();
 				    if(!reg.test(value)){  
-				    	$this.parent().nextAll(".input-alert").html("qqq");
-				    }  
+				    	$this.parent().nextAll(".input-alert").html("请输入3位数的正整数");
+				    	$("#saveBtn").attr("disabled",true);
+				    }else{
+				    	$this.parent().nextAll(".input-alert").html("");
+				    	$("#saveBtn").attr("disabled",false);
+				    }
 				});
-				
-				var checkType = $("#checkType").val();
-				var loanType = $("#loanType").val();
-				var interestType = $("#interestType").val();
-				
-				
-				
-				
-				
+				// 费率检验
+				$("#mngFee").on("change",function(){
+					var $this = $(this);
+				    var reg = new RegExp("^(\\d|[1-9]\\d|100)$");  
+					var value = $this.val();
+				    if(!reg.test(value)){  
+				    	$("#saveBtn").attr("disabled",true);
+				    	$this.parent().nextAll(".input-alert").html("请输入0-100的整数");
+				    }else{
+				    	$this.parent().nextAll(".input-alert").html("");
+				    	$("#saveBtn").attr("disabled",false);
+				    }
+				});
 			});
 	
 			//保存按钮

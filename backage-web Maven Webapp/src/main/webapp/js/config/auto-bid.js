@@ -31,7 +31,6 @@ $(function () {
 function updateAuto () {
 	validform5("btn","auto",true,"3");
 	var percent = $("#firstname").val();
-	alert(percent);
 		$.ajax({
 			type : 'post',
 			url : appPath + "/auto/update.do",

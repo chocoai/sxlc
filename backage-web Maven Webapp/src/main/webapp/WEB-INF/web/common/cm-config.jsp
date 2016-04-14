@@ -22,9 +22,9 @@
                             		<ul class="nav child_menu ul_level_one" style="display: none">
                             			<li><a href="web/config/config.jsp">提现手续费设置</a></li>
                             			<li><a href="web/config/charge-fee.jsp">充值手续费设置</a></li>
-                            			<li><a href="web/config/cash-exam.jsp">提现审核</a></li>
-                            			<li><a href="web/config/assignment-set.jsp">债权转让设置</a></li>
-                            			<li><a href="web/config/late-allocation.jsp">逾期配置</a></li>
+                            			<li><a href="config/toCashExamPg.do">提现审核</a></li>
+                            			<li><a href="config/toAssignmentPage.do">债权转让设置</a></li>
+                            			<li><a href="config/toOverdueLimit.do">逾期配置</a></li>
                             			<li><a href="web/config/integral-rule.jsp">积分规则设置</a></li>
                             			<li><a href="web/config/award-rule.jsp">提奖规则设置</a></li>
                             			<li><a href="web/config/invest-fee.jsp">投资管理费设置</a></li>
@@ -43,8 +43,8 @@
                             		</ul>
                             	</li>
                                	<li id="admin" class="li_level_one"><a href="web/config/test-interface.jsp"><i class="fa fa-edit"></i>托管平台设置</a></li>
-                                <li id="work"><a href="web/config/member-grade.jsp"><i class="fa fa-edit"></i>会员等级配置</a></li>       
-                                <li id="employee"><a href="web/config/member-credit-grade.jsp"><i class="fa fa-edit"></i>会员信用等级配置</a></li>
+                                <li id="work"><a href="config/toMemberGradeList.do"><i class="fa fa-edit"></i>会员等级配置</a></li>       
+                                <li id="employee"><a href="config/toMemberCreditList.do"><i class="fa fa-edit"></i>会员信用等级配置</a></li>
                                 <li id="work"><a href="web/config/frontloan-msg.jsp"><i class="fa fa-edit"></i>前台借款信息填写配置</a></li>
                                 <li id="admin" class="li_level_one"><a><i class="fa fa-edit"></i>项目审批流程配置</a></li>
                                 <li id="admin" class="li_level_one"><a><i class="fa fa-edit"></i>VIP配置</a></li>

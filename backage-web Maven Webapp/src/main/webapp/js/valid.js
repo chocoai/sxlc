@@ -19,6 +19,7 @@ var logPass = /^((?![a-zA-Z]+$)||(?![a-z0-9]+$))[a-zA-Z0-9]{6,16}$/; //登录密
 var newPass = /^((?![a-zA-Z]+$)||(?![a-z0-9]+$))[a-zA-Z0-9]{6,16}$/; //新密码，密码由字母、数字、下划线至少两种组成，且以字母开头，长度为6~16位
 //var zphone = /^(^13\d{9}$)|(^14)[5,7]\d{8}$|(^15[0,1,2,3,5,6,7,8,9]\d{8}$)|(^17)[6,7,8]\d{8}$|(^18\d{9}$)/; //最新手机号验证，目前手机验证支持中国大陆地区13*、14*、15*、17*、18*号段；不支持小灵通号码。
 var zphone = /^1\d{10}$/; //手机号验证，只验证11位数字
+var tellPhone=/^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$|(^(13[0-9]|15[0|3|6|7|8|9]|18[8|9])\d{8}$)/;
 var z6 = /^\d{6}$/; //手机验证码,6位数字
 var idCard = /^\d{17}(\d|x|X){1}$/;//身份证号   18位基本身份证号验证，后台验证唯一
 var nNum1 = /^[0-9]*[1-9][0-9]*$/;//1~无限大的整数
@@ -35,6 +36,20 @@ var mail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;//邮箱
 var QQ= /^\d{5,12}$/;  //QQ验证，可为空，5~12位数字
 var roleName= /^[\u4E00-\u9FA5]{0,10}$/;  //角色名称，10字以下
 var roleMark= /^[\u4E00-\u9FA5]{0,125}$/;  //角色描述 ，125字以下
+var hundrednum = /^(100|[1-9]?\d(\.\d\d?)?)$/ ; //百分数验证不包含%
+//url 路径
+var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+	 + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
+	 + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+	 + "|" // 允许IP和DOMAIN（域名）
+	 + "([0-9a-z_!~*'()-]+\.)*" // 域名- www.
+	 + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\." // 二级域名
+	 + "[a-z]{2,6})" // first level domain- .com or .museum
+	 + "(:[0-9]{1,4})?" // 端口- :80
+	 + "((/?)|" // a slash isn't required if there is no file name
+	 + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+
+var unnormal = /^[^ &',;=?$\\]+$/;
 //var orgcodefmt = /^([0-9A-Z]){8}-[0-9|X]$/;//组织机构代码格式
 var days = /^[0-9]*[1-9][0-9]{1,3}$/;//天数：大于0的整数，最大3位数字
 
@@ -343,6 +358,58 @@ var rolemark = function(gets,obj,curform,datatype) {
 	}
 };
 
+var unNormal = function(gets,obj,curform,datatype) {
+	if(!gets){
+		return "请输入名称";
+	}
+	if(!unnormal.test(gets)) {
+		return "格式不正确";
+	}else {
+		return true;
+	}
+};
+
+var hundredNum = function(gets,obj,curform,datatype) {
+	
+	if(!gets){
+		return "请输入信息";
+	}
+	if(!hundrednum.test(gets)) {
+		return "格式不正确";
+	}else {
+		return true;
+	}
+};
+var qq = function(gets,obj,curform,datatype) {
+	
+	if(!gets){
+		return "请输入信息";
+	}
+	if(!QQ.test(gets)) {
+		return "格式不正确";
+	}else {
+		return true;
+	}
+};
+var acountM = function(gets,obj,curform,datatype) {
+	
+	if(!gets){
+		return "请输入信息";
+	}
+	if(!amcountM.test(gets)) {
+		return "格式不正确";
+	}else {
+		return true;
+	}
+};
+var tell = function(gets,obj,curform,datatype) {
+	
+	if(!tellPhone.test(gets)) {
+		return "电话格式不正确";
+	}else {
+		return true;
+	}
+};
 /**======================2015122添加输入验证end========================**/						
 				
 /**
@@ -382,14 +449,20 @@ function validform5(btn,formId,postonce,tipsType) {
 			"checkIdcard" : checkIdcard,
 			"email" : email,
 			"checkEmail" : checkEmail,
-			"qq" : QQ,
+			"qq" : qq,
 			"enteraddr" : enteraddr,
 			"rolename" : rolename,
 			"rolemark" : rolemark,
 			"z2_8":z2_8,
 			"enterAddress":enterAddress,
+			"unNormal":unNormal,		//正常
+			"hundredNum":hundredNum,	//百分数
+			"acountM":acountM,
+			"tell":tell,
+			"enterAddress":enterAddress,
 			"nNum1" : nNum1,
 			"days":days
+
 		},
 		beforeSubmit:function(curform){//提交借款申请时添加家庭成员和家庭成员信息拼接
 				        //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。  

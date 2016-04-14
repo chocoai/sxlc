@@ -51,7 +51,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 				<div class="form-group">
 				 					<label for="lastname" class="i-fl control-label col3">逾期期限：</label>
 				 					<div class="i-fl">
-				 						<input type="text" class="form-control" dataType="overdueDay" name="overdueLimit" id="lastname" value="${overDays}" placeholder="逾期期限">
+				 						<input type="text" class="form-control" dataType="days" name="overdueLimit" id="lastname" value="${overDays}" placeholder="逾期期限">
 				 					</div>
 				 					<div class="i-fl">
 										<span class="sign i-fl">天<i>*</i></span>

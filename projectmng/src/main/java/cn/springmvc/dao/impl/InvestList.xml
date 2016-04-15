@@ -12,6 +12,7 @@
         <result property = "imageUrl" 		    column = "Image_Url" /> 
         <result property = "availableaAmount"   column = "availableaAmount" /> 
         <result property = "picIcon"            column = "Pic_Icon" /> 
+        <result property = "investTotal"        column = "InvestTotal" /> 
       <association property="projectBaseInfoentity">  
 			<result property = "projectTitle"    column = "Project_Title" />  
 			<result property = "amount" 		 column = "Amount" /> 
@@ -99,5 +100,5 @@
 	            </if> 
 	                and  par.Invest_Statu >=0 
 	          </where>
-    </select>
+    </select>  
 </mapper>   

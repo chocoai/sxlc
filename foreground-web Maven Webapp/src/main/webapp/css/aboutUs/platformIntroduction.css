@@ -1,0 +1,53 @@
+@CHARSET "UTF-8";
+/*默认选中样式 start 黄鑫 20160327*/
+.aboutUsNav .aboutUsNavChoose .choose12,
+.choose1{
+	color:#72c0f3;
+}
+.choose2,.choose3{
+	color:#818181;
+}
+/*默认选中样式end 黄鑫 20160327*/
+/* 主体部分开始 王延君 2016-03-29 */
+.plaform_content{
+	width:1200px;
+	margin-bottom:8%;
+	background-color:#fff;
+	margin-top:23px;
+}
+.plaform_content_title{
+	display:block;
+ 	width:75px;
+	margin:0px auto;
+ 	padding:10px 0;
+ 	border-bottom:3px solid #25adf7;
+ 	font-size:18px;
+ 	color:#414141;
+}
+.plaformContentH{
+	width:100%;
+	border-bottom:1px solid #ededed;
+	margin-bottom: 37px;
+	margin-top: 16px;
+    float: left;
+}
+.plaform_content_word{
+	width:1000px;
+	margin:0 auto;
+	padding:30px 10px;
+}
+.plaform_content img{
+ 	display:block;
+ 	width:1102px;
+ 	margin:0 auto;
+ }
+ .plaform_content_word,.job_content_top{
+ 	font-size:15px;
+ 	text-indent:2em;
+ 	width:1000px;
+ 	display: block;
+ 	margin-top:30px;
+ 	color:#8e8e8e;
+ 	line-height:35px;
+ }
+ /* 主体部分结束 王延君 2016-03-29 */

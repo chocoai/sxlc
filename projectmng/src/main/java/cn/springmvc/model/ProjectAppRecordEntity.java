@@ -168,7 +168,7 @@ public class ProjectAppRecordEntity {
 	 */
 	private String startDate;
 	/**
-	 * 投标结束时间
+	 * 登录用户名
 	 */
 	private String logname; 
 	/**
@@ -219,6 +219,65 @@ public class ProjectAppRecordEntity {
 	 * 项目类型小图标
 	 */
 	private String picIcon;
+	private long   investTotal;//已投资总额
+	private String investTotals;//已投资总额
+	private String projectName;//借款类型名称
+	private String recordDate;//提交申请时间
+	private String checkDate;//申请失败时间
+	private String checkRemark;//申请失败原因
+	private String releaseDate;//项目发布时间
+	private String realEndDate;//实际投标结束日期
+	private String holdDate;//放款时间
+	private long   endamount;//实际借款金额
+	private String endamounts;//实际借款金额
+	private String repayTime;//最近一期还款时间
+	private int    overdue;//统计是否逾期：0未逾期 1逾期
+	private String settleDate;//结清时间
+	private long   sdRepayAmount;//实际应还款总额
+	private long   repayAmount;//实际还款总额
+	private String sdRepayAmounts;//实际应还款总额
+	private String repayAmounts;//实际还款总额
+	private int    statu;//项目状态
+	private String guaranteeName;//担保机构
+	private String apName;//借款审核阶段
+	public int getStatu() {
+		return statu;
+	}
+	public void setStatu(int statu) {
+		this.statu = statu;
+	}
+	public String getGuaranteeName() {
+		return guaranteeName;
+	}
+	public void setGuaranteeName(String guaranteeName) {
+		this.guaranteeName = guaranteeName;
+	}
+	public long getSdRepayAmount() {
+		return sdRepayAmount;
+	}
+	public void setSdRepayAmount(long sdRepayAmount) {
+		this.sdRepayAmount = sdRepayAmount;
+		this.sdRepayAmounts= IntegerAndString.LongToString(sdRepayAmount);
+	}
+	public long getRepayAmount() {
+		return repayAmount;
+	}
+	public void setRepayAmount(long repayAmount) {
+		this.repayAmount = repayAmount;
+		this.repayAmounts= IntegerAndString.LongToString(repayAmount);
+	}
+	public String getSdRepayAmounts() {
+		return sdRepayAmounts;
+	}
+	public void setSdRepayAmounts(String sdRepayAmounts) {
+		this.sdRepayAmounts = sdRepayAmounts;
+	}
+	public String getRepayAmounts() {
+		return repayAmounts;
+	}
+	public void setRepayAmounts(String repayAmounts) {
+		this.repayAmounts = repayAmounts;
+	}
 	public String getLogname() {
 		return logname;
 	}
@@ -523,5 +582,98 @@ public class ProjectAppRecordEntity {
 	public void setPicIcon(String picIcon) {
 		this.picIcon = picIcon;
 	}
+	public long getInvestTotal() {
+		return investTotal;
+	}
+	public void setInvestTotal(long investTotal) {
+		this.investTotal = investTotal;
+		this.investTotals= IntegerAndString.LongToString(investTotal);
+	}
+	public String getInvestTotals() {
+		return investTotals;
+	}
+	public void setInvestTotals(String investTotals) {
+		this.investTotals = investTotals;
+	}
+	public String getProjectName() {
+		return projectName;
+	}
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+	public String getRecordDate() {
+		return recordDate;
+	}
+	public void setRecordDate(String recordDate) {
+		this.recordDate = recordDate;
+	}
+	public String getCheckDate() {
+		return checkDate;
+	}
+	public void setCheckDate(String checkDate) {
+		this.checkDate = checkDate;
+	}
+	public String getCheckRemark() {
+		return checkRemark;
+	}
+	public void setCheckRemark(String checkRemark) {
+		this.checkRemark = checkRemark;
+	}
+	public String getReleaseDate() {
+		return releaseDate;
+	}
+	public void setReleaseDate(String releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+	public String getRealEndDate() {
+		return realEndDate;
+	}
+	public void setRealEndDate(String realEndDate) {
+		this.realEndDate = realEndDate;
+	}
+	public String getHoldDate() {
+		return holdDate;
+	}
+	public void setHoldDate(String holdDate) {
+		this.holdDate = holdDate;
+	}
+	public long getEndamount() {
+		return endamount;
+	}
+	public void setEndamount(long endamount) {
+		this.endamount = endamount;
+		this.setEndamounts(IntegerAndString.LongToString(endamount));
+	}
+	public String getEndamounts() {
+		return endamounts;
+	}
+	public void setEndamounts(String endamounts) {
+		this.endamounts = endamounts;
+	}
+	public String getRepayTime() {
+		return repayTime;
+	}
+	public void setRepayTime(String repayTime) {
+		this.repayTime = repayTime;
+	}
+	public int getOverdue() {
+		return overdue;
+	}
+	public void setOverdue(int overdue) {
+		this.overdue = overdue;
+	}
+	public String getSettleDate() {
+		return settleDate;
+	}
+	public void setSettleDate(String settleDate) {
+		this.settleDate = settleDate;
+	}
+	public String getApName() {
+		return apName;
+	}
+	public void setApName(String apName) {
+		this.apName = apName;
+	}
+	
 }
 

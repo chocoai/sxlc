@@ -1,0 +1,132 @@
+﻿@charset "UTF-8";
+/* 全局通用样式 */
+/* chenzhen */
+/* 最后修改时间:2016.01.19 */
+/* 将具有默认margin和padding的标记置零，所有标记的margin、padding都在使用时具体定义 */
+* {margin:0; padding:0;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
+/* 修正IE5.x和IE6的斜体溢出bug */
+* html body {overflow:visible;}
+* html iframe, * html frame {overflow:auto;}
+* html frameset {overflow:hidden;}
+/* 常用标签，基本标签默认样式取消，HTML标签，取消基本标签默认样式，防止不同浏览器显示效果不同，text-align:center; 解决不同浏览器居中问题 */
+body {color:#000; background:#fff; font-family: "Microsoft YaHei", Verdana, Arial, sans-serif,"宋体"; font-size: 14px;}
+body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div, tr{margin:0 auto; padding:0;}
+/* 设置内容左对齐，恢复因BODY设置剧中产生的继承 */
+body div {text-align:left;}
+/* 标签属性，textarea,input 强制输入时内容超出时换行 */
+textarea, input {word-wrap:break-word; word-break:break-all; padding:0px;font-family: "Microsoft YaHei", Verdana, Arial, sans-serif,"宋体";}
+input, select {font-size:12px; vertical-align:middle;}
+/* 清除ul列表标记的样式，ul列表更多的用在不需要列表前置符号的样式里 */
+li {list-style-type:none;}
+/* 定义图片边框，当图片作为链接内容被填充时，会有默认边框出现，重定义掉 */
+img {border:none;}
+/* 定义H系列标签，覆盖H系列标签默认属性 */
+h1 {font-size:24px; }
+h2 {font-size:20px; }
+h3 {font-size:18px; }
+h4 {font-size:16px; }
+h5 {font-size:14px; }
+h6 {font-size:12px; }
+/* 定义默认的链接样式，仅仅是作为默认样式提供，可以在各自的实例中覆盖掉 */
+a:link,a:visited,a:active{text-decoration:none;} 
+a:hover{text-decoration:underline;}
+/* 去掉链接的虚线框 */
+a {outline:none; star:expression_r(this.onFocus=this.blur());cursor: pointer;}
+/* 重定义斜体标签 根据实际需要可以屏蔽*/
+i {margin:0 5px;}
+
+/* 框架布局 */
+/* 容器 */
+.divH1,.divH5, .divH10, .divH15, .divH20, .divH25, .divH30, .divH40 { width:100%; overflow:hidden; }
+.divH1 { height:1px; }
+.divH5 { height:5px; }
+.divH8 { height:8px; }
+.divH10 { height:10px; }
+.divH15 { height:15px; }
+.divH20 { height:20px; }
+.divH25 { height:25px; }
+.divH30 { height:30px; }
+.divH40 { height:40px; }
+.divH60 { height:60px; }
+.divH80 { height:80px; }
+/* 行间距 */
+.lh1 { line-height:1px; }
+.lh10 { line-height:10px; }
+.lh15 { line-height:15px; }
+.lh18 { line-height:18px; }
+.lh20 { line-height:20px; }
+.lh24 { line-height:24px; }
+.lh25 { line-height:25px; }
+.lh30 { line-height:30px; }
+.lh35 { line-height:35px; }
+/* 左右浮动 */
+.i-fl {float: left; }
+.i-fr {float: right; }
+
+/* 容器居中 */
+.i-c {margin: 0 auto; }
+/* 容器边框 */
+.i-b1 {border: 1px solid #ccc;}
+.i-b2 {border: 1px solid #f00!important;}
+
+.noBorder {border:none; }
+.noPadding {padding:0; }
+/* 定位显示 */
+.absolute { position:absolute; }
+.relative { position:relative; }
+.wrapper { clear:both; overflow:hidden; }
+.o-hidden { overflow:hidden; }
+.invisible { visibility:hidden; }
+.hidden { display:none; }
+.block { display:block; }
+.pointer {cursor:pointer; }
+/* 强制换行 */
+.break { word-break:break-all; word-wrap:break-word; }
+.nobreak { word-break:keep-all; word-wrap:normal; }
+/* 下划线 */
+.unLine { text-decoration:underline; }
+.disunLine { text-decoration:none; }
+
+/* 清除浮动 */
+.cc{clear: both;}
+/* 不换行 加... */
+.ot-h{text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+/* 强制换行 all */
+.ot-a{word-break:break-all;}
+/* 强制换行 word */
+.ot-w{word-wrap: break-word;}
+
+/* 按钮样式公共部分 */
+.btn-common{
+	border: none;
+	border-radius:2px;
+	color: #fff;
+	text-align: center;
+	cursor: pointer;
+}
+/* 文本设置 */
+/* 文本对齐 */
+.t-l {text-align:left; }
+.t-c {text-align:center; }
+.t-r {text-align:right; }
+/* 字体大小 */
+.f10 { font-size:10px; }
+.f11 { font-size:11px; }
+.f12 { font-size:12px; }
+.f13 { font-size:13px; }
+.f14 { font-size:14px; }
+.f16 { font-size:16px; }
+.f18 { font-size:18px; }
+.f20 { font-size:20px; }
+.f24 { font-size:24px; }
+.f28 { font-size:28px; }
+.f32 { font-size:32px; }
+.f36 { font-size:36px; }
+/* 字体粗细 */
+.fb { font-weight:bold; }
+.fn { font-weight:normal; }
+.fi { font-style:italic; }
+/* 定义颜色 */
+.color_xx { color: }
+/* 清除浮动 */
+.clearfix{*zoom: 1;}.clearfix:before,.clearfix:after{display:table;line-height:0;content:"";}.clearfix:after{clear: both;}

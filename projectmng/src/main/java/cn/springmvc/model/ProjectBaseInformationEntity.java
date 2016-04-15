@@ -76,6 +76,10 @@ public class ProjectBaseInformationEntity {
 	 * 会员信用积分
 	 */
 	private int creditIntegral;
+	/**
+	 * 借款期限类型
+	 */
+	private String deadlineTypes;
 	public long getId() {
 		return id;
 	}
@@ -161,6 +165,12 @@ public class ProjectBaseInformationEntity {
 	}
 	public void setReplayWays(String replayWays) {
 		this.replayWays = replayWays;
+	}
+	public String getDeadlineTypes() {
+		return deadlineTypes;
+	}
+	public void setDeadlineTypes(String deadlineTypes) {
+		this.deadlineTypes = deadlineTypes;
 	}
 }
 

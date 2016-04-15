@@ -17,6 +17,7 @@ import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;  
 import cn.springmvc.model.ProjectAppProcessEntity; 
+import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectImageEntity;
 
 /** 
@@ -33,10 +34,10 @@ public interface ProjectPublishService {
 	 *                               investStatu(融资状态),order(1根据借款金额排序，2根据发布时间排序)}
 	 *  @author 刘利 
 	 *  @Description: 实现审核列表查询 
-	 *  @return List<ProjectAppProcessEntity> 
+	 *  @return List<ProjectAppRecordEntity> 
 	 *  @date 2016-3-21 下午12:50:30
 	 */
-	public List<ProjectAppProcessEntity> selectProjectPublishList(PageEntity pageEntity);
+	public List<ProjectAppRecordEntity> selectProjectPublishList(PageEntity pageEntity);
 	/**
 	 * 上传企业形象图
 	 * @author 刘利   

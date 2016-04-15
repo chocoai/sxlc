@@ -2,18 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="ProjectAfterLoanAttach">
     <resultMap type="cn.springmvc.model.ProjectAfterLoanAttachmentEntity" id="resultProjectAfterLoanAttach">
-		<result column="Info_Id" property="apID" />
+		<result column="Info_Id"      property="apID" />
 		<result column="Attach_Title" property="batch" />
-		<result column="Attach_Url" property="indexs" /> 
-		<association property="projectAfterLoanInfoEntity" column="ID" 	resultMap="resultProjectAfterLoanInfo"/>
+		<result column="Attach_Url"   property="indexs" /> 
+		<association property="projectAfterLoanInfoEntity" column="Info_Id" resultMap="resultProjectAfterLoanInfo"/>
     </resultMap>  
     <resultMap type="cn.springmvc.model.ProjectAfterLoanInfoEntity" id="resultProjectAfterLoanInfo">
-        <id column="Info_Id" property="id" />
-		<result column="Apply_Id" property="apID" />
-		<result column="admin_ID" property="batch" />
-		<result column="Record_Date" property="indexs" /> 
-		<result column="Abstract" property="indexs" /> 
-		<result column="Abstract" property="indexs" />
+        <id column="Info_Id"          property="id" />
+		<result column="Apply_Id"     property="apID" />
+		<result column="admin_ID"     property="batch" />
+		<result column="Record_Date"  property="indexs" /> 
+		<result column="Abstract"     property="indexs" /> 
+		<result column="Abstract"     property="indexs" />
     </resultMap>
 	<!-- 查询贷后监管信息-->  
 	<select id="selectProjectAfterLoanAttach"  parameterType="int"  resultMap="resultProjectAfterLoanAttach" >

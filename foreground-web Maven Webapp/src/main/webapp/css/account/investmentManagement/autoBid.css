@@ -1,0 +1,278 @@
+
+.autoBid{
+	width:930px;
+	margin:4% auto;
+}
+.autoBidtH{
+	width:100%;
+	display: inline-block;
+	border-bottom:1px solid #ececec;
+	font-size:18px;
+	color:#000;
+	padding:0 27px;
+}
+.autoBidtH>div{
+	width:125px;
+	display: inline-block;
+	height:45px;
+	padding:0 26px;
+	text-align: center;
+	color:#72c0f3;
+	border-bottom:2px solid #72c0f3;
+}
+.autoBidtList{
+	min-height:344px;
+}
+.autoBidtM,.autoBidtList{
+	margin-top:5px;
+}
+.allowBidBtn:hover{
+	background-color:#61B4EB;
+}
+.autoBidtMTip{
+	width:808px;
+	height:63px;
+	margin:15px auto;
+	font-size:12px;
+	color:#ff9c00;
+	border:1px dashed #ececec;
+	border-radius:1px;
+	line-height:60px;
+}
+.autoBidtMTip>label{
+	padding:8px;
+	display:inline-block;
+	background:url("../../../resource/img/account/investmentManagement/tip_03.png") no-repeat;
+	background-position:center;
+	margin-bottom:-3px;
+	margin-right:5px;
+	margin-left:24px;
+}
+.autoBidtArtical{
+	width:808px;
+	margin:20px auto;
+}
+.autoBidtArtical>p{
+	color:#484848;
+	font-size:14px;
+	line-height:24px;
+	margin-left:20px;
+}
+.requir{
+	margin:0px;
+	text-indent:2em;
+}
+.allowBid{
+	width: 800px;
+	margin-top: 30px;
+}
+.allowBidBtn{
+	width:140px;
+	height:37px;
+	background-color:#72c0f3;
+	color:#fff;
+	font-size:16px;
+	border-radius:3px;
+	text-align:center;
+	line-height:35px;
+	margin-left: 20px;
+	cursor:pointer;
+}
+/* 图表部分开始 */
+.myInvestmentM{
+	display:inline-block;
+	width:100%;
+	font-size:13px;
+	margin:20px 0;
+	padding: 0 10px;
+	text-align: center;
+}
+.revenueRecordUl .myInvestmentMTitle>div,
+.revenueRecordUl .divOutside{
+	width:126px;
+}
+.revenueRecordUl .divOutside{
+	height:58px;
+}
+.myInvestmentMTitle{
+	border-top:1px solid #ececec;
+	background: #f5f5f5;
+	width:885px;
+	height: 45px;
+    line-height: 45px;
+    margin-top: 10px;
+}
+.divOutside{
+	display:table;
+	overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    width: 81px;
+    vertical-align:middle;   
+}
+.divIntside{
+	display:table-cell;
+	vertical-align:middle;
+	font-size: 12px;  
+	color:#575757; 
+}
+.myInvestmentMTitle>div{
+	display:inline-block;
+	text-align:center;
+	font-size:13px;
+	float: left;
+}
+.highLight{
+	color:#fe7407;
+	text-decoration:underline;
+}
+.myInvestmentM>ul>li>div{
+	float:left;
+}
+.divIntside>div{
+	text-align:center;
+}
+.myInvestmentM>ul>li {
+    display: inline-block;
+    vertical-align: middle;
+    border-bottom: 1px solid #ececec;
+}
+.myInvestmentMH{
+	font-size:18px;
+	color:#262626;
+	margin-left:18px;
+}
+/* 图表部分结束 */
+/*弹出层样式  */
+.autoBidSet{
+	display:none;
+}
+.auto-top{
+	margin:0 20px;
+	padding:20px 15px;
+	border-bottom:1px solid #ddd;
+}
+.info-input{
+	font-size:16px;
+	height:40px;
+}
+.info-input1{
+	font-size:16px;
+	height:80px;
+}
+.info-input1 .input-group-out{
+	height:80px;
+	width:350px;
+	float:left;
+}
+.info-input2{
+	font-size:16px;
+	height:170px;
+}
+.info-input2 .input-group-out{
+	height:170px;
+	float:left;
+}
+.info-input2 input{
+	width:88px;
+	height:37px;
+	background-color:#f5f5f5;
+}
+
+.input-group{
+	margin-bottom:18px;
+}
+.input-group2 input{
+	width:88px;
+	height:37px;
+	background-color:#f5f5f5;
+}
+.info-input3{
+	margin:10px 0;
+	font-size:16px;
+	height:40px;
+}
+.info-input3 input{
+	width:192px;
+	background-color:#f5f5f5;
+}
+.left-title{
+	width:130px;
+	height:40px;
+	line-height:40px;
+	float:left;
+}
+.remind{
+	width:350px;
+	height:20px;
+	line-height:20px;
+	text-align:right;
+	color:#ff7800;
+	background-image: url("../../../resource/img/account/personalCenter/zdtb_sz_03.png");
+	background-repeat: no-repeat;
+	background-position: 48px -1px;
+}
+.orange{
+	height:40px;
+	line-height:40px;
+}
+.info-input label{
+	height:40px;
+	line-height:40px;
+}
+.info-input1 label{
+	height:40px;
+	line-height:40px;
+}
+.auto-bottom{
+	margin-top:20px;
+	width:300px;
+	height:50px;
+}
+.autoBtn{
+	width:300px;
+	height:50px;
+	background-color:#72c0f3;
+	color:#fff;
+	font-size:18px;
+	border:none;
+	border-radius:1px;
+}
+/*单选框样式  */
+.tags-list{
+	margin:20px 0;
+}
+.info label{
+	text-align:left;
+	display: inline-block;
+    zoom: 1;
+    cursor: pointer;
+    color: #666;
+    font-size: 14px;
+    padding:0 20px;
+    float:left;
+    background-image: url("../../../resource/img/account/personalCenter/grzx_8.png");
+	background-repeat: no-repeat;
+	background-position: 0 11px;
+}
+.info .active{
+	background-image: url("../../../resource/img/account/personalCenter/grzx_7.png");
+	background-repeat: no-repeat;
+	background-position: 0 11px;
+}
+.info input{
+	opacity: 0;
+	cursor: pointer;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+}
+.info input{
+	display:none;
+}
+/*单选框样式结束  */
+/*弹出层样式结束  */
+
+
+
+
+

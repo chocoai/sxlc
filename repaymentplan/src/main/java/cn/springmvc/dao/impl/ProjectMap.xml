@@ -30,7 +30,7 @@
 	   </association>
     </resultMap> 
      <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
-            <id property = "ID" 				 column = "id" />
+            <id property = "Project_Base_ID" 				 column = "id" />
 			<result property = "projectTitle"    column = "Project_Title" /> 
 			<result property = "uses"            column = "Uses" />
 			<result property = "repaySource"     column = "Repay_Source" />

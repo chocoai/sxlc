@@ -14,12 +14,6 @@
 				}  
 			},
 			columns: [  
-			          {title:'<input type="checkbox"  value="1" />',
-			        	  "mRender": function (data, type, full) {
-			        		  return  '<input type="checkbox" value="1" />';
-			        	  },
-			          sClass: "table-checkbox"
-			          },
 			          { title:"id","data": "id"},  
 			          { title:"会员等级","data": "levelMark"},  
 			          { title:"对应开始积分","data": "scoreMin"},  
@@ -32,7 +26,7 @@
 			          }
 			          ],
 		  aoColumnDefs : [
-		                  {"bVisible": false, "aTargets": [1]}, //控制列的隐藏显示
+		                  {"bVisible": false, "aTargets": [0]}, //控制列的隐藏显示
 		                  {
 		                	  "orderable" : false,
 		                	  "aTargets" : [ 0, 1,2, 3, 4, 5 ]
@@ -46,10 +40,17 @@
 		  }
 		});
 		
-		//选中
+		//表格单选效果
 		 $('#table_id tbody').on( 'click', 'tr', function () {
-		        $(this).toggleClass('selected');
-		 });
+			    var $this = $(this);
+		        if ( $this.hasClass('selected') ) {
+		        	$this.removeClass('selected');
+		        }
+		        else {
+		        	$('#table_id tr.selected').removeClass('selected');
+		        	$this.addClass('selected');
+		        }
+		  });
 		 
 		 /**
 		 * 增加按钮

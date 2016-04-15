@@ -1,0 +1,169 @@
+/* 我要充值 */
+/* 李丽梅 */
+/* 2016-03-30 */
+
+.cashHead ,
+.cashContent 
+{
+	width:100%;
+}
+.cashHead {
+	height:45px;
+	border-bottom:1px solid #ececec;
+	line-height:45px;
+	font-size:18px;
+	margin-top:22px;
+	cursor:pointer;
+}
+
+.cashHead span{
+	display:inline-block;
+	border-bottom:2px solid #38ace9;
+	margin-left:44px;
+}
+.cashHeadFont{
+	color:#38ace9;
+	font-size:18px;
+}
+.cashInput{
+	margin-left:5px;
+	width:232px;
+}
+.cashDistance{
+	margin-left:14px;
+}
+.cashDivDistance{
+	padding-top:17px;
+	padding-bottom:17px;
+	padding-left:23px;
+}
+.cashLabel{
+	color:#6a6a6a;
+	text-align:right;
+	width:100px;
+	display:inline-block;
+	font-size:14px;
+	margin-right:25px;
+}
+.cashPhone{
+	padding:17px 0;
+	vertical-align:middle;
+	padding-left:23px;
+}
+.cashFontStyle span{
+	color:#fe7407;
+	font-size:14px;
+}
+.cashClear{
+	clear:both;
+}
+.cashPhone input{
+	width:125px;
+	margin-left:5px;
+}
+.cashPhone span.codeGet {
+	width:102px;
+	height:41px;
+	background:#ff9c00;
+	font-size:14px;
+	color:#fff;
+	display:inline-block;
+	line-height:41px;
+	vertical-align:middle;
+	text-align:center;
+	border-radius:2px;
+	cursor:pointer;
+}
+.cashAllFont{
+	font-size:14px;
+	color:#000;
+	font-weight:bold;
+}
+
+.addBank{
+	font-size:14px !important;
+	color:#3f3f3f !important;
+}
+.cashBank {
+	line-height:33px;
+	padding-left:23px;
+}
+.cashBank ul{
+	width: 672px;
+	float: left;
+}
+.cashBank ul li{
+	float:left;
+	width:145px;
+	height:47px;
+	line-height:47px;
+	margin:7px 19px 0 0 ;
+	font-size:12px;
+	color:#4d4d4d;
+}
+.cashBankLiSolid{
+	border:1px solid #d7d7d7;
+	cursor:pointer;
+}
+.cashBankLiOne{
+	display:inline-block;
+	border:1px solid #bfbfbf;
+	width:145px;
+	height:43px;
+	line-height:47px;
+	cursor: pointer;
+    -moz-user-select: none;
+}
+.cashInputRadio{display:none; }
+.cashInputRadio:checked + label{
+	border:1px solid #72c0f3;
+	/* 打钩的图片写在这里，用背景图片写，再定位 */
+	background:url('../../../resource/img/account/fundManagement/zjgl_8.png') no-repeat right bottom;
+	display:inline-block;
+}
+.cashImgSign{
+	margin:0 8px;
+	width:27px;
+	height:25px;
+	vertical-align:-4px;
+}
+.cashContentCunt{
+	padding-top:30px;
+	width:868px;
+	position:relative;
+	padding-bottom:200px;
+}
+.btn:hover{
+	cursor:pointer;
+}
+.cashBtn{
+	position:absolute;
+	left:157px;
+	margin-top:30px;
+	width:232px !important;
+	height:44px !important;
+	font-size:16px !important;
+	text-align:center;
+	line-height:40px;
+	border-radius:2px;
+}
+.amount{
+	display:inline-block;
+	height:41px;
+}
+/* 获取动态验证码的弹出提示层样式  */
+.dynamicVerificationSpan{
+	display:inline-block;
+	position:absolute;
+	max-width:270px;
+	height:45px;
+	line-height:46px;
+	padding-left:30px;
+	font-size:12px;
+	color:#777777 !important;
+	background:url(../../../resource/img/loginRegister/forgetPwd.png) no-repeat;
+	background-position:center left;
+}
+.cashPhoneCodeGet{
+	display:inline-block;
+}

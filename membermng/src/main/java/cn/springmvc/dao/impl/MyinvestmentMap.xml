@@ -27,13 +27,13 @@
      </resultMap>     
        <!--     收益 -->
      <resultMap type="cn.membermng.model.InvestIncomeEntity" id="resultMyInome"> 
-		<result column="Indexs" 			         property="projectTitle" />
-		<result column="SDRecv_MaxTime" 		     property="projectNo" /> 
-		<result column="SDRecv_Principal" 		     property="membername" /> 
-		<result column="SDRecv_Principal" 			 property="investAmount" />
-		<result column="totalOver" 			         property="remianindex" /> 
-		<result column="totalincome" 		         property="remaimPrincipal" /> 
-		<result column="Recv_Time" 		             property="remaimInterest" />  
+		<result column="Indexs" 			         property="indexs" />
+		<result column="SDRecv_MaxTime" 		     property="sdRecvMaxTime" /> 
+		<result column="SDRecv_Principal" 		     property="sdRecvPrincipal" /> 
+		<result column="SDRecv_Interest" 			 property="sdRecvInterest" />
+		<result column="totalOver" 			         property="totalOver" /> 
+		<result column="totalincome" 		         property="totalincome" /> 
+		<result column="Recv_Time" 		             property="recvTime" />  
 		<result column="replaystatu" 		         property="replaystatu" />  
      </resultMap>     
 </mapper>   

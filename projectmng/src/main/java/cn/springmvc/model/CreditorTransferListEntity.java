@@ -23,32 +23,32 @@ import product_p2p.kit.datatrans.IntegerAndString;
 public class CreditorTransferListEntity {
 	private String  projectTitle;//项目标题
 	private String  ProjectNo;//项目编号
-	private long  transPrincipal;//转让本金
-	private int surplusTime;//剩余期限
-	private int surplusTimeType;//剩余期限类型
-	private int transDiscount;//转让折扣
-	private int ctaInvestRate;//投资进度
-	private String repalyways;//还款方式
-	private String transStatus;//投资状态
-	private long applyId;//项目申请ID
-	private long ctaId;//债权转让申请ID
-	private int transStatu;//转让状态(-1：待流标处理 0：投标中 1：流标 2：投标完成 3：还款中 4：结清)
-	private String endDate;//债权到期日
+	private long    transPrincipal;//转让本金
+	private int     surplusTime;//剩余期限
+	private int     surplusTimeType;//剩余期限类型
+	private int     transDiscount;//转让折扣
+	private int     ctaInvestRate;//投资进度
+	private String  repalyways;//还款方式
+	private String  transStatus;//投资状态
+	private long    applyId;//项目申请ID
+	private long    ctaId;//债权转让申请ID
+	private int     transStatu;//转让状态(-1：待流标处理 0：投标中 1：流标 2：投标完成 3：还款中 4：结清)
+	private String  endDate;//债权到期日
 	private String  transPrincipals;//转让本金
 	private String  transDiscounts;//转让折扣
 	private String  ctaInvestRates;//投资进度
 	private String  levelMark;//信用等级 
-	private int rateAddRate;//加息率 0：表示非加息标 单位：百万分之		 
-	private int rewardRate;//奖励百分比 0：表示非奖励标 单位：百万分之 
-	private String rewardIcon; //奖励标图标 空表示不单独配置，使用默认
-	private String rateAddRates;//加息率 0：表示非加息标 单位：百万分之		 
-	private String rewardRates;//奖励百分比 0：表示非奖励标 单位：百万分之 
-	private long availableaAmount;//可投金额
-	private String availableaAmounts;//可投金额
+	private int     rateAddRate;//加息率 0：表示非加息标 单位：百万分之		 
+	private int     rewardRate;//奖励百分比 0：表示非奖励标 单位：百万分之 
+	private String  rewardIcon; //奖励标图标 空表示不单独配置，使用默认
+	private String  rateAddRates;//加息率 0：表示非加息标 单位：百万分之		 
+	private String  rewardRates;//奖励百分比 0：表示非奖励标 单位：百万分之 
+	private long    availableaAmount;//可投金额
+	private String  availableaAmounts;//可投金额
 	private long    investTotal;//已投资总额
 	private String  investTotals;//已投资总额
-	private int expectYearrate;//预期年化利率
-	private String expectYearrates;//预期年化利率
+	private int     expectYearrate;//预期年化利率
+	private String  expectYearrates;//预期年化利率
 	public int getExpectYearrate() {
 		return expectYearrate;
 	}

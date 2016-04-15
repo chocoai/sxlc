@@ -1,0 +1,126 @@
+/*2016-4-1伍成然  */
+/*main中头部样式  */
+.head{
+	height:70px;
+	width:100%;
+	border-bottom:1px solid #ddd;
+}
+.title{
+	font-size:18px;
+	width:70px;
+	height:70px;
+	line-height:95px;
+	text-align:center;
+	color:#45a7e6;
+	border-bottom:2px solid #45a7e6;
+	float:left;
+	margin-left:30px;
+}
+.buy-VIP{
+	margin-top:30px;
+	margin-right:30px;
+	width:90px;
+	height:30px;
+	line-height:30px;
+	font-size:18px;
+	text-align:center;
+	float:right;
+	color:#72c0f3;
+	border-radius:1px;
+	border:1px solid #72c0f3;
+	cursor:pointer;
+}
+/*头部样式结束*/
+/*表格样式  */
+.my-VIP-content{
+	float:left;
+	width:100%;
+	min-height:400px;
+	background-color:#fff;
+	padding:0 30px;
+	padding:30px;
+}
+.my-VIP-table{
+	margin:20px 0;
+	width:100%;
+	float:left;
+	font-size:13px;
+}	
+.my-VIP-table li{
+	height:80px;
+	border-bottom:1px solid #ddd;
+}
+.my-VIP-table li:hover{
+	background-color:#e5eff4;
+}
+.my-VIP-table li:first-child{
+	border-top:1px solid #ddd;
+	background-color:#f5f5f5;
+	height:40px;
+}
+.contentOut{
+	height:80px;
+	width:25%;
+	display:table;
+	float:left;
+}
+.content{
+	font-size:14px;
+	vertical-align:middle;   
+	display:table-cell; 
+	text-align:center;
+}
+.my-VIP-table li:first-child .contentOut{
+	height:40px;
+}
+/*表格样式结束*/
+/*弹出层  */
+.buyVip{
+	display:none;
+}
+.buy-top{
+	font-size:16px;
+	padding:20px;
+	width:94%;
+	height:263px;
+	border-bottom:1px solid #ddd;
+}
+.buy-input{
+	height:55px;
+}
+.buy-input .info{
+	width:275px;
+	height:30px;
+	line-height:30px;
+}
+.left-title{
+	width:136px;
+	height:30px;
+	line-height:30px;
+	text-align:right;
+	float:left;
+	margin-right:10px;
+}
+.input-time{
+	height:37px;
+}
+.select-time{
+	background-image: url("../../../resource/img/account/personalCenter/grzx_5.png");
+	background-repeat: no-repeat;
+	background-position: 130px 0;
+}
+.buy-bottom{
+	margin-top:20px;
+	width:300px;
+}
+.buy-now{
+	font-size:18px;
+	color:#fff;
+	background-color:#72c0f3;
+	height:50px;
+	width:300px;
+	border:none;
+	border-radius:2px;
+	cursor:pointer;
+}
+/*弹出层结束  */

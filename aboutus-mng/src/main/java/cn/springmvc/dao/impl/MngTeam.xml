@@ -3,15 +3,15 @@
 <mapper namespace="mngTeam">  
     <resultMap type="cn.springmvc.model.MngTeamEntity" id="resultListMngTeam">
         <id column="Team_ID" property="id" />
-		<result column="Mng_Name" property="mngName" />
-		<result column="Mng_Post" property="mngPost" />
-		<result column="Portrait_Url" property="portraitUrl" />
-		<result column="Profile" property="profile" />
-		<result column="Statu" property="statu" />
-		<result column="CreateTime" property="createTime" />
-		<result column="Opt_Date" property="optDate" />
-		<result column="Admin_ID" property="optId" /> 
-		<result column="adminName" property="adminName" />
+		<result column="Mng_Name" 		property="mngName" />
+		<result column="Mng_Post" 		property="mngPost" />
+		<result column="Portrait_Url" 	property="portraitUrl" />
+		<result column="Profile" 		property="profile" />
+		<result column="Statu" 			property="statu" />
+		<result column="CreateTime" 	property="createTime" />
+		<result column="Opt_Date" 		property="optDate" />
+		<result column="Admin_ID" 		property="optId" /> 
+		<result column="adminName" 		property="adminName" />
     </resultMap> 
     <!-- 分页查询管理团队列表 -->  
 	<select id="selectMngTeamList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListMngTeam">

@@ -42,7 +42,7 @@ legend{
 	width:100%;
 }
 .col3{
-	min-width: 200px;
+	min-width: 210px;
 	padding-left:20px;
 }
 .offset-col3{
@@ -81,10 +81,6 @@ span.sign>i{
 }
 .offset-col1{
 	margin-left:50px;
-}
-/* 搜索条件中的下拉框 */
-.search select{
-	height:25px;
 }
 /* 复选框 */
 .morecheck{

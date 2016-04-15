@@ -1,0 +1,69 @@
+@CHARSET "UTF-8";
+/*默认选中样式 start 黄鑫 20160327*/
+.aboutUsNav .choose5{
+	color:#72c0f3;
+}
+/*默认选中样式end 黄鑫 20160327*/
+/* 主体部分开始 王延君 2016-03-29 */
+.notice_Detail{
+	width:1200px;
+	margin-bottom:8%;
+	background-color:#fff;
+	margin-top:23px;
+	min-height: 638px;
+}
+.notice_Detail_title{
+  	display:inline-block;
+ 	width:345px;
+	margin:20px auto 0 10%;
+ 	padding:10px 0;
+ 	font-size:18px;
+ 	font-weight:bold;
+}
+.detailWordTime{
+  	text-align:center;
+}
+.Detail_title>a{
+  	font-size:16px;
+  	color:#72c0f3;
+}
+.notice_Detail_word{
+  	font-size:16px;
+ 	width:1100px;
+ 	display: block;
+ 	color:#646464;
+ 	line-height:35px;
+ 	margin: 0 auto 8% auto;
+}
+.back_list{
+ 	float:right;
+ 	margin-top: 30px;
+}
+.back_list:hover{
+	text-decoration:none;
+}
+.Detail_title{
+	width: 1100px;
+	text-align:center;
+}
+.notice_Detail_word span{
+	display:block;
+	text-align:right;
+}
+.notice_Detail_foot{
+	text-align:center;
+	margin-top:20px;
+}
+.notice_Detail_foot a{
+	font-size:16px;
+	color:#515151;
+	margin:0 30px;
+}
+.notice_Detail_foot .back_list{
+	float:none;
+	color:#3e91c7;
+}
+.contBottom{
+	margin-top:38px;
+}
+/* 主体部分结束 王延君 2016-03-29 */

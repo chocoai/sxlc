@@ -22,8 +22,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <div class="menu_section">
                             <ul class="nav side-menu">
                                 <li id="admin" class="li_level_one active">
-                                <a><i class="fa fa-edit"></i>担保机构管理<span class="fa fa-chevron-down"></span></a>
-                                	<ul class="nav child_menu ul_level_one" style="display: none">
+                                <a><i class="fa fa-edit"></i>担保机构管理</a>
+                                	<!-- <ul class="nav child_menu ul_level_one" style="display: none">
                                         <li><a>列表展示担保机构信息</a></li>
                                         <li><a>添加担保机构信息</a></li>
                                         <li><a>修改担保机构信息</a></li>
@@ -33,28 +33,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                         <li><a>担保项目查询</a></li>
                                         <li><a>代偿记录查询</a></li>
                                         <li><a>代偿回款记录查询</a></li>
-                                    </ul>
+                                    </ul> -->
                                  </li>
                                 <li id="admin" class="li_level_one">
-                                <a><i class="fa fa-edit"></i>担保机构中心<span class="fa fa-chevron-down"></span></a>
-                                	<ul class="nav child_menu ul_level_one" style="display: none">
+                                <a><i class="fa fa-edit"></i>资产管理方管理</a>
+                                	<!-- <ul class="nav child_menu ul_level_one" style="display: none">
                                         <li><a>设置担保配置</a></li>
                                         <li><a>担保机构担保项目</a></li>
                                         <li><a>代偿管理</a></li>
                                         <li><a>历史代偿记录</a></li>
                                         <li><a>代偿回款记录</a></li>
                                         <li><a>第三方账户信息管理</a></li>
-                                    </ul>
+                                    </ul> -->
                                  </li>
                                 <li id="admin" class="li_level_one">
-                                <a><i class="fa fa-edit"></i>资产管理方<span class="fa fa-chevron-down"></span></a>
-                                	<ul class="nav child_menu ul_level_one" style="display: none">
+                                <a><i class="fa fa-edit"></i>账户中心</a>
+                                	<!-- <ul class="nav child_menu ul_level_one" style="display: none">
                                         <li><a>类表展示资产管理方信息</a></li>
                                         <li><a>添加资产管理方信息</a></li>
                                         <li><a>修改资产管理方信息</a></li>
                                         <li><a>查看资产管理方详情</a></li>
                                         <li><a>资产管理方管理员管理</a></li>
-                                    </ul>
+                                    </ul> -->
+                                 </li>
+                                <li id="admin" class="li_level_one">
+                                <a><i class="fa fa-edit"></i>代偿</a>
+                                 </li>
+                                <li id="admin" class="li_level_one">
+                                <a><i class="fa fa-edit"></i>历史代偿记录</a>
+                                 </li>
+                                <li id="admin" class="li_level_one">
+                                <a><i class="fa fa-edit"></i>代偿回款记录</a>
+                                 </li>
+                                <li id="admin" class="li_level_one">
+                                <a><i class="fa fa-edit"></i>银行卡管理</a>
+                                 </li>
+                                <li id="admin" class="li_level_one">
+                                <a><i class="fa fa-edit"></i>充值记录</a>
+                                 </li>
+                                <li id="admin" class="li_level_one">
+                                <a><i class="fa fa-edit"></i>提现记录</a>
+                                 </li>
+                                <li id="admin" class="li_level_one">
+                                <a><i class="fa fa-edit"></i>交易记录</a>
                                  </li>
                             </ul>
                         </div>

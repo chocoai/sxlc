@@ -1,0 +1,114 @@
+/* δ�����ֿ�ʼ ���Ӿ� 2016-04-02 */
+#pager1,
+#pager2{
+	margin-top:50px !important;
+}
+
+.stationMessage{
+	margin:5% auto;
+}
+.stationMessageH{
+	width:100%;
+	display: inline-block;
+	border-bottom:1px solid #ececec;
+	font-size:18px;
+	color:#000;
+	padding:0 30px;
+	margin:0 auto;
+}
+.stationMessageH>div{
+	width:118px;
+	display: inline-block;
+	height:45px;
+	border-bottom:2px solid #fff;
+	padding:0 5px;
+	text-align: center;
+	cursor:pointer;
+}
+.stationMessageH>div:hover{
+	color:#72c0f3;
+	border-bottom:2px solid #72c0f3;
+}
+.stationMessageM{
+	display:inline-block;
+	width:100%;
+	font-size:13px;
+	margin:20px 0;
+	padding: 0 10px;
+}
+.unReadUl .messageContent,
+.unReadUl .recordTime,
+.unReadUl .state{
+	width: 288px;
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+    overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+.contentInfo{
+	width:100%;
+}
+.myInvestmentMTitle,.myInvestmentMCont{
+	width: 875px;
+}
+.myInvestmentMTitle{
+	height:43px;
+	background-color:#f5f5f5;
+	line-height: 43px;
+	border-top:1px solid #ebebeb;
+	border-bottom:1px solid #ebebeb;
+}
+.contentMessage{
+	height:69px;
+	border-bottom:1px solid #ebebeb;
+	line-height:69px;
+	cursor: pointer;
+}
+.myInvestmentMCont{
+	font-size:14px;
+	color:#575757;
+	-moz-user-select:none;
+}
+.messageContent>label{
+	padding:6px;
+	display:inline-block;
+	background:url("../../../resource/img/account/personalCenter/stationMessageCircle_03.png") no-repeat;
+	margin-right:32px;
+	margin-bottom: -1px;
+}
+.unReadUl .contentMessage .state{
+	color:#f4653b;
+}
+.contentInfo{
+	background-color:#f5fafd;
+	padding:25px;
+	position:relative;
+}
+.contentInfoM{
+	width:665px;
+	display: table;
+}
+.contentInfo>label{
+	padding:11px;
+	display:block;
+	background:url("../../../resource/img/account/personalCenter/triangle_03.png") no-repeat;
+	position:absolute;
+	top:-7px;
+	left:15%;
+}
+/* δ�����ֽ��� */
+/* �Ѷ����ֿ�ʼ */
+.readUl .messageContent,
+.readUl .recordTime,
+.readUl .state{
+	width: 288px;
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+    overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+/* �Ѷ����ֽ��� */

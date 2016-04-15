@@ -1,0 +1,152 @@
+/* CSS Document */
+@charset "UTF-8";
+/* 设置顶部链接样式 */
+.intergralMallCommon .mainPageTop2{
+	color:#72c0f3;
+}
+.nowPosition{
+	width:100%;
+	min-width:1200px;
+}
+.nowPositionContent,
+.mainLoan{
+	width:1200px;
+	margin:0 auto;
+}
+.nowPositionContent,
+.nowPositionContent a{
+	line-height:54px;
+	color:#868686;
+}
+.nowPositionContent span{
+	color:#111 !important;
+}
+/* 商品详情具体部分 */
+.productListArea{
+	width:100%;
+	min-width:1200px;
+}
+.main{
+	width:1200px;
+	margin:0 auto 20px auto;
+}
+/* 商品详情具体内容部分 */
+.itemDetail{
+	background:#fff;
+	padding:20px;
+	padding-top:55px;
+}
+.itemDetail img{
+	display:inline-block;
+	margin:auto 60px;
+	vertical-align:top;
+}
+.detail{
+	display:inline-block;
+	margin-left:60px;
+	vertical-align:-webkit-baseline-middle;
+	vertical-align:middle;
+}
+.detail p{
+	font-size:14px;
+	color:#888888;
+}
+.detail p.productIntroduce{
+	margin:15px 0;
+}
+.detail p.head{
+	font-size:22px;
+	color:#020202;
+	margin-bottom:10px;
+}
+.detail div.integral{
+	width:560px;
+	height:100px;
+	background:#f7f7f7;
+	padding:18px 0 0 30px;
+}
+.detail div.integral samp{
+	font-size:24px;
+	color:#fd4a04;
+}
+.number{
+	margin:30px 0 15px 0;
+}
+.detail div.number input{
+	width:46px;
+	height:33px;
+	line-height:33px;
+	text-align:center;
+	color:#000000;
+	margin:0 10px;
+}
+.detail div.number span{
+	display:inline-block;
+	width:19px;
+	height:22px;
+	border:1px solid #cdcdcd;
+	text-align:center;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.buy{
+	display:block;
+	width:170px;
+	height:40px;
+	line-height:40px;
+	color:#5bb4ef;
+	border:1px solid #5bb4ef;
+	text-align:center;
+	margin-top:10px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	-o-border-radius:3px;
+	border-radius:3px;
+}
+.buy:hover{
+	background:#45b9e3;
+	color:#fff;
+}
+.description{
+	margin-top:20px;
+	background:#fff;
+}
+.descripHead{
+	border-bottom:1px solid #dedede;
+	padding:15px;
+}
+.descripHead span{
+	border-left:4px solid #0075c1;
+	font-size:20px;
+	color:#0075c1;
+	padding-left:20px;
+}
+.detailEmf{
+	padding:20px;
+	margin-bottom:100px;
+}
+.detailEmf p{
+	margin-bottom:10px;
+	color:#323232;
+	font-size:16px;
+}
+.detailEmf p span{
+	display:inline-block;
+	width:50%;
+}
+.detailEmf p span samp{
+	margin-right:50px;
+}
+.titleEmf{
+	font-size:18px !important;
+	font-weight:bold;
+	margin-bottom:30px !important;
+}
+.detailEmfli{
+	padding:30px 0 50px 80px;
+	border-bottom:1px solid #dedede;
+}
+.detailImg{
+	display:block;
+	margin:15px auto;
+}

@@ -1,0 +1,380 @@
+/* CSS Document */
+@charset "UTF-8";
+/* 设置顶部链接样式 */
+.mainPageTop .mainPageTop2{
+	color:#72c0f3;
+}
+/*伍成然2016-3-28*/
+/*main部分  */
+.main{
+	padding-bottom:20px;
+	width:1200px;
+}
+.main a:link {color:#868686;text-decoration:none;}/* 未被访问的链接     */
+.main a:visited {color:#868686}  /* 已被访问过的链接    */
+.main a:hover {text-decoration:underline}    /* 鼠标悬浮在上的链接  */
+/*链接区域  */
+.link-area{
+	color:#868686;
+	height:50px;
+	line-height:50px;
+	text-align:left;
+}
+/* 设置轮播图样式  start 黄鑫 20160327 伍成然2016-4-6复制修改*/
+.banner {
+	position:relative;
+	bottom:5px;
+	background-color:#f8f8f8;
+	padding-top:2px;
+	overflow: auto; 
+	max-width:100%;
+	width: 100%; 
+	height: 175px;
+	position: relative;
+	text-align: center;
+	color: rgba(255,255,255,.6);
+	text-shadow: 0 0 1px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.3);
+	box-shadow: 0 1px 2px rgba(0,0,0,.25);
+}
+.banner ul {
+	list-style: none;
+	position: relative; 
+	left: -100%; 
+	height: 100%;
+}
+.banner ul li {
+	display: block;
+	float: left;
+	min-height: 175px;
+	height: 175px;
+	overflow:hidden;
+	-o-background-size: 100% 100%;
+	-ms-background-size: 100% 100%;
+	-moz-background-size: 100% 100%;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	/* box-shadow: inset 0 -3px 6px rgba(0,0,0,.1); */
+}
+.banner ul li img{
+	width: 100%;
+	height: 100%;
+}
+.banner .dot {
+	-webkit-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	-moz-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	-ms-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	-o-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+}
+.banner .dots {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 20px;
+}
+.banner .dots li {
+	display: inline-block;
+	width: 50px;
+	height: 5px;
+	margin: 0 4px;
+	text-indent: -999em;
+	cursor: pointer;
+	opacity: .4;
+	-webkit-transition: background .5s, opacity .5s;
+	-moz-transition: background .5s, opacity .5s;
+	background: #f8f8f8;
+	transition: background .5s, opacity .5s;
+}
+.banner .dots li.active {
+	background: #f8f8f8;
+	opacity: 1;
+}
+/* 设置轮播图样式  end*/
+/*标签部分  */
+.tab-head{
+	height:35px;
+}
+.tab-li{
+	font-size:16px;
+	color:#000;
+	background-color:#eaeaea;	
+	height:40px;
+	width:110px;
+	border-radius:5px;
+	float:left;
+	line-height:2;
+	text-align:center;
+	margin-right:20px;
+}
+.tab-ing{
+	font-size:16px;
+	color:#fff;
+	background-color:#73c0f4;
+	height:40px;
+	width:110px;
+	border-radius:5px;
+	float:left;
+	line-height:2;
+	text-align:center;
+	margin-right:20px;
+}
+.tab-head a:link {color:#000;text-decoration:none;}/* 未被访问的链接     */
+.tab-head a:visited {color:#000}  /* 已被访问过的链接    */
+.tab-head a:hover {text-decoration:underline}    /* 鼠标悬浮在上的链接  */
+/*筛选框  */
+.fliter-box{
+	height:290px;
+	width:100%;
+	background-color:#fff;
+	border:1px solid #ddd;
+	padding:20px;
+	margin:10px 0 30px 0;
+}
+.fliter-head{
+	width:100%;
+	height:50px;
+	border-bottom:1px dashed #ddd;
+}
+.fliter-title{
+	margin-top:5px;
+	font-size:16px;
+	color:#636363;
+	width:200px;
+	float:left;
+}
+.fliter-search{
+	width:270px;
+	float:right;
+}
+.search{
+	height:35px;
+	width:200px;
+	float:left;
+	padding:0 10px;
+	border:1px solid #72c0f3;
+	border-radius:0;
+}
+.show{
+	height:35px;
+	width:200px;
+	float:left;
+	padding:0 10px;
+	border:1px solid #72c0f3;
+	border-radius:0;
+	background-image:url("../../resource/img/invest/sousuo.png");
+	background-repeat: no-repeat;
+	background-position:10px 6px;
+}
+.search-btn{
+	font-size:14px;
+	cursor:pointer;
+	height:35px;
+	width:50px;
+	padding:0 5px;
+	float:left;
+	background-color:#72c0f3;
+	color:#fff;
+	border:1px solid #72c0f3;
+	border-radius:0;
+}
+/*search-btn点击后效果待改  */
+.search-btn:hover{
+	background-color:#31b4ff;
+	color:#fff;
+}
+
+
+/*筛选tags*/
+.fliter-tags{
+	width:100%;
+	min-width:570px;
+	height:auto;
+	padding-top:10px;
+}
+.fliter-left{
+	width:50%;
+	float:left;
+}
+.fliter-right{
+	width:50%;
+	float:right;
+}	
+
+/*筛选tags每个radio样式*/
+.tags-list{
+	margin:20px 0;
+}
+.fliter-tags label{
+	font-weight:normal;
+	display: inline-block;
+    zoom: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+    color: #666;
+    font-size: 14px;
+    border-radius: 1.5px;
+    background: 0;
+}
+.fliter-tags label:hover{
+	background-color:#eee;
+}
+.fliter-tags .active:hover{
+	background-color:#72c0f3;
+}
+.fliter-tags .active{
+	background-color:#72c0f3;
+	color:#fff;
+}
+.fliter-tags input{
+	display:none;
+}
+.left-title{
+	height:100%;
+	width:105px;
+	float: left;
+	text-align: right;
+    font-size: 14px;
+    color: #666;
+    padding-right: 18px;
+}
+/*项目列表部分 */
+.invest-list{
+	background-color:#fff;
+	padding:0 20px;
+	border:1px solid #ddd;
+	margin-bottom:20px;
+}
+.invest-list li{
+	height:200px;
+	border-bottom:1px solid #ddd;
+	padding:20px 0;
+}
+.invest-list li:last-child{
+	height:200px;
+	border-bottom:0;
+	padding:20px 0;
+}
+.inv-head{
+	height:25px;
+}
+.inv-head-left{
+	color:#636363;
+	font-size:20px;
+	width:500px;
+	float:left;
+}
+.inv-head-left span{
+	font-size:16px;
+	color:#808080;
+}
+/*info部分  */
+.inv-info{
+	width:100%;
+	padding:5px;
+}
+.inv-info >div{
+	text-align:center;
+	width:180px;
+	height:120px;
+	float:left;
+}
+.inv-info .inv-rate{
+	width:220px;
+}
+.inv-info h1{
+	font-weight:normal;
+	font-size:28px;
+	margin-top:40px;
+	color:#5c5c5c;
+	display: inline-table;
+}
+.inv-info p{
+	color:#969696;
+}
+.inv-info h1 + p{
+	white-space:nowrap;
+}
+.inv-info .inv-rate h1{
+	margin-top:30px;
+	font-size:40px;
+	color:#ff6e04;
+}
+.inv-info .inv-rate span{
+	font-size:30px;
+	color:#ff6e04;
+}
+.inv-info .inv-rate .increase{
+	font-size:20px;
+}
+.inv-info span{
+	font-size:16px;
+	color:#5c5c5c;
+}
+.inv-info .inv-time,.inv-info .inv-discount{
+	width:150px;
+}
+.inv-info .progress{
+	width:250px;
+}
+.inv-info .inv-time-count{
+	margin-top:30px;
+	float:right;
+}
+/*进度条  */
+.progress{
+	height:37px;
+	padding:14px 0;
+}
+.progress span{
+	color:#9c9c9c;
+	font-size:14px;
+	width:38px;
+	text-align:right;
+	margin-top:35px;
+	float:left;
+}
+.barbox{
+	margin-top:42px;
+	height:6px;
+	width:170px;
+	float:left;
+	background-color: #eeeeee;
+	border-radius: 5px; 
+}
+.barline{
+	width:0;
+	height:6px;
+	float:left;
+	background-color: #72c0f3;
+	border-radius: 5px; 
+}
+/*进度条结束  */
+.repay-method span{
+	color:#545454;
+	font-size:14px;
+}
+.repay-method{
+	width:170px;
+	float:right;
+	color:#8d8d8d;
+	text-align:center;
+	background-image:url("../../resource/img/invest/wytz_money.jpg");
+	background-repeat: no-repeat;
+	background-position:0px 2px;
+}
+.buy-now{
+	background-color:#fff;
+	color:#72c0f3;
+	width:170px;
+	margin:10px 0;
+	height:37px;
+	font-size:20px;
+	cursor:pointer;
+	line-height:37px;
+	text-align:center;
+	border:1px solid #72c0f3;
+}
+.buy-now:hover{
+	background-color:#72c0f3;
+	color:#fff;
+}

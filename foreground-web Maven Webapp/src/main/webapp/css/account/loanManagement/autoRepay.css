@@ -1,0 +1,71 @@
+/*伍成然2016-3-31*/
+.head{
+	height:70px;
+	width:100%;
+	border-bottom:1px solid #ddd;
+}
+.title{
+	height:70px;
+	line-height:95px;
+	text-align:center;
+	width:150px;
+	float:left;
+	font-size:18px;
+	margin-left:30px;
+	color:#72c0f3;
+	border-bottom:2px solid #72c0f3;
+}
+.body{
+	padding:20px 30px;
+}
+.remind-box{
+	color:#ff7800;
+	padding:10px 50px;
+	height:80px;
+	line-height:60px;
+	width:100%;
+	border:1px dashed #ddd;
+	text-align:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_4.png");
+	background-repeat: no-repeat;
+	background-position: 25px 29px;
+	
+}
+.accountMain .active{
+	display:block;
+	margin:40px 0;
+}
+.active div{
+	font-size:18px;
+	color:#000;
+	margin:10px 0;
+	display:block;
+}
+.auto-repay-ctrl{
+	display:none;
+}
+/*remind-card样式*/
+.remind-card{
+	font-size:14px;
+	height:200px;
+	width:787px;
+	line-height:25px;
+	padding:10px 20px;
+	background-color:#f7f9fa;
+	color:#484848;
+	margin:20px 0;
+}
+.remind-bottom{
+	margin-top:40px;
+	margin-bottom:150px;
+}
+.remind-bottom h3{
+	margin-left:10px;
+	font-size:14px;
+	color:#4b4b4b;
+}
+.remind-bottom p{
+	margin-left:10px;
+	font-size:12px;
+	color:#777777;
+}

@@ -1,0 +1,324 @@
+/*伍成然2016-3-31*/
+/*借款记录,借款申请记录,待确认借款申请record样式*/
+.accountMain{
+	padding-bottom:20px;/*accountMain撑起待做*/
+}
+/*标签切换  */
+.my-repay-tab{
+	font-size:18px;
+	height:70px;
+	width:100%;
+	padding:0 30px; 
+	float:left;
+	border-bottom:1px solid #ddd;
+}
+.my-repay-tab li{
+	height:70px;
+	line-height:95px;
+	margin-right:30px;
+	float:left;
+	cursor:pointer;
+}
+.my-repay-tab li:hover{
+	color:#72c0f3;
+}
+.tab-ing{
+	color:#72c0f3;
+	border-bottom:2px solid #72c0f3;
+}
+.tab-content{
+	margin-top:70px;
+	padding:30px;
+} 
+.tab-content .active{
+	display:block;
+}
+.my-repay-content{
+	display:none;
+}
+
+/*标签切换结束  */
+.head{
+	height:70px;
+	width:100%;
+	border-bottom:1px solid #ddd;
+}
+.title{
+	height:70px;
+	line-height:100px;
+	text-align:center;
+	width:228px;
+	float:left;
+	font-size:18px;
+	margin-left:30px;
+	color:#72c0f3;
+	border-bottom:2px solid #72c0f3;
+}
+.early-repay{
+	margin-top:20px;
+	margin-left:30px;
+	height:42px;
+	width:128px;
+	float:left;
+}
+.remind{/*样式待改  */
+	padding:0 20px;
+	margin:23px 0 0 20px;
+	border:1px solid #ddd;
+	width:334px;
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	font-size:12px;
+	float:left;
+	background-image:url("../../../resource/img/account/loanManagement/jkgl_1.png");
+	background-repeat: no-repeat;
+	background-position:8px 8px;
+}
+/*链接样式  */
+
+.head a:link {color:#72c0f3;text-decoration:none;}/* 未被访问的链接     */
+.head a:visited {color:#72c0f3}  /* 已被访问过的链接    */
+.head a:hover {color:#126dca;text-decoration:none;}    /* 鼠标悬浮在上的链接  */
+
+.my-loan-state a:link {color:#000;text-decoration:none;}/* 未被访问的链接     */
+.my-loan-state a:visited {color:#000}  /* 已被访问过的链接    */
+.my-loan-state a:hover {color:#72c0f3;text-decoration:none;}    /* 鼠标悬浮在上的链接  */
+
+.my-loan-table a:link {color:#fe7409;text-decoration:underline}/* 未被访问的链接     */
+.my-loan-table a:visited {color:#fe7409}  /* 已被访问过的链接    */
+.my-loan-table a:hover {text-decoration:underline}    /* 鼠标悬浮在上的链接  */
+
+.my-loan-table li:hover{
+	background-color:#e5eff4;
+}
+/*链接样式结束  */
+/*record结束*/
+/*融资中，融资结束，还款中，已流标，已结清state样式*/
+.my-loan-group{
+	float:left;
+	width:935px;
+	padding:30px;
+}
+.my-loan-state{
+	height:35px;
+	width:836px;
+	float:left;
+}
+.my-loan-state li{
+	float:left;
+	height:40px;
+	font-size:16px;
+	padding:5px 30px;
+	margin-right:20px;
+	background-color:#fff;
+	border:1px solid #ddd;
+}
+/*state结束*/
+/*content样式*/
+.my-loan-content{
+	float:left;
+	width:885px;
+	background-color:#fff;
+	padding:10px 0;
+	border:1px solid #ddd;
+}
+.my-loan-table{
+	width:100%;
+	float:left;
+	font-size:12px;
+	margin-bottom:20px;
+}
+.my-loan-table li{
+	height:80px;
+	border-bottom:1px solid #ddd;
+	color:#575757;
+}
+.my-loan-table li:first-child{
+	border-top:1px solid #ddd;
+	background-color:#f5f5f5;
+	color:#262626;
+	height:40px;
+}
+/*自定义容器大小  */
+.contentOut0{
+	height:80px;
+	width:7%;
+	display:table;
+	float:left;
+}
+.contentOut1{
+	height:80px;
+	width:8%;
+	display:table;
+	float:left;
+}
+.contentOut2{
+	height:80px;
+	width:9%;
+	display:table;
+	float:left;
+}
+.contentOut3{
+	height:80px;
+	width:10%;
+	display:table;
+	float:left;
+}
+.contentOut4{
+	height:80px;
+	width:12.5%;
+	display:table;
+	float:left;
+}
+.content{
+	font-size:12px;
+	vertical-align:middle;   
+	display:table-cell; 
+	text-align:center;
+}
+.my-loan-table li:first-child .contentOut0{
+	height:40px;
+}
+.my-loan-table li:first-child .contentOut1{
+	height:40px;
+}
+.my-loan-table li:first-child .contentOut2{
+	height:40px;
+}
+.my-loan-table li:first-child .contentOut3{
+	height:40px;
+}
+.my-loan-table li:first-child .contentOut4{
+	height:40px;
+}
+/*自定义容器大小结束  */
+.myLoan .mark{
+	color:#fe730a;
+}
+/*待还计划  */
+.mark{
+	color:red;
+}
+.repay{
+	border:1px solid #45a7e6;
+	color:#45a7e6;
+	width:60px;
+	height:25px;
+	line-height:25px;
+	text-align:center;
+	cursor:pointer;
+}
+/*待还计划结束  */
+/*还款中的借款  */
+.my-repay-content .my-loan-table .loan-agreement{/*借款协议样式  */
+	text-decoration:underline;
+	color:#575757;
+}
+/*还款中的借款结束  */
+/*弹出层  */
+/*我的借款-还款中的借款-还款计划  */
+.repay-content{
+	display:none;
+	padding:10px;
+}
+.repay-content .repay-bottom input{
+	background-color:#f5f5f5;
+}
+.repay-top{
+	padding:20px;
+	border-bottom:1px solid #ddd;
+}
+.repay-top .leftTitle{
+	width:25%;
+	height:40px;
+	line-height:40px;
+	float:left;
+	text-align:left;
+}
+.repay-top label{
+	width:25%;
+	height:40px;
+	line-height:40px;
+	float:left;
+	text-align:left;
+}
+.repay-bottom{
+	padding:20px;
+	border-bottom:1px solid #ddd;
+}
+.repay-bottom .leftTitle{
+	width:30%;
+	height:40px;
+	line-height:40px;
+	float:left;
+	text-align:left;
+}
+.repay-bottom input{
+	height:35px;
+	margin:4px;
+}
+.repay-bottom .money{
+	color:#fe7407;
+	width:50%;
+	height:40px;
+	line-height:40px;
+	float:left;
+	text-align:left;
+}
+.repay-bottom label{
+	width:25%;
+	height:40px;
+	line-height:40px;
+	float:left;
+	text-align:left;
+}
+.input-btn{
+	margin-top:20px;
+	width:300px;
+	height:50px;
+}
+.repay-confirm{
+	width:300px;
+	height:50px;
+	font-size:18px;
+	background-color:#72c0f3;
+	color:#fff;
+	border:none;
+	border-radius:2px;
+	cursor:pointer;
+}
+/*我的借款-还款中的借款-还款计划结束  */
+/*我的借款-还款中的借款-提前还款*/
+.early-repay-content{
+	display:none;
+}
+.early-repay-content li{
+	padding:0 50px;
+	font-size:16px;
+	height:67px;
+	line-height:67px;
+	border-bottom:1px solid #ddd;
+}
+.early-repay-content .left{
+	width:50%;
+	float:left;
+}
+.early-repay-content .right{
+	width:50%;
+	float:right;
+	text-align:right;
+}
+.early-repay-confirm{
+	margin:30px 100px;
+	width:300px;
+	height:50px;
+	font-size:18px;
+	background-color:#72c0f3;
+	color:#fff;
+	border:none;
+	border-radius:2px;
+	cursor:pointer;
+}
+/*我的借款-还款中的借款-提前还款结束*/
+/*弹出层样式结束  */

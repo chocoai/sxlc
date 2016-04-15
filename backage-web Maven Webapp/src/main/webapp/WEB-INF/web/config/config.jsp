@@ -40,29 +40,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	<div class="config">
 			 		<fieldset>
 			 			<legend>会员</legend>
-			 			<form class="form-horizontal config-form" role="form" name="" action="" id="">
+			 			<form class="form-horizontal config-form" role="form" name="" action="javascript:mwithdralsfee()" id="member">
 			 				<div class="form-group">
 			 					<label for="firstname" class="i-fl control-label col3">提现手续费费率：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="" datatype="" placeholder="提现手续费费率">
+			 						<input type="text" class="form-control" id="mFee" datatype="" placeholder="提现手续费费率">
 			 					</div>
 			 					<div class="i-fl">
-			 						<span class="sign i-fl">%<i>*</i></span>
+			 						<span class="sign i-fl">%<i></i></span>
 			 					</div>
 			 					<div class="input-alert">
-			 						<span>错误提示</span>
+			 						<span></span>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">平台代付比例：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="" datatype="*" placeholder="平台代付比例">
+			 						<input type="text" class="form-control" id="mpFee" datatype="*" placeholder="平台代付比例">
 			 					</div>
 			 					<div class="i-fl">
-			 						<span class="sign i-fl">%<i>*</i></span>
+			 						<span class="sign i-fl">%<i></i></span>
 			 					</div>
 			 					<div class="input-alert">
-			 						<span>错误提示</span>
+			 						<span></span>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -74,29 +74,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 		</fieldset>
 			 		<fieldset>
 			 			<legend>第三方合作机构</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<form class="form-horizontal" role="form" name="" action="javascript:owithdralsfee()" id="orgnization">
 			 				<div class="form-group">
 			 					<label for="firstname" class="i-fl control-label col3">提现手续费费率：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="提现手续费费率">
+			 						<input type="text" class="form-control" id="ofee" placeholder="提现手续费费率">
 			 					</div>
 			 					<div class="i-fl">
-			 						<span class="sign i-fl">%<i>*</i></span>
+			 						<span class="sign i-fl">%<i></i></span>
 			 					</div>
 			 					<div class="input-alert">
-			 						<span>错误提示</span>
+			 						<span></span>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">平台代付比例：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="平台代付比例">
+			 						<input type="text" class="form-control" id="opfee" placeholder="平台代付比例">
 			 					</div>
 			 					<div class="i-fl">
-			 						<span class="sign i-fl">%<i>*</i></span>
+			 						<span class="sign i-fl">%<i></i></span>
 			 					</div>
 			 					<div class="input-alert">
-			 						<span>错误提示</span>
+			 						<span></span>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -108,29 +108,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 		</fieldset>
 			 		<fieldset>
 			 			<legend>平台</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<form class="form-horizontal" role="form" name="" action="javascript:pwithdralsfee()" id="station">
 			 				<div class="form-group">
 			 					<label for="firstname" class="i-fl control-label col3">提现手续费费率：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="firstname" placeholder="提现手续费费率">
+			 						<input type="text" class="form-control" id="pfee" placeholder="提现手续费费率">
 			 					</div>
 			 					<div class="i-fl">
-			 						<span class="sign i-fl">%<i>*</i></span>
+			 						<span class="sign i-fl">%<i></i></span>
 			 					</div>
 			 					<div class="input-alert">
-			 						<span>错误提示</span>
+			 						<span></span>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">平台代付比例：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" datatype="" placeholder="平台代付比例">
+			 						<input type="text" class="form-control" id="ppfee" datatype="" placeholder="平台代付比例">
 			 					</div>
 			 					<div class="i-fl">
-			 						<span class="sign i-fl">%<i>*</i></span>
+			 						<span class="sign i-fl">%<i></i></span>
 			 					</div>
 			 					<div class="input-alert">
-			 						<span>错误提示</span>
+			 						<span></span>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -148,6 +148,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 尾部 -->
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<script type="text/javascript" src="js/config/yconfig.js"></script>
 	<!-- 私用js -->
 </body>
 

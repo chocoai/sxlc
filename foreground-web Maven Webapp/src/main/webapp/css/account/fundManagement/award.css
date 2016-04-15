@@ -1,0 +1,489 @@
+/* 资金管理-赠送奖励-我的红包 */
+/* 2016-03-31 */
+/* 李丽梅 */
+
+i{
+	font-style:normal;
+}
+.awardBackground{
+	margin:0 auto;
+	width:868px;
+	border-bottom:1px dashed #e3e3e3;
+	height:225px;
+}
+.awardDivAll{
+	width:140px;
+	height:160px;
+	margin:28px 0;
+	float:left;
+	margin-left:30px;
+	text-align:center;
+}
+.awardRed{
+	background:url('../../../resource/img/account/fundManagement/zjgl_1.png') no-repeat;
+	background-position:top center;
+	display:inline-block;
+}
+.awardExpired{
+	background:url('../../../resource/img/account/fundManagement/zjgl_2.png') no-repeat;
+	background-position:top center;
+	display:inline-block;
+}
+.awardAlreadyUsed{
+	background:url('../../../resource/img/account/fundManagement/zjgl_3.png') no-repeat;
+	background-position:top center;
+	display:inline-block;
+}
+.awardCanUse{
+	background:url('../../../resource/img/account/fundManagement/zjgl_4.png') no-repeat;
+	background-position:top center;
+	display:inline-block;
+}
+.awardUse{
+	width:92px;
+	height:35px;
+	display:inline-block;
+	float:left;
+	font-size:14px;
+	text-align:center;
+	color:#fff;
+	line-height:35px;
+	margin-top:116px;
+	background:url('../../../resource/img/account/fundManagement/zjgl_21.png') no-repeat;
+	background-position:90% 50%;
+	background-color:#72c0f3;
+	border-radius:2px;
+}
+.awardDivAll p{
+	font-size:14px;
+	color:#888;
+	margin:100px 0 10px 0;
+}
+.awardDivAll b{
+	font-size:16px;
+	color:#363232;
+}
+.awardDivAll span{
+	font-size:16px;
+	color:#f4653b;
+}
+.awardDiv{
+	width:140px;
+	height:160px;
+	margin:28px 0 28px 8px;
+	float:left;
+}
+
+/* 我的红包、电子劵 */
+/*标签切换  */
+.awardHead{
+	height:67px;
+	width:100%;
+	border-bottom:1px solid #ececec;
+}
+
+.awardHead .awardHeadLi1{
+	width:75px;
+	height:45px;
+	float:left;
+	font-size:18px;
+	color:#000;
+	margin-left:44px;
+	line-height:45px;
+	margin-top:22px;
+	text-align:center;
+	cursor:pointer;
+}
+.awardHead .awardHeadLi2{
+	width:91px;
+	height:45px;
+	float:left;
+	font-size:18px;
+	color:#000;
+	margin-left:44px;
+	line-height:45px;
+	margin-top:22px;
+	text-align:center;
+	cursor:pointer;
+}
+.awardHead .awardIng{
+	color:#45a7e6;
+	border-bottom:2px solid #45a7e6;
+}
+
+.tabContent .contentActive{
+	display:block;
+}
+.awardContent{
+	display:none;
+}
+
+/*标签切换  结束*/
+
+.awardListInfo{
+	height:70px;
+	margin-left:35px;
+}
+.awardListInfo span{
+	color:#000;
+	font-size:18px;
+	line-height:50px;
+	margin-top:20px;
+	display:inline-block;
+}
+.awardTableHead ul li{
+	float:left;
+}
+.awardTableHead{
+	width:868px;
+	height:45px;
+	line-height:45px;
+	background-color:#f5f5f5;
+	border-top:1px solid #ebebeb;
+	border-bottom:1px solid #ebebeb;
+	padding-left:23px;
+}
+.awardTableHeadAb{
+	width:868px;
+	height:45px;
+	line-height:45px;
+	background-color:#f5f5f5;
+	border-top:1px solid #ebebeb;
+	border-bottom:1px solid #ebebeb;
+}
+
+/* 奖励设置-我的红包 */
+
+.awardTableHeadAb .awardTableHead1 ,
+.awardTableHeadAb .awardTableHead1 ,
+.awardTableHeadAb .awardTableHead2 ,
+.awardTableHeadAb .awardTableHead3 ,
+.awardTableHeadAb .awardTableHead4 ,
+.awardTableHeadAb .awardTableHead5 ,
+.awardTableHeadAb .awardTableHead6 ,
+.awardTableHeadAb .awardTableHead7
+{
+	float:left;
+	font-size:14px;
+	height:45px;
+	line-height:45px;
+	text-align:center;
+}
+
+.awardTableHead1 {
+	width:142px;
+}
+.awardTableHead2{
+	width:112px;
+}
+.awardTableHead3{
+	width:120px;
+}
+.awardTableHead4{
+	width:122px;
+}
+.awardTableHead5{
+	width:142px;
+}
+.awardTableHead6{
+	width:120px;
+}
+.awardTableHead7{
+	width:104px;
+}
+.awardTableHead7a{
+	padding-left:30px;
+}
+
+.awardTableRegister .awardTableHead1 ,
+.awardTableRegister .awardTableHead2 ,
+.awardTableRegister .awardTableHead5 ,
+.awardTableRegister .awardTableHead6 ,
+.awardTableRegister .awardTableHead7 
+{
+	float:left;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+	line-height:70px;
+}
+.awardTableRegister .awardTableHead6 {
+	padding-left:26px;
+}
+.awardTableRegister .awardTabCuA3-1{
+	float:left;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+}
+.awardTableRegister .awardTableHead5a{
+	float:left;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+	line-height:70px;
+}
+.awardTableRegister .awardTableHead6a{
+	float:left;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+	line-height:70px;
+	
+}
+.awardTableHead6a{width:120px;}
+.awardTableHead5a{width:115px;}
+.awardTabCuA3-1{
+	height:70px;
+	width:128px;
+	display:table-cell;
+}
+.awardTabCuA3-1 .contentA{
+	vertical-align:middle;    
+	padding-left:10px;
+	padding-top:18px;
+	text-align:center;
+	padding-right:17px;
+}
+
+.awardTableRegisterAll{
+	font-size:12px;
+	color:#575757;
+	line-height:70px;
+	text-align:center;
+}
+.awardTableRegisterOne{
+	display:block;
+	white-space:nowrap;
+	 overflow:hidden; 
+	 text-overflow:ellipsis;
+	 color:#575757;
+	 font-size:12px;
+	 line-height:70px;
+	 text-align:center;
+}
+.awardTableRegisterTwo{
+	height:70px;
+	width:113px;
+	line-height:24px;
+	color:#575757;
+	font-size:12px;
+	text-align:center;
+}
+.awardTableCuA{width:868px;}
+.awardTableRegisterTwo p 
+{
+	margin-top:15px;
+}
+.awardTableRegisterTwo b ,
+.awardTableRegisterThre b
+{
+	font-weight:normal;
+}
+.awardTableRegister {
+	width:100%;
+	height:70px;
+	clear:both;
+	border-bottom:1px solid #ececec;
+}
+.awardTableRegisterAll i{
+	font-style:normal;
+	font-size:12px;
+}
+
+.awardTabelIstyle{
+	color:#fe7407;
+}
+.awardTableRegister ul {
+	height:70px;
+	width:100%;
+	border-bottom:1px solid #ececec;
+}
+.awardTableRegister ul li{
+	float:left;
+}
+.awardTableRegisterAll , .awardTableRegisterOne{
+	width:113px;
+}
+.awardTgq{
+	background:url('../../../resource/img/account/fundManagement/zjgl_5.png') no-repeat;
+	background-position:center center;
+	display:inline-block;
+	width:91px;
+	height:63px;
+}
+/* 资金管理-赠送奖励-电子劵 */
+/* 2016-03-31 */
+/* 李丽梅 */
+.awardElectronicCouponsCunt{
+	width:100%;
+	height:100%;
+	display:none !important;
+}
+.awardImage{
+	height:190px;
+	padding:33px 0;
+	border-bottom:1px dashed #d7d7d7;
+	width:92%;
+}
+.awardL{
+	float:left;
+	font-size:26px;
+	color:#ff4d2a;
+	display:inline-block;
+	padding-top:32px;
+	padding-left:20px;
+}
+.awardEc{
+	background:url('../../../resource/img/account/fundManagement/zjgl_6.png') no-repeat;
+	background-position:center center;
+	display:inline-block;
+	width:203px;
+	height:117px;
+	margin-right:25px;
+	margin-left:78px;
+}
+ .awardR{
+	float:left;
+} 
+.awardBc{
+	width:502px;
+	height:112px;
+	border:2px dashed #d7d7d7;
+	text-align:center;
+	padding-top:10px;
+}
+
+.awardBc p{
+	background:url('../../../resource/img/account/fundManagement/zjgl_7.png') no-repeat;
+	display:inline-block;
+	width:272px;
+	height:82px;
+}
+.awardTabCuA4-1{
+	height:70px;
+	width:202px;
+	display:table-cell;
+	vertical-align:middle;
+	color:#575757;
+	font-size:12px;
+}
+.awardTabCuA4-1 .contentB{
+	vertical-align:middle;   
+	padding-left:65px;
+	padding-right:55px;
+	text-align:center;
+}
+
+/* 电子劵代金劵获取 */
+.awardTableCunt{
+	clear:both;
+	border:1px solid #eee;
+	width:92%;
+	padding-top:10px;
+	height:340px;
+}
+
+.awardBtn div + div{
+	margin-left:8px;
+}
+.awardTableAll{
+	width:202px;
+	height:55px;
+	line-height:55px;
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;
+}
+.awardTableAll1{
+	width:202px;
+	height:45px;
+	line-height:45px;
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;
+}
+.awardTableRegisterThre {
+	width:210px;
+	line-height:28px;
+	display:inline-block;
+	text-align:center;
+	font-size:14px;
+	color:#262626;
+}
+.awardTableHeadTwo{
+	width:868px;
+	border-bottom:1px solid #ececec;
+	padding-left:23px;
+	font-size:12px;
+	color:#575757;
+}
+.awardTableHeadTwo2{
+	border-bottom:none !important;
+}
+.awardTableHeadTwo ul{
+	clear:both;
+	height:55px;
+	width:100%;
+	border-bottom:1px solid #ececec;
+}
+/* 电子劵使用记录 */
+.awardTableCu{
+	clear:both;
+	border:1px solid #eee;
+	width:92%;
+	padding-top:10px;
+	height:340px;
+	display:none !important;
+}
+/* 电子劵获取。使用记录 */
+
+.awardTable{
+	width:868px;
+	padding-top:10px;
+	border:1px solid #ececec;
+}
+/*标签切换  */
+.awardBtn{
+	margin-top:27px;
+	width:868px;
+    position:relative;
+    z-index:99;
+	height:34px;
+}
+.awardBtn li{
+	width:105px;
+	height:35px;
+	line-height:35px;
+	font-size:14px;
+	color:#000;
+	background-color:#fff;
+	border:1px solid #f7f7f7;
+	float:left;
+	text-align:center;
+	cursor:pointer;
+}
+.awardBtn li + li{
+	margin-left:8px;
+}
+
+.awardBtn .awardBtnIng{
+	border-top:1px solid #3ab1ff;
+	border-bottom:2px solid #fff;
+}
+.awardTableAllFont {
+	color:#ff4d2a;
+}
+.awardtabContent .contentActivea{
+	display:block;
+}
+.awardContenta{
+	display:none;
+}
+/*标签切换  结束*/
+
+/* 分页标签 */
+.pagerCu{
+	margin:40px 0 !important;
+	width:868px !important;
+}

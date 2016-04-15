@@ -40,21 +40,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	<div class="config">
 			 		<fieldset>
 			 			<legend>会员</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<form class="form-horizontal" role="form" name="" action="javascript:mchargefee()" id="member">
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">充值手续费支付比例：</label>
-				 				<div class="i-fl">	
+				 				<div id="mdiv" class="i-fl">	
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之三
+				 						<input type="radio" name="member" id="" value="1"> 扣除充值人千分之三
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value=""> 扣除平台千分之三
+				 						<input type="radio" name="member" id="" value="2"> 扣除平台千分之三
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之一
+				 						<input type="radio" name="member" id="" value="3"> 扣除充值人千分之一
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value="" checked> 扣除平台千分之一
+				 						<input type="radio" name="member" id="" value="4" checked> 扣除平台千分之一
 				 					</label>
 				 				</div>
 			 				</div>
@@ -67,21 +67,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 		</fieldset>
 			 		<fieldset>
 			 			<legend>第三方合作机构</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<form class="form-horizontal" role="form" name="" action="javascript:ochargefee()" id="orgnization">
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">充值手续费支付比例：</label>
-				 				<div class="i-fl">	
+				 				<div id="odiv" class="i-fl">	
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之三
+				 						<input type="radio" name="thirdpart" id="" value="1"> 扣除充值人千分之三
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value=""> 扣除平台千分之三
+				 						<input type="radio" name="thirdpart" id="" value="2"> 扣除平台千分之三
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之一
+				 						<input type="radio" name="thirdpart" id="" value="3"> 扣除充值人千分之一
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value="" checked> 扣除平台千分之一
+				 						<input type="radio" name="thirdpart" id="" value="4" checked> 扣除平台千分之一
 				 					</label>
 				 				</div>
 			 				</div>
@@ -94,21 +94,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 		</fieldset>
 			 		<fieldset>
 			 			<legend>平台</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<form class="form-horizontal" role="form" name="" action="javascript:pchargefee()" id="station">
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">充值手续费支付比例：</label>
-				 				<div class="i-fl">	
+				 				<div id="sdiv" class="i-fl">	
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之三
+				 						<input type="radio" name="platform" id="" value="1"> 扣除充值人千分之三
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value=""> 扣除平台千分之三
+				 						<input type="radio" name="platform" id="" value="2"> 扣除平台千分之三
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value=""> 扣除充值人千分之一
+				 						<input type="radio" name="platform" id="" value="3"> 扣除充值人千分之一
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="" id="" value="" checked> 扣除平台千分之一
+				 						<input type="radio" name="platform" id="" value="4" checked> 扣除平台千分之一
 				 					</label>
 				 				</div>
 			 				</div>
@@ -127,6 +127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 尾部 -->
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<script type="text/javascript" src="js/config/charge-fee.js"></script>
 	<!-- 私用js -->
 </body>
 

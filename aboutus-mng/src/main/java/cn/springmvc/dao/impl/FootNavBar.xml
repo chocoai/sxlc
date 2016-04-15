@@ -3,15 +3,15 @@
 <mapper namespace="footNavBar">
     <resultMap type="cn.springmvc.model.FootNavBarEntity" id="resultListFootNavBar">
         <id column="ID" property="id" />
-		<result column="Type_Id" property="typeId" />
-		<result column="Title" property="title" />
-		<result column="URL" property="url" />
-		<result column="fnbStatu" property="statu" />
+		<result column="Type_Id"    property="typeId" />
+		<result column="Title"      property="title" />
+		<result column="URL"        property="url" />
+		<result column="fnbStatu"   property="statu" />
 		<result column="CreateTime" property="createTime" />
-		<result column="Opt_Date" property="optDate" />
-		<result column="Opt_Id" property="optId" />
-		<result column="adminName" property="adminName" />
-		<result column="Name" property="name" />
+		<result column="Opt_Date"   property="optDate" />
+		<result column="Opt_Id"     property="optId" />
+		<result column="adminName"  property="adminName" />
+		<result column="Name"       property="name" />
     </resultMap> 
 	<!-- 分页查询底部导航条-->  
 	<select id="selectFootNavBarList"  resultMap="resultListFootNavBar" parameterType="product_p2p.kit.pageselect.PageEntity" >
@@ -21,10 +21,10 @@
         LEFT JOIN FootNavBar_Type fNBT on  fNB.Type_Id=fNBT.ID
 		LEFT JOIN Admin a on a.ID=fNB.Opt_Id
         <where>  
-            <if test="map.title != null">  
+            <if test="map !=null and map.title != null and map.title != '' ">  
                 Title like  '%{map.title}%'  
             </if>  
-            <if test="map.statu != -1">  
+            <if test="map !=null and  map.statu != -1">  
                 and fNB.Statu=#{map.statu}
             </if> 
         </where>  
@@ -82,5 +82,6 @@
 	    fNB.CreateTime,fNB.Opt_Date,fNB.Opt_Id,fNBT.Name 
 	    from   FootNavBar  fNB
         LEFT JOIN FootNavBar_Type fNBT on  fNB.Type_Id=fNBT.ID 
+        where fNB.Statu=1
     </select>       
 </mapper>

@@ -1,0 +1,86 @@
+/* ���ݲ��ֿ�ʼ ���Ӿ� 2016-04-02 */
+.messageAlert{
+	margin:5% auto;
+	-moz-user-select:none;
+}
+.messageAlertH{
+	width:100%;
+	display: inline-block;
+	border-bottom:1px solid #ececec;
+	font-size:18px;
+	color:#000;
+	padding:0 30px;
+	margin:0 auto;
+}
+.messageAlertH>div{
+	width:118px;
+	display: inline-block;
+	height:45px;
+	padding:0 5px;
+	text-align: center;
+	color:#72c0f3;
+	border-bottom:2px solid #72c0f3;
+}
+.messageAlertM{
+	display:inline-block;
+	width:100%;
+	font-size:13px;
+	margin:20px 0;
+	padding: 0 10px;
+}
+.messageAlertMTitle,.messageAlertMCont{
+	width: 875px;
+}
+.messageAlertMTitle{
+	height:43px;
+	background-color:#f5f5f5;
+	line-height: 43px;
+	border-top:1px solid #ebebeb;
+	border-bottom:1px solid #ebebeb;
+}
+.settingContent{
+	width:320px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	display:inline-block;
+	text-align: center;
+}
+.shortMessage,
+.websiteMessage,
+.e-mail{
+	width:160px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	display:inline-block;
+	text-align: center;
+}
+.messageAlertMCont{
+	height:47px;
+	border-bottom:1px solid #ebebeb;
+	line-height:47px;
+	font-size:14px;
+	color:#575757;
+	-moz-user-select:none;
+}
+.messageAlertMCont label{
+	color:#ececec;
+	width:18px;
+	height:17px;
+	display: inline-block;
+	margin-bottom: -3px;
+	cursor:pointer;
+}
+.labelSelect{
+	background:url("../../../resource/img/account/personalCenter/select_03.jpg") no-repeat;
+}
+.labelUnSelect{
+	background:url("../../../resource/img/account/personalCenter/unselect_03.jpg") no-repeat;
+}
+
+
+
+
+
+

@@ -3,14 +3,14 @@
 <mapper namespace="safetyCertificationSet">  
    <resultMap type="cn.springmvc.model.SafetyCertificationSetEntity" id="resultListSafetyCertificationSet">
         <id column="Safety_ID" property="id" />
-		<result column="Certification_Picture" property="certificationPicture" />
-		<result column="Certification_Url" property="certificationUrl" />
+		<result column="Certification_Picture"   property="certificationPicture" />
+		<result column="Certification_Url"       property="certificationUrl" />
 		<result column="Certification_StartTime" property="certificationStartTime" />
-		<result column="Certification_EndTime" property="certificationEndTime" />
-		<result column="Certification_AddTime" property="certificationAddTime" />
-		<result column="adminId" property="adminId" />
-		<result column="Statu" property="Statu" /> 
-		<result column="adminName" property="adminName" /> 
+		<result column="Certification_EndTime"   property="certificationEndTime" />
+		<result column="Certification_AddTime"   property="certificationAddTime" />
+		<result column="adminId"                 property="adminId" />
+		<result column="Statu"                   property="Statu" /> 
+		<result column="adminName"               property="adminName" /> 
     </resultMap> 
     <!-- 分页查询首页全屏弹出框配置列表 -->  
 	<select id="selectSafetyCertificationSetList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListSafetyCertificationSet">

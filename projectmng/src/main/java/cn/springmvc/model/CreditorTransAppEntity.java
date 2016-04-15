@@ -12,6 +12,8 @@
  
 package cn.springmvc.model; 
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /** 
  * @author 刘利 
  * @Description: 债权转让申请实体
@@ -19,25 +21,48 @@ package cn.springmvc.model;
  * @date 2016-4-6 上午10:16:45  */
 
 public class CreditorTransAppEntity {
-	private long ctaId;//ID		
+	private long   ctaId;//ID		
 	private String billNo;//债权转让申请编号  审核通过后生成		
-	private long investId;//投资ID		
-	private long transPrincipal;//转让本金(单位：分)		
-	private long transDiscount;//转让折扣(％)		
+	private long   investId;//投资ID		
+	private long   transPrincipal;//转让本金(单位：分)		
+	private long   transDiscount;//转让折扣(％)		
 	private String transMaxTime;//最迟转让时间		
 	private String applyTime;//申请时间		
-	private int checkStatu;//申请状态(0：申请；1：审核通过；-1：审核打回)		
-	private int  statu;//转让状态(-1：待流标处理 0：投标中 1：流标 2：投标完成 3：还款中 4：结清)		
-	private int mngFee;//债权转让手续费金额   单位  分		
-	private int mngFeeStatu;//债权转让手续费状态   0：未支付   1：支付		
-	private int surplusTime;//剩余期限		
-	private int  surplusTimeType;//剩余期限类型 0：天标 1：月标 2：年标		
+	private int    checkStatu;//申请状态(0：申请；1：审核通过；-1：审核打回)		
+	private int    statu;//转让状态(-1：待流标处理 0：投标中 1：流标 2：投标完成 3：还款中 4：结清)		
+	private int    mngFee;//债权转让手续费金额   单位  分		
+	private int    mngFeeStatu;//债权转让手续费状态   0：未支付   1：支付		
+	private int    surplusTime;//剩余期限		
+	private int    surplusTimeType;//剩余期限类型 0：天标 1：月标 2：年标		
 	private String endDate;//债权到期日		
-	private int ctaInvestRate;//投标进度 万分之		
+	private int    ctaInvestRate;//投标进度 万分之	
+	private String ctaInvestRates;//投标进度 万分之	
 	private String dealDate;//	放款时间	
 	private String transPrincipals;//转让本金(单位：分)		
 	private String transDiscounts;//转让折扣(％)	
 	private String mngFees;//债权转让手续费金额   单位  分	
+	private String projectTitle;//转让项目名称 
+	private long transAmount;//转让价格
+	private String transAmounts;//转让价格
+	public String getProjectTitle() {
+		return projectTitle;
+	}
+	public void setProjectTitle(String projectTitle) {
+		this.projectTitle = projectTitle;
+	}
+	public long getTransAmount() {
+		return transAmount;
+	}
+	public void setTransAmount(long transAmount) {
+		this.transAmount = transAmount;
+		this.transAmounts= IntegerAndString.LongToString(transAmount);
+	}
+	public String getTransAmounts() {
+		return transAmounts;
+	}
+	public void setTransAmounts(String transAmounts) {
+		this.transAmounts = transAmounts;
+	}
 	public long getCtaId() {
 		return ctaId;
 	}
@@ -61,12 +86,14 @@ public class CreditorTransAppEntity {
 	}
 	public void setTransPrincipal(long transPrincipal) {
 		this.transPrincipal = transPrincipal;
+		this.transPrincipals= IntegerAndString.LongToString(transPrincipal);
 	}
 	public long getTransDiscount() {
 		return transDiscount;
 	}
 	public void setTransDiscount(long transDiscount) {
 		this.transDiscount = transDiscount;
+		this.transDiscounts= IntegerAndString.LongToString(transDiscount);
 	}
 	public String getTransMaxTime() {
 		return transMaxTime;
@@ -97,6 +124,7 @@ public class CreditorTransAppEntity {
 	}
 	public void setMngFee(int mngFee) {
 		this.mngFee = mngFee;
+		this.mngFees= IntegerAndString.IntToString(mngFee);
 	}
 	public int getMngFeeStatu() {
 		return mngFeeStatu;
@@ -127,6 +155,7 @@ public class CreditorTransAppEntity {
 	}
 	public void setCtaInvestRate(int ctaInvestRate) {
 		this.ctaInvestRate = ctaInvestRate;
+		this.setCtaInvestRates(IntegerAndString.IntToString(ctaInvestRate));
 	}
 	public String getDealDate() {
 		return dealDate;
@@ -152,6 +181,11 @@ public class CreditorTransAppEntity {
 	public void setMngFees(String mngFees) {
 		this.mngFees = mngFees;
 	}
-
+	public String getCtaInvestRates() {
+		return ctaInvestRates;
+	}
+	public void setCtaInvestRates(String ctaInvestRates) {
+		this.ctaInvestRates = ctaInvestRates;
+	}
 }
 

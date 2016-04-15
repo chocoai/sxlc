@@ -24,13 +24,13 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil; 
-import cn.springmvc.controller.RepalyUtitls;
 import cn.springmvc.dao.GenerateRepayListDao; 
 import cn.springmvc.dao.ReplayProjectDetailListDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil; 
 import cn.springmvc.model.LoanRepayEntity; 
 import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.service.GenerateRepayListService;
+import cn.springmvc.utitls.RepalyUtitls;
 
 /** 
  * @author 刘利 
@@ -44,7 +44,8 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 	@Resource(name="replayProjectDetailListDaoImpl")
 	private  ReplayProjectDetailListDao replayProjectDetailListDao; 
 	@Override
-	public int GenerateRepayList(int applyID) {  
+	public int GenerateRepayList(int applyID) {
+		
 		ProjectAppRecordEntity projectAppRecordEntity = null;
 		projectAppRecordEntity = replayProjectDetailListDao.selectProjectDetailByID(applyID);
 		if(projectAppRecordEntity == null ){
@@ -66,15 +67,14 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 		//还款方式
 		int replayway = projectAppRecordEntity
 				.getProjectBaseInfoentity().getRepayWay();
-		SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
-		String presentDate3 = sdf3.format(new Date());//获取当前系统时间
+		 SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+		 String presentDate3 = sdf3.format(new Date());//获取当前系统时间
 		 List<LoanRepayEntity> planList = RepalyUtitls.getIncomePlan2(deadLineType,amounts,yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
 		 LoanRepayEntity planEntity = new LoanRepayEntity();
 		 String planStr = "";
 		 Long id = generatorUtil.GetId();
 		 int iSize = planList.size();
-		 for(int m = 0;m < iSize; m++ ){
-			System.out.print(id);
+		 for(int m = 0;m < iSize; m++ ){ 
 			planEntity = planList.get(m); 
 			if(planStr.equals("")) {
 				planStr = RepalyUtitls.StringToLong(planEntity.getCorpus())+","+RepalyUtitls.StringToLong(planEntity.getInterest())+","+planEntity.getRetrieveDateTime()+","+(m+1) +","+id+"";
@@ -84,8 +84,8 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 		 }
 		 Map<String,Object> map =new HashMap<String,Object>();
 		 map.put("iAppId", applyID);
-		 map.put("sInfo", planStr);
-		 map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		 map.put("sInfo",  planStr);
+		 map.put("sKey",   DbKeyUtil.GetDbCodeKey());
 		 int iResult  = generateRepayListDao.GenerateRepayList(map); 
 		 String[] str = planStr.split(";");
 		 if(str.length >0){

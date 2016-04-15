@@ -33,10 +33,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="javascript:;">债权转让列表</a>
-					</li>
-				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">
 						<div class="panel panel-success">
@@ -64,7 +60,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  		<div class="panel-heading">
 					  			<div class="action_item">
 					  				<button id="credit_assignment_exam" class="obtn glyphicon glyphicon-plus">审核</button>
-									<button id="credit_assignment_end_timealong" class="obtn glyphicon glyphicon-pencil">投标结束时间延长</button>
 								</div> 		
 							</div>
 							<div class="panel-body">
@@ -87,6 +82,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</tr>
 									</thead>
 								<tbody>
+									<%
+										for(int i=0;i<15;i++){
+									 %>
 									<tr>
 										<td><input type="checkbox"></td>
 										<td>信用贷</td>
@@ -102,99 +100,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td>img</td>
 										<td>img</td>
 									</tr>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>信用贷</td>
-										<td>20万~40万</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>简介:</td>
-										<td>无</td>
-										<td>img</td>
-										<td>未审核</td>
-									</tr>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>信用贷</td>
-										<td>20万~40万</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>简介:</td>
-										<td>无</td>
-										<td>img</td>
-										<td>已拒绝</td>
-									</tr>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>信用贷</td>
-										<td>20万~40万</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>简介:</td>
-										<td>无</td>
-										<td>img</td>
-										<td>已启用</td>
-									</tr>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>信用贷</td>
-										<td>20万~40万</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>简介:</td>
-										<td>无</td>
-										<td>img</td>
-										<td>已启用</td>
-									</tr>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>信用贷</td>
-										<td>20万~40万</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>简介:</td>
-										<td>无</td>
-										<td>img</td>
-										<td>已启用</td>
-									</tr>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>信用贷</td>
-										<td>20万~40万</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>简介:</td>
-										<td>无</td>
-										<td>img</td>
-										<td>已启用</td>
-									</tr>
+									<%
+										}
+									 %>
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<!-- 债权转让审核 -->
+					<div class="w-content assignment_exam">
+						<table>
+							<tr>
+								<td class="tt"><label>管理员意见：</label></td>
+								<td class="con">
+									<input type="radio" name="state" class="" value="1" /> 同意
+									<input type="radio" name="state" class="" value="2" /> 拒绝
+								</td>
+							</tr>
+							<tr>
+								<td class="tt"><label class="ineed">选择结束时间：</label></td>
+								<td class="con">
+									<input type="date" class="" value="" />
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -203,7 +132,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<!-- 公用js -->
 		<jsp:include page="../common/cm-js.jsp"></jsp:include>
-		<script src="js/project/credit_assignment_list.js"></script>
+		<script src="js/project/credit_assignment.js"></script>
 		<!-- 私用js -->
 		<script type="text/javascript">
 					//默认禁用搜索和排序
@@ -215,17 +144,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					$(function() {
 						$('#table_credit_assignment_list').DataTable({
 							"autoWidth" : false,
-							scrollY : 500,
+							//scrollY : 500,
 							//paging : false,//分页
 							//"searching" : false,
 							"info" : false,//左下角信息
 							//"ordering": false,//排序
-							"aaSorting" : [ [ 1, "desc" ],[ 6, "desc" ],[ 7, "desc" ] ],//默认第几个排序
+							"aaSorting" : [ [ 2, "desc" ],[ 7, "desc" ],[ 8, "desc" ] ],//默认第几个排序
 							"aoColumnDefs" : [
 							//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 							{
 								"orderable" : false,
-								"aTargets" : [ 0, 2, 3, 4, 5, 8, 9, 10, 11, 12]
+								"aTargets" : [ 0, 1, 3, 4, 5, 6, 9, 10, 11, 12]
 							} // 制定列不参与排序
 							],
 							colReorder : false,

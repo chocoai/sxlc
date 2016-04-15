@@ -151,6 +151,36 @@ public class InvestEntity {
 	 * 登录用户名
 	 */
 	private String logname;
+	private int isBack;//是否使用返现券
+	private String projectNo;//借款项目编号
+	private String projectTitle;//借款项目标题
+	private int investRate;//投资总进度
+	private String investRates;//投资总进度
+	public String getProjectNo() {
+		return projectNo;
+	}
+	public void setProjectNo(String projectNo) {
+		this.projectNo = projectNo;
+	}
+	public String getProjectTitle() {
+		return projectTitle;
+	}
+	public void setProjectTitle(String projectTitle) {
+		this.projectTitle = projectTitle;
+	}
+	public int getInvestRate() {
+		return investRate;
+	}
+	public void setInvestRate(int investRate) {
+		this.investRate = investRate;
+		this.investRates= IntegerAndString.LongToString(investRate);
+	}
+	public String getInvestRates() {
+		return investRates;
+	}
+	public void setInvestRates(String investRates) {
+		this.investRates = investRates;
+	}
 	public String getInvestTypes() {
 		return investTypes;
 	}
@@ -350,6 +380,12 @@ public class InvestEntity {
 	}
 	public void setLogname(String logname) {
 		this.logname = logname;
+	}
+	public int getIsBack() {
+		return isBack;
+	}
+	public void setIsBack(int isBack) {
+		this.isBack = isBack;
 	} 	
 
 

@@ -2,21 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="projectBaseInfo">  
    <resultMap type="cn.springmvc.model.ProjectBaseInfoEntity" id="resultListProjectBaseInfo">
-        <id column="Project_ID" property="id" />
-		<result column="Project_Name" property="projectName" />
-		<result column="Min_Amount" property="minAmount" />
-		<result column="Max_Amount" property="maxAmount" />
-		<result column="Min_Rate" property="minRate" />
-		<result column="Max_Rate" property="maxRate" />
-		<result column="Single_Min" property="singleMin" />
-		<result column="Invest_Max" property="investMax" />
-		<result column="MinStart" property="minStart" />
+        <id column="Project_ID"        property="id" />
+		<result column="Project_Name"  property="projectName" />
+		<result column="Min_Amount"    property="minAmount" />
+		<result column="Max_Amount"    property="maxAmount" />
+		<result column="Min_Rate"      property="minRate" />
+		<result column="Max_Rate"      property="maxRate" />
+		<result column="Single_Min"    property="singleMin" />
+		<result column="Invest_Max"    property="investMax" />
+		<result column="MinStart"      property="minStart" />
 		<result column="Brief_Introduction" property="briefIntroduction" />
-		<result column="Apply_Member" property="applyMember" />
-		<result column="Pic_Url" property="picUrl" /> 
-		<result column="Pic_Icon" property="picIcon" />
-		<result column="Is_Mortgage" property="isMortgage" />
-		<result column="Statu" property="statu" /> 
+		<result column="Apply_Member"  property="applyMember" />
+		<result column="Pic_Url"       property="picUrl" /> 
+		<result column="Pic_Icon"      property="picIcon" />
+		<result column="Is_Mortgage"   property="isMortgage" />
+		<result column="Statu"         property="statu" /> 
     </resultMap> 
     <!-- 分页查询项目类型列表 -->  
 	<select id="selectProjectBaseInfoList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProjectBaseInfo">

@@ -1,0 +1,14 @@
+$(function(){
+	$(".TE").addClass("down");
+	$(".TE4").addClass("down2");	
+	/*浼嶆垚鐒�016-3-31*/
+	/*鑷姩杩樻寮�惎涓庡叧闂�*/
+	$(".close-auto-repay").click(function(){
+		$(this).parent().removeClass("active");
+		$(".open-auto-repay").parent().addClass("active");
+	});
+	$(".open-auto-repay").click(function(){
+		$(this).parent().removeClass("active");
+		$(".close-auto-repay").parent().addClass("active");
+	});
+});

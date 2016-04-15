@@ -43,12 +43,13 @@
         <result property = "memberNo" 		    column = "Member_No" />   
         <result property = "personalName" 		column = "Personal_Name" />  
         <result property = "compangName" 		column = "Compang_Name" />  
-        <result property = "memberName" 		column = "memberName" />   
+        <result property = "memberName" 		column = "memberName" />  
+       
+        <result property = "recordDate"       	column = "Record_Date" /> 
+        <result property = "startDate"       	column = "Start_Date" />
+        <result property = "endDate"       	    column = "End_Date" /> 
+        <result property = "holdDate"       	column = "Hold_Date" /> 
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"></association>
-        <association property="personalBaseInfoEntity" column="Personal_ID" javaType="cn.springmvc.model.PersonalBaseInfoEntity" 
-		select="memberInfo.selectMemberInfoPersonByID"></association>
-		<association property="companyInfoEntity" column="Company_ID" javaType="cn.springmvc.model.CompanyInfoEntity" 
-		select="memberInfo.selectMemberInfoCompanByID"></association>
     </resultMap> 
      <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
             <id property = "ID" 				 column = "id" />
@@ -64,7 +65,7 @@
 			<result property = "replayWays"      column = "name1" /> 
      </resultMap>
     <!-- 根据项目申请ID查询审核项目列表 -->  
-	<select id="selectProjectAuitList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectAppProcess" >
+	<select id="selectProjectAuitList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectDetail" >
 	   select par.Apply_Id,pap.Record_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,
 	   mi.Company_ID,mi.Personal_ID,pbi.Project_Title,par.Project_ID,
 	   pty.Project_Name,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,pbi.Repay_Way,par.Invest_Statu,
@@ -102,7 +103,7 @@
 	     </if>
          <!-- 	     已审核 -->
 	     <if test = "map.statu ==  1"> 
-	        and par.Apply_Id in
+	       and par.Apply_Id in
 	       (select Apply_Id  
 	        from  Project_Check_Record pck
 	        left join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
@@ -136,7 +137,7 @@
     </select>
      
      <!-- 根据项目申请ID查询借款项目详情 -->  
-	<select id="selectProjectdetail"  parameterType="int" resultMap="resultProjectAppProcess" >
+	<select id="selectProjectdetail"  parameterType="int" resultMap="resultProjectDetail" >
 	   select pbi.Project_Title,pbi.Amount,replayway.name1,pbi.Repay_Way,pbi.Uses,
 	   pbi.Repay_Source,pbi.Deadline,pbi.Deadline_Type,par.Invest_Max,pbi.Year_Rate,
 	   par.MinStart,par.Increase_Range,pbi.Project_Descript,
@@ -173,7 +174,7 @@
 				#{CheckRemark,	 mode=IN,	jdbcType=VARCHAR},
 				#{adminID,	     mode=IN,	jdbcType=INTEGER},
 				#{checkid,	     mode=IN,	jdbcType=INTEGER},
-				#{ProcessID,	     mode=IN,	jdbcType=INTEGER},
+				#{ProcessID,	 mode=IN,	jdbcType=INTEGER},
 				#{sIndexs,	     mode=IN,	jdbcType=INTEGER},
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)}

@@ -36,7 +36,7 @@
 		<result property = "projectNo" 			column = "Project_No" /> 
       	<result property = "merBillNo" 			column = "Mer_BillNo" /> 
         <result property = "investRate" 		column = "Invest_Rate" />
-         <result property = "logname" 		    column = "Logname" />  
+        <result property = "logname" 		    column = "Logname" />  
         <result property = "memberType" 		column = "Member_Type" />  
         <result property = "companyID" 		    column = "Company_ID" />
         <result property = "personalID" 		column = "Personal_ID" />  
@@ -44,11 +44,13 @@
         <result property = "personalName" 		column = "Personal_Name" />  
         <result property = "compangName" 		column = "Compang_Name" />
         <result property = "memberName" 		column = "memberName" />  
+        <result property = "projectName" 		column = "Project_Name" /> 
+        <result property = "recordDate"       	column = "Record_Date" /> 
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	    </association>
     </resultMap> 
     <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
-            <id property = "ID" 				 column = "id" />
+            <id property = "ID" 				 column = "Project_Base_ID" />
 			<result property = "projectTitle"    column = "Project_Title" /> 
 			<result property = "uses"            column = "Uses" />
 			<result property = "repaySource"     column = "Repay_Source" />
@@ -61,7 +63,7 @@
 			<result property = "replayWays" 	 column = "name1" />      
      </resultMap>
     <!-- 根据项目申请ID查询发布项目列表 -->  
-	<select id="selectProjectPublishList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectAppProcess" >
+	<select id="selectProjectPublishList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectDetail" >
 	   select pbi.Project_Title,pap.Release_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,pap.Record_Date,par.Project_ID,
 	   pty.Project_Name,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,pbi.Repay_Way,par.Invest_Statu,
 	   pbi.Amount, par.Project_Base_ID, replayway.name1,par.Check_Statu,par.Invest_Max,
@@ -100,8 +102,8 @@
 	       and  #{map.pushendTime} > pap.Release_Date 
 	     </if>
 	     <if test = "map.name !=  null"> 
-	       and ( mi.Company_ID in ( select Company_ID from Company_Info where Compang_Name like '%{map.name}%') 
-	       or mi.Personal_ID in (select Personal_Id from Personal_Base_Info where Personal_Name like  '%{map.name}%' )
+	       and ( mi.Company_ID in ( select Company_ID from Company_Info where Compang_Name like '%${map.name}%') 
+	       or mi.Personal_ID in (select Personal_Id from Personal_Base_Info where Personal_Name like  '%${map.name}%' )
 	       )
 	     </if> 
 	       <if test = "map.investStatu !=  -1"> 
@@ -118,7 +120,7 @@
     
     
      <!-- 根据项目申请ID查询借款项目详情  resultProjectCheckRecord-->  
-	<select id="selectProjectdetail"  parameterType="int" resultMap="resultProjectAppProcess" >
+	<select id="selectProjectdetail"  parameterType="int" resultMap="resultProjectDetail" >
 	   select par.Apply_Id, pap.Record_Date,par.Project_No,mi.Logname,mi.Member_Type,pbi.Project_Title,par.Project_ID,
 	   pty.Project_Name,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,pbi.Repay_Way,par.Invest_Statu,
 	   pbi.Amount, par.Project_Base_ID,replayway.name1,par.Check_Statu

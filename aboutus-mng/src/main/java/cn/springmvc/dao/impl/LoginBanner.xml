@@ -2,16 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="loginBanner">
     <resultMap type="cn.springmvc.model.LoginBannerEntity" id="resultListLoginBanner">
-        <id column="ID" property="id" />
-		<result column="Banner_Title" property="bannerTitle" />
-		<result column="Url" property="url" />
-		<result column="Links" property="links" />
-		<result column="Indexs" property="indexs" />
-		<result column="Statu" property="statu" />
-		<result column="CreateTime" property="createTime" /> 
-		<result column="Opt_Date" property="optDate" />
-		<result column="Opt_Id" property="optId" />
-		<result column="adminName" property="adminName" />
+        <id column="ID" 				property="id" />
+		<result column="Banner_Title" 	property="bannerTitle" />
+		<result column="Url" 			property="url" />
+		<result column="Links" 			property="links" />
+		<result column="Indexs" 		property="indexs" />
+		<result column="Statu" 			property="statu" />
+		<result column="CreateTime" 	property="createTime" /> 
+		<result column="Opt_Date" 		property="optDate" />
+		<result column="Opt_Id" 		property="optId" />
+		<result column="adminName" 		property="adminName" />
     </resultMap>  
 	<!-- 分页查询的登录界面轮播图-->  
 	<select id="selectLoginBannerListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListLoginBanner" >
@@ -32,8 +32,8 @@
             <if test="map.statu != -1">  
                 and hb.Statu=#{map.statu}
             </if>  
-            order by hb.CreateTime desc
         </where>   
+        order by hb.CreateTime desc
     </select> 
      <!-- 新增登录界面轮播图 -->  
 	<insert id="insertLoginBanner"  parameterType="cn.springmvc.model.LoginBannerEntity" >    

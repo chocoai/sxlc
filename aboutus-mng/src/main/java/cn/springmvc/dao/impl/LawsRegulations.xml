@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="lawsRegulations">
     <resultMap type="cn.springmvc.model.LawsRegulationsEntity" id="resultListLawsRegulations">
-        <id column="ID" property="id" /> 
-		<result column="Content" property="content" />
-		<result column="Statu" property="statu" />
-		<result column="CreateTime" property="createTime" />
-		<result column="Opt_Date" property="optDate" />
-		<result column="Opt_Id" property="optId" />
+        <id column="ID" 				property="id" /> 
+		<result column="Content" 		property="content" />
+		<result column="Statu"			property="statu" />
+		<result column="CreateTime" 	property="createTime" />
+		<result column="Opt_Date" 		property="optDate" />
+		<result column="Opt_Id" 		property="optId" />
     </resultMap> 
 	<!-- 查询法律法规 -->  
 	<select id="selectLawsRegulations"  parameterType="int" resultMap="resultListLawsRegulations" >

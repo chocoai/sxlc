@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="Index">
 <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetailIndex">
-        <id property = "applyId"						column = "Apply_Id" />  
+        <id property = "applyId"				column = "Apply_Id" />  
 		<result property = "investStatu" 		column = "Invest_Statu" /> 
 		<result property = "rateAddRate" 		column = "Rate_Add_Rate" /> 
 		<result property = "rewardRate" 		column = "Reward_Rate" />
@@ -16,7 +16,7 @@
 	   </association>
     </resultMap> 
      <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentityIndex">
-            <id property = "ID" 				 column = "id" />
+            <id property = "id" 				 column = "Project_Base_ID" />
 			<result property = "projectTitle"    column = "Project_Title" />  
 			<result property = "amount" 		 column = "Amount" /> 
 			<result property = "deadline" 		 column = "Deadline" />
@@ -93,7 +93,7 @@
 		left join ProjectBaseInfo pty     on par.Project_ID=pty.Project_ID  
 		left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 		left join DICT transStatu on  transStatu.code1= cta.Statu  and transStatu.tcode = 'DICT_ZRZT'
-		 order by  cta.Statu asc 
+		 order by  cta.Statu asc limit 6
 	</select>
 	  <!-- 查询项目直投投资记录-->  
 	<select id="selectInvestRecordIndex" parameterType="map"  resultMap="resultListInvestRecord">

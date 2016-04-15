@@ -6,6 +6,17 @@
 	vertical-align: middle;
 }
 /* 预览盒子 */
+/* 20160413---陈小花---图标删除样式 */
+div.file-del{
+	position: absolute;
+    top: -7px;
+    right: -5px;
+    font-size: 10px;
+    color: red;
+    cursor:pointer;
+    display:none;
+}
+
 #fileList{}
 #fileList .file-item{margin-right: 10px;}
 #fileList div.file-panel {

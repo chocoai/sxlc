@@ -24,6 +24,7 @@ import cn.springmvc.model.MemberInfoEntity;
 import cn.springmvc.model.PersonalBaseInfoEntity;
 import cn.springmvc.model.ProjectAfterLoanAttachmentEntity;
 import cn.springmvc.model.ProjectAppProcessEntity; 
+import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectBaseInformationEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
 
@@ -39,10 +40,10 @@ public interface ProjectDetailListDao {
 	 * @author 刘利   
 	 * @Description: 根据项目申请记录id查询项目详情  
 	 * @param id  项目申请记录id 
-	 * @return ProjectAppProcessEntity 返回类型 
+	 * @return projectAppRecordEntity 返回类型 
 	 * @date 2016-3-21 下午1:55:21 
 	 */
-	public  ProjectAppProcessEntity  selectProjectDetailByID(Map<String,Object> map);
+	public  ProjectAppRecordEntity  selectProjectDetailByID(Map<String,Object> map);
 	/** 
 	 * 根据项目申请记录id查询该项目已投资总额 
 	 * @author 刘利   
@@ -148,6 +149,15 @@ public interface ProjectDetailListDao {
 	 * @date 2016-3-21 下午3:26:08 
 	 */
     public CompanyInfoEntity selectMemberInfoCompanByID(long personID);
-	 
+    /**
+     * 查询项目直投剩余可投金额-已投资总额-转让本金 
+     * @author 刘利   
+     * @Description: TODO 
+     * @param map {applyID，sKey}
+     * @param @return 设定文件 
+     * @return  ProjectAppRecordEntity 返回类型 
+     * @date 2016-4-13 上午10:59:30
+     */
+    public  ProjectAppRecordEntity  selectInvestAvailableaAmount(Map<String,Object> map); 
 }
 

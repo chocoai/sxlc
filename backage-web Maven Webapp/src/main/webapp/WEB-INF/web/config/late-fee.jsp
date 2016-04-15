@@ -111,12 +111,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}  
 				},
 				columns: [  
-				          {title:'<input type="checkbox"  value="1" />',
-				        	  "mRender": function (data, type, full) {
-				        		  return  '<input type="checkbox" value="1" />';
-				        	  },
-				          sClass: "table-checkbox"
-				          },
 				          { title:"id","data": "id"},  
 				          { title:"逾期起算天数","data": "overdueMin"},  
 				          { title:"逾期截止天数","data": "overdueMax"},  
@@ -128,7 +122,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				          }
 				          ],
 			  aoColumnDefs : [
-			                  {"bVisible": false, "aTargets": [1,2 ]}, //控制列的隐藏显示
+			                  {"bVisible": false, "aTargets": [0]}, //控制列的隐藏显示
 			                  {
 			                	  "orderable" : false,
 			                	  "aTargets" : [ 0,1,2,3,4]
@@ -142,35 +136,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  }
 			});
 			
-			//选中
+			//表格单选效果
 			 $('#table-id tbody').on( 'click', 'tr', function () {
-			        $(this).toggleClass('selected');
-			 });
-		});
+				    var $this = $(this);
+			        if ( $this.hasClass('selected') ) {
+			        	$this.removeClass('selected');
+			        }
+			        else {
+			        	$('#table-id tr.selected').removeClass('selected');
+			        	$this.addClass('selected');
+			        }
+			  });
+			
+		   });
 		
 		/**
 		 * 删除
 		 */
 		function deleteData(param){
-			$.ajax( {  
-				url:appPath+"/config/deleteOverdue.do",
-				data:{"overdueMin":param},
-				type:'post',  
-				cache:false,  
-				dataType:'json',  
-				success:function(data) { 
-					if(data>0){
-						layer.alert("操作成功",{icon:1});
-						var table = $('#table-id').DataTable();
-						table.ajax.reload();
-					}else if(data==0){
-						layer.alert("操作失败",{icon:2});  
-					}
-				},  
-				error : function() {  
-					layer.alert("服务器异常",{icon:2});  
-				}  
-			});
+			layer.confirm('确定删除该条信息？', {
+				  btn: ['确定', '取消']
+				}, function(index, layero){
+					$.ajax( {  
+						url:appPath+"/config/deleteOverdue.do",
+						data:{"overdueMin":param},
+						type:'post',  
+						cache:false,  
+						dataType:'json',  
+						success:function(data) { 
+							if(data>0){
+								layer.alert("操作成功",{icon:1});
+								var table = $('#table-id').DataTable();
+								table.ajax.reload();
+							}else if(data==0){
+								layer.alert("操作失败",{icon:2});  
+							}
+						},  
+						error : function() {  
+							layer.alert("服务器异常",{icon:2});  
+						}  
+					});					
+				  	layer.close(index);
+				}, function(index){
+				});
 		}
 		
 

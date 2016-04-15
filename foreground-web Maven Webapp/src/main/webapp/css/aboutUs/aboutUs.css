@@ -1,0 +1,120 @@
+/* CSS Document */
+@charset "UTF-8";
+/* 设置顶部链接样式 */
+.mainPageTop .mainPageTop5{
+	color:#72c0f3;
+}
+/* 关于我们      顶部通用部分样式    黄鑫 20160327 */
+p,div{
+	word-break:break-all;
+}
+.aboutUsAdvert{
+	width: 100%;
+	min-width:1200px;
+	height:240px;
+}
+.aboutUsAdvert img{
+	width: 100%;
+	height:100%;
+	background-color:#fff;
+}
+.aboutUsNav{
+	width: 100%;
+	min-width: 1200px;
+	height:55px;
+	background-color: #fff;
+}
+.aboutUsNav div{
+	width: 1200px;
+	height:100%;
+	font-size: 16px;
+	line-height: 55px;
+}
+.aboutUsNav div ul{
+	width: 1200px;
+	height:100%;
+}
+.aboutUsNav li{
+	width:12.5%;
+	height:100%;
+	float: left;
+	text-align: center;
+}
+.aboutUsNav li a{
+	color:#818181;
+}
+.aboutUsNav li a:hover{
+	text-decoration: none;
+	color:#72c0f3;
+}
+/* .aboutUsNav .aboutUsNavChoose{
+    background: url('../../resource/img/aboutUs/chooseArea.png') no-repeat;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.aboutUsNav .aboutUsNavChoose select{
+	text-align: center;
+    background: transparent;
+    border: none;
+	color:#818181;
+	font-size: 16px;
+    padding: 16px 10px;
+    float:left;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    margin-left:30px;
+    cursor: pointer;
+} */
+
+
+/* 2016-04-10 胥福星      select模拟过程 */
+.aboutUsNav .aboutUsNavChoose input{
+	display:block;
+    width: 100%;
+    height: 45px;
+    line-height:55px;
+	text-align: center;
+    background: transparent;
+	padding-left:20px;
+    border: none;
+	color:#818181;
+	font-size: 16px;
+    outline: none;
+    cursor: pointer;
+}
+.selectM{
+	width:100% !important;
+	background: url('../../resource/img/aboutUs/chooseArea.png') no-repeat;
+	background-position:right center;
+}
+.selectChose{
+	display:none;
+	width:120px !important;
+	height:auto !important;
+	position:relative;
+	border:1px solid #e6e6e6;
+	z-index:1;
+	background:#fff;
+	margin-left:30px;
+}
+.selectOption{
+	display:block;
+	width:100%;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	border-bottom:1px solid #e6e6e6;
+}
+.arrowUp{
+	display:block;
+	width:15px;
+	height:12px;
+	position:absolute;
+	top:-9px;
+	left:50%;
+	margin-left:-7px;
+	background:url(../../resource/img/aboutUs/gywm_up.png) no-repeat;
+}
+/* end */

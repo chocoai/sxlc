@@ -1,0 +1,193 @@
+@CHARSET "UTF-8";
+/*默认选中样式 start 黄鑫 20160327*/
+.aboutUsNav .aboutUsNavChoose .choose12,
+.choose3{
+	color:#72c0f3;
+}
+.choose1,.choose2{
+	color:#818181;
+}
+/*默认选中样式end 黄鑫 20160327*/
+
+.expertAdvisor{
+	width:1200px;
+	margin-bottom:8%;
+	background-color:#fff;
+	margin-top:23px;
+	min-height: 700px;
+}
+.expertAdvisorH{
+	width:100%;
+	border-bottom:1px solid #ededed;
+	margin-bottom: 37px;
+	margin-top: 16px;
+    float: left;
+}
+.expertAdvisorT{
+	display:block;
+ 	width:75px;
+	margin:0px auto;
+ 	padding:10px 0;
+ 	border-bottom:3px solid #25adf7;
+ 	font-size:18px;
+ 	color:#414141;
+}
+.AdvisorContDetail{
+	width:950px;
+	margin:20px auto;
+	display: table;
+}
+.AdvisorContDetailL{
+	width:250px;
+	padding:0 10px;
+	float:left;
+	text-align: center;
+}
+.AdvisorContDetailR{
+	width:700px;
+	padding:0 25px;
+	display: inline-block;
+}
+.AdvisorContDetailR p{
+	line-height:28px;
+	
+}
+.ContDetailRPosition span{
+	display: inline-block;
+	width:5px;
+	height:5px;
+	border-radius:50%;
+	background-color:#000;
+	margin-bottom:4px;
+	margin-right:8px;
+} 
+.ContDetailRName{
+	font-size:20px;
+	color:#72c0f3;
+}
+.ContDetailRPosition{
+	font-size:16px;
+	color:#000;
+}
+.AdvisorDetail{
+	font-size:15px;
+	color:#777;
+	margin:10px 0;
+	text-indent:2em;
+}
+.expertAdvisorCont{
+	width:1100px;
+	margin:30px auto;
+}
+.partner{
+	position:relative;
+}
+.partner_content{
+	float:left;
+	overflow:hidden;
+}
+.divMain-divTitle a {
+    display:block;
+    float:right;
+    margin-top:11px;
+    margin-right:10px;
+}
+.divMain-divWindow {
+    clear:both;
+	margin:0 2%;
+	overflow:hidden;
+}
+.divMain-divWindow div{
+	width:105%;
+}
+.divMain-divWindow ul{
+	display:inline-block;
+}
+.divMain-divWindow ul li{
+	list-style:none;
+	display:inline-block;
+	margin: 2px 10px 0 10px;
+	padding:13px;
+	border:1px solid #ebeaea;
+	border-radius:2px;
+	cursor: pointer;
+}
+.divMain-divWindow ul li img{
+	width:126px;
+	height:165px;
+}
+.divMain-divWindow ul li a{
+	display:block;
+	margin:2px;
+}
+.indexContFooter div{
+	color:#000;
+}
+.indexContFooter div .sec_b_title{
+	border:0 !important;
+}
+.divMain-divWindow ul{
+	padding:0 !important;
+	position:relative;
+	width: 1114px;
+}
+.indexContFooter{
+	position:relative;
+	display:inline-block;
+	margin-top:1.8em;
+}
+.divMain-divWindow li:hover{
+	border:2px solid #459ce5;
+	padding:12px;
+	
+}
+.divMain-divWindow ul li.clicked{
+	border:2px solid #459ce5;
+}
+.expertBtn {
+    cursor: pointer;
+    width: 1150px;
+    position: absolute;
+    top: 30%;
+    margin-left: -15px;
+}
+.expertLeftBtn{
+	padding:21px;
+	background:url("../../resource/img/aboutUs/fanye_icon.jpg") no-repeat;
+	background-position:center;
+	display:inline-block;
+	float:left;
+}
+.expertRightBtn{
+	padding:19px;
+	background:url("../../resource/img/aboutUs/btn_03.png") no-repeat;
+	background-position:center;
+	display:inline-block;
+	float:right;
+}
+.indexConHMore img{
+	margin-left:5px;
+	margin-bottom:-4px;
+}
+.indexConHMore{
+	float:right;
+}
+.indexConH{
+	display: table;
+}
+.indexConH .sec_b_title{
+	margin-bottom:0 !important;
+}
+.divMain-divWindow li p{
+	text-align:center;
+	color:#777;
+}
+.expert{
+	font-size:15px;
+}
+.divMain-divWindow .position{
+	font-size:14px;
+}
+.dn{
+	display: none;
+}

@@ -16,6 +16,7 @@ import java.util.List;
 
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.model.ProjectAppProcessEntity;
+import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectImageEntity;
 
 /** 
@@ -30,10 +31,10 @@ public interface ProjectPublishListDao {
 	 *  @param pageEntity  分页实体
 	 *  @author 刘利 
 	 *  @Description: 实现审核列表查询 
-	 *  @return List<ProjectAppProcessEntity> 
+	 *  @return List<ProjectAppRecordEntity> 
 	 *  @date 2016-3-21 下午12:50:30
 	 */
-	public List<ProjectAppProcessEntity> selectProjectPublishList(PageEntity pageEntity);
+	public List<ProjectAppRecordEntity> selectProjectPublishList(PageEntity pageEntity);
 	/**
 	 * 根据查询项目申请ID企业形象图 
 	 * @author 刘利   

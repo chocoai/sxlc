@@ -49,14 +49,14 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 	 
 	
 	@Override
-	public ProjectAppProcessEntity selectProjectDetailByID(int projectID) {
+	public ProjectAppRecordEntity selectProjectDetailByID(int projectID) {
 		
 		Map<String,Object> map =new HashMap<String,Object>();
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
 		map.put("id", projectID);
-		ProjectAppProcessEntity projectAppProcessEntity = null;
-		projectAppProcessEntity = projectDetailListDaoImpl.selectProjectDetailByID(map); 
-		return projectAppProcessEntity;
+		ProjectAppRecordEntity projectAppRecordEntity = null;
+		projectAppRecordEntity = projectDetailListDaoImpl.selectProjectDetailByID(map); 
+		return projectAppRecordEntity;
 	}
 
 	 
@@ -153,6 +153,19 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 		List<ProjectAfterLoanAttachmentEntity>  projectAfterLoanAttachmentList = null;
 		projectAfterLoanAttachmentList = projectDetailListDaoImpl.selectProjectAfterLoanAttach(projectID);
 		return projectAfterLoanAttachmentList;
+	}
+
+
+
+	@Override
+	public  ProjectAppRecordEntity  selectInvestAvailableaAmount(
+			long applyID) {
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("applyID", applyID);
+		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		return projectDetailListDaoImpl.selectInvestAvailableaAmount(map);
+		
 	}
   
 }

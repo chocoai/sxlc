@@ -1,0 +1,106 @@
+@CHARSET "UTF-8";
+/*默认选中样式 start 黄鑫 20160327*/
+.aboutUsNav .choose10{
+	color:#72c0f3;
+}
+/*默认选中样式end 黄鑫 20160327*/
+/* 法律法规主体部分开始 */
+.lawy{
+	width:1200px;
+	margin-bottom:8%;
+	background-color:#fff;
+	margin-top:23px;
+}
+.lawyH{
+	width:100%;
+	border-bottom:1px solid #ededed;
+	margin-bottom: 45px;
+	margin-top: 16px;
+    float: left;
+}
+.lawy_title{
+	display:block;
+ 	width:75px;
+	margin:0px auto;
+ 	padding:10px 0;
+ 	border-bottom:3px solid #25adf7;
+ 	font-size:18px;
+ 	color:#414141;
+}
+.lawy_content{
+	font-size:16px;
+	width:1100px;
+	margin:0 auto;
+	line-height:30px;
+	position:relative;
+}
+.lawy_content>p{
+	padding:0 2em;
+	color:#8e8e8e;
+}
+.lawy_content ul li h5{
+	font-size:16px;
+	margin-bottom: 28px;
+}
+/* .top_icon,.bottom_icon{
+	position:absolute;
+}
+.top_icon{
+	top: 110px;
+    left: 16px;
+}
+.bottom_icon{
+	top: 155px;
+    left:47%;
+} */
+.top_icon{
+	width:8px;
+	height:12px;
+	background:url(../../resource/img/aboutUs/lawy_03.jpg) no-repeat;
+	background-position:center;
+	display:inline-block;
+	margin-bottom: 8px;
+    margin-right: 6px;
+}
+.bottom_icon{
+	width:8px;
+	height:12px;
+	background:url(../../resource/img/aboutUs/lawy_07.jpg) no-repeat;
+	background-position:center;
+	display:inline-block;
+	margin-bottom: -5px;
+	margin-left: -3px;
+}
+.lawy_content_icon{
+	margin-right:15px;
+}
+.lawy_content ul li{
+	margin:30px 0;
+}
+.lawy_content ul li p{
+	text-indent:2em;
+	color:#8e8e8e;
+}
+.lawy_content ul{
+	margin-top:15px;
+	min-height: 662px;
+}
+.s_manage_main h4{
+	color:#72c0f3;
+}
+.s_manage_img{
+	width:121px;
+}
+.s_manage_main p{
+	line-height:20px;
+}
+.management>p{
+	padding:0 8%;
+}
+.management>p,.s_manage_main p{
+	text-indent:2em;
+}
+.firstP{
+	text-indent:2em;
+}
+/* 法律法规主体部分结束 */

@@ -1,0 +1,4 @@
+.banner{position: relative;width: 100%;overflow: auto;text-align: center;}
+.web-banner .banner{height:350px;position: relative; overflow: auto; width:100%;}
+.web-banner .banner li{width:100%;height:350px;list-style: none;}
+.web-banner .banner ul li{float: left;}.banner .dots{position: absolute;left: 0;right: 0;bottom:10px;}.banner .dots li{display: inline-block;width:10px;height:4px;margin: 0 4px;text-indent: -999em;cursor: pointer;background-color: white;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;height:10px;}.banner .dots li.active{background: #3076cc;opacity: 1;}.banner .arrows{position: absolute;bottom: 20px;right: 20px;color: #fff;}.banner .arrow{display: inline;padding-left: 10px;cursor: pointer;}

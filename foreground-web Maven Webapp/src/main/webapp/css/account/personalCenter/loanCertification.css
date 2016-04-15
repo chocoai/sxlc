@@ -1,0 +1,238 @@
+/* 借款认证css样式部分     */
+.th{
+	line-height:55px;
+	border-bottom:1px solid #ececec;
+	-moz-user-select:none;
+	padding:0 20px;
+}
+.th span{
+	display:inline-block;
+	line-height:55px;
+	margin-left:26px;
+	font-size:18px;
+	color:#000;
+	border-bottom:2px solid transparent;
+	cursor:pointer;
+}
+.th span:hover{
+	color:#45a7e6;
+}
+.thClick{
+	color:#45a7e6 !important;
+	border-bottom:2px solid #45a7e6 !important;
+}
+.personalAuthen{
+	padding:0 46px;
+	margin-bottom:50px;
+}
+.td{
+	line-height:65px;
+	border-bottom:1px solid #ededed;
+	font-size:16px;
+	padding:0 33px;
+}
+.tdFirst{
+	color:#575757;
+}
+.tdSpan,
+.link{
+	font-size:14px;
+}
+.link{
+	display:none;
+}
+.tdFirst,
+.tdSpan{
+	width:42%;
+}
+.tdFirst,
+.tdSpan,
+.linkCheck,
+.linkAuthen,
+.linkAlert{
+	display:inline-block;
+}
+.linkCheck,
+.linkAuthen,
+.linkAlert{
+	width:16%;
+}
+.linkCheck,
+.linkAlert,
+.linkAuthen{
+	display:none;
+	text-align:center;
+}
+.linkCheck a,
+.linkAlert a,
+.linkAuthen a{
+	text-decoration:underline;
+}
+.linkCheck a,
+.linkAlert a{
+	color:#72c0f3;
+}
+.linkAuthen a{
+	color:#ff8a00;
+}
+.tdAuthen{
+	background:url(../../../resource/img/account/personalCenter/grzx_1.png) no-repeat;
+	color:#82d182;
+}
+.tdReview{
+	color:#ff6d1e;
+	background:url(../../../resource/img/account/personalCenter/grzx_28.png) no-repeat;
+}
+.tdUnauth{
+	color:#ff0000;
+	background:url(../../../resource/img/account/personalCenter/grzx_31.png) no-repeat;
+}
+.tdOutOfDate{
+	color:#525252;
+	background:url(../../../resource/img/account/personalCenter/grzx_29.png) no-repeat;
+}
+.tdFile{
+	color:#3a485c;
+	background:url(../../../resource/img/account/personalCenter/grzx_30.png) no-repeat;
+}
+.tdFile,
+.tdOutOfDate,
+.tdUnauth,
+.tdAuthen,
+.tdReview{
+	background-position:left;
+	padding-left:20px;
+}
+.companyAuthen{
+	display:none;
+	padding:0 46px;
+	margin-bottom:50px;
+}
+/*    end    */
+/* 头部公用部分样式   */
+.authenHeader{
+	line-height:55px;
+	border-bottom:1px solid #ececec;
+	padding:0 20px;
+}
+.authenHeader span{
+	display:inline-block;
+	line-height:55px;
+	margin-left:26px;
+	font-size:18px;color:#45a7e6 !important;
+	border-bottom:2px solid #45a7e6 !important;
+}
+.authenHeader a.back{
+	display:inline-block;
+	float:right;
+	font-size:16px;
+	color:#72c0f3;
+	cursor:pointer;
+	border:1px solid #72c0f3;
+	background:#fff;
+	width:78px;
+	height:30px;
+	line-height:28px;
+	text-align:center;
+	margin:13px 45px 0 0;
+}
+.authenHeader a.back:hover{
+	color:#fff;
+	background:#72c0f3;
+}
+/*   单选按钮模拟       */
+.radio{
+	display:inline-block;
+	width:125px;
+	line-height:33px;
+	font-size:16px;
+	color:#575757;
+	padding-left:22px;
+	background:url(../../../resource/img/account/personalCenter/grzx_46.png) no-repeat;
+	background-position:left center;
+	-moz-user-select:none;
+	cursor:pointer;
+}
+.checked{
+	background:url(../../../resource/img/account/personalCenter/grzx_45.png) no-repeat !important;
+	background-position:left center !important;
+}
+/*    end      */
+.authenContent{
+	padding:15px 45px;
+}
+.addAuthen{
+	display:inline-block;
+	height:60px;
+	line-height:60px;
+	color:#ff8200;
+	background:url(../../../resource/img/account/personalCenter/grzx_33.png) no-repeat;
+	background-position:left center;
+	float:right;
+	padding-left:22px;
+	cursor:pointer;
+	font-size:16px;
+	-moz-user-select:none;
+}
+.authenScale{
+	background:#f5f5f5;
+	padding:0 50px;
+	-moz-user-select:none;
+}
+.authenScale p{
+	font-size:18px;
+	color:#737373;
+	line-height:50px;
+	cursor:pointer;
+}
+.authenScaleBtn{
+	background:url(../../../resource/img/account/personalCenter/grzx_34.png) no-repeat;
+	background-position:right;
+}
+.authenScaleClick{
+	background:url(../../../resource/img/account/personalCenter/grzx_35.png) no-repeat;
+	background-position:right;
+}
+.inputArea{
+	margin:30px 0;
+}
+.inputList{
+	margin:24px 0;
+}
+.mustLabel{
+	display:inline-block;
+	width:200px;
+	text-align:right;
+	margin-right:18px;
+	color:#575757;
+	font-size:16px;
+	vertical-align:top;
+	margin-top:7px;
+}
+.mustLabel samp{
+	display:inline-block;
+	width:13px;
+	text-align:left;
+	color:#ff5a00;
+}
+.inputText{
+	width:244px;
+}
+.dateSelect{
+	padding-right:20px;
+	background:url(../../../resource/img/account/personalCenter/grzx_5.png) no-repeat right !important;
+}
+.unitPrice{
+	color:#5d5d5d;
+	margin-left:19px;
+}
+.btn{
+	display:inline-block;
+	margin-left:223px;
+}
+.hint{
+	font-size:16px;
+	color:#ff5a00;
+	margin-left:10px;
+	vertical-align:super;
+}

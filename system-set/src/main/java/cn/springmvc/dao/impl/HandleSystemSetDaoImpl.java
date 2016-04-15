@@ -1,6 +1,7 @@
 
 package cn.springmvc.dao.impl; 
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -30,7 +31,15 @@ public class HandleSystemSetDaoImpl extends SqlSessionDaoSupport implements Hand
 	public int updateSystemSet(SystemSetEntity systemSetEntity) {
 		
 		// TODO Auto-generated method stub return 0;
-		Map<String,Object> map =getSqlSession().selectOne("SystemSetXML.updateSystemSet",systemSetEntity);
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("overdueInsteadDay", systemSetEntity.getOverdueInsteadDay());
+		map.put("autoBackRate", systemSetEntity.getAutoBackRate());
+		map.put("expirationReminderSet", systemSetEntity.getExpirationReminderSet());
+		map.put("riskMarginRateMax", systemSetEntity.getRiskMarginRateMax());
+		map.put("redpacketsRateMax", systemSetEntity.getRedpacketsRateMax());
+		map.put("riskMarginType", systemSetEntity.getRiskMarginType());
+		map.put("endDateRemind", systemSetEntity.getEndDateRemind());
+		getSqlSession().selectOne("SystemSetXML.updateSystemSet",map);
 		int i=IntegerAndString.StringToInt(map.get("rulet").toString(), -1);
 		return i;
 	}

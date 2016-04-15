@@ -1,0 +1,584 @@
+/* 锟剿伙拷锟斤拷锟绞诧拷挚锟绞�锟斤拷锟接撅拷 2016-04-06 */
+.accountOverview{
+	margin:2% auto;
+}
+.accountOverviewH{
+	width:100%;
+	display: inline-block;
+	border-bottom:1px solid #ececec;
+	font-size:18px;
+	color:#000;
+	padding:0 33px;
+	margin:0 auto;
+}
+.accountOverviewH>div{
+	width:90px;
+	display: inline-block;
+	height:45px;
+	text-align: center;
+	cursor:pointer;
+	color:#72c0f3;
+	border-bottom:2px solid #72c0f3;
+	line-height: 45px;
+}
+.accountOverviewH>span,.planM>span{
+	width:75px;
+	height:25px;
+	background-color:#fafafa;
+	font-size:12px;
+	color:#6a6a6a;
+	line-height:25px;
+	float: right;
+    text-align: center;
+    border-radius: 10px;
+}
+.accountOverviewM{
+	width:868px;
+	margin-top:50px;
+}
+.accountOverviewM>div{
+	margin-bottom:25px;
+}
+.mainTitle{
+	font-size:20px;
+}
+.mainTitle>span{
+	font-size:30px;
+	color:#f4653b;
+	margin:0 20px;
+}
+.mainTitle>label{
+	padding:7px;
+	display:inline-block;
+	margin-bottom: 10px;
+	cursor:pointer;
+}
+.totalRecharge{
+	margin-right:40px;
+}
+.totalWithdrawals{
+	margin-left:40px;
+}
+.secondaryTitle{
+	font-size:14px;
+	color:#5a5a5a;
+	width:868px;
+	position:relative;
+}
+.secondaryTitle>div{
+	display:inline-block;
+}
+.secondaryTitle span{
+	font-size:18px;
+	color:#000;
+	margin-left:35px;
+}
+.secondaryTitleOperate{
+	vertical-align:middle;
+	width:318px;
+	float: right;
+}
+.secondaryTitleOperate>div{
+	display:inline-block;
+	margin-right:15px;
+	width:88px;
+	height:32px;
+	border-radius:3px;
+	line-height:32px;
+	font-size:14px;
+}
+.noPointer{
+	cursor:default !important;
+}
+.withdrawalsBtn{
+	background-color:#fff;
+	color:#2ca8fa;
+	border:1px solid #2ca8fa;
+}
+.withdrawalsBtn:hover{
+	color:#fff;
+	background-color:#2ca8fa;
+}
+.friendTransfer{
+	background-color:#fff;
+	color:#f45e1c;
+	border:1px solid #f45e1c;
+}
+.friendTransfer:hover{
+	color:#fff;
+	background-color:#f45e1c;
+}
+.secondaryTitleInfo{
+	width:868px;
+	height:320px;
+	border:1px solid #ebebeb;
+	margin-top:38px;
+	position:relative;
+}
+.secondarySharp{
+	padding:5px;
+	display:inline-block;
+	position:absolute;
+	top:-7px;
+	left:5%;
+	background:url("../../../resource/img/account/accountOverview/triangle_03.jpg") no-repeat;
+	background-position:center;
+}
+.tipOrigin{
+	background:url("../../../resource/img/account/accountOverview/wdzh_2.png") no-repeat;
+	background-position:center;
+}
+.tipChange{
+	background:url("../../../resource/img/account/accountOverview/wdzh_1.png") no-repeat;
+	background-position:center;
+}
+.chartBox1{
+	width:270px;
+	height:180px;
+	float:left;
+	text-align:center;
+}
+.chartBox4{
+	clear:both;
+	width:100%;
+	height:380px;
+	margin-top:13px;
+	display: inline-block;
+}
+.chartBox2{
+	clear:both;
+	width:100%;
+	height:380px;
+	margin-top:13px;
+	display: inline-block;
+}
+.secondaryTitleInfoCont{
+	width:100%;
+	height:180px;
+	margin:8% 0;
+	position:relative;
+}
+.secondaryTitleWord{
+	font-size:12px;
+	position:absolute;
+	top:39%;
+	left:12.5%;
+	text-align:center;
+}
+.secondaryTitleWord>div{
+	text-align:center;
+}
+.secondaryTitleWordNum{
+	font-size:18px;
+}
+.secondaryTitleInfoMiddle{
+	width:218px;
+	height:166px;
+	display:inline-block;
+}
+.secondaryTitleInfoMiddle>div{
+	margin-top:13px;
+	margin-bottom:14px;
+}
+.circle{
+	padding:5px;
+	display:inline-block;
+	margin-right:12px;
+}
+.blue{
+	background:url("../../../resource/img/account/accountOverview/cicle_03.jpg") no-repeat;
+	background-position:center;
+}
+.orangeCircle{
+	background:url("../../../resource/img/account/accountOverview/cicle_10.jpg") no-repeat;
+	background-position:center;
+}
+.red{
+	background:url("../../../resource/img/account/accountOverview/cicle_06.jpg") no-repeat;
+	background-position:center;
+}
+.green{
+	background:url("../../../resource/img/account/accountOverview/cicle_08.jpg") no-repeat;
+	background-position:center;
+}
+.grey{
+	background:url("../../../resource/img/account/accountOverview/cicle_12.jpg") no-repeat;
+	background-position:center;
+}
+.whatever{
+	padding:8px;
+	display:inline-block;
+	margin-left:10px;
+	margin-bottom: -3px;
+	cursor:pointer;
+}
+.secondaryTitleInfoMiddle span{
+	font-size:16px;
+	margin-left:0;
+	float:right;
+}
+.secondaryTitleInfoMiddle .highLight,.planMItem .highLight{
+	color:#ff5928;
+}
+.secondaryTitleInfoRight{
+	width:270px;
+	height:178px;
+	background-color:#fafafa;
+	border:1px solid #ececec;
+	display:inline-block;
+	float:right;
+	margin-right:23px;
+	padding:10px 11px 10px 21px;
+}
+.secondaryTitleInfoRight span{
+	font-size:14px;
+	color:#1b1b1b;
+}
+.InfoRightM{
+	font-size:14px;
+	color:#999999;
+	margin:15px auto;
+}
+.InfoRightM>label{
+	display:inline-block;
+	margin-right:10px;
+}
+.InfoRightM .vouchers{
+	padding:9px;
+	margin-bottom:-4px;
+	background:url("../../../resource/img/account/accountOverview/wdzh_33.png") no-repeat;
+	background-position:center;
+	margin-left:2px;
+}
+.InfoRightM .luckyMoney{
+	padding:11px;
+	margin-bottom:-7px;
+	background:url("../../../resource/img/account/accountOverview/wdzh_34.png") no-repeat;
+	background-position:center;
+}
+.InfoRightM .intAble{
+	padding:11px;
+	margin-bottom:-7px;
+	background:url("../../../resource/img/account/accountOverview/wdzh_35.png") no-repeat;
+	background-position:center;
+}
+.InfoRightM .invitated{
+	padding:11px;
+	margin-bottom:-7px;
+	background:url("../../../resource/img/account/accountOverview/wdzh_36.png") no-repeat;
+	background-position:center;
+}
+.firstSpan{
+	margin-left:43% !important;
+}
+.secondSpan{
+	margin-left:32% !important;
+}
+.thirdSpan{
+	margin-left:19% !important;
+}
+.thirdSpan>a{
+	display:inline;
+	color:#999999;
+	text-decoration:underline;
+	margin-left:13px;
+}
+.fourthSpan{
+	margin-left:23% !important;
+}
+/* 锟剿伙拷锟斤拷锟绞诧拷纸锟斤拷锟�*/
+/* 锟截匡拷苹锟絴锟斤拷锟斤拷苹锟斤拷锟斤拷挚锟绞�*/
+.plan{
+	border-bottom: 1px solid #ececec;
+}
+.planH{
+	width:100%;
+	border-bottom:1px solid #ececec;
+	color:#000;
+	margin:0 auto;
+}
+.planHCont{
+	width:868px;
+}
+.payment,.repayment{
+	width:90px;
+	display: inline-block;
+	height:45px;
+	text-align: center;
+	cursor:pointer;
+	color:#000;
+	line-height: 45px;
+	font-size:18px !important;
+}
+.payment:hover,
+.repayment:hover,
+.payment.active,
+.repayment.active{
+	color:#45a7e6;
+	border-bottom:2px solid #45a7e6;
+}
+.more{
+	font-size:14px;
+	color:#9b9b9b;
+	float:right;
+	margin-top: 20px;
+	cursor:pointer;
+}
+.more:hover{
+	color: #72c0f3;
+}
+.line{
+	padding:12px 2px;
+	display:inline-block;
+	background:url("../../../resource/img/account/accountOverview/line_03.jpg") no-repeat;
+	margin-bottom: -8px;
+}
+.planM{
+	width:868px;
+	margin:0 auto;
+}
+.planM>span{
+	margin-top:15px;
+	margin-bottom:23px;
+}
+.planMTitle{
+	clear:both;
+	padding-left:17px;
+}
+.planMItem{
+	width:20%;
+	float: left;
+}
+.planMItemWord{
+	font-size:14px;
+	color:#808080;
+	padding-left:8px;
+	border-left:2px solid #0893d4;
+}
+.planMItemNum{
+	padding-left:8px;
+	font-size:16px;
+	color:#000;
+	margin:11px 0;
+}
+.listTip{
+	display:inline;
+	margin-left: 28px;
+}
+.time{
+	margin-bottom:33px;
+}
+.time,.planMListTip{
+	text-align:right;
+}
+.planMListTip{
+	margin-bottom:40px;
+}
+.planMItemDetail{
+	color:#535353;
+	font-size:14px;
+}
+/* .planMSecond{
+	display:none;
+} */
+/* 锟截匡拷苹锟絴锟斤拷锟斤拷苹锟斤拷锟斤拷纸锟斤拷锟�*/
+/* 锟绞斤拷态锟斤拷锟街匡拷始 */
+.capitalDynamics,.recommendBoutique{
+	width:100%;
+	margin:23px auto;
+}
+.capitalDynamicsH,.recommendBoutiqueH{
+	width:938px;
+	display: inline-block;
+	font-size:18px;
+	color:#000;
+	padding:0 33px;
+	margin:0 auto;
+}
+.capitalDynamicsH>div,.recommendBoutiqueH>div{
+	width:90px;
+	display: inline-block;
+	height:45px;
+	text-align: center;
+	cursor:pointer;
+	color:#72c0f3;
+	border-bottom:2px solid #72c0f3;
+	line-height: 45px;
+}
+.capitalDynamicsM{
+	width:868px;
+	margin:30px auto 0 auto;
+	display: -webkit-inline-box;
+}
+.capitalDynamicsML{
+	width:70px;
+	min-height:80px;
+	float:left;
+	vertical-align: middle;
+}
+.DynamicsMLTop{
+	width:70px;
+	font-size:14px;
+	color:#8c8c8c;
+	text-align:left;
+}
+.DynamicsMLTop .circle{
+	margin-right:0;
+	margin-left:4px;
+}
+.DynamicsMLBottom{
+	width:64px;
+	height:64px;
+	border-right:1px solid #cccccc;
+	padding-top:7px;
+	padding-left:14px;
+	font-size:25px;
+	color:#6f6f6f;
+	margin:0;
+}
+.capitalDynamicsMR {
+    width: 692px;
+    padding:15px;
+    border: 1px dashed #d1d1d1;
+    border-radius: 5px;
+    margin-top: 22px;
+    display: table;
+    margin-left: 15px;
+    vertical-align: middle;
+    float: left;
+}
+.triangleTip{
+	padding:13px;
+	display:inline-block;
+	margin-bottom:-7px;
+	margin-left:20px;
+}
+.triangleHyacinth{
+	background:url("../../../resource/img/account/accountOverview/wdzh_31.png") no-repeat;
+	background-position:center;
+}
+.triangleBlue{
+	background:url("../../../resource/img/account/accountOverview/wdzh_32.png") no-repeat;
+	background-position:center;
+}
+.capitalDynamicsMR>div{
+	display:inline;
+	margin-right:25px;
+	line-height:25px;
+}
+.capitalDynamicsM li{
+	clear:both;
+}
+.leftBottom{
+	width: 1px;
+    height: 30px;
+    background: url("../../../resource/img/account/accountOverview/dashed_03.jpg") no-repeat;
+    background-position: center;
+    display: block;
+    clear: both;
+    margin-right: 6px;
+}
+.leftTop{
+	text-align: center;
+    float: right;
+    width: 12px;
+    height: 14px;
+}
+.capitalDynamics{
+	border-bottom:1px solid #ececec;
+}
+.capitalDynamicsM ul{
+	min-height:285px;
+}
+/* 锟斤拷品锟狡硷拷锟斤拷锟街匡拷始 */
+.recommendBoutiqueM,.ad{
+	width:877px;
+	margin-top:33px;
+	margin-bottom:24px;
+	display: block;
+	height: 126px;
+}
+.recommendBoutiqueM{
+	width:877px;
+	background:url("../../../resource/img/account/accountOverview/background.png") no-repeat;
+	background-position:center;
+}
+.recommendBoutique{
+	display:inline-block;
+}
+.BoutiqueMContTop>label{
+	padding:9px;
+	display:inline-block;
+	background:url("../../../resource/img/index/dan.png") no-repeat;
+	background-position:center;
+	margin-bottom:-5px;
+}
+.BoutiqueMContTop{
+	height:20px;
+	margin:20px;
+	font-size:16px;
+	display: inline-block;
+}
+.BoutiqueMContTitle{
+	color:#4d4d4d;
+}
+.BoutiqueMContNum{
+	color:#808080;
+}
+.BoutiqueItemNum{
+	font-size:25px;
+	color:#5c5c5c;
+}
+.boutiqueHighLight{
+	color:#2a5b77;
+}
+.BoutiqueMContBottom{
+	width:100%;
+	padding-left:44px;
+}
+.BoutiqueMContBottomItem{
+	width: 18%;
+    margin-left: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+.BoutiqueMContBottomItem>.btn{
+	width:170px;
+	height:37px;
+	border:1px solid #2a5b77;
+	color:#2a5b77;
+	background-color:#e8f1f5;
+	line-height:35px;
+	border-radius: 2px;
+}
+.BoutiqueMContBottomItem>.btn:hover{
+	color:#fff;
+	background-color:#2a5b77;
+}
+.BoutiqueItemName{
+	font-size:12px;
+	color:#969696;
+	padding-left: 24px;
+}
+.BoutiqueBottomItemBtn{
+	width:23%;
+	margin-bottom:20px;
+}
+.BoutiqueItemNum>span{
+	font-size:13px;
+}
+.dynamicsHighLight{
+	color:#565656;
+}
+.ad>label{
+	width:877px;
+	height:126px;
+	background:url("../../../resource/img/account/accountOverview/ad_07.jpg") no-repeat;
+	background-position:center;
+	display: inline-block;
+}
+.leftDistance{
+	padding-left:20px;
+}
+
+

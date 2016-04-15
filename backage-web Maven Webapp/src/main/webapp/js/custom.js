@@ -292,11 +292,17 @@ $(document).ready(function (){
 			    cursorborderradius: "5px",//以像素为光标边界半径 
 			    autohidemode: true //是否隐藏滚动条
             });*/
-            $("#sidebar-menu").niceScroll({
+            /*$("#sidebar-menu").niceScroll({
                 touchbehavior: true,
                 cursorcolor: "rgba(42, 63, 84, 0.35)",
                 cursorwidth: "8px"
                 
+            });*/
+            $(".left_col").niceScroll({
+            	touchbehavior: true,
+            	cursorcolor: "rgba(42, 63, 84, 0.35)",
+            	cursorwidth: "8px"
+            		
             });
             $(".top_menu,.zTree-box").niceScroll();
             $(".w-content").niceScroll();

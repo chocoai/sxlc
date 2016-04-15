@@ -1,0 +1,117 @@
+/*标签切换  */
+.tab-head{
+	width:100%;
+	height:70px;
+	border-bottom:1px solid #ddd;
+}
+.tab-li{
+	color:#292929;
+	margin-left:30px;
+	font-size:18px;
+	height:70px;
+	line-height:95px;
+	float:left;
+	cursor:pointer;
+	
+}
+.tab-head .tab-ing{
+	color:#45a7e6;
+	border-bottom:2px solid #45a7e6;
+}
+
+.tab-content .content-active{
+	display:block;
+}
+.content{
+	display:none;
+}
+/*标签切换结束  */
+/*integral信息*/
+.integral-sum{
+	color:#575757;
+	margin-left:30px;
+	height:100px;
+	line-height:100px;
+	width:200px;
+	text-align:center;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_25.png");
+	background-repeat: no-repeat;
+	background-position: 17px 36px;
+}
+.usable-integral{
+	color:#575757;
+	height:100px;
+	line-height:100px;
+	width:200px;
+	text-align:center;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_26.png");
+	background-repeat: no-repeat;
+	background-position: 10px 36px;
+}
+.used-integral{
+	color:#575757;
+	height:100px;
+	width:200px;
+	line-height:100px;	
+	text-align:center;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_27.png");
+	background-repeat: no-repeat;
+	background-position: 10px 36px;
+}
+.integral span{
+	font-weight:bold;
+}
+/*integral信息结束*/
+/*表格样式  */
+.my-integral-table{
+	padding:0 30px;
+	width:100%;
+	float:left;
+	font-size:14px;
+	margin-bottom:20px;
+}	
+.my-integral-table li{
+	height:80px;
+	border-bottom:1px solid #ddd;
+	color:#575757;
+}
+.my-integral-table li:hover{
+	background-color:#e5eff4;
+}
+.my-integral-table li:first-child{
+	border-top:1px solid #ddd;
+	background-color:#f5f5f5;
+	height:40px;
+	color:#262626;
+}
+.contentOut1{
+	height:80px;
+	width:25%;
+	display:table;
+	float:left;
+}
+.contentOut2{
+	height:80px;
+	width:12.5%;
+	display:table;
+	float:left;
+}
+.content1{
+	font-size:14px;
+	vertical-align:middle;   
+	display:table-cell; 
+	text-align:center;
+}
+.my-integral-table li:first-child .contentOut1{
+	height:40px;
+}
+.my-integral-table li:first-child .contentOut2{
+	height:40px;
+}
+.my-integral-table a:link {color:#ff9c00;text-decoration:underline}/* 未被访问的链接     */
+.my-integral-table a:visited {color:#ff9c00}  /* 已被访问过的链接    */
+.my-integral-table a:hover {text-decoration:underline}    /* 鼠标悬浮在上的链接  */
+/*表格样式结束*/

@@ -19,10 +19,9 @@ $(function() {
 		columns: [  
 		          {title:'<input type="checkbox" class="table-checkbox"  value="1" />',
 		        	  "mRender": function (data, type, full) {
-		        		  sReturn = '<input type="checkbox" value="1" />';
+		        		  sReturn = '<input type="checkbox" class="row-checkbox" value="1" />';
 		        		  return sReturn;
 		        	  }
-//		          "sClass": "table-checkbox"
 		          },
 		          { title:"pid","data": "baseInfo.id"},  
 		          { title:"sid","data": "id"},  
@@ -93,11 +92,34 @@ $(function() {
 		                          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 		                          }
 	 
-	});
-	//选中新式
+	});//表格初始化完毕
+
+	 //表格多选效果
 	 $('#staffListTb tbody').on( 'click', 'tr', function () {
-	        $(this).toggleClass('selected');
-	  });
+		 var $this = $(this);
+		 var $checkBox = $this.find("input:checkbox");
+		 if($checkBox.prop('checked') && $this.hasClass('selected')){
+			 $checkBox.prop("checked",false);
+			 $(".table-checkbox").prop("checked",false);
+		 }else{
+			 $checkBox.prop("checked",true);
+		 }
+		 $this.toggleClass('selected');
+	 });
+	 
+	 //全选效果
+	 $(".table-checkbox").on('click',function(){
+		var $this = $(".table-checkbox");
+		 if($this.prop('checked')){
+			 $(".row-checkbox").prop("checked",true);
+			 $('#staffListTb tr').addClass("selected");
+			 
+		 }else{
+			 $(".row-checkbox").prop("checked",false);
+			 $('#staffListTb tr').removeClass("selected");
+		 }
+		 
+	 });
 	 
 	 /**
 	  * 查询按钮
@@ -212,6 +234,10 @@ $(function() {
 			layer.alert("请选择要修改的员工信息！",{icon:0});
 			return;
 		}
+		if(data.length>1){
+			layer.alert("不能选择多条数据进行修改！",{icon:0});
+			return;
+		}
 		$(".emp-add #personalName").val(data[0].baseInfo.personalName);
 		$(".emp-add #personalIDCard").val(data[0].baseInfo.personalIDCard);
 		$(".emp-add #birthday").val(getBirthday(data[0].baseInfo.personalIDCard));
@@ -275,15 +301,16 @@ $(function() {
 			layer.alert("请选择要删除的员工！",{icon:0});
 			return;
 		}
-		//删除某个职务，当有员工拥有改职务时，不能进行删除
-		layer.confirm('确定删除该员工？', {
+		var ids = new Array();
+		for(var i=0;i<data.length;i++){
+			ids.push(data[i].id);
+		}
+		layer.confirm('确定删除选中员工？', {
 		  btn: ['确定', '取消']
 		}, function(index, layero){
 			$.ajax( {  
-				      url:appPath+"/role/delStaff.do",
-				      data:{  
-				               "id" :   data[0].id
-				      	},  
+				     url:appPath+"/role/delStaff.do",
+				     data:{"ids":JSON.stringify(ids)},  
 				     type:'post',  
 				     cache:false,  
 				     dataType:'json',  

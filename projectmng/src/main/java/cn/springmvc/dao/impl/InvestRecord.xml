@@ -13,8 +13,8 @@
     <!-- 查询项目直投投资记录-->  
 	<select id="selectInvestRecordByProjectID" parameterType="map"  resultMap="resultListInvestRecord">
 	    select  
-	    case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),'22')) using utf8)  
-            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),'22')) using utf8) end 
+	    case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{sKey})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{sKey})) using utf8) end 
             as membername, 
 	    CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{sKey})) as signed) Invest_Amount ,
 	    ir.Invest_Date,ir.IsAuto,ir.Invest_Type,mi.Member_No,investType.name1 as investTypes
@@ -28,10 +28,10 @@
       <!-- 查询债权转让项目投资记录-->  
 	<select id="selectCreditorInvestRecordByctaId" parameterType="map"  resultMap="resultListInvestRecord">
 	  select  
-       case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),'22')) using utf8)  
-            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),'22')) using utf8) end 
+       case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{sKey})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{sKey})) using utf8) end 
             as membername, 
-	    CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),'22')) as signed) Invest_Amount ,
+	    CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{sKey})) as signed) Invest_Amount ,
 	    ir.Invest_Date,ir.IsAuto,ir.Invest_Type,mi.Member_No ,investType.name1 as investTypes
 	    from Creditor_Trans ct
         left join  Invest_Record ir on ir.Invest_Id = ct.Invest_Id

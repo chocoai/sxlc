@@ -3,15 +3,15 @@
 <mapper namespace="homeBanner">
     <resultMap type="cn.springmvc.model.HomeBannerEntity" id="resultListHomeBanner">
         <id column="ID" property="id" />
-		<result column="Banner_Title" property="bannerTitle" />
-		<result column="Url" property="url" />
-		<result column="Links" property="links" />
-		<result column="Indexs" property="indexs" />
-		<result column="Statu" property="statu" />
-		<result column="CreateTime" property="createTime" /> 
-		<result column="Opt_Date" property="optDate" />
-		<result column="Opt_Id" property="optId" />
-		<result column="adminName" property="adminName" />
+		<result column="Banner_Title"   property="bannerTitle" />
+		<result column="Url" 			property="url" />
+		<result column="Links" 			property="links" />
+		<result column="Indexs" 		property="indexs" />
+		<result column="Statu" 			property="statu" />
+		<result column="CreateTime"		property="createTime" /> 
+		<result column="Opt_Date" 		property="optDate" />
+		<result column="Opt_Id" 		property="optId" />
+		<result column="adminName" 		property="adminName" />
     </resultMap>  
 	<!-- 分页查询的首页轮播图-->  
 	<select id="selectHomeBannerListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListHomeBanner" >
@@ -95,9 +95,9 @@
     </select>  
     <!-- 前台首页轮播图-->  
 	<select id="selectHomeBannerfront"   resultMap="resultListHomeBanner" >
-	   select hb.ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
-	   hb.Statu,  hb.CreateTime,  hb.Opt_Date, hb.Opt_Id 
+	   select hb.HomeBanner_ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
+	   hb.Statu,  hb.CreateTime,  hb.Opt_Date
 	   from  Home_Banner  hb 
-	   where hb.Statu = 1 
+	   where hb.Statu = 1 limit 3
     </select> 
 </mapper>

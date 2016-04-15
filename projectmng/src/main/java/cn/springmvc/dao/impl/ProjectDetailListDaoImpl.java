@@ -48,11 +48,11 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
 	} 
 
 	@Override
-	public ProjectAppProcessEntity selectProjectDetailByID(Map<String,Object> map) {
+	public ProjectAppRecordEntity selectProjectDetailByID(Map<String,Object> map) {
 
-		ProjectAppProcessEntity projectAppProcessEntity = null;
-		projectAppProcessEntity = getSqlSession().selectOne("projectDetail.selectProjectdetail",map);
-		return  projectAppProcessEntity;
+		ProjectAppRecordEntity projectAppRecordEntity = null;
+		projectAppRecordEntity = getSqlSession().selectOne("projectDetail.selectProjectdetail",map);
+		return  projectAppRecordEntity;
 
 	}
  
@@ -169,6 +169,14 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
 		CompanyInfoEntity companyInfoEntity = getSqlSession().selectOne("memberInfoProject.selectMemberInfoCompanByID",companyID);
 		return companyInfoEntity;
 		
+	}
+
+	@Override
+	public  ProjectAppRecordEntity selectInvestAvailableaAmount(
+			Map<String, Object> map) { 
+		
+		return getSqlSession().selectOne("projectDetail.selectInvestAvailableaAmount",map);
+	  
 	}
 
 }

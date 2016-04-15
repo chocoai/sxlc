@@ -1,0 +1,494 @@
+.accountMain{
+	min-height:1247px;
+}
+.recommendedTalent{
+	margin:2% auto;
+	-moz-user-select:none;
+}
+.recommendedTalentH{
+	width:100%;
+	display: inline-block;
+	border-bottom:1px solid #ececec;
+	font-size:18px;
+	color:#000;
+	padding:0 33px;
+	margin:0 auto;
+}
+.recommendedTalentH>div{
+	width:82px;
+	display: inline-block;
+	height:45px;
+	text-align: center;
+	color:#72c0f3;
+	border-bottom:2px solid #72c0f3;
+	line-height: 45px;
+}
+.recommendedTalentH>span{
+	width:139px;
+	height:34px;
+	border:1px solid #72c0f3;
+	color:#72c0f3;
+	line-height:34px;
+	font-size:16px;
+	float:right;
+	text-align:center;
+	border-radius:2px;
+}
+.recommendedTalentInfo{
+	width:868px;
+	height:165px;
+	border:1px dashed #eaeaea;
+	border-radius:2px;
+	margin:18px auto;
+	padding:0 38px;
+}
+.ContListTitle>div>em{
+	display: inline-block;
+	width:11px;
+	height:13px;
+	margin-left: 5px;
+	cursor:pointer;
+}
+.iconDown{
+	background:url("../../../resource/img/account/investmentManagement/problem_btn_03.png") no-repeat;
+	background-position:center;
+}
+.iconUp{
+	background:url("../../../resource/img/account/investmentManagement/problem_btn_09.png") no-repeat;
+	background-position:center;
+}
+.TalentInfoL,.TalentInfoR{
+	width:49%;
+	margin:13px 0;
+	display:inline-block;
+}
+.TalentInfoL>div{
+	float:left;
+	width:100%;
+	font-size:14px;
+	color:#575757;
+}
+.TalentInfoR>div{
+	float:right;
+	width:100%;	
+	text-align: right;
+	font-size:14px;
+	color:#575757;
+}
+.TalentInfoL>div>span,.TalentInfoR>div>span{
+	font-size:20px;
+	color:#575757;
+	font-weight:bold;
+	width:23%;
+	display:inline-block;
+	text-align:right;
+	margin-right:3px;    
+}
+ .choose input[type="text"],
+ .selectArea input[type="text"],
+ .recommendedTalentMHistory .chooseName input[type="text"],
+ .recommendedTalentMHistory .search>input[type="text"],
+ .recommendedTalentMHistory .chooseLoanName>input[type="text"]{
+	padding-top:4px !important;
+	padding-bottom:4px !important;
+}
+.selectArea
+.TalentInfoR{
+	text-align:right;
+}
+.recommendedTalentMAward,.recommendedTalentMHistory{
+	width:868px;
+	margin:0 auto;
+}
+.search{
+	font-size:12px;
+	color:#444;
+}
+.searchBtn{
+	display:inline;
+	vertical-align: middle;
+}
+.choose>label{
+	color:#7b7b7b;
+}
+.historyCashBackUl .ContListTitle .outside{
+	height:inherit;
+}
+.search input{
+	width:118px;
+	height:26px;
+	margin-left:10px;
+	margin-right: 10px;
+}
+.search input[type="text"] {
+	font-size:12px;
+}
+.monthCount .select{
+	top:26px;
+	left:10px;
+}
+.monthCount .selectArea input.selectInput{
+	background: url(../../../resource/img/account/common/wdzh_5.png) no-repeat;
+	background-position:80% 50%;
+}
+.choose{
+	width: 333px;
+    display: inline-block;
+    margin-right:31px;
+}
+.choose>input{
+	background:url("../../../resource/img/account/personalCenter/grzx_5.png") no-repeat;
+	background-position: right;
+}
+.chooseTime{
+	margin:0 16px;
+	width:245px;
+	display: inline-block;
+}
+.chooseTime>span{
+	margin:0 10px;
+	cursor:pointer;
+}
+.chooseTime>span:hover{
+	color:#72c0f3;
+}
+.search .btn{
+	font-size:14px;
+}
+.btnSearch{
+	width:62px;
+	height:27px;
+	line-height:25px;
+	display: inline-block;
+	border-radius:2px;
+	margin-right: 28px;
+}
+.btnExport{
+	width:88px;
+	height:27px;
+	line-height:25px;
+	display: inline-block;
+	border-radius:2px;
+	color:#72c0f3;
+	border:1px solid #72c0f3;
+	background-color:#fff;
+	vertical-align: middle;
+}
+.btnExport:hover{
+	color:#fff;
+}
+.btnExport:hover>label{
+	margin-bottom:0;
+}
+.btnExport:hover>label{
+	padding:9px;
+	display:inline-block;
+	margin-right:8px;
+	background:url("../../../resource/img/account/personalCenter/export_05.png") no-repeat;
+	margin-bottom:-6px;
+}
+.btnExport>label{
+	padding:9px;
+	display:inline-block;
+	margin-right:5px;
+	background:url("../../../resource/img/account/personalCenter/export_03.png") no-repeat;
+	margin-bottom:-6px;
+}
+/* �б����ݲ��ֿ�ʼ */
+.recommendedTalentMCont{
+	width:868px;
+	margin:28px auto 0 auto;
+}
+.ContHeader{
+	width:795px;
+	height:34px;
+	margin-left: 0;
+}
+.ContHeader>div{
+	width:102px;
+	height:35px;
+	text-align:center;
+	display: inline-block;
+	line-height:34px;
+	border-top:1px solid #f0f0f0;
+	border-left:1px solid #f0f0f0;
+	border-right:1px solid #f0f0f0;
+	margin-right: 8px;
+	cursor:pointer;
+}
+.ContHeader>div:hover{
+	border-top:1px solid #72c0f3;
+}
+.ContList{
+	width:100%;
+	border-top:1px solid #eee;
+	border-left:1px solid #eee;
+	border-right:1px solid #eee;
+	font-size:12px;
+}
+.ContList>ul{
+	margin-top:14px;
+}
+.ContListTitle{
+	background: #f5f5f5;
+	width:100%;
+	height: 43px;
+    line-height: 43px;
+    border-top:1px solid #ececec;
+}
+.ContListTitle>div{
+	display:inline-block;
+	text-align:center;
+	float: left;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+.ContList>ul>li{
+	display:inline-block;
+	vertical-align:middle; 
+	border-bottom:1px solid #ececec;  
+	width: 100%;
+}
+.ContList>ul>li>div{
+	float:left;
+}
+.ContListMain div{
+	text-align:center;
+}
+.outside{
+	display:table;
+	overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    width: 81px;
+    vertical-align:middle;
+    float:left;
+    height:59px;
+    color:#575757;
+}
+.inside{
+	display:table-cell;
+	vertical-align:middle;
+	font-size: 12px;
+	line-height: 12px !important;   
+}
+.insideFontColor{
+	color:#262626;
+}
+.inside>div{
+	text-align:center;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:initial;
+	word-break:break-all;
+	width:100%;
+	height:auto;
+}
+.awardStatisticsUl .trueName,
+.awardStatisticsUl .userName{
+	width:55px;
+}
+.awardStatisticsUl .loanAmount,
+.awardStatisticsUl .awardAmount,
+.awardStatisticsUl .effectiveInvestmentAmount,
+.awardStatisticsUl .investmentAwardAmount,
+.awardStatisticsUl .totalAwardAmount{
+	width:95px;
+}
+.awardStatisticsUl .successfulDebt{
+	width:131px;
+}
+.awardStatisticsUl .purchaseTimes{
+	width:150px;
+}
+/* �άͳ�Ʋ��ֽ��� */
+/* ��ʷ���ֲ��ֿ�ʼ */
+.historyCashBackUl .outside{
+	height:45px !important;
+	padding:0 !important;
+}
+.historyCashBackUl .inside{
+	text-align:center;
+}
+.historyCashBackUl .ContListTitle>div{
+	display:table;
+}
+.historyCashBackUl .statisticalTimePeriod,
+.historyCashBackUl .totalLoanAmount,
+.historyCashBackUl .awardAmount,
+.historyCashBackUl .investmentAwardAmount,
+.historyCashBackUl .totalPrincipalAmount,
+.historyCashBackUl .totalAwardAmount,
+.historyCashBackUl .actualAwardAmount,
+.historyCashBackUl .mentionAwardTime
+{
+	width:78px;
+}
+.historyCashBackUl .totalInvestmentAmount{
+	width:80px;
+}
+.historyCashBackUl .releaseStatus{
+	width:76px;
+}
+.historyCashBackUl .totalAmountPurchasedVIP{
+	width:86px;
+}
+.historyCashBackUl .ContListMain>div{
+	height:69px !important;
+}
+.recommendedTalentMain2 .choose{
+	margin-left:20px;
+}
+.recommendedTalentMain2 .recommendedTalentMCont{
+	margin-top:12px;
+}
+/* ��ʷ���ֲ��ֽ��� */
+/* �����¼���ֿ�ʼ */
+.monthCount{
+	display:inline;
+}
+.inviteRecordUl .outside{
+	padding:0 !important;
+	height: 58px;
+}
+.inviteRecordUl>li>div{
+	width:867px;
+}
+.inviteRecordUl .VIPName,
+.inviteRecordUl .userName,
+.inviteRecordUl .registerRecord,
+.inviteRecordUl .accountStatus{
+	width:25%;
+}
+.recommendedTalentMain3 .recommendedTalentMCont{
+	margin-top:14px;
+}
+.recommendedTalentMain3 .choose{
+	margin-left:20px;
+	margin-right:0;
+}
+.recommendedTalentMain3 .btnSearch{
+	margin:0 0px -3px 0;
+}
+/* �����¼���ֽ��� */
+/* �����ϸ���ֿ�ʼ */
+.loanNameInput{
+	background-color:#fff;
+}
+.LoanDetailsUl .loanName,
+.LoanDetailsUl .loanAmount,
+.LoanDetailsUl .loanTime,
+.LoanDetailsUl .yearProfit,
+.LoanDetailsUl .loanVName,
+.LoanDetailsUl .userName{
+	width:123px;
+}
+.LoanDetailsUl .lendingTime{
+	width:128px;
+}
+.recommendedTalentMain4 .choose{
+	width:345px;
+	margin-right:0;
+}
+/* �����ϸ���ֽ��� */
+/* Ͷ����ϸ���ֿ�ʼ */
+.investDetailsUl .loanName,
+.investDetailsUl .investAmount,
+.investDetailsUl .investVName,
+.investDetailsUl .investuserName,
+.investDetailsUl .expectOrigionMoney,
+.investDetailsUl .expectProfit
+{
+	width:123px;
+}
+.investDetailsUl .expectProfitTime{
+	width:128px;
+}
+.recommendedTalentMain5 .choose{
+	width:382px;
+	margin-right:0;
+}
+.recommendedTalentMain5 .btnSearch{
+	margin:0px 0px -3px 0;
+}
+/* Ͷ����ϸ���ֽ��� */
+/* ������ϸ���ֿ�ʼ */
+.recommendedTalentMain6 .btnSearch{
+	margin-left:30px;
+}
+.historyPrincipalBackUl .loanName,
+.historyPrincipalBackUl .userName,
+.historyPrincipalBackUl .loanAmount,
+.historyPrincipalBackUl .VIPName,
+.historyPrincipalBackUl .repaymentPrincipal,
+.historyPrincipalBackUl .InterestRepayment,
+.historyPrincipalBackUl .overDue{
+	width:96px;
+}
+.historyPrincipalBackUl .repaymentTime,
+.historyPrincipalBackUl .expectedRepaymentTime{
+	width:97px;
+}
+.historyPrincipalBackUl .outside{
+	height:59px;
+	padding:0 !important;
+}
+.recommendedTalentMain6 .chooseLoanName{
+	display:inline;
+	margin-right: 40px;
+}
+.recommendedTalentMain6 .chooseName{
+	margin-left: 45px;
+}
+.recommendedTalentMain6 .search>div{
+	margin-bottom:17px;
+}
+.recommendedTalentMain6 .recommendedTalentMCont{
+	margin-top:0;
+}
+/* ������ϸ���ֽ��� */
+/* VIP������ϸ���ֿ�ʼ */
+.chooseName{
+	display:inline;
+}
+.chooseName>input{
+	width:135px;
+}
+.chooseName .btnSearch{
+	margin-left:36px !important;
+}
+.purchaseDetailsUl .VIPName{
+	width:188px;
+}
+.purchaseDetailsUl .userName{
+	width:90px;
+}
+.purchaseDetailsUl .purchaseEffectiveTime,
+.purchaseDetailsUl .purchaseAmount,
+.purchaseDetailsUl .paymentTime{
+	width:196px;
+}
+.purchaseDetailsUl .outside{
+	padding:0 !important;
+	height:59px;
+}
+/* VIP������ϸ���ֽ��� */
+.recommendedTalentMain2,
+.recommendedTalentMain3,
+.recommendedTalentMain4,
+.recommendedTalentMain5,
+.recommendedTalentMain6,
+.recommendedTalentMain7{
+	display:none;
+}
+/* �б����ݲ��ֽ��� */
+.page{
+	width:100%;
+	height:162px !important;
+	line-height:162px;
+}
+#pager{
+	width:100% !important;
+	text-align:center;
+}

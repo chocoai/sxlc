@@ -1,0 +1,82 @@
+@CHARSET "UTF-8";
+/*默认选中样式 start 黄鑫 20160327*/
+.aboutUsNav .choose6{
+	color:#72c0f3;
+}
+/*默认选中样式end 黄鑫 20160327*/
+/* 主体部分开始 王延君 2016-03-29 */
+.mediaCoverage{
+	width:1200px;
+	margin-bottom:8%;
+	background-color:#fff;
+	margin-top:23px;
+}
+.mediaCoverage a:hover{
+	text-decoration:none;
+}
+.mCoverCont{
+	width:1200px;
+	margin:0 auto;
+	display: block;
+	font-size:13px;
+	color:#a3a3a3;
+	line-height:35px;
+	min-height: 1313px;
+}
+.mCoverHeader{
+	width:100%;
+	border-bottom:1px solid #ededed;
+	margin-bottom: 37px;
+	margin-top: 16px;
+    float: left;
+}
+.mCoverContT{
+	display:block;
+ 	width:75px;
+	margin:0px auto;
+ 	padding:10px 0;
+ 	border-bottom:3px solid #25adf7;
+ 	font-size:18px;
+ 	color:#414141;
+}
+.mCoverContMain{
+	width:1100px;
+	margin: 30px auto 3% auto;
+	border-bottom: 1px dashed #e1e1e1;
+    padding-bottom: 23px;
+}
+.mCoverContWord{
+	width: 817px;
+    float: right;
+    height:179px;
+}
+.mCoverContH span{
+	font-size: 16px;
+    float: right;
+    color: #727272;
+}
+.mCoverContWord h4{
+	display: inline-block;
+	font-size:18px;
+	color:#414141;
+	font-weight:normal;
+	margin-bottom:10px;
+}
+.mCoverContWord h4:hover{
+	color:#72c0f3;
+	cursor:pointer;
+}
+.mCoverCont a{
+	color:#f7a743;
+	float:right;
+}
+.mCoverCont a:hover{
+	text-decoration:none;
+}
+.mCoverContP{
+	height:134px;
+}
+.mCoverContP:after{
+	
+}
+/* 主体部分结束 王延君 2016-03-29 */

@@ -71,8 +71,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 						</div>
 					</div>
-				
-				
 					<div class="data_display">
 						<div class="panel panel-success">
 							<div class="panel-heading">
@@ -81,7 +79,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<button class="obtn glyphicon glyphicon-pencil obtn-pic-mod" onclick="picMod('修改首页轮播图','web/common/picture/pic-add.jsp','1','id')">修改</button>
 								</div>
 							</div>
-							
 							<div class="panel-body">
 								<table id="table_id" class="display">
 									<thead>

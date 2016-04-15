@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="Mapper">   
     <resultMap type="cn.springmvc.model.PartnersEntity" id="resultListPartner">
-        <id column="Partner_ID" property="id" />
-		<result column="Name" property="name" />
-		<result column="Logo" property="logo" />
-		<result column="URL" property="url" />
+        <id column="Partner_ID" 	property="id" />
+		<result column="Name" 		property="name" />
+		<result column="Logo" 		property="logo" />
+		<result column="URL" 		property="url" />
 		<result column="Introduction" property="introduction" />
-		<result column="Statu" property="statu" />
+		<result column="Statu" 		property="statu" />
 		<result column="CreateTime" property="createTime" />
-		<result column="Indexs" property="indexs" />
-		<result column="Admin_ID" property="optId" />
-		<result column="Opt_Date" property="optDate" />
-		<result column="adminName" property="adminName" />
+		<result column="Indexs"		property="indexs" />
+		<result column="Admin_ID" 	property="optId" />
+		<result column="Opt_Date" 	property="optDate" />
+		<result column="adminName" 	property="adminName" />
     </resultMap> 
      <!-- 查询合作伙伴列表 -->  
 	<select id="selectPartnersList"  resultMap="resultListPartner"  parameterType="product_p2p.kit.pageselect.PageEntity">

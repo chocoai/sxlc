@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.dao.ProjectPublishListDao;
 import cn.springmvc.model.ProjectAppProcessEntity;
+import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectImageEntity;
 
 /** 
@@ -39,12 +40,12 @@ public class ProjectPublishListDaoImpl  extends SqlSessionDaoSupport  implements
 	}
  
 	@Override
-	public List<ProjectAppProcessEntity> selectProjectPublishList(
+	public List<ProjectAppRecordEntity> selectProjectPublishList(
 			PageEntity pageEntity) {
 		
- 		List<ProjectAppProcessEntity> projectAppProcessList =null;
- 		projectAppProcessList = getSqlSession().selectList("projectPublish.selectProjectPublishList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
- 		return projectAppProcessList;
+ 		List<ProjectAppRecordEntity> projectAppRecordlist =null;
+ 		projectAppRecordlist = getSqlSession().selectList("projectPublish.selectProjectPublishList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+ 		return projectAppRecordlist;
 
 		
 	}

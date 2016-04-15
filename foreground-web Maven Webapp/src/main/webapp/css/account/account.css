@@ -1,0 +1,636 @@
+/* CSS Document */
+@charset "UTF-8";
+/* 设置顶部链接样式 */
+.mainPageTop .mainPageTop4{
+	color:#72c0f3;
+}
+/*通用样式*/
+.main{
+	width:100%;
+	min-width:1200px;
+	min-height:300px;
+	padding:15px 0 50px 0;
+}
+.main > div{
+	width:1200px;
+	margin:0 auto;
+}
+.accountCommonTop{
+	width:1200px;
+	height:55px;
+	line-height: 55px;
+	font-size: 16px;
+	color:#888;
+	padding: 0 0 0 15px;
+}
+.accountCommonTop span{
+	color:#ff8200;
+}
+.accountCommonLeft{
+	width:240px;
+	float: left;
+	margin-left: 5px;
+	background-color: #e5eff4;
+}
+.accountLeftTop{
+	width:100%;
+	height:270px;
+	padding: 20px;
+}
+.ALT1{
+	height:90px;
+	width: 200px;
+}
+.ALT1 .userFace{
+	width:90px;
+	height:90px;
+	float: left;
+	position: relative;
+}
+.ALT1 .userFaceTop,
+.ALT1 .userFaceBottom{
+	width: 100%;
+	height:100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.ALT1 .userInfo{
+	width:110px;
+	height:90px;
+	float: left;
+	padding:8px 0 0 20px;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+.ALT1 .userInfo label{
+	line-height: 30px;
+	font-size: 16px;
+	color: #313131;
+	white-space: nowrap;
+}
+.ALT1 .userInfo p{
+	line-height: 26px;
+	color:#6e6e6e;
+	font-size: 14px;
+	white-space: nowrap;
+}
+.ALT1 .userInfo p span{
+	line-height: 26px;
+	color:#383838;
+	font-size: 14px;
+}
+.ALT2{
+	height:60px;
+	width: 200px;
+}
+.ALT2 .integral{
+	width:120px;
+	height:100%;
+	line-height: 60px;
+	text-align: center;
+	float: left;
+}
+.ALT2 .integral span{
+	text-decoration: underline;
+	font-size: 14px;
+	color: #383838;
+	cursor: pointer;
+}
+.ALT2 .sign{
+	width:80px;
+	height:100%;
+	line-height: 60px;
+	float: left;
+}
+.ALT2 .sign label{
+	padding: 8px;
+	margin:0 5px 0 0;
+	background: url("../../resource/img/account/common/wdzh_4.png") no-repeat center;
+}
+.ALT2 .sign span{
+	color:#127cc2;
+	font-size: 14px;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.ALT3{
+	height:40px;
+	width: 200px;
+}
+.ALT3 div{
+	width:27px;
+	height:100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	float: left;
+	margin: 0 0 0 12px;
+}
+.mark1{
+	background-image: url("../../resource/img/account/common/wdzh_7.png");
+}
+.mark2{
+	background-image: url("../../resource/img/account/common/wdzh_9.png");
+}
+.mark3{
+	background-image: url("../../resource/img/account/common/wdzh_11.png");
+}
+.mark4{
+	background-image: url("../../resource/img/account/common/wdzh_13.png");
+}
+.mark5{
+	background-image: url("../../resource/img/account/common/wdzh_15.png");
+}
+.m1 .mark1{
+	background-image: url("../../resource/img/account/common/wdzh_6.png");
+}
+.m2 .mark2{
+	background-image: url("../../resource/img/account/common/wdzh_8.png");
+}
+.m3 .mark3{
+	background-image: url("../../resource/img/account/common/wdzh_10.png");
+}
+.m4 .mark4{
+	background-image: url("../../resource/img/account/common/wdzh_12.png");
+}
+.m5 .mark5{
+	background-image: url("../../resource/img/account/common/wdzh_14.png");
+}
+.ALT4{
+	height:30px;
+	line-height:30px;
+	width: 200px;
+	font-size: 12px;
+	color: #878181;
+}
+.ALT4 label{
+	margin:0 0 0 20px;
+	padding: 15px;
+	background: url("../../resource/img/account/common/wdzh_39.png") no-repeat center;
+}
+.ALT4 span{
+	color:#575757;
+}
+.accountLeftBottom{
+	width: 100%;
+	height:auto;
+	-moz-user-select: none;
+}
+.accountLeftBottom label,
+.accountLeftBottom span{
+	cursor: pointer;
+}
+.accountLeftBottom li{
+	cursor: pointer;
+}
+.accountLeftBottom > ul > li{
+	border-top:1px solid #dedede;
+}
+.accountLeftBottom > ul > li.down{
+	border-top:none;
+}
+.accountLeftBottom > ul > li > ul{
+	display: none;
+}
+.accountLeftBottom > ul > li.down > ul{
+	display: block;
+}
+.level1Tip{
+	width:100%;
+	height:60px;
+	line-height: 60px;
+	padding:0 0 0 30px;
+}
+.level1Tip span{
+	color:#252525;
+	font-size: 16px;
+	margin:0 30px 0 15px;
+}
+.down .level1Tip{
+	border-left: 2px solid #34afff;
+	border-top: 1px solid #a6d1ea;
+	width:242px;
+	margin-left:-2px;
+	background-color: #fff;
+	border-bottom: none;
+}
+.down .level1Tip span{
+	color:#34afff;
+	font-size: 16px;
+}
+.icon0{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_30.png") no-repeat center; 
+}
+.down .icon0{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_29.png") no-repeat center; 
+}
+.icon1{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_20.png") no-repeat center; 
+}
+.down .icon1{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_19.png") no-repeat center; 
+}
+.icon2{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_22.png") no-repeat center; 
+}
+.down .icon2{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_21.png") no-repeat center; 
+}
+.icon3{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_24.png") no-repeat center; 
+}
+.down .icon3{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_23.png") no-repeat center; 
+}
+.icon4{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_26.png") no-repeat center; 
+}
+.down .icon4{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_25.png") no-repeat center; 
+}
+.icon5{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_28.png") no-repeat center; 
+}
+.down .icon5{
+	padding: 10px;
+	background: url("../../resource/img/account/common/wdzh_27.png") no-repeat center; 
+}
+.accountLeftBottom > ul > li > ul > li{
+	height:48px;
+	text-align: center;
+	line-height: 48px;
+	font-size: 16px;
+	color:#636363;
+}
+.accountLeftBottom > ul > li > ul > li.down2{
+	color:#298cde;
+	background-color: #bee0f2;
+}
+.accountRight,.autoBidtList{
+	width:940px;
+	float: right;
+	margin-left: 15px;
+	background-color: #fff;
+	border:1px solid #f5f5f5;
+}
+.accountCommonRightTop{
+	width:880px;
+	height:74px;
+	line-height: 74px;
+	margin:0 auto;
+	border-bottom: 1px dashed #efefef;
+	font-size: 14px;
+	white-space: nowrap;
+}
+.ACRT1{
+	padding: 2px 22px;
+	border-right:1px solid #efefef;
+	background: url("../../resource/img/account/common/wdzh_17.png") no-repeat left;
+}
+.ACRT2{
+	color:#6e6e6e;
+	margin-left:28px;
+	cursor: pointer;
+}
+.orange{
+	color:#ff9c00;
+}
+.ACRT3{
+	margin-left:130px;
+	padding: 2px 10px;
+	background: url("../../resource/img/account/common/wdzh_18.png") no-repeat center;
+}
+.ACRT4{
+	color:#6e6e6e;
+	margin-right:24px;
+}
+
+
+
+
+/* 以下为封装的css内容    */
+/* 2016-03-29 胥福星 input标签的公用样式 */
+input[type="text"]{
+	border:1px solid #d2d2d2;
+	outline:none;
+}
+input[type="text"]{
+	padding:10px 0 10px 14px;
+	font-size:14px;
+	color:#333;
+}
+input[type="text"]:focus{
+	border-color:#a5d7f7;
+}
+/* end */
+/* button共用样式 */
+.btn{
+	width:184px;
+	height:44px;
+	line-height:44px;
+	text-align:center;
+	font-size:16px;
+	color:#fff;
+	background-color:#72c0f3;
+	border:1px solid #72c0f3;
+	cursor: pointer;
+	-moz-user-select: none;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	-o-border-radius:3px;
+	border-radius:3px;
+}
+.btn:hover{
+	background-color:#38aaf4;
+}
+.btn:active{
+	background-color:#168bd7;
+	border:1px solid #168bd7;
+}
+/* end */
+/* ul模拟select共用样式 */
+.selectValue{
+	display: none;
+}
+.selectArea{
+	width:100px;
+	height:41px;
+	position:relative;
+	display:inline-block;
+}
+.selectArea input.selectInput{
+	width:100%;
+	background:url(../../resource/img/account/common/wdzhDown.png) no-repeat;
+	background-position:right;
+	-moz-user-select: none;
+	cursor: pointer;
+}
+.select{
+	width:100%;
+	position:absolute;
+	top:41px;
+	border-top:0;
+	border-bottom:1px solid #d2d2d2;
+	border-left:1px solid #d2d2d2;
+	border-right:1px solid #d2d2d2;
+	text-align:left;
+	display:none;
+	background:#fff;
+	z-index:1;
+	padding-left:14px;
+}
+.selectOption{
+	padding-top:5px;
+	cursor:pointer;
+}
+.selectOption:hover{
+	color:#fff;
+	background:#38aaf4;
+}
+/* 图片预览公用样式   */
+.previewPicture{
+	display:inline-block;
+	min-width:187px;
+	min-height:187px;
+	overflow:hidden;
+	background:url(../../resource/img/account/personalCenter/grzx_32.png) no-repeat center;
+	position:relative;
+}
+.previewImg{
+	display:block;
+	max-width:244px;
+	min-height:187px;
+}
+.previewInput{
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:2;
+	filter: alpha(opacity:0);
+    opacity: 0;
+    cursor: pointer;
+}
+.previewPicHold{
+	text-align:center;
+	padding:10px 0;
+}
+.previewImgHold{
+	display:inline-block;
+	width:30%;
+	height:auto;
+}
+/* 弹出提示的样式 */
+/* 输入错误时弹出的样式  */
+.tipError,
+.after,
+.pre{
+	display:inline-block;
+	vertical-align:middle;
+}
+.tipError{
+	position: absolute;
+	margin-right:-300px;
+}
+.after{
+	height:42px;
+	background:#fce3e3;
+	border-top:1px solid #fd0202;
+	border-bottom:1px solid #fd0202;
+	border-right:1px solid #fd0202;
+	line-height:42px;
+	padding:0 10px 0 5px;
+	margin-top:2px;
+	color:#fd0202;
+	max-width:300px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+.after,
+.pre{
+	float:left;
+}
+.pre{
+	width:40px;
+	height:45px;
+	background:url(../../resource/img/account/common/tipsError_03.png) no-repeat;
+}
+/* 获取焦点时弹出的样式  */
+.tip,
+.afterTip,
+.preTip{
+	display:inline-block;
+	vertical-align:middle;
+}
+.tip{
+	position:absolute;
+	margin-right:-350px;
+}
+.afterTip{
+	height:42px;
+	max-width:300px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	background:#fff;
+	border-top:1px solid #72c0f3;
+	border-right:1px solid #72c0f3;
+	border-bottom:1px solid #72c0f3;
+	line-height:42px;
+	padding:0 10px 0 2px;
+	margin-top:2px;
+	color:#7c7c7c;
+}
+.afterTip,
+.preTip{
+	float:left;
+}
+.preTip{
+	width:20px;
+	height:45px;
+	background:url(../../resource/img/account/common/tip_07.png) no-repeat;
+}
+/* 输入正确的提示弹出层 */
+.tipOk{
+	position:absolute;
+}
+.tipOk{
+	display:inline-block;
+	width:15px;
+	height:15px;
+	margin-left:10px;
+	vertical-align:middle;
+	background:url(../../resource/img/account/common/zq.png) no-repeat;
+}
+/* 获取动态验证码的弹出提示层样式  */
+.dynamicVerificationSpan{
+	display:inline-block;
+	position:absolute;
+	max-width:270px;
+	height:45px;
+	line-height:46px;
+	padding-left:30px;
+	font-size:12px;
+	color:#777777 !important;
+	background:url(../../resource/img/loginRegister/forgetPwd.png) no-repeat;
+	background-position:center left;
+}
+/*弹出层伍成然2016-4-7*/
+.sign-success{
+	display:none;
+}
+.sign-success img{
+	margin-top:20px;
+}
+.sign-success p{
+	margin-top:20px;
+	width:170px;
+	font-size:24px;
+}
+.sign-success p a{
+	color:#ed5628;
+}
+.sign-success .btn{
+	margin-top:20px;
+	width:300px;
+	height:53px;
+	line-height:53px;
+	font-szie:18px;
+}
+/*弹出层结束伍成然2016-4-7*/
+
+
+/* 弹出提示层样式   胥福星      2016-04-06  */
+.tipUp,
+.tipDown,
+.tipLeft,
+.tipDown2{
+	display:inline-block;
+	position:absolute;
+	margin-right:-200px !important;
+	z-index:1;
+}
+.tipLeft,
+.contentLeft{
+	width:auto !important;
+	height:auto !important;
+}
+.imgLeft{
+	margin:0 !important;
+}
+.tipDown2{
+	margin-right:-100px !important;
+}
+.contentDown2{
+	width:100px !important;
+}
+.contentUp,
+.contentDown,
+.contentDown2{
+	width:200px;
+	color:#797979;
+	font-size:12px;
+	padding:5px 15px;
+	position:relative;
+	border:1px solid #ededed;
+	background:#fff;
+}
+.imgUp{
+	width:14px;
+	height:12px;
+	position:absolute;
+	bottom:-8px;
+	right:45%;
+	background:url(../../resource/img/account/accountOverview/wdzh_tip1.png) no-repeat;
+}
+.imgDown{
+	width:14px;
+	height:10px;
+	position:absolute;
+	top:-9px;
+	right:45%;
+	background:url(../../resource/img/account/accountOverview/wdzh_tip3.png) no-repeat;
+}
+.contentLeft{
+	max-width:350px !important;
+	color:#797979;
+	font-size:12px;
+	padding:10px 15px;
+	position:relative;
+	border:1px solid #ededed;
+	background:#fff;
+}
+.imgLeft{
+	width:14px !important;
+	height:20px !important;
+	position:absolute;
+	left:-13px;
+	top:9px;
+	background:url(../../resource/img/account/accountOverview/wdzh_tip2.png) no-repeat;
+}
+.samp{
+	color:#fc6a6a;
+}
+.third{
+	color:#72c0f3;
+	margin-left:5px;
+	text-decoration:underline;
+}
+.number{
+	color:#72c0f3;
+	margin:0 5px;
+}

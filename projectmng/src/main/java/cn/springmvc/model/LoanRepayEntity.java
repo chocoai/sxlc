@@ -81,6 +81,9 @@ public class LoanRepayEntity {
 	private Double allSy;  //总收益
 	private long totalSDRepay;//共需还本息
 	private String totalSDRepays;
+	private String loanStatu;//还款状态
+	private long sdPrincipalInterest;//应还本息
+	private String sdPrincipalInterests;//应还本息
 	public String getCorpus() {
 		return corpus;
 	}
@@ -209,7 +212,26 @@ public class LoanRepayEntity {
 	}
 	public void setTotalSDRepays(String totalSDRepays) {
 		this.totalSDRepays = totalSDRepays;
-	}			
+	}	 
+	public String getLoanStatu() {
+		return loanStatu;
+	}
+	public void setLoanStatu(String loanStatu) {
+		this.loanStatu = loanStatu;
+	} 
+	public long getSdPrincipalInterest() {
+		return sdPrincipalInterest;
+	}
+	public void setSdPrincipalInterest(long sdPrincipalInterest) {
+		this.sdPrincipalInterest = sdPrincipalInterest;
+		this.sdPrincipalInterests= IntegerAndString.LongToString(sdPrincipalInterest);
+	}
+	public String getSdPrincipalInterests() {
+		return sdPrincipalInterests;
+	}
+	public void setSdPrincipalInterests(String sdPrincipalInterests) {
+		this.sdPrincipalInterests = sdPrincipalInterests;
+	}
 	@Override
 	public String toString() {
 		return "LoanRepayEntity [repayID=" + repayID + ", projectId="
@@ -223,9 +245,11 @@ public class LoanRepayEntity {
 				+ ", replayTotals=" + replayTotals + ", corpus=" + corpus
 				+ ", interest=" + interest + ", endCorpusInterest="
 				+ endCorpusInterest + ", retrieveDateTime=" + retrieveDateTime
-				+ ", allSy=" + allSy + "]";
-	}
-	
+				+ ", allSy=" + allSy + ", totalSDRepay=" + totalSDRepay
+				+ ", totalSDRepays=" + totalSDRepays + ", loanStatu="
+				+ loanStatu + ", sdPrincipalInterest=" + sdPrincipalInterest
+				+ ", sdPrincipalInterests=" + sdPrincipalInterests + "]";
+	} 
 
 }
 

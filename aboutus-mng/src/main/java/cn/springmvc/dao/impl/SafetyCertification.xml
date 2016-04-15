@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD footNavBar 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="safetyCertification">
     <resultMap type="cn.springmvc.model.SafetyCertificationEntity" id="resultListSafetyCertification">
-        <id column="ID" property="id" /> 
-		<result column="Title" property="title" /> 
-		<result column="Logo" property="logo" />
-		<result column="URL" property="url" />
-		<result column="Statu" property="statu" />
+        <id column="ID" 			property="id" /> 
+		<result column="Title" 		property="title" /> 
+		<result column="Logo" 		property="logo" />
+		<result column="URL" 		property="url" />
+		<result column="Statu" 		property="statu" />
 		<result column="CreateTime" property="createTime" />
-		<result column="Opt_Date" property="optDate" />
-		<result column="Opt_Id" property="optId" />
-		<result column="adminName" property="adminName" /> 
+		<result column="Opt_Date" 	property="optDate" />
+		<result column="Opt_Id" 	property="optId" />
+		<result column="adminName" 	property="adminName" /> 
     </resultMap> 
 	<!-- 分页查询底部网站认证-->  
 	<select id="selectSafetyCertificationList"  resultMap="resultListSafetyCertification" parameterType="product_p2p.kit.pageselect.PageEntity" >

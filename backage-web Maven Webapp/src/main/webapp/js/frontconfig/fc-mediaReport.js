@@ -14,12 +14,6 @@ $(function() {
 			}  
 		},
 		columns: [  
-		          {title:'<input type="checkbox"  value="1" />',
-		        	  "mRender": function (data, type, full) {
-		        		  return  '<input type="checkbox" value="1" />';
-		        	  }
-	//	          "sClass": "table-checkbox"
-		          },
 		          { title:"媒体报道ID","data": "id"},  
 		          { title:"logoUrl","data": "logo"},  
 		          { title:"添加时间","data": "createTime"},  
@@ -56,7 +50,7 @@ $(function() {
 		          }
 		          ],
 	  aoColumnDefs : [
-	                  {"bVisible": false, "aTargets": [1,2 ]}, //控制列的隐藏显示
+	                  {"bVisible": false, "aTargets": [0,1]}, //控制列的隐藏显示
 	                  {
 	                	  "orderable" : false,
 	                	  "aTargets" : [0,1,3,4,5,6,7,8,9]
@@ -71,10 +65,18 @@ $(function() {
 	
 	});
 	
-	//选中
+	//表格单选效果
 	 $('#mediaTb tbody').on( 'click', 'tr', function () {
-	        $(this).toggleClass('selected');
+		    var $this = $(this);
+	        if ( $this.hasClass('selected') ) {
+	        	$this.removeClass('selected');
+	        }
+	        else {
+	        	$('#mediaTb tr.selected').removeClass('selected');
+	        	$this.addClass('selected');
+	        }
 	  });
+	 
 	
 });
 

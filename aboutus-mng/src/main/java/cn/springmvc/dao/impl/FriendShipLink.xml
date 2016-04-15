@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="friendshipUnit">
     <resultMap type="cn.springmvc.model.FriendshipUnitEntity" id="resultListFriendshipLink">
-        <id column="ID" property="id" />
-		<result column="Name" property="name" />
-		<result column="Logo" property="logo" />
-		<result column="URL" property="url" />
-		<result column="Introduction" property="introduction" />
-		<result column="Statu" property="statu" />
-		<result column="CreateTime" property="createTime" />
-		<result column="Indexs" property="indexs" />
-		<result column="Opt_Id" property="optId" />
-		<result column="Opt_Date" property="optDate" />
-		<result column="adminName" property="adminName" />
+        <id column="ID" 				property="id" />
+		<result column="Name" 			property="name" />
+		<result column="Logo" 			property="logo" />
+		<result column="URL" 			property="url" />
+		<result column="Introduction"   property="introduction" />
+		<result column="Statu" 			property="statu" />
+		<result column="CreateTime" 	property="createTime" />
+		<result column="Indexs" 		property="indexs" />
+		<result column="Opt_Id" 		property="optId" />
+		<result column="Opt_Date" 		property="optDate" />
+		<result column="adminName" 		property="adminName" />
     </resultMap> 
     <!-- 查询友情链接列表 -->  
 	<select id="selectFriendShipLinkList" parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="resultListFriendshipLink">

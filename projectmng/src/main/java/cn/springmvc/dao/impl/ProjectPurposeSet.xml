@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="projectPurposeSet">  
    <resultMap type="cn.springmvc.model.ProjectPurposeSetEntity" id="resultListProjectPurposeSet"> 
-		<result column="Option_Type" property="optionType" />
+		<result column="Option_Type"  property="optionType" />
 		<result column="Option_Statu" property="optionStatu" /> 
     </resultMap> 
     <!-- 借款意向配置列表 -->  

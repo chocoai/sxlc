@@ -174,16 +174,23 @@ public class StaffController {
 	* delStaff(删除员工) 
 	* @author 唐国峰  
 	* @Description: 
+	* @param ids 要删除的员工ids
 	* @return void
 	* @date 2016-4-5 下午2:20:40
 	* @throws 
 	*/
 	@RequestMapping("/delStaff")
 	@ResponseBody
-	public int delStaff(StaffInfo info,HttpServletRequest req,HttpServletResponse res){
+	public int delStaff(String ids,HttpServletRequest req){
 		int result=0;
 		try {
-			result = iStaffInfoService.quit(info);
+			ids = ids.substring(1, ids.length()-1);
+			String[] all = ids.split(",");
+			for(String id : all){
+				StaffInfo info = new StaffInfo();
+				info.setId(Long.parseLong(id));
+				result = iStaffInfoService.quit(info);
+			}
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

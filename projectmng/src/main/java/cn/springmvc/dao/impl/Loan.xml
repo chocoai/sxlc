@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="projectLoan">
+    <!-- 项目放款-->  
+    <select id="Loan"  statementType="CALLABLE" parameterType="Map"> 
+	     {call FuangKuan(
+				#{lId ,	         mode=IN,	jdbcType=BIGINT},
+				#{lApplyId,	     mode=IN,	jdbcType=BIGINT},
+				#{sMerBillNo,	 mode=IN,	jdbcType=VARCHAR},
+				#{sOrderNos,	 mode=IN,	jdbcType=VARCHAR},
+				#{iStatu,	     mode=IN,	jdbcType=INTEGER},
+				#{backInfoenc,	 mode=IN,	jdbcType=VARCHAR},
+				#{backinfo,	     mode=IN,	jdbcType=VARCHAR},
+				#{Skey,	         mode=IN,	jdbcType=VARCHAR}, 
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)} 
+	</select>
+</mapper>

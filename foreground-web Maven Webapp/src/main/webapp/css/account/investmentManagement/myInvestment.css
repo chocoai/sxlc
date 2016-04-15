@@ -1,0 +1,219 @@
+.myInvestment{
+	width:930px;
+	margin:5% auto 0;
+}
+.myInvestmentH{
+	width:100%;
+	display: inline-block;
+	border-bottom:1px solid #ececec;
+	font-size:18px;
+	color:#000;
+	padding: 0 0 0 25px;
+}
+.myInvestmentH>div{
+	width:82px;
+	display: inline-block;
+	height:45px;
+	border-bottom:2px solid #fff;
+	text-align: center;
+	cursor:pointer;
+}
+.revenueRecordUl .divOutside{
+	height:78px;
+}
+.myInvestmentH>div:hover{
+	color:#45a7e6;
+	border-bottom:2px solid #72c0f3;
+}
+.myInvestmentM{
+	display:inline-block;
+	width:100%;
+	font-size:13px;
+	margin:20px 0 0;
+	padding: 0 10px;
+}
+.myInvestmentMTitle{
+	border-top:1px solid #ececec;
+	background: #f5f5f5;
+	width:885px;
+	height: 45px;
+    line-height: 45px;
+    margin-top: 10px;
+}
+.myInvestmentMTitle>div{
+	display:inline-block;
+	text-align:center;
+	font-size:13px;
+	float: left;
+}
+.myInvestmentMTitle>div>em{
+	display: inline-block;
+	width:11px;
+	height:13px;
+	margin-left: 5px;
+}
+.remainingNum,.nextPaymentT{
+	cursor:pointer;
+}
+.iconDown{
+	background:url("../../../resource/img/account/investmentManagement/problem_btn_03.png") no-repeat;
+	background-position:center;
+}
+.iconUp{
+	background:url("../../../resource/img/account/investmentManagement/problem_btn_09.png") no-repeat;
+	background-position:center;
+}
+.divOutside{
+	display:table;
+	overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    width: 81px;
+    vertical-align:middle;   
+}
+.recycleUl .divOutside{
+	height:99px;
+}
+.settledUl .divOutside,
+.bidingUl .divOutside{
+	height:77px;
+}
+.bidMissedUl .divOutside{
+	height:69px;
+}
+.bidEndUl .divOutside{
+	height:79px;
+}
+.divIntside{
+	display:table-cell;
+	vertical-align:middle;
+	font-size: 12px;  
+	color:#575757; 
+}
+.divIntside div{
+	text-align:center;
+	margin: 5px 0;
+}
+.myInvestmentM>ul>li{
+	display:inline-block;
+	vertical-align:middle; 
+	border-bottom:1px solid #ececec;  
+}
+.myInvestmentM>ul>li>div{
+	float:left;
+}
+.productNum,
+.productName,
+.investNum,
+.remainingMoney,
+.remainingInterest{
+	width:75px;
+}
+.lender{
+	width:50px;
+}
+.remainingNum,.opreations{
+	width:80px;
+}
+.settledUl .myInvestmentMTitle>div,
+.settledUl .divOutside,
+.bidingUl .myInvestmentMTitle>div,
+.bidingUl .divOutside,
+.bidEndUl .myInvestmentMTitle>div,
+.bidEndUl .divOutside{
+	width:98px;
+}
+.nextPaymentT,
+.nextPaymentM,
+.nextPaymentI,
+.totalRevenue,
+.lendingTime,
+.closingTime{
+	width:100px;
+}
+.bidMissedUl .myInvestmentMTitle>div,
+.bidMissedUl .divOutside{
+	width:110px;
+}
+.revenueRecordUl .myInvestmentMTitle>div,
+.revenueRecordUl .divOutside{
+	width:126px;
+}
+.revenuePlanUl .myInvestmentMTitle>div,
+.revenuePlanUl .divOutside{
+	width:110px;
+}
+.profitPlan>a{
+	color:#fe7407;
+}
+.agreement>a,.supervise>a{
+	color:#575757;
+}
+.divIntside>div>a{
+	text-decoration:underline;
+	cursor:pointer;
+}
+.supervise>span{
+	display: inline-block;
+	width:13px;
+	height:15px;
+	background:url("../../../resource/img/account/investmentManagement/tzgl_2.png");
+	margin-bottom: -3px;
+    margin-right: 2px;
+}
+.supervise:hover span{
+	display: inline-block;
+	width:13px;
+	height:15px;
+	background:url("../../../resource/img/account/investmentManagement/tzgl_1.png");
+	margin-bottom: -3px;
+    margin-right: 2px;
+}
+.supervise:hover a{
+	color:#72c0f3;
+}
+.settledUl,
+.bidingUl,
+.bidMissedUl,
+.bidEndUl{
+	display:none;
+}
+/* �ѽ����Ͷ��-�����¼��ʼ���� */
+.revenueRecord{
+	width:198px !important;
+	color: #72c0f3;
+    border-bottom: 2px solid #72c0f3 !important;
+}
+.revenueRecordContent .myInvestmentM ul{
+	display:inline-block;
+}
+/* �ѽ����Ͷ��-�����¼����� */
+/* �ѻ����е�Ͷ��-����ƻ���ʼ���� */
+.revenuePlanContent .myInvestmentM ul{
+	display:inline-block;
+	text-align: center;
+}
+.revenuePlanContent .revenuePlanUl .divOutside{
+	height:78px;
+}
+.unRepayment{
+	color:#fe7407;
+}
+/* �ѽ����Ͷ��-�����¼��ʼ���� */
+
+/* 分页 */
+.page{
+	width:100%;
+	height:162px !important;
+	line-height:162px;
+	border:0 !important;
+	margin: 10px 0;
+}
+#pager{
+	width:100% !important;
+	text-align:center;
+}
+
+
+
+

@@ -43,9 +43,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                         <li><a href="web/project/soon_pay_count.jsp">即将还款统计</a></li>
                                         <li><a href="web/project/late_pay_count.jsp">逾期还款统计</a></li>
                                         <li><a href="web/project/soon_due_bill.jsp">即将到期借款催收</a></li>
-                                        <li><a href="javascript:;">逾期借款催收</a></li>
-                                        <li><a href="javascript:;">催收已还账单</a></li>
-                                        <!-- <li><a href="web/project/late_advance.jsp">逾期垫付</a></li> -->
+                                        <li><a href="web/project/overdue_collection.jsp">逾期借款催收</a></li>
+                                        <li><a href="web/project/collection_has_bill.jsp">催收已还账单</a></li>
                                     </ul>
                                  </li>
                                 <li id="credit_transfer_exam"><a href="web/project/credit_assignment_exam.jsp"><i class="fa fa-edit"></i>债权转让审核</a></li>

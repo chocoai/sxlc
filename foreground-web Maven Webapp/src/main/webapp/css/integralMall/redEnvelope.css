@@ -1,0 +1,61 @@
+/*伍成然2016-4-7*/
+.main{
+	height:1344px;
+	width:1500px;
+	background-image: url("../../resource/img/integralMall/qhb_01.jpg");
+	background-repeat: no-repeat;
+	background-position:0;
+	position:relative;
+}
+/*时间  */
+.time{
+	height:55px;
+	width:443px;
+	font-size:22px;
+	color:#ed5858;
+	position:absolute;
+	top:414px;
+	left:560px;
+}
+/*时间结束  */
+/*按钮  */
+.btn{
+	position:absolute;
+	bottom:100px;
+	left:390px;
+	cursor:pointer;
+}
+/*按钮结束*/
+/* 中奖滚动部分开始 */
+.reward ul{
+	color:#4d4d4d;
+	height:273px;
+	width:750px;
+}
+.reward li { 
+	height:35px;
+	font-size:26px;
+	list-style: none; 
+}
+.reward li:hover{color:#de0c04;cursor:pointer;}
+.reward span{
+	width:30%;
+	float:left;
+}
+.reward li .mid{
+	width:30%;
+	float:left;
+	text-align:left;
+} 
+.reward li .right{
+	width:40%;
+	float:right;
+} 
+#news{ 
+	position:absolute;
+	bottom:476px;
+	right:327px;
+	height:230px; 
+	overflow: hidden; 
+}
+/* 中奖滚动部分结束 */

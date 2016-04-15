@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="investincome">
+   <resultMap type = "cn.springmvc.model.InvestRecordEntity" id = "resultInvestRecord"> 
+        <id property = "investID"			    column = "Invest_ID" />
+		<result property = "investAmount"    	column = "Invest_Amount" />
+		<result property = "investDate"         column = "Invest_Date" />  
+		<result property = "memberID"           column = "Member_ID" /> 
+		<result property = "investAmountValid"  column = "investAmountValid" /> 
+		<result property = "projectId"          column = "Apply_ID" />  
+    </resultMap>  
+    <!-- 根据项目ID查询项目直投投资记录-->  
+	<select id="selectInvestListByProjectID" parameterType="map"  resultMap="resultInvestRecord">
+	    select  CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{sKey})) as signed) investAmountValid ,
+	    ir.Invest_Date,ir.Member_ID,ir.Invest_ID  
+        from Invest_Record ir   
+	    where ir.Apply_Id=#{projectID} and ir.IsValid=0
+    </select> 
+    <!-- 根据项目ID查询项目直投投资记录-->  
+	<select id="selectInvestInfoByInvestID" parameterType="long"  resultMap="resultInvestRecord">
+	    select  ir.Member_ID,ir.Invest_ID ,ir.Apply_ID  
+        from Invest_Record ir   
+	    where ir.Invest_ID=#{investID}
+    </select> 
+     <!-- 根据项目ID查询项目还款计划ID-->  
+	 <select id="selectLoanRepayIDByapplyID" parameterType="long"  resultType="cn.springmvc.model.LoanRepayEntity">
+	    select Repay_ID as repayID from Loan_Repay where Apply_ID = #{applyID} and Statu=0 and IsCompensatory=0 order by Repay_MaxTime asc
+     </select> 
+     <!-- 新增收益计划 -->
+     <select id="insertInvestIncome"  statementType="CALLABLE" parameterType="Map"> 
+     {call insertInvestIncome(
+				#{iId  ,	             mode=IN,	jdbcType=BIGINT},
+				#{repayId,	             mode=IN,	jdbcType=BIGINT}, 
+				#{investId,	             mode=IN,	jdbcType=BIGINT}, 
+				#{memberId,	             mode=IN,	jdbcType=BIGINT},
+				#{sPrincipal,	         mode=IN,	jdbcType=INTEGER}, 
+				#{sInterest,	         mode=IN,	jdbcType=INTEGER}, 
+				#{ttDate,	             mode=IN,	jdbcType=VARCHAR},
+				#{sKey,	                 mode=IN,	jdbcType=VARCHAR},
+				#{result,	             mode=OUT,	jdbcType=INTEGER}
+    		)}
+     </select>  
+    <!-- 根据还款计划ID查询总的应收本金与利息-->  
+	<select id="selectSumAmount" parameterType="map"  resultType="cn.springmvc.model.InvestIncomeEntity">
+	    select sum(CAST((AES_DECRYPT(UNHEX(SDRecv_Principal),#{sKey})) as signed)) as totalSDRecvPrincipal,
+	           sum(CAST((AES_DECRYPT(UNHEX(SDRecv_Interest),#{sKey})) as signed))  as totalSDRecvInterest
+	           from Invest_Income where Repay_Id=#{replayID} and IsValid=0
+    </select>   
+     <!-- 根据还款计划ID查询对应收益计划的应还款时间-->  
+	<select id="selectSDRecvMaxTime" parameterType="long"  resultType="String">
+	   select SDRecv_MaxTime from Invest_Income where Repay_Id=#{replayID} and IsValid=0  order by Income_Id desc LIMIT 0,1
+    </select>  
+       <!-- 修改还款计划 收益平账 -->
+     <select id="updateReplay"  statementType="CALLABLE" parameterType="Map"> 
+     {call updateReplay(
+				#{iId  ,	                 mode=IN,	jdbcType=BIGINT},
+				#{iPrincipal,	             mode=IN,	jdbcType=BIGINT}, 
+				#{iInterest,	             mode=IN,	jdbcType=BIGINT},
+				#{ttDate,	                 mode=IN,	jdbcType=VARCHAR},
+				#{sKey,	                     mode=IN,	jdbcType=VARCHAR},  
+				#{result,	                 mode=OUT,	jdbcType=INTEGER}
+    		)}
+     </select>     
+</mapper>

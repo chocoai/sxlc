@@ -1,5 +1,87 @@
-/* 陈小花
-弹出层样式 */
+/* 陈小花 */
+/* 项目详情中项目类型简介 */
+.introduce{
+	cursor:pointer;
+	margin:0;
+}
+.all{
+	display:none;
+	width:200px;
+	height:auto;
+	position:absolute;
+	border:1px solid #BFBFBF;
+	border-radius:4px;
+	color:#5F4B05;
+	padding:10px;
+	background-color:#D9DEE4;
+	z-index:9999;
+	text-indent:22px;
+	line-height:22px;
+	font-size:12px;
+}
+td{
+	position:relative;
+}
+td.con{
+	width:100%;
+}
+/* 修改样式 */
+.w-content{
+	display:block;
+}
+.w-content td.tt{
+	min-width:145px;
+}
+.w-content td.con textarea{
+	width:96%;
+}
+.loanproduct li,
+.options li{
+	list-style: none;
+    width: 100%;
+}
+.options li{
+	height:32px;
+	overflow: hidden;
+    margin: 10px 0;
+}
+.loanproduct li>div{
+	float: left;
+    width: 33.3%;
+    text-align: center;
+}
+.options li>div{
+	float:left;
+	margin-right:10px;
+}
+/* .options li>div:last-child{
+	display:none;
+} */
+.protype{
+	display:none;
+}
+.doc{
+	float: left;
+    height: 25px;
+    margin-right: 5px;
+}
+.autobid input{
+	width:50px;
+	padding:4px 1px;
+}
+.allocation{
+	width:80%;
+	margin:20px auto;
+}
+.allocation select{
+	height:25px;
+}
+.allocation .select{
+	margin-left:60px;
+	padding:3px 8px;
+	margin-top:10px;
+}
+/*弹出层样式 */
 body{
 	background-color:#fff;
 	color:#575757;
@@ -7,10 +89,10 @@ body{
 textarea{
 	resize:none;
 }
-.add_type_contianer{
+/* .add_type_contianer{
 	width:auto;
 	margin:20px 45px;
-}
+} */
 .guide{
 	margin-top:20px;
 }

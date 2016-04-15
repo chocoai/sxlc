@@ -1,0 +1,883 @@
+/* 李丽梅 */
+/* 收支明细*/
+/* 2016-4-1*/
+/*标签切换  */
+em{
+	font-style:normal;
+}
+.iEDHead{
+	height:67px;
+	width:100%;
+	border-bottom:1px solid #ececec;
+}
+
+.iEDHead li{
+	width:75px;
+	height:45px;
+	float:left;
+	font-size:18px;
+	color:#000;
+	margin-left:44px;
+	line-height:45px;
+	margin-top:22px;
+	text-align:center;
+	cursor:pointer;
+}
+.iEDHead .iEDHeadIng{
+	color:#45a7e6;
+	border-bottom:2px solid #45a7e6;
+}
+
+.iEDtabContent .iEDcontentActive{
+	display:block;
+}
+ .iEDContent{
+	display:none;
+} 
+.aDF{
+	display:none !important;
+} 
+/*标签切换  结束*/
+.iEDTrecordType{
+	width:868px;
+	line-height:90px;
+	clear:both;
+}
+.iEDTrecordTypeLeft{
+	float:left;
+}
+.iEDTrecordTypeLeftJ{
+	margin-right:10px;
+}
+
+.iEDDiv{
+	display:inline-block;
+	height:90px;
+	font-size:12px;
+	color:#444;
+	line-height:90px;
+	text-align:center;
+	margin:0 5px 0 10px;
+}
+ .iEDDiv em{
+ 	clear:both;
+	font-style:normal;
+	width:60px;
+	padding:3px 10px;
+	margin:0 2px;
+	cursor:pointer;
+	border-radius:2px;
+	-moz-border-radius: 2px 2px 2px 2px;
+	-webkit-border-radius: 2px;
+	-o-border-radius: 2px;
+} 
+.active{
+	background:#72c0f3;
+	color:#fff;
+}
+.iEDTrecordTypeLeft i{
+	font-style:normal;
+	width:10px;
+	text-align:center; 
+	display:inline-block;;
+	border:1px solid #7b7b7b;
+}
+.iEDleft{
+	margin-left:17px;
+}
+.iEDTrecordTypeLeft label{
+	font-size:12px;
+	color:#7b7b7b;
+	margin-right:3px;
+}
+.iEDDiv2 {
+	width:76px;
+	line-height:30px;
+}
+.iEDTrecordTypeLeft span{
+	width:60px;
+	background:#72c0f3;
+	color:#fff;
+	font-size:12px; 
+	display:inline-block;
+	margin-top:30px;
+	margin-left:28px;
+	border-radius:2px;
+}
+.iEDTrecordTypeLeftSpan span
+{
+	width:60px;
+	background:#72c0f3;
+	color:#fff;
+	font-size:12px; 
+	display:inline-block;
+	margin-top:30px;
+	margin-left:10px;
+	float:left;
+	text-align:center;
+	border-radius:2px;
+}
+.iEDTrecordTypeLeftSpan{
+	float:left;
+}
+.awardTableHead ul li{
+	float:left;
+	margin:0 4px;
+}
+.awardTableAllOn{
+	padding-left:30px;
+}
+.awardTableRegisterAlla{
+	line-height:68px;
+	width:141px;
+	text-align:center; 
+	display:inline-block;
+	color:#575757;
+}
+.awardTableHead{
+	width:868px;
+	height:43px;
+	line-height:43px;
+	background-color:#f5f5f5;
+	border-top:1px solid #ebebeb;
+	border-bottom:1px solid #ebebeb;
+}
+/* 充值记录 */
+.awardTableHeada{
+	width:868px;
+	height:43px;
+	line-height:43px;
+	background-color:#f5f5f5;
+	border-top:1px solid #ebebeb;
+	border-bottom:1px solid #ebebeb;
+	padding-left:15px;
+}
+.awardTableHeada1{
+	width:868px;
+	height:43px;
+	line-height:43px;
+	background-color:#f5f5f5;
+	border-top:1px solid #ebebeb;
+	border-bottom:1px solid #ebebeb;
+	padding-left:9px;
+}
+
+.awardTableHeadAll{
+	width:56px;
+	height:43px;
+	line-height:43px;
+	display:inline-block;
+	text-align:center;
+	font-size:11px;
+	color:#262626;
+}
+.awardTableHeadAlla {
+	width:122px;
+	height:43px;
+	line-height:43px;
+	display:inline-block;
+	text-align:center;
+	font-size:11px;
+	color:#262626;
+}
+.awardTableHead>div em{
+	padding:5px;
+}
+.awardTableHeada>div em{
+	padding:5px;
+	display:inline-block;
+	margin-left:3px;
+	display:inline-block;
+}
+.awardTableHeada1>div em{
+	padding:5px;
+	display:inline-block;
+	margin-left:3px;
+	display:inline-block;
+}
+.btnUp{
+	background:url("../../../resource/img/account/investmentManagement/problem_btn_03.png") no-repeat;
+	background-position:center;
+	cursor:pointer;
+}
+.btnDown{
+	background:url("../../../resource/img/account/investmentManagement/problem_btn_09.png") no-repeat;
+	background-position:center;
+	cursor:pointer;
+}
+.awardTableRegisterTwo{
+	height:70px;
+	width:98px;
+	line-height:24px;
+	color:#575757;
+	font-size:12px;
+	text-align:center;
+}
+
+.awardTableRegisterTwo p{
+	margin-top:10px;
+}
+.awardTableRegisterTwo b{
+	font-weight:normal;
+}
+.awardTableRegisterTwoab 
+{
+	display:inline-block;
+	width:76px;
+	font-size:12px;
+	text-align:center;
+	color:#575757;
+}
+.awardTableRegisterAllac{
+	display:inline-block;
+	width:40px;
+	font-size:12px;
+	text-align:center;
+	color:#575757;
+	line-height:68px; 
+}
+.awardTableRegisterTwoab p{
+	margin-top:10px;
+}
+.awardTableRegisterTwoab b{
+	font-weight:normal;
+}
+
+.awardTableRegisterAllJu2{
+	padding-left:8px;
+}
+.awardTabRegister{
+	width:868px;
+	height:70px;
+}
+
+.iEDTrecordNext{
+	border-bottom:1px solid #f5f5f5;
+	width:875px;
+	height:69px;
+}
+.iEDTrecordNext li{
+	height:100%;
+}
+/* 充值记录的li宽度 */
+.awardTableRegister{
+	width:868px;
+	border-bottom:1px solid #ececec;
+}
+/* 提现记录 */
+
+.awardTableHead .awardTableHead1 ,
+.awardTableHead .awardTableHead2 ,
+.awardTableHead .awardTableHead3 ,
+.awardTableHead .awardTableHead4 ,
+.awardTableHead .awardTableHead5 ,
+.awardTableHead .awardTableHead6 ,
+.awardTableHead .awardTableHead7 ,
+.awardTableHead .awardTableHead8 ,
+.awardTableHead .awardTableHead9 ,
+.awardTableHead .awardTableHead10 ,
+.awardTableHead .awardTableHead11 ,
+.awardTableHead .awardTableHead12 ,
+.awardTableHead .awardTableHead13 
+{
+	float:left;
+	heigth:45px;
+	text-align:center;
+	line-height:45px;
+	color:#262626;
+	font-size:12px;
+}
+.awardTableRegister .awardTableHead1 ,
+.awardTableRegister .awardTableHead2 ,
+.awardTableRegister .awardTableHead3 ,
+.awardTableRegister .awardTableHead4 ,
+.awardTableRegister .awardTableHead5 ,
+.awardTableRegister .awardTableHead6 ,
+.awardTableRegister .awardTableHead7 ,
+.awardTableRegister .awardTableHead8 ,
+.awardTableRegister .awardTableHead9 ,
+.awardTableRegister .awardTableHead10 ,
+.awardTableRegister .awardTableHead11 
+
+{
+	float:left;
+	color:#575757;
+	font-size:12px;
+	line-height:70px;
+	text-align:center;
+}.awardTableRegister .awardTableHead12-1 {
+	float:left;
+	color:#575757;
+	font-size:12px;
+	line-height:70px;
+	text-align:right;
+}
+.awardDistance{
+	padding-left:15px;
+}
+.awardTableRegister .awardTableHead13-1{
+	float:left;
+	color:#575757;
+	font-size:12px;
+	text-align:center;
+}
+.awardTabRegister .awardTableHead3a{
+	float:left;
+	width:60px;
+	color:#575757;
+	font-size:12px;
+	text-align:center;
+	line-height:70px;
+}
+.awardTabRegister .awardTableHead5a{
+	float:left;
+	width:61px;
+	color:#575757;
+	font-size:12px;
+	text-align:center;
+	line-height:70px;
+}
+.awardTabDow{
+	background:#f3f6f8;
+	border-left:2px solid #b9dff9;
+}
+/* 交易记录 */
+.awardTableHead1
+{
+	width:50px;
+}
+.awardTableHead2{
+	width:55px;
+}
+.awardTableHead3{
+	width:68px;
+}
+.awardTableHead4{
+	width:56px;
+}
+.awardTableHead5{
+	width:64px;
+}
+.awardTableHead6{
+	width:64px;
+}
+.awardTableHead7{
+	width:64px;
+}
+
+.awardTableHead8{
+	width:67px;
+}
+.awardTableHead9{
+	width:64px;
+}
+.awardTableHead10{
+	width:70px;
+}
+.awardTableHead11{
+	width:123px;
+}
+.awardTableHead12{
+	width:54px;
+}
+.awardTableHead13{
+	width:61px;
+}
+.awardTableHead12-1{
+	width:51px;
+}
+
+.awardTableHead13-1{
+	height:70px;
+	width:80px;
+	display:table;
+}
+.awardTableHead13-1 .contentA{
+	padding-left:5px;
+	vertical-align:middle;   
+	display:table-cell; 
+	text-align:center;
+}
+/* 充值记录 */
+.awardTableHeada .awardTableCu1 ,
+.awardTableHeada .awardTableCu2 ,
+.awardTableHeada .awardTableCu3 ,
+.awardTableHeada .awardTableCu4 ,
+.awardTableHeada .awardTableCu5 ,
+.awardTableHeada .awardTableCu6 ,
+.awardTableHeada .awardTableCu7 
+
+{
+	float:left;
+	height:43px;
+	line-height:43px;
+	font-size:14px;
+	color:#262626;
+	text-align:center;
+	display:inline-block;
+}
+
+.awardTableRegister .awardTableCu1 ,
+.awardTableRegister .awardTableCu3 ,
+.awardTableRegister .awardTableCu4 ,
+.awardTableRegister .awardTableCu5 ,
+.awardTableRegister .awardTableCu6 ,
+.awardTableRegister .awardTableCu7 
+{
+	float:left;
+	line-height:70px;
+	text-align:center;
+	height:70px;
+	color:#575757;
+	font-size:12px;
+}
+.awardTableRegister .awardTableCu2-1 
+{
+	float:left;
+	text-align:center;
+	color:#575757;
+	font-size:12px;
+}
+
+.awardTableCu1 {
+	width:106px;
+}
+.awardTableCu2 {
+	width:120px;
+}
+.awardTableCu3 {
+	 width:120px;
+ }
+.awardTableCu4 {
+	 width:108px;
+}
+.awardTableCu5 {
+	width:133px;
+}
+.awardTableCu6 {
+ 	width:169px;
+}
+.awardTableCu7 {
+	width:65px;
+}
+.awardTableCu2-1{
+	width:119px;
+	text-align:center;
+	height:70px;
+	display:table;
+}
+.awardTableCu2-1 .contentB{
+	padding-left:1px;
+	vertical-align:middle;   
+	display:table-cell; 
+	text-align:center;
+}
+/* 提现记录 */
+.awardTableHeada1 .awardTabCuA1 ,
+.awardTableHeada1 .awardTabCuA2 ,
+.awardTableHeada1 .awardTabCuA3 ,
+.awardTableHeada1 .awardTabCuA4 ,
+.awardTableHeada1 .awardTabCuA5 ,
+.awardTableHeada1 .awardTabCuA6 ,
+.awardTableHeada1 .awardTabCuA7 ,
+.awardTableHeada1 .awardTabCuA8 ,
+.awardTableHeada1 .awardTabCuA9 
+{
+	float:left;
+	height:43px;
+	text-align:center;
+	color:#262626;
+	font-size:14px;
+}
+.awardTableRegister .awardTabCuA1 ,
+.awardTableRegister .awardTabCuA3 ,
+.awardTableRegister .awardTabCuA4 ,
+.awardTableRegister .awardTabCuA6 ,
+.awardTableRegister .awardTabCuA7 ,
+.awardTableRegister .awardTabCuA8 ,
+.awardTableRegister .awardTabCuA9
+{
+	float:left;
+	line-height:70px;
+	text-align:center;
+	height:70px;
+	color:#575757;
+	font-size:12px;
+}
+.awardTableRegister .awardTabCuA2-1{
+	float:left;
+	text-align:center;
+	color:#575757;
+	font-size:12px;
+}
+.awardTabCuA1{
+	width:108px;
+}
+.awardTabCuA2{
+	width:93px;
+}
+.awardTabCuA3{
+	width:95px;
+}
+.awardTabCuA4{
+	width:77px;
+}
+.awardTabCuA5{
+	width:88px;
+}
+.awardTabCuA6{
+	width:114px;
+}
+.awardTabCuA7{
+	width:131px;
+}
+.awardTabCuA8{
+	width:67px;
+}
+.awardTabCuA9{
+	width:84px;
+}
+.awardTabCuA2-1{
+	width:95px;
+	text-align:center;
+	height:70px;
+	display:table;
+	padding-left:11px;
+}
+.awardTabCuA2-1 .contentC{
+	vertical-align:middle;   
+	display:table-cell; 
+	text-align:center;
+}
+
+.awardTableAllOn {
+	margin-left:5px;
+}
+.awardTableAllCu{
+	width:120px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+}
+.awardTabCu{
+	width:96px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	padding:0 6px;
+}
+.awardTabCu1a{
+	width:110px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	padding:0 6px;
+}
+.awardTabCuONe{
+	width:113px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	margin-left:6px;
+}
+.awardTabCuTWo{
+	width:77px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+}
+.awardTableAllCuOne{
+	width:90px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+}
+.awardTableAllCua{
+	width:160px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+}
+.awardTableRcunt{
+	width:92%;
+}
+.iEDCunt{
+	width:88%;
+	border-bottom:1px solid #f5f5f5;
+}
+.awardTableAll{
+	width:128px;;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+}
+/* 距离 */
+
+.awardTableAllb{
+	width:116px;;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+}
+.awardTableAlla{
+	width:130px;;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+}
+.awardTableAlla1{
+	width:138px;;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+}
+.awardTabSinglela{
+	width:111px;;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+	padding-left:37px;
+}
+.awardTabSinglelb{
+	width:96px;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+	padding-left:31px;
+}
+.awardTabSinglelc{
+	width:62px;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+	padding-left:22px;
+}
+.awardTabSinglelc1{
+	width:76px;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+	padding-left:16px;
+}
+
+.awardTableAllSpan{
+	font-size:12px;
+	color:#fe7407;
+}
+.iEDContentHead{
+	height:80px;
+	border:1px dashed #e3e3e3;
+	width:868px;
+	margin-top:22px;
+}
+.iEDContentHeadTop{
+	float:left;
+	font-size:16px;
+	color:#5e5e5e;
+	width:290px;
+	height:80px;
+	line-height:80px;
+	text-align:center;
+}
+.iEDContentHeadC{
+	float:left;
+	height:80px;
+	line-height:80px;
+	text-align:center;
+	margin-left:80px;
+}
+.iEDContentHeadC span{
+	width:85px;
+	height:32px;
+	line-height:32px;
+	background:#fff;
+	color:#f45e1c;
+	font-size:14px;
+	text-align:center;
+	border:1px solid #f45e1c;
+	display:inline-block;
+	cursor:pointer;
+	border-radius:2px;
+}
+.iEDContentHeadC span:hover{
+	background:#f45e1c;
+	color:#fff;
+	border:none;
+}
+.iEDContentHeadTop span{
+	margin-right:5px;
+}
+.iEDContentHeadTopSpan3{
+	margin-left:5px;
+}
+.iEDContentHeadTopBa{
+	color:#3a3a3a;
+	font-size:22px;
+}
+.iEDContentHeadTopBb{
+	color:#f4653b;
+	font-size:22px;
+}
+.iEDContentA{
+	display:none;
+}
+.awardTabSinglel{
+	width:96px;;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+}
+.awardTabSinglelFont{
+	width:118px;;
+	height:70px;
+	line-height:70px;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+}
+/* 背景圖片 */
+.awardTabBack{}
+.iEDTrecordInfo{
+	width:866px;
+	height:152px;
+	border:1px solid #d7d7d7;
+	display:none;
+}
+.awardTableRegisterH{
+	height:70px;
+	padding-left:15px;
+}
+.awardTableRegisterH1{
+	height:70px;
+	padding-left:2px;
+}
+.iEDTrecordInfoDiv , .iEDTrecordInfoDiv2{
+	margin:5px 9px;
+}
+
+.iEDTrecordInfoP1{
+	width:180px;
+	display:inline-block;
+	float:left;
+}
+.iEDTrecordInfoP2{
+	width:622px;
+	float:right;
+	display:inline-block;
+}
+.iEDTrecordInfoDiv span{
+	width:218px;
+	height:30px;
+	display:inline-block;
+}
+.iEDTrecordInfoDiv2 span{
+	height:30px;
+	display:inline-block;
+}
+.iEDTrecordInfofuha{
+	width:40px;
+	text-align:center;
+}
+.iEDTrecordInfoDiv2 i{
+	font-size:13px;
+	color:#f4653b;
+	font-style:normal;
+}
+/* 交易记录-交易类型选择 */
+.iEDSelect{
+	width:114px !important;
+	top:401px !important;
+	line-height:30px ;
+	padding-left:0 !important;
+}
+.iEDSelecta{
+	width:114px !important;
+	top:505px !important;
+	heigth:30px;
+	line-height:30px;
+	padding-left:0 !important;
+}
+.iEDSelecta li{
+	border-bottom:1px solid #ececec;
+	padding-left:14px;
+}
+.iEDInput{
+	width:114px;
+	height:25px;
+	font-size:12px !important;
+	padding:4px 0 4px 14px !important;
+}
+.iEDInputBack{
+	background:url('../../../resource/img/account/fundManagement/grzx_5.png') no-repeat;
+	display:inline-block;
+	background-position:90% 50%;
+}
+
+.iEDInputA{
+	width:114px;
+	height:25px;
+	font-size:12px !important;
+	color:#151515 !important;
+	background:url('../../../resource/img/account/fundManagement/wdzh_5.png') no-repeat;
+	background-position:90% 50%;
+	display:inline-block;
+	padding:4px 0 4px 14px !important;
+}
+.iEDInputB{
+	width:114px;
+	height:25px;
+	font-size:12px !important;
+	color:#b8b8b8 !important;
+	display:inline-block;
+	padding:4px 0 4px 14px !important;
+}
+.iEDSelect li{
+	width:114px;
+	vertical-align:middle;
+	border-bottom:1px solid #ececec;
+	padding-left:14px;
+}
+.iEDSelect li:hover{
+	cursor:pointer;
+	background:#72c0f3;
+}
+/* 多行文本垂直居中 */
+.contentOutAb{
+	height:70px;
+	width:98px;
+	line-height:24px;
+	display:table;
+}
+.contentAc{
+	vertical-align:middle;   
+	display:table-cell; 
+	color:#575757;
+	font-size:12px;
+}
+.btnHeight{
+	height:30px !important;
+	line-height:30px;
+}
+/* 分页标签 */
+.pagerCu{
+	margin:40px 0 !important;
+	width:868px !important;
+}

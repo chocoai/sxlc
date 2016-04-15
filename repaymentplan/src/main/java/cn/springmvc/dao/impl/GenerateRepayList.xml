@@ -17,6 +17,5 @@
 				#{sKey,	         mode=IN,	jdbcType=VARCHAR}, 
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)}
-	</select>
-  
+	</select> 
 </mapper>

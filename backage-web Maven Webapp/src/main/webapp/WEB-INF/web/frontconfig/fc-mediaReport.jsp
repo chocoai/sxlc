@@ -129,8 +129,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					详情
 				</div>
 				<div class="w-content pic-view">
-								<div class="w-content hideHtml">暂无头像</div>
-								<img id="picView" src="">
+					<div class="w-content hideHtml">暂无头像</div>
+					<img id="picView" src="">
 				</div>
 				
 				

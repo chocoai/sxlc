@@ -223,13 +223,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<td class="con">
 						<ul class="options">
 							<li>
+								<label class="i-fl">是否为加息标：</label>
 								<div>
 									<input type="radio" name="addinterest" class="" value="是"/> 是
 									<input type="radio" name="addinterest" class="" value="否"/> 否
 								</div>
 								<div class="set">
 									<label>添加利息：</label>
-									<input type="text" class="" placeholder="N%" value="" />
+									<input type="text" class="" placeholder="添加利息" value="" />
+									<span>%*</span>
+								</div>
+							</li>
+							<li>
+								<label class="i-fl">是否为定向标：</label>
+								<div>
+									<input type="radio" name="addinterest" class="" value="是"/> 是
+									<input type="radio" name="addinterest" class="" value="否"/> 否
+								</div>
+								<div class="set">
+									<label>投资密码：</label>
+									<input type="password" class="" value="" />
+								</div>
+							</li>
+							<li>
+								<label class="i-fl">是否为奖励标：</label>
+								<div>
+									<input type="radio" name="addinterest" class="" value="是"/> 是
+									<input type="radio" name="addinterest" class="" value="否"/> 否
+								</div>
+								<div class="set">
+									<label>返现投资本金：</label>
+									<input type="text" class="" placeholder="返现投资本金" value="" />
+									<span>%*</span>
 								</div>
 							</li>
 						</ul>

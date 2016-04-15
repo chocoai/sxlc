@@ -73,7 +73,7 @@
 				</a>
 			</li>
 			<li class="f-tab">
-				<a href="web/recommend/recommend.jsp">
+				<a href="web/recommend/guarantee-manage.jsp">
 					<p><i class="fa fa-star"></i></p>
 					<p>保荐机构管理</p>
 				</a>

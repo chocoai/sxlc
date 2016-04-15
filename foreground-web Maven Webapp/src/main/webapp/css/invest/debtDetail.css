@@ -1,0 +1,823 @@
+/* CSS Document */
+@charset "UTF-8";
+/* 设置顶部链接样式 */
+.mainPageTop .mainPageTop2{
+	color:#72c0f3;
+}
+/*伍成然2016-3-28  */
+.main{
+	width:1200px;
+	padding-bottom:20px;
+}
+/*链接区域  */
+.link-area{
+	color:#868686;
+	height:50px;
+	line-height:50px;
+	text-align:left;
+}
+/*统一更改a标签样式  */
+.main a:link {color:#868686;text-decoration:none;}/* 未被访问的链接     */
+.main a:visited {color:#868686}  /* 已被访问过的链接    */
+.main a:hover {text-decoration:underline}    /* 鼠标悬浮在上的链接  */
+
+.inv-deal-box a:link {color:#72c0f3;text-decoration:none;}/* 未被访问的链接     */
+.inv-deal-box a:visited {color:#72c0f3}  /* 已被访问过的链接    */
+.inv-deal-box a:hover {text-decoration:underline}    /* 鼠标悬浮在上的链接  */
+/*a标签样式结束  */
+.link-parents{
+	float:left;
+}
+.page-link{
+	float:left;
+}
+.page-link .on{
+	display:block
+}
+.current-page{
+	display:none;
+}
+/*链接部分结束  */
+/*inv-top-box区域  */
+.inv-top-box{
+	width:838px;
+	height:290px;
+	background-color:#fff;
+	float:left;
+	padding:20px 35px;	
+	margin-right:20px;
+}
+.inv-head{
+	height:25px;
+	font-size:20px;
+	width:100%;
+	color:#636363;
+}
+.inv-head img{
+	position:relative;	
+	top:3px;
+}
+.inv-head span{
+	font-size:16px;
+	color:#a0a0a0;
+}
+/*info部分  */
+.inv-info{
+	width:100%;
+	padding:5px;
+}
+.inv-info >div{
+	text-align:left;
+	width:180px;
+	height:120px;
+	float:left;
+}
+.inv-info .inv-rate{
+	width:220px;
+}
+.inv-info h1{
+	font-weight:normal;
+	font-size:28px;
+	margin-top:20px;
+	color:#5c5c5c;
+	display: inline-table;
+}
+.inv-info p{
+	margin-top:20px;
+	color:#969696;
+}
+.inv-info h1 + p{
+	white-space:nowrap;
+}
+.inv-info .inv-rate h1{
+	margin-top:10px;
+	font-size:40px;
+	color:#ff6e04;
+}
+.inv-info .inv-rate span{
+	font-size:30px;
+	color:#ff6e04;
+}
+.inv-info .inv-rate .increase{
+	font-size:20px;
+}
+.inv-info span{
+	font-size:16px;
+	color:#5c5c5c;
+}
+.inv-info .inv-time{
+	width:100px;
+}
+.inv-info-bottom .info-label{
+	width:50%;
+	float:left;
+	margin-bottom:15px;
+}
+.inv-info-bottom .info-label .time-ico{
+	float:left;
+	width:160px !important;
+	padding:0 15px;
+	color:#5c5c5c;
+	background-image: url("../../resource/img/invest/sysj.png");
+	background-repeat: no-repeat;
+	background-position: 1px 1px;
+}
+.inv-item-amount{
+	width:230px !important;
+	position:relative;
+}
+.reward{
+	width:150px;
+	height:21px;
+	line-height:17px;
+	padding-left:37px;
+    color: #ff9600 !important;
+    position: absolute;
+    font-size:12px !important;
+    top: 40px;
+    left: 100px;
+    background-image: url("../../resource/img/index/jl.png");
+	background-repeat: no-repeat;
+	background-position: 0;
+}
+.reward img{
+	vertical-align:middle;
+}
+/*进度条  */
+.progress{
+	height:35px;
+	width:600px;
+	float:left;
+}
+.pro-title{
+	width:75px;
+	float:left;
+	color:#9c9c9c;
+}
+.progress span{
+	margin-left:10px;
+	color:#9c9c9c;
+}
+.barbox{
+	margin-top:5px;
+	height:7px;
+	width:470px;
+	float:left;
+	background-color: #eeeeee;
+	border-radius: 5px; 
+}
+.barline{
+	width:0;
+	height:7px;
+	float:left;
+	background-color: #72c0f3;
+	border-radius: 5px; 
+}
+/*进度条结束  */
+/*inv-info-bottom*/
+.left-title{
+	height:100%;
+	float: left;
+	text-align: right;
+    color: #9c9c9c;
+    padding-right: 7px;
+}
+.main .inv-top-box a:link {color:#5c5c5c;text-decoration:underline}/* 未被访问的链接     */
+.main .inv-top-box a:visited {color:#5c5c5c}  /* 已被访问过的链接    */
+.main .inv-top-box a:hover {text-decoration:underline}    /* 鼠标悬浮在上的链接  */
+.inv-info-bottom label{
+	color:#5c5c5c;
+}
+
+
+/*inv-bottom结束*/
+/*inv-top-box区域结束  */
+/*inv-deal-box各种状态  */
+/*inv-deal-box登录状态  */
+.inv-deal-box{
+	color:#747474;
+	width:340px;
+	height:290px;
+	background-color:#fff;
+	border-top:2px solid #26acfb;
+	float:right;
+}
+.logined{
+	padding:25px;
+	display:none;/*控制显示消失  */
+}
+.inv-available{
+	height:30px;
+	color:#757474;
+}
+.inv-available .right{
+	float:right;
+}
+.inv-available .right span{
+	font-size:18px;
+	color:#393939;
+}
+.amount-available{
+	height:30px;
+	color:#757474;
+}
+.amount-available .right{
+	float:right;
+}
+.amount-available .right span{
+	font-size:18px;
+	color:#ff6e04;
+}
+/*输入框组  */
+.charge-input{
+	padding:0 10px;
+	float:left;
+	height:40px;
+	width:200px;
+	border:1px solid #ddd;
+	border-right:none;
+}
+.logined .charge-input{
+	background-color:#fbfbfb;
+	color:#9c9c9c;
+}
+.charge-addon{
+	line-height:37px;
+	height:40px;
+	width:20px;
+	float:left;
+	border:1px solid #ddd;
+	border-left:none;
+	background-color:#fbfbfb;
+}
+.charge-btn{
+	height:28px;
+	width:54px;
+	color:#fff;
+	background-color:#6eb7e8;
+	border:none;
+	border-radius:1px;
+	margin:6px 0 0 11px;
+	cursor:pointer;
+}
+.charge-btn:hover{
+	background-color:#38aaf4;
+}
+/*输入框组结束  */
+.expected-return{
+	margin:15px 0;
+	background-color:#fffbe9;
+	height:37px;
+	width:100%;
+	line-height:37px;
+	text-align:center;
+	color:#757474;
+}
+.expected-return span{
+	color:#ff6e04;
+}
+.inv-now{
+	cursor:pointer;
+	height:37px;
+	width:100%;
+	border:1px solid #72c0f3;
+	background-color:#fff;
+	color:#72c0f3;
+	font-size:18px;
+}
+.inv-now:hover{
+	background-color:#72c0f3;
+	color:#fff;
+}
+.remain-vouchers{
+	margin-top:10px;
+	width:100%;
+	height:20px;
+}
+.remain-vouchers .right{
+	float:right;
+}
+/*inv-deal-box登录状态结束  */
+/*inv-deal-box未登录状态  */
+.not-logined{
+	padding:65px 20px;
+	display:block;/*控制显示消失  */
+}
+.login-remind{
+	height:20px;
+	font-size:16px;
+	color:#757474;
+}
+.not-logined .charge-input{
+	height:40px;
+	font-size:14px;
+	width:275px;
+	margin:14px 0 30px 0;
+	color:#9c9c9c;
+	background-color:#fbfbfb;
+}
+.not-logined .charge-addon{
+	height:40px;
+	margin:14px 0 30px 0;
+	background-color:#fbfbfb;
+	color:#393939;
+}
+.login-now{
+	cursor:pointer;
+	height:37px;
+	width:100%;
+	border:1px solid #72c0f3;
+	background-color:#72c0f3;
+	color:#fff;
+	font-size:18px;
+	margin:10px 0;
+}
+.login-now:hover{
+	background-color:#38aaf4;
+}
+/*inv-deal-box未登录状态结束  */
+/*inv-deal-box还款中状态  */
+.repaying{
+	padding:20px;
+	display:none;
+}
+.count-down-title{
+	width:105px;
+	font-size:14px;
+	height:30px;
+	line-height:30px;
+	color:#72c0f3;
+	text-align:right;
+	background-image: url("../../resource/img/invest/wytz_sj.jpg");
+	background-repeat: no-repeat;
+	background-position: 0 7px;
+}
+.count-down{
+	color:#444444;
+	font-size:14px;
+	text-align:center;
+	margin-bottom:20px;
+}
+/*inv-deal-box还款中状态结束  */
+/*inv-bottom-box区域  */
+.inv-bottom-box{
+	width:1200px;
+	background-color:#fff;
+	float:left;
+	margin-top:20px;
+}
+/*还款中新增——贷后监管  */
+.after-inv-li{
+	display:block;/*未登录时显示，可投资时隐藏，还款中时显示  */
+}
+/*贷后监管结束  */
+/*可切换tab标签待改  */
+.tab-head{
+	height:55px;
+	line-height:55px;
+	margin:0;
+	padding:0 15px;
+	border-bottom:1px solid #ddd;
+}
+.tab-li{
+	font-size:16px;
+	color:#636363;
+	height:55px;
+	line-height:55px;
+	width:110px;
+	float:left;
+	cursor:pointer;
+	text-align:center;
+	margin-right:50px;
+}
+.tab-li:hover{
+	color:#72c0f3;
+}
+.tab-head .tab-ing{
+	color:#72c0f3;
+	height:55px;
+	line-height:55px;
+	width:110px;
+	float:left;
+	border-bottom:2px solid #72c0f3;
+	text-align:center;
+}
+/*可切换tab部分结束 */
+/*content通用部分  */
+.tab-content .content-active{
+	display:block;
+}
+.content{
+	padding:20px 40px;
+	display:none;
+}
+/* content通用部分结束 */
+/* 项目详情部分*/
+.inv-bottom-box .info-label{
+	margin:8px 0;
+	width:16%;
+	float:left;
+}
+.content .left-head{
+    width:100%;
+    text-align:left;
+    font-size:16px;
+    color:#3f3f3f;
+}
+.content .left-title{
+	color:#9c9c9c;
+}
+.content .info-label label{
+	color:#5c5c5c;
+}
+.statistics-info{
+	margin-top:20px;
+}
+.identification-info{
+	margin-top:20px;
+}
+/*表格  */
+.blue-table{
+	margin-top:22px;
+}
+.blue-table li{
+	width:1120px;
+	height:37px;
+}
+.blue-table li div{
+	font-size:16px;
+	color:#848484;
+	width:33.3%;
+	float:left;
+	height:53px;
+	line-height:53px;
+	text-align:center;
+	border:1px solid #ddd;
+	border-top:none;
+}
+.blue-table li:first-child div{
+	font-size:18px;
+	height:39px;
+	line-height:39px;
+	color:#fff;
+	background-color:#72c0f3;
+	border:1px solid #fff;
+}
+/*表格结束  */
+/* 项目详情部分结束*/
+/*风控措施部分*/
+.loan-description p{
+	margin:10px 0;
+	color:#9c9c9c;
+	font-size:14px;
+	line-height:28px;
+}
+.photo{
+	margin-top:15px;
+	border:1px solid #ddd;
+	padding:10px;
+	padding-top:20px;
+}
+.photo .card{
+	height:190px;
+	width:274px;
+	float:left;
+}
+.photo .card img{
+	display:block;
+}
+.photo .card .text{
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	width:100%;
+}
+/*风控措施部分结束*/
+/*还款计划部分*/
+.contentList{
+	padding:0 !important;
+}
+/*还款计划于投资列表表格样式相同！  */
+.table{
+	margin-top:16px;
+}
+.table li{
+	width:100%;
+	height:40px;
+}
+.table li div{
+	color:#9c9c9c;
+	width:20%;
+	float:left;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	border-top:none;
+}
+.table li:first-child div{
+	color:#757474;
+	height:40px;
+	line-height:30px;
+	font-size:16px;
+	border-bottom:1px solid #ddd;
+}
+/* 还款计划于投资列表表格结束 */
+.repay-sum{
+	margin:20px 40px;
+	color:#000;
+	float:right;
+}
+.repay-sum span{
+	color:#ff6e04;
+}
+.repaymentPlan .not-repay{
+	color:#72c0f3 !important;
+}
+/*还款计划部分结束*/
+/*投资列表部分*/
+.inv-sum{
+	margin:20px 40px;
+	color:#000;
+	float:right;
+}
+.inv-sum span{
+	color:#ff6e04;
+	margin-right:20px;
+}
+.investmentList .invListPhone{
+	background-image: url("../../resource/img/invest/zqzr_tzlb.png");
+	background-repeat: no-repeat;
+	background-position: 80px 9px;
+}
+.investmentList .wechat{
+	background-image: url("../../resource/img/invest/weixin.png");
+	background-repeat: no-repeat;
+	background-position: 78px 12px;
+}
+/*投资列表部分结束*/
+/*项目历程  */
+.pro-state{
+	width:95%;
+	margin-left:5%;
+	position:relative;
+}
+.submit-application{
+	background-image: url("../../resource/img/invest/wytz_1.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+.pro-pass{
+	background-image: url("../../resource/img/invest/wytz_2.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+.start-raising{
+	background-image: url("../../resource/img/invest/wytz_3.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+.pro-loan{
+	background-image: url("../../resource/img/invest/wytz_4.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+.pro-repay{
+	background-image: url("../../resource/img/invest/wytz_5.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+.pro-end{
+	background-image: url("../../resource/img/invest/wytz_6.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+.pro-ing{
+	width:200px;
+	float:left;
+	height:75px;
+	padding:15px 0 0 70px;
+	cursor:pointer;
+}
+.pro-ing div{
+	width:100%;
+	float:left;
+	font-size:18px;
+	font-weight:bold;
+	text-align:center;
+	color:#605f5f;
+}
+.pro-ing span{
+	display:inline-block;
+	font-size:14px;
+	width:100%;
+	text-align:center;
+	color:#6f6f6f;
+}
+.pro-line-icon{
+	margin-left:5%;
+}
+/*浮起表格  */
+
+/*浮起表格结束  */
+/*项目历程结束  */
+/*贷后监管  */
+.info-top{
+	margin-left:106px;
+	float:right;
+	border-left:6px solid #c2c2c2;
+	padding:19px;
+	display:none;
+}
+.info-content{
+	border:1px solid #ddd;
+	border-left:6px solid #72c0f3;
+	padding:10px;
+}
+.info-content img{
+	width:500px;
+	height:250px;
+	margin:0 215px;
+}
+.info-content h2{
+	text-align:center;
+}
+.info-content p{
+	color:#9c9c9c;
+}
+.info-bottom{
+	height:91px;
+	width:1100px;
+}
+.info-time{
+	margin-top:30px;
+	float:left;
+}
+.info-bottom img{
+	float:left;
+}
+.info-short{
+	margin-top:18px;
+	height:50px;
+	padding:10px;
+	line-height:30px;
+	text-align:center;
+	border:1px solid #ddd;
+	border-left:6px solid #72c0f3;
+	float:left;
+	cursor:pointer;
+}
+/*贷后监管结束  */
+/*红包弹窗*/
+.red-packets-top{
+	width:100%;
+	padding:10px;
+}
+.info{
+	height:40px;
+	margin:5px 0;
+}
+.inputDJJ{
+	height:30px;
+	width:60px;
+}
+.info span{
+	font-size:18px;
+	height:40px;
+	line-height:40px;
+}
+.orange{
+	color:#ff6e04;
+	
+}
+/*红包金额选择样式 */
+.leftTitle{
+	width:120px;
+	height:40px;
+	line-height:40px;
+	float:left;
+	text-align:right;
+	margin-right:20px;
+}
+.select label{
+	font-weight:normal;
+	display: inline-block;
+    zoom: 1;
+    cursor: pointer;
+    padding: 1px 10px;
+    color: #666;
+    font-size: 14px;
+    background: 0;
+}
+.select .active{
+	border:1px solid #72c0f3;
+	background-color:#fff;
+	color:#72c0f3;
+	margin-top:8px;
+}
+.select input{
+	display:none;
+}
+/*红包金额选择样式结束  */
+.red-packets{
+	display:none;
+}
+.red-packets-bottom{
+	padding:10px 30px;
+	border-top:1px solid #ddd;
+	margin-top:30px;
+}
+.label{
+	margin:6px 0;
+	width:200px;
+	float:left;
+}
+.btn-group{
+	height:40px;
+	width:260px;
+}
+.confirm{
+	height:40px;
+	width:115px;
+	background-color:#72c0f3;
+	color:#fff;
+	font-size:18px;
+	border:1px solid #72c0f3;
+	border-radius:2px;
+	cursor:pointer;
+}
+.cancel{
+	height:40px;
+	width:115px;
+	background-color:#fff;
+	color:#72c0f3;
+	font-size:18px;
+	border:1px solid #72c0f3;
+	border-radius:2px;
+	cursor:pointer;
+}
+/*红包弹窗结束*/
+/* 弹出窗口样式  */
+.tipClick{
+	display:inline-block;
+	position:absolute;
+}
+.contentTip{
+	border:1px solid #ededed;
+	color:#797979;
+	font-size:12px;
+	padding:5px 15px;
+	position:relative;
+	background:#fff;
+}
+.imgTip{
+	position:absolute;
+	top:-10px;
+	right:50%;
+}
+/*项目历程弹出层*/
+.projectCourse{
+	position:relative;
+}
+.proLi{
+	padding:0 30px;
+	position:absolute;
+	top:-137px;
+	left:221px;
+	display:none;
+}
+.proLi img{
+	position:absolute;
+	top:155px;
+	left:4px;
+}
+.proli-table{
+	padding-top:15px;
+	width:619px;
+	height:347px;
+	border:1px dashed #72c0f3;
+	border-radius:10px;
+}
+.table{
+	margin-top:16px;
+}
+.proli-table li{
+	width:100%;
+	height:40px;
+}
+.proli-table li div{
+	color:#9c9c9c;
+	width:33.3%;
+	float:left;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	border-top:none;
+}
+.proli-table li:first-child div{
+	color:#757474;
+	height:40px;
+	line-height:30px;
+	font-size:16px;
+	border-bottom:1px solid #ddd;
+}
+/*项目历程弹出层结束*/

@@ -19,6 +19,7 @@ import java.util.Map;
 import product_p2p.kit.pageselect.PageEntity; 
 import cn.springmvc.model.ProjectAppAttachmentEntity;
 import cn.springmvc.model.ProjectAppProcessEntity;
+import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectCheckAttachDealEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
 import cn.springmvc.model.ProjectCheckRecordEntity;
@@ -37,19 +38,19 @@ public interface ProjectAuitService {
 	 *                              startTime，endTime,keys}
 	 *  @author 刘利 
 	 *  @Description: 实现审核列表查询 
-	 *  @return List<ProjectAppProcessEntity> 
+	 *  @return List<ProjectAppRecordEntity> 
 	 *  @date 2016-3-21 下午12:50:30
 	 */
-	public List<ProjectAppProcessEntity> selectProjectAuitList(PageEntity pageEntity); 
+	public List<ProjectAppRecordEntity> selectProjectAuitList(PageEntity pageEntity); 
 	/** 
 	 * 根据项目申请记录id查询项目详情  
 	 * @author 刘利   
 	 * @Description: 根据项目申请记录id查询项目详情  
 	 * @param id  项目申请记录id 
-	 * @return ProjectAppProcessEntity 返回类型 
+	 * @return ProjectAppRecordEntity 返回类型 
 	 * @date 2016-3-21 下午1:55:21 
 	 */
-	public  ProjectAppProcessEntity  selectProjectDetailByID(int id);
+	public  ProjectAppRecordEntity  selectProjectDetailByID(int id);
 	
 	/**
 	 * 审核项目 

@@ -11,8 +11,7 @@
 * @version V5.0 */
  
 package cn.springmvc.service.impl; 
-
-import java.util.HashMap;
+ 
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +28,7 @@ import cn.springmvc.dao.impl.ProjectPublishDaoImpl;
 import cn.springmvc.dao.impl.ProjectPublishListDaoImpl;
 import cn.springmvc.model.ProjectAppAttachmentEntity;
 import cn.springmvc.model.ProjectAppProcessEntity; 
+import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
 import cn.springmvc.model.ProjectCheckRecordEntity;
 import cn.springmvc.model.ProjectImageEntity;
@@ -50,7 +50,7 @@ public class ProjectPublishServiceImpl implements ProjectPublishService {
 	 
  
 	@Override
-	public List<ProjectAppProcessEntity> selectProjectPublishList(
+	public List<ProjectAppRecordEntity> selectProjectPublishList(
 			PageEntity pageEntity) {
 		
 		return projectPublishListDaoImpl.selectProjectPublishList(pageEntity);

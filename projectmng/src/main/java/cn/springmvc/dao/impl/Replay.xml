@@ -29,17 +29,26 @@
 		<result property = "isValid" 	        column = "IsValid" />  
 		<result property = "replayTotal" 	    column = "replayTotal" />  
 		<result property = "totalSDRepay" 	    column = "totalSDRepay" /> 
+		<result property = "loanStatu" 	        column = "loanStatu" /> 
+		<result property = "sdPrincipalInterest" column = "SDPrincipalInterest" /> 
     </resultMap>  
     <!-- 查询项目还款计划-->  
 	<select id="selectReplayByProjectID" parameterType="map"  resultMap="resultListRepaly">
-	    select lr.Repay_MaxTime,lr.Statu,loanStatu.name1 as loanStatu,
+	    select lr.Repay_MaxTime,loanStatu.name1 as loanStatu,
 	    CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{sKey})) as signed) SDRepay_Principal,
 	    CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{sKey})) as signed) SDRepay_Interest,
+	    
+	    (ifnull(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{sKey})) as signed),0) +
+	    ifnull(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{sKey})) as signed),0) ) as SDPrincipalInterest,
+	    
 	    (select  ifnull(sum(CAST((AES_DECRYPT(UNHEX(SDRepay_Principal),#{sKey})) as signed)),0)+
         ifnull(sum(CAST((AES_DECRYPT(UNHEX(SDRepay_Interest),#{sKey})) as signed)),0) 
         from Loan_Repay lr  where lr.Apply_Id=#{projectID} and lr.IsValid=0 ) as totalSDRepay,
-        case when now() > lr.Repay_MaxTime  and lr.Statu  !=3 then  4 else lr.Statu end  as statuover
+        
+        case when now() > lr.Repay_MaxTime  and lr.Statu  !=3 then  4 else lr.Statu end  as Statu
+        
 	    from Loan_Repay lr 
+	    
 	    left join DICT loanStatu on   loanStatu.code1= lr.Statu  and loanStatu.tcode = 'DICT_HKJD' 
 	    where lr.Apply_Id=#{projectID}  
 	    and ( ((select count(Repay_ID) from  Loan_Repay  where IsValid = 1 and  Apply_Id=#{projectID} )=0 and lr.IsValid=0)  
@@ -57,7 +66,7 @@
 	   (ifnull(lrr.Repay_Principal,0)+ifnull(lrr.Repay_Interest,0)+ifnull(lrr.Repay_Overdue_Interest,0)+
 	   ifnull(lrr.Repay_Overdue,0)+ifnull(lrr.Repay_Penalty,0)) as replayTotal
 	   from  Loan_Real_Repay  lrr 
-	   left join Loan_Repay lr on lr.Repay_ID = lrr.Real_Repay_ID 
+	   left  join Loan_Repay lr on lr.Repay_ID = lrr.Real_Repay_ID 
 	   where  lr.Apply_Id=#{projectID}  
     </select>  
 </mapper>

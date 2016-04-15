@@ -19,10 +19,11 @@
     select <include refid="SystemSet_Column_List"></include> from System_Set limit 1
   </select>
   <!-- 修改系统设置 -->
-  <select id="updateSystemSet"  resultType="Map" parameterType="cn.springmvc.model.SystemSetEntity">
+  <select id="updateSystemSet"  resultType="Map"  statementType="CALLABLE">
   	<![CDATA[{call updateSystemSet(
 				#{overdueInsteadDay,	 mode=IN,	jdbcType=INTEGER},
 				#{autoBackRate,	 mode=IN,	jdbcType=INTEGER},
+				#{endDateRemind,	 mode=IN,	jdbcType=INTEGER},
 				#{expirationReminderSet,	 mode=IN,	jdbcType=INTEGER},
 				#{riskMarginRateMax,	 mode=IN,	jdbcType=INTEGER},
 				#{redpacketsRateMax,	 mode=IN,	jdbcType=INTEGER},

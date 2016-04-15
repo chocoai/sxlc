@@ -38,11 +38,14 @@
         <result property = "investRate" 		column = "Invest_Rate" /> 
         <result property = "availableaAmount" 	column = "availableaAmount" /> 
         <result property = "levelMark" 	        column = "Level_Mark" /> 
+        <result property = "investTotal"        column = "InvestTotal" /> 
+        <result property = "startDate"       	column = "Start_Date" />
+        <result property = "endDate"       	   column = "End_Date" /> 
        <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	   </association>
     </resultMap> 
      <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
-            <id property = "ID" 				 column = "id" />
+            <id property = "Project_Base_ID" 	 column = "id" />
 			<result property = "projectTitle"    column = "Project_Title" /> 
 			<result property = "uses"            column = "Uses" />
 			<result property = "repaySource"     column = "Repay_Source" />
@@ -56,7 +59,7 @@
 			<result property = "replayWays" 	 column = "name1" />  
      </resultMap>
     <!-- 根据项目申请ID查询投资项目详情 -->  
-	<select id="selectProjectdetail"  parameterType="map" resultMap="resultProjectAppProcess" >
+	<select id="selectProjectdetail"  parameterType="map" resultMap="resultProjectDetail" >
 	   select pty.Pic_Icon,pbi.Project_Title,par.Project_No,pbi.Year_Rate,pbi.Amount,
 	   pbi.Deadline,pbi.Deadline_Type,par.Reward_Rate,par.Rate_Add_Rate, par.Reward_Icon,
 	   par.Invest_Rate,replayway.name1,par.Member_ID,pap.Start_Date,pap.End_Date,
@@ -110,4 +113,17 @@
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID 
 	   where  par.Apply_Id=#{projectID}
     </select>   
+     <!--     已投资总额  -->
+    <select id="selectInvestAvailableaAmount"  parameterType="map" resultMap="resultProjectDetail" >
+	    SELECT   pbi.Amount,
+	   (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{sKey})) as signed)),0)  
+	   from Invest_Record  where Apply_Id=par.Apply_Id and IsValid=0) as InvestTotal,
+	
+	   (pbi.Amount-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{sKey})) as signed)),0)  
+	   from Invest_Record  where Apply_Id=par.Apply_Id and IsValid=0)) availableaAmount 
+	
+	   from Project_App_Record par
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
+	   where  par.apply_ID=#{applyID}
+	</select>
 </mapper>

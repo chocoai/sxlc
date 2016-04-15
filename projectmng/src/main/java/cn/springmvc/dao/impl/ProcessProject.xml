@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="processProject">
     <resultMap type="cn.springmvc.model.ProcessProjectEntity" id="resultListProcessProject">
-        <id column="PP_ID" property="id" />
-		<result column="Process_ID" property="apID" />
-		<result column="Batch" property="batch" />
-		<result column="Indexs" property="indexs" />
-		<result column="Statu" property="statu" />
-		<result column="AP_Name" property="apName" /> 
+        <id column="PP_ID"            property="id" />
+		<result column="Process_ID"   property="apID" />
+		<result column="Batch"        property="batch" />
+		<result column="Indexs"       property="indexs" />
+		<result column="Statu"        property="statu" />
+		<result column="AP_Name"      property="apName" /> 
     </resultMap>  
 	<!-- 分页查询的项目审批流程-->  
 	<select id="selectProcessProjectListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProcessProject" >

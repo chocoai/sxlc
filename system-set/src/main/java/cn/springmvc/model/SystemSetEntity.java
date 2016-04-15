@@ -78,6 +78,18 @@ public class SystemSetEntity {
 	public void setSredpacketsRateMax(String sredpacketsRateMax) {
 		this.sredpacketsRateMax = sredpacketsRateMax;
 	}
+	@Override
+	public String toString() {
+		return "SystemSetEntity [overdueInsteadDay=" + overdueInsteadDay
+				+ ", autoBackRate=" + autoBackRate + ", sautoBackRate="
+				+ sautoBackRate + ", endDateRemind=" + endDateRemind
+				+ ", expirationReminderSet=" + expirationReminderSet
+				+ ", riskMarginRateMax=" + riskMarginRateMax
+				+ ", sriskMarginRateMax=" + sriskMarginRateMax
+				+ ", redpacketsRateMax=" + redpacketsRateMax
+				+ ", sredpacketsRateMax=" + sredpacketsRateMax
+				+ ", riskMarginType=" + riskMarginType + "]";
+	}
 	
 }
 

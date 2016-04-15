@@ -92,6 +92,7 @@ body.nav-md .container.body .col-md-3.left_col {
     position: absolute;
     display: flex;
     height: 100%;
+    overflow-y: auto;
 }
 body.nav-md .container.body .right_col {
     margin-left: 200px;
@@ -102,6 +103,7 @@ body.nav-sm .container.body .left_col {
     position: fixed;
     height: 100%;
     z-index: 200;
+    overflow-y:auto;
 }
 body.nav-sm .container.body .right_col {
     margin-left: 70px;
@@ -431,7 +433,10 @@ button.obtn.obtn-query{background: #5191D4;color: #fff;padding-bottom: 7px;}
 
 
 /* ============表格========== */
-
+/* 搜索条件中的下拉框     */     /* 陈小花    160412*/
+.search select{
+	height:25px;
+}
 textarea{
 	width:100%;            /* 陈小花       配置中心---会员等级配置--添加*/
 	padding: 5px 10px;

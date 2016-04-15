@@ -27,6 +27,7 @@ import cn.springmvc.dao.ProjectAuitDao;
 import cn.springmvc.dao.ProjectAuitListDao;
 import cn.springmvc.model.ProjectAppAttachmentEntity;
 import cn.springmvc.model.ProjectAppProcessEntity;
+import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
 import cn.springmvc.model.ProjectCheckRecordEntity;
 
@@ -42,20 +43,20 @@ public class ProjectAuditListDaoImpl extends SqlSessionDaoSupport implements Pro
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
 	@Override
-	public List<ProjectAppProcessEntity> selectProjectAuitList(
+	public List<ProjectAppRecordEntity> selectProjectAuitList(
 			PageEntity pageEntity) {
 
- 		List<ProjectAppProcessEntity> projectAppProcessList =null;
- 		projectAppProcessList = getSqlSession().selectList("projectAudit.selectProjectAuitList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
- 		return projectAppProcessList;
+ 		List<ProjectAppRecordEntity> ProjectAppRecordlist =null;
+ 		ProjectAppRecordlist = getSqlSession().selectList("projectAudit.selectProjectAuitList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+ 		return ProjectAppRecordlist;
 
 	}
  	@Override
-	public ProjectAppProcessEntity selectProjectDetailByID(int id) {
+	public ProjectAppRecordEntity selectProjectDetailByID(int id) {
 
-		ProjectAppProcessEntity projectAppProcessEntity = null;
-		projectAppProcessEntity = getSqlSession().selectOne("projectAudit.selectProjectdetail",id);
-		return  projectAppProcessEntity;
+ 		ProjectAppRecordEntity ProjectAppRecordEntity = null;
+ 		ProjectAppRecordEntity = getSqlSession().selectOne("projectAudit.selectProjectdetail",id);
+		return  ProjectAppRecordEntity;
 
 	}
  	@Override

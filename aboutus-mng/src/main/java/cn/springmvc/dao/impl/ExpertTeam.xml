@@ -2,16 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="expertTeam">  
     <resultMap type="cn.springmvc.model.ExpertTeamEntity" id="resultListExpertTeam">
-        <id column="Expert_ID" property="id" />
-		<result column="Mng_Name" property="mngName" />
-		<result column="Mng_Post" property="mngPost" />
+        <id column="Expert_ID"        property="id" />
+		<result column="Mng_Name"     property="mngName" />
+		<result column="Mng_Post"     property="mngPost" />
 		<result column="Portrait_Url" property="portraitUrl" />
-		<result column="Profile" property="profile" />
-		<result column="Statu" property="statu" />
-		<result column="CreateTime" property="createTime" />
-		<result column="Opt_Date" property="optDate" />
-		<result column="Admin_ID" property="optId" /> 
-		<result column="adminName" property="adminName" />
+		<result column="Profile"      property="profile" />
+		<result column="Statu"        property="statu" />
+		<result column="CreateTime"   property="createTime" />
+		<result column="Opt_Date"     property="optDate" />
+		<result column="Admin_ID"     property="optId" /> 
+		<result column="adminName"    property="adminName" />
     </resultMap> 
     <!-- 分页查询专家顾问列表 -->  
 	<select id="selectExpertTeamList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListExpertTeam">
@@ -20,8 +20,8 @@
 	   from  Expert_Team et
 	   LEFT JOIN Admin a on a.Admin_ID=et.Admin_ID
            <where>  
-	            <if test="map.mngName != null">  
-	                Mng_Name like  '%{map.mngName}%'  
+	            <if test="map.mngName != null and  map.mngName != ''">  
+	                Mng_Name like  '%${map.mngName}%'  
 	            </if>   
 	            <if test="map.statu != -1">  
 	                and et.Statu=#{map.statu}

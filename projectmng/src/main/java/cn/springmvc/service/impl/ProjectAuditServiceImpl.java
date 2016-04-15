@@ -31,6 +31,7 @@ import cn.springmvc.dao.impl.ProjectAuditListDaoImpl;
 import cn.springmvc.dao.impl.ProjectDetailListDaoImpl;
 import cn.springmvc.model.ProjectAppAttachmentEntity;
 import cn.springmvc.model.ProjectAppProcessEntity; 
+import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectCheckAttachDealEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
 import cn.springmvc.model.ProjectCheckRecordEntity;
@@ -52,19 +53,19 @@ public class ProjectAuditServiceImpl implements ProjectAuitService {
 	private ProjectDetailListDao projectDetailListDaoImpl;  
 	
 	@Override
-	public List<ProjectAppProcessEntity> selectProjectAuitList(
+	public List<ProjectAppRecordEntity> selectProjectAuitList(
 			PageEntity pageEntity) { 
 		
-		List<ProjectAppProcessEntity>  ProjectAppProcesslist = null ;
-		ProjectAppProcesslist = projectAuditListDaoImpl.selectProjectAuitList(pageEntity); 
-        return ProjectAppProcesslist;
+		List<ProjectAppRecordEntity>  projectAppRecordList = null ;
+		projectAppRecordList = projectAuditListDaoImpl.selectProjectAuitList(pageEntity); 
+        return projectAppRecordList;
 	}
 	@Override
-	public ProjectAppProcessEntity selectProjectDetailByID(int id) {
+	public ProjectAppRecordEntity selectProjectDetailByID(int id) {
 		
-		ProjectAppProcessEntity projectAppProcessEntity = null;
-		projectAppProcessEntity = projectAuditListDaoImpl.selectProjectDetailByID(id);  
-		return projectAppProcessEntity;
+		ProjectAppRecordEntity projectAppRecordEntity = null;
+		projectAppRecordEntity = projectAuditListDaoImpl.selectProjectDetailByID(id);  
+		return projectAppRecordEntity;
 		
 	}
 	 
@@ -114,6 +115,7 @@ public class ProjectAuditServiceImpl implements ProjectAuitService {
 	@Override
 	public int projectAudit(Map<String, Object> map,
 			List<ProjectCheckAttachEntity> projectCheckAttachList) {
+		
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
 		map.put("checkid", id);

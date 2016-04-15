@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="systemAgreementSet">  
    <resultMap type="cn.springmvc.model.SystemAgreementSetEntity" id="resultListSystemAgreementSet">
-		<result column="Agreement_Type" property="agreementType" />
+		<result column="Agreement_Type"   property="agreementType" />
 		<result column="Agreement_Detail" property="agreementDetail" /> 
-		<result column="Agreement_Statu" property="agreementStatu" />  
+		<result column="Agreement_Statu"  property="agreementStatu" />  
     </resultMap> 
     <!-- 分页系统协议列表 -->  
 	<select id="selectSystemAgreementSetList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListSystemAgreementSet">

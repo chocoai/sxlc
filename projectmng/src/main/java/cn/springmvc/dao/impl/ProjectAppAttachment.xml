@@ -6,12 +6,10 @@
      <result property = "attachInfoType"    column = "Attach_Info_Type" />
      <result property = "attachTitle"       column = "Attach_Title" />
      <result property = "attachUrl"       	column = "Attach_Url" /> 
- </resultMap>
- 
+ </resultMap> 
     <!-- 根据项目申请ID查询申请附件列表-->  
 	<select id="selectProjectAuitList"  parameterType="int" resultMap="resultProjectAppAttachment" >
 	   select Apply_Id,Attach_Info_Type,Attach_Title,Attach_Url
 	   from  Project_App_Attachment  where  Apply_Id = #{projectID}
-   </select>
- 
+   </select> 
 </mapper>

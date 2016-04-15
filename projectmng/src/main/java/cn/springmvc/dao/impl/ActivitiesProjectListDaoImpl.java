@@ -1,6 +1,5 @@
 package  cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,7 +23,8 @@ public class ActivitiesProjectListDaoImpl extends SqlSessionDaoSupport implement
 	public ActivitiesProjectEntity selectActivitiesProjectIsExistByNAme(
 			ActivitiesProjectEntity entity) {
 		ActivitiesProjectEntity activitiesProjectEntity=null;
-		activitiesProjectEntity = (ActivitiesProjectEntity) getSqlSession().selectOne("activitiesProject.selectActivitiesProjectIsExistByNAme",entity);
+		activitiesProjectEntity = (ActivitiesProjectEntity) getSqlSession().
+				selectOne("activitiesProject.selectActivitiesProjectIsExistByNAme",entity);
 		return activitiesProjectEntity;
 	}
 
@@ -32,18 +32,21 @@ public class ActivitiesProjectListDaoImpl extends SqlSessionDaoSupport implement
 	public List<ActivitiesProjectEntity> selectActivitiesProjectAllpage(
 			PageEntity pageEntity) {
 		List<ActivitiesProjectEntity> activitiesProjectList=null;
-		activitiesProjectList = getSqlSession().selectList("activitiesProject.selectActivitiesProjectList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		activitiesProjectList = getSqlSession().selectList("activitiesProject.selectActivitiesProjectList"
+				,pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		return activitiesProjectList;
 	}
 	@Override
 	public int selectActivitiesProjectRoleIsExist(ActivitiesProjectEntity entity) {
-		int result = getSqlSession().selectOne("activitiesProject.selectActivitiesProjectRoleIsExist",entity);
+		int result = getSqlSession().selectOne("activitiesProject.selectActivitiesProjectRoleIsExist"
+				,entity);
 		return result;
 	}
 	@Override
 	public ActivitiesProjectEntity selectActivitiesProjectByID(int id) {
 		ActivitiesProjectEntity activitiesProjectEntity=null;
-		activitiesProjectEntity = (ActivitiesProjectEntity) getSqlSession().selectOne("activitiesProject.selectActivitiesProjectByID",id);
+		activitiesProjectEntity = (ActivitiesProjectEntity) getSqlSession()
+				.selectOne("activitiesProject.selectActivitiesProjectByID",id);
 		return activitiesProjectEntity;
 	} 
 }

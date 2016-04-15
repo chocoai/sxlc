@@ -1,0 +1,102 @@
+@CHARSET "UTF-8";
+/*默认选中样式 start 黄鑫 20160327*/
+.aboutUsNav .choose7{
+	color:#72c0f3;
+}
+/*默认选中样式end 黄鑫 20160327*/
+/* 主体部分开始 王延君 2016-03-29 */
+.safety{
+	color:#909090;
+	width:1200px;
+	min-height:2640px;
+	margin-bottom:8%;
+	background-color:#fff;
+}
+.safeContent{
+	margin-top:23px;
+	display:table;
+}
+.s_plat2 .sPlatMainCont{
+	padding:11px 0 0 40px;
+}
+.safety h6{
+	color:#7e7e7e !important;
+}
+.s_plat,.s_plat2{
+	width:945px;
+	margin: 4% auto 5% auto;
+	font-size:16px;
+}
+.s_plat_img{
+	width:170px;
+	margin-left: 8%;
+    padding-left: 2%;
+}
+.sPlatMainCont{
+	width:632px;
+	float:left;
+	line-height:40px;
+	text-indent:4em;
+	padding:11px 40px 0 0px;
+}
+.s_plat2 .sPlatMainCont>h4{
+	text-indent:0;
+    margin-bottom: 7px;
+}
+.s_plat_main>span {
+    display: inline-block;
+    width: 260px;
+    height: 220px;
+    text-align: right;
+}
+.s_plat_main{
+	width:100%;
+	display:inline-block;
+}
+.s_plat h4,.s_plat2 h4,.sPlatAdverse h4{
+	font-weight:normal;
+	color:#72c0f3;
+	font-size:26px;
+}
+.sPlatAdverse>h4{
+	margin-bottom:27px;
+}
+.safeImg{
+	margin-top:8%;
+}
+.safeContLast{
+	margin-bottom:0 !important;
+}
+.lawyTitle{
+	text-indent:0 !important;
+	color:#7e7e7e !important;
+}
+.s_plat>h6,.s_plat2>h6{
+	clear:both;
+}
+.s_plat h6,.s_plat2 h6{
+	margin:20px 0;
+	padding: 0 5%;
+}
+.s_plat_main2 div{
+	float:right;
+}
+.platLawy>h6{
+	margin:0;
+	text-indent:0;
+	padding:0;
+	font-size:16px;
+}
+.sPlatLawy,.sPlatAdverse{
+	width:963px;
+	margin:0 auto;
+	line-height:40px;
+	font-size:16px;
+}
+.sPlatAdverse{
+	margin-top:40px;
+}
+.sPlatLawy h6,.sPlatAdverse h6{
+	font-size:16px;
+}
+/* 主体部分结束 王延君 2016-03-29 */

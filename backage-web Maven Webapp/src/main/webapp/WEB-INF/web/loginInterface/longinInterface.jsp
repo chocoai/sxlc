@@ -1,8 +1,26 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@page import="java.net.URLDecoder"%>
 <%
-request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	Cookie cookies[]=request.getCookies(); 
+		Cookie sCookie=null; 
+		String svalue=null; 
+		String sname=null; 
+		if(cookies!=null){
+			for(int i=0;i<cookies.length;i++){ 
+				sCookie=cookies[i]; 
+				sname=sCookie.getName();
+				if(sname.equals("UserName")){
+					svalue=sCookie.getValue(); 
+					 break;
+				}
+			}
+		}
+		if(svalue==null){
+			svalue="";
+		} 
+		svalue = URLDecoder.decode(svalue, "utf-8");
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -17,6 +35,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" type="text/css" href="css/longinInterface.css">
+	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+	<script type="text/javascript">
+		//刷新图形验证码参数
+		var currentTimeMillis = "<%=System.currentTimeMillis()%>";
+	</script>	    
 </head>
 
 <body class="nav-md">
@@ -41,23 +65,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<form action="">
 						<div class="admUser">
 							<i class="loginIcon user"></i>
-							<input type="text" placeholder="用户名或者手机号">
+							<input type="text" placeholder="用户名" name="adminName" id="adminName" value="<%=svalue %>" >
 						</div>
 						<div class="admPasword">
 							<i class="loginIcon pwd"></i>
-							<input type="text" placeholder="密码">
+							<input type="text"  name="adminPwd" id="adminPwd" placeholder="密码" >
 						</div>
 						<div class="admPhoneCode">
 							<i class="loginIcon phone"></i>
-							<input type="text" placeholder="手机验证码">
-							<span>获取验证码</span>
+							<input type="text" name="code" id="code" name="code" maxlength="4" placeholder="验证码">
+							<img alt="点击刷新" id="vCodeImg" style="width: 90px;height:30px" class="img" title="点击刷新" src="authImage.do?tt=<%=System.currentTimeMillis()%>" onclick="refreshImg('vCodeImg');">
 						</div>
 						<div class="admForgetPassword">
 							<a href="javascript:;">忘记密码？</a>
 						</div>
 						<div class="admRest">
-							<button type="button" class="admRestL btn">登录</button>
-							<button type="button" class="admRestT btn">重置</button>
+							<button type="button" id="loginBtn" class="admRestL btn">登录</button>
+							<button type="button" id="resetBtn" class="admRestT btn" onclick="Reset()">重置</button>
 						</div>
 					</form>
 				</div>

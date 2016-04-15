@@ -1,0 +1,640 @@
+/* CSS Document */
+@charset "UTF-8";
+/* 设置顶部链接样式 */
+.mainPageTop .mainPageTop3{
+	color:#72c0f3;
+}
+/* ul模拟select共用样式 */
+.selectArea{
+	height:41px;
+	position:relative;
+	display:inline-block;
+}
+.selectValue{
+	display: none;
+}
+.selectArea1{
+	width:415px;
+}
+.selectArea input.selectInput{
+	width:100%;
+	background:url(../../resource/img/loan/tranggleDown.png) no-repeat;
+	background-position:right;
+	-moz-user-select: none;
+	cursor: pointer;
+}
+.select{
+	width:100%;
+	position:absolute;
+	top:44px;
+	z-index:1;
+	border-top:0;
+	border-bottom:1px solid #d2d2d2;
+	border-left:1px solid #d2d2d2;
+	border-right:1px solid #d2d2d2;
+	text-align:left;
+	display:none;
+	background:#fff;
+	padding-left:6px;
+	font-size:16px;
+}
+.selectOption{
+	padding:8px;
+	cursor:pointer;
+}
+.selectOption:hover{
+	color:#fff;
+	background:#38aaf4;
+}
+.selectInput1{
+	color:#2f2f2f !important;
+	font-weight:bold;
+}
+/* 我要借款样式    胥福星   2016-03-27*/
+.nowPosition{
+	width:100%;
+	min-width:1200px;
+}
+.nowPositionContent,
+.mainLoan{
+	width:1200px;
+	margin:0 auto;
+}
+.nowPositionContent,
+.nowPositionContent a{
+	line-height:50px;
+	color:#868686;
+}
+.nowPositionContent span{
+	color:#111 !important;
+}
+.borrow{
+	background-color:#ffffff;
+	text-align:center;
+	padding:30px 0 50px 0;
+}
+.process{
+	display:inline-block;
+	width:100px;
+	text-align:center;
+}
+.processStep{
+	width:90px;
+	height:90px;
+	margin-bottom:15px;
+}
+/* 当完成一个步骤时，移除.processStep*类，加.processStep*Success类  */
+.processStep1{
+	background:url(../../resource/img/loan/smrz.png) no-repeat;
+}
+.processStep1Success{
+	background:url(../../resource/img/loan/xzsmre.png) no-repeat;
+}
+.processStep2{
+	background:url(../../resource/img/loan/khsq.png) no-repeat;
+}
+.processStep2Success{
+	background:url(../../resource/img/loan/xzkhsq.png) no-repeat;
+}
+.processStep3{
+	background:url(../../resource/img/loan/tjxx.png) no-repeat;
+}
+.processStep3Success{
+	background:url(../../resource/img/loan/xztjjk.png) no-repeat;
+}
+.processStep4{
+	background:url(../../resource/img/loan/kflx.png) no-repeat;
+}
+.processStep4Success{
+	background:url(../../resource/img/loan/xzkflx.png) no-repeat;
+}
+.processStep5{
+	background:url(../../resource/img/loan/shtg.png) no-repeat;
+}
+.processStep5Success{
+	background:url(../../resource/img/loan/xzshtg.png) no-repeat;
+}
+.processStep6{
+	background:url(../../resource/img/loan/qrfb.png) no-repeat;
+}
+.processStep6Success{
+	background:url(../../resource/img/loan/xzfbjk.png) no-repeat;
+}
+.processStep7{
+	background:url(../../resource/img/loan/cgfk.png) no-repeat;
+}
+.processStep7Success{
+	background:url(../../resource/img/loan/xzcgfk.png) no-repeat;
+}
+.process p{
+	text-align:center;
+	width:100%;
+	white-space:nowrap;
+	position:relative;
+}
+.processSpan{
+	display:block;
+	width:200px;
+	position:absolute;
+	right:50%;
+	margin-right:-100px !important;
+}
+.processSpan2{
+	right:39% !important;
+}
+.process span{
+	margin-bottom:15px;
+	display:block;
+}
+.processSuccess{
+	width:90px;
+	height:90px;
+}
+.arrow{
+	display:inline-block;
+	width:39px;
+	height:32px;
+	vertical-align:top;
+	margin:30px 10px 0 10px;
+	background:url(../../resource/img/loan/arrowL.jpg) no-repeat;
+}
+/* 快速借款部分 */
+.loan{
+	margin-top:15px;
+	padding-bottom:25px;
+	background:#fff;
+}
+.loan1{
+	background:none;
+	margin-top:35px;
+}
+#guide{
+	margin-bottom:80px;
+}
+.quickLoan{
+	padding:0 20px;
+	line-height:40px;
+	border-top:1px solid #eeeeee;
+	border-bottom:1px solid #eeeeee;
+}
+.quickLoan span{
+	display:inline-block;
+	line-height:67px;
+	border-bottom:2px solid #21aaf8;
+	font-size:20px;
+	color:#575757;
+}
+.prompt{
+	margin:40px 30px;
+	border:1px solid #efe0c3;
+	line-height:50px;
+	background-color:#fcefde;
+	color:#ff7800;
+	font-size:16px;
+}
+.prompt img{
+	vertical-align:text-bottom;
+	margin-left: 23px;
+    margin-right: 12px;
+}
+.prompt span{
+	font-weight:bold;
+	padding-left:65px;
+	background:url(../../resource/img/loan/wyjkts.png) no-repeat;
+	background-position:40px center;
+}
+.personInfo div.inputArea{
+	margin:0 0 30px 260px;
+	position:relative;
+}
+.personInfo input,
+.personInfo textarea,
+.modeSelectDiv{
+	width:415px;
+	border:1px solid #dbdbdb;
+}
+.personInfo input,
+.personInfo textarea,
+label,
+select,
+.personInfo span,
+.borrowDetail a{
+	font-size:16px;
+}
+.personInfo input,
+.personInfo textarea,
+select{
+	color:#2f2f2f;
+}
+.personInfo input,
+.personInfo textarea{
+	padding: 11px 11px;
+}
+.modeSelectDiv select{
+	width:460px;
+	border:0;
+	font-weight:bold;
+}
+select{
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	outline:none;
+	padding:10px 11px;
+	cursor:pointer;
+}
+label{
+    margin-right:20px;
+    display: inline-block;
+    color:#3c3c3c;
+}
+.personInfo textarea{
+	height:120px;
+	vertical-align:top;
+	font-size:16px;
+}
+.loanTimeInput{
+	width:289px !important;
+	vertical-align:top;
+}
+.submit{
+	background:#73c0f4;
+	color:#ffffff !important;
+	width:345px !important;
+	margin-left:350px;
+	margin-top:15px;
+	height:50px !important;
+	line-height:50px;
+	border:0;
+	outline:0;
+	font-size:18px !important;
+	cursor:pointer;
+	text-align:center;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	-o-border-radius:3px;
+	border-radius:3px;
+}
+.submit:hover{
+	background:#25a9ff;
+}
+.personInfo span{
+	position:absolute;
+	top:11px;
+	left:38.4%;
+	color:#a2a2a2;
+}
+.personInfo samp{
+	position:absolute;
+	top:11px;
+	right:49%;
+}
+/* 借款方式描述 */
+.borrowModeDiv{
+	display:inline-block;
+	width:383px;
+	cursor:pointer;
+	background:#fff;
+}
+.borrowMode{
+	width:100%;
+	position:relative;
+	border:1px solid #ffffff;
+}
+.borrowMode1{
+	margin-left:21px;
+}
+.borrowMode img{
+	display:block;
+	width:100%;
+}
+.borrowDetail{
+	padding:20px 19px;
+}
+.borrowDetail p{
+	height:78px;
+	text-indent:28px;
+	line-height:26px;
+	text-align:justify;
+	color:#424242;
+	word-break:break-all;
+	overflow:hidden;
+}
+.borrowDetail a{
+	display:block;
+	width:240px;
+	height:50px;
+	line-height:50px;
+	margin:20px auto 0 auto;
+	margin-top:25px;
+	text-align:center;
+	border:1px solid #72c0f3;
+	color:#72c0f3;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	-o-border-radius:3px;
+	border-radius:3px;
+}
+.borrowDetail a:hover{
+	text-decoration:none;
+}
+.flowTop{
+	position:absolute;
+	top:20px;
+	left:0;
+}
+.flowTopHover{
+	width:380px;
+	height:249px;
+	position:absolute;
+	top:0;
+	left:0;
+	padding:55px 38px;
+	background:rgba(255,255,255,0.5);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7Fffffff,endColorstr=#7Fffffff);    /*IE8支持*/
+	display:none;
+}
+.flowTopHover p{
+	font-size:17px;
+	color:#2d2d2d;
+}
+.flowTopHover p span.span{
+	margin-right:35px;
+	color:#404040;
+}
+.flowTopHover .priceRange,
+.guideLi ul li samp{
+	color:#ff7800 !important;
+	font-weight:600 !important;
+}
+.flowTopHover p{
+	margin-bottom:12px;
+}
+.borrowModeHover{
+	border:1px solid #73c0f4;
+}
+/* 信用贷的内容 */
+.back{
+	float:right;
+	line-height:67px;
+	text-decoration:underline !important;
+	color:#42a0dd;
+	font-size:16px;
+	padding-left:35px;
+	background:url(../../resource/img/loan/fhlxxz.png) no-repeat;
+	background-position:left center;
+}
+.back:hover{
+	color:#1c81c3;
+}
+.back img{
+	width:35px;
+	vertical-align:top;
+	margin-top: 11px;
+}
+.guideList{
+	padding:0 25px;
+}
+.guideLi{
+	display:block;
+	padding:43px 0;
+	border-bottom:1px dashed #eeeeee;
+}
+.guideLi > span{
+	display:inline-block;
+	font-size:16px;
+	color:#515151;
+	font-weight:bold;
+	padding:10px 20px;
+	background:url(../../resource/img/loan/disc.png) no-repeat;
+	background-position:left center;
+}
+.material{
+	line-height:30px;
+}
+.guideLi p{
+	word-break:break-all;
+}
+.guideLi p,
+.guideLi ul{
+	padding-left:23px;
+}
+.guideLi .guideP{
+	font-size:16px;
+	color:#212121;
+}
+.guideP span{
+	color:#595959;
+}
+.guideLi ul li{
+	display:inline-block;
+	width:24%;
+	color: #212121;
+}
+.guideLi p span{
+	margin:0 15px;
+}
+.guideLi p span:nth-of-type(1){
+	margin-left:0 !important;
+}
+.guideDiv{
+	text-align:left !important;
+}
+.guide{
+	width:60px;
+}
+.guide p{
+	padding:0 !important;
+}
+.guideStep1{
+	background:url(../../resource/img/loan/zczh.png) no-repeat;
+}
+.guideStep2{
+	background:url(../../resource/img/loan/shim.png) no-repeat;
+}
+.guideStep3{
+	background:url(../../resource/img/loan/wdzh.png) no-repeat;
+}
+.guideStep4{
+	background:url(../../resource/img/loan/jkgl.png) no-repeat;
+}
+.guideStep5{
+	background:url(../../resource/img/loan/wyjk.png) no-repeat;
+}
+.guideStep6{
+	background:url(../../resource/img/loan/txxx.png) no-repeat;
+}
+.guideStep7{
+	background:url(../../resource/img/loan/ptsh.png) no-repeat;
+}
+.guideStep8{
+	background:url(../../resource/img/loan/cjjk.png) no-repeat;
+}
+.guideStep9{
+	background:url(../../resource/img/loan/hdjk.png) no-repeat;
+}
+.arrow2{
+	display:inline-block;
+	width:39px;
+	height:20px;
+	vertical-align:top;
+	margin:20px 10px 0 5px;
+	background:url(../../resource/img/loan/arrowDashed.png) no-repeat;
+}
+.guideStep{
+	display:inline-block;
+	width:60px;
+	height:55px;
+	background-position:center;
+}
+.backGuideStep1{
+	background:url(../../resource/img/loan/wdzhl.png) no-repeat;
+}
+.backGuideStep2{
+	background:url(../../resource/img/loan/jkgll.png) no-repeat;
+}
+.backGuideStep3{
+	background:url(../../resource/img/loan/hkgll.png) no-repeat;
+}
+.backGuideStep4{
+	background:url(../../resource/img/loan/hkzjk.png) no-repeat;
+}
+.backGuideStep5{
+	background:url(../../resource/img/loan/huankuan.png) no-repeat;
+}
+.backGuideStep{
+	display:inline-block;
+	width:70px;
+	height:63px;
+	background-position:center;
+}
+.apply{
+	display:inline-block;
+	width:180px;
+	height:50px;
+	line-height:50px;
+	background:#73c0f4;
+	color:#ffffff;
+	text-decoration:none;
+	margin:30px auto 30px auto;
+	font-size:18px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	-o-border-radius:3px;
+	border-radius:3px;
+}
+.apply:hover{
+	background:#25a9ff;
+}
+.applyDiv{
+	text-align:center;
+}
+.apply:hover{
+	text-decoration:none;
+}
+.inputRate{
+	width:100px;
+	background:red;
+}
+/* 2016-04-06 胥福星 input标签的公用样式 */
+input[type="text"]{
+	border:1px solid #d2d2d2;
+	outline:none;
+}
+input[type="text"]{
+	padding:10px 0 10px 14px;
+	font-size:16px;
+	color:#333;
+}
+input[type="text"]:focus{
+	border-color:#a5d7f7;
+}
+/* end */
+/* 弹出提示的样式 */
+/* 输入错误时弹出的样式  */
+.tipError,
+.after,
+.pre{
+	display:inline-block;
+	vertical-align:middle;
+}
+.tipError{
+	position: absolute;
+}
+.after{
+	height:42px;
+	background:#fce3e3;
+	border-top:1px solid #fd0202;
+	border-bottom:1px solid #fd0202;
+	border-right:1px solid #fd0202;
+	line-height:42px;
+	padding:0 10px 0 5px;
+	margin-top:2px;
+	color:#fd0202;
+	max-width:300px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+.after,
+.pre{
+	float:left;
+}
+.pre{
+	width:40px;
+	height:45px;
+	background:url(../../resource/img/account/common/tipsError_03.png) no-repeat;
+}
+/* 获取焦点时弹出的样式  */
+.tip,
+.afterTip,
+.preTip{
+	display:inline-block;
+	vertical-align:middle;
+}
+.tip{
+	position:absolute;
+}
+.afterTip{
+	height:42px;
+	max-width:300px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	background:#fff;
+	border-top:1px solid #72c0f3;
+	border-right:1px solid #72c0f3;
+	border-bottom:1px solid #72c0f3;
+	line-height:42px;
+	padding:0 10px 0 2px;
+	margin-top:2px;
+	color:#7c7c7c;
+}
+.afterTip,
+.preTip{
+	float:left;
+}
+.preTip{
+	width:20px;
+	height:45px;
+	background:url(../../resource/img/account/common/tip_07.png) no-repeat;
+}
+/* 输入正确的提示弹出层 */
+.tipOk{
+	position:absolute;
+}
+.tipOk{
+	display:inline-block;
+	width:15px;
+	height:15px;
+	margin-left:10px;
+	vertical-align:middle;
+	background:url(../../resource/img/account/common/zq.png) no-repeat;
+}
+.selectDate{
+	width:292px !important;
+}
+.selectArea2{
+	width:100px;
+	margin-left:18px;
+}

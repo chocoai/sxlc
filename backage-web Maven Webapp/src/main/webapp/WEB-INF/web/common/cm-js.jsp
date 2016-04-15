@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 		<script src="js/jquery-1.11.0.min.js"></script>
 		<script src="plugs/Bootstrap/js/bootstrap.min.js"></script>
- 		<script src="plugs/nicescroll/jquery.nicescroll.min.js"></script>
 		<script src="plugs/datatables/1.10.0/jquery.dataTables.min.js"></script>
 		<script src="plugs/Validform/5.3.2/js/Validform.min.js"></script>
 		<script src="js/valid.js"></script>
@@ -15,3 +14,4 @@
 				mathHeight();
 			};
 		</script>
+ 		<script src="plugs/nicescroll/jquery.nicescroll.min.js"></script>

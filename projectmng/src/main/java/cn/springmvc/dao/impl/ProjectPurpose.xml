@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="projectPurpose">  
    <resultMap type="cn.springmvc.model.ProjectPurposeEntity" id="resultListProjectPurpose">
-        <id column="Purpose_ID" property="id" />
-		<result column="Member_ID" property="memberID" />
-		<result column="Uses" property="uses" />
-		<result column="Repay_Source" property="repaySource" />
-		<result column="Amount" property="amount" />
+        <id column="Purpose_ID" 		property="id" />
+		<result column="Member_ID" 		property="memberID" />
+		<result column="Uses" 			property="uses" />
+		<result column="Repay_Source"   property="repaySource" />
+		<result column="Amount" 		property="amount" />
 		<result column="Project_Descript" property="projectDescript" />
-		<result column="Deadline" property="deadline" />
-		<result column="Deadline_Type" property="deadlineType" />
-		<result column="Repay_Way" property="repayWay" />
-		<result column="Year_Rate" property="yearRate" />
-		<result column="Record_Date" property="recordDate" />
-		<result column="Admin_Id" property="adminId" /> 
-		<result column="Deal_Statu" property="dealStatu" />
-		<result column="Deal_Date" property="dealDate" />
+		<result column="Deadline" 		property="deadline" />
+		<result column="Deadline_Type"  property="deadlineType" />
+		<result column="Repay_Way" 		property="repayWay" />
+		<result column="Year_Rate" 		property="yearRate" />
+		<result column="Record_Date" 	property="recordDate" />
+		<result column="Admin_Id" 		property="adminId" /> 
+		<result column="Deal_Statu" 	property="dealStatu" />
+		<result column="Deal_Date" 		property="dealDate" />
     </resultMap>  
 	<!-- 新增借款意向 -->  
 	<insert id="insertProjectPurpose"  parameterType="cn.springmvc.model.ProjectPurposeEntity">    

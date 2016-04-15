@@ -3,8 +3,8 @@
 <mapper namespace="projectTypeReply">  
    <resultMap type="cn.springmvc.model.ProjectTypeReplyEntity" id="resultListProjectTypeReply"> 
 		<result column="Project_ID" property="projectType" />
-		<result column="Content" property="content" />
-		<result column="Pt_Index" property="ptIndex" /> 
+		<result column="Content"    property="content" />
+		<result column="Pt_Index"   property="ptIndex" /> 
     </resultMap> 
     <!-- 分页查询项目类型还款指南列表 -->  
 	<select id="selectProjectTypeReplyList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProjectTypeReply">

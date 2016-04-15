@@ -1,0 +1,459 @@
+/*伍成然2016-4-1  */
+/*好友管理右侧按钮  */
+.accountMain{
+	position:relative;
+}
+.friend-deal{
+	top:12px;
+	right:20px;
+	position:absolute;
+}
+.unprocessed{
+	font-size:16px;
+	border:1px solid #fe7407;
+	background-color:#fff;
+	color:#fe7407;
+	height:33px;
+	width:90px;
+	border-radius:1px;
+	margin-right:15px;
+	cursor:pointer;	
+}
+.add-friends{
+	font-size:16px;	
+	border:1px solid #72c0f3;
+	background-color:#fff;
+	color:#72c0f3;
+	height:33px;
+	width:90px;
+	border-radius:1px;
+	cursor:pointer;
+}
+/*右侧按钮结束  */
+/*标签切换  */
+.tab-head{
+	width:100%;
+	height:70px;
+	border-bottom:1px solid #ddd;
+}
+.tab-li{
+	margin-left:30px;
+	font-size:18px;
+	height:70px;
+	line-height:95px;
+	float:left;
+	cursor:pointer;
+}
+.tab-head .tab-ing{
+	color:#45a7e6;
+	border-bottom:2px solid #45a7e6;
+}
+
+.tab-content .content-active{
+	display:block;
+}
+.content{
+	display:none;
+}
+/*标签切换结束  */
+/*share-box  */
+.share-box{
+	border-bottom:20px solid #f8f8f8;
+}
+/*邀请好友部分  */
+.copy-share{
+	text-align:center;
+	width:100%;
+	height:330px;
+	padding:40px 100px;
+}
+.text{
+	width:650px;
+	height:120px;
+	line-height:25px;
+	padding:30px 0;
+	float:right;
+}
+.text span{
+	float:left;
+}
+.code{
+	color:#fd2a02;
+	font-weight:bold;
+}
+.url{
+	float:left;
+	color:#444444;
+	font-weight:bold;
+}
+.copy{
+	margin-left:80px;
+	background-color:#fff;
+	font-size:16px;
+	height:37px;
+	line-height:37px;
+	text-align:center;
+	float:left;
+	width:140px;
+	color:#72c0f3;
+	border:1px solid #72c0f3;
+	cursor:pointer;
+	border-radius:1px;
+	position:relative;
+	top:-4px;
+}
+/*邀请好友部分结束  */
+/*分享图标  */
+.share-method{
+	height:100px;
+	width:100%;
+	border-top:1px solid #ddd;
+}
+.share-remind{
+	height:100px;
+	line-height:100px;
+	width:25%;
+	float:left;
+	text-align:right;
+}
+.QQ{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_10.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+.QQ:hover{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_11.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+.WeChat{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_12.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+.WeChat:hover{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_13.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+.Qzone{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_14.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+.Qzone:hover{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_15.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+.Weibo{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_16.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+.Weibo:hover{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_17.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+.Tencent{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_18.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+.Tencent:hover{
+	width:70px;
+	height:100px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_19.png");
+	background-repeat: no-repeat;
+	background-position: 15px 30px;
+}
+/*分享图标结束  */
+/*表格上方样式  */
+.list-name{
+	font-size:18px;
+	color:#262626;
+	margin-top:20px;
+	margin-left:20px;
+}
+.input-group{
+	margin-top:20px;
+	margin-left:35px;
+}
+.serch-input{
+	height:30px;
+	width:250px;
+	margin:0 20px;
+}
+.search-btn{
+	height:30px;
+	width:65px;	
+	line-height:30px;
+}
+/*表格上方样式结束 */
+/*表格样式  */
+.my-integral-content{
+	float:left;
+	width:100%;
+	background-color:#fff;
+	padding:0 30px;
+}
+.my-integral-table{
+	padding:0 35px;
+	margin:20px 0;
+	width:100%;
+	float:left;
+	font-size:13px;
+}	
+.my-integral-table li{
+	height:65px;
+	border-bottom:1px solid #ddd;
+	color:#575757;
+}
+.my-integral-table li:hover{
+	background-color:#e5eff4;
+}
+.my-integral-table li:first-child{
+	border-top:1px solid #ddd;
+	background-color:#f5f5f5;
+	height:40px;
+}
+.contentOut1{
+	height:65px;
+	width:25%;
+	display:table;
+	float:left;
+}
+.contentOut2{
+	height:65px;
+	width:30%;
+	display:table;
+	float:left;
+}
+.contentOut3{
+	height:65px;
+	width:40%;
+	display:table;
+	float:left;
+}
+.content1{
+	font-size:14px;
+	vertical-align:middle;   
+	display:table-cell; 
+	text-align:center;
+}
+.my-integral-table li:first-child .contentOut1{
+	height:40px;
+}
+.my-integral-table li:first-child .contentOut2{
+	height:40px;
+}
+.my-integral-table li:first-child .contentOut3{
+	height:40px;
+}
+.delete-deal{
+	text-decoration:underline;
+	color:#fe7407;
+	cursor:pointer;
+}
+/*表格样式结束*/
+/*弹出层  */
+.undeal{
+	display:none;
+}
+.addFriends{
+	display:none;
+}
+/*未处理申请  */
+.undeal{
+	padding:10px;
+}
+.contentOut5{
+	height:60px;
+	width:33%;
+	display:table;
+	float:left;
+}
+.undeal-info li:first-child{
+	border-top:1px solid #ddd;
+	background-color:#f5f5f5;
+	height:40px;
+}
+.undeal-info li{
+	height:60px;
+	border-bottom:1px solid #ddd;
+}
+.undeal-info li:first-child .contentOut5{
+	height:40px;
+}
+.agree{
+	height:30px;
+	line-height:30px;
+	width:100px;
+	color:#72c0f3;
+	border:1px solid #72c0f3;
+	border-radius:1px;
+	text-align:center;
+	cursor:pointer;
+}
+/*未处理申请结束*/
+/*添加好友*/
+.input-group1{
+	padding:27px 50px;
+	height:110px;
+}
+.inputFriend{
+	float:left;
+	height:50px;
+	width:407px;
+}
+.search{
+	margin-left:10px;
+	float:left;
+	height:50px;
+	line-height:50px;
+	text-align:right;
+	padding:0 29px;
+	width:116px;
+	border:none;
+	border-radius:1px;
+	color:#fff;
+	font-size:16px;
+	background-color:#3397ea;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_tjhy_03.png");
+	background-repeat: no-repeat;
+	background-position: 24px 13px;
+	cursor:pointer;
+}
+.addFriends ul{
+	border-top:1px solid #ddd;
+}
+.addFriends li{
+	padding:0 10px;
+	width:94%;
+	height:100px;
+	border-bottom:1px solid #ddd;
+}
+.photo{
+	margin-right:10px;
+	position:relative;
+	width:50px;
+	height:50px;
+	overflow:hidden;
+    border-radius:50%;
+    float:right;
+}
+.photo img{
+  	width:auto;
+  	height:100%;
+}
+.contentOut6{
+	height:100px;
+	width:80px;
+	display:table;
+	float:left;
+}
+.contentOut7{
+	height:100px;
+	width:200px;
+	display:table;
+	float:left;
+}
+.contentOut8{
+	height:100px;
+	width:100px;
+	display:table;
+	float:right;
+}
+.content2{
+	vertical-align:middle;   
+	display:table-cell;
+	text-align:center; 
+}
+.content3{
+	vertical-align:middle;   
+	display:table-cell;
+	text-align:left; 
+}
+.add{
+	width:138px;
+	height:35px;
+	line-height:35px;
+	text-align:center;
+	color:#72c0f3;
+	border:1px solid #72c0f3;
+	border-radius:1px;
+	cursor:pointer;
+}
+/*添加好友结束 */
+/* 翻页按钮  */
+.pageTab{
+	margin-top:30px;
+	height:30px;
+	width:80px;
+	float:right;
+}
+.pageBefore{
+	height:30px;
+	width:30px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_20.png");
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+}
+.pageTab .pageBefore1{
+	height:30px;
+	width:30px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_21.png");
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+}
+.pageAfter{
+	height:30px;
+	width:30px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_22.png");
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+}
+.pageTab .pageAfter1{
+	height:30px;
+	width:30px;
+	float:left;
+	background-image: url("../../../resource/img/account/personalCenter/grzx_23.png");
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+}
+/*弹出层结束  */
+.dn{
+	display: none;
+}

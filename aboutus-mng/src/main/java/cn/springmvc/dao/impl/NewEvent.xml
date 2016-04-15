@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="newEvent">
     <resultMap type="cn.springmvc.model.NewEventEntity" id="resultListNewEvent">
-        <id column="New_ID" property="id" />
-		<result column="TitleS" property="title" />
-		<result column="Content" property="content" />
-		<result column="Statu" property="statu" />
-		<result column="CreateTime" property="createTime" />
-		<result column="Opt_Date" property="optDate" />
-		<result column="admin_ID" property="optId" />
-		<result column="adminName" property="adminName" />
+        <id column="New_ID" 			property="id" />
+		<result column="TitleS" 		property="title" />
+		<result column="Content" 		property="content" />
+		<result column="Statu" 			property="statu" />
+		<result column="CreateTime" 	property="createTime" />
+		<result column="Opt_Date"		property="optDate" />
+		<result column="admin_ID" 		property="optId" />
+		<result column="adminName" 		property="adminName" />
     </resultMap> 
 	<!-- 分页查询最新动态 -->  
 	<select id="selectNewEventListpage"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultListNewEvent" >
@@ -30,12 +30,12 @@
     <!-- 新增最新动态 -->  
 	<insert id="insertNewEvent"  parameterType="cn.springmvc.model.NewEventEntity" >    
 		insert into 
-		New_Event( New_ID,   TitleS,    Content,  Opt_Id) 
+		New_Event( New_ID,   TitleS,    Content,  admin_ID) 
 		  values (#{id},#{title},#{content},#{optId})    
 	</insert> 
 	<!-- 查询该标题的最新动态是否存在 -->  
 	<select id="selectNewEventIsExistByNAme"  parameterType="cn.springmvc.model.NewEventEntity" resultMap="resultListNewEvent" >
-	   select New_ID,   TitleS,   Content,   Statu,   CreateTime,  Opt_Date, Opt_Id
+	   select New_ID,   TitleS,   Content,   Statu,   CreateTime,  Opt_Date, admin_ID
 	   from  New_Event where  Title=#{title}  and New_ID != #{id} 
     </select> 
     <!-- 修改最新动态信息 -->  

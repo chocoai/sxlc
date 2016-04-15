@@ -12,7 +12,7 @@
  
 package cn.springmvc.model; 
 
-import cn.springmvc.controller.RepalyUtitls;
+import cn.springmvc.utitls.RepalyUtitls;
   
 /** 
  * @author 刘利 

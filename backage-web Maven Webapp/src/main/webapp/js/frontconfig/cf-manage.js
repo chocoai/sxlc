@@ -5,9 +5,6 @@
 
 $(function() {
 	validform5(".layui-layer-btn0","dataForm",false,3);
-//	$("#addBtn").on("click",function(){
-//		parent.layer.close();
-//	});
 	$('#teamTb').DataTable(
 			{	
 				ajax: {  
@@ -22,12 +19,6 @@ $(function() {
 					}  
 				},
 				columns: [  
-				          {title:'<input type="checkbox"  value="1" />',
-				        	  "mRender": function (data, type, full) {
-				        		  return  '<input type="checkbox" value="1" />';
-				        	  }
-//				          "sClass": "table-checkbox"
-				          },
 				          { title:"teamId","data": "id"},  
 				          { title:"头像","data": "portraitUrl"},  
 				          { title:"添加时间","data": "createTime"},  
@@ -61,10 +52,10 @@ $(function() {
 
 				          ],
 	          aoColumnDefs : [
-	                          {"bVisible": false, "aTargets": [ 1,2 ]}, //控制列的隐藏显示
+	                          {"bVisible": false, "aTargets": [ 0,1 ]}, //控制列的隐藏显示
 	                          {
 	                        	  "orderable" : false,
-	                        	  "aTargets" : [0,2,4,5,6,7,8,9,10]
+	                        	  "aTargets" : [0,1,3,4,5,6,7,8,9]
 	                          } // 制定列不参与排序
 	                          ],
               pagingType: "simple_numbers",//设置分页控件的模式  
@@ -73,26 +64,19 @@ $(function() {
               info:false,
               rowCallback:function(row,data){//添加单击事件，改变行的样式      
               }
-//				,
-//              Language: {
-//            	  "LengthMenu": "每页显示 _MENU_ 条记录",
-//            	  "ZeroRecords": "抱歉， 没有找到",
-//            	  "Info": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
-//            	  "InfoEmpty": "没有数据",
-//            	  "InfoFiltered": "(从 _MAX_ 条数据中检索)",
-//            	  "Paginate": {
-//            	  "First": "首页",
-//            	  "Previous": "前一页",
-//            	  "Next": "后一页",
-//            	  "Last": "尾页"
-//            	  }
-//              }
 	 
-	});
+	});//表格初始化完毕
 	 
-	//选中
+	//表格单选效果
 	 $('#teamTb tbody').on( 'click', 'tr', function () {
-	        $(this).toggleClass('selected');
+		    var $this = $(this);
+	        if ( $this.hasClass('selected') ) {
+	        	$this.removeClass('selected');
+	        }
+	        else {
+	        	$('#teamTb tr.selected').removeClass('selected');
+	        	$this.addClass('selected');
+	        }
 	  });
 	
 	

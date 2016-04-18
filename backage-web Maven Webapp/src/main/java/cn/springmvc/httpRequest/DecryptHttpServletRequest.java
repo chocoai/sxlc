@@ -22,12 +22,18 @@ public class DecryptHttpServletRequest extends HttpServletRequestWrapper{
 	
 	public DecryptHttpServletRequest(HttpServletRequest request) {
 		super(request);
-		privateKey = (String) request.getSession().getAttribute(Constant.publicKey);
+		privateKey = (String) request.getSession().getAttribute(Constant.privateKey);
 	}
 
 	@Override
 	public String getParameter(String name) {
 		String ciphertext = super.getParameter(name);
+		if("start".equals(name)){
+			return ciphertext;
+		}
+		if("length".equals(name)){
+			return ciphertext;
+		}
 		if (privateKey == null) {
 			return ciphertext;
 		}else{
@@ -38,7 +44,7 @@ public class DecryptHttpServletRequest extends HttpServletRequestWrapper{
 	@Override
 	public String[] getParameterValues(String name) {
 		String[] names =  super.getParameterValues(name);
-		if (privateKey == null) {
+		if (privateKey == null || names == null) {
 			
 			return names;
 		}else{

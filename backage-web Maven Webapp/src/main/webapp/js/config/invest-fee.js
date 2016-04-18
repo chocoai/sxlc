@@ -1,4 +1,4 @@
-/** 自动投标返回百分比 **/
+/** 投资管理返回百分比 **/
 //获取项目根目录全路径
 function getRootPath(){
         var curWwwPath=window.document.location.href;
@@ -31,10 +31,14 @@ $(function () {
 function updateMange () {
 	validform5("btn","mange",true,"3");
 	var percent = $("#lastname").val();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result = encrypt.encrypt((percent));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/mange/update.do",
-			data : "priceDatum=" + percent,
+			data : {priceDatum : percent},
 			success : function (msg) {
 				if (msg == 1) {
 					layer.alert("操作成功",{icon:1});

@@ -1,0 +1,12 @@
+@media (min-width: 978px) and (max-width: 1211px) {
+	.search .con-item{
+		width:275px !important;
+	}
+	.search button{
+		float:right;
+	}
+}
+@media (max-width: 520px){
+	.search .con-item{
+		width:350px !important;
+	}

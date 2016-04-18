@@ -32,10 +32,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="web/project/apply_failed.jsp">申请失败</a>
-					</li>
-				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">
 						<div class="panel panel-success">
@@ -53,9 +49,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="con-item"><span>项目编号</span><input type="text" class="" value="项目编号" /></span>
 									<span class="con-item"><span>借款人用户名</span><input type="text" class="" value="借款人用户名" /></span>
 									<span class="con-item"><span>借款人姓名</span><input type="text" class="" value="借款人姓名" /></span>
-									<span class="con-item"><span>提交申请时间范围</span><input type="text" class="" value="提交申请时间范围" /></span>
-									<span class="con-item"><span>申请失败时间范围</span><input type="date" class="" value="申请失败时间范围" /></span>
-									<span class="con-item"><span>借款金额范围</span><input type="text" class="" value="借款金额范围" /></span>
+									<span class="con-item"><span>提交申请时间范围</span><input type="date" class="" value="" />-&nbsp;&nbsp;<input type="date" class="" value="" /></span>
+									<span class="con-item"><span>申请失败时间范围</span><input type="date" class="" value="" />-&nbsp;&nbsp;<input type="date" class="" value="" /></span>
+									<span class="con-item"><span>借款金额范围</span><input type="text" class="" value="借款金额范围" />-&nbsp;&nbsp;<input type="text" class="" value="借款金额范围" /></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -64,9 +60,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="data_display">
 						<div class="panel panel-success">
 							<div class="panel-heading">
-							  	<!-- <div class="action_item">
-						  			<button id="add_intention_loan" class="obtn glyphicon glyphicon-plus">添加意向借款</button>
-								</div> -->
+							  	<div class="action_item">
+						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-export">导出</button>
+								</div>
 							</div>
 						<div class="panel-body">
 						<table id="table_apply_failed" class="display">
@@ -87,6 +83,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 							</thead>
 							<tbody>
+								<%
+									for(int i=0;i<15;i++){
+								 %>
 								<tr>
 									<td><input type="checkbox"></td>
 									<td>0000001</td>
@@ -101,216 +100,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td>描述</td>
 									<td>类型</td>
 								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-								</tr>
+								<%
+									}
+								 %>
 							</tbody>
 						</table>
 					</div>
@@ -323,7 +115,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script src="js/project/loan_intention_2.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
 				//默认禁用搜索和排序

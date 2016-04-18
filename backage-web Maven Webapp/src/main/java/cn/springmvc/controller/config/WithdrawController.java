@@ -4,14 +4,23 @@ package cn.springmvc.controller.config;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.WithdrawalsFeeEntity;
 import cn.springmvc.service.FinancialSettingService;
 import cn.springmvc.service.QuickRechargeFeeService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 /**
  * 
@@ -68,10 +77,15 @@ public class WithdrawController {
 	 */
 	@RequestMapping("/update")
 	@ResponseBody
-	public int update(String withdrawal_Fee_Pingtai,
-			String withdrawal_Fee_Third, String payment_Member_Type) {
+	public int update(HttpServletRequest request) {
 		
 		WithdrawalsFeeEntity withdrawalsFeeEntity = new WithdrawalsFeeEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		
+		String payment_Member_Type = request.getParameter("payment_Member_Type");
+		String withdrawal_Fee_Pingtai = request.getParameter("withdrawal_Fee_Pingtai");
+		String withdrawal_Fee_Third = request.getParameter("withdrawal_Fee_Third");
 		
 			withdrawalsFeeEntity.setPayment_Member_Type(Integer.valueOf(payment_Member_Type));
 		if (withdrawal_Fee_Pingtai != null && withdrawal_Fee_Pingtai != "") {
@@ -81,7 +95,19 @@ public class WithdrawController {
 			withdrawalsFeeEntity.setWithdrawal_Fee_Third(Integer.valueOf(withdrawal_Fee_Third));
 		}
 		
-		int num = financialSettingService.updateWithdrawalsFee(withdrawalsFeeEntity, null, null);
+		String [] sIpInfo = new String[5];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(6010301);
+		entity.setlModuleId(60103);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = financialSettingService.updateWithdrawalsFee(withdrawalsFeeEntity, entity, null);
 		
 		return num;
 	}
@@ -103,8 +129,13 @@ public class WithdrawController {
 	 */
 	@RequestMapping("/update4charge")
 	@ResponseBody
-	public int update4charge (Map<String, Object> req, String paymentMemberType,
-			String feePaymentMethod) {
+	public int update4charge (Map<String, Object> req, HttpServletRequest request) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		
+		String paymentMemberType = request.getParameter("paymentMemberType");
+		String feePaymentMethod = request.getParameter("feePaymentMethod");
 		
 		if (paymentMemberType != null && paymentMemberType != "") {
 			req.put("paymentMemberType", paymentMemberType);
@@ -114,9 +145,21 @@ public class WithdrawController {
 		}
 		req.put("rechargeTypeThird", 0);
 		
-		int num = quickRechargeFeeService.updateQuickRechargeFee(req, null, null);
+		String [] sIpInfo = new String[5];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(6010201);
+		entity.setlModuleId(60102);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = quickRechargeFeeService.updateQuickRechargeFee(req, entity, sIpInfo);
 		return num;
 	}
-
+	
 }
 

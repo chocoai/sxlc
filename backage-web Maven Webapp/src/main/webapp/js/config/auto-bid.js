@@ -31,10 +31,13 @@ $(function () {
 function updateAuto () {
 	validform5("btn","auto",true,"3");
 	var percent = $("#firstname").val();
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result = encrypt.encrypt((percent));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/auto/update.do",
-			data : "autoBackRate=" + percent,
+			data : {autoBackRate : result},
 			success : function (msg) {
 				if (msg == 1) {
 					layer.alert("操作成功",{icon:1});

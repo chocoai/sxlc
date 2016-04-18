@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">投资管理费：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="lastname" placeholder="投资管理费">
+			 						<input type="text" class="form-control" name="priceDatum" id="lastname" placeholder="投资管理费">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i></i></span>
@@ -69,7 +69,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="js/config/invest-fee.js"></script>
+	<script type="text/javascript" src="js/rsa/RSA.js"></script> 
+	<script type="text/javascript" src="js/rsa/Barrett.js"></script>
+	<script type="text/javascript" src="js/rsa/BigInt.js"></script>
 	<!-- 私用js -->
+	<script>
+		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </body>
 
 </html>

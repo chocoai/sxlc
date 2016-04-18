@@ -37,10 +37,7 @@ public class CheckParamFilter implements Filter{
 		HttpServletRequest 	servletRequest 		= (HttpServletRequest) request;
 		String 				requestPath	 		= servletRequest.getRequestURI().replace("/IAndF/", "");
 		
-		if (requestPath.equals("applyRequest")) {		//过滤不拦截的请求
-			chain.doFilter(request, response);
-			return;
-		}else if(requestPath.equals("login")){			//拦截的请求
+		if (requestPath.equals("applyRequest") || requestPath.equals("login")) {		//过滤不拦截的请求
 			chain.doFilter(request, response);
 			return;
 		}else{

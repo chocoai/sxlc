@@ -26,9 +26,9 @@ td.con{
 	width:100%;
 }
 /* 修改样式 */
-.w-content{
+.add_type_contianer .w-content{
 	display:block;
-}
+} 
 .w-content td.tt{
 	min-width:145px;
 }

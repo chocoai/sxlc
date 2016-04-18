@@ -6,7 +6,7 @@
 	margin-bottom: 0;
 }
 .panel-heading{padding: 8px 10px;}
-.panel-body{padding: 8px 10px;}
+.panel-body{padding: 8px 10px;overflow: scroll;}
 
 
 .search>.panel,

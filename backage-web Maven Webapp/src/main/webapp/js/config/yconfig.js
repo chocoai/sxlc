@@ -20,6 +20,7 @@ $(function () {
 		url : appPath + "/withdraw/msg.do",
 		success : function (msg) {
 			for (var i = 0; i < msg.length; i ++) {
+				alert(msg.length);
 				if (msg[i].payment_Member_Type == 0) {
 					$("#mFee").val(msg[i].withdrawal_Fee_Pingtai);
 					$("#mpFee").val(msg[i].withdrawal_Fee_Third);
@@ -42,10 +43,19 @@ function mwithdralsfee () {
 	//validform5("btn","auto",true,"3");
 	var percent = $("#mFee").val();
 	var ppercent = $("#mpFee").val();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result1 = encrypt.encrypt((percent));
+    var result2 = encrypt.encrypt((ppercent));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/withdraw/update.do",
-			data : "payment_Member_Type=" + 0 +"&withdrawal_Fee_Pingtai=" + percent + "&withdrawal_Fee_Third=" + ppercent,
+			data : {
+						payment_Member_Type : 0, 
+						withdrawal_Fee_Pingtai : result1, 
+						withdrawal_Fee_Third : result2
+					},
 			success : function (msg) {
 				if (msg == 1) {
 					layer.alert("操作成功",{icon:1});
@@ -64,10 +74,19 @@ function owithdralsfee () {
 	//validform5("btn","auto",true,"3");
 	var percent = $("#ofee").val();
 	var ppercent = $("#opfee").val();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result1 = encrypt.encrypt((percent));
+    var result2 = encrypt.encrypt((ppercent));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/withdraw/update.do",
-			data : "payment_Member_Type=" + 1 + "&withdrawal_Fee_Pingtai=" + percent + "&withdrawal_Fee_Third=" + ppercent,
+			data : {
+				payment_Member_Type : 1, 
+				withdrawal_Fee_Pingtai : result1, 
+				withdrawal_Fee_Third : result2
+			},
 			success : function (msg) {
 				if (msg == 1) {
 					layer.alert("操作成功",{icon:1});
@@ -86,10 +105,19 @@ function pwithdralsfee () {
 	//validform5("btn","auto",true,"3");
 	var percent = $("#pfee").val();
 	var ppercent = $("#ppfee").val();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result1 = encrypt.encrypt((percent));
+    var result2 = encrypt.encrypt((ppercent));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/withdraw/update.do",
-			data : "payment_Member_Type=" + 2 + "&withdrawal_Fee_Pingtai=" + percent + "&withdrawal_Fee_Third=" + ppercent,
+			data : {
+						payment_Member_Type : 2, 
+						withdrawal_Fee_Pingtai : result1, 
+						withdrawal_Fee_Third : result2
+					},
 			success : function (msg) {
 				if (msg == 1) {
 					layer.alert("操作成功",{icon:1});

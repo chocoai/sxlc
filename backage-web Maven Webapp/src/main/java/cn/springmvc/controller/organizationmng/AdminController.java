@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.RSA.RSAPlugn;
+import product_p2p.kit.constant.Constant;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
@@ -97,8 +98,8 @@ public class AdminController {
 				PrivateKey privatek =   keyPair.getPrivate();
 				String publicKey=new  String(Base64.encodeBase64((publicK.getEncoded())));
 				String privatekey=new  String(Base64.encodeBase64((privatek.getEncoded())));
-				session.setAttribute("publicKey", publicKey);
-				session.setAttribute("privatekey", privatekey);
+				session.setAttribute(Constant.publicKey, publicKey);
+				session.setAttribute(Constant.privateKey, privatekey);
 				
 				 moduleList = roleInfoServer.getModuleList();	//模块权限
 				 operationList = roleInfoServer.getOperationList(); //操作权限

@@ -24,7 +24,7 @@ function mchargefee () {
 	$.ajax({
 		type : 'post',
 		url : appPath + "/withdraw/update4charge.do",
-		data : "paymentMemberType=" + 0 +"&feePaymentMethod=" + mtype,
+		data : {paymentMemberType : 0, feePaymentMethod : mtype},
 		success : function (msg) {
 			if (msg == 1) {
 				layer.alert("操作成功",{icon:1});
@@ -44,7 +44,7 @@ function ochargefee () {
 	$.ajax({
 		type : 'post',
 		url : appPath + "/withdraw/update4charge.do",
-		data : "paymentMemberType=" + 1 +"&feePaymentMethod=" + otype,
+		data : {paymentMemberType : 1, feePaymentMethod : otype},
 		success : function (msg) {
 			if (msg == 1) {
 				layer.alert("操作成功",{icon:1});
@@ -64,7 +64,7 @@ function pchargefee () {
 	$.ajax({
 		type : 'post',
 		url : appPath + "/withdraw/update4charge.do",
-		data : "paymentMemberType=" + 2 +"&feePaymentMethod=" + ptype,
+		data : {paymentMemberType : 2, feePaymentMethod : ptype},
 		success : function (msg) {
 			if (msg == 1) {
 				layer.alert("操作成功",{icon:1});
@@ -83,6 +83,10 @@ $(function () {
 			$(this).attr("checked",true).parent(".checkbox-inline").siblings().children("input[type='radio']").attr("checked",false);
 			if($(this).attr("checked")){
 				mtype = $(this).val();
+				//加密操作
+				var encrypt = new JSEncrypt();
+			    encrypt.setPublicKey(publicKey_common);
+			    mtype = encrypt.encrypt((mtype));
 			}
 		});
 	});
@@ -93,6 +97,10 @@ $(function () {
 				$(this).attr("checked",true).parent(".checkbox-inline").siblings().children("input[type='radio']").attr("checked",false);
 				if($(this).attr("checked")){
 					otype = $(this).val();
+					//加密操作
+					var encrypt = new JSEncrypt();
+				    encrypt.setPublicKey(publicKey_common);
+				    otype = encrypt.encrypt((otype));
 				}
 			});
 		});
@@ -104,6 +112,10 @@ $(function () {
 				$(this).attr("checked",true).parent(".checkbox-inline").siblings().children("input[type='radio']").attr("checked",false);
 				if($(this).attr("checked")){
 					ptype = $(this).val();
+					//加密操作
+					var encrypt = new JSEncrypt();
+				    encrypt.setPublicKey(publicKey_common);
+				    ptype = encrypt.encrypt((ptype));
 				}
 			});
 		});

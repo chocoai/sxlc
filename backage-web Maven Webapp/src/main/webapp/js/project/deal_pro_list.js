@@ -26,14 +26,7 @@ $(document).ready(function() {
     });
     
     /** *************贷后监管************** **/
-    $('#deal_list_supervice_list').on('click', function(){
-    	layer.open({
-    		type: 2,
-    		title: '贷后监管',
-    		maxmin: true,
-    		shadeClose: true, //点击遮罩关闭层
-    		area : ['800px' , '520px'],
-    		content: 'web/project/deal_list_supervice_list.jsp'
-    	});
+    $('#deal_list_suppervision').on('click', function(){
+    	$(".right_col").load('web/project/deal_list_supervice_list.jsp');
     });
 });

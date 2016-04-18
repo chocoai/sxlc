@@ -1,13 +1,22 @@
 
 package cn.springmvc.controller.config;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.SystemSetEntity;
 import cn.springmvc.service.SystemSetService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 /**
  * 
 * @author 杨翰林
@@ -59,10 +68,13 @@ public class AutomaticbidController {
 	 */
 	@RequestMapping("/update")
 	@ResponseBody
-	public int update(String autoBackRate) {
+	public int update(HttpServletRequest request) {
 		
 		SystemSetEntity systemSetEntity = new SystemSetEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
+		String autoBackRate = request.getParameter("autoBackRate");
 		if (autoBackRate != null && autoBackRate != "") {
 			systemSetEntity.setSautoBackRate(autoBackRate);
 		}
@@ -72,10 +84,22 @@ public class AutomaticbidController {
 		systemSetEntity.setRedpacketsRateMax(-1);
 		systemSetEntity.getRiskMarginType();
 		
-		int num = systemSetService.updateSystemSet(systemSetEntity, null, null);
+		String [] sIpInfo = new String[5];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(6010901);
+		entity.setlModuleId(60109);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = systemSetService.updateSystemSet(systemSetEntity, entity, sIpInfo);
 		
 		return num;
 	}
-
+	
 }
 

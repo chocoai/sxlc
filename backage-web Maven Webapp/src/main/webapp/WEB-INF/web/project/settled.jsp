@@ -32,10 +32,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="web/project/settled.jsp">已结清</a>
-					</li>
-				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">
 						<div class="panel panel-success">
@@ -64,9 +60,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="data_display">
 						<div class="panel panel-success">
 							<div class="panel-heading">
-							  	<!-- <div class="action_item">
-						  			<button id="add_intention_loan" class="obtn glyphicon glyphicon-plus">添加意向借款</button>
-								</div> -->
+							  	<div class="action_item">
+						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-export">导出</button>
+								</div>
 							</div>
 						<div class="panel-body">
 						<table id="table_settled" class="display">
@@ -91,6 +87,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 							</thead>
 							<tbody>
+								<%
+									for(int i=0;i<15;i++){
+								 %>
 								<tr>
 									<td><input type="checkbox"></td>
 									<td>0000001</td>
@@ -109,312 +108,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td>233万</td>
 									<td>32万</td>
 								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>张三</td>
-									<td>建设大街</td>
-									<td>计算机</td>
-									<td>12-01</td>
-									<td>23万</td>
-									<td>20万</td>
-									<td>2%</td>
-									<td>05-12</td>
-									<td>05-11</td>
-									<td>06-24</td>
-									<td>07-01</td>
-									<td>233万</td>
-									<td>32万</td>
-								</tr>
+								<%
+									}
+								 %>
 							</tbody>
 						</table>
 					</div>
@@ -427,7 +123,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script src="js/project/loan_intention_2.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
 				//默认禁用搜索和排序

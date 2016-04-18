@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<li><a href="web/frontconfig/fc-hotNews.jsp"><i class="fa fa-edit"></i>最新动态管理        </a></li>
 								<li><a href="front/toMediRepList.do"><i class="fa fa-edit"></i>媒体报道管理        </a></li>
 								<li><a href="web/frontconfig/fc-invite.jsp"><i class="fa fa-edit"></i>招贤纳士管理        </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>产品介绍管理        </a></li>
+								<li><a href="web/frontconfig/fc-proIntro.jsp"><i class="fa fa-edit"></i>产品介绍管理        </a></li>
 								<li><a href="web/frontconfig/fc-partner.jsp"><i class="fa fa-edit"></i>合作伙伴管理        </a></li>
 								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>常见问题管理        </a></li>
 								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>法律法规管理        </a></li>

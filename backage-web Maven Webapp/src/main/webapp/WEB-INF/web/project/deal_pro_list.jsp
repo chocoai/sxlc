@@ -32,10 +32,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="web/project/deal_pro_list.jsp">成交项目列表</a>
-					</li>
-				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">
 						<div class="panel panel-success">
@@ -53,11 +49,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="con-item"><span>项目编号</span><input type="text" class="" value="项目编号" /></span>
 									<span class="con-item"><span>借款人用户名</span><input type="text" class="" value="借款人用户名" /></span>
 									<span class="con-item"><span>借款人姓名</span><input type="text" class="" value="借款人姓名" /></span>
-									<span class="con-item"><span>借款期限</span><input type="date" class="" value="借款期限(天、月)" /></span>
+									<span class="con-item"><span>借款期限</span><input type="date" class="term" value="借款期限(天、月)" />-&nbsp;&nbsp;<input type="date" class="term" value="借款期限(天、月)" /></span>
 									<span class="con-item"><span>实际借款金额</span><input type="text" class="" value="实际借款金额" /></span>
 									<span class="con-item"><span>还款方式</span><input type="text" class="" value="还款方式" /></span>
 									<span class="con-item"><span>合同约定下一还款日</span><input type="date" class="" value="合同约定下一还款日" /></span>
-									<span class="con-item"><span>还款状态</span><input type="text" class="" value="还款状态" /></span>
+									<span class="con-item"><span>还款状态</span><select><option>请选择</option><option>已停用</option><option>已启用</option></select></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -67,13 +63,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 							  	<div class="action_item">
-						  			<button id="deal_list_pro_detail" class="obtn glyphicon glyphicon-plus">查看项目详情</button>
-						  			<button id="deal_list_pay_detail" class="obtn glyphicon glyphicon-plus">查看还款详情</button>
-						  			<button id="deal_list_supervice_list" class="obtn glyphicon glyphicon-plus">项目监管</button>
+						  			<button id="deal_list_pro_detail" class="obtn glyphicon glyphicon-plus">项目详情</button>
+						  			<button id="deal_list_pay_detail" class="obtn glyphicon glyphicon-plus">还款详情</button>
+						  			<button id="deal_list_suppervision" class="obtn glyphicon glyphicon-plus">贷后监管</button>
 								</div>
 							</div>
 						<div class="panel-body">
-						<table id="table_deal_list" class="display">
+						<table id="table_id" class="display">
 							<thead>
 								<tr>
 									<th></th>
@@ -103,6 +99,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 							</thead>
 							<tbody>
+								<%
+									for(int i=0;i<15;i++){
+								 %>
 								<tr>
 									<td><input type="checkbox"></td>
 									<td>0000001</td>
@@ -129,136 +128,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td>04-15</td>
 									<td>04-15</td>
 								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>还款中</td>
-									<td>10万</td>
-									<td>1万</td>
-									<td>38293</td>
-									<td>29</td>
-									<td>02-04</td>
-									<td>03-01</td>
-									<td>04-12</td>
-									<td>04-15</td>
-									<td>04-15</td>
-									<td>04-15</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>还款中</td>
-									<td>10万</td>
-									<td>1万</td>
-									<td>38293</td>
-									<td>29</td>
-									<td>02-04</td>
-									<td>03-01</td>
-									<td>04-12</td>
-									<td>04-15</td>
-									<td>04-15</td>
-									<td>04-15</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>还款中</td>
-									<td>10万</td>
-									<td>1万</td>
-									<td>38293</td>
-									<td>29</td>
-									<td>02-04</td>
-									<td>03-01</td>
-									<td>04-12</td>
-									<td>04-15</td>
-									<td>04-15</td>
-									<td>04-15</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>还款中</td>
-									<td>10万</td>
-									<td>1万</td>
-									<td>38293</td>
-									<td>29</td>
-									<td>02-04</td>
-									<td>03-01</td>
-									<td>04-12</td>
-									<td>04-15</td>
-									<td>04-15</td>
-									<td>04-15</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>还款中</td>
-									<td>10万</td>
-									<td>1万</td>
-									<td>38293</td>
-									<td>29</td>
-									<td>02-04</td>
-									<td>03-01</td>
-									<td>04-12</td>
-									<td>04-15</td>
-									<td>04-15</td>
-									<td>04-15</td>
-								</tr>
+								<%
+									}
+								 %>
 							</tbody>
 						</table>
 					</div>
@@ -281,9 +153,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				} ); */
 				// 这样初始化，排序将会打开
 				$(function() {
-					$('#table_deal_list').DataTable({
+					$('#table_id').DataTable({
 						"autoWidth" : false,
-						"scrollY": 500,
+						//"scrollY": 500,
 						//paging : false,//分页
 						
 						//"searching" : false,
@@ -294,7 +166,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 						{
 							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17]
+							"aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17 ]
 						} // 制定列不参与排序
 						],
 						colReorder : false,

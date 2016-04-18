@@ -30,10 +30,14 @@ $(function () {
 function addRedV () {
 	validform5("btn","red",true,"3");
 	var days = $("#days").val();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result = encrypt.encrypt((days));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/redV/update.do",
-			data : "endDateRemind=" + days,
+			data : {endDateRemind : result},
 			success : function (msg) {
 				if (msg == 1) {
 					layer.alert("操作成功",{icon:1});

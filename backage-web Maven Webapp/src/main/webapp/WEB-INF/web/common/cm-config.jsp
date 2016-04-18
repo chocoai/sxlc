@@ -46,11 +46,11 @@
                                 <li id="work"><a href="config/toMemberGradeList.do"><i class="fa fa-edit"></i>会员等级配置</a></li>       
                                 <li id="employee"><a href="config/toMemberCreditList.do"><i class="fa fa-edit"></i>会员信用等级配置</a></li>
                                 <li id="work"><a href="web/config/frontloan-msg.jsp"><i class="fa fa-edit"></i>前台借款信息填写配置</a></li>
-                                <li id="admin" class="li_level_one"><a><i class="fa fa-edit"></i>项目审批流程配置</a></li>
-                                <li id="admin" class="li_level_one"><a><i class="fa fa-edit"></i>VIP配置</a></li>
-                                <li id="work"><a><i class="fa fa-edit"></i>协议配置</a></li>       
-                                <li id="employee"><a><i class="fa fa-edit"></i>账单催收</a> </li>
-                               	<li id="admin" class="li_level_one"><a><i class="fa fa-edit"></i>借款认证项配置</a></li>
+                                <li id="admin" class="li_level_one"><a href="web/config/proexam-point.jsp"><i class="fa fa-edit"></i>项目审批流程配置</a></li>
+                                <li id="admin" class="li_level_one"><a href="web/config/vipset.jsp"><i class="fa fa-edit"></i>VIP配置</a></li>
+                                <li id="work"><a href="web/config/agreement.jsp"><i class="fa fa-edit"></i>协议配置</a></li>       
+                                <li id="employee"><a href="web/config/bill-collection.jsp"><i class="fa fa-edit"></i>账单催收</a> </li>
+                               	<li id="admin" class="li_level_one"><a href="web/config/loan-items.jsp"><i class="fa fa-edit"></i>借款认证项配置</a></li>
                             </ul>
                         </div>
                     </div>

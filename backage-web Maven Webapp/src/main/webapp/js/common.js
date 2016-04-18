@@ -127,15 +127,17 @@ function mathHeight() {
 	var _rcH = _bdH - _disH;// 35 右侧主要内容
 	//console.log(_disH + "," + _bdH + "," + _rcH);
 	$(".right_col,.left_col").css("height", _rcH + "px");
-	$(".main_menu_side").css("height", _rcH - 55 + "px");
+	//左侧菜单（-57还有点问题）
+	var _tH = $(".nav_title").height();
+	$(".main_menu_side").css("height", _rcH - _tH - 2 + "px");
 	$(".tree-table").css("height",_rcH - 40 + "px");
 }
 
 
 //清除空格
-String.prototype.trim=function(){
+/*String.prototype.trim=function(){
      return this.replace(/(^\s*)|(\s*$)/g,'');
-};
+};*/
 //复制、剪切、粘贴
 function limitOperate() {
     $("input:password,input[limitoperate='1']").bind("copy cut paste",function(e){

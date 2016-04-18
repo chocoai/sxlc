@@ -32,14 +32,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-				<ul class="nav nav-tabs">
-					<li role="presentation" class=""><a href="web/project/soon_due_bill.jsp">即将到期账单</a>
-					</li>
-					<li role="presentation" class=""><a href="web/project/overdue_collection.jsp">逾期催收</a>
-					</li>
-					<li role="presentation" class="active"><a href="web/project/collection_has_bill.jsp">催收已还账单</a>
-					</li>
-				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">
 						<div class="panel panel-success">
@@ -67,147 +59,92 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 							  	<div class="action_item">
-						  			<button id="collection_has_bill_detail" class="obtn glyphicon glyphicon-plus">账单详情</button>
-						  			<button id="collection_has_bill_prodetail" class="obtn glyphicon glyphicon-plus">借款项目详情</button>
+						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-bill-detail">账单详情</button>
+						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-loan-prodetail">借款项目详情</button>
 								</div>
 							</div>
-						<div class="panel-body">
-						<table id="table_collection_has_bill" class="display">
-							<thead>
-								<tr>
-									<th></th>
-									<th>借款项目编号</th>
-									<th>借款项目名称</th>
-									<th>借款人</th>
-									<th>账单编号</th>
-									<th>账单金额</th>
-									<th>账单期数</th>
-									<th>还款时间</th>
-									<th>实际还款时间</th>
-									<th>操作</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>200000</td>
-									<td>12-01</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>12-01</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>200000</td>
-									<td>12-01</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>200000</td>
-									<td>12-01</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>200000</td>
-									<td>12-01</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>交电费</td>
-									<td>jiuyang</td>
-									<td>王书记</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>200000</td>
-									<td>12-01</td>
-								</tr>
-							</tbody>
-						</table>
+							<div class="panel-body">
+								<table id="table_collection_has_bill" class="display">
+									<thead>
+										<tr>
+											<th></th>
+											<th>借款项目编号</th>
+											<th>借款项目名称</th>
+											<th>借款人</th>
+											<th>账单编号</th>
+											<th>账单金额</th>
+											<th>账单期数</th>
+											<th>还款时间</th>
+											<th>实际还款时间</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%
+											for(int i=0;i<15;i++){
+										 %>
+										<tr>
+											<td><input type="checkbox"></td>
+											<td>0000001</td>
+											<td>交电费</td>
+											<td>jiuyang</td>
+											<td>王书记</td>
+											<td>1234455415</td>
+											<td>200000</td>
+											<td>12-01</td>
+											<td>200000</td>
+											<td>12-01</td>
+										</tr>
+										<%
+											}
+										 %>
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
+				<!-- 尾部 -->
 			</div>
 		</div>
-		
-			<!-- 尾部 -->
-			
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script src="js/project/loan_intention_2.js"></script>
+	<script type="text/javascript" src="js/project/collection_has_bill.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
-				//默认禁用搜索和排序
-				/* $.extend( $.fn.dataTable.defaults, {
-				    searching: true,
-				    ordering:  false
-				} ); */
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#table_collection_has_bill').DataTable({
-						"autoWidth" : true,
-						"scrollY": 500,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [[ 5, "desc"],[ 7, "desc"],[ 8, "desc"]],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3, 4, 6, 9]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
-		</div>
-	</div>
+		//默认禁用搜索和排序
+		/* $.extend( $.fn.dataTable.defaults, {
+		    searching: true,
+		    ordering:  false
+		} ); */
+		// 这样初始化，排序将会打开
+		$(function() {
+			$('#table_collection_has_bill').DataTable({
+				"autoWidth" : true,
+				//"scrollY": 500,
+				//paging : false,//分页
+				
+				//"searching" : false,
+				"info" : false,//左下角信息
+				//"ordering": false,//排序
+				"aaSorting" : [[ 5, "desc"],[ 7, "desc"],[ 8, "desc"]],//默认第几个排序
+				"aoColumnDefs" : [
+				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
+				{
+					"orderable" : false,
+					"aTargets" : [ 0, 1, 2, 3, 4, 6, 9]
+				} // 制定列不参与排序
+				],
+				colReorder : false,
+				"scrollX": true,
+				"sScrollX" : "100%",
+				"sScrollXInner" : "100%",
+				"bScrollCollapse" : true
+			});
+		});
+		
+	</script>
 </body>
 
 </html>

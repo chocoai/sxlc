@@ -1,13 +1,23 @@
 
 package cn.springmvc.controller.config; 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.SystemSetEntity;
 import cn.springmvc.service.SystemSetService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 /**
  * 
@@ -61,22 +71,39 @@ public class RedVoucherController {
 	 */
 	@RequestMapping("/update")
 	@ResponseBody
-	public int update(String endDateRemind) {
+	public int update(HttpServletRequest request) {
 		
 		SystemSetEntity systemSetEntity = new SystemSetEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
+		String endDateRemind = request.getParameter("endDateRemind");
 		if (endDateRemind != null && endDateRemind != "") {
-			systemSetEntity.setEndDateRemind(Integer.valueOf(endDateRemind));
+			systemSetEntity.setEndDateRemind(IntegerAndString.StringToInt(endDateRemind, -1));
 		}
 		systemSetEntity.setExpirationReminderSet(-1);
 		systemSetEntity.setOverdueInsteadDay(-1);
 		systemSetEntity.setRedpacketsRateMax(-1);
-		systemSetEntity.getRiskMarginType();
+		systemSetEntity.setRiskMarginType(-1);
 		systemSetEntity.setAutoBackRate(-1);
+		systemSetEntity.setRiskMarginRateMax(-1);
 		
-		int num = systemSetService.updateSystemSet(systemSetEntity, null, null);
+		String [] sIpInfo = new String[5];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(6011001);
+		entity.setlModuleId(60110);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = systemSetService.updateSystemSet(systemSetEntity, entity, sIpInfo);
 		
 		return num;
 	}
+	
 }
 

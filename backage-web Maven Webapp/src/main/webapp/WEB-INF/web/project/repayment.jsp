@@ -32,10 +32,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="web/project/repayment.jsp">还款中</a>
-					</li>
-				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">
 						<div class="panel panel-success">
@@ -53,11 +49,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="con-item"><span>项目编号</span><input type="text" class="" value="项目编号" /></span>
 									<span class="con-item"><span>借款人用户名</span><input type="text" class="" value="借款人用户名" /></span>
 									<span class="con-item"><span>借款人姓名</span><input type="text" class="" value="借款人姓名" /></span>
-									<span class="con-item"><span>项目发布日期</span><input type="text" class="" value="项目发布日期" /></span>
-									<span class="con-item"><span>借款期限</span><input type="date" class="" value="借款期限(天、月)" /></span>
+									<span class="con-item"><span>项目发布日期</span><input type="date" class="" value="项目发布日期" /></span>
+									<span class="con-item"><span>借款期限</span><input type="text" class="" value="借款期限(天、月)" /><select><option>请选择</option><option>天</option><option>月</option></select></span>
 									<span class="con-item"><span>借款金额</span><input type="text" class="" value="借款金额" /></span>
 									<span class="con-item"><span>实际借款金额</span><input type="date" class="" value="实际借款金额" /></span>
-									<span class="con-item"><span>最近一期还款时间范围</span><input type="date" class="" value="最近一期还款时间范围" /></span>
+									<span class="con-item"><span>最近一期还款时间范围</span><input type="date" class="" value="" />&nbsp;&nbsp;<input type="date" class="" value="" /></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -67,6 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 							  	<div class="action_item">
+							  		<button id="" class="obtn glyphicon glyphicon-plus obtn-export">导出</button>
 						  			<button id="repayment_plan" class="obtn glyphicon glyphicon-plus">还款计划</button>
 						  			<button id="repayment_invest_record" class="obtn glyphicon glyphicon-plus">查看投资记录</button>
 								</div>
@@ -94,6 +91,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 							</thead>
 							<tbody>
+								<%
+									for(int i=0;i<15;i++){
+								 %>
 								<tr>
 									<td><input type="checkbox"></td>
 									<td>0000001</td>
@@ -112,96 +112,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td>03-25</td>
 									<td>否</td>
 								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>30万</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td><a href="javascript:;" class="btn-progress">查看</a></td>
-									<td>02-11</td>
-									<td>03-25</td>
-									<td>否</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>30万</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td><a href="javascript:;" class="btn-progress">查看</a></td>
-									<td>02-11</td>
-									<td>03-25</td>
-									<td>否</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>30万</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td><a href="javascript:;" class="btn-progress">查看</a></td>
-									<td>02-11</td>
-									<td>03-25</td>
-									<td>否</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>30万</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td><a href="javascript:;" class="btn-progress">查看</a></td>
-									<td>02-11</td>
-									<td>03-25</td>
-									<td>否</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>30万</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td><a href="javascript:;" class="btn-progress">查看</a></td>
-									<td>02-11</td>
-									<td>03-25</td>
-									<td>否</td>
-								</tr>
+								<%
+									}
+								 %>
 							</tbody>
 						</table>
 					</div>

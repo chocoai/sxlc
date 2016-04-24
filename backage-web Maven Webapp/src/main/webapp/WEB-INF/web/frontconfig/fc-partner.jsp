@@ -22,6 +22,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </head>
 
 <body class="nav-md">
@@ -43,55 +46,54 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-partner-add" onclick="addPartner('添加合作伙伴','web/common/picture/pic-add.jsp','2')" type="button">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-partner-mod" onclick="modPartner('修改合作伙伴','web/common/picture/pic-add.jsp','2')" type="button">修改</button>
+								<button class="obtn glyphicon glyphicon-plus obtn-partner-add" onclick="addOrUpdate(1)" type="button">添加</button>
+								<button class="obtn glyphicon glyphicon-pencil obtn-partner-mod" onclick="addOrUpdate(2)" type="button">修改</button>
 								<button class="obtn" onclick="ableDisable()">停用/启用</button>
-								<%-- <input type="hidden" id="hostPath" value="${hostPath}"/> --%>
+								<input type="hidden" id="hostPath" value="${hostPath}"/>
 							</div>
 						</div>
 						
 						<div class="panel-body">
 							<table id="partnerTb" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>添加时间</th>
-										<th>合作伙伴图片</th>
-										<th>合作伙伴名称</th>
-										<th>合作伙伴链接</th>
-										<th>合作伙伴简介</th>
-										<th>状态</th>
-										<th>最近一次操作管理员</th>
-									</tr>
-								</thead>
-								<tbody>
-								<%for (int i=0;i<5;i++){ %>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>添加时间</td>
-										<td>合作伙伴图片</td>
-										<td>合作伙伴名称</td>
-										<td>合作伙伴链接</td>
-										<td>合作伙伴简介</td>
-										<td>有效</td>
-										<td>最近一次操作管理员</td>
-									</tr>
-									<%}%>
-								</tbody>
 							</table>
 						</div>
 						
+					<div class="w-content pic-add">
+						<form id="savePartner" action="javascript:addPartner()" method="post" >
+							<table>
+								<tr>
+									<td class="tt">图片标题</td>
+									<td class="con"><input id="title" type="text" class="" /></td>
+								</tr>
+								<tr>
+									<td class="tt">图片链接</td>
+									<td class="con"><input id="link" type="text" class="w500" /></td>
+								</tr>
+								<tr>
+									<td class="tt">图片选择</td>
+									<td class="con">
+										<!--dom结构部分-->
+										<div id="uploader">
+										    <!--用来存放item-->
+										    <div class="" id="fileList"></div>
+										    <div id="filePicker">选择图片</div>
+										    <span class="rec-dimensions">建议尺寸：580*280</span>
+										    <img id="showImg" src="">
+										    <input type="hidden" name="logo" id="pictureUrl" />
+								    		<input type="hidden" name="coopId" id="coopId" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="tt" valign="top">图片预览</td>
+									<td class="con">
+										<input type="hidden" name="content" id="content" />
+										<script id="editor" type="text/plain" style="height:300px;width:98%;"></script>
+									</td>
+								</tr>
+							</table>
+						</form>
 					</div>
-				</div>
-				<!-- <div class="w-content report-det">
-					详情
-				</div>
-				<div class="w-content pic-view">
-								<div class="w-content hideHtml">暂无头像</div>
-								<img id="picView" src="">
-				</div> -->
-				
-				
 			</div>
 		</div>
 	</div>
@@ -104,20 +106,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript">
-		$('#partnerTb').DataTable({
-			"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,4,5,6,7]
-			} // 制定列不参与排序
-			],
-		});
 	</script>
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 	<script type="text/javascript" src="js/valid.js"></script>
-	<script type="text/javascript" src="js/frontconfig/fc-mediaReport.js"></script>
+	<script type="text/javascript" src="js/frontconfig/fc-partner.js"></script>
 	<script type="text/javascript" src="js/exp-upload.js"></script>
 	
 </body>

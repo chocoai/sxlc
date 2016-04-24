@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="loginBanner">
     <resultMap type="cn.springmvc.model.LoginBannerEntity" id="resultListLoginBanner">
-        <id column="ID" 				property="id" />
+        <id column="loginBanner_ID" 	property="id" />
 		<result column="Banner_Title" 	property="bannerTitle" />
 		<result column="Url" 			property="url" />
 		<result column="Links" 			property="links" />
@@ -10,23 +10,23 @@
 		<result column="Statu" 			property="statu" />
 		<result column="CreateTime" 	property="createTime" /> 
 		<result column="Opt_Date" 		property="optDate" />
-		<result column="Opt_Id" 		property="optId" />
+		<result column="Admin_ID" 		property="optId" />
 		<result column="adminName" 		property="adminName" />
     </resultMap>  
 	<!-- 分页查询的登录界面轮播图-->  
 	<select id="selectLoginBannerListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListLoginBanner" >
-	    select hb.ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
+	    select hb.loginBanner_ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
 	    hb.Statu,  hb.CreateTime,  hb.Opt_Date, hb.Opt_Id,a.adminName 
 	    from  Login_Banner  hb
-	    LEFT JOIN Admin a on a.ID=hb.Opt_Id
+	    LEFT JOIN Admin a on a.Admin_ID=hb.Admin_ID
 	    <where>  
-             <if test="map.bannerTitle != null">  
-                hb.Banner_Title like  '%{map.bannerTitle}%'  
+             <if test="map.bannerTitle != null and map.bannerTitle != ''">  
+                hb.Banner_Title like  '%${map.bannerTitle}%'  
             </if>  
-            <if test="map.startTime != null">  
+            <if test="map.startTime != null and map.startTime != ''">  
                 and hb.CreateTime>=#{map.startTime}
             </if>  
-             <if test="map.endTime != null">  
+             <if test="map.endTime != null and map.endTime != ''">  
                 and #{map.endTime}>= hb.CreateTime
             </if>  
             <if test="map.statu != -1">  
@@ -38,13 +38,13 @@
      <!-- 新增登录界面轮播图 -->  
 	<insert id="insertLoginBanner"  parameterType="cn.springmvc.model.LoginBannerEntity" >    
 		insert into 
-		Login_Banner( ID,   Banner_Title,   Url,   Links,   Indexs,  Opt_Id) 
-		    values (#{id},#{bannerTitle},#{url},#{links},#{indexs},#{optId})    
+		Login_Banner(loginBanner_ID,   Banner_Title,   Url,   Links,   Indexs,  Admin_ID) 
+		    values (#{id},            #{bannerTitle},#{url},#{links},#{indexs},#{optId})    
 	</insert> 
 	<!-- 查询该标题的登录界面轮播图是否存在 -->  
 	<select id="selectLoginBannerIsExistByNAme"  parameterType="cn.springmvc.model.LoginBannerEntity" resultMap="resultListLoginBanner" >
-	   select ID, Banner_Title,   Url,   Links,   Indexs,   Statu,  CreateTime,  Opt_Date, Opt_Id
-	   from  Login_Banner where  Banner_Title=#{bannerTitle}  and ID !=#{id} 
+	   select loginBanner_ID 
+	   from  Login_Banner where  Banner_Title=#{bannerTitle}  and loginBanner_ID !=#{id} 
     </select> 
     <!-- 修改登录界面轮播图信息 -->  
 	<update id="updateLoginBannerByID"  parameterType="cn.springmvc.model.LoginBannerEntity">
@@ -64,15 +64,15 @@
 		</if>  
 		 	Opt_Date=now() , 
 	   </set>
-	   where ID=#{id}   
+	   where loginBanner_ID=#{id}   
     </update>   
     <!-- 删除登录界面轮播图 -->  
-	<delete id="deleteLoginBannerByID"  parameterType="int">
-	   delete from  Login_Banner where ID=#{id}   
+	<delete id="deleteLoginBannerByID"  parameterType="long">
+	   delete from  Login_Banner where loginBanner_ID=#{id}   
     </delete>  
      <!-- 停用或启用登录界面轮播图 -->  
 	<update id="updateLoginBannerStatuByID"  parameterType="cn.springmvc.model.LoginBannerEntity">
-	   update  Login_Banner  set   Statu=#{statu} where ID=#{id}   
+	   update  Login_Banner  set   Statu=#{statu} where loginBanner_ID=#{id}   
     </update>  
      <!--上移或下移登录界面轮播图 -->
     <select id="moveAndDownLoginBanner"  statementType="CALLABLE" resultType="Map">
@@ -88,15 +88,15 @@
 	   select ifnull(Indexs,0) from  Login_Banner  order by Indexs desc limit 1
     </select>
     <!-- 根据id查询的登录界面轮播图-->  
-	<select id="selectLoginBannerByID"  parameterType="int"  resultMap="resultListLoginBanner" >
-	    select hb.ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
-	    hb.Statu,  hb.CreateTime,  hb.Opt_Date, hb.Opt_Id 
-	    from  Login_Banner  hb  where  hb.ID=#{id} 
+	<select id="selectLoginBannerByID"  parameterType="long"  resultMap="resultListLoginBanner" >
+	    select hb.loginBanner_ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
+	    hb.Statu,  hb.CreateTime,  hb.Opt_Date, hb.Admin_ID 
+	    from  Login_Banner  hb  where  hb.loginBanner_ID=#{id} 
     </select>
     <!--  查询的登录界面轮播图前台-->  
 	<select id="selectLoginBannerfront"    resultMap="resultListLoginBanner" >
-	    select hb.ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
-	    hb.Statu,  hb.CreateTime,  hb.Opt_Date, hb.Opt_Id
+	    select hb.loginBanner_ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
+	    hb.Statu,  hb.CreateTime,  hb.Opt_Date, hb.Admin_ID
 	    from  Login_Banner  hb
 	    where  hb.Statu =1 limit 1
     </select>    

@@ -1,8 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+ 
 
 import javax.annotation.Resource;
 
@@ -38,7 +35,7 @@ public class PartnerDaoImpl extends SqlSessionDaoSupport implements PartnersDao 
 	}
 
 	@Override
-	public int deletePartnerByID(int id) {
+	public int deletePartnerByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("Mapper.deletePartnerByID", id);

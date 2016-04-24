@@ -1,10 +1,7 @@
 package cn.springmvc.dao;
+ 
 
-import java.util.List;
-import java.util.Map;
-
-import cn.springmvc.model.MediaReportsEntity;
-import cn.springmvc.model.PlatformAnnouncementEntity;
+import cn.springmvc.model.MediaReportsEntity; 
 /**
  * 
 * @author 刘利 
@@ -30,7 +27,7 @@ public interface MediaReportsDao {
 	 * @param id 媒体报道id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteMediaReportsByID(int id); 
+	public  int  deleteMediaReportsByID(long id); 
 	
 	/**
 	 * 停用或启用媒体报道

@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -25,7 +24,9 @@ public class SafetyCertificationListDaoImpl extends SqlSessionDaoSupport impleme
 			SafetyCertificationEntity entity) {
 		
 		SafetyCertificationEntity safetyCertificationEntity = null;
-		safetyCertificationEntity = (SafetyCertificationEntity) getSqlSession().selectOne("safetyCertification.selectSafetyCertificationIsExistByNAme",entity);
+		safetyCertificationEntity = (SafetyCertificationEntity) getSqlSession().
+				selectOne("safetyCertification.selectSafetyCertificationIsExistByNAme",entity);
+		
 		return safetyCertificationEntity;
 	}
 	@Override
@@ -33,17 +34,17 @@ public class SafetyCertificationListDaoImpl extends SqlSessionDaoSupport impleme
 			PageEntity pageEntity) {
 		
 		List<SafetyCertificationEntity> safetyCertificationList = null;
-		safetyCertificationList = getSqlSession().selectList("safetyCertification.selectSafetyCertificationList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		safetyCertificationList = getSqlSession().selectList("safetyCertification.selectSafetyCertificationList",
+				pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		
 		return safetyCertificationList;
 	}
 	
  
 	@Override
-	public SafetyCertificationEntity selectSafetyCertificationByID(int id) {
+	public SafetyCertificationEntity selectSafetyCertificationByID(long id) {
 		
-		SafetyCertificationEntity safetyCertificationEntity=null;
-		safetyCertificationEntity = (SafetyCertificationEntity) getSqlSession().selectOne("safetyCertification.selectSafetyCertificationByID",id);
-		return safetyCertificationEntity;
+		return getSqlSession().selectOne("safetyCertification.selectSafetyCertificationByID",id); 
 	 
 	}
 	@Override

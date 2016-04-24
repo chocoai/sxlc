@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="Mapper">
     <resultMap type="cn.springmvc.model.RegisterBannerEntity" id="resultListRegisterBanner">
-        <id column="ID" 				property="id" />
+        <id column="Register_ID" 		property="id" />
 		<result column="Banner_Title" 	property="bannerTitle" />
 		<result column="Url" 			property="url" />
 		<result column="Links" 			property="links" />
@@ -10,41 +10,41 @@
 		<result column="Statu" 			property="statu" />
 		<result column="CreateTime" 	property="createTime" /> 
 		<result column="Opt_Date" 		property="optDate" />
-		<result column="Opt_Id" 		property="optId" />
+		<result column="Admin_ID" 		property="optId" />
 		<result column="adminName" 		property="adminName" />
     </resultMap>  
 	<!-- 分页查询的注册界面轮播图-->  
 	<select id="selectRegisterBannerListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListRegisterBanner" >
-	   select rb.ID,   rb.Banner_Title,   rb.Url,   rb.Links,   rb.Indexs,  
-	   rb.Statu,  rb.CreateTime,  rb.Opt_Date, rb.Opt_Id,a.adminName  
+	   select rb.Register_ID,   rb.Banner_Title,   rb.Url,   rb.Links,   rb.Indexs,  
+	   rb.Statu,  rb.CreateTime,  rb.Opt_Date, rb.Admin_ID,a.adminName  
 	   from  Register_Banner  rb
-	   LEFT JOIN Admin a on a.ID=rb.Opt_Id
+	   LEFT JOIN Admin a on a.Admin_ID=rb.Admin_ID
 	    <where>  
-            <if test="map.bannerTitle != null">  
-                rb.Banner_Title like  '%{map.bannerTitle}%'  
+            <if test="map.bannerTitle != null and map.bannerTitle != ''">  
+                rb.Banner_Title like '%${map.bannerTitle}%'  
             </if>  
-            <if test="map.startTime != null">  
+            <if test="map.startTime != null and map.startTime != ''">  
                 and rb.CreateTime>=#{map.startTime}
             </if>  
-             <if test="map.endTime != null">  
+             <if test="map.endTime != null and map.endTime != ''">  
                 and #{map.endTime}>= rb.CreateTime
             </if>  
             <if test="map.statu != -1">  
                 and rb.Statu=#{map.statu}
             </if>  
-            order by rb.CreateTime desc
-        </where>   
+        </where> 
+        order by rb.CreateTime desc  
     </select> 
      <!-- 新增注册界面轮播图 -->  
 	<insert id="insertRegisterBanner"  parameterType="cn.springmvc.model.RegisterBannerEntity" >    
 		insert into 
-		Register_Banner( ID,   Banner_Title,   Url,   Links,   Indexs,  Opt_Id) 
-		    values (#{id},#{bannerTitle},#{url},#{links},#{indexs}, #{optId})    
+		Register_Banner( Register_ID,   Banner_Title,   Url,    Links,    Indexs,  Opt_Id) 
+		    values     (#{id},        #{bannerTitle}, #{url}, #{links}, #{indexs}, #{optId})    
 	</insert> 
 	<!-- 查询该标题的注册界面轮播图是否存在 -->  
 	<select id="selectRegisterBannerIsExistByNAme"  parameterType="cn.springmvc.model.RegisterBannerEntity" resultMap="resultListRegisterBanner" >
-	   select ID, Banner_Title,   Url,   Links,   Indexs,   Statu,  CreateTime,  Opt_Date, Opt_Id
-	   from  Register_Banner where  Banner_Title=#{bannerTitle}  and  ID !=#{id}
+	   select Register_ID 
+	   from  Register_Banner where  Banner_Title=#{bannerTitle}  and  Register_ID !=#{id}
     </select> 
     <!-- 修改注册界面轮播图信息 -->  
 	<update id="updateRegisterBannerByID"  parameterType="cn.springmvc.model.RegisterBannerEntity">
@@ -60,19 +60,19 @@
 	        Links=#{links},
 	       </if>    
 	       <if test="optId != 0" >
-	        Opt_Id=#{optId},
+	        Admin_ID=#{optId},
 	       </if>  
 	        Opt_Date=now() , 
 	   </set>
-	   where ID=#{id}   
+	   where Register_ID=#{id}   
     </update>   
     <!-- 删除注册界面轮播图 -->  
 	<delete id="deleteRegisterBannerByID"  parameterType="int">
-	   delete from  Register_Banner where ID=#{id}   
+	   delete from  Register_Banner where Register_ID=#{id}   
     </delete>  
      <!-- 停用或启用注册界面轮播图 -->  
 	<update id="updateRegisterBannerStatuByID"  parameterType="cn.springmvc.model.RegisterBannerEntity">
-	   update  Register_Banner  set   Statu=#{statu} where ID=#{id}   
+	   update  Register_Banner  set   Statu=#{statu} where Register_ID=#{id}   
     </update>
     <!--上移或下移注册界面轮播图 -->
     <select id="moveAndDownRegisterBanner"  statementType="CALLABLE" resultType="Map">
@@ -89,14 +89,14 @@
     </select>   
     <!-- 根据ID查询的注册界面轮播图-->  
 	<select id="selectRegisterBannerByID"  parameterType="int"  resultMap="resultListRegisterBanner" >
-	   select rb.ID,   rb.Banner_Title,   rb.Url,   rb.Links,   rb.Indexs,  
-	   rb.Statu,  rb.CreateTime,  rb.Opt_Date, rb.Opt_Id 
-	   from  Register_Banner  rb  where  rb.ID = #{id}  
+	   select rb.Register_ID,   rb.Banner_Title,   rb.Url,   rb.Links,   rb.Indexs,  
+	   rb.Statu,  rb.CreateTime,  rb.Opt_Date, rb.Admin_ID 
+	   from  Register_Banner  rb  where  rb.Register_ID = #{id}  
     </select>
     <!-- 前台查询的注册界面轮播图-->  
 	<select id="selectRegisterBannerfront"    resultMap="resultListRegisterBanner" >
-	   select rb.ID,   rb.Banner_Title,   rb.Url,   rb.Links,   rb.Indexs,  
-	   rb.Statu,  rb.CreateTime,  rb.Opt_Date, rb.Opt_Id 
+	   select rb.Register_ID,   rb.Banner_Title,   rb.Url,   rb.Links,   rb.Indexs,  
+	   rb.Statu,  rb.CreateTime,  rb.Opt_Date, rb.Admin_ID 
 	   from  Register_Banner  
 	   where  rb.Statu =1
     </select>   

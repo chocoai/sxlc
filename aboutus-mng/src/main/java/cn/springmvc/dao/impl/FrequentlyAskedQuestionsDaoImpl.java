@@ -47,7 +47,7 @@ public class FrequentlyAskedQuestionsDaoImpl extends SqlSessionDaoSupport implem
 	}
 
 	@Override
-	public int deleteFrequentlyAskedQuestionsByID(int id) {
+	public int deleteFrequentlyAskedQuestionsByID(long id) {
 		
 		int result = 0;
 		result=getSqlSession().delete("frequentlyAskedQuestions.deleteFrequentlyAskedQuestionsByID", id);

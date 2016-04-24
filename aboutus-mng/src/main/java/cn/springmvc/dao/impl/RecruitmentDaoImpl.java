@@ -1,8 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+ 
 
 import javax.annotation.Resource;
 
@@ -38,7 +35,7 @@ public class RecruitmentDaoImpl  extends SqlSessionDaoSupport implements Recruit
 	}
 
 	@Override
-	public int deleteRecruitmentByID(int id) {
+	public int deleteRecruitmentByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("Mapper.deleteRecruitmentByID", id);

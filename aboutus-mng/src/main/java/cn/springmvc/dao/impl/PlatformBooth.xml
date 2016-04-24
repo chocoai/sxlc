@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="PlatformBooth">  
+    <!--           首页显示平台宣传点 -->
+	<select id="selectPlatformBooth" resultType="cn.springmvc.model.PlatformBoothEntity">
+	  select PB.SG_Title as asTitle,PB.SG_Content as sgContent,PB.SG_Pic as sgPic,PB.SG_Url as sgUrl,PB.SG_ID as sgID,A.adminName as adminName
+	  from  Platform_Booth PB LEFT JOIN Admin A ON A.Admin_Id =PB.Admin_Id where Statu = 1
+	</select>
+	 <!-- 分页查询平台宣传点 -->  
+	<select id="selectPlatformBoothList" parameterType="product_p2p.kit.pageselect.PageEntity" 
+	 resultType="cn.springmvc.model.PlatformBoothEntity">
+	   select SG_ID as sgID,SG_Title as asTitle,SG_Content as sgContent,SG_Pic as sgPic,SG_Url as sgUrl ,pb.Statu as statu,
+	    a.adminName 
+	   from  Platform_Booth pb
+	   LEFT JOIN Admin a on a.Admin_ID=pb.Admin_ID
+        <!--    <where> 
+                <if test="map.asTitle != null and map.asTitle != ''">    
+	                SG_Title like  '%${map.asTitle}%'  
+	            </if>     
+           </where> -->
+           order by pb.CreateTime desc
+    </select>   
+     <!--           根据ID查询平台宣传点 -->
+	<select id="selectPlatformBoothByID" parameterType="long" resultType="cn.springmvc.model.PlatformBoothEntity">
+	  select SG_ID as sgID, SG_Title as asTitle,SG_Content as sgContent,SG_Pic as sgPic,SG_Url as sgUrl 
+	  from  Platform_Booth where SG_ID = #{sgID}
+	</select> 
+	<!-- 查询平台宣传点否存在 -->  
+	<select id="selectPlatformBoothIsExistByTitle"  parameterType="cn.springmvc.model.PlatformBoothEntity" resultType="int" >
+	  select count(SG_ID) from  Platform_Booth where SG_ID != #{sgID} and  SG_Title != #{asTitle}
+    </select>   
+	<!-- 新增平台宣传点 -->  
+	<insert id="insertPlatformBooth"  parameterType="cn.springmvc.model.PlatformBoothEntity">    
+		insert into 
+		Platform_Booth(SG_ID,    SG_Title,  SG_Content,  SG_Pic,   SG_Url,   Admin_ID) 
+		values       (#{sgID},  #{asTitle},#{sgContent},#{sgPic}, #{sgUrl}, #{adminID})    
+	</insert>  
+	 <!-- 修改平台宣传点 -->  
+	<update id="updatePlatformBoothByID"  parameterType="cn.springmvc.model.PlatformBoothEntity">
+	   update  Platform_Booth 
+	   <set>
+	       <if test="asTitle != null" >
+	          SG_Title=#{asTitle},
+	       </if> 
+	       <if test="sgContent != null" >
+	          SG_Content=#{sgContent},
+	       </if> 
+	       <if test="sgPic != null" >
+	          SG_Pic=#{sgPic},
+	       </if> 
+	       <if test="sgUrl != null" >
+	         SG_Url=#{sgUrl},
+	       </if>   
+	       <if test="adminID != 0" >
+	          Admin_ID=#{adminID},
+	       </if>  
+	          Opt_Date=now(), 
+	    </set>
+	   where SG_ID=#{sgID}   
+    </update>  
+     <!-- 删除平台宣传点 -->  
+	<delete id="deletePlatformBoothByID"  parameterType="long">
+	   delete from  Platform_Booth where SG_ID=#{sgID}   
+    </delete> 
+    <update id="updatePlatformBoothStatu" parameterType="Map">
+      update Platform_Booth set Statu = #{statu} where  SG_ID = #{sgID} 
+    </update> 
+</mapper>

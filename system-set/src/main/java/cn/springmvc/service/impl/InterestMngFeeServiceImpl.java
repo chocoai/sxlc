@@ -9,7 +9,10 @@ import javax.annotation.Resource;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.dao.impl.HandleInterestMngFeeDaoImpl;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectInterestMngFeeDaoImpl;
 import cn.springmvc.model.IntegralRuleEntity;
 import cn.springmvc.model.InterestMngFeeEntity;
@@ -23,7 +26,7 @@ import cn.springmvc.service.OverdueService;
 import cn.springmvc.service.QuickRechargeFeeService;
 
 /** 
- * 逾期设置 接口实现
+ * 利息管理费 接口实现
 * @author ZZY 
 * @Description: TODO 
 * @since 
@@ -34,7 +37,8 @@ public class InterestMngFeeServiceImpl implements InterestMngFeeService {
 	private SelectInterestMngFeeDaoImpl  selectInterestMngFeeDaoImpl;
 	@Resource(name="handleInterestMngFeeDaoImpl")
 	private HandleInterestMngFeeDaoImpl  handleInterestMngFeeDaoImpl;
-	
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	@Override
 	public List<InterestMngFeeEntity> selectAllInterestMngFee() {
 		
@@ -44,16 +48,18 @@ public class InterestMngFeeServiceImpl implements InterestMngFeeService {
 
 
 	@Override
-	public int updateInterestMngFee(InterestMngFeeEntity interestMngFeeEntity) {
-		
+	public int updateInterestMngFee(InterestMngFeeEntity interestMngFeeEntity,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("修改利息管理费设置:"+interestMngFeeEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleInterestMngFeeDaoImpl.updateInterestMngFee(interestMngFeeEntity);
 	}
 
 
 	@Override
-	public int insertInterestMngFee(InterestMngFeeEntity interestMngFeeEntity) {
-		
+	public int insertInterestMngFee(InterestMngFeeEntity interestMngFeeEntity,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("添加利息管理费设置:"+interestMngFeeEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleInterestMngFeeDaoImpl.insertInterestMngFee(interestMngFeeEntity);
 	}

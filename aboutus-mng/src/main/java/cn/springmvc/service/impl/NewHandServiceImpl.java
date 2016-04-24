@@ -4,14 +4,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.dao.NewHandDao;
-import cn.springmvc.dao.NewHandListDao;
-import cn.springmvc.dao.impl.ExpertTeamDaoImpl;
-import cn.springmvc.dao.impl.ExpertTeamListDaoImpl;
-import cn.springmvc.dao.impl.IdGeneratorUtil;
-import cn.springmvc.dao.impl.NewHandDaoImpl;
-import cn.springmvc.dao.impl.NewHandListDaoImpl;
-import cn.springmvc.model.ExpertTeamEntity;
+import cn.springmvc.dao.NewHandListDao; 
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.NewHandEntity;
 import cn.springmvc.service.NewHandService;
 @Service("newHandServiceImpl")
@@ -19,9 +16,13 @@ public class NewHandServiceImpl implements NewHandService {
 	@Resource(name="newHandDaoImpl")
 	private NewHandDao newHandDaoImpl;  
 	@Resource(name="newHandListDaoImpl")
-	private NewHandListDao newHandListDaoImpl;  
+	private NewHandListDao newHandListDaoImpl; 
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
+	
 	@Override
-	public int insertNewHand(NewHandEntity entity) {
+	public int insertNewHand(NewHandEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
 			return 0;
@@ -29,17 +30,26 @@ public class NewHandServiceImpl implements NewHandService {
 		// 查询平台简介是否存在，不存在就新增，存在则修改
 		int count = newHandListDaoImpl.selectNewHandIsExist();
 		if(count == 0) { 
-			return newHandDaoImpl.insertNewHand(entity); 
+			count = newHandDaoImpl.insertNewHand(entity); 
+			logentity.setsDetail("添加新手指南");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		}else{
-			return newHandDaoImpl.updateNewHand(entity); 
+			count =  newHandDaoImpl.updateNewHand(entity); 
+			logentity.setsDetail("修改新手指南");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		} 
-		
+		return count;
 	} 
 	
 	@Override
-	public int deleteNewHand() {
+	public int deleteNewHand(InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
-		int result = newHandDaoImpl.deleteNewHand(); 
+		int result = newHandDaoImpl.deleteNewHand();
+		if(result == 1) {
+		  logentity.setsDetail("删除新手指南");
+		  optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
   

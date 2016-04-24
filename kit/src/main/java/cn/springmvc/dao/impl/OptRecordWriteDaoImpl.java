@@ -32,6 +32,7 @@ public class OptRecordWriteDaoImpl extends SqlSessionDaoSupport{
 		param.put("adminId", entity.getiAdminId());
 		param.put("modId", entity.getlModuleId());
 		param.put("optId", entity.getlOptId());
+		param.put("detail", entity.getsDetail());
 		param.put("ipv", entity.getsIp());
 		param.put("macv", entity.getsMac());
 		param.put("urlv", entity.getsUrl());

@@ -1,24 +1,20 @@
 package cn.springmvc.service.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+ 
+import java.util.List; 
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
-
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo; 
+ 
 
 import cn.springmvc.dao.MngTeamDao;
 import cn.springmvc.dao.MngTeamListDao;
-import cn.springmvc.dao.impl.IdGeneratorUtil;
-import cn.springmvc.dao.impl.MngTeamDaoImpl;
-import cn.springmvc.dao.impl.MngTeamListDaoImpl;
+import cn.springmvc.dao.impl.IdGeneratorUtil; 
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.MngTeamEntity; 
 import cn.springmvc.service.MngTeamService;
 @Service("mngTeamServiceImpl")
@@ -27,8 +23,11 @@ public class MngTeamServiceImpl implements MngTeamService {
 	private MngTeamDao mngTeamDaoImpl;  
 	@Resource(name="mngTeamListDaoImpl")
 	private MngTeamListDao mngTeamListDaoImpl;  
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	@Override
-	public int insertMngTeam(MngTeamEntity entity) {
+	public int insertMngTeam(MngTeamEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
 			return 0;
@@ -49,19 +48,28 @@ public class MngTeamServiceImpl implements MngTeamService {
 			generatorUtil.SetIdUsedFail(id);
 		}else{
 			generatorUtil.SetIdUsed(id);
+			logentity.setsDetail("添加管理团队 :"+entity.getMngName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		}
 		return result;  
 	}
 
 	@Override
-	public int deleteMngTeamByID(int id) {
+	public int deleteMngTeamByID(long id,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
+		MngTeamEntity mngTeamEntity = mngTeamListDaoImpl.selectMngTeamByID(id);
 		int result = mngTeamDaoImpl.deleteMngTeamByID(id); 
+		if(result == 1) {
+			logentity.setsDetail("删除管理团队 :"+mngTeamEntity.getMngName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
 
 	@Override
-	public int updateMngTeamByID(MngTeamEntity entity) {
+	public int updateMngTeamByID(MngTeamEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
 			return 0;
@@ -72,16 +80,29 @@ public class MngTeamServiceImpl implements MngTeamService {
 			return -1;
 		} 
 		int result=mngTeamDaoImpl.updateMngTeamByID(entity); 
+		if(result == 1) {
+			logentity.setsDetail("修改管理团队 :"+entity.getMngName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
 
 	@Override
-	public int updateMngTeamStatuByID(MngTeamEntity entity) {
+	public int updateMngTeamStatuByID(MngTeamEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		if(entity == null){
 			return 0;
 		} 
+		MngTeamEntity mngTeamEntity = mngTeamListDaoImpl.selectMngTeamByID(entity.getId());
 		int result = mngTeamDaoImpl.updateMngTeamStatuByID(entity); 
+		if(result == 1 && entity.getStatu() == 1) {
+			logentity.setsDetail("启用管理团队 :"+mngTeamEntity.getMngName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}else if(result == 1 && entity.getStatu() == 0){
+			logentity.setsDetail("停用管理团队 :"+mngTeamEntity.getMngName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
 
@@ -94,7 +115,7 @@ public class MngTeamServiceImpl implements MngTeamService {
  
 	
 	@Override
-	public MngTeamEntity selectMngTeamByID(int id) {
+	public MngTeamEntity selectMngTeamByID(long id) {
 		
 		MngTeamEntity mngTeamEntity = mngTeamListDaoImpl.selectMngTeamByID(id);
 		return mngTeamEntity;

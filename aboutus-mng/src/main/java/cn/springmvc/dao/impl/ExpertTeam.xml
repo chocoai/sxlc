@@ -25,8 +25,7 @@
 	            </if>   
 	            <if test="map.statu != -1">  
 	                and et.Statu=#{map.statu}
-	            </if>  
-	            
+	            </if>   
            </where>
            order by et.CreateTime desc
     </select>       
@@ -65,7 +64,7 @@
 	   where Expert_ID=#{id}   
     </update>   
     <!-- 删除专家顾问信息 -->  
-	<delete id="deleteExpertTeamByID"  parameterType="int">
+	<delete id="deleteExpertTeamByID"  parameterType="long">
 	   delete from  Expert_Team where Expert_ID=#{id}   
     </delete>    
      <!-- 停用或启用专家顾问 -->  
@@ -73,14 +72,14 @@
 	   update  Expert_Team  set   Statu=#{statu} where Expert_ID=#{id}   
     </update> 
     <!-- 根据ID查询专家顾问 -->  
-	<select id="selectExpertTeamByID" parameterType="int"  resultMap="resultListExpertTeam">
+	<select id="selectExpertTeamByID" parameterType="long"  resultMap="resultListExpertTeam">
 	    select et.Expert_ID,et.Mng_Name,et.Mng_Post,et.Portrait_Url,et.Profile,et.Statu,
 	    et.Opt_Id,et.CreateTime,et.Opt_Date 
 	    from  Expert_Team et  where  et.Expert_ID=#{id}
     </select>  
     <!-- 前台查询专家顾问列表 -->  
 	<select id="selectExpertTeamfront"  resultMap="resultListExpertTeam">
-	   select et.Expert_ID,et.Mng_Name,et.Mng_Post,et.Portrait_Url,et.Profile,et.Statu,
+	    select et.Expert_ID,et.Mng_Name,et.Mng_Post,et.Portrait_Url,et.Profile,et.Statu,
 	    et.Admin_ID,et.CreateTime,et.Opt_Date 
 	    from  Expert_Team et 
 	    where et.Statu = 1 

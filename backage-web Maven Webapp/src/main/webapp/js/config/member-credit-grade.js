@@ -8,6 +8,10 @@
  * 内容介绍：
  */
 
+//加密设置
+var encrypt = new JSEncrypt();
+encrypt.setPublicKey(publicKey_common);
+
 	$(function(){
 		//表格初始化
 		$('#table_id').DataTable({
@@ -89,7 +93,7 @@
 					  
 					  $.ajax( {  
 							url:appPath+"/config/addCreditLevel.do",
-							data:{"levelMark":levelMark,"creditScoreMin":creditScoreMin,"creditScoreMax":creditScoreMax,"levelDetail":levelDetail},
+							data:{"levelMark":encrypt.encrypt(levelMark),"creditScoreMin":encrypt.encrypt(creditScoreMin),"creditScoreMax":encrypt.encrypt(creditScoreMax),"levelDetail":encrypt.encrypt(levelDetail)},
 							type:'post',  
 							cache:false,  
 							dataType:'json',  
@@ -127,7 +131,7 @@
 		}, function(index, layero){
 			$.ajax( {  
 				url:appPath+"/config/delCreditLevel.do",
-				data:{"id":param},
+				data:{"id":encrypt.encrypt(""+param)},
 				type:'post',  
 				cache:false,  
 				dataType:'json',  

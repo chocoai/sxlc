@@ -1,8 +1,6 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+ 
+import java.util.List; 
 
 import javax.annotation.Resource;
 
@@ -27,7 +25,8 @@ public class NewEventListDaoImpl extends SqlSessionDaoSupport implements NewEven
 	public NewEventEntity selectNewEventIsExistByNAme(NewEventEntity entity) {
 		
 		NewEventEntity platformAnnouncementEntity = null;
-		platformAnnouncementEntity = (NewEventEntity) getSqlSession().selectOne("newEvent.selectNewEventIsExistByNAme",entity);
+		platformAnnouncementEntity = (NewEventEntity) getSqlSession().
+				selectOne("newEvent.selectNewEventIsExistByNAme",entity);
 		return platformAnnouncementEntity;
 	} 
 
@@ -35,14 +34,17 @@ public class NewEventListDaoImpl extends SqlSessionDaoSupport implements NewEven
 	public List<NewEventEntity> selectNewEventList(PageEntity pageEntity) {
 		
 		List<NewEventEntity> newEventList = null;
-		newEventList = getSqlSession().selectList("newEvent.selectNewEventListpage",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		newEventList = getSqlSession().selectList("newEvent.selectNewEventListpage",
+				pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		return newEventList;
 	}
+	
     @Override
-	public NewEventEntity selectNewEventByID(int id) {
+	public NewEventEntity selectNewEventByID(long id) {
     	
     	NewEventEntity platformAnnouncementEntity = null;
-    	platformAnnouncementEntity = (NewEventEntity) getSqlSession().selectOne("newEvent.selectNewEventByID",id);
+    	platformAnnouncementEntity = (NewEventEntity) getSqlSession().
+    			selectOne("newEvent.selectNewEventByID",id);
 		return platformAnnouncementEntity;
 	 
 	}

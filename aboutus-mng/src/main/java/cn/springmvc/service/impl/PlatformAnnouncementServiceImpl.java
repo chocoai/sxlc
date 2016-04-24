@@ -6,12 +6,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
  
 
 import cn.springmvc.dao.PlatformAnnouncementDao;
 import cn.springmvc.dao.PlatformAnnouncementListDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;  
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.PlatformAnnouncementEntity;
 import cn.springmvc.service.PlatformAnnouncementService;
  
@@ -21,8 +23,11 @@ public class PlatformAnnouncementServiceImpl implements PlatformAnnouncementServ
 	private PlatformAnnouncementDao platformAnnouncementDaoImpl; 
 	@Resource(name="platformAnnouncementListDaoImpl")
 	private PlatformAnnouncementListDao platformAnnouncementListDaoImpl; 
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	@Override
-	public int insertPlatform(PlatformAnnouncementEntity entity) {
+	public int insertPlatform(PlatformAnnouncementEntity entity
+			,InsertAdminLogEntity logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
 			return 0;
@@ -30,7 +35,8 @@ public class PlatformAnnouncementServiceImpl implements PlatformAnnouncementServ
 		/**
 		 * 查询该平台公告是否存在
 		 */
-		PlatformAnnouncementEntity platformAnnouncementEntity= platformAnnouncementListDaoImpl.selectPlatformIsExistByNAme(entity);
+		PlatformAnnouncementEntity platformAnnouncementEntity= platformAnnouncementListDaoImpl.
+				selectPlatformIsExistByNAme(entity);
 		if(platformAnnouncementEntity != null){
 			return -1;
 		}
@@ -44,20 +50,31 @@ public class PlatformAnnouncementServiceImpl implements PlatformAnnouncementServ
 			generatorUtil.SetIdUsedFail(id);
 		}else{
 			generatorUtil.SetIdUsed(id);
+			logentity.setsDetail("新增平台公告 :"+entity.getTitle());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		}
 		return result; 
 		
 	}
 
 	@Override
-	public int deletePlatform(int id) {
+	public int deletePlatform(long id,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
+		
+		PlatformAnnouncementEntity platformAnnouncementEntity = 
+				platformAnnouncementListDaoImpl.selectPlatformByID(id);
 		
 		int result = platformAnnouncementDaoImpl.deletePlatformByID(id);
+		if(result == 1) { 
+			logentity.setsDetail("删除平台公告 :"+platformAnnouncementEntity.getTitle());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
 
 	@Override
-	public int updatePlatform(PlatformAnnouncementEntity entity) {
+	public int updatePlatform(PlatformAnnouncementEntity entity,
+			InsertAdminLogEntity logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
 			return 0;
@@ -65,17 +82,25 @@ public class PlatformAnnouncementServiceImpl implements PlatformAnnouncementServ
 		/**
 		 * 查询该平台公告是否存在
 		 */
-		PlatformAnnouncementEntity platformAnnouncementEntity = platformAnnouncementListDaoImpl.selectPlatformIsExistByNAme(entity);
+		PlatformAnnouncementEntity platformAnnouncementEntity = platformAnnouncementListDaoImpl.
+				selectPlatformIsExistByNAme(entity);
 		if(platformAnnouncementEntity != null){
 			return -1;
 		}
 		int result = platformAnnouncementDaoImpl.updatePlatformByID(entity);
+		
+		if(result == 1) { 
+			logentity.setsDetail("修改平台公告 :"+entity.getTitle());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
+		
 		return result;
 	}
  
 
 	@Override
-	public int updatePlatformStatuByID(PlatformAnnouncementEntity entity) {
+	public int updatePlatformStatuByID(PlatformAnnouncementEntity entity,
+			InsertAdminLogEntity logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
 			return 0;
@@ -85,7 +110,19 @@ public class PlatformAnnouncementServiceImpl implements PlatformAnnouncementServ
 		}else{
 			entity.setStatu(1);
 		}
+		PlatformAnnouncementEntity platformAnnouncementEntity = 
+				platformAnnouncementListDaoImpl.selectPlatformByID(entity.getId());
+		
 		int result = platformAnnouncementDaoImpl.updatePlatformStatuByID(entity);
+		if(result == 1 && entity.getStatu() == 1) { 
+			
+			logentity.setsDetail("启用平台公告 :"+platformAnnouncementEntity.getTitle());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+			
+		}else if(result == 1 && entity.getStatu() == 0){
+			logentity.setsDetail("停用平台公告 :"+platformAnnouncementEntity.getTitle());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
 
@@ -100,9 +137,10 @@ public class PlatformAnnouncementServiceImpl implements PlatformAnnouncementServ
 
 	 
 	@Override
-	public PlatformAnnouncementEntity selectPlatformByID(int id) {
+	public PlatformAnnouncementEntity selectPlatformByID(long id) {
 		
-		PlatformAnnouncementEntity platformAnnouncementEntity = platformAnnouncementListDaoImpl.selectPlatformByID(id);
+		PlatformAnnouncementEntity platformAnnouncementEntity = platformAnnouncementListDaoImpl.
+				selectPlatformByID(id);
 		return platformAnnouncementEntity;
 		
 	}

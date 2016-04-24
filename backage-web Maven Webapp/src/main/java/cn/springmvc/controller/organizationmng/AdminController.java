@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.RSA.RSAPlugn;
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.Module;
@@ -34,6 +36,7 @@ import cn.springmvc.model.RoleInfo;
 import cn.springmvc.service.IAdminLoginService;
 import cn.springmvc.service.IAdminService;
 import cn.springmvc.service.IRoleInfoServer;
+import cn.springmvc.util.LoadUrlUtil;
 
 
 /**
@@ -72,7 +75,7 @@ public class AdminController {
 	public int  adminLogin(HttpServletRequest request,HttpServletResponse response){
 		String adminName = request.getParameter("adminName"); 
 		String adminPwd = request.getParameter("adminPwd");
-		String vCode = request.getParameter("code");//输入验证码
+		//String vCode = request.getParameter("code");//输入验证码
 		HttpSession session = request.getSession();
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("adminName", adminName);
@@ -128,8 +131,24 @@ public class AdminController {
 	 */
 	@RequestMapping("/saveOrEditAdmin")
 	@ResponseBody
-	public int saveAdmin(HttpServletRequest request,String adminName,String adminPwd,String adminRole,String adminRemark,String staffId){
-		
+
+	public int saveAdmin(HttpServletRequest request){
+		String adminName =request.getParameter("adminName");
+		String adminPwd = request.getParameter("adminPwd");
+		String adminRole =request.getParameter("adminRole");
+		String adminRemark =request.getParameter("adminRemark");
+		String  staffId  =request.getParameter("staffId");
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		String[] sIpinfo = new String[6];
+		Admin loginAdmin = (Admin) request.getSession().getAttribute("LoginPerson");
+		if(loginAdmin!=null&&loginAdmin.getId()>0){
+			entity.setiAdminId(loginAdmin.getId());
+		}
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpinfo));
+		entity.setsMac("");
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		entity.setlModuleId(106);
+
 		Admin admin = new Admin();
 		admin.setAdminName(adminName);
 		admin.setAdminPwd(adminPwd);
@@ -143,11 +162,13 @@ public class AdminController {
 		int iResult = 0;
 		long roleId = IntegerAndString.StringToLong(adminRole, 0);
 		if(addOrUpdate ==0 ){ //添加
-			iResult = adminService.saveAdmin(admin, roleId);
+			entity.setlOptId(10601);
+			iResult = adminService.saveAdmin(admin, roleId,entity,sIpinfo);
 		}else{//修改
+			entity.setlOptId(10602);
 			long adminId= IntegerAndString.StringToLong(request.getParameter("adminId"), 0);
 			admin.setId(adminId);
-			iResult = adminService.editAdmin(admin, roleId);
+			iResult = adminService.editAdmin(admin, roleId,entity,sIpinfo);
 		}
 		return  iResult;
 	}
@@ -179,18 +200,22 @@ public class AdminController {
 	 */
 	@RequestMapping(value ="/getAdminList", method = RequestMethod.GET)
 	@ResponseBody
-	public PageEntity getAdminList(String adminName,String userName,String startTime,String endTime,HttpServletRequest request){
+	public PageEntity getAdminList(HttpServletRequest request){
 		Map<String ,Object> param = new HashMap<String, Object>();
-		if(adminName!=null && adminName!=""){
+		String adminName =request.getParameter("adminName");
+		String userName = request.getParameter("userName1");
+		String startTime = request.getParameter("startTime");
+		String  endTime = request.getParameter("endTime");
+		if(adminName!=null && !adminName.equals("")){
 			param.put("adminName", adminName);
 		}
-		if(userName!=null&& userName!=""){
+		if(userName!=null&& !userName.equals("")){
 			param.put("userName", userName);
 		}
-		if(startTime!=null && startTime!=""){
+		if(startTime!=null && !startTime.equals("")){
 			param.put("startTime", startTime);
 		}
-		if(endTime!=null && endTime!=""){
+		if(endTime!=null && !endTime.equals("")){
 			param.put("endTime", endTime);
 		}
 		String sKey = DbKeyUtil.GetDbCodeKey();
@@ -221,7 +246,20 @@ public class AdminController {
 	public int ofRole(HttpServletRequest request){
 		long id =IntegerAndString.StringToLong(request.getParameter("adminId"),0);
 		int statu = IntegerAndString.StringToInt(request.getParameter("statu"), 0);
-		int result = adminService.ofAdmin(id, statu);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		String[] sIpinfo = new String[6];
+		Admin loginAdmin = (Admin) request.getSession().getAttribute("LoginPerson");
+		if(loginAdmin!=null && loginAdmin.getId()>0){
+			entity.setiAdminId(loginAdmin.getId());
+		}
+		
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpinfo));
+		entity.setsMac("");
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		entity.setlModuleId(106);
+		entity.setlOptId(10603);
+		
+		int result = adminService.ofAdmin(id, statu,entity,sIpinfo);
 		return result;
 	}
 }

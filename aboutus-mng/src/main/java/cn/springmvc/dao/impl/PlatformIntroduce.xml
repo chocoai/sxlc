@@ -18,7 +18,7 @@
 	   update  Platform_Introduce   set Content=#{content}
     </update>   
     <!-- 删除平台简介 -->  
-	<delete id="deleteplatformIntroduce"  parameterType="int">
+	<delete id="deleteplatformIntroduce"  >
 	   delete from  Platform_Introduce    
     </delete>     
 </mapper>

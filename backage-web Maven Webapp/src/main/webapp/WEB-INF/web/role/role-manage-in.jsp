@@ -1,3 +1,4 @@
+<%@page import="cn.springmvc.model.Operation"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"
 	contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -7,6 +8,13 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	/* 登录人操作权限 */
+	List<Operation> operations = null;
+	if(session.getAttribute("operationList") != null){
+		operations = (List<Operation>)session.getAttribute("operationList");
+
+	}
+	
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -22,6 +30,20 @@
 <!-- 私用css -->
 <script type="text/javascript" src="<%=basePath%>/plugs/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript">
+	var on_off =false; //停用启用权限标记
+	<%
+		if(operations.size()>0){
+			for(int j=0;j<operations.size();j++){
+				if(operations.get(j).getOptID()==10603){
+	%>
+		   		on_off =true;
+	<%
+				}
+			}
+		}
+	%>
+</script>
 </head>
 
 <body class="nav-md">
@@ -61,14 +83,14 @@
 						</div>
 						<div class="panel-body">
 							<form id="" class="" action="">
-								<span class="con-item"><span>管理员编码</span><input type="text" class="" placeholder="" /></span>
-								<span class="con-item"><span>用户名称</span><input type="text" class="" placeholder="" /></span>
+								<span class="con-item"><span>管理员名称</span><input type="text" name="adminNo" id="adminNo" class="" placeholder="管理员名称" /></span>
+								<span class="con-item"><span>用户名称</span><input type="text" name="user1" id="user1" class="" placeholder="" /></span>
 								
 								<span class="con-item"><span>生成时间范围</span><input readonly="readonly"  id="start" name="start" class="Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'end\')}'})"></span>
 								
 								<span class="con-item"><span>至 </span><input readonly="readonly"  id="end" name="end" class="Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'start\')}'})"></span>
 								
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+								<button class="obtn obtn-query glyphicon glyphicon-search" type="button">查询</button>
 							</form>
 						</div>
 					</div>
@@ -81,8 +103,25 @@
 						<div class="panel-heading">
 							<div class="action_item">
 								<button class="obtn glyphicon glyphicon-plus obtn-manage-det" onclick="manageDet('管理员详细信息')">管理员详细信息</button>
+					<%
+						if(operations.size()>0){
+							for(int i = 0;i < operations.size(); i++){
+								
+				      			if(operations.get(i).getOptID() == 10601){
+					%>				
 								<button class="obtn glyphicon glyphicon-plus obtn-manage-add" onclick="manageAdd('添加内部管理员','0')">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-manage-mod" onclick="manageMod('修改内部管理员','0')">修改</button>
+					<%      
+				      			}
+				      			if(operations.get(i).getOptID() == 10602){
+					%>				
+								<button class="obtn glyphicon glyphicon-pencil obtn-manage-mod" onclick="manageMod('修改内部管理员','1')">修改</button>
+					<%      
+				      			}
+					  		 }
+						 }
+				     %>	
+								
+								
 								<!-- <button class="obtn glyphicon glyphicon-trash obtn-manage-del" onclick="manageDel()">删除</button> -->
 							</div>
 						</div>
@@ -279,7 +318,11 @@
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="js/valid.js"></script>
+	<script type="text/javascript" src="js/rsa/RSA.js"></script> 
+	<script type="text/javascript" src="js/rsa/Barrett.js"></script>
+	<script type="text/javascript" src="js/rsa/BigInt.js"></script>
 	<script type="text/javascript" src="js/role/role-manage.js"></script>
+
 </body>
 
 </html>

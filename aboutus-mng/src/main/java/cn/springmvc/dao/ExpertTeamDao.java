@@ -1,7 +1,5 @@
 package cn.springmvc.dao;
-
-import java.util.List;
-import java.util.Map;
+ 
 
 import cn.springmvc.model.ExpertTeamEntity;
 /**
@@ -30,7 +28,7 @@ public interface ExpertTeamDao {
 	 * @param id 专家顾问id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteExpertTeamByID(int id); 
+	public  int  deleteExpertTeamByID(long id); 
 	/**
 	 * 停用或启用专家顾问
 	 * @param entity 专家顾问实体

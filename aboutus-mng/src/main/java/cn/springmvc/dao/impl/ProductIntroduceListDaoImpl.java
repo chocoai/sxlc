@@ -1,17 +1,12 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-
+ 
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
-import cn.springmvc.dao.productIntroduceListDao;
-import cn.springmvc.model.ExpertTeamEntity;
-import cn.springmvc.model.PlatformAnnouncementEntity;
+import cn.springmvc.dao.productIntroduceListDao; 
 import cn.springmvc.model.ProductIntroduceEntity;
 @Repository("productIntroduceListDaoImpl")
 public class ProductIntroduceListDaoImpl  extends SqlSessionDaoSupport  implements productIntroduceListDao {

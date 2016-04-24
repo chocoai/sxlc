@@ -17,13 +17,6 @@ import cn.springmvc.model.PostInfo;
 public interface IPostInfoDao {
 	
 	
-	/***
-	 * 获取职务列表
-	 * @param deptNo					部门编号
-	 * @param postName					职务名称
-	 * @return
-	 */
-	public List<PostInfo> getListByParam(PageEntity entity);
 	
 	
 	
@@ -65,5 +58,5 @@ public interface IPostInfoDao {
 	 */
 	public int ofPost(PostInfo info);
 	
-
+	
 }

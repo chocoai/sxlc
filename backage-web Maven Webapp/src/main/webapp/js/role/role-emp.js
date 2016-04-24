@@ -1,3 +1,7 @@
+//加密设置
+var encrypt = new JSEncrypt();
+encrypt.setPublicKey(publicKey_common);
+
 $(function() {
 	//表格初始化
 	$('#staffListTb').DataTable({
@@ -6,10 +10,11 @@ $(function() {
 			"dataSrc": "results",   
 			"type": "POST",
 			"data": function ( d ) {  
-				var personalName = $("#personalName").val();
-				var personalPhone = $("#personalPhone").val();
-				var personalIDCard = $("#personalIDCard").val();
-				var postId = $("#postId").val();
+				//加密
+				var personalName = encrypt.encrypt($("#personalNameQuery").val());
+				var personalPhone = encrypt.encrypt($("#personalPhoneQuery").val());
+				var personalIDCard = encrypt.encrypt($("#personalIDCardQuery").val());
+				var postId = encrypt.encrypt($("#postIdQuery").val());
 				d.personalName = personalName;
 				d.personalPhone = personalPhone;
 				d.personalIDCard = personalIDCard;
@@ -98,7 +103,7 @@ $(function() {
 	 $('#staffListTb tbody').on( 'click', 'tr', function () {
 		 var $this = $(this);
 		 var $checkBox = $this.find("input:checkbox");
-		 if($checkBox.prop('checked') && $this.hasClass('selected')){
+		 if($this.hasClass('selected')){
 			 $checkBox.prop("checked",false);
 			 $(".table-checkbox").prop("checked",false);
 		 }else{
@@ -151,6 +156,11 @@ $(function() {
 				  $("#dataForm").submit();
 			  },cancel: function(index){//或者使用btn2（concel）
 			  	//取消的回调
+				  $("#dataForm").find(".Validform_checktip").removeClass("Validform_right");
+				  $("#dataForm").find(".Validform_checktip").removeClass("Validform_wrong");
+				  $("#dataForm").find(".Validform_error").removeClass("Validform_error");
+				  $("#dataForm").find(".Validform_checktip").html("");
+				  
 			  }
 		});
 	});
@@ -265,8 +275,8 @@ $(function() {
 		    btn:['确定', '取消']
 			  ,yes: function(index, layero){ //或者使用btn1
 				  $.ajax( {  
-					  url:appPath+"/role/editStaff.do",
-					  data: $("#dataForm").serialize(),  
+					  url:appPath+"/role/addOrUpdateStaff.do",
+					  data: getEncryptData(2),  
 					  type:'post',  
 					  cache:false,  
 					  dataType:'json',  
@@ -278,7 +288,9 @@ $(function() {
 							  table.ajax.reload();
 				         }else if(data==1){  
 				        	 layer.alert("修改失败!",{icon:2});  
-				         }  
+				         }else if(data==-1){
+								layer.alert("身份证已存在",{icon:2});  
+						 }    
 				      },  
 				      error : function() {  
 				           layer.alert("服务器异常!",{icon:2});  
@@ -310,7 +322,7 @@ $(function() {
 		}, function(index, layero){
 			$.ajax( {  
 				     url:appPath+"/role/delStaff.do",
-				     data:{"ids":JSON.stringify(ids)},  
+				     data:{"ids":encrypt.encrypt(JSON.stringify(ids))},  
 				     type:'post',  
 				     cache:false,  
 				     dataType:'json',  
@@ -321,7 +333,7 @@ $(function() {
 							 table.ajax.reload();
 				         }else if(data ==1){  
 				        	 layer.alert("删除失败!",{icon:2});  
-				         }  
+				         }
 				      },  
 				      error : function() {  
 				           layer.alert("服务器异常!",{icon:2});  
@@ -378,8 +390,8 @@ function getDateByStr(data){
  */
 function addStaff(){
 		$.ajax( {  
-			url:appPath+"/role/addStaff.do",
-			data:$("#dataForm").serialize(),
+			url:appPath+"/role/addOrUpdateStaff.do",
+			data:getEncryptData(1),
 			type:'post',  
 			cache:false,  
 			dataType:'json',  
@@ -400,3 +412,44 @@ function addStaff(){
 			}  
 		});
 }
+
+/**
+ * 获取加密参数
+ * @param type 操作类型 1：增加  2：修改
+ */
+function getEncryptData(type){
+	var data={};
+	var personalName = encrypt.encrypt($("#personalName").val());
+	data.personalName=personalName;
+	var sexId = encrypt.encrypt($("input[name='baseInfo.sexId']:checked").val());
+	data.sexId=sexId;
+	var personalIDCard = encrypt.encrypt($("#personalIDCard").val());
+	data.personalIDCard=personalIDCard;
+	var nationId = encrypt.encrypt($("#nationId").val());
+	data.nationId=nationId;
+	var personalPhone = encrypt.encrypt($("#personalPhone").val());
+	data.personalPhone=personalPhone;
+	var qq = encrypt.encrypt($("#qq").val());
+	data.qq=qq;
+	var personalEmail = encrypt.encrypt($("#personalEmail").val());
+	data.personalEmail=personalEmail;
+	var homeTown = encrypt.encrypt($("#homeTown").val());
+	data.homeTown=homeTown;
+	var houseAddress = encrypt.encrypt($("#houseAddress").val());
+	data.houseAddress=houseAddress;
+	var education = encrypt.encrypt($("#education").val());
+	data.education=education;
+	var graduatedDate = encrypt.encrypt($("#graduatedDate").val());
+	data.graduatedDate=graduatedDate;
+	var emerName = encrypt.encrypt($("#emerName").val());
+	data.emerName=emerName;
+	var emerPhone = encrypt.encrypt($("#emerPhone").val());
+	data.emerPhone=emerPhone;
+	var postId = encrypt.encrypt($("#postId").val());
+	data.postId=postId;
+	var deptId = encrypt.encrypt($("#deptId").val());
+	data.deptId=deptId;
+	data.type=encrypt.encrypt(""+type);
+	return data;
+}
+

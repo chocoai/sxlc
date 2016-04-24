@@ -24,13 +24,19 @@ public class AdminReadDaoImpl extends SqlSessionDaoSupport implements IAdminRead
 	}
 
 	
+	
+	@Override
+	public Admin findAdminById(long adminId) {
+		
+		return getSqlSession().selectOne("adminDaoImpl.findAdminById", adminId);
+	}
+	
 
 	@Autowired
 	@Override
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
-
 
 
 }

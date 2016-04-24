@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="integralMallBanner">
     <resultMap type="cn.springmvc.model.IntegralMallBannerEntity" id="resultListIntegralMallBanner">
-        <id column="ID" property="id" />
+        <id column="IntegralMall_ID"  property="id" />
 		<result column="Banner_Title" property="bannerTitle" />
 		<result column="Url"          property="url" />
 		<result column="Links" 		  property="links" />
@@ -10,41 +10,41 @@
 		<result column="Statu"		  property="statu" />
 		<result column="CreateTime"   property="createTime" /> 
 		<result column="Opt_Date"     property="optDate" />
-		<result column="Opt_Id"       property="optId" />
+		<result column="Admin_ID"     property="optId" />
 		<result column="adminName"    property="adminName" />
     </resultMap>  
 	<!-- 分页查询的积分商城轮播图-->  
 	<select id="selectIntegralMallBannerListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListIntegralMallBanner" >
-	   select ib.ID,   ib.Banner_Title,   ib.Url,   ib.Links,   ib.Indexs, 
-	   ib.Statu,  ib.CreateTime, ib.Opt_Date, ib.Opt_Id,a.adminName
+	   select ib.IntegralMall_ID,   ib.Banner_Title,   ib.Url,   ib.Links,   ib.Indexs, 
+	   ib.Statu,  ib.CreateTime, ib.Opt_Date, ib.Admin_ID,a.adminName
 	   from  IntegralMall_Banner ib
-	   LEFT JOIN Admin a on a.ID=ib.Opt_Id
+	   LEFT JOIN Admin a on a.Admin_ID=ib.Admin_ID
 	    <where>  
-            <if test="map.bannerTitle != null">  
-                ib.Banner_Title like  '%{map.bannerTitle}%'  
+            <if test="map.bannerTitle != null and map.bannerTitle != ''">  
+                ib.Banner_Title like  '%${map.bannerTitle}%'  
             </if>  
-            <if test="map.startTime != null">  
+            <if test="map.startTime != null and map.startTime != ''">  
                 and ib.CreateTime>=#{map.startTime}
             </if>  
-             <if test="map.endTime != null">  
+             <if test="map.endTime != null and map.endTime != ''">  
                 and #{map.endTime}>= ib.CreateTime
             </if>  
             <if test="map.statu != -1">  
                 and ib.Statu=#{map.statu}
             </if>  
-            order by ib.CreateTime desc
         </where>   
+        order by ib.CreateTime desc
     </select> 
      <!-- 新增积分商城轮播图 -->  
 	<insert id="insertIntegralMallBanner"  parameterType="cn.springmvc.model.IntegralMallBannerEntity" >    
 		insert into 
-		IntegralMall_Banner( ID,   Banner_Title,   Url,   Links,   Indexs,   Statu,  Opt_Id) 
-		    values (#{id},#{bannerTitle},#{url},#{links},#{indexs},#{statu}, #{optId})    
+		IntegralMall_Banner( IntegralMall_ID,   Banner_Title,   Url,   Links,   Indexs,   Statu,  Admin_ID) 
+		    values          (#{id}            ,#{bannerTitle},#{url},#{links},#{indexs},#{statu}, #{optId})    
 	</insert> 
 	<!-- 查询该标题的积分商城轮播图是否存在 -->  
 	<select id="selectIntegralMallBannerIsExistByNAme"  parameterType="cn.springmvc.model.IntegralMallBannerEntity" resultMap="resultListIntegralMallBanner" >
-	   select ID, Banner_Title,   Url,   Links,   Indexs,   Statu,  CreateTime,  Opt_Date, Opt_Id
-	   from  IntegralMall_Banner where  Banner_Title = #{bannerTitle} and ID != #{id}  
+	   select IntegralMall_ID 
+	   from  IntegralMall_Banner where  Banner_Title = #{bannerTitle} and IntegralMall_ID != #{id}  
     </select> 
     <!-- 修改积分商城轮播图信息 -->  
 	<update id="updateIntegralMallBannerByID"  parameterType="cn.springmvc.model.IntegralMallBannerEntity">
@@ -60,19 +60,19 @@
 	        Links=#{links},
 	       </if>    
 	       <if test="optId != 0" >
-	         Opt_Id=#{optId},
+	         Admin_ID=#{optId},
 	       </if>  
 	         Opt_Date=now() , 
 	   </set>
-	   where ID=#{id}   
+	   where IntegralMall_ID=#{id}   
     </update>   
     <!-- 删除积分商城轮播图 -->  
-	<delete id="deleteIntegralMallBannerByID"  parameterType="int">
-	   delete from  IntegralMall_Banner where ID=#{id}   
+	<delete id="deleteIntegralMallBannerByID"  parameterType="long">
+	   delete from  IntegralMall_Banner where IntegralMall_ID=#{id}   
     </delete>  
      <!-- 停用或启用积分商城轮播图 -->  
 	<update id="updateIntegralMallBannerStatuByID"  parameterType="cn.springmvc.model.IntegralMallBannerEntity">
-	   update  IntegralMall_Banner  set   Statu=#{statu} where ID=#{id}   
+	   update  IntegralMall_Banner  set   Statu=#{statu} where IntegralMall_ID=#{id}   
     </update>
     <!--上移或下移注册界面轮播图 -->
     <select id="moveAndDownIntegralMallBanner"  statementType="CALLABLE" resultType="Map">
@@ -88,15 +88,15 @@
 	   select ifnull(Indexs,0) from  IntegralMall_Banner  order by Indexs desc limit 1
     </select>  
     <!-- 根据id查询的积分商城轮播图-->  
-	<select id="selectIntegralMallBannerByid"  parameterType="cn.springmvc.model.IntegralMallBannerEntity"  resultMap="resultListIntegralMallBanner" >
-	   select ib.ID,   ib.Banner_Title,   ib.Url,   ib.Links,   ib.Indexs, 
-	   ib.Statu,  ib.CreateTime, ib.Opt_Date, ib.Opt_Id 
-	   from  IntegralMall_Banner ib  where ib.ID=#{id}  
+	<select id="selectIntegralMallBannerByid"  parameterType="long"  resultMap="resultListIntegralMallBanner" >
+	   select ib.IntegralMall_ID,   ib.Banner_Title,   ib.Url,   ib.Links,   ib.Indexs, 
+	   ib.Statu,  ib.CreateTime, ib.Opt_Date, ib.Admin_ID 
+	   from  IntegralMall_Banner ib  where ib.IntegralMall_ID=#{id}  
     </select>  
     <!-- 积分商城轮播图前台-->  
 	<select id="selectIntegralMallBannerfront"   resultMap="resultListIntegralMallBanner" >
-	   select ib.ID,   ib.Banner_Title,   ib.Url,   ib.Links,   ib.Indexs, 
-	   ib.Statu,  ib.CreateTime, ib.Opt_Date, ib.Opt_Id
+	   select ib.IntegralMall_ID,   ib.Banner_Title,   ib.Url,   ib.Links,   ib.Indexs, 
+	   ib.Statu,  ib.CreateTime, ib.Opt_Date, ib.Admin_ID
 	   from  IntegralMall_Banner ib 
 	   where ib.Statu = 1
     </select>   

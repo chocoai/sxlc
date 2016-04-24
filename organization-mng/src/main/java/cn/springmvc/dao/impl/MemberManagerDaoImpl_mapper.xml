@@ -43,10 +43,6 @@
 	</resultMap>
 	
 	
-	<!-- 会员银行卡信息 -->
-	<resultMap type="cn.springmvc.model.MemberBankCard" id="memberBankCard">
-	</resultMap>
-	
 
 	<!-- 获取全部会员 -->
 	<select id="members" parameterType="Map" resultType="cn.springmvc.model.MemberAll">
@@ -85,6 +81,15 @@
 		(select sum(Gift_Amount) from Member_Redpackets where Member_ID = mi.member_Id and End_Date &lt; now()) as redPackageGq,
 		mtai.Is_Auto_Invest as automaticBidding,
 		mtai.Open_Auto_Pay as automaticRepayment
+		
+		from member_info mi 
+		left join personal_base_info 	pbi on pbi.Personal_Id = mi.Personal_ID
+		left join Province_Dictionary 	pd 	on mi.Province_Id = pd.province_Id
+		left join City_Dictionary 		cd 	on	cd.City_id = mi.City_id
+		left join County_Dictionary 	cod on cod.County_Id = mi.County_Id
+		left join Town_Dictionary 		td 	on td.Town_id = mi.Town_id
+		left join Member_Third_Info 	mti on mti.Member_ID = mi.Member_id and mti.Member_Type = mi.Member_Type
+		left join Member_Third_Auth_Info mtai on mti.Account_Id = mtai.Account_Id
 	</select>
 	
 	<!-- 获取某个会员信息 -->
@@ -110,6 +115,14 @@
 		cd.City_Name																			as cityName,
 		cod.County_Name																			as countyName,
 		td.Town_Name																			as townName
+		from member_info mi 
+		left join personal_base_info 	pbi on pbi.Personal_Id = mi.Personal_ID
+		left join Province_Dictionary 	pd 	on mi.Province_Id = pd.province_Id
+		left join City_Dictionary 		cd 	on	cd.City_id = mi.City_id
+		left join County_Dictionary 	cod on cod.County_Id = mi.County_Id
+		left join Town_Dictionary 		td 	on td.Town_id = mi.Town_id
+		left join Member_Third_Info 	mti on mti.Member_ID = mi.Member_id and mti.Member_Type = mi.Member_Type
+		where member_id = #{memberId}
 	</select>
 	
 	<!-- 获取会员的第三方开通状态 -->

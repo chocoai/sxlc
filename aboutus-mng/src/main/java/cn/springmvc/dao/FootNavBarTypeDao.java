@@ -1,7 +1,5 @@
 package cn.springmvc.dao;
-
-import java.util.List;
-import java.util.Map;
+ 
 
 import cn.springmvc.model.FootNavBarTypeEntity; 
 /**
@@ -30,7 +28,7 @@ public interface FootNavBarTypeDao {
 	 * @param id 底部导航条类型id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteFootNavBarTypeByID(int id); 
+	public  int  deleteFootNavBarTypeByID(long id); 
 	
 	/**
 	 * 停用或启用底部导航条类型

@@ -30,7 +30,7 @@ public interface LoginBannerDao {
 	 * @param id 登录界面轮播图id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteLoginBannerByID(int id);
+	public  int  deleteLoginBannerByID(long id);
 	/**
 	 * 查询登录界面轮播图列表
 	 * @param map查询条件集合

@@ -7,14 +7,21 @@
 var STAFF_NUM = 0; //控制员工列表显示一次
 $(function() {
 	plannerList();
+	//单选
 	$('#table_id,#staffListTb tbody').on( 'click', 'tr', function () {
-		if ( $(this).hasClass('selected') ) {
-			$(this).removeClass('selected');
-		}
-		else {
-			$('tr.selected').removeClass('selected');
-			$(this).addClass('selected');
-		}
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
 	} );
 	
 	//==============理财顾问
@@ -39,6 +46,10 @@ $(function() {
 						layer.alert("请选择要处理的事务！",{icon:0});  
 						return;
 					}
+					var encrypt = new JSEncrypt();
+			    	encrypt.setPublicKey(publicKey_common);
+			    	//result 为加密后参数
+			    	staffId = encrypt.encrypt(staffId);
 				  $.ajax({
 						url : appPath+"/savaPlannerAdvise.do",
 							data:{
@@ -80,6 +91,10 @@ $(function() {
 			layer.alert("请选择要处理的事务！",{icon:0});  
 			return;
 		}
+		var encrypt = new JSEncrypt();
+    	encrypt.setPublicKey(publicKey_common);
+    	//result 为加密后参数
+    	staffId = encrypt.encrypt(staffId);
 		layer.confirm('确定移除该理财顾问？', {
 		  btn: ['确定', '取消']
 		}, function(index, layero){
@@ -138,9 +153,21 @@ function plannerList(){
 		            "url": appPath+"/getPlannerAdvise.do",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {  
-		                var level1 = $('#level1').val();  
-		                //添加额外的参数传给服务器  
-		                d.extra_search = level1;  
+		            	var staffName = $("#staffName").val();//管理员编码
+		            	var memberNo =  $("#memberNo").val();//用户
+		            	var logName =  $("#logName").val();//开始时间
+		            	var realName =  $("#realName").val();//结束时间
+		            	var encrypt = new JSEncrypt();
+		            	encrypt.setPublicKey(publicKey_common);
+		            	//result 为加密后参数
+		            	staffName = encrypt.encrypt(staffName);
+		            	memberNo = encrypt.encrypt(memberNo);
+		            	logName = encrypt.encrypt(logName);
+		            	realName = encrypt.encrypt(realName);
+		            	d.staffName=staffName;
+		            	d.memberNo=memberNo;
+		            	d.logName=logName;
+		            	d.realName=realName; 
 		            }  
 		        },
 		        columns: [  
@@ -223,9 +250,10 @@ function staffList(){
 		            "url": appPath+"/role/getAllStaff.do?sType=2",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {  
-//		                var level1 = $('#level1').val();  
-//		                //添加额外的参数传给服务器  
-//		                d.extra_search = level1;  
+		            	d.personalName = "";  
+		            	d.personalPhone="";
+		            	d.personalIDCard="";
+		            	d.postId="";
 		            }  
 		        },
 		        columns: [  

@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -23,26 +22,22 @@ public class RecruitmentListDaoImpl extends SqlSessionDaoSupport  implements Rec
 	@Override
 	public RecruitmentEntity selectRecruitmentIsExistByNAme(RecruitmentEntity entity) {
 		
-		RecruitmentEntity recruitmentEntity = null;
-		recruitmentEntity = (RecruitmentEntity) getSqlSession().selectOne("Mapper.selectRecruitmentIsExistByNAme",entity);
-		return recruitmentEntity;
+		return getSqlSession().selectOne("Mapper.selectRecruitmentIsExistByNAme",entity); 
 	}
 
 
 	@Override
 	public List<RecruitmentEntity> selectRecruitmentList(PageEntity pageEntity) {
 		
-		List<RecruitmentEntity> recruitmentList = null;
-		recruitmentList = getSqlSession().selectList("Mapper.selectRecruitmentsList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
-		return recruitmentList;
+		return  getSqlSession().selectList("Mapper.selectRecruitmentsList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		 
 	}
 	 
 	@Override
-	public RecruitmentEntity selectRecruitmentByID(int id) {
+	public RecruitmentEntity selectRecruitmentByID(long id) {
 		
-		RecruitmentEntity recruitmentEntity = null;
-		recruitmentEntity = (RecruitmentEntity) getSqlSession().selectOne("Mapper.selectRecruitmentsByID",id);
-		return  recruitmentEntity;
+		return getSqlSession().selectOne("Mapper.selectRecruitmentsByID",id);
+		 
 	}
 
 

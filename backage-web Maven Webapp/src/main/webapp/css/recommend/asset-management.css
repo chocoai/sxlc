@@ -1,0 +1,42 @@
+.assettype{
+	width: 185px;
+    height: 30px;
+    padding: 4px 8px;
+}
+fieldset{
+	padding:10px;
+	margin:10px auto 20px auto;
+	border:1px solid #D4D4D4;
+	border-radius:3px;
+	width: 550px;
+}
+legend{
+	padding:0 10px;
+	border:0;
+	width:auto;
+	font-size: 13px;
+    font-weight:400;
+    margin-bottom:0;
+}
+#manageAdmainAdd .fieldsetitem,
+#manageAdmainMod .fieldsetitem{
+	margin:10px;
+}
+#manageAdmainAdd .fieldsetitem span,
+#manageAdmainMod .fieldsetitem span{
+	width:127px;
+	text-align:right;
+	display:inline-block;
+}
+#manageAdmainAdd .fieldsetitem textarea,
+#manageAdmainMod .fieldsetitem textarea{
+	display:inline-block;
+	width:350px;
+	height:80px;
+	vertical-align: middle;
+}
+#manageAdmainAdd .fieldsetitem .remark,
+#manageAdmainMod .fieldsetitem .remark{
+	height:50px;
+	display:inline-block;
+}

@@ -67,7 +67,7 @@
 	   where Team_ID=#{id}   
     </update>   
     <!-- 删除管理团队信息 -->  
-	<delete id="deleteMngTeamByID"  parameterType="int">
+	<delete id="deleteMngTeamByID"  parameterType="long">
 	   delete from  Mng_Team where Team_ID=#{id}   
     </delete>    
      <!-- 停用或启用管理团队 -->  
@@ -75,7 +75,7 @@
 	   update  Mng_Team  set   Statu=#{statu} where Team_ID=#{id}   
     </update>
     <!--  根据id查询管理团队  -->  
-	<select id="selectMngTeamByID" parameterType="int"  resultMap="resultListMngTeam">
+	<select id="selectMngTeamByID" parameterType="long"  resultMap="resultListMngTeam">
 	   select mt.Team_ID,mt.Mng_Name,mt.Mng_Post,mt.Portrait_Url,mt.Profile,mt.Statu,
 	   mt.Admin_ID,mt.CreateTime ,mt.Opt_Date 
 	   from  Mng_Team mt   where Team_ID= #{id} 

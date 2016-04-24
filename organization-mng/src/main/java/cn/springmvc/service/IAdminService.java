@@ -3,6 +3,7 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.Admin;
@@ -30,8 +31,16 @@ public interface IAdminService {
 	 * @param roles			权限
 	 * @return -1该员工已是管理员、-2管理员名称已被使用、0成功
 	 */
-	public int saveAdmin(Admin admin,long roles);
+	public int saveAdmin(Admin admin,long roles,InsertAdminLogEntity entity,String[] sIpInfo);
 	
+	
+	/**
+	* 查询一个管理员详细信息
+	* @author 李杰
+	* @return
+	* @date 2016-4-19 下午5:54:37
+	 */
+	public Admin findAdminById(long adminId);
 	
 	
 	/***
@@ -51,7 +60,7 @@ public interface IAdminService {
 	 * @param admin				管理员信息
 	 * @return		0修改成功过  -1修改失败
 	 */
-	public int editAdmin(Admin admin,long roles);
+	public int editAdmin(Admin admin,long roles,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/***
@@ -63,7 +72,7 @@ public interface IAdminService {
 	* @return	1修改成功、-1修改失败
 	* @date 2016-4-6 上午10:11:45
 	 */
-	public int editAdminPassword(long adminId,String password);
+	public int editAdminPassword(long adminId,String password,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/***
@@ -74,7 +83,7 @@ public interface IAdminService {
 	 * @param admin				管理员信息
 	 * @return -1失败 、 0成功
 	 */
-	public int ofAdmin(long id,int statu);
+	public int ofAdmin(long id,int statu,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 

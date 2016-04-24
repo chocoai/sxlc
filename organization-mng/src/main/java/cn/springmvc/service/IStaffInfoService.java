@@ -1,12 +1,10 @@
 package cn.springmvc.service;
 
 import java.util.Date;
-import java.util.List;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
-
 import cn.springmvc.model.StaffInfo;
-import cn.springmvc.model.StaffPost;
 
 
 
@@ -26,7 +24,7 @@ public interface IStaffInfoService {
 	 * @param post				员工职务信息
 	 * @return
 	 */
-	public int saveStaff(StaffInfo info,String deptId,String postId,Date joinDate);
+	public int saveStaff(StaffInfo info,String deptId,String postId,Date joinDate,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -56,7 +54,7 @@ public interface IStaffInfoService {
 	 * @param staffPost				
 	 * @return
 	 */
-	public int editStaff(StaffInfo info,String deptId,String posId,Date joinDate);
+	public int editStaff(StaffInfo info,String deptId,String posId,Date joinDate,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -67,12 +65,21 @@ public interface IStaffInfoService {
 	 * @param info					员工实体
 	 * @return
 	 */
-	public int quit(StaffInfo info);
+	public int quit(StaffInfo info,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
-	
-	
+	/***
+	* 更具员工编号获取员工信息
+	* 
+	* @author 李杰
+	* @Title: findById
+	* @param fid
+	* @return
+	* @Description: TODO
+	* @date 2016-4-20 上午11:09:45
+	 */
+	public StaffInfo findById(long fid);
 	
 	
 }

@@ -22,28 +22,7 @@ import cn.springmvc.model.RoleInfo;
 @Component("roleInfoDaoImpl")
 public class RoleInfoDaoImpl extends SqlSessionDaoSupport implements IRoleInfoDao {
 
-	@Override
-	public List<Module> getModuleList() {
-		
-		return getSqlSession().selectList("roleInfoDaoImpl.getModule");
-	}
-
-	@Override
-	public List<Operation> getOperationList() {
-		return getSqlSession().selectList("roleInfoDaoImpl.getOperation");
-	}
-	@Override
-	public List<RoleInfo> getListByParam(Map<String, Object> param,PageEntity entity) {
-		if(entity == null){
-			return null;
-		}
-		SqlSession session = getSqlSession();
-		entity.setMap(param);
-		List<RoleInfo> roleList = session.selectList("roleInfoDaoImpl.getListByParam", entity,new RowBounds(entity.getPageNum(),entity.getPageSize()));
-		return roleList;
-//		return getSqlSession().selectList("roleInfoDaoImpl.getListByParam", param);
-	}
-
+	
 	@Override
 	public int saveRole(RoleInfo info, String auths) {
 		Map<String,Object> param = new HashMap<String, Object>();
@@ -105,26 +84,7 @@ public class RoleInfoDaoImpl extends SqlSessionDaoSupport implements IRoleInfoDa
 	    return result; 
 	}
 
-	@Override
-	public List<Module> getModuleListById(long roleId) {
-		
-		return getSqlSession().selectList("roleInfoDaoImpl.getModuleById",roleId);
-	}
-
-	@Override
-	public List<Operation> getOperationListById(long roleId) {
-		return getSqlSession().selectList("roleInfoDaoImpl.getOperationById",roleId);
-	}
 	
-	@Override
-	public List<RoleInfo> getRoleInfoById(long roleId) {
-		return getSqlSession().selectList("roleInfoDaoImpl.getRoleInfoById",roleId);
-	}
-	
-	@Override
-	public List<RoleAuth> getRoleAuthById(long roleId) {
-		return getSqlSession().selectList("roleInfoDaoImpl.getRoleAuthById",roleId);
-	}
 	
 	@Autowired
 	@Override
@@ -132,10 +92,5 @@ public class RoleInfoDaoImpl extends SqlSessionDaoSupport implements IRoleInfoDa
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
 
-	@Override
-	public List<RoleInfo> getRoleList() {
-		return getSqlSession().selectList("roleInfoDaoImpl.getRoleList");
-	}
-
-
+	
 }

@@ -2,28 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="lawsRegulations">
     <resultMap type="cn.springmvc.model.LawsRegulationsEntity" id="resultListLawsRegulations">
-        <id column="ID" 				property="id" /> 
+        <id column="Law_ID" 			property="id" /> 
 		<result column="Content" 		property="content" />
 		<result column="Statu"			property="statu" />
 		<result column="CreateTime" 	property="createTime" />
 		<result column="Opt_Date" 		property="optDate" />
-		<result column="Opt_Id" 		property="optId" />
+		<result column="Admin_ID" 		property="optId" />
     </resultMap> 
 	<!-- 查询法律法规 -->  
 	<select id="selectLawsRegulations"  parameterType="int" resultMap="resultListLawsRegulations" >
-	   select ID,   Content,   Statu,   CreateTime,  Opt_Date, Opt_Id
+	   select Law_ID,   Content,   Statu,   CreateTime,  Opt_Date, Admin_ID
 	   from  Laws_Regulations  
 	   <where>  
             <if test="statu != -1">  
-                Statu=1
+                Statu= #{statu}
             </if>  
 	   </where>
     </select> 
     <!-- 新增法律法规 -->  
 	<insert id="insertLawsRegulations"  parameterType="cn.springmvc.model.LawsRegulationsEntity" >    
 		insert into 
-		Laws_Regulations( ID,   Content,     Opt_Id) 
-		          values (#{id},#{content},#{optId})    
+		Laws_Regulations( Law_ID,   Content,     Admin_ID) 
+		          values (#{id},  #{content},   #{optId})    
 	</insert> 
 	<!-- 查询法律法规是否存在 -->  
 	<select id="selectLawsRegulationsIsExist"  resultType="int" >
@@ -37,18 +37,18 @@
 	        Content=#{content},
 	       </if> 
 	       <if test="optId != 0" >
-	         Opt_Id=#{optId},
+	         Admin_ID=#{optId},
 	       </if>  
 	         Opt_Date=now(), 
 	     </set>   
-	   where ID=#{id}   
+	   where Law_ID=#{id}   
     </update>   
     <!-- 删除法律法规 -->  
 	<delete id="deleteLawsRegulationsByID"  parameterType="int">
-	   delete from  Laws_Regulations where ID=#{id}   
+	   delete from  Laws_Regulations where Law_ID=#{id}   
     </delete>  
      <!-- 停用或启用法律法规 -->  
 	<update id="updateLawsRegulationsStatuByID"  parameterType="cn.springmvc.model.LawsRegulationsEntity">
-	   update  Laws_Regulations  set   Statu=#{statu} where ID=#{id}   
+	   update  Laws_Regulations  set   Statu=#{statu} where Law_ID=#{id}   
     </update>       
 </mapper>

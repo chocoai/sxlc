@@ -1,10 +1,7 @@
 package cn.springmvc.dao;
+ 
 
-import java.util.List;
-import java.util.Map;
-
-import cn.springmvc.model.FriendshipUnitEntity;
-import cn.springmvc.model.PartnersEntity;
+import cn.springmvc.model.FriendshipUnitEntity; 
 /**
  * 
 * @author 刘利 
@@ -30,7 +27,7 @@ public interface FriendshipLinkDao {
 	 * @param id 友情链接id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteFriendshipLinkByID(int id);
+	public  int  deleteFriendshipLinkByID(long id);
 	 	/**
 	 * 停用或启用友情链接
 	 * @param entity 友情链接实体

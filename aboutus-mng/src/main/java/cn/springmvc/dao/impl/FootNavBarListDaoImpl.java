@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -32,7 +31,8 @@ public class FootNavBarListDaoImpl extends SqlSessionDaoSupport implements FootN
 			FootNavBarEntity entity) {
 		
 		FootNavBarEntity footNavBarEntity = null;
-		footNavBarEntity = (FootNavBarEntity) getSqlSession().selectOne("footNavBar.selectFootNavBarIsExistByNAme",entity);
+		footNavBarEntity = (FootNavBarEntity) getSqlSession().
+				selectOne("footNavBar.selectFootNavBarIsExistByNAme",entity);
 		return footNavBarEntity;
 	}
 	@Override
@@ -40,15 +40,17 @@ public class FootNavBarListDaoImpl extends SqlSessionDaoSupport implements FootN
 			PageEntity pageEntity) {
 		
 		List<FootNavBarEntity> footNavBarList = null;
-		footNavBarList = getSqlSession().selectList("footNavBar.selectFootNavBarList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		footNavBarList = getSqlSession().selectList("footNavBar.selectFootNavBarList",pageEntity
+				,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		return footNavBarList;
 	}
 	 
 	@Override
-	public FootNavBarEntity selectFootNavBarByID(int id) { 
+	public FootNavBarEntity selectFootNavBarByID(long id) { 
 		
 		FootNavBarEntity footNavBarEntity = null;
-		footNavBarEntity = (FootNavBarEntity) getSqlSession().selectOne("footNavBar.selectFootNavBarbyID",id);
+		footNavBarEntity = (FootNavBarEntity) getSqlSession().
+				selectOne("footNavBar.selectFootNavBarbyID",id);
 		return footNavBarEntity;
 		
 	}

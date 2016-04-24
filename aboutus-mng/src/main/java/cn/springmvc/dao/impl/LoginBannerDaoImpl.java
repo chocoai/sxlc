@@ -40,7 +40,7 @@ public class LoginBannerDaoImpl extends SqlSessionDaoSupport implements LoginBan
 	}
 
 	@Override
-	public int deleteLoginBannerByID(int id) {
+	public int deleteLoginBannerByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("loginBanner.deleteLoginBannerByID", id);

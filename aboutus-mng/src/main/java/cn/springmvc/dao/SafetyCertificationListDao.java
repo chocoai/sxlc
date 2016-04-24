@@ -30,7 +30,7 @@ public interface SafetyCertificationListDao {
 	 * @param id 底部网站认证id
 	 * @return  safetyCertificationEntity 
 	 */
-	public  SafetyCertificationEntity  selectSafetyCertificationByID(int id);
+	public  SafetyCertificationEntity  selectSafetyCertificationByID(long id);
 	/**
 	 * 前台查询底部网站认证 
 	 * @return

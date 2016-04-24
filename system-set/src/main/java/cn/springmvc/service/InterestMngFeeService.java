@@ -4,6 +4,8 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.IntegralRuleEntity;
 import cn.springmvc.model.InterestMngFeeEntity;
@@ -44,7 +46,7 @@ public interface InterestMngFeeService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateInterestMngFee(InterestMngFeeEntity interestMngFeeEntity);
+	public int updateInterestMngFee(InterestMngFeeEntity interestMngFeeEntity,InsertAdminLogEntity entity, String[] sIpInfo);
 	
 	/** 
 	* insertInterestMngFee 添加利息管理费设置 
@@ -59,6 +61,6 @@ public interface InterestMngFeeService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertInterestMngFee(InterestMngFeeEntity interestMngFeeEntity);
+	public int insertInterestMngFee(InterestMngFeeEntity interestMngFeeEntity,InsertAdminLogEntity entity, String[] sIpInfo);
 }
 

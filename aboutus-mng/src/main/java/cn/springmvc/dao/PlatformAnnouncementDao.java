@@ -1,10 +1,7 @@
 package cn.springmvc.dao;
+ 
 
-import java.util.List;
-import java.util.Map;
-
-import cn.springmvc.model.PlatformAnnouncementEntity;
-import cn.springmvc.model.PlatformAnnouncementEntity;
+import cn.springmvc.model.PlatformAnnouncementEntity; 
 /**
  * 
 * @author 刘利 
@@ -30,7 +27,7 @@ public interface PlatformAnnouncementDao {
 	 * @param id 平台公告id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deletePlatformByID(int id); 
+	public  int  deletePlatformByID(long id); 
 	/**
 	 * 停用或启用平台公告
 	 * @param entity 平台公告实体

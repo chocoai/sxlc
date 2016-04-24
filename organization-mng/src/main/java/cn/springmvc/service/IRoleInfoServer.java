@@ -3,8 +3,8 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
-
 import cn.springmvc.model.Module;
 import cn.springmvc.model.Operation;
 import cn.springmvc.model.RoleAuth;
@@ -22,6 +22,16 @@ public interface IRoleInfoServer {
 	 * return List<PostInfo>
 	 */
 	public List<Module> getModuleList();	
+	
+	/**
+	 * TODO 获取第三级目录
+	 * 创建日期：2016-4-19上午11:34:09
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<Module>
+	 */
+	public List<Module> getModuleListThree();	
 	
 	/**
 	 * TODO   获取操作列表
@@ -67,7 +77,7 @@ public interface IRoleInfoServer {
 	 * @param auths					权限
 	 * @return
 	 */
-	public int saveRole(RoleInfo info,String auths);
+	public int saveRole(RoleInfo info,String auths,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -79,7 +89,7 @@ public interface IRoleInfoServer {
 	 * @param auths					权限
 	 * @return
 	 */
-	public int editRole(RoleInfo info,String auths);
+	public int editRole(RoleInfo info,String auths,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -90,7 +100,7 @@ public interface IRoleInfoServer {
 	 * @param info					角色信息
 	 * @return	
 	 */
-	public int remove(RoleInfo info);
+	public int remove(RoleInfo info,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -101,7 +111,7 @@ public interface IRoleInfoServer {
 	 * @param info
 	 * @return
 	 */
-	public int ofRole(RoleInfo info);
+	public int ofRole(RoleInfo info,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/**

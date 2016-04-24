@@ -158,6 +158,26 @@
 	</select>
 	
 	
+	<!-- 查询单个员工信息 -->
+	<select id="findById" parameterType="Map" resultMap="deptResult">
+		select si.Staff_Id,CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{sKey})) using utf8) as Personal_Name,
+		pbi.SexID,pbi.Personal_Id pid,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{sKey})) using utf8) as Personal_IDCard,
+		pbi.Nation_Id,pi.Post_Id,pi.Post_Name,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{sKey})) using utf8) as Personal_Phone,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.qq),#{sKey})) using utf8) as qq,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{sKey})) using utf8) as Personal_Email,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Home_Town),#{sKey})) using utf8) as Home_Town,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.House_Address),#{sKey})) using utf8) as House_Address,
+		pbi.Education,pbi.Graduated_DATE,
+		CONVERT((AES_DECRYPT(UNHEX(si.Emer_Name),#{sKey})) using utf8) as Emer_Name,
+		CONVERT((AES_DECRYPT(UNHEX(si.Emer_Phone),#{sKey})) using utf8) as Emer_Phone,si.Start_Date
+		from Staff_Info si 
+		left join Personal_Base_Info pbi on pbi.Personal_Id = si.Personal_Id
+		left join Staff_Post sp on sp.Staff_Id = si.Staff_Id
+		left join post_info pi on pi.Post_Id = sp.Post_Id
+		where si.Staff_Statu != 1  and si.staff_id = #{sid}
+	</select>
 	
 	
 	

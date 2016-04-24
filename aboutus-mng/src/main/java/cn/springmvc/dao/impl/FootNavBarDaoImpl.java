@@ -32,7 +32,7 @@ public class FootNavBarDaoImpl extends SqlSessionDaoSupport implements FootNavBa
 	}
 
 	@Override
-	public int deleteFootNavBarByID(int id) {
+	public int deleteFootNavBarByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("footNavBar.deleteFootNavBarByID", id);

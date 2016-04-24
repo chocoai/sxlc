@@ -1,0 +1,14 @@
+.copyright{
+	margin:20px;
+}
+.copyright input{
+	width:600px;
+	margin-left:10px;
+}
+.copyright div{
+	text-align:center;
+	margin:20px 0;
+}
+.copyright button{
+	padding: 6px 15px 8px 15px !important;
+}

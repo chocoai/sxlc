@@ -26,6 +26,6 @@ public interface PlatformIntroduceDao {
 	 * 删除平台简介 
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deletePlatformIntroduce(int id);
+	public  int  deletePlatformIntroduce();
 
 }

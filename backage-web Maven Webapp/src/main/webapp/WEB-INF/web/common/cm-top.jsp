@@ -2,7 +2,7 @@
 <script type="text/javascript">
 	$(function() {
 		//菜单控制
-		var _index = <%=request.getParameter("top_menu_index")%>;
+		var _index = '<%=request.getParameter("top_menu_index")%>';
 		$(".top_menu li").menu({
 			_index : _index		//下标
 		});

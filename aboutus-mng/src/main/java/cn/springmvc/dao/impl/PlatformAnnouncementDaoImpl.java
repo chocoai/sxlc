@@ -1,8 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+ 
 
 import javax.annotation.Resource;
 
@@ -36,7 +33,7 @@ public class PlatformAnnouncementDaoImpl extends SqlSessionDaoSupport implements
 	}
 
 	@Override
-	public int deletePlatformByID(int id) {
+	public int deletePlatformByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("Mapper.deletePlatformByID", id);

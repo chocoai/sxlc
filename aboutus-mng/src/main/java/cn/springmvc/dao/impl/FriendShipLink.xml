@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="friendshipUnit">
     <resultMap type="cn.springmvc.model.FriendshipUnitEntity" id="resultListFriendshipLink">
-        <id column="ID" 				property="id" />
+        <id column="Link_ID" 			property="id" />
 		<result column="Name" 			property="name" />
 		<result column="Logo" 			property="logo" />
 		<result column="URL" 			property="url" />
@@ -10,16 +10,16 @@
 		<result column="Statu" 			property="statu" />
 		<result column="CreateTime" 	property="createTime" />
 		<result column="Indexs" 		property="indexs" />
-		<result column="Opt_Id" 		property="optId" />
+		<result column="Admin_ID" 		property="optId" />
 		<result column="Opt_Date" 		property="optDate" />
 		<result column="adminName" 		property="adminName" />
     </resultMap> 
     <!-- 查询友情链接列表 -->  
 	<select id="selectFriendShipLinkList" parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="resultListFriendshipLink">
-	   select fl.ID,fl.Name,fl.Logo,fl.URL,fl.Introduction,fl.Statu,fl.Indexs,fl.Opt_Id,
+	   select fl.Link_ID,fl.Name,fl.Logo,fl.URL,fl.Introduction,fl.Statu,fl.Indexs,fl.Admin_ID,
 	   fl.CreateTime,fl.Opt_Date,a.adminName
 	   from  FriendShip_Link  fl
-	   LEFT JOIN Admin a on a.ID=fl.Opt_Id
+	   LEFT JOIN Admin a on a.Admin_ID=fl.Admin_ID
          <where>  
             <if test="map.name != null">  
                 Name like  '%{name}%'  
@@ -27,19 +27,19 @@
             <if test="map.statu != -1">  
                 and fl.Statu=#{map.statu}
             </if>  
-                order by fl.CreateTime desc
-        </where>  
+        </where>
+        order by fl.CreateTime desc  
     </select>       
 	<!-- 新增友情链接 -->  
 	<insert id="insertFriendShipLink"  parameterType="cn.springmvc.model.FriendshipUnitEntity">    
 		insert into 
-		FriendShip_Link(ID,    Name,   Logo,   URL,    Introduction,   Indexs,  Opt_Id) 
-		values         (#{id},#{name},#{logo},#{url},#{introduction},#{indexs},#{optId})    
+		FriendShip_Link(Link_ID,    Name,   Logo,   URL,    Introduction,   Indexs,  Admin_ID) 
+		values         (#{id},     #{name},#{logo},#{url},#{introduction},#{indexs},#{optId})    
 	</insert> 
 	<!-- 查询友情链接是否存在 -->  
 	<select id="selectFriendShipLinkIsExistByNAme"  parameterType="cn.springmvc.model.FriendshipUnitEntity" resultMap="resultListFriendshipLink" >
-	   select ID,Name,Logo,URL,Introduction,Statu,Indexs,Opt_Id,CreateTime ,Opt_Date 
-	   from  FriendShip_Link where  Name=#{name}   and ID!=#{id} 
+	   select Link_ID
+	   from  FriendShip_Link where  Name=#{name}   and Link_ID!=#{id} 
     </select> 
     <!-- 修改友情链接信息 -->  
 	<update id="updateFriendShipLinkByID"  parameterType="cn.springmvc.model.FriendshipUnitEntity">
@@ -61,29 +61,29 @@
 	         Indexs=#{indexs},
 	       </if> 
 	        <if test="optId !=0" >
-	          Opt_Id=#{optId},
+	          Admin_ID=#{optId},
 	        </if> 
-	         Opt_Date=now(), 
+	          Opt_Date=now(), 
 	       </set>   
-	   where ID=#{id}   
+	   where Link_ID=#{id}   
     </update>   
     <!-- 删除友情链接信息 -->  
-	<delete id="deleteFriendShipLinkByID"  parameterType="int">
-	   delete from  FriendShip_Link where ID=#{id}   
+	<delete id="deleteFriendShipLinkByID"  parameterType="long">
+	   delete from  FriendShip_Link where Link_ID=#{id}   
     </delete>    
      <!-- 停用或启用友情链接 -->  
 	<update id="updateFriendShipLinkStatuByID"  parameterType="cn.springmvc.model.FriendshipUnitEntity">
-	   update  FriendShip_Link  set   Statu=#{statu} where ID=#{id}   
+	   update  FriendShip_Link  set   Statu=#{statu} where Link_ID=#{id}   
     </update> 
      <!-- 根据id查询友情链接 -->  
-	<select id="selectFriendShipLinkByID" parameterType="cn.springmvc.model.FriendshipUnitEntity"   resultMap="resultListFriendshipLink">
-	   select fl.ID,fl.Name,fl.Logo,fl.URL,fl.Introduction,fl.Statu,fl.Indexs,fl.Opt_Id,
+	<select id="selectFriendShipLinkByID" parameterType="long"   resultMap="resultListFriendshipLink">
+	   select fl.Link_ID,fl.Name,fl.Logo,fl.URL,fl.Introduction,fl.Statu,fl.Indexs,fl.Admin_ID,
 	   fl.CreateTime,fl.Opt_Date 
-	   from  FriendShip_Link where  fl.ID=#{id}  
+	   from  FriendShip_Link where  fl.Link_ID=#{id}  
     </select>   
      <!-- 查询友情链接列表 -->  
 	<select id="selectFriendShipLinkfront"  resultMap="resultListFriendshipLink">
-	   select fl.ID,fl.Name,fl.Logo,fl.URL,fl.Introduction,fl.Statu,fl.Indexs,fl.Opt_Id,
+	   select fl.Link_ID,fl.Name,fl.Logo,fl.URL,fl.Introduction,fl.Statu,fl.Indexs,fl.Admin_ID,
 	   fl.CreateTime,fl.Opt_Date 
 	   from  FriendShip_Link  fl  
 	   where  fl.Statu = 1

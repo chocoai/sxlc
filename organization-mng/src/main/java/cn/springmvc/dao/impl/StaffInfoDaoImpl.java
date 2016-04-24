@@ -25,15 +25,7 @@ import cn.springmvc.model.StaffInfo;
 public class StaffInfoDaoImpl extends SqlSessionDaoSupport implements IStaffInfoDao{
 
 	
-	
-	
-	@Override
 
-	public List<StaffInfo> getListByParam(PageEntity pageEntity) {
-		return getSqlSession().selectList("StaffInfoDaoImpl.getListByParam",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
-
-	}
-	
 
 	@Override
 	public int saveStaff(StaffInfo info,String deptId,String postId,String joinDate,String sKey) {
@@ -122,8 +114,6 @@ public class StaffInfoDaoImpl extends SqlSessionDaoSupport implements IStaffInfo
 		return IntegerAndString.StringToInt(param.get("result").toString(), -1);
 	}
 
-	
-	
 	
 	
 	

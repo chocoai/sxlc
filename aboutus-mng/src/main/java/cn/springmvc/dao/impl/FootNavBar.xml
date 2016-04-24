@@ -2,27 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD footNavBar 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="footNavBar">
     <resultMap type="cn.springmvc.model.FootNavBarEntity" id="resultListFootNavBar">
-        <id column="ID" property="id" />
+        <id column="FootNavBar_ID" property="id" />
 		<result column="Type_Id"    property="typeId" />
 		<result column="Title"      property="title" />
 		<result column="URL"        property="url" />
 		<result column="fnbStatu"   property="statu" />
 		<result column="CreateTime" property="createTime" />
 		<result column="Opt_Date"   property="optDate" />
-		<result column="Opt_Id"     property="optId" />
+		<result column="Admin_ID"     property="optId" />
 		<result column="adminName"  property="adminName" />
 		<result column="Name"       property="name" />
     </resultMap> 
 	<!-- 分页查询底部导航条-->  
 	<select id="selectFootNavBarList"  resultMap="resultListFootNavBar" parameterType="product_p2p.kit.pageselect.PageEntity" >
-	    select fNB.ID,fNB.Type_Id,fNB.Title,fNB.URL,fNB.Statu as fnbStatu,
+	    select fNB.FootNavBar_ID,fNB.Type_Id,fNB.Title,fNB.URL,fNB.Statu as fnbStatu,
 	    fNB.CreateTime,fNB.Opt_Date,fNB.Opt_Id,fNBT.Name, a.adminName 
 	    from   FootNavBar  fNB
-        LEFT JOIN FootNavBar_Type fNBT on  fNB.Type_Id=fNBT.ID
-		LEFT JOIN Admin a on a.ID=fNB.Opt_Id
+        LEFT JOIN FootNavBar_Type fNBT on  fNB.Type_Id=fNBT.Type_Id
+		LEFT JOIN Admin a on a.Admin_ID=fNB.Admin_ID
         <where>  
             <if test="map !=null and map.title != null and map.title != '' ">  
-                Title like  '%{map.title}%'  
+                Title like  '%${map.title}%'  
             </if>  
             <if test="map !=null and  map.statu != -1">  
                 and fNB.Statu=#{map.statu}
@@ -32,12 +32,12 @@
     <!-- 新增底部导航条-->  
 	<insert id="insertFootNavBar"  parameterType="cn.springmvc.model.FootNavBarEntity" >    
 		insert into 
-		FootNavBar( ID, Type_Id,    Title,    URL, Opt_Id) 
+		FootNavBar( FootNavBar_ID, Type_Id,    Title,    URL, Admin_ID) 
 		  values (#{id},#{typeId} ,#{title},#{url},#{optId})    
 	</insert> 
 	<!-- 查询该标题的最新动态是否存在 -->  
 	<select id="selectFootNavBarIsExistByNAme"  parameterType="cn.springmvc.model.FootNavBarEntity" resultMap="resultListFootNavBar" >
-	   select ID from  FootNavBar where  Title=#{title}  and   ID!=#{id}
+	   select FootNavBar_ID from  FootNavBar where  Title=#{title}  and   FootNavBar_ID!=#{id}
     </select> 
     <!-- 修改最新动态信息 -->  
 	<update id="updateFootNavBarByID"  parameterType="cn.springmvc.model.FootNavBarEntity">
@@ -50,38 +50,38 @@
 	        URL=#{url},
 	       </if> 
 	       <if test="optId != 0" >
-	       Opt_Id=#{optId},
+	       Admin_ID=#{optId},
 	       </if> 
 	       <if test="typeId != 0" >
 	       Type_Id=#{typeId},
 	       </if> 
 	       Opt_Date=now() 
 	       </set>   
-	   where ID=#{id}   
+	   where FootNavBar_ID=#{id}   
     </update>   
     <!-- 删除底部导航条-->  
-	<delete id="deleteFootNavBarByID"  parameterType="int">
-	   delete from  FootNavBar where ID=#{id}   
+	<delete id="deleteFootNavBarByID"  parameterType="long">
+	   delete from  FootNavBar where FootNavBar_ID=#{id}   
     </delete> 
     
      <!-- 停用或启用底部导航条-->  
 	<update id="updateFootNavBarStatuByID"  parameterType="cn.springmvc.model.FootNavBarEntity">
-	   update  FootNavBar  set   Statu=#{statu} where ID=#{id}   
+	   update  FootNavBar  set   Statu=#{statu} where FootNavBar_ID=#{id}   
     </update> 
     <!-- 根据id查询底部导航条-->  
-	<select id="selectFootNavBarbyID"  resultMap="resultListFootNavBar" parameterType="int" >
-	    select fNB.ID,fNB.Type_Id,fNB.Title,fNB.URL,fNB.Statu as fnbStatu,
-	    fNB.CreateTime,fNB.Opt_Date,fNB.Opt_Id,fNBT.Name 
+	<select id="selectFootNavBarbyID"  resultMap="resultListFootNavBar" parameterType="long" >
+	    select fNB.FootNavBar_ID,fNB.Type_Id,fNB.Title,fNB.URL,fNB.Statu as fnbStatu,
+	    fNB.CreateTime,fNB.Opt_Date,fNB.Admin_ID,fNBT.Name 
 	    from   FootNavBar  fNB
-        LEFT JOIN FootNavBar_Type fNBT on  fNB.Type_Id=fNBT.ID 
+        LEFT JOIN FootNavBar_Type fNBT on  fNB.Type_Id=fNBT.Type_Id 
         where  fNB.ID=#{id}  
     </select> 
     <!--  查询底部导航条前台显示-->  
 	<select id="selectFootNavBarfront"  resultMap="resultListFootNavBar">
-	    select fNB.ID,fNB.Type_Id,fNB.Title,fNB.URL,fNB.Statu as fnbStatu,
-	    fNB.CreateTime,fNB.Opt_Date,fNB.Opt_Id,fNBT.Name 
+	    select fNB.FootNavBar_ID,fNB.Type_Id,fNB.Title,fNB.URL,fNB.Statu as fnbStatu,
+	    fNB.CreateTime,fNB.Opt_Date,fNBT.Name 
 	    from   FootNavBar  fNB
-        LEFT JOIN FootNavBar_Type fNBT on  fNB.Type_Id=fNBT.ID 
+        LEFT JOIN FootNavBar_Type fNBT on  fNB.Type_Id=fNBT.Type_Id 
         where fNB.Statu=1
     </select>       
 </mapper>

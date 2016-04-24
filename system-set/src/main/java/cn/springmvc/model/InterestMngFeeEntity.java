@@ -29,6 +29,11 @@ public class InterestMngFeeEntity {
 	public void setStatu(int statu) {
 		this.statu = statu;
 	}
+	@Override
+	public String toString() {
+		return "InterestMngFeeEntity [priceDatum(利息管理费 单位万分之)=" + priceDatum
+				+ ", projectType(项目类型ID)=" + projectType + ", statu(认证项状态 0：无效 1：有效)=" + statu + "]";
+	}
 	
 }
 

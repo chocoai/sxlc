@@ -137,9 +137,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
-	
-	<script type="text/javascript">
-		
+	<script type="text/javascript" src="js/rsa/RSA.js"></script> 
+	<script type="text/javascript" src="js/rsa/Barrett.js"></script>
+	<script type="text/javascript" src="js/rsa/BigInt.js"></script>
+	<script>
+		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 	<script>
 		

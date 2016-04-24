@@ -62,16 +62,16 @@
 									<div class="panel-body">
 										<form id="" class="" action="">
 											<span class="con-item">
-												<span>部门编号</span><input type="text" class="" placeholder="部门编号" />
+												<span>部门编号</span><input id="deptNo" name="deptNo" type="text" class="" placeholder="部门编号" />
 											</span>
 											<span class="con-item">
-												<span>部门名称</span><input type="text" class="" placeholder="部门名称" />
+												<span>部门名称</span><input id="deptName" name="deptName" type="text" class="" placeholder="部门名称" />
 											</span>
 											<span class="con-item">
-												<span>部门负责人</span><input type="text" class="" placeholder="部门负责人" />
+												<span>部门负责人</span><input id="deptPerson" name="principalName" type="text" class="" placeholder="部门负责人" />
 											</span>
 											<span class="con-item">
-												<span>部门负责人电话</span><input type="text" class="" placeholder="部门负责人电话" />
+												<span>部门负责人电话</span><input id="deptPhone" name="principalPhone" type="text" class="" placeholder="部门负责人电话" />
 											</span>
 											<span class="con-item">
 												<span>状态</span>
@@ -105,31 +105,31 @@
 												<tr>
 													<td class="tt"><label class="ineed">部门名称：</label></td>
 													<td class="con">
-														<input type="text" name="deptName" datatype="entername" class="" placeholder="" />
+														<input type="text" id="sdeptName" name="deptName" datatype="entername" class="" placeholder="" />
 													</td>
 												</tr>
 												<tr>
 													<td class="tt"><label>部门负责人：</label></td>
 													<td class="con">
-														<input type="text" name="principalName" datatype="enterperson" class="" placeholder="" />
+														<input type="text" id="sprincipalName" name="principalName" datatype="enterperson" class="" placeholder="" />
 													</td>
 												</tr>
 												<tr>
 													<td class="tt"><label>负责人电话：</label></td>
 													<td class="con">
-														<input type="text" name="principalPhone" datatype="zPhone" class="" placeholder="" />
+														<input type="text" id="sprincipalPhone" name="principalPhone" datatype="zPhone" class="" placeholder="" />
 													</td>
 												</tr>
 												<tr>
 													<td class="tt"><label>上级部门ID：</label></td>
 													<td class="con">
-														<input type="text" name="preDeptId" class="" placeholder="" />
+														<input type="text" id="spreDeptId" name="preDeptId" class="" placeholder="" />
 													</td>
 												</tr>
 												<tr>
 													<td class="tt"><label>部门描述：</label></td>
 													<td class="con">
-														<input type="text" name="deptRemark" datatype="reMarks" class="" placeholder="" />
+														<input type="text" id="sdeptRemark" name="deptRemark" datatype="reMarks" class="" placeholder="" />
 													</td>
 												</tr>
 											</table>
@@ -180,58 +180,56 @@
 	<script type="text/javascript" src="js/valid.js"></script>
 	<script type="text/javascript" src="js/role/role-dept.js"></script>
 	<script type="text/javascript" src="plugs/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+	<script type="text/javascript" src="plugs/zTree/v3/js/jquery.ztree.core-3.5.js"></script>
+	<script type="text/javascript" src="js/role/jquery.form.js"></script>
+	<script type="text/javascript" src="js/rsa/RSA.js"></script> 
+	<script type="text/javascript" src="js/rsa/Barrett.js"></script>
+	<script type="text/javascript" src="js/rsa/BigInt.js"></script>
+	<script type="text/javascript" src="js/role/myZtree.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
-		var setting = {
-			view: {
-				showIcon: showIconForTree
-			},
-			data: {
-				simpleData: {
-					enable: true
-				}
-			}
-		};
-
-		var zNodes =[
-			{ id:1, pId:0, name:"父节点1 - 展开", open:true},
-			{ id:11, pId:1, name:"父节点11 - 折叠"},
-			{ id:111, pId:11, name:"叶子节点111"},
-			{ id:112, pId:11, name:"叶子节点112"},
-			{ id:113, pId:11, name:"叶子节点113"},
-			{ id:114, pId:11, name:"叶子节点114"},
-			{ id:12, pId:1, name:"父节点12 - 折叠"},
-			{ id:121, pId:12, name:"叶子节点121"},
-			{ id:122, pId:12, name:"叶子节点122"},
-			{ id:123, pId:12, name:"叶子节点123"},
-			{ id:124, pId:12, name:"叶子节点124"},
-			{ id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
-			{ id:2, pId:0, name:"父节点2 - 折叠"},
-			{ id:21, pId:2, name:"父节点21 - 展开", open:true},
-			{ id:211, pId:21, name:"叶子节点211"},
-			{ id:212, pId:21, name:"叶子节点212"},
-			{ id:213, pId:21, name:"叶子节点213"},
-			{ id:214, pId:21, name:"叶子节点214"},
-			{ id:22, pId:2, name:"父节点22 - 折叠"},
-			{ id:221, pId:22, name:"叶子节点221"},
-			{ id:222, pId:22, name:"叶子节点222"},
-			{ id:223, pId:22, name:"叶子节点223"},
-			{ id:224, pId:22, name:"叶子节点224"},
-			{ id:23, pId:2, name:"父节点23 - 折叠"},
-			{ id:231, pId:23, name:"叶子节点231"},
-			{ id:232, pId:23, name:"叶子节点232"},
-			{ id:233, pId:23, name:"叶子节点233"},
-			{ id:234, pId:23, name:"叶子节点234"},
-			{ id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
-		];
-
-		function showIconForTree(treeId, treeNode) {
-			return !treeNode.isParent;
-		};
-
 		$(document).ready(function(){
-			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+			$(document).ajaxStart(onStart).ajaxSuccess(onStop);
+			loadMenu("treeDemo");
 		});
+	
+		function loadMenu(treeObj){
+				var depId = 1;
+				$.ajax({
+					type:"POST",
+					url : appPath + "/role/treeList.do",
+					dataType : "json",
+					success:function(data){
+					alert(data[0].resourceName);
+						// 如果返回数据不为空，加载"业务模块"目录
+						if(data != null){
+							// 将返回的数据赋给zTree
+							$.fn.zTree.init($("#"+treeObj), setting, data);
+							zTree = $.fn.zTree.getZTreeObj(treeObj);
+							//点击事件
+							TheSelectedNode(depId);
+			                if( zTree ){
+								// 默认展开所有节点
+								zTree.expandAll(true);
+							}
+						}
+					}
+				});
+			}
+		
+		//点击事件
+		function TheSelectedNode(id){
+			 var node = zTree.getNodeByParam('parentID',id);//获取id为1的点   设置默认点击第几级
+	         zTree.selectNode(node);//选择点  
+	         zTree.setting.callback.onClick(null,zTree.setting.treeId,node);//调用事件  
+		}	
+		
+		//刷新
+		function updateTable(prevId,moduleId){
+		}
+	</script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </body>
 

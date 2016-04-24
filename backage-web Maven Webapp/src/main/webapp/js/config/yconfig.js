@@ -20,7 +20,6 @@ $(function () {
 		url : appPath + "/withdraw/msg.do",
 		success : function (msg) {
 			for (var i = 0; i < msg.length; i ++) {
-				alert(msg.length);
 				if (msg[i].payment_Member_Type == 0) {
 					$("#mFee").val(msg[i].withdrawal_Fee_Pingtai);
 					$("#mpFee").val(msg[i].withdrawal_Fee_Third);
@@ -48,18 +47,18 @@ function mwithdralsfee () {
     encrypt.setPublicKey(publicKey_common);
     var result1 = encrypt.encrypt((percent));
     var result2 = encrypt.encrypt((ppercent));
+    var result3 = encrypt.encrypt((0 + ""));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/withdraw/update.do",
 			data : {
-						payment_Member_Type : 0, 
+						payment_Member_Type : result3, 
 						withdrawal_Fee_Pingtai : result1, 
 						withdrawal_Fee_Third : result2
 					},
 			success : function (msg) {
-				if (msg == 1) {
+				if (msg == 3) {
 					layer.alert("操作成功",{icon:1});
-					day = null;
 					setTimeout('location.reload()',2000);
 				}else {
 					layer.alert("操作失败",{icon:2});
@@ -79,18 +78,18 @@ function owithdralsfee () {
     encrypt.setPublicKey(publicKey_common);
     var result1 = encrypt.encrypt((percent));
     var result2 = encrypt.encrypt((ppercent));
+    var result3 = encrypt.encrypt((1 + ""));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/withdraw/update.do",
 			data : {
-				payment_Member_Type : 1, 
+				payment_Member_Type : result3, 
 				withdrawal_Fee_Pingtai : result1, 
 				withdrawal_Fee_Third : result2
 			},
 			success : function (msg) {
-				if (msg == 1) {
+				if (msg == 3) {
 					layer.alert("操作成功",{icon:1});
-					day = null;
 					setTimeout('location.reload()',2000);
 				}else {
 					layer.alert("操作失败",{icon:2});
@@ -110,18 +109,18 @@ function pwithdralsfee () {
     encrypt.setPublicKey(publicKey_common);
     var result1 = encrypt.encrypt((percent));
     var result2 = encrypt.encrypt((ppercent));
+    var result3 = encrypt.encrypt((2 + ""));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/withdraw/update.do",
 			data : {
-						payment_Member_Type : 2, 
+						payment_Member_Type : result3, 
 						withdrawal_Fee_Pingtai : result1, 
 						withdrawal_Fee_Third : result2
 					},
 			success : function (msg) {
-				if (msg == 1) {
+				if (msg == 3) {
 					layer.alert("操作成功",{icon:1});
-					day = null;
 					setTimeout('location.reload()',2000);
 				}else {
 					layer.alert("操作失败",{icon:2});

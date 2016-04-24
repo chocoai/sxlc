@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List; 
 import javax.annotation.Resource;
 
@@ -44,7 +43,7 @@ public class IntegralMallBannerListDaoImpl extends SqlSessionDaoSupport implemen
 	}
  
 	@Override
-	public IntegralMallBannerEntity selectIntegralMallBannerByID(int id) {
+	public IntegralMallBannerEntity selectIntegralMallBannerByID(long id) {
 		
 		IntegralMallBannerEntity mediaReportsEntity=null;
 		mediaReportsEntity = (IntegralMallBannerEntity) getSqlSession().selectOne("integralMallBanner.selectIntegralMallBannerByid",id);

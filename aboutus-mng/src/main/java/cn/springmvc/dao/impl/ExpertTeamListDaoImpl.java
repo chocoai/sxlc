@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -45,7 +44,7 @@ public class ExpertTeamListDaoImpl extends SqlSessionDaoSupport  implements Expe
 	} 
 	 
 	@Override
-	public ExpertTeamEntity selectExpertTeamByID(int id) {
+	public ExpertTeamEntity selectExpertTeamByID(long id) {
 		
 		ExpertTeamEntity expertTeamEntity = null;
 		expertTeamEntity=(ExpertTeamEntity) getSqlSession().selectOne("expertTeam.selectExpertTeamByID",id);

@@ -2,7 +2,6 @@ package cn.springmvc.dao.impl.sms;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -11,13 +10,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import product_p2p.kit.HttpClient.HttpClientUtil;
 import product_p2p.kit.datatrans.IntegerAndString;
@@ -29,7 +30,7 @@ import product_p2p.kit.datatrans.IntegerAndString;
 * @since 
 * @date 2016-3-24 下午2:25:15
  */
-@Controller("SendSmsUtil")
+@Service("sendSmsUtil")
 public class SendSmsUtil {
 	
 	@Resource(name="smsReadDaoImpl")
@@ -120,8 +121,9 @@ public class SendSmsUtil {
 			break;
 		}
 		
-		sInfo = transmitStr(sPhone, sContent, smsSet.getsSn(), smsSet.getsPwd(), smsSet.getsInterface());
+//		sInfo = transmitStr(sPhone, sContent, smsSet.getsSn(), smsSet.getsPwd(), smsSet.getsInterface());
 //		sInfo = mdgxsend(sPhone, sContent, smsSet.getsSn(), smsSet.getsPwd(), smsSet.getsInterface());
+		sInfo = sendSMS(sPhone, sContent, smsSet.getsSn(), smsSet.getsPwd(), smsSet.getsInterface());
 		
 		short iStatu = 1;
 		if(sInfo!=null && sInfo[0]!=null && sInfo[0].equals("0")){
@@ -131,6 +133,7 @@ public class SendSmsUtil {
 		
 		return sInfo;
 	}
+	
 	
 	/*
 	 * 方法名称：gxmt 功 能：漫道科技发送短信 参
@@ -221,7 +224,6 @@ public class SendSmsUtil {
 	* @param @param sInterface 		url
 	* @return void 返回类型 
 	* @date 2016-3-24 下午2:27:48
-	* @throws
 	 */
 	public String[] transmitStr(String phone,String content,String sn,String pwd,String sInterface){
 		String url=sInterface;//"http://sdk4rptws.eucp.b2m.cn:8080/sdkproxy/sendsms.action";
@@ -249,6 +251,195 @@ public class SendSmsUtil {
 		}
 		return sResult;
 	}
+
+	
+	
+	
+	/***
+	* 使用凌凯短信平台发送短信
+	* <br>
+	* 这个方法主要是最基本的封装、用于满足所有要求。
+	* @author 李杰	
+	* @param cropId						用户名
+	* @param pwd						用户密码
+	* @param moblie						手机号集合
+	* @param content					发送类容
+	* @param cell						扩展号(必须是数字或为空)
+	* @param sendTime					定时发送时间(可为空)
+	* @return
+	* 
+	* @Description: TODO
+	* @date 2016-4-1 上午11:27:43
+	 */
+	private static String[] lkSendSMS(String url,String cropId,String pwd,Set<String> moblie,String content,String cell,String sendTime){
+		try {
+			content+="【凌凯】";
+			content = content=URLEncoder.encode(content, "gb2312");
+		} catch (UnsupportedEncodingException e1) {
+			//编码参数异常
+			return new String[]{"0","发送失败,参数异常"};
+		}
+		//1.检查输入参数
+		if(content == null || content.trim().length() == 0){//发送类容为空、发送失败
+			
+		}
+		//检查发送号码是否为空
+		if(moblie.size() == 0){
+			
+		}
+		StringBuffer phone= new StringBuffer();
+		for (String string : moblie) {
+			phone.append(string);
+			phone.append(",");
+		}
+		String phones = phone.substring(0, phone.length()-1);
+		
+		StringBuffer sendParam = new StringBuffer();
+		sendParam.append("CorpID=");
+		sendParam.append(cropId);
+		
+		sendParam.append("&Pwd=");
+		sendParam.append(pwd);
+		
+		sendParam.append("&Mobile=");
+		sendParam.append(phones);
+		
+		sendParam.append("&Content=");
+		sendParam.append(content);
+		
+		if(cell != null){
+			sendParam.append("&Cell=");
+			sendParam.append(cell);
+		}
+		if(sendTime != null){
+			sendParam.append("&SendTime=");
+			sendParam.append(sendTime);
+		}
+		
+		
+		System.out.println(url+"?"+sendParam.toString()+"-------------------->");
+		String ResultStr = HttpClientUtil.sendGet(url, sendParam.toString());
+		
+		int result = -20;
+		try {
+			result = Integer.parseInt(ResultStr);
+		} catch (Exception e) {
+			System.out.println("短信接口调用返回异常:"+e.getLocalizedMessage());
+		}
+		
+		String[] returnInfo = new String[2];
+		if(result >= 0){
+			returnInfo[1] = "提交成功";
+		}else if(result == -1){
+			returnInfo[1] = "账号未注册";
+		}else if(result == -2){
+			returnInfo[1] = "其他错误";
+		}else if(result == -3){
+			returnInfo[1] = "账户密码错误";
+		}else if(result == -5){
+			returnInfo[1] = "余额不足";
+		}else if(result == -6){
+			returnInfo[1] = "定时发送时间不是有效的时间格式";
+		}else if(result == -7){
+			returnInfo[1] = "提交信息末尾未签名，请添加中文的企业签名【】";
+		}else if(result == -8){
+			returnInfo[1] = "发送内容需在1到300字之间";
+		}else if(result == -9){
+			returnInfo[1] = "发送号码为空";
+		}else if(result == -10){
+			returnInfo[1] = "定时时间不能小于系统当前时间";
+		}else if(result == -100){
+			returnInfo[1] = "IP黑名单";
+		}else if(result == -102){
+			returnInfo[1] = "账号黑名单";
+		}else if(result == -103){
+			returnInfo[1] = "IP未导白";
+		}
+		returnInfo[0] = ResultStr;
+		return returnInfo;
+	}
+	
+	
+	
+	
+	/***
+	* 发送短信信息
+	* @author 李杰
+	* @Title: sendSMS
+	* @param phone							目标号码
+	* @param content						发送内容
+	* @param cropId							账户
+	* @param pwd							密码
+	* @param sinterface						短信接口地址
+	* @return
+	* @Description: TODO
+	* @date 2016-4-1 下午1:52:58
+	 */
+	private String[] sendSMS(String phone,String content,String cropId,String pwd,String sinterface){
+		Set<String> moblie = new HashSet<String>();
+		moblie.add(phone);
+		return lkSendSMS(sinterface, cropId, pwd, moblie, content, null, null);
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	* 获取短信信息
+	* 
+	* @author 李杰
+	* @Title: getSMS
+	* @param cropId							账号
+	* @param pwd							密码
+	* @param phoneAndCode			用于返回手机号码等信息[手机号#上行内容#发送时间#扩展号]
+	* @return 状态码信息,返回1说明正常，返回0说明没有信息。
+	* -1账号未注册，-2其他错误，-3密码错误，-101接口调用太频繁，-100Ip黑名单，-102账号黑名单，-103IP未导白
+	* @Description: TODO
+	* @date 2016-3-1 下午2:28:03
+	 */
+	public int getSMS(String cropId,String pwd,String sinterface,String[] phoneAndCode){
+		String param = "CorpID="+cropId+",Pwd="+pwd;
+		String resultString = HttpClientUtil.sendGet(sinterface, param);
+		
+		if(resultString == null || resultString.trim().length()==0){
+			return 0;
+		}
+		int result = 1;
+		try {
+			result = Integer.parseInt(resultString);//如果转换成功，说明没有返回正确数据信息
+		} catch (Exception e) {
+			phoneAndCode = resultString.split("||");
+		}
+		return result;
+	}
+	
+	
+	
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
 

@@ -50,7 +50,7 @@
 					</tr>
 					<tr>
 						<td class="tt" valign="top">图片预览</td>
-						<td class="con" id="fileList">
+						<td class="con i-b2" id="fileList">
 							
 						</td>
 					</tr>

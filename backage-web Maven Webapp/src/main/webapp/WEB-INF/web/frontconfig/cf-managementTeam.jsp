@@ -20,6 +20,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
 	<link rel="stylesheet" href="css/upload.css" />
 	<script type="text/javascript" src="<%=basePath%>/plugs/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </head>
 
 <body class="nav-md">
@@ -68,7 +71,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<table>
 									<tr>
 										<td class="tt">姓名</td>
-										<td class="con"><input type="text" name="mngName" id="mngName" class="" datatype="z2_8" /></td>
+										<td class="con">
+											<input type="text" name="mngName" id="mngName" class="" datatype="z2_8" />
+										</td>
 									</tr>
 									<tr>
 										<td class="tt">职务</td>

@@ -3,6 +3,10 @@
  * 内容介绍：
  */
 
+//加密设置
+var encrypt = new JSEncrypt();
+encrypt.setPublicKey(publicKey_common);
+
 	$(function(){
 		//表格初始化
 		$('#table_id').DataTable({
@@ -85,7 +89,7 @@
 					  
 					  $.ajax( {  
 							url:appPath+"/config/addMemberLevel.do",
-							data:{"levelMark":levelMark,"scoreMin":scoreMin,"scoreMax":scoreMax,"levelDetail":levelDetail},
+							data:{"levelMark":encrypt.encrypt(levelMark),"scoreMin":encrypt.encrypt(scoreMin),"scoreMax":encrypt.encrypt(scoreMax),"levelDetail":encrypt.encrypt(levelDetail)},
 							type:'post',  
 							cache:false,  
 							dataType:'json',  
@@ -121,7 +125,7 @@
 		}, function(index, layero){
 			$.ajax( {  
 				url:appPath+"/config/delMemberLevel.do",
-				data:{"id":param},
+				data:{"id":encrypt.encrypt(""+param)},
 				type:'post',  
 				cache:false,  
 				dataType:'json',  

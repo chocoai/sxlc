@@ -138,26 +138,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="js/frontconfig/cf-notice.js"></script>
+	<script type="text/javascript" src="js/rsa/RSA.js"></script> 
+	<script type="text/javascript" src="js/rsa/Barrett.js"></script>
+	<script type="text/javascript" src="js/rsa/BigInt.js"></script>
 	<!-- 私用js -->
-	
-	
-	<script type="text/javascript">
-		
-		/* $(function(){
-			$('#table_id').DataTable({
-				"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,2,3,4,5,6]
-				} // 制定列不参与排序
-				],
-			});
-		}); */
-	</script>
-	<script type="text/javascript">
-		
+	<script>
+		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </body>
 

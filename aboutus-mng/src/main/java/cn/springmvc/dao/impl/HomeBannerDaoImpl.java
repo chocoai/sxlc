@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
- 
-import java.util.List;
+  
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -39,7 +38,7 @@ public class HomeBannerDaoImpl extends SqlSessionDaoSupport implements HomeBanne
 	}
 
 	@Override
-	public int deleteHomeBannerByID(int id) {
+	public int deleteHomeBannerByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("homeBanner.deleteHomeBannerByID", id);

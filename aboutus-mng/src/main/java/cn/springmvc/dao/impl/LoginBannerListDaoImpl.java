@@ -1,8 +1,6 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+ 
+import java.util.List; 
 
 import javax.annotation.Resource;
 
@@ -39,7 +37,7 @@ public class LoginBannerListDaoImpl extends SqlSessionDaoSupport implements Logi
 	}
  
 	@Override
-	public LoginBannerEntity selectLoginBannerByID(int id) {
+	public LoginBannerEntity selectLoginBannerByID(long id) {
 		
 		LoginBannerEntity loginBannerEntity = null;
 		loginBannerEntity = (LoginBannerEntity) getSqlSession().selectOne("loginBanner.selectLoginBannerByID",id);

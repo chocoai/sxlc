@@ -34,6 +34,18 @@ public class DecryptHttpServletRequest extends HttpServletRequestWrapper{
 		if("length".equals(name)){
 			return ciphertext;
 		}
+		if("draw".equals(name)){//datatable 视图 可不传
+			return ciphertext;
+		}
+		if("auth".equals(name)){//角色权限
+			return ciphertext;
+		}
+		if("auth".equals(name)){//角色权限
+			return ciphertext;
+		}
+		if("content".equals(name)){//百度编辑器文本内容
+			return ciphertext;
+		}
 		if (privateKey == null) {
 			return ciphertext;
 		}else{
@@ -48,7 +60,7 @@ public class DecryptHttpServletRequest extends HttpServletRequestWrapper{
 			
 			return names;
 		}else{
-			String[] param = new String[name.length()];
+			String[] param = new String[names.length];
 			for (int i = 0; i < names.length; i++) {
 				param[i] = (RSAPlugn.decryptByPrivateKey(names[i],privateKey));
 			}

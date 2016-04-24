@@ -6,17 +6,22 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.WithdrawalsFeeEntity;
 import cn.springmvc.service.CreditorService;
 import cn.springmvc.service.FinancialSettingService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 /** 
 * @author 唐国峰
@@ -57,23 +62,66 @@ public class CreditorController {
 	 */
 	@RequestMapping("/addCreditor")
 	@ResponseBody
-	public int addCreditor(CreditorEntity param,String type){
-		CreditorEntity entity = creditorService.findAllCreditor();
+	public int addCreditor(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = HttpSessionUtil.getSession(req);
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=60104(债权转让设置)
+		//optID=6010401(修改)
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(60104);
+		logEntity.setlOptId(6010401);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		
+		CreditorEntity entity = creditorService.findAllCreditor();//查询数据库中是否存在数据
+		CreditorEntity param = new CreditorEntity();//插入实体
+		Map<String, Object> map = new HashMap<String,Object>();//修改参数map
+		
+		//获取解密参数，不用判断是否空值，js控制
+		String type = req.getParameter("type");
+		if("0".equals(type)){
+			map.put("type", type);
+			int holdDay = Integer.parseInt(req.getParameter("holdDay"));
+			param.setHoldDay(holdDay);
+			map.put("holdDay", holdDay);
+			int rangeDay = Integer.parseInt(req.getParameter("rangeDay"));
+			param.setRangeDay(rangeDay);
+			map.put("rangeDay", rangeDay);
+			int interestDay = Integer.parseInt(req.getParameter("interestDay"));
+			param.setInterestDay(interestDay);
+			map.put("interestDay", interestDay);
+			int mngFee = Integer.parseInt(req.getParameter("mngFee"));
+			param.setMngFee(mngFee);
+			map.put("mngFee",mngFee);
+			int mngType = Integer.parseInt(req.getParameter("mngType"));
+			param.setMngType(mngType);
+			map.put("mngType", mngType);
+		}else if("1".equals(type)){
+			map.put("type", type);
+			int checkType = Integer.parseInt(req.getParameter("checkType"));
+			map.put("checkType", checkType);
+			param.setCheckType(checkType);
+		}else if("2".equals(type)){
+			map.put("type", type);
+			int loanType = Integer.parseInt(req.getParameter("loanType"));
+			map.put("loanType", loanType);
+			param.setLoanType(loanType);
+		}else if("3".equals(type)){
+			map.put("type", type);
+			int interestType = Integer.parseInt(req.getParameter("interestType"));
+			map.put("interestType",interestType);
+			param.setInterestType(interestType);
+		}
+		
 		int result=0;
 		if(null != entity){
-			Map<String, Object> map = new HashMap<String,Object>();
-			map.put("type", type);
-			map.put("holdDay", param.getHoldDay());
-			map.put("rangeDay", param.getRangeDay());
-			map.put("interestDay", param.getInterestDay());
-			map.put("mngFee", param.getMngFee());
-			map.put("mngType", param.getMngType());
-			map.put("checkType", param.getCheckType());
-			map.put("loanType", param.getLoanType());
-			map.put("interestType", param.getInterestType());
-			result = creditorService.updateCreditor(map);
+			result = creditorService.updateCreditor(map,logEntity,sIpInfo);
 		}else{
-			result = creditorService.inserCreditor(param);
+			result = creditorService.inserCreditor(param,logEntity,sIpInfo);
 		}
 		return result;
 	}
@@ -103,18 +151,33 @@ public class CreditorController {
 	 */
 	@RequestMapping("/addCashExam")
 	@ResponseBody
-	public int addCashExam(WithdrawalsFeeEntity param){
+	public int addCashExam(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = HttpSessionUtil.getSession(req);
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=60103(提现审核)
+		//optID=6010301(审核)
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(60103);
+		logEntity.setlOptId(6010301);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		
+		WithdrawalsFeeEntity param = new WithdrawalsFeeEntity();
 		List<WithdrawalsFeeEntity> entity = financialSettingService.selectWithdrawalsFee();
-		InsertAdminLogEntity log = new InsertAdminLogEntity();
-		String[] sIpInfo={"",""};
+		int check_Type = Integer.parseInt(req.getParameter("check_Type"));
+		param.setCheck_Type(check_Type);
 		int result=0;
 		if(entity.size()>0){
 			for(WithdrawalsFeeEntity item:entity){
-				item.setCheck_Type(param.getCheck_Type());
-				result = financialSettingService.updateWithdrawalsFee(item,log,sIpInfo);
+				item.setCheck_Type(check_Type);
+				result = financialSettingService.updateWithdrawalsFee(item,logEntity,sIpInfo);
 			}
 		}else{
-			result = financialSettingService.insertWithdrawalsFee(param,log,sIpInfo);
+			result = financialSettingService.insertWithdrawalsFee(param,logEntity,sIpInfo);
 		}
 		return result;
 	}

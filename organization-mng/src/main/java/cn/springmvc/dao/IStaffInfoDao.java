@@ -1,10 +1,9 @@
 package cn.springmvc.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
-
-import cn.springmvc.model.PostInfo;
 import cn.springmvc.model.StaffInfo;
 
 
@@ -19,15 +18,6 @@ public interface IStaffInfoDao {
 	
 	
 	
-	/***
-	 * 根据条件获取员工列表
-	 * @param name					员工姓名
-	 * @param contactPhone			员工联系电话
-	 * @param idCard				身份证号码	
-	 * @param postId				职务
-	 * @return
-	 */
-	public List<StaffInfo> getListByParam(PageEntity pageEntity);
 	
 	
 	
@@ -61,6 +51,9 @@ public interface IStaffInfoDao {
 	 * @return
 	 */
 	public int quit(StaffInfo info);
+
+
+
 	
 	
 }

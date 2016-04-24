@@ -3,19 +3,20 @@ package product_p2p.kit.RSA;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+
 import javax.crypto.Cipher;
 
 import org.apache.commons.codec.binary.Base64;
@@ -194,7 +195,7 @@ public class RSAPlugn implements Serializable{
 			result = out.toByteArray();
 			out.close();
 			logger.debug("公钥解密-私钥加密-解密\t:"+new String(result));
-			return new String(result);
+			return new String(result,"utf-8");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("公钥解密-解密异常");
@@ -260,7 +261,7 @@ public class RSAPlugn implements Serializable{
 			
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			byte[] sources = Base64.decodeBase64(source);
-			int offSet = 0;
+			int offSet = 0;	
 			byte[] chche;
 			int i = 0;
 			while (sources.length - offSet > 0) {
@@ -276,8 +277,9 @@ public class RSAPlugn implements Serializable{
 			result = out.toByteArray();
 			out.close();
 			logger.debug("私钥加密、公钥解密-解密\t:"+new String(result));
-			return new String(result);
+			return new String(result,"utf-8");
 		} catch (Exception e) {
+ 			e.printStackTrace();			
 			logger.warn("私钥解密-解密异常");
 		}
 		return null;
@@ -355,9 +357,31 @@ public class RSAPlugn implements Serializable{
 	/***
 	 * 获取publicKey
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
 	/*public String publicKey(){
 		return new String(Base64.encodeBase64(rsaPublicKey.getEncoded()));
 	}*/
+	
+	
+	
+	
+	
+	
+	public static void main(String[] args) throws UnsupportedEncodingException {
+		//KeyPair keyPair = RSAPlugn.GetKeyPair();
+		//System.out.println("public key"+new String(Base64.encodeBase64(keyPair.getPublic().getEncoded())));
+		//System.out.println("private key"+new String(Base64.encodeBase64(keyPair.getPrivate().getEncoded())));
+		//System.out.println(RSAPlugn.encryptionByPublicKey("Hello World","MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCF43+ty46WB80nkkzTyakaGeYLrMdohNrKFrWiyxD6FXPa44vM5mUvUuQRrz58FCBDZGTYNhKviRT7OSurDN6VYylp6Wvn7HXWc/xYrWQIxDMEjMKGcIKslR6wWGlr6QGew0tFypDuav9SEDoaMeqA7757x4WoAOB1aCeBcuqz3wIDAQAB"));
+		String result = RSAPlugn.decryptByPrivateKey(
+				"Gf1ZBS0nI5P56d2oHw/merrfQqddwXUcTGiSymiq/XJ+SgkyZlFNib37FIPnc3evtBJ90uL939b+UskPveBi85++BoAzOQT8cph4pIcqLr0lx+P2jmrk0U9rsCMfARcgOcI9QDyx1skqaF8O/HoPF8A1H46F6dnc/0w3PdoAz1wWkCa/P5Cz/z8CzonBBLBouNgelJZFop/Ik6wnrUaUIY3qRhfrFafjqiBYvceA4lwaZ+QBRar+I1z559VrSRBMOnoKulA04V0VdAyPcdevvxmACKy4wkcx9Y0LA6QM4J7AEMYrhJFvw/TisXsCdQxW4doHoL2cq39vFhFo2eFw9wcjH5+gLA9CACeytw14DekFjVLT6vPU+UGelTfcmHIes6Iy97Oa2D6saFb3Ru6ZhZEG1BRyJEDsyHl8c5Zuahj23h/bkBv378mgXwMhknwfvrfEf/ghal5ophtjuojesPGWvmgo5r8vcMx45snvx2s8kfXFtyf+ZuTOYlGyBfTQ",
+				"MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAIXjf63LjpYHzSeSTNPJqRoZ5gusx2iE2soWtaLLEPoVc9rji8zmZS9S5BGvPnwUIENkZNg2Eq+JFPs5K6sM3pVjKWnpa+fsddZz/FitZAjEMwSMwoZwgqyVHrBYaWvpAZ7DS0XKkO5q/1IQOhox6oDvvnvHhagA4HVoJ4Fy6rPfAgMBAAECgYBIsbe+Jhp5zSyPgrih+QkOeedUiXAPiKq+NMxT4kuKbSFlREzAaIuhwTDBhVO4zLijvpueZOWKVzSEHoteKPOkgW9nhLBMAwGTuJmFZutZiMg8W7zQuPl1N38XoAE4q2vZ9thpILIOzzjHm7kbpNFQf46heM8ytFE9tUqGsQ6HsQJBAMApl2ermUDYUmI5jwRy54nPAoU9ffeGxEr6+gNh9RYDyuhNxLGItOrHDQ1L2TN3zxMtVJrHmAnAqa+i/ixcFhcCQQCyXgbWrP/jlXefKKdllQQaoPrXodYbFK8FqvAsv6FETOCbLhTVwWnJuKJVjcJi+BlgT4+gtku9gu9hO6BAKrV5AkADZrkPVLI5u5p5spsdcQs4HTnmMdhw8Sm4Sgjy1mEIKrkEs5uvqMPLBArvGVCW4KABruO4eZ/vTEG0oiXtkxOxAkAw969Y8FWv3TDh+P873BUsWlWDLWLiPGNwYuVc458aaSCgeZ4usNKiFpY6dpiPIx2UW0NLE8DnXjLptrzf4NnBAkBj1XlW3ToLYuytLv0gsuG+4wIs1yu5C5BF4DelSxAcuw+rLNWC/z5ztw7jiT7S1mAx+z/JW6S5xUS+RawsuMV/");
+		System.out.println(URLDecoder.decode(result,"utf-8"));
+	}
+	
+	
+	
+	
+	
 	
 }

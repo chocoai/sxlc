@@ -75,11 +75,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus" onclick="manageAdd()">账户信息查看</button>
-								<button class="obtn glyphicon glyphicon-pencil" onclick="manageMod()">充值</button>
-								<button class="obtn" onclick="checkDetail()">提现</button>
-								<button class="obtn" onclick="manageAdmain()">担保项目设置</button>
-								<button class="obtn" onclick="checkProject()">自动代偿设置</button>
+								<button class="obtn glyphicon glyphicon-plus" onclick="checkaccountinfo()">导出</button>
+								<!-- <button class="obtn glyphicon glyphicon-pencil" onclick="grq-recharge()">充值</button>
+								<button class="obtn" onclick="grq-withdraw()">提现</button>
+								<button class="obtn" onclick="g-projectpsettings()">担保项目设置</button>
+								<button class="obtn" onclick="autocompensetting()">自动代偿设置</button> -->
 							</div>
 						</div>
 						
@@ -109,15 +109,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td>借款金额</td>
 										<td>项目保证金</td>
 										<td>担保登记时间</td>
-										<td>
-											<span>
-												<select>
-													<option>请选择</option>
-													<option>是</option>
-													<option>否</option>
-												</select>
-											</span>
-										</td>
+										<td>是</td>
 										<td>代偿金额</td>
 										<td>最近代偿时间</td>
 									</tr>
@@ -131,74 +123,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			
-			
-			<!-- <!-- 查看担保机构信息部分开始
-			<div class="w-content" id="checkDetail">
-				<form action="">
-					<table>
-						<tr>
-							<td><label>担保机构名称</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>营业执照号码</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>组织机构代码</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>税务登记号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>经营场所</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>注册资金</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>法人姓名</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>法人手机号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>法人身份照号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>注册地址</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>注册资本来源</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>经营范围</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>公司简介</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>联系人姓名</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>联系人手机号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>联系人邮箱</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>绑定后台管理员</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>设置的担保配置信息</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>上传的担保证件</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-					</table>
-				</form>
-			</div>
-			查看担保机构信息部分结束 --> -->
 			<!-- 尾部 -->
 			
 		</div>
@@ -207,7 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/recommend/guarantee-manage.js"></script>
+	<script type="text/javascript" src="js/recommend/guarantee-record-query.js"></script>
 	<script type="text/javascript">
 		$('#table_id').DataTable({
 			autoWidth : false,

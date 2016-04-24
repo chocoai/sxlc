@@ -7,19 +7,37 @@
 
 var STAFF_NUM = 0;  //记录点击添加次数
 
+
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#tb-manage-in').DataTable().ajax.reload();
+	
+});
+
 $(function() {
 	adminList();	//管理员列表
 	
+	//单选
 	$('#tb-manage-in,#staffListTb tbody').on( 'click', 'tr', function () {
-		if ( $(this).hasClass('selected') ) {
-			$(this).removeClass('selected');
-		}
-		else {
-			$('tr.selected').removeClass('selected');
-			$(this).addClass('selected');
-		}
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
 	} );
-	$('#tb-manage-in tr').slice(1).each(function(g){
+	
+	/*$('#tb-manage-in tr').slice(1).each(function(g){
 		var p = this;
 		$(this).children.silce(1).click(function(){
 			$($(p).children()[0]).children().each(function(){
@@ -32,7 +50,7 @@ $(function() {
 				}
 			});
 		});
-	});
+	});*/
 });
 
 
@@ -61,9 +79,23 @@ function adminList(){
 		            "url": appPath+"/getAdminList.do",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {  
-		                var level1 = $('#level1').val();  
-		                //添加额外的参数传给服务器  
-		                d.extra_search = level1;  
+		            	var adminNo = $("#adminNo").val();//管理员编码
+		            	var user1 =  $("#user1").val();//用户
+		            	var startTime =  $("#start").val();//开始时间
+		            	var endTime =  $("#end").val();//结束时间
+		            	var encrypt = new JSEncrypt();
+		            	encrypt.setPublicKey(publicKey_common);
+		            	//result 为加密后参数
+		            	adminNo = encrypt.encrypt(adminNo);
+		            	user1 = encrypt.encrypt(user1);
+		            	startTime = encrypt.encrypt(startTime);
+		            	endTime = encrypt.encrypt(endTime);
+		            	
+		            	
+		            	d.adminName=adminNo;
+		            	d.userName1=user1;
+		            	d.startTime=startTime;
+		            	d.endTime=endTime;
 		            }  
 		        },
 		        columns: [  
@@ -92,19 +124,23 @@ function adminList(){
 		                  { title:"状态","mRender":function(data, type, full){
 		                	  var sReturn ="";
 		                	  if(full.adminStatu==0){
-		                		  sReturn = "<font color='red'>无效</font>";
-		                	  }else{
 		                		  sReturn = "<font >有效</font>";
+		                	  }else{
+		                		  sReturn = "<font color='red'>无效</font>";
 		                	  }
 		                  		return sReturn;
 		                  	}
 		                  }, 
 		                  { title:"操作","mRender": function(data, type, full){
 		                	  var sReturn ="";
-		                	  if(full.adminStatu==0){
-		                		  sReturn = "<a href='javascript:stopOrStart("+full.id+",1);' class='btn-enable'>启用</a>";
+		                	  if(on_off==true){
+		                		  if(full.adminStatu==0){
+			                		  sReturn = "<a href='javascript:stopOrStart("+full.id+",1);' class='btn-enable'>停用</a>";
+			                	  }else{
+			                		  sReturn = "<a href='javascript:stopOrStart("+full.id+",0);' class='btn-disable'>启用</a>";
+			                	  }
 		                	  }else{
-		                		  sReturn = "<a href='javascript:stopOrStart("+full.id+",0);' class='btn-disable'>停用</a>";
+		                		  sReturn = "<a href='javascript:void(0);' class='btn-disable'></a>";
 		                	  }
 		                  	
 		                		  return sReturn;
@@ -239,10 +275,15 @@ function manageMod(title,type){
 	var adminName ="";
 	var adminId=0;
 	var obj = null;
+	var staffId= 0;
+	var adminRemark ="";
 	if(!isEmptyObject(rowdata[0])){ //判断是否选择
 		adminName=rowdata[0].adminName;
 		obj = rowdata[0].personalBaseInfo;
 		adminId= rowdata[0].id;
+		staffId = rowdata[0].staffId;
+		adminRemark= rowdata[0].adminRemark;
+		
 	}else{
 		layer.alert("请选择要处理的事务！",{icon:0});
 		return;
@@ -258,6 +299,8 @@ function manageMod(title,type){
 	$("input[name=userName]").val(obj.personalName).attr("disabled",true);
 	$("input[name=adminName]").val(adminName).attr("disabled",true);
 	$("#adminName").val(adminName);
+	$("input[name=staffId]").val(staffId);
+	$("#adminRemark").val(adminRemark);
 	$("#adminRole").append("<option selected='selected' value='"+rowdata[0].roleId+"'>"+rowdata[0].roleName+"</option>");
 	//赋值
 	layer.open({
@@ -353,16 +396,22 @@ function showMess(id){
 }
 /**
  * 
- * @param id   角色id
- * @param statu 角色状态
+ * @param id   管理员id
+ * @param statu 管理员状态
  */
 function stopOrStart(id,statu){
 	var ms ="";
-	if(statu==0){
+	if(statu==1){
 		ms="确定停用？";
 	}else{
 		ms="确定启用？";
 	}
+	var status=statu;
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publicKey_common);
+	//result 为加密后参数
+	var id = encrypt.encrypt(id+"");
+	var statu = encrypt.encrypt(statu+"");
 	layer.confirm(ms, {
 		  btn: ['确定', '取消']
 	}, function(index, layero){
@@ -383,15 +432,15 @@ function stopOrStart(id,statu){
 				//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
 				if(data == 0){
 					//执行完关闭
-					if(statu==0){
-						alert("停用成功。");
+					if(status==1){
+						layer.alert("停用成功。",{icon:1});  
 					}else{
-						alert("启用成功。");
+						layer.alert("启用成功。",{icon:1});
 					}
 				  	layer.close(index);
 				  	setTimeout('location.reload()',500);
 				}else if(data == -1){
-					if(statu==0){
+					if(status==1){
 						alert("停用失败！");
 					}else{
 						alert("启用失败！");
@@ -461,9 +510,10 @@ function staffList(){
 		            "url": appPath+"/role/getAllStaff.do?sType=1",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {  
-//		                var level1 = $('#level1').val();  
-//		                //添加额外的参数传给服务器  
-//		                d.extra_search = level1;  
+		            	d.personalName = "";  
+		            	d.personalPhone="";
+		            	d.personalIDCard="";
+		            	d.postId="";
 		            }  
 		        },
 		        columns: [  
@@ -570,6 +620,17 @@ function sumitAdmin(){
 		return;
 	}
 	var adminRemark = $("#adminRemark").val();
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publicKey_common);
+	
+	
+	staffId = encrypt.encrypt(staffId+"");
+	adminName = encrypt.encrypt(adminName);
+	adminPwd = encrypt.encrypt(adminPwd);
+	type = encrypt.encrypt(type+"");
+	adminId = encrypt.encrypt(adminId+"");
+	adminRole = encrypt.encrypt(adminRole+"");
+	adminRemark = encrypt.encrypt(adminRemark);
 	$.ajax( {  
 		url:appPath+"/saveOrEditAdmin.do",
 		data:{

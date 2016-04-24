@@ -1,9 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+ 
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -38,7 +34,7 @@ public class NewEventDaoImpl extends SqlSessionDaoSupport implements NewEventDao
 	}
 
 	@Override
-	public int deleteNewEventByID(int id) {
+	public int deleteNewEventByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("newEvent.deleteNewEventByID", id);

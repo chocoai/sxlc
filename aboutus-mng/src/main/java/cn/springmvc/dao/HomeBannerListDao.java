@@ -1,7 +1,6 @@
 package cn.springmvc.dao;
 
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 
 import product_p2p.kit.pageselect.PageEntity;
 
@@ -31,7 +30,7 @@ public interface HomeBannerListDao {
 	 * @param id 首页轮播图id
 	 * @return  homeBannerEntity 
 	 */
-	public  HomeBannerEntity  selectHomeBannerByID(int id);
+	public  HomeBannerEntity  selectHomeBannerByID(long id);
 	/**
 	 * 前台查询首页轮播图 
 	 * @return

@@ -31,7 +31,7 @@ public interface PlatformAnnouncementListDao {
 	 * @param id 平台公告id
 	 * @return  PlatformAnnouncementEntity 
 	 */
-	public  PlatformAnnouncementEntity  selectPlatformByID(int id);
+	public  PlatformAnnouncementEntity  selectPlatformByID(long id);
 	/**
 	 * 首页显示平台公告
 	 * @param   

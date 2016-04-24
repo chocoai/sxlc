@@ -23,6 +23,8 @@
 		<result						column="moduleFunction"				property="moduleFunction"/>
 		<result						column="moduleindex"				property="moduleindex"	/>
 		<result						column="moduleType"					property="moduleType"	/>
+		<result						column="dowmModuleNum"				property="dowmModuleNum"	/>
+		<result						column="preModuleName"				property="preModuleName"	/>
 	</resultMap>
 <!--操作	--> 
 	<resultMap 						type="cn.springmvc.model.Operation" 	id="operationinfo"	>
@@ -47,10 +49,15 @@
 	
 	<!-- 获取模块列表 -->
 	<select id="getModule"  	resultMap="moduleinfo">
-		select moduleID,moduleLevel,moduleName,prevModuleID,modulePic1,modulePic2,
-		moduleFunction,moduleindex,moduleType from module ORDER BY moduleID ASC
+		SELECT m.*,(SELECT COUNT(1) FROM module mn WHERE mn.prevModuleID = m.moduleID) AS dowmModuleNum,prem.moduleName AS preModuleName
+		FROM module m   LEFT JOIN module prem ON prem.moduleID = m.prevModuleID  ORDER BY m.moduleID ASC
 	</select>
 	
+	<!-- 获取第三级模块列表 -->
+	<select id="getModuleThree"  	resultMap="moduleinfo">
+		SELECT m.*,(SELECT COUNT(1) FROM module mn WHERE mn.prevModuleID = m.moduleID) AS dowmModuleNum,prem.moduleName AS preModuleName
+		FROM module m   LEFT JOIN module prem ON prem.moduleID = m.prevModuleID WHERE m.moduleID =3  ORDER BY m.moduleID ASC
+	</select>
 	
 	<!-- 获取操作列表 -->
 	<select id="getOperation" 	resultMap="operationinfo">
@@ -62,16 +69,16 @@
 	<select id="getListByParam" 	parameterType="product_p2p.kit.pageselect.PageEntity" 	resultMap="roleinfo">
 		select roleID,Role_No,Role_Name,Add_Date,Role_Remark,Role_Statu from Role_Info
 		<where>
-			<if test="map.roleNo != null">
+			<if test="map!=null and  map.roleNo != null">
 				Role_No = #{map.roleNo}
 			</if>
-			<if test="map.roleName != null">
+			<if test="map!=null and  map.roleName != null">
 				Role_Name = #{map.roleName}
 			</if>
-			<if test="map.startTime != null">
+			<if test="map!=null and  map.startTime != null">
 				Add_Date between #{map.startTime} and #{map.endTime}
 			</if>
-			<if test="map.statu != null">
+			<if test="map!=null and  map.statu != null">
 				Role_Statu = #{map.statu}
 			</if>
 		</where>

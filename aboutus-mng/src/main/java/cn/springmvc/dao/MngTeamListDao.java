@@ -1,7 +1,6 @@
 package cn.springmvc.dao;
 
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 
 import product_p2p.kit.pageselect.PageEntity;
 
@@ -32,5 +31,5 @@ public interface MngTeamListDao {
 	 * @param id 管理团队id
 	 * @return  mngTeamEntity 
 	 */
-	public  MngTeamEntity  selectMngTeamByID(int id);
+	public  MngTeamEntity  selectMngTeamByID(long id);
 }

@@ -5,15 +5,21 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.CreditLevelEntity;
 import cn.springmvc.model.MemberLevelEntity;
 import cn.springmvc.service.LevelSetService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 /** 
 * @author 唐国峰
@@ -42,16 +48,16 @@ public class MemberLevelController {
 	
 	/** 
 	 * @author 唐国峰 
-	 * @Description: 
-	 * @param start
-	 * @param length
+	 * @Description: 获取会员等级信息
 	 * @return PageEntity  
 	 * @date 2016-4-14 下午12:31:25
 	 * @throws 
 	 */
 	@RequestMapping("/getMemberLevel")
 	@ResponseBody
-	public PageEntity getMemberLevel(int start,int length){
+	public PageEntity getMemberLevel(HttpServletRequest req){
+		int start = Integer.parseInt(req.getParameter("start"));
+		int length = Integer.parseInt(req.getParameter("length"));
 		PageEntity pager = new PageEntity();
 		Map<String,Object> param=new HashMap<String,Object>();
 		pager.setMap(param);
@@ -64,16 +70,38 @@ public class MemberLevelController {
 	/** 
 	 * @author 唐国峰 
 	 * @Description: 添加会员等级
-	 * @param entity
 	 * @return int  
 	 * @date 2016-4-14 下午3:03:55
 	 * @throws 
 	 */
 	@RequestMapping("/addMemberLevel")
 	@ResponseBody
-	public int addMemberLevel(MemberLevelEntity entity){
+	public int addMemberLevel(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = HttpSessionUtil.getSession(req);
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=605(会员等级设置)
+		//optID=60501(添加)
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(605);
+		logEntity.setlOptId(60501);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		
+		MemberLevelEntity entity = new MemberLevelEntity();
+		String levelMark = req.getParameter("levelMark");
+		entity.setLevelMark(levelMark);
+		int scoreMin = Integer.parseInt(req.getParameter("scoreMin"));
+		entity.setScoreMin(scoreMin);
+		int scoreMax = Integer.parseInt(req.getParameter("scoreMax"));
+		entity.setScoreMax(scoreMax);
+		String levelDetail = req.getParameter("levelDetail");
+		entity.setLevelDetail(levelDetail);
 		int result=0;
-		result = levelSetService.insertMemberLevel(entity);
+		result = levelSetService.insertMemberLevel(entity,logEntity,sIpInfo);
 		return result;
 	}
 	
@@ -87,11 +115,26 @@ public class MemberLevelController {
 	 */
 	@RequestMapping("/delMemberLevel")
 	@ResponseBody
-	public int delMemberLevel(String id){
+	public int delMemberLevel(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = HttpSessionUtil.getSession(req);
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=605(会员等级设置)
+		//optID=60502(删除)
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(605);
+		logEntity.setlOptId(60502);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		
+		String id = req.getParameter("id");
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("id", id);
 		int result=0;
-		result = levelSetService.deleteMemberLevelById(map);
+		result = levelSetService.deleteMemberLevelById(map,logEntity,sIpInfo);
 		return result;
 	}
 	
@@ -122,7 +165,9 @@ public class MemberLevelController {
 	 */
 	@RequestMapping("/getCreditLevel")
 	@ResponseBody
-	public PageEntity getCreditLevel(int start,int length){
+	public PageEntity getCreditLevel(HttpServletRequest req){
+		int start = Integer.parseInt(req.getParameter("start"));
+		int length = Integer.parseInt(req.getParameter("length"));
 		PageEntity pager = new PageEntity();
 		Map<String,Object> param=new HashMap<String,Object>();
 		pager.setMap(param);
@@ -143,13 +188,37 @@ public class MemberLevelController {
 	 */
 	@RequestMapping("/addCreditLevel")
 	@ResponseBody
-	public int addCreditLevel(CreditLevelEntity entity){
+	public int addCreditLevel(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = HttpSessionUtil.getSession(req);
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=606(会员信用等级配置)
+		//optID=60601(添加)
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(606);
+		logEntity.setlOptId(60601);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		
+		CreditLevelEntity entity = new CreditLevelEntity();
+		String levelMark = req.getParameter("levelMark");
+		entity.setLevelMark(levelMark);
+		int creditScoreMin = Integer.parseInt(req.getParameter("creditScoreMin"));
+		entity.setCreditScoreMin(creditScoreMin);
+		int creditScoreMax = Integer.parseInt(req.getParameter("creditScoreMax"));
+		entity.setCreditScoreMax(creditScoreMax);
+		String levelDetail = req.getParameter("levelDetail");
+		entity.setLevelDetail(levelDetail);
+		//查询数据库中已有最大的分数
 		int maxScore = levelSetService.selectMaxScore();
 		if(maxScore>entity.getCreditScoreMin()){
 			return -1;
 		}
 		int result=0;
-		result = levelSetService.insertCreditLevel(entity);
+		result = levelSetService.insertCreditLevel(entity,logEntity,sIpInfo);
 		return result;
 	}
 	
@@ -164,11 +233,26 @@ public class MemberLevelController {
 	 */
 	@RequestMapping("/delCreditLevel")
 	@ResponseBody
-	public int delCreditLevel(String id){
+	public int delCreditLevel(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = HttpSessionUtil.getSession(req);
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=606(会员信用等级配置)
+		//optID=60602(删除)
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(606);
+		logEntity.setlOptId(60602);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		
+		String id = req.getParameter("id");
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("id", id);
 		int result=0;
-		result = levelSetService.deleteCreditLevelById(map);
+		result = levelSetService.deleteCreditLevelById(map,logEntity,sIpInfo);
 		return result;
 	}
 }

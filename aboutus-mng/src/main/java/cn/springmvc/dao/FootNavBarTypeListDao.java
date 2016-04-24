@@ -31,5 +31,5 @@ public interface FootNavBarTypeListDao {
 	 * @param id 底部导航条类型ID
 	 * @return  FootNavBarTypeEntity 
 	 */
-	public  FootNavBarTypeEntity  selectFootNavBarTypeByID(int id);
+	public  FootNavBarTypeEntity  selectFootNavBarTypeByID(long id);
 }

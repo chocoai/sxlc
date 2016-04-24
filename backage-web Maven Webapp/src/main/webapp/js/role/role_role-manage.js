@@ -4,6 +4,7 @@
  * 内容介绍：角色管理
  */
 $(function(){
+	validform5(".layui-layer-btn0","dataForm",false,3);
 	showRoleList();//显示角色列表
 	//模块全选 添加
 	$("[name='moduleCls']").change(function() {
@@ -28,50 +29,32 @@ $(function(){
 			var t = $(this).parent().parent().parent().parent().parent();
 			var a = t.find("[name='checkAutoCls']:checked");
 			if(a.length == 0){
-				t.prev("div").find("[name='moduleCls']").attr("checked",false);//prev("div").
+				t.prev("div").find("[name='moduleCls']").prop("checked",false);//prev("div").
 			}
 		}
 	});
-	//模块全选  修改
-	$("[name='moduleCls1']").change(function() {
-		if ($(this).prop("checked")) {
-			var obj = $(this).parent().parent().parent().parent().parent().nextAll().find("[name='checkAutoCls1']");
-			for ( var i = 0; i < obj.length; i++) {
-				if (!obj[i].checked) {
-					obj[i].checked = true;
-				} 
-			}
-		} else {
-			$(this).parent().parent().parent().parent().parent().nextAll().find("[name='checkAutoCls1']").attr("checked", false);
-		}
-		
-	});
-	//操作选择  修改
-	$(" [name='checkAutoCls1']").change(function() {
-		if ($(this).prop("checked")) {//$(this).is(":checked") == true
-			var t = $(this).parent().parent().parent().parent().parent();
-			t.prev("div").find("[name='moduleCls1']").prop("checked","checked");
-		}else{
-			var t = $(this).parent().parent().parent().parent().parent();
-			var a = t.find("[name='checkAutoCls1']:checked");
-			if(a.length == 0){
-				t.prev("div").find("[name='moduleCls1']").attr("checked",false);//prev("div").
-			}
-		}
-	});
-
+	//单选
 	$('#table_id tbody').on( 'click', 'tr', function () {
-		if ( $(this).hasClass('selected') ) {
-			$(this).removeClass('selected');
-		}
-		else {
-			$('tr.selected').removeClass('selected');
-			$(this).addClass('selected');
-		}
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
 	} );
-
 	
 	$(".obtn-role-add").on("click touchstart",function(){
+		 $("#roleName1").val(""); //角色名称
+		 $("#rolediscribe1").val("");	//角色描述
+		 $("#addOrUpdate").val(0);
+		clearCheck();
 		layer.open({
 		    type: 1,
 		    area: ['980px', '600px'], //高宽
@@ -80,39 +63,10 @@ $(function(){
 		    btn:['确定', '取消']
 			  ,yes: function(index, layero){ //或者使用btn1
 			    //确定的回调
-				  var roleName = $("#roleName").val(); //角色名称
-				  var rolediscribe =  $("#rolediscribe").val();	//角色描述
-					var auth = "";
-					auth = checkboxStr("moduleCls","checkAutoCls");
-					$.ajax({
-		 				url : appPath+"/saveRole.do",
-		 				data:{
-		 					roleName:roleName,
-		 					rolediscribe:rolediscribe,
-		 					auth:auth
-		 				},
-		 				type : "post",
-		 				dataType:"text",
-						error : function() {
-							alert('操作失败！');
-							return;
-						},
-						success : function(data) {
-							//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
-							if(data == 0){
-								//执行完关闭
-								layer.alert("添加成功。",{icon:1});  
-							  	layer.close(index);
-							  	setTimeout('location.reload()',500);
-							}else if(data == -1){
-								layer.alert("角色名称已存在！",{icon:0});  
-							}
-						},complete:function(){	//完成过后清空数据
-							clearCheck("moduleCls","checkAutoCls");
-						}
-		 			});
+				  $("#dataForm").submit();
 			  },cancel: function(index){//或者使用btn2（concel）
 			  	//取消的回调
+				  $("#dataForm").Validform().resetStatus();
 			  }
 		});
 	});
@@ -122,7 +76,7 @@ $(function(){
 	 */
 	$(".obtn-role-mod").on("click touchstart",function(){
 		//获得选取的对象
-		
+		clearCheck();
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();
 		var roleId =0;
 		if(!isEmptyObject(rowdata[0])){ //判断是否选择
@@ -131,6 +85,11 @@ $(function(){
 			layer.alert("请选择要处理的事务！",{icon:0});  
 			return;
 		}
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publicKey_common);
+		//result 为加密后参数
+		$("#roleId").val(roleId);
+		roleId = encrypt.encrypt(roleId+"");
 		$.ajax({
 				url : appPath+"/getRoleMess.do",
 				data:{
@@ -146,18 +105,19 @@ $(function(){
 				//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
 				if(data!=null && data!=""){
 					var roleInfo = data.roleInfo;
-				    $("input[name=modify_roledis]").val(roleInfo[0].roleRemark);
-				    $("input[name=modify_roleName]").val(roleInfo[0].roleName);
+				    $("#roleName1").val(roleInfo[0].roleName);
+				    $("#rolediscribe1").val(roleInfo[0].roleRemark);
+				    $("#addOrUpdate").val(1);
 				    
 				    //模块操作权限
 				    var str = data.roleAuth;
 				    
-				    var moduleCls = $(".role-mod input[name='moduleCls1']");
+				    var moduleCls = $("input[name='moduleCls']");
 					moduleCls.each(function(index){
 						var moduVal = $(this).val();
 						$.each(str, function(k, list) {
 							if(moduVal == list.moduleId){
-								$("#moduleCls"+moduVal+"").attr("checked",true);
+								$("#moduleCls"+moduVal+"").prop("checked",true);
 							//	console.log("模块："+moduVal);
 								return true;
 							}
@@ -165,12 +125,12 @@ $(function(){
 							
 					});
 					
-					var checkAutoCls = $(".role-mod input[name='checkAutoCls1']");
+					var checkAutoCls = $("input[name='checkAutoCls']");
 					checkAutoCls.each(function(index){
 						var moduVal = $(this).val();
 						$.each(str, function(k, list) {
 							if(moduVal == list.optId){
-								$("#checkAutoCls"+moduVal+"").attr("checked",true);
+								$("#checkAutoCls"+moduVal+"").prop("checked",true);
 							//	console.log("操作："+moduVal);
 								return true;
 							}
@@ -178,8 +138,6 @@ $(function(){
 						
 					});
 				}
-			},complete:function(){	//完成过后清空数据
-				clearCheck("moduleCls","checkAutoCls");
 			}
 		});
 		
@@ -188,43 +146,13 @@ $(function(){
 		    type: 1,
 		    area: ['980px', '600px'], //高宽
 		    title: "修改角色",
-		    content: $(".role-mod"),//DOM或内容
+		    content: $(".role-add"),//DOM或内容
 		    btn:['确定', '取消']
 			  ,yes: function(index, layero){ //或者使用btn1
-				//确定的回调
-				  var roleName = $("input[name=modify_roleName]").val(); //角色名称
-				  var rolediscribe =  $("input[name=modify_roledis]").val();	//角色描述
-					var auth = "";
-					auth = checkboxStr("moduleCls1","checkAutoCls1");
-					$.ajax({
-						url : appPath+"/editRole.do",
-		 				data:{
-		 					roleId:roleId,
-		 					roleName:roleName,
-		 					rolediscribe:rolediscribe,
-		 					auth:auth
-		 				},
-		 				type : "post",
-		 				dataType:"text",
-						error : function() {
-							alert('操作失败！');
-							return;
-						},
-						success : function(data) {
-							//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
-							if(data == 0){
-								//执行完关闭
-								alert("修改成功。");
-								layer.alert("修改成功。",{icon:1});  
-							  	layer.close(index);
-							  	setTimeout('location.reload()',500);
-							}else if(data == -1){
-								layer.alert("角色名称已存在！",{icon:0});  
-							}
-						}
-		 			});
+				  $("#dataForm").submit();
 			  },cancel: function(index){//或者使用btn2（concel）
 			  	//取消的回调
+				  $("#dataForm").Validform().resetStatus();
 			  }
 		});
 	});
@@ -240,6 +168,10 @@ $(function(){
 			layer.alert("请选择要处理的事务！",{icon:0});  
 			return;
 		}
+		//result 为加密后参数
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publicKey_common);
+		roleId = encrypt.encrypt(roleId+"");
 		layer.confirm('确定删除该条信息？', {
 		  btn: ['确定', '取消']
 		}, function(index, layero){
@@ -320,19 +252,19 @@ function checkboxStr(moduName,checkName){
  * @param moduleCls 	//模块
  * @param checkAutoCls  //操作
  */
-function clearCheck(moduleCls,checkAutoCls){
-	var moduleList = document.getElementsByName(moduleCls);	//模块
-	$.each(moduleList,function(i,obj){
-		 if($(this).attr("checked")){
-			 $(this).removeAttr("checked");
-		 }
-	});
-	var operationList = document.getElementsByName(checkAutoCls);	//操作
-	$.each(moduleList,function(i,obj){
-		 if($(this).attr("checked")){
-			 $(this).removeAttr("checked");
-		 }
-	});
+function clearCheck(){
+	  var moduleCls = $("input[name='moduleCls']");
+		moduleCls.each(function(){
+			if($(this).prop("checked")==true){
+				$(this).prop("checked",false);
+			}
+		});
+		var checkAutoCls = $("input[name='checkAutoCls']");
+		checkAutoCls.each(function(index,list){
+			if($(this).prop("checked")==true){
+				$(this).prop("checked",false);
+			}
+		});
 }
 
 /**
@@ -362,11 +294,27 @@ function showRoleList(){
 		        ajax: {  
 		            "url": appPath+"/getRoleList.do",   
 		            "dataSrc": "results",   
-		            "data": function ( d ) {  
-		                var level1 = $('#level1').val();  
-		                //添加额外的参数传给服务器  
-		                d.extra_search = level1;  
-		            }  
+		            "data": function ( d ) {
+		            	var roleNo = $("#roleNo").val();//角色编码
+		            	var roleName =  $("#roleName").val();//角色
+		            	var startTime =  $("#start").val();//角色
+		            	var endTime =  $("#end").val();//角色
+		            	var encrypt = new JSEncrypt();
+		            	encrypt.setPublicKey(publicKey_common);
+		            	
+		            	//result 为加密后参数
+		            	roleNo = encrypt.encrypt(roleNo);
+		            	roleName = encrypt.encrypt(roleName);
+		            	startTime = encrypt.encrypt(startTime);
+		            	endTime = encrypt.encrypt(endTime);
+		            	
+		            	
+		            	//?roleNo="+roleNo+"&roleName="+roleName+"&startTime="+startTime+"&endTime="+endTime
+		            	d.roleNo=roleNo;
+		            	d.roleName=roleName;
+		            	d.startTime=startTime;
+		            	d.endTime=endTime;
+		            } 
 		        },
 		        columns: [  
 		                  {title:'<input type="checkbox" class="table-checkbox"  value="1" />',
@@ -387,20 +335,26 @@ function showRoleList(){
 		                  { title:"状态","mRender":function(data, type, full){
 		                	  var sReturn ="";
 		                	  if(full.roleStatu==0){
-		                		  sReturn = "<font color='red'>无效</font>";
-		                	  }else{
 		                		  sReturn = "<font >有效</font>";
+		                	  }else{
+		                		  sReturn = "<font color='red'>无效</font>";
+		                		 
 		                	  }
 		                  		return sReturn;
 		                  	}
 		                  }, 
 		                  { title:"操作","mRender": function(data, type, full){
 		                	  var sReturn ="";
-		                	  if(full.roleStatu==0){
-		                		  sReturn = "<a href=\"javascript:stopOrStart("+full.id+",1);\" class='btn-enable'>启用</a>";
+		                	  if(on_off==true){
+		                		  if(full.roleStatu==0){
+			                		  sReturn = "<a href=\"javascript:stopOrStart("+full.id+",1);\" class='btn-enable'>停用</a>";
+			                	  }else{
+			                		  sReturn = "<a href=\"javascript:stopOrStart("+full.id+",0);\" class='btn-disable'>启用</a>";
+			                	  }
 		                	  }else{
-		                		  sReturn = "<a href=\"javascript:stopOrStart("+full.id+",0);\" class='btn-disable'>停用</a>";
+		                		  sReturn = "<a href=\"javascript:void(0);\" class='btn-disable'></a>";
 		                	  }
+		                	  
 		                  		return sReturn;
 		                  	}
 		                }, 
@@ -420,12 +374,25 @@ function showRoleList(){
 		        oTableTools:{"sRowSelect":"multi"}
 	});
 }
+
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#table_id').DataTable().ajax.reload();
+	
+});
 /**
  * 显示角色权限信息
  * @param id 角色id
  */
 function showMess(id){
 	var html ="";
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publicKey_common);
+	//result 为加密后参数
+	var id = encrypt.encrypt(id+"");
 	//debugger;
 	$.ajax({
 		url : appPath+"/getLimitById.do",
@@ -474,11 +441,17 @@ function showMess(id){
  */
 function stopOrStart(id,statu){
 	var ms ="";
-	if(statu==0){
+	if(statu==1){
 		ms="确定停用？";
 	}else{
 		ms="确定启用？";
 	}
+	var status = statu;
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publicKey_common);
+	//result 为加密后参数
+	var id = encrypt.encrypt(id+"");
+	var statu = encrypt.encrypt(statu+"");
 	layer.confirm(ms, {
 		  btn: ['确定', '取消']
 	}, function(index, layero){
@@ -499,7 +472,7 @@ function stopOrStart(id,statu){
 				//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
 				if(data == 0){
 					//执行完关闭
-					if(statu==0){
+					if(status==1){
 						layer.alert("停用成功。",{icon:1});  
 					}else{
 						layer.alert("启用成功。",{icon:1});
@@ -507,7 +480,7 @@ function stopOrStart(id,statu){
 				  	layer.close(index);
 				  	setTimeout('location.reload()',500);
 				}else if(data == -1){
-					if(statu==0){
+					if(status==1){
 						layer.alert("停用失败!",{icon:0});  
 					}else{
 						layer.alert("启用失败!",{icon:0});
@@ -519,6 +492,84 @@ function stopOrStart(id,statu){
 		}, function(index){
 		  //按钮【按钮二】的回调
 		});
+}
+
+/**
+ * 添加或者修改角色
+ */
+function AddOrUpdateRole(){
+	//确定的回调
+	  var addOrUpdate = $("#addOrUpdate").val();
+	  var roleName = $("#roleName1").val(); //角色名称
+	  var rolediscribe =  $("#rolediscribe1").val();	//角色描述
+	  var auth = "";
+	  auth = checkboxStr("moduleCls","checkAutoCls");
+		if(auth=="" ||auth==null){
+			layer.alert("请选择角色权限。",{icon:2});  
+			return;
+		}
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publicKey_common);
+		//result 为加密后参数
+		roleName = encrypt.encrypt(roleName);
+		rolediscribe = encrypt.encrypt(rolediscribe);
+		if(addOrUpdate==0){//添加
+			$.ajax({
+ 				url : appPath+"/saveRole.do",
+ 				data:{
+ 					roleName:roleName,
+ 					rolediscribe:rolediscribe,
+ 					auth:auth
+ 				},
+ 				type : "post",
+ 				dataType:"text",
+				error : function() {
+					alert('操作失败！');
+					return;
+				},
+				success : function(data) {
+					//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
+					if(data == 0){
+						//执行完关闭
+						layer.alert("添加成功。",{icon:1});  
+						$(".layui-layer-btn1").click();
+					  	setTimeout('location.reload()',500);
+					}else if(data == -1){
+						layer.alert("角色名称已存在！",{icon:0});  
+					}
+				}
+ 			});
+		}else{//修改
+			var roleId = $("#roleId").val();
+			roleId = encrypt.encrypt(roleId+"");
+			$.ajax({
+				url : appPath+"/editRole.do",
+				data:{
+					roleId:roleId,
+					roleName:roleName,
+					rolediscribe:rolediscribe,
+					auth:auth
+				},
+				type : "post",
+				dataType:"text",
+				error : function() {
+					alert('操作失败！');
+					return;
+				},
+				success : function(data) {
+					//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
+					if(data == 1 ){
+						//执行完关闭
+						layer.alert("修改成功。",{icon:1});  
+						$(".layui-layer-btn1").click();
+					  	setTimeout('location.reload()',500);
+					}else if(data == -1){
+						layer.alert("角色名称已存在！",{icon:0});  
+					}
+				}
+			});
+		}
+		
 }
 /**
  * 判断对象是否为空

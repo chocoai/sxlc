@@ -88,4 +88,15 @@
 		select * from dept_info where dept_id = #{deptId}
 	</select>
 	
+	<!-- 获取所有部门列表 -->
+	<select id="findall" parameterType="Map" resultMap="deptResult">
+		select * from dept_info where Dept_Statu = 1
+	</select>
+	
+	<!-- 根据上级部门查询下级部门 -->
+	<select id="findDeptListByParantId" parameterType="Map" resultMap="deptResult">
+		select * from dept_info where PreDept_Id = #{parentId} and Dept_Statu = 1
+	</select>
+	
+	
 </mapper>

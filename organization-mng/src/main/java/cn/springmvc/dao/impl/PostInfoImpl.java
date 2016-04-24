@@ -15,12 +15,7 @@ import cn.springmvc.model.PostInfo;
 @Repository
 public class PostInfoImpl extends SqlSessionDaoSupport implements IPostInfoDao{
 
-	@Override
-	public List<PostInfo> getListByParam(PageEntity entity) {
-		
-		return getSqlSession().selectList("PostInfoDaoImpl.getListByParam",entity,new RowBounds(entity.getPageNum(),entity.getPageSize()));
-	}
-
+	
 	@Override
 	public int savePost(PostInfo info) {
 		
@@ -44,11 +39,17 @@ public class PostInfoImpl extends SqlSessionDaoSupport implements IPostInfoDao{
 
 		return getSqlSession().selectOne("PostInfoDaoImpl.ofPostInfo",info);
 	}
+	
+	
+	
+	
+	
+	
+	
 
 	@Autowired
 	@Override
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-		// TODO Auto-generated method stub
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
 	

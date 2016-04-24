@@ -33,7 +33,7 @@ public class MngTeamListDaoImpl extends SqlSessionDaoSupport implements MngTeamL
 		return mngTeamList;
 	}
  	@Override
-	public MngTeamEntity selectMngTeamByID(int id) {
+	public MngTeamEntity selectMngTeamByID(long id) {
  		
  		MngTeamEntity mngTeamEntity = null;
 		mngTeamEntity = (MngTeamEntity) getSqlSession().selectOne("mngTeam.selectMngTeamByID",id);

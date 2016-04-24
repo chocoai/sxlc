@@ -1,7 +1,5 @@
 package cn.springmvc.dao;
-
-import java.util.List;
-import java.util.Map;
+ 
 
 import cn.springmvc.model.RecruitmentEntity;
 /**
@@ -30,7 +28,7 @@ public interface RecruitmentDao {
 	 * @param id 招贤纳士id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteRecruitmentByID(int id);  
+	public  int  deleteRecruitmentByID(long id);  
 	/**
 	 * 停用或启用招贤纳士
 	 * @param entity 招贤纳士实体

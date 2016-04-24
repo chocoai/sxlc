@@ -30,7 +30,7 @@ public interface FootNavBarListDao {
 	 * @param id 底部导航条id
 	 * @return  FootNavBarEntity 
 	 */
-	public  FootNavBarEntity  selectFootNavBarByID(int id);
+	public  FootNavBarEntity  selectFootNavBarByID(long id);
 	/**
 	 * 前台显示底部导航条 
 	 * @return

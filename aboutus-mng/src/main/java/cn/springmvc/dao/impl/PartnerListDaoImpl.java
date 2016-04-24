@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -35,7 +34,7 @@ public class PartnerListDaoImpl extends SqlSessionDaoSupport implements Partners
 		return partnersList;
 	}  
 	@Override
-	public PartnersEntity selectPartnerByID(int id) {
+	public PartnersEntity selectPartnerByID(long id) {
 		
 		PartnersEntity partnersEntity = null;
 		partnersEntity = (PartnersEntity) getSqlSession().selectOne("Mapper.selectPartnersByID",id);

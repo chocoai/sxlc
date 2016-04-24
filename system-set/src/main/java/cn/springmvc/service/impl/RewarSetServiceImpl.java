@@ -9,11 +9,13 @@ import javax.annotation.Resource;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
 import cn.springmvc.dao.impl.HandleQuickRechargeFeeDaoImpl;
 import cn.springmvc.dao.impl.HandleRewarSetDaoImpl;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
 import cn.springmvc.dao.impl.SelectQuickRechargeFeeDaoImpl;
 import cn.springmvc.dao.impl.SelectRewarSetDaoImpl;
@@ -32,7 +34,8 @@ public class RewarSetServiceImpl implements
 	private SelectRewarSetDaoImpl  selectRewarSetDaoImpl;
 	@Resource(name="handleRewarSetDaoImpl")
 	private HandleRewarSetDaoImpl  handleRewarSetDaoImpl;
-
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	@Override
 	public List<RewardSetEntity> selectRewarSetByType(PageEntity page) {
 		// TODO Auto-generated method stub return null;
@@ -49,24 +52,27 @@ public class RewarSetServiceImpl implements
 
 
 	@Override
-	public int insertRewarSet(RewardSetEntity rewardSetEntity) {
-		
+	public int insertRewarSet(RewardSetEntity rewardSetEntity,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("添加提奖设置:"+rewardSetEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleRewarSetDaoImpl.insertRewarSet(rewardSetEntity);
 	}
 
 
 	@Override
-	public int updateRewarSet(RewardSetEntity rewardSetEntity) {
-		
+	public int updateRewarSet(RewardSetEntity rewardSetEntity,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail(" 修改提奖设置 :"+rewardSetEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleRewarSetDaoImpl.updateRewarSet(rewardSetEntity);
 	}
 
 
 	@Override
-	public int deleteRewarSet(RewardSetEntity rewardSetEntity) {
-		
+	public int deleteRewarSet(RewardSetEntity rewardSetEntity,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("删除提奖设置:"+rewardSetEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleRewarSetDaoImpl.deleteRewarSet(rewardSetEntity);
 	}

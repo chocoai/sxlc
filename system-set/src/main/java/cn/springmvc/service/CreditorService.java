@@ -3,6 +3,8 @@ package cn.springmvc.service;
 
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.model.CreditorEntity;
 
 
@@ -42,7 +44,7 @@ public interface CreditorService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int inserCreditor(CreditorEntity creditorEntity);
+	public int inserCreditor(CreditorEntity creditorEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -59,6 +61,6 @@ public interface CreditorService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateCreditor(Map<String, Object> map);
+	public int updateCreditor(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 

@@ -2,6 +2,8 @@ package cn.springmvc.dao;
 
 import java.util.Map;
 
+import cn.springmvc.model.Admin;
+
 public interface IAdminWriteDao {
 
 	
@@ -45,6 +47,9 @@ public interface IAdminWriteDao {
 	* @date 2016-4-6 上午10:38:22
 	 */
 	public int editAdminPassword(Map<String, Object> param);
-	
+
+
+
+
 	
 }

@@ -4,14 +4,22 @@ package cn.springmvc.controller.frontconfig;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.PartnersEntity;
 import cn.springmvc.service.PartnersService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
+import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 /**
@@ -47,10 +55,14 @@ public class CooPartnerController {
 	 */
 	@RequestMapping("/list")
 	@ResponseBody
-	public PageEntity list(Map<String, Object> req, int start, int length,
-			String name, String statu) {
+	public PageEntity list(Map<String, Object> req, HttpServletRequest request) {
 		
 		PageEntity pager = new PageEntity();
+		
+		String name = request.getParameter("name");
+		String statu = request.getParameter("statu");
+		String length = request.getParameter("length");
+		String start = request.getParameter("start");
 		
 		if (name != null && name != "") {
 			req.put("name", name);
@@ -60,8 +72,8 @@ public class CooPartnerController {
 		}else {
 			req.put("statu", -1);
 		}
-		pager.setPageNum(start / length + 1);
-		pager.setPageSize(length);
+		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
+		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
 		
 		List<PartnersEntity> results = partnersService.selectPartnersList(pager);
@@ -90,13 +102,20 @@ public class CooPartnerController {
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public int save(String logo, String url, String introduction, String name,
-			String indexs, String optId) {
+	public int save(HttpServletRequest request) {
 		
 		PartnersEntity partNer = new PartnersEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
-		if (name != null && name != "") {
-			partNer.setName(name);
+		String title = request.getParameter("title");
+		String logo = request.getParameter("logo");
+		String url = request.getParameter("url");
+		String introduction = request.getParameter("introduction");
+		String indexs = request.getParameter("indexs");
+		String optId = request.getParameter("optId");
+		if (title != null && title != "") {
+			partNer.setName(title);
 		}
 		if (logo != null && logo != "") {
 			partNer.setLogo(logo);
@@ -114,7 +133,19 @@ public class CooPartnerController {
 			partNer.setOptId(Long.valueOf(optId));
 		}
 		
-		int num = partnersService.insertPartners(partNer);
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(51001);
+		entity.setlModuleId(510);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = partnersService.insertPartners(partNer, entity, sIpInfo);
 		return num;
 	}
 	
@@ -139,10 +170,19 @@ public class CooPartnerController {
 	 */
 	@RequestMapping("/update")
 	@ResponseBody
-	public int update(String logo, String url, String introduction, String name,
-			String indexs, String optId, String partnerId) {
+	public int update(HttpServletRequest request) {
 		
 		PartnersEntity partNer = new PartnersEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		
+		String partnerId = request.getParameter("partnerId");
+		String name = request.getParameter("name");
+		String logo = request.getParameter("logo");
+		String url = request.getParameter("url");
+		String introduction = request.getParameter("introduction");
+		String indexs = request.getParameter("indexs");
+		String optId = request.getParameter("optId");
 		
 		if (partnerId != null && partnerId != "") {
 			partNer.setId(Long.valueOf(partnerId));
@@ -165,7 +205,20 @@ public class CooPartnerController {
 		if (optId != null && optId != "") {
 			partNer.setOptId(Long.valueOf(optId));
 		}
-		int num = partnersService.updatePartners(partNer);
+		
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(51002);
+		entity.setlModuleId(510);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = partnersService.updatePartners(partNer, null, null);
 		return num;
 	}
 	
@@ -185,16 +238,32 @@ public class CooPartnerController {
 	 */
 	@RequestMapping("/ofOrOpen")
 	@ResponseBody
-	public int ofOrOpen(boolean statu, String partNerId) {
+	public int ofOrOpen(HttpServletRequest request) {
 		
 		PartnersEntity partNer = new PartnersEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
-		partNer.setStatu(statu);
+		String statu = request.getParameter("statu");
+		String partNerId = request.getParameter("partNerId");
+			partNer.setStatu(Boolean.valueOf(statu));
 		if (partNerId != null && partNerId != "") {
 			partNer.setId(Long.valueOf(partNerId));
 		}
 		
-		int num = partnersService.updatePartnerStatuByID(partNer);
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(51003);
+		entity.setlModuleId(510);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = partnersService.updatePartnerStatuByID(partNer, entity, sIpInfo);
 		return num;
 	}
 	

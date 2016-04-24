@@ -120,6 +120,20 @@ public class SystemInfoSetEntity {
 	}
 	public void setWelcomeTitle(String welcomeTitle) {
 		this.welcomeTitle = welcomeTitle;
+	}
+	@Override
+	public String toString() {
+		return "SystemInfoSetEntity [systemName平台名称=" + systemName
+				+ ", backgroundLogo=" + backgroundLogo + ", forgroundLogo="
+				+ forgroundLogo + ", systemHotline=" + systemHotline
+				+ ", systemOfficeHours=" + systemOfficeHours + ", weiboName="
+				+ weiboName + ", weiboQRCode=" + weiboQRCode + ", qQGroupCode="
+				+ qQGroupCode + ", qQGroupQRCode=" + qQGroupQRCode
+				+ ", weChatCode=" + weChatCode + ", weChatQRCode="
+				+ weChatQRCode + ", switchStatu=" + switchStatu
+				+ ", riskReserveFund=" + riskReserveFund + ", expectYearRate="
+				+ expectYearRate + ", integralAlias=" + integralAlias
+				+ ", welcomeTitle=" + welcomeTitle + "]";
 	}	
 	
 	

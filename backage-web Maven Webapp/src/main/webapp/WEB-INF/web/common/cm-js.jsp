@@ -8,6 +8,9 @@
 		<script src="js/common.js"></script>
 		<script src="js/custom.js"></script>
 		<script src="js/debug.js"></script>
+		<script type="text/javascript" src="js/rsa/RSA.js"></script> 
+		<script type="text/javascript" src="js/rsa/Barrett.js"></script>
+		<script type="text/javascript" src="js/rsa/BigInt.js"></script>
 		<script type="text/javascript">
 			window.onload = function(){
 				console.log("页面加载后执行");

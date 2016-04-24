@@ -2,6 +2,7 @@ package cn.springmvc.service;
 
 import java.util.List;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.FootNavBarEntity;
@@ -18,25 +19,29 @@ public interface FootNavBarService {
 	 * @param entity 底部导航条实体
 	 * @return 0：数据为空;-1：该名称的底部导航条已存在;1:添加成功
 	 */
-	public int insertFootNavBar(FootNavBarEntity entity); 
+	public int insertFootNavBar(FootNavBarEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo); 
 	/**
 	 * 删除底部导航条
 	 * @param id 底部导航条id
 	 * @return 0：失败；1成功
 	 */
-	public int deleteFootNavBarByID(int id); 
+	public int deleteFootNavBarByID(long id,InsertAdminLogEntity 
+			logentity,String[] sIpInfo); 
 	/**
 	 * 修改底部导航条
 	 * @param entity 底部导航条实体
 	 * @return 0：失败；1成功;-1：该名称的底部导航条已存在
 	 */
-	public int updateFootNavBarByID(FootNavBarEntity entity);
+	public int updateFootNavBarByID(FootNavBarEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo);
 	 /**
 	 * 停用或启用底部导航条信息
 	 * @param entity 底部导航条实体 传statu(0无效，1有效),与id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  updateFootNavBarStatuByID(FootNavBarEntity entity);
+	public  int  updateFootNavBarStatuByID(FootNavBarEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo);
 	/**
 	 * 分页查询底部导航条
 	 * @param pageEntity 分页实体类  map 包含(title,statu(0无效，1有效,-1全部)) 
@@ -49,7 +54,7 @@ public interface FootNavBarService {
 	 * @param id 底部导航条id
 	 * @return  FootNavBarEntity 
 	 */
-	public  FootNavBarEntity  selectFootNavBarByID(int id);
+	public  FootNavBarEntity  selectFootNavBarByID(long id);
 	/**
 	 * 前台显示底部导航条 
 	 * @return

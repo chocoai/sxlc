@@ -69,4 +69,10 @@ public class LawsRegulationsEntity {
 	public void setOptId(long optId) {
 		this.optId = optId;
 	}
+	public String getAdminName() {
+		return adminName;
+	}
+	public void setAdminName(String adminName) {
+		this.adminName = adminName;
+	}
 }

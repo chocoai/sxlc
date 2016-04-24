@@ -65,8 +65,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-proInfo-add" onclick="proInfoAdd('添加产品介绍','web/frontconfig/invite-add.jsp','1')">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-proInfo-mod" onclick="proInfoMod('修改产品介绍','web/frontconfig/invite-mod.jsp','1','id')">修改</button>
+								<button class="obtn glyphicon glyphicon-plus obtn-proInfo-add" onclick="proInfoAdd('添加产品介绍','web/frontconfig/fc-add/fc-proIntroAdd.jsp','1')">添加</button>
+								<button class="obtn glyphicon glyphicon-pencil obtn-proInfo-mod" onclick="proInfoAlert('修改产品介绍','web/frontconfig/fc-add/fc-proIntroAdd.jsp','1','id')">修改</button>
 							</div>
 						</div>
 						
@@ -116,33 +116,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				
 				
-				<!-- 添加 -->
-				<div class="w-content" id="proInfoAdd">
-					<table>
-						<tr>
-							<td class="tt"><label>产品名称</label></td>
-							<td class="con"><input type="text"/></td>
-							<td class="tt">借款金额范围</td>
-							<td class="con"><input type="text"/></td>
-						</tr>
-						<tr>
-							<td class="tt"><label>年化利率范围</label></td>
-							<td class="con"><input type="text"/></td>
-							<td class="tt"><label>借款时间范围</label></td>
-							<td class="con"><input type="text"/></td>
-						</tr>
-						<tr>
-							<td class="tt"></td>
-							<td class="con" colspan="3"></td>
-						</tr>
-						<tr>
-							<td class="tt"></td>
-							<td class="con" colspan="3"></td>
-						</tr>
-					</table>
-				</div>
-				
-				
 			</div>
 		</div>
 	</div>
@@ -153,20 +126,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
+	<script type="text/javascript" src="js/upload.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/frontconfig/fc-proIntro.js"></script>
-	<script type="text/javascript">
-		$('#table_id').DataTable({
-			"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,2,3,4,5,6,7]
-			} // 制定列不参与排序
-			],
-		});
-	</script>
+	
 </body>
-
 </html>

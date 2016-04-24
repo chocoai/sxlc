@@ -1,6 +1,5 @@
 package cn.springmvc.dao;
-
-import java.util.List;
+ 
 import java.util.Map;
 
 import cn.springmvc.model.HomeBannerEntity;
@@ -30,7 +29,7 @@ public interface HomeBannerDao {
 	 * @param id 首页轮播图id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteHomeBannerByID(int id);
+	public  int  deleteHomeBannerByID(long id);
 	/**
 	 * 停用或启用首页轮播图
 	 * @param entity 首页轮播图实体

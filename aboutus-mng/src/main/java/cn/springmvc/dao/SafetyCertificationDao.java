@@ -1,7 +1,5 @@
 package cn.springmvc.dao;
-
-import java.util.List;
-import java.util.Map;
+ 
 
 import cn.springmvc.model.SafetyCertificationEntity; 
 /**
@@ -30,7 +28,7 @@ public interface SafetyCertificationDao {
 	 * @param id 底部网站认证id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteSafetyCertificationByID(int id); 
+	public  int  deleteSafetyCertificationByID(long id); 
 	
 	/**
 	 * 停用或启用底部网站认证

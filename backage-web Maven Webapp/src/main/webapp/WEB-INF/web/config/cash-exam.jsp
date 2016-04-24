@@ -17,6 +17,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link href="css/config.css" rel="stylesheet" />
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </head>
 <!-- 配置中心-------------------财务设置 -->
 <body class="nav-md">
@@ -50,7 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 						<input type="radio" name="checkType" id="optionsRadios1" value="1"> 是
 				 					</label>
 				 					<label class="checkbox-inline">
-				 						<input type="radio" name="checkType" id="optionsRadios2" value="0" checked> 否
+				 						<input type="radio" name="checkType" id="optionsRadios2" value="0" > 否
 				 					</label>
 				 				</div>
 				 				<div class="radio-alert">
@@ -74,8 +77,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript">
+			//加密设置
+			var encrypt = new JSEncrypt();
+			encrypt.setPublicKey(publicKey_common);
+			//页面初始化
 			$(function(){
-				//页面初始化
 				var checkType = $("#check_Type").val();
 				$("input[name='checkType'][value="+checkType+"]").attr('checked','true');
 			});
@@ -86,7 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 					$.ajax( {  
 						url:appPath+"/config/addCashExam.do",
-						data:{"check_Type":checkType},
+						data:{"check_Type":encrypt.encrypt(checkType)},
 						type:'post',  
 						cache:false,  
 						dataType:'json',  

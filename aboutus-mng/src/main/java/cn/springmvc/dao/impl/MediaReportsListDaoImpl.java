@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -37,12 +36,18 @@ public class MediaReportsListDaoImpl extends SqlSessionDaoSupport implements Med
 	}
 	
     @Override
-	public MediaReportsEntity selectMediaReportsByID(int id) {
+	public MediaReportsEntity selectMediaReportsByID(long id) {
 		
 	    MediaReportsEntity mediaReportsEntity = null;
 		mediaReportsEntity = (MediaReportsEntity) getSqlSession().selectOne("mediaReports.selectMediaReportsByID",id);
 		return mediaReportsEntity;
 	 
+	}
+	@Override
+	public List<MediaReportsEntity> selectMediaReportsListIndex() {
+		
+		return getSqlSession().selectList("mediaReports.selectMediaReportsListIndex");
+		
 	}
 
 }

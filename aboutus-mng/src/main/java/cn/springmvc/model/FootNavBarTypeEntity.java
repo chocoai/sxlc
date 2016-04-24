@@ -48,6 +48,12 @@ public class FootNavBarTypeEntity {
 	}
 	public void setStatu(int statu) {
 		this.statu = statu;
+	}
+	public String getAdminName() {
+		return adminName;
+	}
+	public void setAdminName(String adminName) {
+		this.adminName = adminName;
 	}																				
 
 }

@@ -31,5 +31,5 @@ public interface NewEventListDao {
 	 * @param id 最新动态id
 	 * @return  NewEventEntity 
 	 */
-	public  NewEventEntity  selectNewEventByID(int id);
+	public  NewEventEntity  selectNewEventByID(long id);
 }

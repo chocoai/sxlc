@@ -3,6 +3,9 @@
 var mtype = null;
 var otype = null;
 var ptype = null;
+var mpay = null;
+var opay = null;
+var ppay = null;
 //获取项目根目录全路径
 function getRootPath(){
         var curWwwPath=window.document.location.href;
@@ -24,7 +27,7 @@ function mchargefee () {
 	$.ajax({
 		type : 'post',
 		url : appPath + "/withdraw/update4charge.do",
-		data : {paymentMemberType : 0, feePaymentMethod : mtype},
+		data : {paymentMemberType : mpay, feePaymentMethod : mtype},
 		success : function (msg) {
 			if (msg == 1) {
 				layer.alert("操作成功",{icon:1});
@@ -44,7 +47,7 @@ function ochargefee () {
 	$.ajax({
 		type : 'post',
 		url : appPath + "/withdraw/update4charge.do",
-		data : {paymentMemberType : 1, feePaymentMethod : otype},
+		data : {paymentMemberType : opay, feePaymentMethod : otype},
 		success : function (msg) {
 			if (msg == 1) {
 				layer.alert("操作成功",{icon:1});
@@ -64,7 +67,7 @@ function pchargefee () {
 	$.ajax({
 		type : 'post',
 		url : appPath + "/withdraw/update4charge.do",
-		data : {paymentMemberType : 2, feePaymentMethod : ptype},
+		data : {paymentMemberType : ppay, feePaymentMethod : ptype},
 		success : function (msg) {
 			if (msg == 1) {
 				layer.alert("操作成功",{icon:1});
@@ -87,6 +90,7 @@ $(function () {
 				var encrypt = new JSEncrypt();
 			    encrypt.setPublicKey(publicKey_common);
 			    mtype = encrypt.encrypt((mtype));
+			    mpay = encrypt.encrypt((0 + ""));
 			}
 		});
 	});
@@ -101,6 +105,7 @@ $(function () {
 					var encrypt = new JSEncrypt();
 				    encrypt.setPublicKey(publicKey_common);
 				    otype = encrypt.encrypt((otype));
+				    opay = encrypt.encrypt((1 + ""));
 				}
 			});
 		});
@@ -116,6 +121,7 @@ $(function () {
 					var encrypt = new JSEncrypt();
 				    encrypt.setPublicKey(publicKey_common);
 				    ptype = encrypt.encrypt((ptype));
+				    ppay = encrypt.encrypt((2 + ""));
 				}
 			});
 		});

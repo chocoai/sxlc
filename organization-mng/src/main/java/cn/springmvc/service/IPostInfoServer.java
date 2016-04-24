@@ -2,8 +2,10 @@ package cn.springmvc.service;
 
 import java.util.List;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
+import cn.springmvc.model.DeptInfo;
 import cn.springmvc.model.PostInfo;
 
 
@@ -29,7 +31,7 @@ public interface IPostInfoServer {
 	 * @param info						职务实体
 	 * @return							返回1当前职务名称已存在、0持久化成功
 	 */
-	public int savePost(PostInfo info);
+	public int savePost(PostInfo info,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -39,7 +41,7 @@ public interface IPostInfoServer {
 	 * @param info						职务信息实体
 	 * @return							
 	 */
-	public int editPost(PostInfo info);
+	public int editPost(PostInfo info,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -49,7 +51,7 @@ public interface IPostInfoServer {
 	 * @param info						职务信息实体
 	 * @return							
 	 */
-	public int delPost(PostInfo info);
+	public int delPost(PostInfo info,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -58,7 +60,8 @@ public interface IPostInfoServer {
 	 * @param info						职务信息实体
 	 * @return							
 	 */
-	public int ofPost(PostInfo info);
+	public int ofPost(PostInfo info,InsertAdminLogEntity entity,String[] sIpInfo);
+	
 	
 
 }

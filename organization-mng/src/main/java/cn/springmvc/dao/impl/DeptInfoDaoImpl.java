@@ -1,18 +1,14 @@
 package cn.springmvc.dao.impl;
 
-import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.datatrans.IntegerAndString;
-import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.dao.IDeptInfoDao;
-import cn.springmvc.model.DeptInfo;
 
 /**
  * @author Administrator
@@ -22,11 +18,7 @@ import cn.springmvc.model.DeptInfo;
 public class DeptInfoDaoImpl extends SqlSessionDaoSupport implements IDeptInfoDao{
 	
 
-	@Override
-	public List<DeptInfo> getListByParam(PageEntity entity) {
-		
-		return getSqlSession().selectList("DeptInfoDaoImpl.getListByParam", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
-	}
+	
 
 	@Override
 	public int saveDept(Map<String,Object> param) {
@@ -56,16 +48,6 @@ public class DeptInfoDaoImpl extends SqlSessionDaoSupport implements IDeptInfoDa
 	
 	
 	
-	@Override
-	public List<DeptInfo> findall() {
-		return getSqlSession().selectList("DeptInfoDaoImpl.findall");
-	}
-	
-	
-	@Override
-	public DeptInfo deptInfo(Map<String, Object> param) {
-		return getSqlSession().selectOne("DeptInfoDaoImpl.deptInfo",param);
-	}
 	
 	
 	

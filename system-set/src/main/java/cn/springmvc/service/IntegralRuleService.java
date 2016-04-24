@@ -4,6 +4,8 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.IntegralRuleEntity;
 import cn.springmvc.model.OverdueEntity;
@@ -47,7 +49,7 @@ public interface IntegralRuleService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateRegPointsIntegralRule(Map<String, Object> map);
+	public int updateRegPointsIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -63,7 +65,7 @@ public interface IntegralRuleService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int deleteIntegralRule(Map<String, Object> map);
+	public int deleteIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -79,7 +81,7 @@ public interface IntegralRuleService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insetRegPointsIntegralRule(Map<String, Object> map);
+	public int insetRegPointsIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -98,6 +100,6 @@ public interface IntegralRuleService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertIntegralRule(Map<String, Object> map);
+	public int insertIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 

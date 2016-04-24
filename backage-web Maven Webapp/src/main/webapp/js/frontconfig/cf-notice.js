@@ -47,9 +47,17 @@ function addNotice() {
 	var content = ue1.getContent();
 	
 	var title = $("#title").val();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result1 = encrypt.encrypt((content));
+    var result2 = encrypt.encrypt((title));
 	$.ajax( {  
 		url:appPath+"/frontconfig/save.do",
-		data:"title=" + title + "&content=" + content,
+		data : {
+			content : result1, 
+			title : result2 
+		},
 		type:'post',  
 		cache:false,  
 		success:function(data) { 
@@ -75,10 +83,16 @@ $(function () {
 		var ue2 = UE.getEditor('meditor');
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();
 		$("#mtitle").val(rowdata[0].title);
+		//加密操作
+		var encrypt = new JSEncrypt();
+	    encrypt.setPublicKey(publicKey_common);
+	    var result = encrypt.encrypt(rowdata[0].id + "");
 		$.ajax({
 			type : 'post',
 			url : appPath + "/frontconfig/query4update.do",
-			data : "noticeId=" + rowdata[0].id,
+			data : {
+				noticeId : result
+			},
 			success : function (msg) {
 				ue2.addListener("ready", function () {
 	        	// editor准备好之后才可以使用
@@ -115,9 +129,19 @@ function updateNotice () {
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
 	var title = $("#mtitle").val();
 	var content = ue2.getContent();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result1 = encrypt.encrypt((content));
+    var result2 = encrypt.encrypt((title));
+    var result3 = encrypt.encrypt(rowdata[0].id + "");
 	$.ajax( {  
 		url:appPath+"/frontconfig/update.do",
-		data:"title=" + title + "&content=" + content + "&annoceId=" + rowdata[0].id,
+		data : {
+			content : result1, 
+			title : result2,
+			annoceId : result3
+		},
 		type:'post',  
 		cache:false,  
 		success:function(data) { 
@@ -143,10 +167,18 @@ function openAnnoce () {
 	}, function(index, layero){
 	  //确定回掉
 	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	  //加密操作
+	  var encrypt = new JSEncrypt();
+	  encrypt.setPublicKey(publicKey_common);
+	  var result1 = encrypt.encrypt((rowdata[0].id + ""));
+	  var result2 = encrypt.encrypt((rowdata[0].statu + ""));
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/frontconfig/ofOrOpenNotice.do",
-	  	data : "annoceId=" + rowdata[0].id + "&statu=" + rowdata[0].statu,
+	  	data : {
+	  		annoceId : result1, 
+	  		statu : result2
+		},
 	  	success : function (msg) {
 	  		if (msg == 1) {
 	  			layer.alert("操作成功!",{icon:1});
@@ -172,10 +204,18 @@ function ofAnnoce () {
 	}, function(index, layero){
 	  //确定回掉
 	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	  //加密操作
+	  var encrypt = new JSEncrypt();
+	  encrypt.setPublicKey(publicKey_common);
+	  var result1 = encrypt.encrypt((rowdata[0].id + ""));
+	  var result2 = encrypt.encrypt((rowdata[0].statu + ""));
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/frontconfig/ofOrOpenNotice.do",
-	  	data : "annoceId=" + rowdata[0].id + "&statu=" + rowdata[0].statu,
+	  	data : {
+	  		annoceId : result1, 
+	  		statu : result2
+		},
 	  	success : function (msg) {
 	  		if (msg == 1) {
 	  			layer.alert("操作成功!",{icon:1});
@@ -221,12 +261,7 @@ $(function() {
 		autoWidth : false,
 		scrollY : 500,
 		pagingType: "simple_numbers",//设置分页控件的模式  
-		// paging : false,//分页
-//		searching : false,
-//		info : false,// 左下角信息
-//		ordering: false,//排序
 		lengthMenu:[[5,10,25,50,-1],[5,10,25,50,"全部"]],
-//		aaSorting : [ [ 16, "desc" ] ],// 默认第几个排序
 		colReorder : false,
 		scrollX : true,
 		sScrollX : "100%",
@@ -249,7 +284,6 @@ $(function() {
                 		  sReturn = '<input type="checkbox" value="1" />';
                 		  return sReturn;
                 	  }
-//                	  "sClass": "table-checkbox"
                   },
                   { title:"公告id","data": "id" },
                   { title:"添加时间","data": "createTime" },  
@@ -276,7 +310,6 @@ $(function() {
                   }
         ],
         aoColumnDefs : [
-        				// {"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
         				{
         					sDefaultContent: '',
         					orderable : false,
@@ -288,9 +321,6 @@ $(function() {
                         }
         				],
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
-//        	if($.inArray(data.DT_RowId,selected)!==-1){
-//        		$(row).addClass('selected'); 
-//        	}
         }
 });
  var table = $('#table_id').DataTable();

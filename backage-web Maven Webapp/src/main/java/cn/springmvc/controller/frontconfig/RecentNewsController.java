@@ -4,14 +4,22 @@ package cn.springmvc.controller.frontconfig;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.NewEventEntity;
 import cn.springmvc.service.NewEventService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
+import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 /**
@@ -45,10 +53,14 @@ public class RecentNewsController {
 	 */
 	@RequestMapping("/list")
 	@ResponseBody
-	public PageEntity list(Map<String, Object> req, Integer start, Integer length, String title, String statu) {
+	public PageEntity list(Map<String, Object> req, HttpServletRequest request) {
 		
 		PageEntity pager = new PageEntity();
 		
+		String title = request.getParameter("title");
+		String statu = request.getParameter("statu");
+		int start = Integer.valueOf(request.getParameter("start"));
+		int length = Integer.valueOf(request.getParameter("length"));
 		if (title != null && title != "") { 
 			req.put("title", title);
 		}
@@ -84,19 +96,35 @@ public class RecentNewsController {
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public int save(String title, String content, String optId) {
+	public int save(HttpServletRequest request) {
 		
-		NewEventEntity entity = new NewEventEntity();
+		NewEventEntity newEventEntity = new NewEventEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
 		if (title != null && title != "") {
-			entity.setTitle(title);
+			newEventEntity.setTitle(title);
 		}
 		if (content != null && content != "") {
-			entity.setContent(content);
+			newEventEntity.setContent(content);
 		}
-			entity.setOptId(Long.valueOf(1));
+		newEventEntity.setOptId(Long.valueOf(1));
+			
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(50601);
+		entity.setlModuleId(506);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
-		int num = newEventService.insertNewEvent(entity);
+		int num = newEventService.insertNewEvent(newEventEntity, entity, sIpInfo);
 		return num;
 	}
 	
@@ -118,24 +146,42 @@ public class RecentNewsController {
 	 */
 	@RequestMapping("/update")
 	@ResponseBody
-	public int update(String title, String content, String optId, String newsId) {
+	public int update(HttpServletRequest request) {
 		
-		NewEventEntity entity = new NewEventEntity();
+		NewEventEntity newEventEntity = new NewEventEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+		String optId = request.getParameter("optId");
+		String newsId = request.getParameter("newsId");
 		if (title != null && title != "") {
-			entity.setTitle(title);
+			newEventEntity.setTitle(title);
 		}
 		if (content != null && content != "") {
-			entity.setContent(content);
+			newEventEntity.setContent(content);
 		}
 		if (optId != null && optId != "") {
-			entity.setOptId(Long.valueOf(optId));
+			newEventEntity.setOptId(Long.valueOf(optId));
 		}
 		if (newsId != null && newsId != "") {
-			entity.setId(Long.valueOf(newsId));
+			newEventEntity.setId(Long.valueOf(newsId));
 		}
 		
-		int num = newEventService.updateNewEventByID(entity);
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(50602);
+		entity.setlModuleId(506);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = newEventService.updateNewEventByID(newEventEntity, entity, sIpInfo);
 		return num;
 	}
 	
@@ -155,18 +201,34 @@ public class RecentNewsController {
 	 */
 	@RequestMapping("/ofOrOpenNews")
 	@ResponseBody
-	public int ofOrOpenNews(String newsId, String statu) {
+	public int ofOrOpenNews(HttpServletRequest request) {
 		
-		NewEventEntity entity = new NewEventEntity();
+		NewEventEntity newEventEntity = new NewEventEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
+		String newsId = request.getParameter("newsId");
+		String statu = request.getParameter("statu");
 		if (newsId != null && newsId != "") {
-			entity.setId(Long.valueOf(newsId));
+			newEventEntity.setId(Long.valueOf(newsId));
 		}
 		if (statu != null && statu != "") {
-			entity.setStatu(Integer.valueOf(statu));
+			newEventEntity.setStatu(Integer.valueOf(statu));
 		}
 		
-		int num = newEventService.updateNewEventStatuByID(entity);
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(50603);
+		entity.setlModuleId(506);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = newEventService.updateNewEventStatuByID(newEventEntity, entity, sIpInfo);
 		return num;
 	}
 	
@@ -185,8 +247,9 @@ public class RecentNewsController {
 	 */
 	@RequestMapping("/query4update")
 	@ResponseBody
-	public NewEventEntity query4update(String newsId) {
+	public NewEventEntity query4update(HttpServletRequest request) {
 		
+		String newsId = request.getParameter("newsId");
 		NewEventEntity event = newEventService.
 				selectNewEventByID(Integer.valueOf(newsId));
 		return event;

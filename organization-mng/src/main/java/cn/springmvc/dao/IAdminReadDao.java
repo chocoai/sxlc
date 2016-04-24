@@ -22,6 +22,17 @@ public interface IAdminReadDao {
 	public List<Admin> getAdminsByParam(PageEntity entity);
 
 	
+	/***
+	* 获取管理员详细信息
+	* 
+	* @author 李杰
+	* @param adminId			管理员编号
+	* @return
+	* @date 2016-4-19 下午5:56:30
+	 */
+	public Admin findAdminById(long adminId);
+
+	
 	
 	
 	

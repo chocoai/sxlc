@@ -27,7 +27,7 @@ public interface FrequentlyAskedQuestionsDao {
 	 * @param id 常见问题id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteFrequentlyAskedQuestionsByID(int id);   
+	public  int  deleteFrequentlyAskedQuestionsByID(long id);   
 	/**
 	 * 停用或启用常见问题
 	 * @param entity 常见问题体

@@ -30,16 +30,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<li><a href="web/frontconfig/fc-invite.jsp"><i class="fa fa-edit"></i>招贤纳士管理        </a></li>
 								<li><a href="web/frontconfig/fc-proIntro.jsp"><i class="fa fa-edit"></i>产品介绍管理        </a></li>
 								<li><a href="web/frontconfig/fc-partner.jsp"><i class="fa fa-edit"></i>合作伙伴管理        </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>常见问题管理        </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>法律法规管理        </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>安全保障管理        </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>友情链接管理        </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>底部导航管理        </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>底部网站认证管理    </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>版权信息管理        </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>首页全屏弹出公告管理</a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>平台简介管理        </a></li>
-								<li><a href="web/frontconfig/frontconfig.jsp"><i class="fa fa-edit"></i>新手指南管理        </a></li>   
+								<li><a href="web/frontconfig/fc-faq.jsp"><i class="fa fa-edit"></i>常见问题管理        </a></li>
+								<li><a href="web/frontconfig/fc-law.jsp"><i class="fa fa-edit"></i>法律法规管理        </a></li>
+								<li><a href="web/frontconfig/fc-platformSecurity.jsp"><i class="fa fa-edit"></i>平台安全保障管理       </a></li>
+								<li><a href="web/frontconfig/fc-safety.jsp"><i class="fa fa-edit"></i>首页4大安全保障管理         </a></li>			
+								<li><a href="web/frontconfig/fc-friendshipLink.jsp"><i class="fa fa-edit"></i>友情链接管理        </a></li>
+								<li><a href="web/frontconfig/fc-bottomLink.jsp"><i class="fa fa-edit"></i>底部导航管理        </a></li>
+								<li><a href="web/frontconfig/fc-webAuthentication.jsp"><i class="fa fa-edit"></i>底部网站认证管理    </a></li>
+								<li><a href="web/frontconfig/fc-copyrightInfo.jsp"><i class="fa fa-edit"></i>版权信息管理        </a></li>
+								<li><a href="web/frontconfig/fc-fullAd.jsp"><i class="fa fa-edit"></i>首页全屏弹出公告管理</a></li>
+								<li><a href="web/frontconfig/fc-platIntro.jsp"><i class="fa fa-edit"></i>平台简介管理        </a></li>
+								<li><a href="web/frontconfig/fc-beginnerGuide.jsp"><i class="fa fa-edit"></i>新手指南管理        </a></li>   
                             </ul>
                         </div>
                     </div>

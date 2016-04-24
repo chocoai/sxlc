@@ -64,7 +64,7 @@
 	   where Report_ID=#{id}   
     </update>   
     <!-- 删除媒体报道 -->  
-	<delete id="deleteMediaReportsByID"  parameterType="int">
+	<delete id="deleteMediaReportsByID"  parameterType="long">
 	   delete from  Media_Reports where Report_ID=#{id}   
     </delete>  
      <!-- 停用或启用媒体报道 -->  
@@ -72,7 +72,7 @@
 	   update  Media_Reports  set   Statu=#{statu} where Report_ID=#{id}   
     </update>
     <!-- 根据id查询媒体报道-->  
-	<select id="selectMediaReportsByID"  parameterType="int"  resultMap="resultListMediaReports" >
+	<select id="selectMediaReportsByID"  parameterType="long"  resultMap="resultListMediaReports" >
 	   select mr.Report_ID,   mr.Title,   mr.Logo,   mr.Source,  
 	   mr.Content,   mr.Statu,  mr.CreateTime,  mr.Opt_Date, mr.Admin_ID 
 	   from  Media_Reports mr where mr.Report_ID = #{id}

@@ -30,5 +30,5 @@ public interface RecruitmentListDao {
 	 * @param id 招贤纳士id
 	 * @return  RecruitmentEntity 
 	 */
-	public  RecruitmentEntity  selectRecruitmentByID(int id);
+	public  RecruitmentEntity  selectRecruitmentByID(long id);
 }

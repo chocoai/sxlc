@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -25,23 +24,26 @@ public class PlatformAnnouncementListDaoImpl extends SqlSessionDaoSupport implem
 			PlatformAnnouncementEntity entity) {
 		
 		PlatformAnnouncementEntity platformAnnouncementEntity=null;
-		platformAnnouncementEntity = (PlatformAnnouncementEntity) getSqlSession().selectOne("Mapper.selectPlatformIsExistByNAme",entity);
+		platformAnnouncementEntity = (PlatformAnnouncementEntity) getSqlSession().
+				selectOne("Mapper.selectPlatformIsExistByNAme",entity);
 		return platformAnnouncementEntity;
 	}
 	@Override
 	public List<PlatformAnnouncementEntity> selectPlatformList(PageEntity pageEntity) {
 		
 		List<PlatformAnnouncementEntity> platformAnnouncementList=null;
-		platformAnnouncementList = getSqlSession().selectList("Mapper.selectPlatformListpage",pageEntity.getMap(),new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		platformAnnouncementList = getSqlSession().selectList("Mapper.selectPlatformListpage",
+				pageEntity.getMap(),new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		return platformAnnouncementList;
 	
 	}
  
 	@Override
-	public PlatformAnnouncementEntity selectPlatformByID(int id) {
+	public PlatformAnnouncementEntity selectPlatformByID(long id) {
 		
 		PlatformAnnouncementEntity platformAnnouncementEntity=null;
-		platformAnnouncementEntity = (PlatformAnnouncementEntity) getSqlSession().selectOne("Mapper.selectPlatformByID",id);
+		platformAnnouncementEntity = (PlatformAnnouncementEntity) getSqlSession().
+				selectOne("Mapper.selectPlatformByID",id);
 	    return platformAnnouncementEntity;
 	    
 	}

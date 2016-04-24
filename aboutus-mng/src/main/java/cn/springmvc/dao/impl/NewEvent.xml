@@ -56,7 +56,7 @@
 	   where New_ID=#{id}   
     </update>   
     <!-- 删除最新动态 -->  
-	<delete id="deleteNewEventByID"  parameterType="int">
+	<delete id="deleteNewEventByID"  parameterType="long">
 	   delete from  New_Event where New_ID=#{id}   
     </delete> 
     
@@ -65,7 +65,7 @@
 	   update  New_Event  set   Statu=#{statu} where New_ID=#{id}   
     </update> 
     <!-- 根据id查询最新动态 -->  
-	<select id="selectNewEventByID"  parameterType="int" resultMap="resultListNewEvent" >
+	<select id="selectNewEventByID"  parameterType="long" resultMap="resultListNewEvent" >
 	    select ne.New_ID,   ne.TitleS,   ne.Content,   ne.Statu,   ne.CreateTime, 
 	    ne.Opt_Date, ne.admin_ID  
 	    from  New_Event ne   where ne.New_ID=#{id}

@@ -17,6 +17,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link href="css/config.css" rel="stylesheet" />
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </head>
 <!-- 配置中心-------------------财务设置 -->
 <body class="nav-md">
@@ -49,9 +52,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 			<legend>逾期严重程度配置</legend>
 				 			<form class="form-horizontal" role="form" name="" action="javascript:addOverdueLimit()" id="dataForm">
 				 				<div class="form-group">
-				 					<label for="lastname" class="i-fl control-label col3">逾期期限：</label>
+				 					<label for="overdueLimit" class="i-fl control-label col3">逾期期限：</label>
 				 					<div class="i-fl">
-				 						<input type="text" class="form-control" dataType="days" name="overdueLimit" id="lastname" value="${overDays}" placeholder="逾期期限">
+				 						<input type="text" class="form-control" dataType="days" name="overdueLimit" id="overdueLimit" value="${overDays}" placeholder="逾期期限">
 				 					</div>
 				 					<div class="i-fl">
 										<span class="sign i-fl">天<i>*</i></span>
@@ -75,6 +78,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript">
+		//加密设置
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publicKey_common);
 		$(function(){
 			validform5("#submitBtn","dataForm",false,3);
 		});
@@ -82,7 +88,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function addOverdueLimit(){
 			$.ajax( {  
 				url:appPath+"/config/addOverdueLimit.do",
-				data:$("#dataForm").serialize(),
+				data:{"overdueLimit":encrypt.encrypt($("#overdueLimit").val())},
 				type:'post',  
 				cache:false,  
 				dataType:'json',  

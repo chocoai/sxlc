@@ -24,6 +24,12 @@ public class FinancialAdvisorReadDaoImpl extends SqlSessionDaoSupport implements
 		 return getSqlSession().selectList("financialAdvisorDaoImpl.getListByParam", entity ,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
 	
+	
+	@Override
+	public FinancialAdvisor findById(Map<String, Object> param) {
+		return getSqlSession().selectOne("financialAdvisorDaoImpl.findById",param);
+	}
+	
 
 	@Autowired
 	@Override

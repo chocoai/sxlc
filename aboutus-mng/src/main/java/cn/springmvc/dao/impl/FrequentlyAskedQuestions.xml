@@ -2,28 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
  <mapper namespace="frequentlyAskedQuestions"> 
     <resultMap type="cn.springmvc.model.FrequentlyAskedQuestionsEntity" id="resultListFrequentlyAskedQuestionsAnnouncement">
-        <id column="ID"               property="id" /> 
-		<result column="Content"      property="content" />
-		<result column="Statu"        property="statu" />
-		<result column="CreateTime"   property="createTime" />
-		<result column="Opt_Date"     property="optDate" />
-		<result column="Opt_Id"       property="optId" />
+        <id column="Question_ID"               property="id" /> 
+		<result column="Content"               property="content" />
+		<result column="Statu"                 property="statu" />
+		<result column="CreateTime"            property="createTime" />
+		<result column="Opt_Date"              property="optDate" />
+		<result column="Admin_ID"              property="optId" />
     </resultMap> 
 	<!-- 查询常见问题-->  
 	<select id="selectFrequentlyAskedQuestions"  parameterType="int" resultMap="resultListFrequentlyAskedQuestionsAnnouncement" >
-	   select ID,   Content,   Statu,   CreateTime,  Opt_Date, Opt_Id
+	   select Question_ID,   Content,   Statu,   CreateTime,  Opt_Date, Admin_ID
 	   from  Frequently_Asked_Questions
        <where>  
             <if test="statu != -1">  
-                Statu=1
+                Statu= #{statu}
             </if>  
 	   </where>
     </select> 
     <!-- 新增常见问题-->  
 	<insert id="insertFrequentlyAskedQuestions"  parameterType="cn.springmvc.model.FrequentlyAskedQuestionsEntity" >    
 		insert into 
-		Frequently_Asked_Questions( ID,    Content,  Opt_Id) 
-		                   values (#{id},#{content},#{optId})    
+		Frequently_Asked_Questions( Question_ID,    Content,  Admin_ID) 
+		                   values (       #{id},  #{content},    #{optId})    
 	</insert> 
 	<!-- 查询常见问题是否存在 -->  
 	<select id="selectFrequentlyAskedQuestionsIsExist"  resultType="int" >
@@ -37,18 +37,18 @@
 	        Content=#{content},
 	       </if> 
 	       <if test="optId != 0" >
-	         Opt_Id=#{optId},
+	         Admin_ID=#{optId},
 	       </if>  
 	         Opt_Date=now(), 
 	       </set>   
-	   where ID=#{id}   
+	   where Question_ID=#{id}   
     </update>   
     <!-- 删除常见问题-->  
-	<delete id="deleteFrequentlyAskedQuestionsByID"  parameterType="int">
-	   delete from  Frequently_Asked_Questions where ID=#{id}   
+	<delete id="deleteFrequentlyAskedQuestionsByID"  parameterType="long">
+	   delete from  Frequently_Asked_Questions where Question_ID=#{id}   
     </delete>  
      <!-- 停用或启用常见问题-->  
 	<update id="updateFrequentlyAskedQuestionsStatuByID"  parameterType="cn.springmvc.model.FrequentlyAskedQuestionsEntity">
-	   update  Frequently_Asked_Questions  set   Statu=#{statu} where ID=#{id}   
+	   update  Frequently_Asked_Questions  set   Statu=#{statu} where Question_ID=#{id}   
     </update>  
 </mapper>

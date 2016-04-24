@@ -11,12 +11,15 @@ public class Module {
 	private Long		moduleId;				//模块序号
 	private Integer		moduleLevel;			//模块级别
 	private String		moduleNamel;			//模块名称
-	private Integer		prevModuleId;			//上级模块编号
+	private Long		prevModuleId;			//上级模块编号
 	private String		modulePic1;				//模块对应的图片名称
 	private String		modulePic2;				//模块对应的图片名称
 	private String		moduleFunction;			//模块对应的资源路径
 	private Integer		moduleindex;			//模块序号
 	private Integer		moduleType;				//模块对应的类型
+	
+	private int         dowmModuleNum;			//下级模块数量
+	private String      preModuleName;			//下级模块名称 
 	
 	
 	public Module() {
@@ -24,9 +27,11 @@ public class Module {
 	}
 
 	
+
 	public Module(Long moduleId, Integer moduleLevel, String moduleNamel,
-			Integer prevModuleId, String modulePic1, String modulePic2,
-			String moduleFunction, Integer moduleindex, Integer moduleType) {
+			Long prevModuleId, String modulePic1, String modulePic2,
+			String moduleFunction, Integer moduleindex, Integer moduleType,
+			int dowmModuleNum, String preModuleName) {
 		super();
 		this.moduleId = moduleId;
 		this.moduleLevel = moduleLevel;
@@ -37,6 +42,29 @@ public class Module {
 		this.moduleFunction = moduleFunction;
 		this.moduleindex = moduleindex;
 		this.moduleType = moduleType;
+		this.dowmModuleNum = dowmModuleNum;
+		this.preModuleName = preModuleName;
+	}
+
+
+
+	public int getDowmModuleNum() {
+		return dowmModuleNum;
+	}
+
+
+	public void setDowmModuleNum(int dowmModuleNum) {
+		this.dowmModuleNum = dowmModuleNum;
+	}
+
+
+	public String getPreModuleName() {
+		return preModuleName;
+	}
+
+
+	public void setPreModuleName(String preModuleName) {
+		this.preModuleName = preModuleName;
 	}
 
 
@@ -69,13 +97,12 @@ public class Module {
 		this.moduleNamel = moduleNamel;
 	}
 
-
-	public Integer getPrevModuleId() {
+	public Long getPrevModuleId() {
 		return prevModuleId;
 	}
 
 
-	public void setPrevModuleId(Integer prevModuleId) {
+	public void setPrevModuleId(Long prevModuleId) {
 		this.prevModuleId = prevModuleId;
 	}
 

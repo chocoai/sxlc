@@ -22,6 +22,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </head>
 
 <body class="nav-md">

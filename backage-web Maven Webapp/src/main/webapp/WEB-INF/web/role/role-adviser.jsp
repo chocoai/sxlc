@@ -1,3 +1,4 @@
+<%@page import="cn.springmvc.model.Operation"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"
 	contentType="text/html; charset=UTF-8"%>
 <%
@@ -6,6 +7,12 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	/* 登录人操作权限 */
+	List<Operation> operations = null;
+	if(session.getAttribute("operationList") != null){
+		operations = (List<Operation>)session.getAttribute("operationList");
+
+	}
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -52,11 +59,11 @@
 						</div>
 						<div class="panel-body">
 							<form id="" class="" action="">
-								<span class="con-item"><span>员工名称</span><input type="text" class="" placeholder="员工名称" /></span>
-								<span class="con-item"><span>前台会员编号</span><input type="text" class="" placeholder="前台会员编号" /></span>
-								<span class="con-item"><span>前台会员名称</span><input type="text" class="" placeholder="前台会员名称" /></span>
-								<span class="con-item"><span>前台会员用户名</span><input type="text" class="" placeholder="前台会员用户名" /></span>
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+								<span class="con-item"><span>员工名称</span><input type="text" name="staffName" id="staffName" class="" placeholder="员工名称" /></span>
+								<span class="con-item"><span>前台会员编号</span><input type="text" name="memberNo" id="memberNo" class="" placeholder="前台会员编号" /></span>
+								<span class="con-item"><span>前台会员名称</span><input type="text" name="logName" id="logName" class="" placeholder="前台会员名称" /></span>
+								<span class="con-item"><span>前台会员用户名</span><input type="text" name="realName" id="realName" class="" placeholder="前台会员用户名" /></span>
+								<button class="obtn obtn-query glyphicon glyphicon-search" type="button">查询</button>
 							</form>
 						</div>
 					</div>
@@ -66,8 +73,24 @@
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
+					<%
+						if(operations.size()>0){
+							for(int i = 0;i < operations.size(); i++){
+								
+				      			if(operations.get(i).getOptID() == 10401){
+					%>				
 								<button class="obtn glyphicon glyphicon-plus obtn-adviser-add">添加</button>
+					<%      
+				      			}
+				      			if(operations.get(i).getOptID() == 10402){
+					%>				
 								<button class="obtn glyphicon glyphicon-trash obtn-adviser-del">移除</button>
+					<%      
+				      			}
+					  		 }
+						 }
+				     %>	
+								
 							</div>
 						</div>
 						<div class="panel-body">
@@ -147,8 +170,11 @@
 			<!-- 公用js -->
 			<jsp:include page="../common/cm-js.jsp"></jsp:include>
 			<script type="text/javascript" src="js/role.js"></script>
+			<script type="text/javascript" src="js/rsa/RSA.js"></script> 
+			<script type="text/javascript" src="js/rsa/Barrett.js"></script>
+			<script type="text/javascript" src="js/rsa/BigInt.js"></script>
 			<script type="text/javascript" src="js/role/role-financial.js"></script>
-		</div>
+			</div>
 	</div>
 </body>
 

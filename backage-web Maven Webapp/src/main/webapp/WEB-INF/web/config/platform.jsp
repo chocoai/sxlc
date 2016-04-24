@@ -250,10 +250,9 @@
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 	<script type="text/javascript" src="js/config/upload.js"></script>
 	<script type="text/javascript" src="js/valid.js"></script>
-<!-- 	<script type="text/javascript" src="js/Barrett.js"></script>
-	<script type="text/javascript" src="js/BigInt.js"></script>
-	<script type="text/javascript" src="js/RSA.js"></script> -->
-	<!-- 私用js -->
+	<script type="text/javascript" src="js/rsa/RSA.js"></script> 
+	<script type="text/javascript" src="js/rsa/Barrett.js"></script>
+	<script type="text/javascript" src="js/rsa/BigInt.js"></script>
 	<script type="text/javascript" src="js/configCenter/platformConfig.js"></script>
 </body>
 

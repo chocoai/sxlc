@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -32,23 +31,26 @@ public class FriendshipLinkListDaoImpl extends SqlSessionDaoSupport implements F
 			FriendshipUnitEntity entity) {
 		
 		FriendshipUnitEntity friendshipUnitEntity = null;
-		friendshipUnitEntity = (FriendshipUnitEntity) getSqlSession().selectOne("friendshipUnit.selectFriendShipLinkIsExistByNAme",entity);
+		friendshipUnitEntity = (FriendshipUnitEntity) getSqlSession().
+				selectOne("friendshipUnit.selectFriendShipLinkIsExistByNAme",entity);
 		return friendshipUnitEntity;
 	}
 	@Override
 	public List<FriendshipUnitEntity> selectFriendshipLinkAllpage(PageEntity pageEntity) {
 		
 		List<FriendshipUnitEntity> friendshipLinkList=null;
-		friendshipLinkList = getSqlSession().selectList("friendshipUnit.selectFriendShipLinkList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		friendshipLinkList = getSqlSession().selectList("friendshipUnit.selectFriendShipLinkList",
+				pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		return friendshipLinkList;
 	}
 	 
 	
 	@Override
-	public FriendshipUnitEntity selectFriendshipLinkByID(int id) {
+	public FriendshipUnitEntity selectFriendshipLinkByID(long id) {
 		
 		FriendshipUnitEntity friendshipUnitEntity=null;
-		friendshipUnitEntity = (FriendshipUnitEntity) getSqlSession().selectOne("friendshipUnit.selectFriendShipLinkByID",id);
+		friendshipUnitEntity = (FriendshipUnitEntity) getSqlSession().
+				selectOne("friendshipUnit.selectFriendShipLinkByID",id);
 		return friendshipUnitEntity;
 		
 	}

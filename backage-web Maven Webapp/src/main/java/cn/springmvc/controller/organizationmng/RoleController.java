@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,16 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
-
+import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.Module;
 import cn.springmvc.model.Operation;
 import cn.springmvc.model.RoleAuth;
 import cn.springmvc.model.RoleInfo;
 import cn.springmvc.service.IRoleInfoServer;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 
 /**
@@ -49,8 +53,10 @@ public class RoleController {
 	@RequestMapping(value ="/getModuleAndOperation", method = RequestMethod.GET)
 	public String getModuleAndOperation(HttpServletRequest request,String deptNo,Model model){
 		List<Module> moduleList = roleInfoServer.getModuleList();	//模块权限
+		List<Module> moduleThree = roleInfoServer.getModuleListThree();	//第三级模块权限
 		List<Operation> operationList = roleInfoServer.getOperationList(); //操作权限
 		request.setAttribute("modulelist", moduleList);
+		request.setAttribute("moduleThree", moduleThree);
 		request.setAttribute("operationList",operationList );
 		//return new ModelAndView("web/role/role.jsp");
 		return "role/role";
@@ -73,18 +79,27 @@ public class RoleController {
 		String startTime = request.getParameter("startTime");
 		String endTime =request.getParameter("endTime");
 		Map<String ,Object> param = new HashMap<String, Object>();
-		param.put("roleNo", roleNo);
-		param.put("roleName", roleName);
-		param.put("startTime", startTime);
-		param.put("endTime", endTime);
+		if(roleNo!=null && !roleNo.equals("")){
+			param.put("roleNo", roleNo);
+		}
+		if(roleName!=null && !roleName.equals("")){
+			param.put("roleName", roleName);
+		}
+		if(startTime!=null && !startTime.equals("")){
+			param.put("startTime", startTime);
+		}
+		if(endTime!=null && !endTime.equals("")){
+			param.put("endTime", endTime);
+		}
+		
 		int pageSize = IntegerAndString.StringToInt(request.getParameter("length"), 10) ;//每页显示行数
 		int page = IntegerAndString.StringToInt(request.getParameter("start"), 1) ;
 		page = page/pageSize + 1;	//当前页数
 		PageEntity pageEntity = new PageEntity();
 		pageEntity.setPageNum(page);
 		pageEntity.setPageSize(pageSize);
-		pageEntity.setDraw(Integer.parseInt(request.getParameter("draw") == null ? "0"
-                : request.getParameter("draw")) + 1);
+		/*pageEntity.setDraw(Integer.parseInt(request.getParameter("draw") == null ? "0"
+                : request.getParameter("draw")) + 1);*/
 		 roleInfoServer.getListByParam(param,pageEntity);
 		return pageEntity;
 	}
@@ -99,7 +114,7 @@ public class RoleController {
 	 */
 	@RequestMapping(value ="/saveRole", method = RequestMethod.POST)
 	@ResponseBody
-	public int  saveRole(HttpServletRequest request,String deptNo,Model model){
+	public int  saveRole(HttpServletRequest request,Model model){
 		String roleName = request.getParameter("roleName");
 		String rolediscribe= request.getParameter("rolediscribe");
 		
@@ -112,7 +127,22 @@ public class RoleController {
 		info.setRoleStatu(0);
 		info.setRoleRemark(rolediscribe);
 		String auths =request.getParameter("auth");
-		int result = roleInfoServer.saveRole(info, auths);
+		
+		
+		String [] sIpInfo = new String[5];
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null && userInfo.getId()>0) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(105);
+		entity.setlModuleId(10501);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		int result = roleInfoServer.saveRole(info, auths,entity,sIpInfo);
 		return result;
 	}
 	/**
@@ -135,7 +165,21 @@ public class RoleController {
 		info.setRoleRemark(rolediscribe);
 		info.setRoleStatu(0);
 		String auths =request.getParameter("auth");
-		int result = roleInfoServer.editRole(info, auths);
+		
+		String [] sIpInfo = new String[5];
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(105);
+		entity.setlModuleId(10502);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		int result = roleInfoServer.editRole(info,auths,entity,sIpInfo);
 		return result;
 	}	
 	
@@ -153,7 +197,21 @@ public class RoleController {
 		long id =IntegerAndString.StringToLong(request.getParameter("roleId"),0);
 		RoleInfo info = new RoleInfo();
 		info.setId(id);
-		int result = roleInfoServer.remove(info);
+		
+		String [] sIpInfo = new String[5];
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(105);
+		entity.setlModuleId(10503);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		int result = roleInfoServer.remove(info,entity, sIpInfo);
 		return result;
 	}	
 	/**
@@ -172,7 +230,21 @@ public class RoleController {
 		RoleInfo info = new RoleInfo();
 		info.setId(id);
 		info.setRoleStatu(statu);
-		int result = roleInfoServer.ofRole(info);
+		
+		String [] sIpInfo = new String[5];
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(105);
+		entity.setlModuleId(10504);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		int result = roleInfoServer.ofRole(info,entity,sIpInfo);
 		return result;
 	}
 

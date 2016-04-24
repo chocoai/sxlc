@@ -2,8 +2,13 @@
 package cn.springmvc.controller.organizationmng;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,10 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sun.corba.se.impl.util.Utility;
+
+import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.DeptInfo;
+import cn.springmvc.model.Trui;
 import cn.springmvc.service.IDeptInfoServer;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 /**
  * 
@@ -56,14 +69,21 @@ public class DeptController {
 	 */
 	@RequestMapping("/role-dept")
 	@ResponseBody
-	public PageEntity list(Map<String, Object> req, Integer start, Integer length,
-			String deptNo, String deptName, String principalName,
-			String principalPhone, Integer deptStatu) {
+	public PageEntity list(HttpServletRequest request) {
 		
 		//日志信息
 		logger.info("查询部门列表");
 		
 		PageEntity pager = new PageEntity();
+		Map<String, Object> req = new HashMap<String, Object>();
+		
+		//参数接收
+		String deptNo = request.getParameter("deptNo");
+		String deptName = request.getParameter("deptName");
+		String principalName = request.getParameter("principalName");
+		String principalPhone = request.getParameter("principalPhone");
+		int start = Integer.valueOf(request.getParameter("start"));
+		int length = Integer.valueOf(request.getParameter("length"));
 		
 		if(deptNo != null && deptNo != "") {
 			req.put("deptNo", deptNo);
@@ -77,19 +97,10 @@ public class DeptController {
 		if (principalPhone != null && principalPhone != "") {
 			req.put("principalPhone", principalPhone);
 		}
-		
-		if (deptStatu != null) {
-			req.put("deptStatu", deptStatu);
-		}else {
 			req.put("deptStatu", -1);
-		}
 		
-		if (start != null) {
-			pager.setPageNum(start / length + 1);
-		}
-		if (length != null) {
-			pager.setPageSize(length);
-		}
+		pager.setPageNum(start / length + 1);
+		pager.setPageSize(length);
 		pager.setMap(req);
 		
 		logger.info("开始调用查询部门列表接口......req=" + req);
@@ -121,14 +132,21 @@ public class DeptController {
 	 */
 	@RequestMapping(value ="/save", method = RequestMethod.POST)
 	@ResponseBody
-	public int save(String deptName, String principalName, 
-			String principalPhone, String preDeptId,
-			String deptRemark) {
+	public int save(HttpServletRequest request) {
 		
 		//日志信息
 		logger.info("添加部门");
 		
 		DeptInfo deptInfo = new DeptInfo();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		//获取参数
+		
+		String deptRemark = request.getParameter("deptRemark");
+		String deptName = request.getParameter("deptName");
+		String principalName = request.getParameter("principalName");
+		String principalPhone = request.getParameter("principalPhone");
+		String preDeptId = request.getParameter("preDeptId");
 		
 		deptInfo.setDeptNo("AAA123bbb");
 		if (deptRemark != null && deptRemark != "") {
@@ -147,8 +165,20 @@ public class DeptController {
 			deptInfo.setPreDeptId(Long.valueOf(preDeptId));
 		}
 		
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(10101);
+		entity.setlModuleId(101);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
 		logger.info("开始调用添加部门接口......deptInfo=" + deptInfo);
-		int num = deptInfoServer.saveDept(deptInfo);
+		int num = deptInfoServer.saveDept(deptInfo, entity, sIpInfo);
 		logger.info("结束调用添加部门接口......接口返回：result=" + num);
 		
 		return num;
@@ -174,13 +204,21 @@ public class DeptController {
 	 */
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public int update(String deptId, String deptName, String deptRemark, String principalName,
-			String principalPhone) {
+	public int update(HttpServletRequest request) {
 		
 		//日志信息
 		logger.info("修改部门");
 		
 		DeptInfo deptInfo = new DeptInfo();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		//获取参数
+		
+		String deptId = request.getParameter("deptId");
+		String deptRemark = request.getParameter("deptRemark");
+		String deptName = request.getParameter("deptName");
+		String principalName = request.getParameter("principalName");
+		String principalPhone = request.getParameter("principalPhone");
 		
 		if (deptId != null && deptId != "") {
 			deptInfo.setId(Long.valueOf(deptId));
@@ -198,8 +236,20 @@ public class DeptController {
 			deptInfo.setPrincipalPhone(principalPhone);
 		}
 		
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(10102);
+		entity.setlModuleId(101);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
 		logger.info("开始调用修改部门接口......deptInfo=" + deptInfo);
-		int num = deptInfoServer.editDept(deptInfo);
+		int num = deptInfoServer.editDept(deptInfo, entity, sIpInfo);
 		logger.info("结束调用修改部门接口......接口返回：result=" + num);
 		
 		return num;
@@ -219,19 +269,34 @@ public class DeptController {
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
-	public int delete(String deptId) {
+	public int delete(HttpServletRequest request) {
 		
 		//日志信息
 		logger.info("删除部门");
 		
 		DeptInfo deptInfo = new DeptInfo();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
+		String deptId = request.getParameter("deptId");
 		if (deptId != null && deptId != "") {
 			deptInfo.setId(Long.valueOf(deptId));
 		}
 		
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(10103);
+		entity.setlModuleId(101);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
 		logger.info("开始调用删除部门接口......deptInfo=" + deptInfo);
-		int num = deptInfoServer.delDept(deptInfo);
+		int num = deptInfoServer.delDept(deptInfo, entity, sIpInfo);
 		logger.info("开始调用删除部门接口......接口返回：result=" + num);
 		
 		return num;
@@ -252,17 +317,70 @@ public class DeptController {
 	 */
 	@RequestMapping("/ofOrOpenDept")
 	@ResponseBody
-	public int ofOrOpenDept(String deptId, String deptStatu) {
+	public int ofOrOpenDept(HttpServletRequest request) {
 		
 		//日志信息
 		logger.info("启用停用部门");
 		DeptInfo deptInfo = new DeptInfo();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		
+		String deptId = request.getParameter("deptId");
+		String deptStatu = request.getParameter("deptStatu");
 		
 		deptInfo.setId(Long.valueOf(deptId));
 		deptInfo.setDeptStatu(Integer.valueOf(deptStatu));
 		
-		int num = deptInfoServer.ofDept(deptInfo);
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(10104);
+		entity.setlModuleId(101);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = deptInfoServer.ofDept(deptInfo, entity, sIpInfo);
 		return num;
+	}
+	
+	@RequestMapping("/treeList")
+	@ResponseBody
+	public List<Trui> treeList(HttpServletRequest request){
+		
+		List<DeptInfo> deptlist = null;
+		//获取参数
+		String parentId = request.getParameter("deptId");
+		if (parentId != null && parentId != "") {
+			deptlist = deptInfoServer.findDeptInfoByParentId(Long.valueOf(parentId));
+		}else {
+			deptlist = deptInfoServer.findall();
+		}
+		
+	    List<Trui> treeList= new ArrayList<Trui>(); 
+		Trui entity = null;
+		String sPath = "";
+		
+		if(deptlist!=null && deptlist.size()>0){
+			for (DeptInfo deptInfo : deptlist) {
+				sPath = "/role/treeList.do?deptId=" + parentId;
+				entity = new Trui();
+				entity.setResourceID(String.valueOf(deptInfo.getId()));
+				entity.setParentID(String.valueOf(deptInfo.getPreDeptId()));
+				entity.setResourceCode("");
+				entity.setResourceDesc("");
+				entity.setResourceOrder("0");
+				entity.setResourceType("0");
+				entity.setAccessPath(sPath);
+				entity.setResourceName(deptInfo.getDeptName());
+				entity.setResourceGrade(String.valueOf(deptInfo.getDeptLevel()));
+				treeList.add(entity);
+			}
+		}
+		return	treeList;
 	}
 }
 

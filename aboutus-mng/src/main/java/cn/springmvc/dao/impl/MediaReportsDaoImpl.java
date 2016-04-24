@@ -34,7 +34,7 @@ public class MediaReportsDaoImpl extends SqlSessionDaoSupport implements MediaRe
 	}
 
 	@Override
-	public int deleteMediaReportsByID(int id) {
+	public int deleteMediaReportsByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("mediaReports.deleteMediaReportsByID", id);

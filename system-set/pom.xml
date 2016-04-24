@@ -25,11 +25,6 @@
   </properties>
 
   <dependencies>
-  	<dependency>
-  		<artifactId>backage-web</artifactId>
-  		<groupId>product_p2p</groupId>
-  		<version>${project.version}</version>
-  	</dependency>
 	  <dependency>
 	  	  <groupId>product_p2p</groupId>
 		  <artifactId>kit</artifactId>

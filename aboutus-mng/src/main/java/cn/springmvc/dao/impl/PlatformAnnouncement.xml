@@ -56,7 +56,7 @@
 	    where Platform_ID=#{id} 
     </update>   
     <!-- 删除平台公告 -->  
-	<delete id="deletePlatformByID"  parameterType="int">
+	<delete id="deletePlatformByID"  parameterType="long">
 	   delete from  Platform_Announcement where Platform_ID=#{id}   
     </delete> 
     
@@ -65,7 +65,7 @@
 	   update  Platform_Announcement  set   Statu=#{statu} where Platform_ID=#{id}   
     </update>  
     <!-- 根据id查询平台公告 -->  
-	<select id="selectPlatformByID"  parameterType="int" resultMap="resultListPlatformAnnouncement" >
+	<select id="selectPlatformByID"  parameterType="long" resultMap="resultListPlatformAnnouncement" >
 	   select pa.Platform_ID,   pa.Title,   pa.Content,   pa.Statu,   pa.CreateTime, 
 	    pa.Opt_Date, pa.Admin_ID 
 	   from  Platform_Announcement pa   where  pa.Platform_ID =  #{id}

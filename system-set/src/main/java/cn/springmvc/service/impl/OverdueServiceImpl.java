@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
 
@@ -16,6 +17,7 @@ import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
 import cn.springmvc.dao.impl.HandleOverdueDaoImpl;
 import cn.springmvc.dao.impl.HandleQuickRechargeFeeDaoImpl;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
 import cn.springmvc.dao.impl.SelectOverdueDaoImpl;
 import cn.springmvc.dao.impl.SelectQuickRechargeFeeDaoImpl;
@@ -38,7 +40,8 @@ public class OverdueServiceImpl implements OverdueService {
 	private SelectOverdueDaoImpl  selectOverdueDaoImpl;
 	@Resource(name="handleOverdueDaoImpl")
 	private HandleOverdueDaoImpl  handleOverdueDaoImpl;
-	
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	/* * 
 	 * 查询所有的逾期天数设置
 	 *  *  * @return * @see cn.springmvc.service.OverdueService#findAllOverdue() */
@@ -76,8 +79,9 @@ public class OverdueServiceImpl implements OverdueService {
 	 */
 	/* *  *  * @return * @see cn.springmvc.service.OverdueService#insertOverdueLimit(java.util.Map) */
 	@Override
-	public int insertOverdueLimit(Map<String, Object> map) {
-		
+	public int insertOverdueLimit(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("添加逾期程度 :"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleOverdueDaoImpl.insertOverdueLimit(map);
 	}
@@ -89,8 +93,9 @@ public class OverdueServiceImpl implements OverdueService {
 	 */
 	/* *  *  * @return * @see cn.springmvc.service.OverdueService#updateOverdueLimit(java.util.Map) */
 	@Override
-	public int updateOverdueLimit(Map<String, Object> map) {
-		
+	public int updateOverdueLimit(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("修改逾期程度 :"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleOverdueDaoImpl.updateOverdueLimit(map);
 	}
@@ -102,7 +107,7 @@ public class OverdueServiceImpl implements OverdueService {
 	 */
 	/* *  *  * @return * @see cn.springmvc.service.OverdueService#insertOverdue(cn.springmvc.model.OverdueEntity) */
 	@Override
-	public int insertOverdue(OverdueEntity overdueEntity) {
+	public int insertOverdue(OverdueEntity overdueEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
 		overdueEntity.setId((int)id);
@@ -112,6 +117,8 @@ public class OverdueServiceImpl implements OverdueService {
 		}else{
 			generatorUtil.SetIdUsed(id);
 		}
+		entity.setsDetail("添加逾期天数设置 :"+overdueEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		return result;
 	}
 
@@ -122,8 +129,9 @@ public class OverdueServiceImpl implements OverdueService {
 	 */
 	/* *  *  * @return * @see cn.springmvc.service.OverdueService#deleteOverdue(java.util.Map) */
 	@Override
-	public int deleteOverdue(Map<String, Object> map) {
-		
+	public int deleteOverdue(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("删除逾期天数设置 :"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleOverdueDaoImpl.deleteOverdue(map);
 	}

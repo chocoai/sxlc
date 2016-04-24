@@ -58,6 +58,7 @@
 		</where>
 	</select>
 	
+	
 	<!-- 添加理财顾问 -->
 	<select id="bind"	statementType="CALLABLE" parameterType="Map">
 		call saveFinancialAdvisor(
@@ -78,8 +79,23 @@
 	</select>
 	
 	
-	
-	
+	<!-- 根据理财师编号获取理财师信息 -->
+	<select id="findById" parameterType="Map" resultMap="FinancialAdvisor">
+		select fa.FA_ID,fa.Service_No,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{sKey}) using utf8) as Personal_Name,
+		CONVERT(AES_DECRYPT(UNHEX(fa.Service_QQ),#{sKey}) using utf8) as Service_QQ,
+		CONVERT(AES_DECRYPT(UNHEX(fa.Service_Phone),#{sKey}) using utf8) as Service_Phone,
+		CONVERT(AES_DECRYPT(UNHEX(fa.Service_FixPhone),#{sKey}) using utf8) as Service_FixPhone,
+		fa.Service_Nickname,fa.Service_Email,fa.Service_HeadUrl,
+		CONVERT(AES_DECRYPT(UNHEX(lpbi.Personal_Name),#{sKey}) using utf8) as lPersonal_Name,
+		fa.Record_Date,mi.Member_Id,mi.Member_No,mi.Logname,mi.Member_Type
+		FROM Financial_Advisor fa
+		LEFT JOIN Member_Info mi ON mi.Member_Id  = fa.Member_Id
+		LEFT JOIN Personal_Base_Info lpbi ON lpbi.Personal_Id=mi.Personal_ID
+		LEFT JOIN Staff_Info si ON si.Staff_Id = fa.Staff_Id
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id = si.Personal_Id
+		where fa.fa_id = #{fid}
+	</select>
 	
 	
 	

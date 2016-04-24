@@ -1,0 +1,11 @@
+.webauthenimg{
+	width:98px;
+	height:37px;
+}
+.addauthenform img{
+	height:37px;
+	width:98px;
+}
+.addauthenform .rec-dimensions{
+	vertical-align:-webkit-baseline-middle;
+}

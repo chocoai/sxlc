@@ -6,23 +6,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.dbkey.DbKeyUtil;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.dictionaries.model.EducationInfoEntity;
 import cn.dictionaries.model.NationInfoEntity;
 import cn.springmvc.dao.impl.DictionariesCore;
+import cn.springmvc.model.Admin;
+import cn.springmvc.model.PersonalBaseInfo;
 import cn.springmvc.model.StaffInfo;
 import cn.springmvc.service.IPostInfoServer;
 import cn.springmvc.service.IStaffInfoService;
+import cn.springmvc.service.SystemSetService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 /** 
 * @author 唐国峰
@@ -32,7 +40,7 @@ import cn.springmvc.service.IStaffInfoService;
 */
 @Controller
 @RequestMapping("/role")
-public class StaffController {
+public class StaffController  {
 	
 	@Autowired
 	private IStaffInfoService iStaffInfoService;
@@ -42,6 +50,12 @@ public class StaffController {
 	
 	@Autowired
 	private DictionariesCore dictionariesCore;
+	
+	/**
+	 * 操作日志记录
+	 */
+	@Resource(name="systemSetServiceImpl")
+	private SystemSetService systemSetService;
 	
 	/** 
 	* @author 唐国峰  
@@ -64,12 +78,6 @@ public class StaffController {
 		return "role/role-emp";
 	}
 	
-	@RequestMapping("/test")
-	public String test(HttpServletRequest req){
-		return "role/test";
-	}
-	
-	
 	
 	/** 
 	* getStaffList(获取员工信息列表) 
@@ -81,12 +89,14 @@ public class StaffController {
 	*/
 	@RequestMapping("/getAllStaff")
 	@ResponseBody
-	public PageEntity getStaffList(int start,int length,String personalName,String personalPhone,String personalIDCard,Long postId,
-			HttpServletRequest request,HttpServletResponse res){
-
-		//获取前台额外传递过来的查询条件  
-//		String extra_search = request.getParameter("extra_search");
-		int sType = IntegerAndString.StringToInt(request.getParameter("sType"), 0);		// 非员工中的管理员  1
+	public PageEntity getStaffList(HttpServletRequest req){
+		int start = Integer.parseInt(req.getParameter("start"));
+		int length = Integer.parseInt(req.getParameter("length"));
+//		int sType = IntegerAndString.StringToInt(req.getParameter("sType"), 0);		// 1:非员工中的管理员    2: 非理财顾问中的员工
+		String personalName = req.getParameter("personalName");
+		String personalPhone = req.getParameter("personalPhone");
+		String personalIDCard = req.getParameter("personalIDCard");
+		String postId = req.getParameter("postId");
 
 		PageEntity pager = new PageEntity();
 		Map<String,Object> param=new HashMap<String,Object>();
@@ -95,7 +105,7 @@ public class StaffController {
 		param.put("personalPhone", personalPhone);
 		param.put("personalIDCard", personalIDCard);
 		param.put("postId", postId);
-		param.put("sType", sType);
+//		param.put("sType", sType);
 		param.put("sKey", sKey);
 		pager.setMap(param);
 		pager.setPageNum(start/length+1);
@@ -106,17 +116,62 @@ public class StaffController {
 	
 	
 	/** 
-	* addStaff(增加员工) 
 	* @author 唐国峰  
-	* @Description: 
+	* @Description: 增加或修改员工信息
 	* @return int 1:成功 0：失败
 	* @date 2016-4-5 下午2:18:59
 	* @throws 
 	*/
-	@RequestMapping("/addStaff")
+	@RequestMapping("/addOrUpdateStaff")
 	@ResponseBody
-	public int addStaff(StaffInfo info,HttpServletRequest req,HttpServletResponse res){
+	public int addStaff(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = HttpSessionUtil.getSession(req);
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=103(员工管理)
+		//optID=10301(添加) 10302(修改)
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(103);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		
+		//获取解密参数
+		StaffInfo info = new StaffInfo();
+		PersonalBaseInfo baseInfo = new PersonalBaseInfo();
+		String personalName = req.getParameter("personalName");
+		baseInfo.setPersonalName(personalName);
+		Long sexId = Long.parseLong(req.getParameter("sexId"));
+		baseInfo.setId(sexId);
+		String personalIDCard = req.getParameter("personalIDCard");
+		baseInfo.setPersonalIDCard(personalIDCard);
+		Integer nationId = Integer.parseInt(req.getParameter("nationId"));
+		baseInfo.setNationId(nationId);
+		String personalPhone = req.getParameter("personalPhone");
+		baseInfo.setPersonalPhone(personalPhone);
+		String qq = req.getParameter("qq");
+		baseInfo.setQq(qq);
+		String personalEmail = req.getParameter("personalEmail");
+		baseInfo.setPersonalEmail(personalEmail);
+		String homeTown = req.getParameter("homeTown");
+		baseInfo.setHomeTown(homeTown);
+		String houseAddress = req.getParameter("houseAddress");
+		baseInfo.setHouseAddress(houseAddress);
+		baseInfo.setHomeAddress(houseAddress);
+		Integer education = Integer.parseInt(req.getParameter("education"));
+		baseInfo.setEducation(education);
+		String emerName = req.getParameter("emerName");
+		info.setEmerName(emerName);
+		String emerPhone = req.getParameter("emerPhone");
+		info.setEmerPhone(emerPhone);
+		
+		info.setBaseInfo(baseInfo);
+		String postId = req.getParameter("postId");
+		String deptId= req.getParameter("deptId");
 		String graduatedDate = req.getParameter("graduatedDate");
+		String type = req.getParameter("type");
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
 		int result=0;
@@ -126,70 +181,54 @@ public class StaffController {
 			}
 			info.getBaseInfo().setGraduatedDATE(date);
 			Date joinDate = new Date(); 
-			String deptId= "1";
-			String postId="1";
-			result = iStaffInfoService.saveStaff(info, deptId, postId, joinDate);
-			return result;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 1;
-		}
-	}
-	
-	
-	/** 
-	* editStaff(修改员工信息) 
-	* @author 唐国峰  
-	* @Description: 
-	* @return void
-	* @date 2016-4-5 下午2:19:13
-	* @throws 
-	*/
-	@RequestMapping("/editStaff")
-	@ResponseBody
-	public int editStaff(StaffInfo info,HttpServletRequest req,HttpServletResponse res){
-		String graduatedDate = req.getParameter("graduatedDate");
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = null;
-		int result=0;
-		try {
-			if(graduatedDate !=null){
-				date = format.parse(graduatedDate);
+			if(type.equals("1")){//增加操作
+				logEntity.setlOptId(10301);
+				result = iStaffInfoService.saveStaff(info, deptId, postId, joinDate,logEntity,sIpInfo);
+			}else if(type.equals("2")){//修改操作
+				logEntity.setlOptId(10302);
+				result = iStaffInfoService.editStaff(info, deptId, postId, joinDate,logEntity,sIpInfo);
 			}
-			info.getBaseInfo().setGraduatedDATE(date);
-			Date joinDate = new Date(); 
-			String deptId= "1";
-			String postId="1";
-			result = iStaffInfoService.editStaff(info, deptId, postId, joinDate);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 1;
 		}
 	}
-	
 	
 	/** 
 	* delStaff(删除员工) 
 	* @author 唐国峰  
-	* @Description: 
-	* @param ids 要删除的员工ids
+	* @Description: 删除员工
 	* @return void
 	* @date 2016-4-5 下午2:20:40
 	* @throws 
 	*/
 	@RequestMapping("/delStaff")
 	@ResponseBody
-	public int delStaff(String ids,HttpServletRequest req){
+	public int delStaff(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = HttpSessionUtil.getSession(req);
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=103(员工管理)
+		//optID=10303(离职)
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(103);
+		logEntity.setlOptId(10303);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		
 		int result=0;
+		String ids = req.getParameter("ids");
 		try {
 			ids = ids.substring(1, ids.length()-1);
 			String[] all = ids.split(",");
 			for(String id : all){
 				StaffInfo info = new StaffInfo();
 				info.setId(Long.parseLong(id));
-				result = iStaffInfoService.quit(info);
+				result = iStaffInfoService.quit(info,logEntity,sIpInfo);
 			}
 			return result;
 		} catch (Exception e) {

@@ -42,15 +42,19 @@ function login() {
 									window.location.href = "web/index/index.jsp"; // web/common/homPage.jsp
 								} else if (data == 1) {
 									openwindow("登录失败！");
+									refreshImg('vCodeImg');//刷新验证码
 									return false;
 								}else if (data == -1) {
 									openwindow("用户名不存在！");
+									refreshImg('vCodeImg');//刷新验证码
 									return false;
 								} else if (data == 2) {
 									openwindow("密码错误！");
+									refreshImg('vCodeImg');//刷新验证码
 									return false;
 								} else if (data == 3) {
 									openwindow("用户名已失效！");
+									refreshImg('vCodeImg');//刷新验证码
 									return false;
 								}
 							}

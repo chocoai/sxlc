@@ -4,6 +4,7 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.CreditLevelEntity;
@@ -97,7 +98,7 @@ public interface LevelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertMemberLevel(MemberLevelEntity memberLevelEntity);
+	public int insertMemberLevel(MemberLevelEntity memberLevelEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* updateMemberLevelById 修改单个会员等级设置
@@ -112,7 +113,7 @@ public interface LevelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateMemberLevelById(MemberLevelEntity memberLevelEntity);
+	public int updateMemberLevelById(MemberLevelEntity memberLevelEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* deleteMemberLevelById 删除单条会员等级设置 
@@ -127,7 +128,7 @@ public interface LevelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int deleteMemberLevelById(Map<String, Object> map);
+	public int deleteMemberLevelById(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -143,7 +144,7 @@ public interface LevelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertCreditLevel(CreditLevelEntity creditLevelEntity);
+	public int insertCreditLevel(CreditLevelEntity creditLevelEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* updateCreditLevelById 修改单条会员信用等级信息 
@@ -158,7 +159,7 @@ public interface LevelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateCreditLevelById(CreditLevelEntity creditLevelEntity);
+	public int updateCreditLevelById(CreditLevelEntity creditLevelEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* deleteCreditLevelById 根据id删除单条会员信用等级信息 
@@ -173,7 +174,7 @@ public interface LevelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int deleteCreditLevelById(Map<String, Object> map);
+	public int deleteCreditLevelById(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	

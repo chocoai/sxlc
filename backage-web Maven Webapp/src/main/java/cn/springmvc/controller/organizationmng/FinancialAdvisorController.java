@@ -1,7 +1,6 @@
 package cn.springmvc.controller.organizationmng;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -12,11 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.FinancialAdvisor;
 import cn.springmvc.service.IFinancialAdvisorServer;
+import cn.springmvc.util.LoadUrlUtil;
 
 
 /**
@@ -34,12 +37,25 @@ public class FinancialAdvisorController {
 	
 	@RequestMapping(value ="/getPlannerAdvise", method = RequestMethod.GET)
 	@ResponseBody
-	public PageEntity getPlannerAdvise(String staffName,String memberNo,String logName,String realName,  HttpServletRequest request){
+	public PageEntity getPlannerAdvise(HttpServletRequest request){
 		Map<String ,Object> param = new HashMap<String, Object>();
-		param.put("staffName", staffName);
-		param.put("memberNo", memberNo);
-		param.put("logName", logName);
-		param.put("realName", realName);
+		String staffName =request.getParameter("staffName");
+		String memberNo =request.getParameter("memberNo");
+		String logName =request.getParameter("logName");
+		String realName = request.getParameter("realName");
+		if(staffName!=null && !staffName.equals("")){
+			param.put("staffName", staffName);
+		}
+		if(memberNo!=null && !memberNo.equals("")){
+			param.put("memberNo", memberNo);
+		}
+		if(logName!=null && !logName.equals("")){
+			param.put("logName", logName);
+		}
+		if(realName!=null && !realName.equals("")){
+			param.put("realName", realName);
+		}
+		
 		String sKey = DbKeyUtil.GetDbCodeKey();
 		param.put("sKey", sKey);
 		int pageSize = IntegerAndString.StringToInt(request.getParameter("length"), 10) ;//每页显示行数
@@ -65,14 +81,25 @@ public class FinancialAdvisorController {
 	 * @param
 	 * return int
 	 */
-	
-
 	@RequestMapping(value ="/savaPlannerAdvise", method = RequestMethod.POST)
 	@ResponseBody
-	public int savaPlannerAdvise(String staffId, HttpServletRequest request){
+	public int savaPlannerAdvise(HttpServletRequest request){
 		FinancialAdvisor advisor = new FinancialAdvisor();
+		String staffId = request.getParameter("staffId");
 		advisor.setStaffId(IntegerAndString.StringToLong(staffId, 0));
-		return financialAdvisorServer.saveFinancialAdvisor(advisor);
+		
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		String[] sIpInfo = new String[6];
+		Admin userInfo = (Admin)request.getSession().getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(10401);
+		entity.setlModuleId(104);
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		return financialAdvisorServer.saveFinancialAdvisor(advisor,entity,sIpInfo);
 	}
 	
 	/**
@@ -86,10 +113,24 @@ public class FinancialAdvisorController {
 	 */
   	@RequestMapping(value ="/removePlannerAdvise", method = RequestMethod.POST)
 	@ResponseBody
-	public int removePlannerAdvise(String planneId, HttpServletRequest request){
+	public int removePlannerAdvise( HttpServletRequest request){
+  		String planneId =request.getParameter("planneId");
 		long planne_Id = IntegerAndString.StringToLong(planneId, 0);
 		FinancialAdvisor advisor = new FinancialAdvisor();
 		advisor.setId(planne_Id);
-		return financialAdvisorServer.removeFinancialAdvisor(advisor);
+		
+		
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		String[] sIpInfo = new String[6];
+		Admin userInfo = (Admin)request.getSession().getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(10402);
+		entity.setlModuleId(104);
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		return financialAdvisorServer.removeFinancialAdvisor(advisor,entity,sIpInfo);
 	}
 }	

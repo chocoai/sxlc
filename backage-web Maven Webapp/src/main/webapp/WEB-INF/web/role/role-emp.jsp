@@ -21,7 +21,9 @@
 <!-- 私用css -->
 <link rel="stylesheet" href="css/role.css" />
 <script type="text/javascript" src="<%=basePath%>/plugs/My97DatePicker/WdatePicker.js"></script>
-
+<script type="text/javascript">
+	var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+</script>
 </head>
 
 <body class="nav-md">
@@ -54,15 +56,15 @@
 						</div>
 						<div class="panel-body">
 							<form id="" class="" action="">
-								<span class="con-item"><span>姓名</span><input type="text" class="" id="personalName" placeholder="姓名" /></span>
-								<span class="con-item"><span>身份证号</span><input type="text" class="" id="personalIDCard" placeholder="身份证号" /></span>
+								<span class="con-item"><span>姓名</span><input type="text" class="" id="personalNameQuery" placeholder="姓名" /></span>
+								<span class="con-item"><span>身份证号</span><input type="text" class="" id="personalIDCardQuery" placeholder="身份证号" /></span>
 								<span class="con-item"><span>职务</span>
 <!-- 									<input type="text" class="" id="postId" placeholder="职务" /> -->
-									<input type="text" disabled="disabled" style="width:130px" name="" id="postId" class="" />
+									<input type="text" disabled="disabled" style="width:130px" name="" id="postIdQuery" class="" />
 									<button class="btn btn-primary btn-xs deptSelect" type="button">选择</button>
 								</span>
 								&nbsp;&nbsp;&nbsp;
-								<span class="con-item"><span>联系电话</span><input type="text" class="" id="personalPhone" placeholder="联系电话" /></span>
+								<span class="con-item"><span>联系电话</span><input type="text" class="" id="personalPhoneQuery" placeholder="联系电话" /></span>
 								<button class="obtn obtn-query glyphicon" id="queryBtn" type="button">查询</button>
 							</form>
 						</div>
@@ -116,7 +118,7 @@
 										</td>
 										<td class="tt"><label class="ineed">联系电话：</label></td>
 										<td class="con">
-											<input type="text" name="baseInfo.personalPhone" id="nationId" class="personalPhone" datatype="zPhone" placeholder="" />
+											<input type="text" name="baseInfo.personalPhone" id="personalPhone" class="personalPhone" datatype="zPhone" placeholder="" />
 										</td>
 									</tr>
 									<tr>
@@ -180,6 +182,8 @@
 							                  </select> --%>
 							                  <input type="hidden" name="id" id="staffId"/>
 							                  <input type="hidden" name="baseInfo.id" id="personalId"/>
+							                  <input type="hidden" name="postId" id="postId" value="1"/>
+							                  <input type="hidden" name="deptId" id="postId" value="1"/>
 										</td>
 									</tr>
 									

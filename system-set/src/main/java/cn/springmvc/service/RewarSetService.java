@@ -4,6 +4,7 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.RewardSetEntity;
@@ -55,7 +56,7 @@ public interface RewarSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertRewarSet(RewardSetEntity rewardSetEntity);
+	public int insertRewarSet(RewardSetEntity rewardSetEntity,InsertAdminLogEntity entity, String[] sIpInfo);
 	
 	/** 
 	* updateRewarSet 修改提奖设置 
@@ -70,7 +71,7 @@ public interface RewarSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateRewarSet(RewardSetEntity rewardSetEntity);
+	public int updateRewarSet(RewardSetEntity rewardSetEntity,InsertAdminLogEntity entity, String[] sIpInfo);
 	
 	/** 
 	* deleteRewarSet 删除提奖设置
@@ -85,6 +86,6 @@ public interface RewarSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int deleteRewarSet(RewardSetEntity rewardSetEntity);
+	public int deleteRewarSet(RewardSetEntity rewardSetEntity,InsertAdminLogEntity entity, String[] sIpInfo);
 }
 

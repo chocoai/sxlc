@@ -1,5 +1,6 @@
 package cn.springmvc.service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import cn.springmvc.model.FrequentlyAskedQuestionsEntity;
  
 /**
@@ -15,19 +16,22 @@ public interface FrequentlyAskedQuestionsService {
 	 * @param entity 常见问题实体
 	 * @return -1：数据为空;0：添加失败;1:添加成功
 	 */
-	public int insertFrequentlyAskedQuestions(FrequentlyAskedQuestionsEntity entity); 
+	public int insertFrequentlyAskedQuestions(FrequentlyAskedQuestionsEntity entity,
+			InsertAdminLogEntity  logentity,String[] sIpInfo); 
 	/**
 	 * 删除常见问题
 	 * @param id 常见问题id
 	 * @return 0：失败；1成功
 	 */
-	public int deleteFrequentlyAskedQuestions(int id);  
+	public int deleteFrequentlyAskedQuestions(long id,InsertAdminLogEntity 
+			logentity,String[] sIpInfo);  
 	/**
 	 * 停用或启用常见问题信息
-	 * @param entity 常见问题实体 包含statu 常见问题状态(0:无效 1：有效-1：全部),id
+	 * @param entity 常见问题实体 包含statu 常见问题状态(0:无效 1：有效),id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  updateFrequentlyAskedQuestionsStatuByID(FrequentlyAskedQuestionsEntity entity);
+	public  int  updateFrequentlyAskedQuestionsStatuByID(FrequentlyAskedQuestionsEntity entity,
+			InsertAdminLogEntity logentity,String[] sIpInfo);
 	/**
 	 * 查询常见问题 
 	 * @param statu 常见问题状态(0:无效 1：有效-1：全部)

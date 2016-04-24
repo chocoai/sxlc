@@ -11,7 +11,7 @@ public class RewardSetEntity {
 	private int type;//
 	private long id;//	
 	private String gradeName;//		等级名称	
-	private long totalInvest;//		投资总金额等级
+	private long totalInvest;//		投资总金额
 	private String gradeRemark;//	等级描述
 	private int vIPReward;//		VIP提成设置 推荐一个VIP提成金额 单位：元  保留4位小数
 	private int borrowReward;//		借款提奖点数 保留4位小数
@@ -77,6 +77,14 @@ public class RewardSetEntity {
 	}
 	public void setStatu(int statu) {
 		this.statu = statu;
+	}
+	@Override
+	public String toString() {
+		return "RewardSetEntity [type=" + type + ", id=" + id + ", gradeName(等级名称)="
+				+ gradeName + ", totalInvest(投资总金额)=" + totalInvest + ", gradeRemark(等级描述)="
+				+ gradeRemark + ", vIPReward(VIP提成设置)=" + vIPReward + ", borrowReward(借款提奖点数 保留4位小数)="
+				+ borrowReward + ", repayReward(借款还本金提奖点数)=" + repayReward
+				+ ", investReward(投资收益提奖点数 )=" + investReward + ", statu(状态 0：无效 1：有效)=" + statu + "]";
 	}
 
 }

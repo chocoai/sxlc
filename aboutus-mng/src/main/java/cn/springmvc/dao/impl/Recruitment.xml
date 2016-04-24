@@ -20,8 +20,8 @@
 	   from  Recruitment rt
 	   LEFT JOIN Admin a on a.Admin_ID=rt.Admin_ID
          <where>  
-            <if test="map.name != null">  
-                rt.Name like  '%{map.name}%'  
+            <if test="map.name != null and map.name != ''">  
+                rt.Name like  '%${map.name}%'  
             </if>   
             <if test="map.statu != -1">  
                 and rt.Statu=#{map.statu}
@@ -58,13 +58,13 @@
 	       </if> 
 	        <if test="optId != 0" >
 	           Admin_ID=#{optId},
-	       </if> 
+	        </if> 
 	        Opt_Date=now(), 
 	      </set>   
 	   where Recruitment_ID=#{id}   
     </update>   
     <!-- 删除招贤纳士 -->  
-	<delete id="deleteRecruitmentByID"  parameterType="int">
+	<delete id="deleteRecruitmentByID"  parameterType="long">
 	   delete from  Recruitment where Recruitment_ID=#{id}   
     </delete> 
     
@@ -73,7 +73,7 @@
 	   update  Recruitment  set   Statu=#{statu} where Recruitment_ID=#{id}   
     </update>  
     <!-- 根据id查询招贤纳士 -->  
-	<select id="selectRecruitmentsByID"  parameterType="int" resultMap="resultListRecruitment" >
+	<select id="selectRecruitmentsByID"  parameterType="long" resultMap="resultListRecruitment" >
 	   select rt.Recruitment_ID,   rt.Name,   rt.Area, rt.Job_Responsibilities, rt.Job_Requirements,  
 	   rt.Statu, rt.CreateTime,rt.Opt_Date,rt.Admin_ID 
 	   from  Recruitment rt  where Recruitment_ID=#{id}  

@@ -2,7 +2,11 @@
  * 版块：前台界面配置-媒体报道
  * 内容介绍：
  */
- 
+
+//加密设置
+var encrypt = new JSEncrypt();
+encrypt.setPublicKey(publicKey_common);
+
 $(function() {
 	//表格初始化
 	$('#mediaTb').DataTable({
@@ -10,7 +14,7 @@ $(function() {
 			"url": appPath+"/front/getMediaData.do",   
 			"dataSrc": "results", 
 			"type": "POST",
-			"data": function ( d ) {  
+			"data": function ( d ) {
 			}  
 		},
 		columns: [  
@@ -98,10 +102,8 @@ function addOrUpdate(type){
 	$("#filePicker").html("选择图片");//清除样式
 	//操作
 	var title="";
-	var url=""; 
 	if(type==1){
 		title="添加最新动态";
-		url="/front/addMediaReport.do";
 		if(num==0){
 			ue.addListener("ready", function () {
 	        	ue.setContent("");
@@ -112,7 +114,6 @@ function addOrUpdate(type){
 		}
 	}else if(type==2){
 		title="修改最新动态";
-		url="/front/editMediaReport.do";
 		var data = $('#mediaTb').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的数据！",{icon:0});
@@ -140,12 +141,26 @@ function addOrUpdate(type){
 	    content: $(".pic-add"),//DOM或内容
 	    btn:['确定', '取消']
 		  ,yes: function(index, layero){ //或者使用btn1
-			    var content = ue.getContent();
-				$("#content").val(content);
+//				$("#content").val(content);
 //				ue.destroy();
+				
+				//加密参数
+				var data={};
+				var title = encrypt.encrypt($("#title").val());
+				data.title=title;
+				var source = encrypt.encrypt($("#source").val());
+				data.source=source;
+				var logo = encrypt.encrypt($("#pictureUrl").val());
+				data.logo=logo;
+				var reportId = encrypt.encrypt($("#reportId").val());
+				data.reportId=reportId;
+				var content = ue.getContent();
+				data.content=encrypt.encrypt(content);
+				data.type=encrypt.encrypt(""+type);
+				
 				$.ajax( {  
-					url:appPath+url,
-					data:$("#dataForm").serialize(),
+					url:appPath+"/front/addOrUpdateReport.do",
+					data:data,
 					type:'post',  
 					cache:false,  
 					dataType:'json',  
@@ -184,7 +199,7 @@ function addOrUpdate(type){
 function enableOrDisable(type,id){
 	$.ajax( {  
 		url:appPath+"/front/enableMediRepo.do",
-		data:{"statu":type,"id":id},
+		data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id)},
 		type:'post',  
 		cache:false,  
 		dataType:'json',  

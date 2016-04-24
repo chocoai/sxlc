@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="safetyCertificationSet">  
+   <resultMap type="cn.springmvc.model.SafetyCertificationSetEntity" id="resultListSafetyCertificationSet">
+        <id column="Safety_ID" 						property="id" />
+		<result column="Certification_Picture" 		property="certificationPicture" />
+		<result column="Certification_Url" 			property="certificationUrl" />
+		<result column="Certification_StartTime" 	property="certificationStartTime" />
+		<result column="Certification_EndTime" 		property="certificationEndTime" />
+		<result column="Certification_AddTime" 		property="certificationAddTime" />
+		<result column="Admin_ID" 					property="adminId" />
+		<result column="Statu" 						property="Statu" /> 
+		<result column="adminName" 					property="adminName" /> 
+    </resultMap> 
+    <!-- 分页查询首页全屏弹出框配置列表 -->  
+	<select id="selectSafetyCertificationSetList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListSafetyCertificationSet">
+	   select sc.Safety_ID,sc.Certification_Picture,sc.Certification_Url,sc.Certification_StartTime,
+	   sc.Certification_EndTime,sc.Admin_ID,sc.Statu,a.adminName 
+	   from  Safety_CertificationSet sc
+	   LEFT JOIN Admin a on a.Admin_ID=sc.Admin_ID
+           <where>  
+	            <if test="map.startTime != null and map.startTime != ''">  
+	                sc.Certification_AddTime >#{map.startTime}  
+	            </if>
+	            <if test="map.endTime != null and map.endTime != ''">  
+	                and #{map.endTime} > sc.Certification_AddTime 
+	            </if>   
+	            <if test="map.statu != -1">  
+	                and sc.Statu=#{map.statu}
+	            </if>   
+           </where>  
+    </select>       
+	<!-- 新增首页全屏弹出框配置 -->  
+	<insert id="insertSafetyCertificationSet"  parameterType="cn.springmvc.model.SafetyCertificationSetEntity">    
+		insert into Safety_CertificationSet
+		   (Safety_ID,  Certification_Picture, Certification_Url,  Certification_StartTime,  Certification_EndTime,  Admin_ID,Certification_AddTime) 
+		values     
+		  (#{id},#{certificationPicture},#{certificationUrl},#{certificationStartTime},#{certificationEndTime},#{adminId},now())    
+	</insert>  
+    <!-- 修改首页全屏弹出框配置信息 -->  
+	<update id="updateSafetyCertificationSetByID"  parameterType="cn.springmvc.model.SafetyCertificationSetEntity">
+	   update  Safety_CertificationSet 
+	   <set>
+	       <if test="certificationPicture != null" >
+	         Certification_Picture=#{certificationPicture},
+	       </if> 
+	       <if test="certificationUrl != null" >
+	         Certification_Url=#{certificationUrl},
+	       </if> 
+	       <if test="certificationStartTime != null" >
+	         Certification_StartTime=#{certificationStartTime},
+	       </if> 
+	       <if test="certificationEndTime != null" >
+	         Certification_EndTime=#{certificationEndTime},
+	       </if>  
+	       <if test="adminId != 0" >
+	         Admin_ID=#{adminId},
+	       </if>   
+	    </set>
+	   where Safety_ID=#{id}   
+    </update>   
+    <!-- 删除首页全屏弹出框配置信息 -->  
+	<delete id="deleteSafetyCertificationSetByID"  parameterType="int">
+	   delete from  Safety_CertificationSet where Safety_ID=#{id}   
+    </delete>    
+     <!-- 停用或启用首页全屏弹出框配置 -->  
+	<update id="updateSafetyCertificationSetStatuByID"  parameterType="cn.springmvc.model.SafetyCertificationSetEntity">
+	   update  Safety_CertificationSet  set   Statu=#{statu} where Safety_ID=#{id}   
+    </update>  
+    <!-- 根据id查询首页全屏弹出框配置 -->  
+	<select id="selectSafetyCertificationSetbyid" parameterType="int"  resultMap="resultListSafetyCertificationSet">
+	   select sc.Safety_ID,sc.Certification_Picture,sc.Certification_Url,sc.Certification_StartTime,
+	   sc.Certification_EndTime,sc.Admin_ID,sc.Statu 
+	   from  Safety_CertificationSet sc  where  Safety_ID=#{id} 
+    </select> 
+     <!--  （首页显示）查询首页全屏弹出框配置列表 -->  
+	<select id="selectSafetyCertificationSetIndex" resultMap="resultListSafetyCertificationSet">
+	   select sc.Safety_ID,sc.Certification_Picture,sc.Certification_Url,sc.Certification_StartTime,
+	   sc.Certification_EndTime 
+	   from  Safety_CertificationSet sc 
+	   where sc.Statu = 1
+	 </select>             
+</mapper>   

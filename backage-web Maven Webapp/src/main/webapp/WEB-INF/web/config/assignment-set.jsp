@@ -17,6 +17,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link href="css/config.css" rel="stylesheet" />
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </head>
 <!-- 配置中心-------------------财务设置   债权转让手续费设置-->
 <body class="nav-md">
@@ -196,8 +199,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript">
+			//加密设置
+			var encrypt = new JSEncrypt();
+			encrypt.setPublicKey(publicKey_common);
+			
+			//页面初始化
 			$(function(){
-				//页面初始化
 				var mngType = $("#mngType").val();
 				var checkType = $("#checkType").val();
 				var loanType = $("#loanType").val();
@@ -244,16 +251,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						var interestDay =$("#interestDay").val();
 						var mngFee =$("#mngFee").val();
 						var mngType =$("input[name='mngType']:checked").val();
-						data = {"holdDay":holdDay,"rangeDay":rangeDay,"interestDay":interestDay,"mngFee":mngFee,"mngType":mngType,"type":type};
+						data = {"holdDay":encrypt.encrypt(holdDay),"rangeDay":encrypt.encrypt(rangeDay),
+								"interestDay":encrypt.encrypt(interestDay),"mngFee":encrypt.encrypt(mngFee),
+								"mngType":encrypt.encrypt(mngType),"type":encrypt.encrypt(""+type)};
 					}else if(type==1){
 						var checkType = $("input[name='checkType']:checked").val();
-						data={"type":type,"checkType":checkType};
+						data={"type":encrypt.encrypt(""+type),"checkType":encrypt.encrypt(checkType)};
 					}else if(type==2){
 						var loanType = $("input[name='loanType']:checked").val();
-						data={"type":type,"loanType":loanType};
+						data={"type":encrypt.encrypt(""+type),"loanType":encrypt.encrypt(loanType)};
 					}else if(type==3){
 						var interestType = $("input[name='interestType']:checked").val();
-						data={"type":type,"interestType":interestType};
+						data={"type":encrypt.encrypt(""+type),"interestType":encrypt.encrypt(interestType)};
 					}
 					
 					$.ajax( {  

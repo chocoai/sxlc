@@ -32,7 +32,7 @@ public class FriendshipLinkDaoImpl extends SqlSessionDaoSupport implements Frien
 	}
 
 	@Override
-	public int deleteFriendshipLinkByID(int id) {
+	public int deleteFriendshipLinkByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("friendshipUnit.deleteFriendShipLinkByID", id);

@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
 
@@ -16,6 +17,7 @@ import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
 import cn.springmvc.dao.impl.HandleLeveSetDaoImpl;
 import cn.springmvc.dao.impl.HandleQuickRechargeFeeDaoImpl;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
 import cn.springmvc.dao.impl.SelectLeveSetDaoImpl;
 import cn.springmvc.dao.impl.SelectQuickRechargeFeeDaoImpl;
@@ -42,6 +44,8 @@ LevelSetService {
 	private SelectLeveSetDaoImpl  selectLeveSetDaoImpl;
 	@Resource(name="handleLeveSetDaoImpl")
 	private HandleLeveSetDaoImpl  handleLeveSetDaoImpl;
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	@Override
 	public List<MemberLevelEntity> selectAllMemberLevel(PageEntity pageEntity) {
 		
@@ -72,7 +76,7 @@ LevelSetService {
 	}
 
 	@Override
-	public int insertMemberLevel(MemberLevelEntity memberLevelEntity) {
+	public int insertMemberLevel(MemberLevelEntity memberLevelEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
 		memberLevelEntity.setId(id);
@@ -82,25 +86,29 @@ LevelSetService {
 		}else{
 			generatorUtil.SetIdUsed(id);
 		}
+		entity.setsDetail("会员等级添加设置 :"+memberLevelEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		return result;
 	}
 
 	@Override
-	public int updateMemberLevelById(MemberLevelEntity memberLevelEntity) {
-		
+	public int updateMemberLevelById(MemberLevelEntity memberLevelEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("会员等级修改 :"+memberLevelEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleLeveSetDaoImpl.updateMemberLevelById(memberLevelEntity);
 	}
 
 	@Override
-	public int deleteMemberLevelById(Map<String, Object> map) {
-		
+	public int deleteMemberLevelById(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("会员等级删除 :"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleLeveSetDaoImpl.deleteMemberLevelById(map);
 	}
 
 	@Override
-	public int insertCreditLevel(CreditLevelEntity creditLevelEntity) {
+	public int insertCreditLevel(CreditLevelEntity creditLevelEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
 		creditLevelEntity.setId(id);
@@ -110,19 +118,23 @@ LevelSetService {
 		}else{
 			generatorUtil.SetIdUsed(id);
 		}
+		entity.setsDetail("会员信用等级添加 :"+creditLevelEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		return result;
 	}
 
 	@Override
-	public int updateCreditLevelById(CreditLevelEntity creditLevelEntity) {
-		
+	public int updateCreditLevelById(CreditLevelEntity creditLevelEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("会员信用等级修改 :"+creditLevelEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleLeveSetDaoImpl.updateCreditLevelById(creditLevelEntity);
 	}
 
 	@Override
-	public int deleteCreditLevelById(Map<String, Object> map) {
-		
+	public int deleteCreditLevelById(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("会员信用等级删除 :"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleLeveSetDaoImpl.deleteCreditLevelById(map);
 	}

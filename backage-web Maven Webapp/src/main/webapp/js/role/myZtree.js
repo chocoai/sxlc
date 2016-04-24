@@ -5,7 +5,7 @@
 				view: {
 					dblClickExpand: false,
 					showLine: false,
-					//expandSpeed: ($.browser.msie && parseInt($.browser.version)<=6)?"":"fast"
+					expandSpeed: ($.browser.msie && parseInt($.browser.version)<=6)?"":"fast"
 				},
 				data: {
 					key: {
@@ -19,14 +19,13 @@
 					}
 				},
 				callback: {
-					onClick: zTreeOnClick			
+					onClick: zTreeOnClick		
 				}
 		};
 		
 		/** 用于捕获节点被点击的事件回调函数  **/
 		function zTreeOnClick(event, treeId, treeNode) {
-			var zTree = $.fn.zTree.getZTreeObj("dleft_tab1");
-			alert(zTree+"你好啊");
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 			
 			// 如果节点路径为空或者为"#"，不允许单击操作
 			if(treeNode.accessPath=="" || treeNode.accessPath=="#"){
@@ -34,8 +33,8 @@
 				return false;
 			}
 		    // 跳到该节点下对应的路径, 把当前资源ID(resourceID)传到后台，写进Session
-		    rightMain(treeNode.accessPath);
 		};
+		
 		
 		function onStart(){
 			$("#ajaxDialog").show();

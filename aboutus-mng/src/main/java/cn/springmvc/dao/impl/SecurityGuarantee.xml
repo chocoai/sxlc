@@ -2,31 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
  <mapper namespace="securityGuarantee"> 
     <resultMap type="cn.springmvc.model.SecurityGuaranteeEntity" id="resultListSecurityGuaranteeAnnouncement">
-        <id column="ID" 				property="id" /> 
+        <id column="Security_ID" 		property="id" /> 
 		<result column="Content" 		property="content" />
 		<result column="Statu" 			property="statu" />
 		<result column="CreateTime" 	property="createTime" />
 		<result column="Opt_Date" 		property="optDate" />
-		<result column="Opt_Id" 		property="optId" />
+		<result column="Admin_ID" 		property="optId" />
     </resultMap> 
 	<!-- 查询安全保障-->  
-	<select id="selectSecurityGuarantee"  parameterType="int" resultMap="resultListSecurityGuaranteeAnnouncement" >
-	   select ID,   Content,   Statu,   CreateTime,  Opt_Date, Opt_Id
-	   from  Security_Guarantee 
-	     <where>    
-            <if test=" statu != -1">  
-                and  Statu=#{ statu}
-            </if>   
-        </where>
+	<select id="selectSecurityGuarantee"   resultMap="resultListSecurityGuaranteeAnnouncement" >
+	   select Security_ID,   Content,   Statu,   CreateTime,  Opt_Date, Admin_ID
+	   from  Security_Guarantee  
     </select> 
     <!-- 新增安全保障-->  
 	<insert id="insertSecurityGuarantee"  parameterType="cn.springmvc.model.SecurityGuaranteeEntity" >    
 		insert into 
-		Security_Guarantee( ID,    Content,  Opt_Id) 
-		                   values (#{id},#{content},#{optId})    
+		Security_Guarantee( Security_ID,Content,Admin_ID) 
+		           values (#{id},  #{content},#{optId})    
 	</insert> 
 	<!-- 查询安全保障是否存在 -->  
-	<select id="selectSecurityGuaranteeIsExist"  resultType="int" >
+	<select id="selectSecurityGuaranteeIsExist"  resultType="java.lang.Integer" >
 	   select count(*) from  Security_Guarantee
     </select> 
     <!-- 修改安全保障信息 -->  
@@ -37,18 +32,18 @@
 	        Content=#{content},
 	       </if> 
 	       <if test="optId != 0" >
-	         Opt_Id=#{optId},
+	         Admin_ID=#{optId},
 	       </if>  
 	         Opt_Date=now(), 
 	       </set>   
-	   where ID=#{id}   
+	   <!-- where Security_ID=#{id}    -->
     </update>   
     <!-- 删除安全保障-->  
 	<delete id="deleteSecurityGuaranteeByID"  parameterType="int">
-	   delete from  Security_Guarantee where ID=#{id}   
+	   delete from  Security_Guarantee where Security_ID=#{id}   
     </delete>  
      <!-- 停用或启用安全保障-->  
 	<update id="updateSecurityGuaranteeStatuByID"  parameterType="cn.springmvc.model.SecurityGuaranteeEntity">
-	   update  Security_Guarantee  set   Statu=#{statu} where ID=#{id}   
+	   update  Security_Guarantee  set   Statu=#{statu} where Security_ID=#{id}   
     </update>       
 </mapper>

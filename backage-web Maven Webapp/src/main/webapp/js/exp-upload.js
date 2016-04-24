@@ -35,6 +35,7 @@ function expUpload(urlBtn) {
 			
 			
 			    // $list为容器jQuery实例
+			    $("#fileList").empty();
 			    $list = $("#fileList");
 			    $list.append( $li );
 			    $del.appendTo( $li );
@@ -102,6 +103,8 @@ function expUpload(urlBtn) {
 				if(urlBtn != null && urlBtn != ''){
 					$(urlBtn).val(uploadUrl);
 				}
+				
+				
 			    $( '#'+file.id ).addClass('upload-state-done');
 			});
 			

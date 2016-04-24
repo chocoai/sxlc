@@ -1,8 +1,5 @@
 package cn.springmvc.dao;
-
-import java.util.List;
-import java.util.Map;
-
+ 
 import cn.springmvc.model.MngTeamEntity;
 /**
  * 
@@ -29,7 +26,7 @@ public interface MngTeamDao {
 	 * @param id 管理团队id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteMngTeamByID(int id); 
+	public  int  deleteMngTeamByID(long id); 
 	/**
 	 * 停用或启用管理团队
 	 * @param entity 管理团队实体

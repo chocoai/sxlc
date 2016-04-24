@@ -1,7 +1,5 @@
 package cn.springmvc.dao;
-
-import java.util.List;
-import java.util.Map;
+ 
 
 import cn.springmvc.model.NewEventEntity;
 /**
@@ -29,7 +27,7 @@ public interface NewEventDao {
 	 * @param id 最新动态id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteNewEventByID(int id); 
+	public  int  deleteNewEventByID(long id); 
 	/**
 	 * 停用或启用最新动态
 	 * @param entity 最新动态实体

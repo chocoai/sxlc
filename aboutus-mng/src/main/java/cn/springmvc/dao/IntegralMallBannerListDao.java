@@ -1,7 +1,6 @@
 package cn.springmvc.dao;
 
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 
 import product_p2p.kit.pageselect.PageEntity;
 
@@ -31,7 +30,7 @@ public interface IntegralMallBannerListDao {
 	 * @param id 积分商城轮播图id
 	 * @return  integralMallBannerEntity 
 	 */
-	public  IntegralMallBannerEntity  selectIntegralMallBannerByID(int id);
+	public  IntegralMallBannerEntity  selectIntegralMallBannerByID(long id);
 	/**
 	 * 查询积分商城轮播图 前台
 	 * @return

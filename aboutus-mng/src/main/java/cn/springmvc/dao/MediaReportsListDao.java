@@ -30,6 +30,12 @@ public interface MediaReportsListDao {
 	 * @param id 媒体报道实体
 	 * @return  mediaReportsEntity 
 	 */
-	public  MediaReportsEntity  selectMediaReportsByID(int id);
+	public  MediaReportsEntity  selectMediaReportsByID(long id);
+	/**
+	 * 首页查询媒体报道
+	 * @param pageEntity 分页实体
+	 * @return
+	 */
+	public List<MediaReportsEntity> selectMediaReportsListIndex(); 
 
 }

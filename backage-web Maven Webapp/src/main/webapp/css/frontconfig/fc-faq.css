@@ -1,0 +1,13 @@
+.panel-body {
+    padding: 8px 80px;
+}
+.faqAdd{
+	margin-top:20px;
+	text-align:center;
+}
+.faqAdd .btn{
+	height:40px;
+	background-color:#3E75B8;
+	color:#fff;
+	width:100px;
+}

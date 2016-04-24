@@ -9,24 +9,6 @@ public class PartnersEntity {
 	 * 合作伙伴ID
 	 */
 	private  long id	;
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public long getOptId() {
-		return optId;
-	}
-	public void setOptId(long optId) {
-		this.optId = optId;
-	}
-	public String getAdminName() {
-		return adminName;
-	}
-	public void setAdminName(String adminName) {
-		this.adminName = adminName;
-	}
 	/**
 	 * 合作伙伴名称
 	 */
@@ -67,6 +49,25 @@ public class PartnersEntity {
 	 * 最后一次操作员名称
 	 */
 	private String adminName; 
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public long getOptId() {
+		return optId;
+	}
+	public void setOptId(long optId) {
+		this.optId = optId;
+	}
+	public String getAdminName() {
+		return adminName;
+	}
+	public void setAdminName(String adminName) {
+		this.adminName = adminName;
+	}
+	
 	public String getName() {
 		return name;
 	}

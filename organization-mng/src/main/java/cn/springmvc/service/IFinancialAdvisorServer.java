@@ -3,6 +3,7 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.FinancialAdvisor;
@@ -33,7 +34,7 @@ public interface IFinancialAdvisorServer {
 	 * @param advisor				理财顾问实体
 	 * @return
 	 */
-	public int saveFinancialAdvisor(FinancialAdvisor advisor);
+	public int saveFinancialAdvisor(FinancialAdvisor advisor,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	
@@ -48,7 +49,7 @@ public interface IFinancialAdvisorServer {
 	 * @param advisor
 	 * @return
 	 */
-	public int removeFinancialAdvisor(FinancialAdvisor advisor);
+	public int removeFinancialAdvisor(FinancialAdvisor advisor,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	

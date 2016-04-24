@@ -47,9 +47,17 @@ function addNews() {
 	var content = ue1.getContent();
 	
 	var title = $("#title").val();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result1 = encrypt.encrypt((content));
+    var result2 = encrypt.encrypt((title));
 	$.ajax( {  
 		url:appPath+"/news/save.do",
-		data:"title=" + title + "&content=" + content,
+		data : {
+			content : result1, 
+			title : result2 
+		},
 		type:'post',  
 		cache:false,  
 		success:function(data) { 
@@ -75,10 +83,14 @@ $(function () {
 		var ue2 = UE.getEditor('meditor');
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();
 		$("#mtitle").val(rowdata[0].title);
+		//加密操作
+		var encrypt = new JSEncrypt();
+	    encrypt.setPublicKey(publicKey_common);
+	    var result1 = encrypt.encrypt((rowdata[0].id + ""));
 		$.ajax({
 			type : 'post',
 			url : appPath + "/news/query4update.do",
-			data : "newsId=" + rowdata[0].id,
+			data : {newsId : result1},
 			success : function (msg) {
 				ue2.addListener("ready", function () {
 	        	// editor准备好之后才可以使用
@@ -115,9 +127,19 @@ function modNews () {
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
 	var title = $("#mtitle").val();
 	var content = ue2.getContent();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result1 = encrypt.encrypt((rowdata[0].id));
+    var result2 = encrypt.encrypt((title));
+    var result3 = encrypt.encrypt((content));
 	$.ajax( {  
 		url:appPath+"/news/update.do",
-		data:"title=" + title + "&content=" + content + "&newsId=" + rowdata[0].id,
+		data : {
+			newsId : result1,
+			title : result2,
+			content : result3
+		},
 		type:'post',  
 		cache:false,  
 		success:function(data) { 
@@ -143,10 +165,18 @@ function openNews () {
 	}, function(index, layero){
 	  //确定回掉
 	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	  //加密操作
+	  var encrypt = new JSEncrypt();
+	  encrypt.setPublicKey(publicKey_common);
+	  var result1 = encrypt.encrypt((rowdata[0].id + ""));
+	  var result2 = encrypt.encrypt((rowdata[0].statu + ""));
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/news/ofOrOpenNews.do",
-	  	data : "newsId=" + rowdata[0].id + "&statu=" + rowdata[0].statu,
+	  	data : {
+			newsId : result1,
+			statu : result2
+		},
 	  	success : function (msg) {
 	  		if (msg == 1) {
 	  			layer.alert("操作成功!",{icon:1});
@@ -172,10 +202,18 @@ function ofNews () {
 	}, function(index, layero){
 	  //确定回掉
 	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	//加密操作
+	  var encrypt = new JSEncrypt();
+	  encrypt.setPublicKey(publicKey_common);
+	  var result1 = encrypt.encrypt((rowdata[0].id + ""));
+	  var result2 = encrypt.encrypt((rowdata[0].statu + ""));
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/news/ofOrOpenNews.do",
-	  	data : "newsId=" + rowdata[0].id + "&statu=" + rowdata[0].statu,
+	  	data : {
+			newsId : result1,
+			statu : result2
+		},
 	  	success : function (msg) {
 	  		if (msg == 1) {
 	  			layer.alert("操作成功!",{icon:1});

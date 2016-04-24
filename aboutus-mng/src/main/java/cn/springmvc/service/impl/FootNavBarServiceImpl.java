@@ -1,19 +1,18 @@
 package cn.springmvc.service.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
  
 import cn.springmvc.dao.FootNavBarDao;
-import cn.springmvc.dao.FootNavBarListDao;
-import cn.springmvc.dao.impl.FootNavBarDaoImpl;
-import cn.springmvc.dao.impl.FootNavBarListDaoImpl; 
+import cn.springmvc.dao.FootNavBarListDao; 
 import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.FootNavBarEntity;
 import cn.springmvc.service.FootNavBarService;
 /**
@@ -29,8 +28,11 @@ public class FootNavBarServiceImpl implements FootNavBarService {
 	private FootNavBarDao footNavBarDaoImpl;  
 	@Resource(name="footNavBarListDaoImpl")
 	private FootNavBarListDao footNavBarListDaoImpl; 
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	@Override
-	public int insertFootNavBar(FootNavBarEntity entity) {
+	public int insertFootNavBar(FootNavBarEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		if(entity == null){
 			return 0;
@@ -49,19 +51,28 @@ public class FootNavBarServiceImpl implements FootNavBarService {
 			generatorUtil.SetIdUsedFail(id);
 		}else{
 			generatorUtil.SetIdUsed(id);
+			logentity.setsDetail("添加底部导航条 :"+entity.getName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		}
 		return result; 
 	}
 
 	@Override
-	public int deleteFootNavBarByID(int id) {
+	public int deleteFootNavBarByID(long id,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
-		int result = footNavBarDaoImpl.deleteFootNavBarByID(id); 
+		FootNavBarEntity footNavBarEntity = footNavBarListDaoImpl.selectFootNavBarByID(id);
+		int result = footNavBarDaoImpl.deleteFootNavBarByID(id);
+		if(result == 1) {
+			logentity.setsDetail("删除底部导航条 :"+footNavBarEntity.getName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
 
 	@Override
-	public int updateFootNavBarByID(FootNavBarEntity entity) {
+	public int updateFootNavBarByID(FootNavBarEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
 			return 0;
@@ -72,17 +83,29 @@ public class FootNavBarServiceImpl implements FootNavBarService {
 			return -1;
 		} 
 		int result = footNavBarDaoImpl.updateFootNavBarByID(entity);
-		
+		if(result == 1) {
+			logentity.setsDetail("修改底部导航条 :"+entity.getName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
 
 	@Override
-	public int updateFootNavBarStatuByID(FootNavBarEntity entity) {
+	public int updateFootNavBarStatuByID(FootNavBarEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
 			return 0;
 		} 
+		FootNavBarEntity footNavBarEntity = footNavBarListDaoImpl.selectFootNavBarByID(entity.getId()); 
 		int result=footNavBarDaoImpl.updateFootNavBarStatuByID(entity); 
+		if(result == 1 && entity.getStatu() == 1) {
+			logentity.setsDetail("启用底部导航条 :"+footNavBarEntity.getName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}else if(result == 1 && entity.getStatu() == 0){
+			logentity.setsDetail("停用底部导航条 :"+footNavBarEntity.getName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
 
@@ -96,7 +119,7 @@ public class FootNavBarServiceImpl implements FootNavBarService {
 	}
  
 	@Override
-	public FootNavBarEntity selectFootNavBarByID(int id) {
+	public FootNavBarEntity selectFootNavBarByID(long id) {
 		
 		FootNavBarEntity footNavBarEntity = footNavBarListDaoImpl.selectFootNavBarByID(id); 
 		return  footNavBarEntity;

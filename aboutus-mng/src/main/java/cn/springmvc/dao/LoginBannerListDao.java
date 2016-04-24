@@ -1,7 +1,6 @@
 package cn.springmvc.dao;
 
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 
 import product_p2p.kit.pageselect.PageEntity;
 
@@ -31,7 +30,7 @@ public interface LoginBannerListDao {
 	 * @param id 登录界面轮播图id
 	 * @return  LoginBannerEntity 
 	 */
-	public  LoginBannerEntity  selectLoginBannerByID(int id);
+	public  LoginBannerEntity  selectLoginBannerByID(long id);
 	/**
 	 * 登录界面轮播图前台 
 	 * @return

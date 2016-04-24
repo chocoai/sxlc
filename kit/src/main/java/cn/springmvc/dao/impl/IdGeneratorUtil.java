@@ -5,12 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-
 
 import product_p2p.kit.Lock.SyncLock;
 import product_p2p.kit.id.IdEntity;
@@ -54,16 +49,16 @@ public class IdGeneratorUtil {
 //	private List<IdEntity> idList = new ArrayList<IdEntity>();
 	private static IdGeneratorUtil idGeneratorUtil=null;
 	public IdGeneratorUtil(){
-		String path = getClass().getClassLoader().getResource("/").getPath();
-//		String path = "D:\\";
+//		String path = getClass().getClassLoader().getResource("/").getPath();
+		String path = "D:\\";
 	    path = path.replaceAll("%20", " ");
 	    
 	    String filePath = path+"IdGenerator.xml";
 	    sShareCache = new shareCache(filePath,iFileSize);
 	    sShareCache.startShare();
-	    if(idGeneratorUtil == null){
+//	    if(idGeneratorUtil == null){
 			idGeneratorUtil = this;
-		}
+//		}
 	}
 	public static IdGeneratorUtil GetIdGeneratorInstance(){
 		if(idGeneratorUtil == null){

@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List; 
 import javax.annotation.Resource;
 
@@ -44,7 +43,7 @@ public class HomeBannerListDaoImpl extends SqlSessionDaoSupport implements HomeB
 	
 	 	
 	@Override
-	public HomeBannerEntity selectHomeBannerByID(int id) {
+	public HomeBannerEntity selectHomeBannerByID(long id) {
 		
 		HomeBannerEntity mediaReportsEntity = null;
 		mediaReportsEntity = (HomeBannerEntity) getSqlSession().selectOne("homeBanner.selectHomeBannerByID",id);

@@ -1,7 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
-import java.util.List;
+ 
 
 import javax.annotation.Resource;
 
@@ -36,10 +34,10 @@ public class PlatformIntroduceDaoImpl extends SqlSessionDaoSupport implements Pl
 	}
 
 	@Override
-	public int deletePlatformIntroduce(int id) {
+	public int deletePlatformIntroduce() {
 		
 		int result = 0;
-		result = getSqlSession().delete("platformIntroduce.deleteplatformIntroduce", id);
+		result = getSqlSession().delete("platformIntroduce.deleteplatformIntroduce");
 		return result;
 	}
  

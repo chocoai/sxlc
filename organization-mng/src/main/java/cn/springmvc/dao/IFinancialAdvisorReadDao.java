@@ -30,8 +30,15 @@ public interface IFinancialAdvisorReadDao {
 	
 
 	
-	
-	
+	/***
+	* 
+	* @author 李杰
+	* @Title: findById
+	* @param Id
+	* @return
+	* @date 2016-4-20 上午10:52:54
+	 */
+	public FinancialAdvisor findById(Map<String,Object> param);
 	
 	
 	

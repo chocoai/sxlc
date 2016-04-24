@@ -1,6 +1,5 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -13,8 +12,7 @@ import org.springframework.stereotype.Repository;
 import product_p2p.kit.pageselect.PageEntity;
  
 import cn.springmvc.dao.FootNavBarTypeListDao;
-import cn.springmvc.model.FootNavBarTypeEntity;
-import cn.springmvc.model.PartnersEntity;
+import cn.springmvc.model.FootNavBarTypeEntity; 
 @Repository("footNavBarTypeListDaoImpl")
 public class FootNavBarTypeListDaoImpl extends SqlSessionDaoSupport implements FootNavBarTypeListDao{
 	@Resource(name="sqlSessionFactory")
@@ -40,7 +38,7 @@ public class FootNavBarTypeListDaoImpl extends SqlSessionDaoSupport implements F
 	
  	@Override
 	public FootNavBarTypeEntity selectFootNavBarTypeByID(
-			int id) {
+			long id) {
 		
  		FootNavBarTypeEntity footNavBarTypeEntity = null;
 		footNavBarTypeEntity = (FootNavBarTypeEntity) getSqlSession().selectOne("footNavBarType.selectFootNavBarTypeByID",id);

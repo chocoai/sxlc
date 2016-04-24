@@ -1,7 +1,5 @@
 package cn.springmvc.dao;
-
-import java.util.List;
-import java.util.Map;
+ 
 
 import cn.springmvc.model.PartnersEntity; 
 /**
@@ -30,7 +28,7 @@ public interface PartnersDao {
 	 * @param id 合作伙伴id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deletePartnerByID(int id); 
+	public  int  deletePartnerByID(long id); 
 	
 	/**
 	 * 停用或启用合作伙伴

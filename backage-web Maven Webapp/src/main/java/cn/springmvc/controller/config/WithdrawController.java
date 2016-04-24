@@ -107,7 +107,7 @@ public class WithdrawController {
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
-		int num = financialSettingService.updateWithdrawalsFee(withdrawalsFeeEntity, entity, null);
+		int num = financialSettingService.updateWithdrawalsFee(withdrawalsFeeEntity, entity, sIpInfo);
 		
 		return num;
 	}

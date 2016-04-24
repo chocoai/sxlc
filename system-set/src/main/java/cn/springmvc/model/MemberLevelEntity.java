@@ -14,6 +14,7 @@ public class MemberLevelEntity {
 	private String levelMark;//	等级名称
 	private String levelDetail;//	等级描述
 	private int statu;//	状态 0：无效 1：有效
+	
 	public long getId() {
 		return id;
 	}
@@ -50,6 +51,11 @@ public class MemberLevelEntity {
 	public void setStatu(int statu) {
 		this.statu = statu;
 	}
-
+	@Override
+	public String toString() {
+		return "MemberLevelEntity [id=" + id + ", scoreMin=" + scoreMin
+				+ ", scoreMax=" + scoreMax + ", levelMark=" + levelMark
+				+ ", levelDetail=" + levelDetail + ", statu=" + statu + "]";
+	}
 }
 

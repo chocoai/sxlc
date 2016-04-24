@@ -4,13 +4,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.dao.PlatformIntroduceDao;
-import cn.springmvc.dao.PlatformIntroduceListDao;
-import cn.springmvc.dao.impl.ExpertTeamDaoImpl;
-import cn.springmvc.dao.impl.ExpertTeamListDaoImpl;
-import cn.springmvc.dao.impl.PlatformIntroduceDaoImpl;
-import cn.springmvc.dao.impl.PlatformIntroduceListDaoImpl;
-import cn.springmvc.model.ExpertTeamEntity;
+import cn.springmvc.dao.PlatformIntroduceListDao; 
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.PlatformIntroduceEntity;
 import cn.springmvc.service.PlatformIntroduceService;
 @Service("platformIntroduceServiceImpl")
@@ -18,9 +16,13 @@ public class PlatformIntroduceServiceImpl implements PlatformIntroduceService {
 	@Resource(name="platformIntroduceDaoImpl")
 	private PlatformIntroduceDao platformIntroduceDaoImpl;  
 	@Resource(name="platformIntroduceListDaoImpl")
-	private PlatformIntroduceListDao platformIntroduceListDaoImpl;  
+	private PlatformIntroduceListDao platformIntroduceListDaoImpl;
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
+	
 	@Override
-	public int insertPlatformIntroduce(PlatformIntroduceEntity entity) {
+	public int insertPlatformIntroduce(PlatformIntroduceEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
 			return 0;
@@ -28,17 +30,26 @@ public class PlatformIntroduceServiceImpl implements PlatformIntroduceService {
 		// 查询平台简介是否存在，不存在就新增，存在则修改
 		int count = platformIntroduceListDaoImpl.selectPlatformIntroducesIsExist();
 		if(count == 0) {
-			return platformIntroduceDaoImpl.insertPlatformIntroduce(entity); 
+			count = platformIntroduceDaoImpl.insertPlatformIntroduce(entity);
+			logentity.setsDetail("添加平台简介");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		}else{
-			return platformIntroduceDaoImpl.updatePlatformIntroduce(entity); 
+			count = platformIntroduceDaoImpl.updatePlatformIntroduce(entity);
+			logentity.setsDetail("修改平台简介");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		} 
-		
+		return count;
 	}
 
 	@Override
-	public int deletePlatformIntroduce(int id) {
+	public int deletePlatformIntroduce(InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
-		int result = platformIntroduceDaoImpl.deletePlatformIntroduce(id); 
+		int result = platformIntroduceDaoImpl.deletePlatformIntroduce(); 
+		if(result == 1) {
+		    logentity.setsDetail("删除平台简介");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
   

@@ -17,6 +17,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link href="css/config.css" rel="stylesheet" />
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </head>
 <!-- 配置中心-------------------财务设置  逾期配置-->
 <body class="nav-md">
@@ -68,19 +71,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<tr>
 										<td class="tt"><label class="ineed">逾期起算天数：</label></td>
 										<td class="con">
-											<input type="text" name = "overdueMin" dayatype="" id="overdueMin" placeholder="" value="1" />
+											<input type="text" name = "overdueMin" dataType="days" id="overdueMin" placeholder=""  />
 										</td>
 									</tr>
 									<tr>
 										<td class="tt"><label>逾期截止天数：</label></td>
 										<td class="con">
-											<input type="text" name = "overdueMax"  dayatype="" id="overdueMax" placeholder="" />
+											<input type="text" name = "overdueMax"  dataType="days" id="overdueMax" placeholder="" />
 										</td>
 									</tr>
 									<tr>
 										<td class="tt"><label>逾期罚息日利息(%)：</label></td>
 										<td class="con">
-											<input type="text" name = "price"  dayatype="" id="price" placeholder="" />
+											<input type="text" name = "price"  dataType="hundredNum" id="price" placeholder="" />
 										</td>
 									</tr>
 								</table>
@@ -99,8 +102,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="js//config/config.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
+		//加密设置
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publicKey_common);
 		$(function(){
-			validform5("#submitBtn","dataForm",false,3);//合法性检验
+			validform5(".layui-layer-btn0","dataForm",false,3);//合法性检验
 			//表格初始化
 			$('#table-id').DataTable({
 				ajax: {  
@@ -159,7 +165,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}, function(index, layero){
 					$.ajax( {  
 						url:appPath+"/config/deleteOverdue.do",
-						data:{"overdueMin":param},
+						data:{"overdueMin":encrypt.encrypt(param)},
 						type:'post',  
 						cache:false,  
 						dataType:'json',  
@@ -186,6 +192,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 * 增加按钮
 		 */
 		$(".obtn-invest-fee-modify").on("click touchstart",function(){
+			document.getElementById("dataForm").reset();
 			layer.open({
 			    type: 1,
 			    area: ['500px', '300px'], //高宽
@@ -200,9 +207,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 		});
 		function addOrUpdate(){
+			//加密参数
+			var data = {};
+			var overdueMin = encrypt.encrypt($("#overdueMin").val());
+			var overdueMax = encrypt.encrypt($("#overdueMax").val());
+			var price = encrypt.encrypt($("#price").val());
+			data.overdueMin=overdueMin;
+			data.overdueMax=overdueMax;
+			data.price=price;
 			$.ajax( {  
 				url:appPath+"/config/addOverdue.do",
-				data:$("#dataForm").serialize(),
+				data:data,
 				type:'post',  
 				cache:false,  
 				dataType:'json',  

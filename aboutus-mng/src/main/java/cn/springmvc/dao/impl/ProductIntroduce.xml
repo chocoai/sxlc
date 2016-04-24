@@ -2,28 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="Mapper">
     <resultMap type="cn.springmvc.model.ProductIntroduceEntity" id="resultListProductIntroduceAnnouncement">
-        <id column="ID" 			property="id" /> 
+        <id column="Introduce_ID" 	property="id" /> 
 		<result column="Content" 	property="content" />
 		<result column="Statu" 		property="statu" />
 		<result column="CreateTime" property="createTime" />
 		<result column="Opt_Date" 	property="optDate" />
-		<result column="Opt_Id" 	property="optId" />
+		<result column="Admin_ID" 	property="optId" />
     </resultMap> 
 	<!-- 查询产品介绍 -->  
 	<select id="selectProductIntroduce"  parameterType="int" resultMap="resultListProductIntroduceAnnouncement" >
-	   select ID,   Content,   Statu,   CreateTime,  Opt_Date, Opt_Id
+	   select Introduce_ID,   Content,   Statu,   CreateTime,  Opt_Date, Admin_ID
 	   from  Product_Introduce 
 	   <where>    
             <if test=" statu != -1">  
-                and  Statu=#{ statu}
+                 Statu=#{ statu}
             </if>   
         </where> 
     </select> 
     <!-- 新增产品介绍 -->  
 	<insert id="insertProductIntroduce"  parameterType="cn.springmvc.model.ProductIntroduceEntity" >    
 		insert into 
-		Product_Introduce( ID,   Content,     Opt_Id) 
-		          values (#{id},#{content},#{optId})    
+		Product_Introduce( Introduce_ID,   Content,     Admin_ID) 
+		          values (#{id},         #{content},    #{optId})    
 	</insert> 
 	<!-- 查询产品介绍是否存在 -->  
 	<select id="selectProductIntroduceIsExist"  resultType="int" >
@@ -37,18 +37,18 @@
 	        Content=#{content},
 	       </if> 
 	       <if test="optId != 0" >
-	         Opt_Id=#{optId},
+	         Admin_ID=#{optId},
 	       </if>  
 	         Opt_Date=now(), 
-	       </set>   
-	   where ID=#{id}   
+	   </set>   
+	   where Introduce_ID=#{id}   
     </update>   
     <!-- 删除产品介绍 -->  
 	<delete id="deleteProductIntroduceByID"  parameterType="int">
-	   delete from  Product_Introduce where ID=#{id}   
+	   delete from  Product_Introduce where Introduce_ID=#{id}   
     </delete>  
      <!-- 停用或启用产品介绍 -->  
 	<update id="updateProductIntroduceStatuByID"  parameterType="cn.springmvc.model.ProductIntroduceEntity">
-	   update  Product_Introduce  set   Statu=#{statu} where ID=#{id}   
+	   update  Product_Introduce  set   Statu=#{statu} where Introduce_ID=#{id}   
     </update>       
 </mapper>

@@ -4,14 +4,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.dao.ProductIntroduceDao;
-import cn.springmvc.dao.productIntroduceListDao;
-import cn.springmvc.dao.impl.ExpertTeamDaoImpl;
-import cn.springmvc.dao.impl.ExpertTeamListDaoImpl;
+import cn.springmvc.dao.productIntroduceListDao; 
 import cn.springmvc.dao.impl.IdGeneratorUtil;
-import cn.springmvc.dao.impl.ProductIntroduceDaoImpl;
-import cn.springmvc.dao.impl.ProductIntroduceListDaoImpl;
-import cn.springmvc.model.ExpertTeamEntity;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl; 
 import cn.springmvc.model.ProductIntroduceEntity;
 import cn.springmvc.service.ProductIntroduceService;
 @Service("productIntroduceServiceImpl")
@@ -19,13 +17,18 @@ public class ProductIntroduceServiceImpl implements ProductIntroduceService {
 	@Resource(name="productIntroduceDaoImpl")
 	private ProductIntroduceDao productIntroduceDaoImpl;  
 	@Resource(name="productIntroduceListDaoImpl")
-	private productIntroduceListDao productIntroduceListDaoImpl;  
+	private productIntroduceListDao productIntroduceListDaoImpl; 
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
+	
 	@Override
-	public int insertProductIntroduce(ProductIntroduceEntity entity) {
+	public int insertProductIntroduce(ProductIntroduceEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		if(entity == null) {
-			return 0;
+			return -1;
 		} 
+		int result = 0;
 		// 查询产品介绍是否存在，不存在就新增，存在则修改
 		int count = productIntroduceListDaoImpl.selectProductIntroduceIsExist();
 		if(count == 0) {
@@ -33,32 +36,51 @@ public class ProductIntroduceServiceImpl implements ProductIntroduceService {
 			long id = generatorUtil.GetId();
 			entity.setId((int)id);
 			
-			int result = productIntroduceDaoImpl.insertProductIntroduce(entity);
+			result = productIntroduceDaoImpl.insertProductIntroduce(entity);
 			
 			if(result == 0) {
 				generatorUtil.SetIdUsedFail(id);
 			}else{
 				generatorUtil.SetIdUsed(id);
+				logentity.setsDetail("添加产品介绍");
+				optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 			}
-			return result; 
+			
 		}else{
-			return productIntroduceDaoImpl.updateProductIntroduceByID(entity); 
+			result = productIntroduceDaoImpl.updateProductIntroduceByID(entity); 
+			if(result == 1) {
+				logentity.setsDetail("修改产品介绍");
+				optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+			}
 		} 
-		
+		return result; 
 	}
 
 	@Override
-	public int deleteProductIntroduce(int id) {
+	public int deleteProductIntroduce(int id,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
 		int result = productIntroduceDaoImpl.deleteProductIntroduceByID(id); 
+		if(result == 1) {
+			logentity.setsDetail("删除产品介绍");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
  
 
 	@Override
-	public int updateProductIntroduceStatuByID(ProductIntroduceEntity entity) {
-		
+	public int updateProductIntroduceStatuByID(ProductIntroduceEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
+		 
 		int result = productIntroduceDaoImpl.updateProductIntroduceStatuByID(entity); 
+		if(result == 1 && entity.getStatu() == 1) {
+			logentity.setsDetail("启用产品介绍");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}else if(result == 1 && entity.getStatu() == 0){
+			logentity.setsDetail("停用产品介绍");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
 		return result;
 	}
 

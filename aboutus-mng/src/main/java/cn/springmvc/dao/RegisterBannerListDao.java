@@ -1,8 +1,6 @@
 package cn.springmvc.dao;
 
-import java.util.List;
-import java.util.Map;
-
+import java.util.List; 
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.RegisterBannerEntity;

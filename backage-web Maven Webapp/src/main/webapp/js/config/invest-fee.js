@@ -38,7 +38,7 @@ function updateMange () {
 		$.ajax({
 			type : 'post',
 			url : appPath + "/mange/update.do",
-			data : {priceDatum : percent},
+			data : {priceDatum : result},
 			success : function (msg) {
 				if (msg == 1) {
 					layer.alert("操作成功",{icon:1});

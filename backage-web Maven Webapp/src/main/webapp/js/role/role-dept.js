@@ -43,9 +43,28 @@ $(function () {
  */
 function addDept() {
 	var appPath = getRootPath();//项目根路径
+	var deptName = $("#sdeptName").val();
+	var principalName = $("#sprincipalName").val();
+	var principalPhone = $("#sprincipalPhone").val();
+	var preDeptId = $("#spreDeptId").val();
+	var deptRemark = $("#sdeptRemark").val();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result1 = encrypt.encrypt((deptName));
+    var result2 = encrypt.encrypt((principalName));
+    var result3 = encrypt.encrypt((principalPhone));
+    var result4 = encrypt.encrypt((preDeptId));
+    var result5 = encrypt.encrypt((deptRemark));
 	$.ajax( {  
 		url:appPath+"/role/save.do",
-		data:$("#saveDept").serialize(),
+		data : {
+			deptName : result1, 
+			principalName : result2, 
+			principalPhone : result3,
+			preDeptId : result4,
+			deptRemark : result5
+		},
 		type:'post',  
 		cache:false,  
 		success:function(data) { 
@@ -96,9 +115,29 @@ $(function () {
  */
 function updateDept() {
 	var appPath = getRootPath();//项目根路径
+	var deptId = $("#dId").val();
+	var deptName = $("#dName").val();
+	var principalName = $("#dpName").val();
+	var principalPhone = $("#dpPhone").val();
+	var deptRemark = $("#dRemark").val();
+	//加密操作
+	var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey_common);
+    var result1 = encrypt.encrypt((deptId));
+    var result2 = encrypt.encrypt((deptName));
+    var result3 = encrypt.encrypt((principalName));
+    var result4 = encrypt.encrypt((principalPhone));
+    var result5 = encrypt.encrypt((deptRemark));
 	$.ajax( {  
 		url:appPath+"/role/update.do",
-		data:$("#updateDept").serialize(),
+		data : {
+				deptId : result1,
+				deptName : result2, 
+				principalName : result3, 
+				principalPhone : result4,
+				deptRemark : result5
+				
+		},
 		type:'post',  
 		cache:false,  
 		dataType:'json',  
@@ -128,10 +167,14 @@ $(function () {
 		}, function(index, layero){
 		  //确定的回调
 		  var rowdata = $('#table_id').DataTable().rows('.selected').data();
+		  //加密操作
+		  var encrypt = new JSEncrypt();
+		  encrypt.setPublicKey(publicKey_common);
+		  var result = encrypt.encrypt(rowdata[0].id + "");
 		  $.ajax({
 		  	type : 'post',
 		  	url : appPath + "/role/delete.do",
-		  	data : "deptId=" + rowdata[0].id,
+		  	data : {deptId : result},
 		  	success : function (msg) {
 		  		if (msg == 0) {
 		  			layer.alert("删除成功!",{icon:1});
@@ -161,10 +204,18 @@ function openDept () {
 	}, function(index, layero){
 	  //确定回掉
 	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	  //加密操作
+	  var encrypt = new JSEncrypt();
+	  encrypt.setPublicKey(publicKey_common);
+	  var result = encrypt.encrypt(rowdata[0].id + "");
+	  var result2 = encrypt.encrypt((rowdata[0].deptStatu + ""));
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/role/ofOrOpenDept.do",
-	  	data : "deptId=" + rowdata[0].id + "&deptStatu=" + rowdata[0].deptStatu,
+	  	data : {
+				deptId : result,
+				deptStatu : result2 
+		},
 	  	success : function (msg) {
 	  		layer.alert("操作成功!",{icon:1});
 	  		setTimeout('location.reload()',2000);
@@ -189,12 +240,19 @@ function ofDept () {
 	}, function(index, layero){
 	  //确定回掉
 	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	  //加密操作
+	  var encrypt = new JSEncrypt();
+	  encrypt.setPublicKey(publicKey_common);
+	  var result1 = encrypt.encrypt(rowdata[0].id + "");
+	  var result2 = encrypt.encrypt((rowdata[0].deptStatu + ""));
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/role/ofOrOpenDept.do",
-	  	data : "deptId=" + rowdata[0].id + "&deptStatu=" + rowdata[0].deptStatu,
+	  	data : {
+				deptId : result1,
+				deptStatu : result2 
+		},
 	  	success : function (msg) {
-	  		alert(msg);
 	  		layer.alert("操作成功!",{icon:1});
 	  		setTimeout('location.reload()',2000);
 	  	},
@@ -219,12 +277,7 @@ $(function() {
 		autoWidth : false,
 		scrollY : 500,
 		pagingType: "simple_numbers",//设置分页控件的模式  
-		// paging : false,//分页
-//		searching : false,
-//		info : false,// 左下角信息
-//		ordering: false,//排序
 		lengthMenu:[[5,10,25,50,-1],[5,10,25,50,"全部"]],
-//		aaSorting : [ [ 16, "desc" ] ],// 默认第几个排序
 		colReorder : false,
 		scrollX : true,
 		sScrollX : "100%",
@@ -236,9 +289,28 @@ $(function() {
             "url": appPath + "/role/role-dept.do",   
             "dataSrc": "results", 
             "data": function ( d ) {  
-                var level1 = $('#level1').val();  
-                //添加额外的参数传给服务器  
-                d.extra_search = level1;
+                var deptNo = $("#deptNo").val();
+                var deptName = $('#deptName').val(); 
+                var principalName = $('#deptPerson').val(); 
+                var principalPhone = $('#deptPhone').val();
+                var encrypt = new JSEncrypt();
+                encrypt.setPublicKey(publicKey_common);
+                if (deptNo != null && deptNo != "") {
+                	var result1 = encrypt.encrypt((deptNo));
+                }
+				if (deptName != null && deptName != "") {
+					var result2 = encrypt.encrypt((deptName));
+				}
+				if (principalName != null && principalName != "") {
+					var result3 = encrypt.encrypt((principalName));
+				}
+				if (principalPhone != null && principalPhone != "") {
+					var result4 = encrypt.encrypt((principalPhone));
+				}
+                	d.deptNo = result1;
+                	d.deptName = result2;
+                	d.principalName = result3;
+                	d.principalPhone = result4;
             } 
         },
         columns: [  
@@ -296,4 +368,12 @@ $(function() {
  $('#table_id tbody').on( 'click', 'tr', function () {
         $(this).toggleClass('selected');
   });
+});
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#table_id').DataTable().ajax.reload();
+	
 });

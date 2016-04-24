@@ -30,7 +30,7 @@ public interface PartnersListDao {
 	 * @param id 合作伙伴id
 	 * @return  PartnersEntity 
 	 */
-	public  PartnersEntity  selectPartnerByID(int id);
+	public  PartnersEntity  selectPartnerByID(long id);
 	/**
 	 * 首页查询合作伙伴 
 	 * @return

@@ -3,6 +3,10 @@
  * 内容介绍：
  */
 
+//加密设置
+var encrypt = new JSEncrypt();
+encrypt.setPublicKey(publicKey_common);
+
 $(function() {
 	validform5(".layui-layer-btn0","dataForm",false,3);
 	$('#teamTb').DataTable(
@@ -12,10 +16,10 @@ $(function() {
 					"dataSrc": "results", 
 					"type": "POST",
 					"data": function ( d ) {  
-						var name = $("#name").val();
-						var addDate = $("#addDate").val();
-						d.name = name;  
-						d.addDate = addDate;  
+						var name = encrypt.encrypt($("#name").val());
+						var addDate = encrypt.encrypt($("#addDate").val());
+						d.mngName = name;  
+						d.startTime = addDate;  
 					}  
 				},
 				columns: [  
@@ -52,7 +56,7 @@ $(function() {
 
 				          ],
 	          aoColumnDefs : [
-	                          {"bVisible": false, "aTargets": [ 0,1 ]}, //控制列的隐藏显示
+	                          {"bVisible": false, "aTargets": [ 0,1]}, //控制列的隐藏显示
 	                          {
 	                        	  "orderable" : false,
 	                        	  "aTargets" : [0,1,3,4,5,6,7,8,9]
@@ -61,7 +65,7 @@ $(function() {
               pagingType: "simple_numbers",//设置分页控件的模式  
               processing: true, //打开数据加载时的等待效果  
               serverSide: true,//打开后台分页  
-              info:false,
+//              info:false,
               rowCallback:function(row,data){//添加单击事件，改变行的样式      
               }
 	 
@@ -116,6 +120,7 @@ function addOrUpdate(type){
 			return;
 		}
 		$("#teamId").val(data[0].id);	
+		$("#nameOld").val(data[0].mngName);	//修改之前的name
 		$("#mngName").val(data[0].mngName);	
 		$("#mngPost").val(data[0].mngPost);	
 		$("#profile").val(data[0].profile);	
@@ -138,7 +143,7 @@ function addOrUpdate(type){
 		  }
 	});
 	//上传插件初始化
-	expUpload("portraitUrl");
+	expUpload("#portraitUrl");
 }
 
 
@@ -148,15 +153,23 @@ function addOrUpdate(type){
  * @param type 1:增加  2：修改
  */
 function addOrModify(type){
-		var url=""; 
-		if(type==1){
-			url="/front/addMngTeam.do";
-		}else if(type==2){
-			url="/front/editMngTeam.do";
-		}
+		//加密参数
+		var data={};
+		var mngName = encrypt.encrypt($("#mngName").val());
+		data.mngName=mngName;
+		var mngPost = encrypt.encrypt($("#mngPost").val());
+		data.mngPost=mngPost;
+		var portraitUrl = encrypt.encrypt($("#portraitUrl").val());
+		data.portraitUrl=portraitUrl;
+		var profile = encrypt.encrypt($("#profile").val());
+		data.profile=profile;
+		var teamId = encrypt.encrypt($("#teamId").val());
+		data.teamId=teamId;
+		data.type=encrypt.encrypt(""+type);
+		
 		$.ajax( {  
-			url:appPath+url,
-			data:$("#dataForm").serialize(),
+			url:appPath+"/front/addOrUpdateTeam.do",
+			data:data,
 			type:'post',  
 			cache:false,  
 			dataType:'json',  
@@ -187,7 +200,7 @@ function addOrModify(type){
 function enableOrDisable(type,id){
 	$.ajax( {  
 		url:appPath+"/front/enableMngTeam.do",
-		data:{"statu":type,"id":id},
+		data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id)},
 		type:'post',  
 		cache:false,  
 		dataType:'json',  

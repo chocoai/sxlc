@@ -4,6 +4,9 @@ package cn.springmvc.controller.frontconfig;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.springmvc.model.Admin;
 import cn.springmvc.model.PlatformAnnouncementEntity;
 import cn.springmvc.service.PlatformAnnouncementService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 
+import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 /**
@@ -53,21 +61,21 @@ public class NoticeController {
 	 */
 	@RequestMapping("/list")
 	@ResponseBody
-	public PageEntity list(Map<String, Object> req, int start, int length, String title, String statu) {
+	public PageEntity list(Map<String, Object> req, HttpServletRequest request) {
 		
 		//日志信息
 		logger.info("查询网站公告列表");
 		
 		PageEntity pager = new PageEntity();
 		
-		if (title != null && title != "") {
-			req.put("title", title);
-		}
-		if (statu != null && statu != "") {
-			req.put("statu", statu);
-		}
-			pager.setPageNum(start / length + 1);
-			pager.setPageSize(length);
+		String title = request.getParameter("title");
+		String statu = request.getParameter("statu");
+		int start = Integer.valueOf(request.getParameter("start"));
+		int length = Integer.valueOf(request.getParameter("length"));
+		req.put("title", title);
+		req.put("statu", statu);
+		pager.setPageNum(start / length + 1);
+		pager.setPageSize(length);
 		pager.setMap(req);
 		
 		logger.info("开始查询网站公告列表......req=" + req);
@@ -80,12 +88,17 @@ public class NoticeController {
 	
 	@RequestMapping("/save")
 	@ResponseBody
-	public int addNotice(String title, String content, String optId) {
+	public int addNotice(HttpServletRequest request) {
 		
 		//日志信息
 		logger.info("添加网站公告");
 		
 		PlatformAnnouncementEntity announce = new PlatformAnnouncementEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
 		
 		if (title != null && title != "") {
 			announce.setTitle(title);
@@ -94,10 +107,22 @@ public class NoticeController {
 			announce.setContent(content);
 		}
 			announce.setOptId(1);
+			
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(50301);
+		entity.setlModuleId(503);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
-		//logger.info("开始添加网站公告......req：title：" + title);
-		int num = announcementService.insertPlatform(announce);
-		//logger.info("结束添加网站公告......接口返回result：" + num);
+		logger.info("开始添加网站公告......req：title：" + title);
+		int num = announcementService.insertPlatform(announce, entity, sIpInfo);
+		logger.info("结束添加网站公告......接口返回result：" + num);
 		
 		return num;
 	}
@@ -120,13 +145,18 @@ public class NoticeController {
 	 */
 	@RequestMapping("/update")
 	@ResponseBody
-	public int update(String title, String content, String optId, String annoceId) {
+	public int update(HttpServletRequest request) {
 		
 		//日志信息
 		logger.info("修改网站公告");
 		
 		PlatformAnnouncementEntity announce = new PlatformAnnouncementEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+		String annoceId = request.getParameter("annoceId");
 		if (title != null && title != "") {
 			announce.setTitle(title);
 		}
@@ -137,8 +167,20 @@ public class NoticeController {
 			announce.setId(Long.valueOf(annoceId));
 		}
 		
+		String [] sIpInfo = new String[5];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(50302);
+		entity.setlModuleId(503);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
 		logger.info("开始修改网站公告......req：title：" + title);
-		int num = announcementService.updatePlatform(announce);
+		int num = announcementService.updatePlatform(announce, entity, sIpInfo);
 		logger.info("结束修改网站公告......接口返回：result：" + title);
 		
 		return num;
@@ -160,17 +202,34 @@ public class NoticeController {
 	 */
 	@RequestMapping("ofOrOpenNotice")
 	@ResponseBody
-	public int ofOrOpenNotice(String annoceId, String statu) {
+	public int ofOrOpenNotice(HttpServletRequest request) {
 		
 		PlatformAnnouncementEntity announce = new PlatformAnnouncementEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		
+		String annoceId = request.getParameter("annoceId");
+		String statu = request.getParameter("statu");
 		if (annoceId != null && annoceId != "") {
 			announce.setId(Long.valueOf(annoceId));
 		}
 		if (statu != null && statu != "") {
 			announce.setStatu(Integer.valueOf(statu));
 		}
-		int num = announcementService.updatePlatformStatuByID(announce);
+		
+		String [] sIpInfo = new String[5];
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(50303);
+		entity.setlModuleId(503);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = announcementService.updatePlatformStatuByID(announce, entity, sIpInfo);
 		return num;
 	}
 	
@@ -189,8 +248,9 @@ public class NoticeController {
 	 */
 	@RequestMapping("/query4update")
 	@ResponseBody
-	public PlatformAnnouncementEntity query4update (String noticeId){
+	public PlatformAnnouncementEntity query4update (HttpServletRequest request){
 		
+		String noticeId = request.getParameter("noticeId");
 		PlatformAnnouncementEntity annonce = announcementService.
 				selectPlatformByID(Integer.valueOf(noticeId));
 		return annonce;

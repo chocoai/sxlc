@@ -4,6 +4,7 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.CreditorEntity;
@@ -75,7 +76,7 @@ public interface OverdueService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertOverdueLimit(Map<String, Object> map);
+	public int insertOverdueLimit(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* updateOverdueLimit 修改逾期程度设置 
@@ -90,7 +91,7 @@ public interface OverdueService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateOverdueLimit(Map<String, Object> map);
+	public int updateOverdueLimit(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -106,7 +107,7 @@ public interface OverdueService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertOverdue(OverdueEntity overdueEntity);
+	public int insertOverdue(OverdueEntity overdueEntity,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -122,6 +123,6 @@ public interface OverdueService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int deleteOverdue(Map<String, Object> map);
+	public int deleteOverdue(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 

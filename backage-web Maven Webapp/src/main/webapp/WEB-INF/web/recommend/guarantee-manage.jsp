@@ -94,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						
 						<div class="panel-body">
-							<table id="table_id" class="display i-b2">
+							<table id="table_id" class="display">
 								<thead>
 									<tr>
 										<th class="table-checkbox"></th>
@@ -152,61 +152,70 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 			<!-- 添加担保机构信息部分开始 -->
 			<div class="w-content" id="manage-add">
-				<form action="">
+				<form id="manageAdd" action="">
 					<table>
 						<tr>
 							<td><label>担保机构名称</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="entername" /></td>
 							<td><label>营业执照号码</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="businessNum" /></td>
 						</tr>
 						<tr>
 							<td><label>组织机构代码</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="orgcodefmt" /></td>
 							<td><label>税务登记号</label></td>
 							<td><input type="text" class="" placeholder="" /></td>
 						</tr>
 						<tr>
 							<td><label>经营场所</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="z2_20"/></td>
 							<td><label>注册资金</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="amcountM"/></td>
 						</tr>
 						<tr>
 							<td><label>法人姓名</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="enterperson"/></td>
 							<td><label>法人手机号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
 						</tr>
 						<tr>
-							<td><label>法人身份照号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><label>法人身份证号</label></td>
+							<td><input type="text" class="" placeholder="" datatype="idcard"/></td>
 							<td><label>注册地址</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="enterAddress"/></td>
 						</tr>
 						<tr>
 							<td><label>注册资本来源</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
 							<td><label>经营范围</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
 						</tr>
 						<tr>
 							<td><label>公司简介</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="rolemark"/></td>
 							<td><label>联系人姓名</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="z2_12"/></td>
 						</tr>
 						<tr>
 							<td><label>联系人手机号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
 							<td><label>联系人邮箱</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="email"/></td>
 						</tr>
 						<tr>
 							<td><label>绑定后台管理员</label></td>
 							<td><input type="text" class="" placeholder="" /></td>
 							<td><label>担保证件类型</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td>
+								<select class="guaranteetype">
+									<option>请选择</option>
+									<option>营业执照</option>
+									<option>资质认证</option>
+									<option>税务登记证</option>
+									<option>组织机构代码证</option>
+									<option>其它</option>
+								</select>
+							</td>
 						</tr>
 					</table>
 				</form>
@@ -218,130 +227,72 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<table>
 						<tr>
 							<td><label>担保机构名称</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="entername"/></td>
 							<td><label>营业执照号码</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="businessNum"/></td>
 						</tr>
 						<tr>
 							<td><label>组织机构代码</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="orgcodefmt"/></td>
 							<td><label>税务登记号</label></td>
 							<td><input type="text" class="" placeholder="" /></td>
 						</tr>
 						<tr>
 							<td><label>经营场所</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="z2_20"/></td>
 							<td><label>注册资金</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="amcountM"/></td>
 						</tr>
 						<tr>
 							<td><label>法人姓名</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="enterperson"/></td>
 							<td><label>法人手机号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
 						</tr>
 						<tr>
 							<td><label>法人身份照号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="idcard"/></td>
 							<td><label>注册地址</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="enterAddress"/></td>
 						</tr>
 						<tr>
 							<td><label>注册资本来源</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
 							<td><label>经营范围</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
 						</tr>
 						<tr>
 							<td><label>公司简介</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="rolemark"/></td>
 							<td><label>联系人姓名</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="z2_12"/></td>
 						</tr>
 						<tr>
 							<td><label>联系人手机号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
 							<td><label>联系人邮箱</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td><input type="text" class="" placeholder="" datatype="email"/></td>
 						</tr>
 						<tr>
 							<td><label>绑定后台管理员</label></td>
 							<td><input type="text" class="" placeholder="" /></td>
 							<td><label>担保证件类型</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
+							<td>
+								<select class="guaranteetype">
+									<option>请选择</option>
+									<option>营业执照</option>
+									<option>资质认证</option>
+									<option>税务登记证</option>
+									<option>组织机构代码证</option>
+									<option>其它</option>
+								</select>
+							</td>
 						</tr>
 					</table>
 				</form>
 			</div>
 			<!-- 修改担保机构信息部分结束 -->
-			<!-- 查看担保机构信息部分开始 -->
-			<div class="w-content" id="checkDetail">
-				<form action="">
-					<table>
-						<tr>
-							<td><label>担保机构名称</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>营业执照号码</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>组织机构代码</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>税务登记号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>经营场所</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>注册资金</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>法人姓名</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>法人手机号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>法人身份照号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>注册地址</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>注册资本来源</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>经营范围</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>公司简介</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>联系人姓名</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>联系人手机号</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>联系人邮箱</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>绑定后台管理员</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-							<td><label>设置的担保配置信息</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-						<tr>
-							<td><label>上传的担保证件</label></td>
-							<td><input type="text" class="" placeholder="" /></td>
-						</tr>
-					</table>
-				</form>
-			</div>
-			<!-- 查看担保机构信息部分结束 -->
 			<!-- 尾部 -->
-			
 		</div>
 	</div>
 	<!-- 公用js -->
@@ -350,8 +301,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/recommend/guarantee-manage.js"></script>
 	<script type="text/javascript">
+		$(function(){
+			validform5("layui-layer-btn0","manageAdd",false,"3");
+			validform5("layui-layer-btn0","manageMod",false,"3");
+			validform5("layui-layer-btn0","checkDetail",false,"3");
+		});
 		$('#table_id').DataTable({
 			autoWidth : false,
+			"scrollX": true,
 			"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
 			"aoColumnDefs" : [
 			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示

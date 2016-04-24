@@ -80,6 +80,11 @@ function showPlantConfig(){
 
 //保存
 function submitPlatCofig(){
+	
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publicKey_common);
+	//result 为加密后参数
+	
 	var systemName = $("#systemName").val();//平台名称
 	var back_logo = $("input[name=back_logo]").val();//平台后台logo	
 	var pro_logo = $("input[name=pro_logo]").val();//平台前台logo	
@@ -99,6 +104,25 @@ function submitPlatCofig(){
 	var expectYearRate= $("#expectYearRate").val();//平台前台显示预期年化设置	
 	var integralAlias = $("#integralAlias").val();//积分别名	
 	var welcomeTitle = $("#welcomeTitle").val();//平台欢迎语设置
+	
+	systemName = encrypt.encrypt(systemName);
+	back_logo = encrypt.encrypt(back_logo);
+	pro_logo = encrypt.encrypt(pro_logo);
+	systemHotline = encrypt.encrypt(systemHotline);
+	systemOfficeHours = encrypt.encrypt(systemOfficeHours);
+	weiboName = encrypt.encrypt(weiboName);
+	weiboQRCode = encrypt.encrypt(weiboQRCode);
+	qQGroupCode = encrypt.encrypt(qQGroupCode);
+	qQGroupQRCode = encrypt.encrypt(qQGroupQRCode);
+	
+	weChatCode = encrypt.encrypt(weChatCode);
+	weChatQRCode = encrypt.encrypt(weChatQRCode);
+	
+	switchStatu = encrypt.encrypt(switchStatu);
+	riskReserveFund = encrypt.encrypt(riskReserveFund);
+	expectYearRate = encrypt.encrypt(expectYearRate);
+	integralAlias = encrypt.encrypt(integralAlias);
+	welcomeTitle = encrypt.encrypt(welcomeTitle);
 	$.ajax( {  
 		url:appPath+"/platform/savePlatConfig.do",
 		data:{

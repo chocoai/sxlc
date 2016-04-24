@@ -17,6 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/recommend/guarantee_manage.css"></link>
+	<link rel="stylesheet" href="css/recommend/account-center.css" type="text/css"></link>
 </head>
 
 <body class="nav-md">
@@ -40,45 +41,47 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<button class="obtn glyphicon glyphicon-plus" onclick="accRecharge()">充值</button>
 								<button class="obtn glyphicon glyphicon-pencil" onclick="accWithdraw()">提现</button>
 								<button class="obtn" onclick="accCheckRecords()">查看担保费收取记录</button>
-								<button class="obtn" onclick="accOn/Off()">开启/关闭自动代偿</button>
+								<button class="obtn" onclick="accOnOff()">开启/关闭自动代偿</button>
 							</div>
 						</div>
-						
-						<div class="panel-body">
-							<table id="table_id" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>第三方账户号</th>
-										<th>当前余额</th>
-										<th>代偿总金额</th>
-										<th>代偿回款总金额</th>
-										<th>代偿未回款总金额</th>
-										<th>担保费收取总金额</th>
-										<th>自动代偿是否开启</th>
-										<th>担保配置</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>第三方账户号</td>
-										<td>当前余额</td>
-										<td>代偿总金额</td>
-										<td>代偿回款总金额</td>
-										<td>代偿未回款总金额</td>
-										<td>担保费收取总金额</td>
-										<td>自动代偿是否开启</td>
-										<td>担保配置</td>
-									</tr>
-									<%
-										}
-									%>
-								</tbody>
-							</table>
+						<div class="content2">
+			   				<div class="info clearfix">
+				   				<div class="item">
+				   					<div class="label">第三方账户号：</div>
+				   					<div class="con">第三方账户号</div>
+				   				</div>
+				   				<div class="item">
+				   					<div class="label">当前余额：</div>
+				   					<div class="con">当前余额<label>元</label></div>
+				   				</div>
+				   				<div class="item">
+				   					<div class="label">代偿总金额：</div>			   				
+							   		<div class="con">代偿总金额<label>元</label></div>
+									
+				   				</div>
+				   				<div class="item">
+				   					<div class="label">代偿回款总金额：</div>
+				   					<div class="con">代偿回款总金额<label>元</label></div>
+				   				</div>
+				   				<div class="item">
+				   					<div class="label">代偿未回款总金额：</div>
+				   					<div class="con">代偿未回款总金额<label>元</label></div>
+				   				</div>
+				   				<div class="item">
+				   					<div class="label">担保费收取总金额：</div>
+				   					<div class="con">担保费收取总金额<label>元</label></div>
+				   				</div>
+				   				<div class="item">
+				   					<div class="label">自动代偿是否开启：</div>
+				   					<div class="con">是</div>
+				   				</div>
+				   				<div class="item">
+				   					<div class="label">担保配置：</div>
+				   					<div class="con">担保配置</div>
+				   				</div>
+				   				
+				   				</div>
+			   				</div>
 						</div>
 						
 					</div>
@@ -86,8 +89,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<!-- 尾部 -->
 			
-		</div>
-	</div>
+	
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	

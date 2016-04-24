@@ -32,7 +32,7 @@ public class SafetyCertificationDaoImpl extends SqlSessionDaoSupport implements 
 	}
 
 	@Override
-	public int deleteSafetyCertificationByID(int id) {
+	public int deleteSafetyCertificationByID(long id) {
 		
 		int result = 0;
 		result = getSqlSession().delete("safetyCertification.deleteSafetyCertificationByID", id);

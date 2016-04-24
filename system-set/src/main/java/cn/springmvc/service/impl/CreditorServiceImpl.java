@@ -9,8 +9,12 @@ import javax.annotation.Resource;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
 import cn.springmvc.dao.impl.HandleQuickRechargeFeeDaoImpl;
+import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
 import cn.springmvc.dao.impl.SelectQuickRechargeFeeDaoImpl;
 import cn.springmvc.model.CreditorEntity;
@@ -32,6 +36,9 @@ public class CreditorServiceImpl implements
 	
 	@Resource(name="handleCreditorDaoImpl")
 	private HandleCreditorDaoImpl  handleCreditorDaoImpl;
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
+	IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 	
 	/* * 
 	 * 债权转让设置查询
@@ -51,8 +58,9 @@ public class CreditorServiceImpl implements
 	 */
 	/* *  *  * @return * @see cn.springmvc.service.CreditorService#inserCreditor(cn.springmvc.model.CreditorEntity) */
 	@Override
-	public int inserCreditor(CreditorEntity creditorEntity) {
-		
+	public int inserCreditor(CreditorEntity creditorEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("添加债权转让设置 :"+creditorEntity.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleCreditorDaoImpl.inserCreditor(creditorEntity);
 	}
@@ -77,8 +85,9 @@ public class CreditorServiceImpl implements
 	 */
 	/* *  *  * @return * @see cn.springmvc.service.CreditorService#updateCreditor(java.util.Map) */
 	@Override
-	public int updateCreditor(Map<String, Object> map) {
-		
+	public int updateCreditor(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("修改债权转让设置 :"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleCreditorDaoImpl.updateCreditor(map);
 	}

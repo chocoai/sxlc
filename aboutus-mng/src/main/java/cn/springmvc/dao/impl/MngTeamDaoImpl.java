@@ -33,7 +33,7 @@ public class MngTeamDaoImpl extends SqlSessionDaoSupport implements MngTeamDao {
 	}
 
 	@Override
-	public int deleteMngTeamByID(int id) {
+	public int deleteMngTeamByID(long id) {
 		
 		int result = 0;
 		result=getSqlSession().delete("mngTeam.deleteMngTeamByID", id);

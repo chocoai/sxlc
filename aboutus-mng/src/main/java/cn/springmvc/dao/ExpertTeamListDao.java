@@ -31,7 +31,7 @@ public interface ExpertTeamListDao {
 	 * @param id 专家顾问id
 	 * @return  expertTeamEntitys  专家顾问实体
 	 */
-	public  ExpertTeamEntity  selectExpertTeamByID(int id);
+	public  ExpertTeamEntity  selectExpertTeamByID(long id);
 	/**
 	 * 前台显示专家顾问 
 	 * @return 专家顾问列表

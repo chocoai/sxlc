@@ -9,10 +9,13 @@ import javax.annotation.Resource;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
+
 import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
 import cn.springmvc.dao.impl.HandleIntegralRuleDaoImpl;
 import cn.springmvc.dao.impl.HandleOverdueDaoImpl;
 import cn.springmvc.dao.impl.HandleQuickRechargeFeeDaoImpl;
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
 import cn.springmvc.dao.impl.SelectIntegralRuleDaoImpl;
 import cn.springmvc.dao.impl.SelectOverdueDaoImpl;
@@ -28,7 +31,7 @@ import cn.springmvc.service.OverdueService;
 import cn.springmvc.service.QuickRechargeFeeService;
 
 /** 
- * 逾期设置 接口实现
+ * 积分规则设置
 * @author ZZY 
 * @Description: TODO 
 * @since 
@@ -40,6 +43,8 @@ public class IntegralRuleServiceImpl implements IntegralRuleService {
 
 	@Resource(name="handleIntegralRuleDaoImpl")
 	private HandleIntegralRuleDaoImpl  handleIntegralRuleDaoImpl;
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	/* * 
 	 * 
 	 *  *  * @param map
@@ -54,32 +59,36 @@ public class IntegralRuleServiceImpl implements IntegralRuleService {
 
 
 	@Override
-	public int updateRegPointsIntegralRule(Map<String, Object> map) {
-		
+	public int updateRegPointsIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("修改邀请注册积分规则 :"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleIntegralRuleDaoImpl.updateRegPointsIntegralRule(map);
 	}
 
 
 	@Override
-	public int deleteIntegralRule(Map<String, Object> map) {
-		
+	public int deleteIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("根据id删除积分规则 :"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleIntegralRuleDaoImpl.deleteIntegralRule(map);
 	}
 
 
 	@Override
-	public int insetRegPointsIntegralRule(Map<String, Object> map) {
-		
+	public int insetRegPointsIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("添加  邀请注册积分规则 :"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleIntegralRuleDaoImpl.insetRegPointsIntegralRule(map);
 	}
 
 
 	@Override
-	public int insertIntegralRule(Map<String, Object> map) {
-		
+	public int insertIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("添加 项目投资积分membertype 0:推荐达人  1:理财顾问 2:会员 ;type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 "+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleIntegralRuleDaoImpl.insertIntegralRule(map);
 	}

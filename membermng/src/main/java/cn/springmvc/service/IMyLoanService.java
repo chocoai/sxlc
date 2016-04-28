@@ -3,12 +3,14 @@ package cn.springmvc.service;
 import java.util.List;
 
 import product_p2p.kit.pageselect.PageEntity;
-
+import cn.membermng.model.Cleared;
 import cn.membermng.model.Financing;
 import cn.membermng.model.FlowLabel;
 import cn.membermng.model.InvestmentRecord;
+import cn.membermng.model.LoanApplyRecord;
 import cn.membermng.model.LoanRepay;
 import cn.membermng.model.RepaymentIn;
+import cn.membermng.model.StayStillPlan;
 
 
 /****
@@ -102,7 +104,6 @@ public interface IMyLoanService {
 	* <br>
 	* memberId				会员编号
 	* memberType			会员类型
-	* 
 	* @author 李杰
 	* @Title: FlowLabelS
 	* @param entity
@@ -111,6 +112,51 @@ public interface IMyLoanService {
 	* @date 2016-4-5 上午11:01:16
 	 */
 	public List<FlowLabel> flowLabelS(PageEntity entity);
+
+
+	/***
+	* 查看会员当前已结清的借款信息
+	* <br>
+	* memberId				会员编号
+	* @author 李杰
+	* @param entity
+	* @return
+	* @Description: TODO
+	* @date 2016-4-5 下午2:05:53
+	 */
+	public List<Cleared> cleared(PageEntity entity);
+
+
+
+	
+	/***
+	* 查看当前会员的借款申请记录
+	* 
+	* @author 李杰
+	* @Title: loanApplyRecord
+	* @param entity
+	* @return
+	* @Description: TODO
+	* @date 2016-4-5 下午4:00:08
+	 */
+	public List<LoanApplyRecord> loanApplyRecord(PageEntity entity);
+
+
+
+	/***
+	* 查看当前会员的待还计划信息
+	* 
+	* @author 李杰
+	* @Title: stayStillPlans
+	* @param entity
+	* @return
+	* @Description: TODO
+	* @date 2016-4-5 下午5:33:32
+	 */
+	public List<StayStillPlan> stayStillPlans(PageEntity entity);
+
+
+
 	
 	
 	

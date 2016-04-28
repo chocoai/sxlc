@@ -9,8 +9,10 @@ import javax.annotation.Resource;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 
 import cn.springmvc.dao.impl.HandleChannelSetDaoImpl;
 import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
@@ -21,9 +23,12 @@ import cn.springmvc.dao.impl.SelectChannelSetDaoImpl;
 import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
 import cn.springmvc.dao.impl.SelectQuickRechargeFeeDaoImpl;
 import cn.springmvc.model.CreditorEntity;
+import cn.springmvc.model.MailHistoryEntity;
 import cn.springmvc.model.MailSettingsEntity;
 import cn.springmvc.model.MessageTypeEntity;
 import cn.springmvc.model.QuickRechargeFeeEntity;
+import cn.springmvc.model.SMSHistoryEntity;
+import cn.springmvc.model.SendHistoryEntity;
 import cn.springmvc.model.SmsSettingsEntity;
 import cn.springmvc.model.ThreeInterfaceEntity;
 import cn.springmvc.service.ChannelSetService;
@@ -57,9 +62,9 @@ ChannelSetService {
 
 	@Override
 	public List<SmsSettingsEntity> selectSmsSettings(PageEntity pageEntity) {
-		
-		// TODO Auto-generated method stub return null;
-		return selectChannelSetDaoImpl.selectSmsSettings(pageEntity);
+		List<SmsSettingsEntity> list = selectChannelSetDaoImpl.selectSmsSettings(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	@Override
@@ -83,19 +88,25 @@ ChannelSetService {
 	/* *  *  * @param sIpInfo
 	/* *  *  * @return * @see cn.springmvc.service.ChannelSetService#updateChannelSet(java.util.Map, product_p2p.kit.optrecord.InsertAdminLogEntity, java.lang.String[]) */
 	@Override
-	public List<Object> updateChannelSet(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+	public int updateChannelSet(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
 		entity.setsDetail("设置是否发送该类型消息 :"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
-		return handleChannelSetDaoImpl.updateChannelSet(map);
+		handleChannelSetDaoImpl.updateChannelSet(map);
+		//rulset ==1 成功
+		 int rulset = IntegerAndString.StringToInt(map.get("rulset").toString(), -1);
+		return rulset;
 	}
 
 	@Override
-	public List<Object> updateMessage(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+	public int updateMessage(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
 		entity.setsDetail("设置类型消息发送内容 :"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
-		return handleChannelSetDaoImpl.updateMessage(map);
+		 handleChannelSetDaoImpl.updateMessage(map);
+		 //rulset ==0 成功
+		 int rulset = IntegerAndString.StringToInt(map.get("rulset").toString(), -1);
+		return rulset;
 	}
 
 	@Override
@@ -173,8 +184,31 @@ ChannelSetService {
 		// TODO Auto-generated method stub return 0;
 		return handleChannelSetDaoImpl.insertThreeInterface(map);
 	}
-	
-	
 
+	@Override
+	public List<MessageTypeEntity> selectChannelSetByPage(PageEntity pageEntity) {
+		List<MessageTypeEntity> list = selectChannelSetDaoImpl.selectChannelSetByPage(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
+	}
+	
+	@Override
+	public List<MailHistoryEntity> MailHistory(PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectChannelSetDaoImpl.MailHistory(pageEntity);
+	}
+	@Override
+	public List<SendHistoryEntity> SendHistory(PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectChannelSetDaoImpl.SendHistory(pageEntity);
+	}
+	@Override
+	public List<SMSHistoryEntity> SMSHistory(PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectChannelSetDaoImpl.SMSHistory(pageEntity);
+	}
 }
 

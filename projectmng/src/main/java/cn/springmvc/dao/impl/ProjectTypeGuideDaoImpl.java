@@ -26,16 +26,16 @@ public class ProjectTypeGuideDaoImpl extends SqlSessionDaoSupport  implements Pr
 	}
 
 	@Override
-	public int updateProjectTypeGuideByID(ProjectTypeGuideEntity entity) {
+	public int updateProjectTypeGuideByIndex(ProjectTypeGuideEntity entity) {
 		int result=0;
 		result=getSqlSession().update("projectTypeGuide.updateProjectTypeGuideByIndex", entity);
 		return result;
 	}
 
 	@Override
-	public int deleteProjectTypeGuideByID(int id) {
+	public int deleteProjectTypeGuideByIndex(int ptIndex) {
 		int result=0;
-		result=getSqlSession().delete("projectTypeGuide.deleteProjectTypeGuideByIndex", id);
+		result=getSqlSession().delete("projectTypeGuide.deleteProjectTypeGuideByIndex", ptIndex);
 		return result;
 	}
  

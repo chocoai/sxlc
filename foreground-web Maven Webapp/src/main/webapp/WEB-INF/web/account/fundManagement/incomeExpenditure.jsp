@@ -1,21 +1,28 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>收支明细</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/fundManagement/incomeExpenditure.css">
 	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 </head>
 <body> 
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../../common/top.jsp"></jsp:include>
+   	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
    	<div class="main">
    		<div class="clearfix">
-		   	<jsp:include page="/web/account/accountCommonLeft.jsp"></jsp:include>
+		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
    			<div class="accountRight">
-			   	<jsp:include page="/web/account/accountCommonRightTop.jsp"></jsp:include>
+			   	<jsp:include page="../../account/accountCommonRightTop.jsp"></jsp:include>
    				<div class="accountMain clearfix">
 	   				<!-- 收支明细 -->
 	   				<!-- 李丽梅 -->
@@ -363,10 +370,10 @@
   	 <!-- 分页标签 -->
    <!--  <script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script> -->
    <script type="text/javascript" src="plugs/pager/pager.js"></script>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/fundManagement/incomeExpenditure.js"></script>
-	<script type="text/javascript" src="plugs/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
 	
 </body>
 </html>

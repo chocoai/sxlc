@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.IDeptInfoDao;
 import cn.springmvc.dao.IDeptInfoReadDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
@@ -72,8 +73,9 @@ public class DeptInfoServerImpl implements IDeptInfoServer{
 	
 	
 	@Override
-	public List<DeptInfo> getListByParam(PageEntity entity) {
-		return deptInfoReadDao.getListByParam(entity);
+	public void   getListByParam(PageEntity entity) {
+		List<DeptInfo> list =  deptInfoReadDao.getListByParam(entity);
+		PageUtil.ObjectToPage(entity, list);
 	}
 	
 	
@@ -136,6 +138,11 @@ public class DeptInfoServerImpl implements IDeptInfoServer{
 	public List<DeptInfo> findDeptInfoByParentId(long parentId) {
 		Map<String,Object> param = new HashMap<String,Object>();
 		return deptInfoReadDao.findDeptInfoByParentId(param);
+	}
+
+	@Override
+	public List<DeptInfo> getDeptList() {
+		return deptInfoReadDao.getDeptList();
 	}
 
 	

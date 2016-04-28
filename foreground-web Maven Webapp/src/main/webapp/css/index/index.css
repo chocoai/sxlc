@@ -1,10 +1,10 @@
 /* CSS Document   */
 @charset "UTF-8";
-/* ���ö���������ʽ   */
+/* 閿熸枻鎷烽敓鐭鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷峰紡   */
 .mainPageTop .mainPageTop1{
 	color:#72c0f3;
 }
-/* �����ֲ�ͼ��ʽ  start ���� 20160327  */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熻璇ф嫹鍥鹃敓鏂ゆ嫹寮� start 閿熸枻鎷烽敓鏂ゆ嫹 20160327  */
 .banner {
 	overflow: auto; 
 	max-width:100%;
@@ -74,8 +74,8 @@
 	background: #fff;
 	opacity: 1;
 }
-/* �����ֲ�ͼ��ʽ  end  */
-/* ������� ��ʼ  */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熻璇ф嫹鍥鹃敓鏂ゆ嫹寮� end  */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓锟介敓鏂ゆ嫹濮� */
 .carousel_float{
 	width:290px;
 	height:325px;
@@ -156,8 +156,8 @@
 	border-right:1px solid #ffffff;
 	float:left;
 }
-/* ������� ����  */
-/* ����������ֿ�ʼ   */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓锟介敓鏂ゆ嫹閿熸枻鎷� */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷锋寶閿熺粸锟� */
 .contFoot{
 	width:100%;
 	background-color:#fff;
@@ -225,8 +225,8 @@
 	margin:0px 30px;
 	color:#656565;
 }
-/* ����������ֽ���   */
-/* ƽ̨��ɫ��ʼ����   */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷风焊閿熸枻鎷烽敓锟� */
+/* 骞冲彴閿熸枻鎷疯壊閿熸枻鎷峰閿熸枻鎷烽敓鏂ゆ嫹   */
 .featureImg{
 	width:78px;
 	height:89px;
@@ -306,8 +306,8 @@
 	float:left;
 	margin:0px 10px 5px 0;
 }
-/* ƽ̨��ɫ���ֽ���   */
-/* �������鲿�ֿ�ʼ   */
+/* 骞冲彴閿熸枻鎷疯壊閿熸枻鎷烽敓琛楁枻鎷烽敓鏂ゆ嫹   */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓浠嬮儴閿熻鍖℃嫹濮�  */
 .newMember{
 	width:1200px;
 	margin-top:30px;
@@ -400,8 +400,8 @@
 	font-weight:normal !important;
 	margin:23px 0;
 }
-/* �������鲿�ֽ���   */
-/* Ͷ��ר��ʼ����   */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓浠嬮儴閿熻鏂ゆ嫹閿熸枻鎷�  */
+/* 鎶曢敓鏂ゆ嫹涓撻敓鏂ゆ嫹濮嬮敓鏂ゆ嫹閿熸枻鎷�  */
 .invest{
 	width:1200px;
 	margin: 30px auto;
@@ -470,7 +470,7 @@
 .rowContent {
     width: 100%;
 }
-/*�������ʽ  */ 
+/*閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓缁烇拷 */ 
 .progressbar_1 {
     background-color: #eee;
     height: 8px;
@@ -789,8 +789,8 @@
 .investContLast .reward{
 	display:none;
 }
-/* Ͷ��ר��� ����  */
-/* ծȨת�ò��ֿ�ʼ   */
+/* 鎶曢敓鏂ゆ嫹涓撻敓鏂ゆ嫹閿燂拷閿熸枻鎷烽敓鏂ゆ嫹  */
+/* 鍊烘潈杞敓鐭鎷烽敓琛楀尅鎷峰   */
 .debt{
 	display: inline-block;
 	color:#4e4e4e;
@@ -929,8 +929,8 @@
 	color:#373737;
 	margin: 10px auto;
 }
-/* ծȨת�ò��ֽ���   */
-/* �в�banner���ֿ�ʼ   */
+/* 鍊烘潈杞敓鐭鎷烽敓琛楁枻鎷烽敓鏂ゆ嫹   */
+/* 閿熷彨璇ф嫹banner閿熸枻鎷烽敓琛楀尅鎷峰   */
 .ad{
 	width:100%;
 	padding:0 15px;
@@ -946,8 +946,8 @@
 	background:url("../../resource/img/index/ad_03.jpg") no-repeat;
 	background-position:center;
 }
-/* �в�banner���ֽ���   */
-/* ���Ź�����ư�ʼ  */
+/* 閿熷彨璇ф嫹banner閿熸枻鎷烽敓琛楁枻鎷烽敓鏂ゆ嫹   */
+/* 閿熸枻鎷烽敓鑴氱櫢鎷烽敓鏂ゆ嫹閿熸枻鎷风摙閿熺粸锟�*/
 .secBottomH{
     display: inline-block;
     width: 100%;
@@ -1221,8 +1221,8 @@
 .webSite .artical_main ul{
 	padding-top:8px;
 }
-/* ���Ź�����ư����  */
-/* ������鲿�ֿ�ʼ   */
+/* 閿熸枻鎷烽敓鑴氱櫢鎷烽敓鏂ゆ嫹閿熸枻鎷风摙閿熸枻鎷烽敓鏂ゆ嫹  */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷锋ご鍖℃嫹鎸氶敓缁烇拷  */
 .partner{
 	position:relative;
 }
@@ -1273,7 +1273,7 @@
 .indexContFooter{
 	position:relative;
 	display:inline-block;
-	margin:20px 0;
+	margin:0 0 20px 0;
 }
 .partner_03{
 	background:url(../../resource/img/index/partner_03.jpg) no-repeat;
@@ -1352,11 +1352,14 @@
 .indexConH{
 	display: table;
 }
+.indexConH{
+	line-height:0px;
+}
 .indexConH .sec_b_title{
 	margin-bottom:0 !important;
 }
-/* ������鲿�ֽ���   */
-/* ���߲��ֿ�ʼ    */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷锋ご鍖℃嫹绾搁敓鏂ゆ嫹閿燂拷  */
+/* 閿熸枻鎷烽敓绔鎷烽敓琛楀尅鎷峰    */
 .asideLeft{
 	position:fixed;
 	top:30%;
@@ -1375,7 +1378,7 @@
 .asideLeftLine{
 	display:block;
 }
-.after{
+.indexAfter{
 	width:39px;
 	height:39px;
 	border-radius:50%;
@@ -1408,4 +1411,67 @@
 
 
 
-
+.applyTalent{
+	display:none;
+}
+.apply-top{
+	height:203px;
+	width:435px;
+	text-align:center;
+	font-size:18px;
+/* 	border-bottom:1px solid #ddd; */
+	background-image: url("../../resource/img/common/xsty-.png");
+	background-repeat: no-repeat;
+	background-position: 100px 0px;
+	color:#262626;
+	padding-top: 34px;
+}
+.apply-top b span{
+	color:#fff;
+	font-size: 28px;	
+}
+.apply-top b{
+	color:#fff;
+	font-size: 18px;	
+}
+.apply-top label{
+	color:#8c8c8c;
+	font-size:28px;
+	margin-top: 47px;
+    display: inline-block;
+    margin-right: 0;
+}
+.apply-top label span{
+	font-size:28px;
+	color:#ff6e04;
+}
+.apply-top label + br + span{
+	color:#535353;
+	font-size:18px;
+	line-height: 54px;
+}
+.apply-top label + br + span a{
+	color:#535353;
+	text-decoration: underline;
+}
+.apply-top label + br + span a:hover{
+	color:#ff6e04;
+}
+.apply-bottom{
+	margin-top:20px;
+	width:252px;
+}
+.apply-bottom input{	
+	height:42px;
+	width:252px;
+	background-color:#72c0f3;
+	color:#fff;
+	font-size:16px;
+	border:none;
+	border-radius:1px;
+	margin:0;
+}
+.apply-bottom input:hover{
+	background-color: #38aaf4;
+	cursor: pointer;
+}

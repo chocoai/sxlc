@@ -47,6 +47,67 @@ public class InvestIncomeEntity {
 	public String    investMngFees;//	 	投资管理费(单位：分)	
 	public String    recvTime;// 实收时间		
 	private String   replaystatu;//还款状态
+	private int      indexs;//期数
+	private long     totalOver;//逾期费总额
+	private long     totalincome;//总收益 
+	private String   totalOvers;//逾期费总额
+	private String   totalincomes;//总收益 
+	private long     recvAmount;//已收本息
+	private String   recvAmounts;//已收本息
+	private long     overdueAmount;//逾期应收收益
+	private String   overdueAmounts;//逾期应收收益
+	public long getRecvAmount() {
+		return recvAmount;
+	}
+	public void setRecvAmount(long recvAmount) {
+		this.recvAmount = recvAmount;
+		this.recvAmounts= IntegerAndString.LongToString(recvAmount);
+	}
+	public String getRecvAmounts() {
+		return recvAmounts;
+	}
+	public void setRecvAmounts(String recvAmounts) {
+		this.recvAmounts = recvAmounts;
+	}
+	public long getOverdueAmount() {
+		return overdueAmount;
+	}
+	public void setOverdueAmount(long overdueAmount) {
+		this.overdueAmount = overdueAmount;
+		this.overdueAmounts= IntegerAndString.LongToString(overdueAmount);
+	}
+	public String getOverdueAmounts() {
+		return overdueAmounts;
+	}
+	public void setOverdueAmounts(String overdueAmounts) {
+		this.overdueAmounts = overdueAmounts;
+	}
+	public long getTotalOver() {
+		return totalOver;
+	}
+	public void setTotalOver(long totalOver) {
+		this.totalOver = totalOver;
+		this.totalOvers= IntegerAndString.LongToString(totalOver);
+	}
+	public long getTotalincome() {
+		return totalincome;
+	}
+	public void setTotalincome(long totalincome) {
+		this.totalincome = totalincome;
+		this.totalOvers= IntegerAndString.LongToString(totalOver);
+	}
+	public String getTotalOvers() {
+		return totalOvers;
+	}
+	public void setTotalOvers(String totalOvers) {
+		this.totalOvers = totalOvers;
+	}
+	public String getTotalincomes() {
+		return totalincomes;
+	}
+	public void setTotalincomes(String totalincomes) {
+		this.totalincomes = totalincomes;
+	}
 	public long getRepayId() {
 		return repayId;
 	}
@@ -210,6 +271,12 @@ public class InvestIncomeEntity {
 	}
 	public void setReplaystatu(String replaystatu) {
 		this.replaystatu = replaystatu;
+	}
+	public int getIndexs() {
+		return indexs;
+	}
+	public void setIndexs(int indexs) {
+		this.indexs = indexs;
 	}
 
 }

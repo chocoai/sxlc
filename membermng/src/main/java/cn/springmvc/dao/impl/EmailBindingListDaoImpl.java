@@ -42,5 +42,19 @@ public class EmailBindingListDaoImpl extends SqlSessionDaoSupport implements Ema
 		
 	}
 
+	@Override
+	public String selectOldEmail(Map<String, Object> map) {
+		
+		return getSqlSession().selectOne("emailBinding.selectOldEmail",map);
+		
+	}
+
+	@Override
+	public int checkEmail(Map<String, Object> map) {
+		
+		return getSqlSession().selectOne("emailBinding.checkEmail",map);
+		
+	}
+
 }
 

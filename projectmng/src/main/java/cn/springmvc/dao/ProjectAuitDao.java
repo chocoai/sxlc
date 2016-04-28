@@ -11,18 +11,12 @@
 * @version V5.0 */
  
 package cn.springmvc.dao; 
-
-import java.util.HashMap;
+ 
 import java.util.List;
 import java.util.Map;
-
-import cn.springmvc.model.ProjectAppAttachmentEntity;
-import cn.springmvc.model.ProjectAppProcessEntity;
+ 
 import cn.springmvc.model.ProjectCheckAttachDealEntity;
-import cn.springmvc.model.ProjectCheckAttachEntity;
-import cn.springmvc.model.ProjectCheckRecordEntity;
-
-import product_p2p.kit.pageselect.PageEntity; 
+import cn.springmvc.model.ProjectCheckAttachEntity; 
 
 /** 
  * @author 刘利 

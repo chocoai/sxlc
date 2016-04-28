@@ -28,7 +28,7 @@ import product_p2p.kit.pageselect.PageEntity;
 
 public interface CreditorTransferListDao {
 	/**
-	 * 分页查询债权转让列表
+	 * 分页查询债权转让列表 前台显示
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param pageEntity        
@@ -66,7 +66,6 @@ public interface CreditorTransferListDao {
 	 * @return List<InvestEntity> 返回类型 
 	 * @date 2016-4-6 下午2:45:15
 	 */
-	public List<InvestEntity> selectCreditorInvestRecordByctaId(Map<String,Object> map);
-
+	public List<InvestEntity> selectCreditorInvestRecordByctaId(Map<String,Object> map); 
 }
 

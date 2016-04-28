@@ -9,21 +9,22 @@
 %>
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>账户总览</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/accountOverview/accountOverview.css">
 	<%-- <jsp:include page="myPIChart.jsp"></jsp:include> --%>
 	<script src="plugs/dist/echarts.js"></script>
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../../common/top.jsp"></jsp:include>
+   	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
    	<div class="main">
    		<div class="clearfix">
-		   	<jsp:include page="/web/account/accountCommonLeft.jsp"></jsp:include>
+		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
    			<div class="accountRight">
-			   	<jsp:include page="/web/account/accountCommonRightTop.jsp"></jsp:include>
+			   	<jsp:include page="../../account/accountCommonRightTop.jsp"></jsp:include>
    				<div class="accountMain clearfix">
    				<!-- 在此处写入代码 -->
    					<!-- 账户总资产部分开始 王延君  -->
@@ -47,9 +48,9 @@
 	   								<div class="totalRecharge">累计充值<span class="moneyFormat">1000</span></div>
 	   								<div class="totalWithdrawals">累计提现<span class="moneyFormat">0</span></div>
 	   								<div class="secondaryTitleOperate">
-	   									<div class="btn rechargeBtn" onselectstart="return false" onclick="window.location='recharge.html';">充值</div>
-		   								<div class="btn withdrawalsBtn" onselectstart="return false" onclick="window.location='cash.html';">提现</div>
-		   								<div class="btn friendTransfer" onselectstart="return false" onclick="window.location='friendManagement.html';">好友转账</div>
+	   									<div class="btn rechargeBtn" onselectstart="return false" onclick="window.location='fundManagement/recharge.html';">充值</div>
+		   								<div class="btn withdrawalsBtn" onselectstart="return false" onclick="window.location='fundManagement/cash.html';">提现</div>
+		   								<div class="btn friendTransfer" onselectstart="return false" onclick="window.location='personalCenter/friendManagement.html';">好友转账</div>
 	   								</div>
 	   								<div class="secondaryTitleInfo">
 	   									<span class="secondarySharp"></span>
@@ -173,7 +174,7 @@
 													<label class="luckyMoney"></label>红包<span class="secondSpan moneyFormat">2000</span>
 												</div>
 												<div class="InfoRightM">
-													<label class="intAble"></label>可用积分(分)<span class="thirdSpan">1200<a href="mallIndex.html">兑换</a></span>
+													<label class="intAble"></label>可用积分(分)<span class="thirdSpan">1200<a href="integralMall/mallIndex.html">兑换</a></span>
 												</div>
 												<div class="InfoRightM">
 													<label class="invitated"></label>已邀请好友(位)<span class="fourthSpan">2</span>
@@ -468,7 +469,7 @@
    						<div class="capitalDynamics">
    							<div class="capitalDynamicsH">
    								<div class="noPointer">资金动态</div>
-   								<span class="more" onclick="window.location='incomeExpenditure.html'">更多&gt;</span>
+   								<span class="more" onclick="window.location='fundManagement/incomeExpenditure.html'">更多&gt;</span>
    							</div>
    							<div class="capitalDynamicsM">
    								<ul>
@@ -523,7 +524,7 @@
    										<div class="BoutiqueItemName">可投金额</div>
    									</div>
    									<div class="BoutiqueMContBottomItem">
-   										<div class="btn" onselectstart="return false" onclick="window.location='loan.html';">立即查看</div>
+   										<div class="btn" onselectstart="return false" onclick="window.location='loan/loan.html';">立即查看</div>
    									</div>
    								</div>
    							</div>
@@ -537,7 +538,7 @@
    			</div>
    		</div>
    	</div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/accountOverview/accountOverview.js"></script>
 </body>

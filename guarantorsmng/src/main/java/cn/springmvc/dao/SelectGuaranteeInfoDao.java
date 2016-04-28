@@ -6,11 +6,13 @@ import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
 
+import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
 import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoEntity;
 import cn.springmvc.model.GuaranteePeriodEntity;
 import cn.springmvc.model.GuaranteeRelationalEntity;
+import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
 
@@ -155,5 +157,37 @@ public interface SelectGuaranteeInfoDao {
 	* @throws 
 	*/
 	public List<GuaranteeRelationalEntity> selectGuaranteeRelational(Map<String, Object> map);
+	
+	
+	/** 
+	* findGuaranteeAdmin(根据保荐机构id,查询担保机构管理员信息) 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findGuaranteeAdmin 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return List<GuaranteeAdminEntity> 返回类型 
+	* @date 2016-4-20 上午10:39:11
+	* @throws 
+	*/
+	public List<GuaranteeAdminEntity> findGuaranteeAdmin(PageEntity pageEntity);
+	
+	
+	/** 
+	* InstitutionsToRaiseCashRecords 分页查询担保机构 充值或提现记录
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: InstitutionsToRaiseCashRecords 
+	* @Description: TODO 
+	* @param @param pageEntity map:{dealType:交易类型 0：充值 1：提现;
+	* startdealTime:交易时间 开始；enddealTime：交易时间结束；merBillno：平台订单号；thirdMerBillno：第三方流水号
+	* statu：状态： 0：失败 1：成功； 排序 ：amountStatu 1：降序 2 升序}
+	* @param @return 设定文件 
+	* @return List<InstitutionsRecordsEntity> 返回类型 
+	* @date 2016-4-25 下午4:57:19
+	* @throws 
+	*/
+	public List<InstitutionsRecordsEntity> InstitutionsToRaiseCashRecords(PageEntity pageEntity);
 }
 

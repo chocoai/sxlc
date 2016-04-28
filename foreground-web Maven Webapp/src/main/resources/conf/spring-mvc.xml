@@ -24,4 +24,14 @@
 		<property name="prefix" value="/WEB-INF/web/"/>
 	</bean>
 
+
+	<!-- 注册SpringUtil -->
+	<bean id="springUtil" class="product_p2p.kit.spring.SpringUtil"></bean>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+    		<mvc:mapping path="/*"/>
+    		<bean class="cn.springmvc.interceptor.SessionCheckInterceptor"></bean>
+    	</mvc:interceptor>
+    </mvc:interceptors>
 </beans>

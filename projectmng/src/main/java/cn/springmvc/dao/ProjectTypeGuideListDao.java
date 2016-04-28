@@ -41,4 +41,14 @@ public interface ProjectTypeGuideListDao {
      * @date 2016-4-7 下午9:27:07
      */
 	public int selectProjectTypeGuideEntityindex();
+	/**
+	 * 前台查询项目类型 申请指南列表
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param projectType 项目申请ID
+	 * @param @return 设定文件 
+	 * @return List<ProjectTypeGuideEntity> 返回类型 
+	 * @date 2016-4-22 下午2:00:45
+	 */
+	public  ProjectTypeGuideEntity  selectProjectTypeGuideListfront(long projectType);
 }

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="PostLoanSupervision">  
+   <resultMap type="cn.springmvc.model.ProjectAfterLoanInfoEntity" id="resultListProjectBaseInfo">
+        <id column="Project_ID"        property="id" />
+		<result column="Project_Name"  property="projectName" />
+		<result column="Min_Amount"    property="minAmount" />
+		<result column="Max_Amount"    property="maxAmount" />
+		<result column="Min_Rate"      property="minRate" />
+		<result column="Max_Rate"      property="maxRate" />
+		<result column="Single_Min"    property="singleMin" />
+		<result column="Invest_Max"    property="investMax" />
+		<result column="MinStart"      property="minStart" />
+		<result column="Brief_Introduction" property="briefIntroduction" />
+		<result column="Apply_Member"  property="applyMember" />
+		<result column="Pic_Url"       property="picUrl" /> 
+		<result column="Pic_Icon"      property="picIcon" />
+		<result column="Is_Mortgage"   property="isMortgage" />
+		<result column="Statu"         property="statu" /> 
+    </resultMap> 
+    <!-- 分页查询项目类型列表 -->  
+	<select id="selectProjectBaseInfoList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProjectBaseInfo">
+	   select Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
+	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage, Statu
+	   from  ProjectBaseInfo   
+           <where>  
+	            <if test="map.projectName != null">  
+	                Project_Name like  '%${map.projectName}%'  
+	            </if>   
+	            <if test="map.statu != -1">  
+	                and Statu=#{map.statu}
+	            </if>   
+           </where>  
+            order by  Min_Amount
+    </select>       
+	<!-- 新增项目类型 -->  
+	<insert id="insertProjectBaseInfo"  parameterType="cn.springmvc.model.ProjectBaseInfoEntity">    
+		insert into ProjectBaseInfo 
+		(Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
+	    Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage ) 
+		values     
+		(#{id},#{projectName},#{minAmount},#{maxAmount},#{minRate},#{maxRate},#{singleMin},#{investMax},#{minStart},#{briefIntroduction}
+		,#{applyMember},#{picUrl},#{picIcon},#{isMortgage})    
+	</insert> 
+	<!-- 查询项目类型是否存在 -->  
+	<select id="selectProjectBaseInfoIsExistByNAme"  parameterType="cn.springmvc.model.ProjectBaseInfoEntity" resultMap="resultListProjectBaseInfo" >
+	   select Project_ID,Project_Name from  ProjectBaseInfo where  Project_Name=#{projectName} and Project_ID!=#{id} 
+    </select> 
+    <!-- 修改项目类型信息 -->  
+	<update id="updateProjectBaseInfoByID"  parameterType="cn.springmvc.model.ProjectBaseInfoEntity">
+	   update  ProjectBaseInfo 
+	   <set>
+	       <if test="projectName != null" >
+	         Project_Name=#{projectName},
+	       </if> 
+	       <if test="minAmount != 0" >
+	         Min_Amount=#{minAmount},
+	       </if> 
+	       <if test="maxAmount != 0" >
+	         Max_Amount=#{maxRate},
+	       </if> 
+	       <if test="minRate != 0" >
+	         Min_Rate=#{minRate},
+	       </if>  
+	       <if test="maxRate != 0" >
+	         Max_Rate=#{maxRate},
+	       </if>  
+	       <if test="singleMin != 0" >
+	         Single_Min=#{singleMin},
+	       </if>  
+	       <if test="investMax != 0" >
+	         Invest_Max=#{investMax},
+	       </if>   
+	        <if test="minStart != 0" >
+	          MinStart=#{minStart},
+	        </if> 
+	         <if test="briefIntroduction != null" >
+	          Brief_Introduction=#{briefIntroduction},
+	        </if> 
+	         <if test="applyMember != 0" >
+	          Apply_Member=#{applyMember},
+	        </if> 
+	         <if test="picUrl != null" >
+	          Pic_Url=#{picUrl},
+	        </if> 
+	         <if test="picIcon != null" >
+	          Pic_Icon=#{picIcon},
+	        </if> 
+	        <if test="isMortgage != 0" >
+	          Is_Mortgage=#{isMortgage},
+	        </if>   
+	       </set>
+	   where Project_ID=#{id}   
+    </update>   
+    <!-- 删除项目类型信息 -->  
+	<delete id="deleteProjectBaseInfoByID"  parameterType="long">
+	   delete from  ProjectBaseInfo where Project_ID=#{id}   
+    </delete>    
+     <!-- 停用或启用项目类型 -->  
+	<update id="updateProjectBaseInfoStatuByID"  parameterType="cn.springmvc.model.ProjectBaseInfoEntity">
+	   update  ProjectBaseInfo  set   Statu=#{statu} where Project_ID=#{id}   
+    </update>  
+    <!-- 根据id查询项目类型 -->  
+	<select id="selectProjectBaseInfoentitybyID" parameterType="long"  resultMap="resultListProjectBaseInfo">
+	   select Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
+	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage, Statu
+	   from  ProjectBaseInfo  where Project_ID=#{id}   
+    </select> 
+    <!--  项目类型列表 -->  
+	<select id="selectProjectBaseInfo"   resultMap="resultListProjectBaseInfo">
+	   select Project_ID,Project_Name 
+	   from  ProjectBaseInfo   where Statu = 1
+    </select>                  
+</mapper>   

@@ -251,7 +251,7 @@
       -khtml-opacity: 0.6;   
       opacity: 0.6; 
 	z-index:1;
-    background-image: url("../../resource/img/integralMall/jfsc_17.png");
+    background-image: url("../../resource/img/integralMall/jfsc_background.png");
     background-position-x: 91%;
     background-position-y: 79%;
     background-size: initial;
@@ -262,10 +262,14 @@
     background-origin: initial;
     background-clip: initial;
 }
-.sellOut + img{
+.sellOutImg{
+	width:137px;
+	height:134px;
+	background:url(../../resource/img/integralMall/jfsc_17.png) no-repeat;
 	position:absolute;
 	right:10px;
 	bottom: 44px;
+	z-index:1;
 }
 
 .sellOutHide{

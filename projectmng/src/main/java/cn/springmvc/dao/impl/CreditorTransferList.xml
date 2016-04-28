@@ -39,7 +39,7 @@
 		left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 		left join DICT transStatu on  transStatu.code1= cta.Statu  and transStatu.tcode = 'DICT_ZRZT' 
            <where>  
-                 cta.Check_Statu = 1
+                 cta.Check_Statu = 1 
                  <!-- 项目编号或名称--> 
 	            <if test = "map.projectinfo != null">  
 	               and ( pbi.Project_Title   like '%${map.projectinfo}%' or par.Project_No  like '%${map.projectinfo}%' ) 
@@ -92,7 +92,7 @@
     </select>
       <!-- 查询债权转让项目详情 -->  
 	<select id = "selectCreditorTransferDetail" parameterType = "Map"  resultMap = "resultCreditorTransfer"> 
-	select pbi.Project_Title,par.Project_No,cta.Trans_Principal,cta.Surplus_Time,
+	select cta.CTA_Id,pbi.Project_Title,par.Project_No,cta.Trans_Principal,cta.Surplus_Time,
 	cta.Surplus_Time_Type,cta.Trans_Discount,cta.Cta_Invest_Rate,par.Reward_Rate,par.Rate_Add_Rate,par.Reward_Icon,
 	replayway.name1 as repalyways,par.Member_ID,mi.Credit_Integral,cta.End_Date,
 	CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal,

@@ -506,25 +506,35 @@
 .apply-top{
 	height:203px;
 	width:435px;
-	line-height:17;
 	text-align:center;
 	font-size:18px;
-	border-bottom:1px solid #ddd;
-	background-image: url("../../../resource/img/account/personalCenter/grzx_37.png");
+/* 	border-bottom:1px solid #ddd; */
+	background-image: url("../../../resource/img/common/cg.png");
 	background-repeat: no-repeat;
-	background-position: 165px 25px;
+	background-position: 165px 0px;
 	color:#262626;
+	padding-top: 110px;
+}
+.apply-top label{
+	color:#8c8c8c;
+	font-size:28px;
+    margin-right: 0;
+}
+.apply-top span{
+	color:#535353;
+	font-size:18px;
+	line-height: 70px;
 }
 .apply-bottom{
 	margin-top:20px;
-	width:300px;
+	width:252px;
 }
 .apply-bottom input{	
-	height:50px;
-	width:300px;
+	height:42px;
+	width:252px;
 	background-color:#72c0f3;
 	color:#fff;
-	font-size:18px;
+	font-size:16px;
 	border:none;
 	border-radius:1px;
 }

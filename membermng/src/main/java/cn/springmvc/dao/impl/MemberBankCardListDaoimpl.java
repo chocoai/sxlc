@@ -55,7 +55,7 @@ public class MemberBankCardListDaoimpl extends SqlSessionDaoSupport implements M
 	@Override
 	public List<CityDictionaryEntity> selectCityDictionary(int provinceId) {
 		
-		return  getSqlSession().selectList("bankInfo.selectProvinceDictionary",provinceId);
+		return  getSqlSession().selectList("bankInfo.selectCityDictionary",provinceId);
 		
 	}
 
@@ -75,9 +75,23 @@ public class MemberBankCardListDaoimpl extends SqlSessionDaoSupport implements M
 	}
 
 	@Override
-	public BankCardInfoEntity selectMemberBankCardByID(int bankCardId) {
+	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId) {
 		
 		return getSqlSession().selectOne("bankInfo.selectMemberBankCardByID",bankCardId);
+		
+	}
+
+	@Override
+	public int selectMemberBankCardCount(Map<String, Object> map) {
+		
+		return getSqlSession().selectOne("bankInfo.selectMemberBankCardCount",map);
+		
+	}
+
+	@Override
+	public int selectMemberBankCardisExist(Map<String, Object> map) {
+		
+		return getSqlSession().selectOne("bankInfo.selectMemberBankCardisExist",map);
 		
 	}
 

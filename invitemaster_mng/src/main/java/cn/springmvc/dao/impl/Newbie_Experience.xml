@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="Newbie_Experience">     
+	 <resultMap type = "cn.invitemastermng.model.NewbieExperienceRecordsEntity" id = "ExperienceIncome"> 
+		<result property = "memberNo"       	column = "Member_No" />
+		<result property = "logname"    	    column = "Logname" />
+		<result property = "personalName"    	column = "Personal_Name" />
+		<result property = "regDate"  	        column = "Reg_Date" />
+		<result property = "experienceDate" 	column = "Experience_Date" />
+		<result property = "vouchersAmount" 	column = "Vouchers_Amount" /> 
+		<result property = "prizeWorth" 	    column = "Prize_Worth" /> 
+		<result property = "incomeAmount" 	    column = "Income_Amount" />  
+    </resultMap> 	
+    <!-- 会员体验收益获取记录 --> 
+		<!-- 
+		Member_No,会员编号
+		Logname,会员用户名
+		Personal_Name,会员名称
+		Reg_Date,开户时间
+		Experience_Date,投资体验标时间
+		Vouchers_Amount,代金券面值
+		Prize_Worth,是否成功发放
+		Income_Amount,收益总金额
+	--> 
+	<!--传入参数整理
+		#{skey}#{Member_No}#{Logname}#{Personal_Name}#{Reg_Date_Min}#{Reg_Date_Max}#{Experience_Date_Min}
+		#{Experience_Date_Max}#{Statu}#{ordercolumn}	
+		-->
+	<select id="getExperienceIncome" parameterType="Map" resultMap="ExperienceIncome">
+		 SELECT
+		  mi.Member_No,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,
+		  mi.Reg_Date,
+		  ner.Experience_Date,
+		  CAST((AES_DECRYPT(UNHEX(ner.Vouchers_Amount),#{skey})) AS SIGNED) Vouchers_Amount,
+		  ner.Statu,
+		  (select sum(ifnull(CAST((AES_DECRYPT(UNHEX(eir.Income_Amount),#{skey})) AS SIGNED),0)) from Experience_Income_Records eir where eir.Experience_ID = ner.Experience_ID) Income_Amount
+		FROM Newbie_Experience_Records ner
+		  JOIN Member_Info mi
+			ON ner.Member_ID = mi.Member_ID
+		  LEFT JOIN personal_base_info pbi
+			ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci
+			ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+		  AND IF(#{Logname} IS NULL OR #{Logname} = '', 1=1, mi.Logname = #{Logname})
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+		  AND IF(#{Reg_Date_Min} IS NULL OR #{Reg_Date_Min} = '', 1=1, mi.Reg_Date>=#{Reg_Date_Min})
+		  AND IF(#{Reg_Date_Max} IS NULL OR #{Reg_Date_Max} = '', 1=1, mi.Reg_Date&lt;=#{Reg_Date_Max})
+		  AND IF(#{Experience_Date_Min} IS NULL OR #{Experience_Date_Min} = '', 1=1, ner.Experience_Date>=#{Experience_Date_Min})
+		  AND IF(#{Experience_Date_Max} IS NULL OR #{Experience_Date_Max} = '', 1=1, ner.Experience_Date&lt;=#{Experience_Date_Max})
+		  AND IF(#{Statu} IS NULL OR #{Statu} = '', 1=1, eir.Statu = #{Statu})
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'EXPERIENCE_DATE' THEN ner.Experience_Date
+				WHEN 'REG_DATE' THEN mi.Reg_Date
+				WHEN 'INCOME_AMOUNT' THEN Income_Amount
+				ELSE ner.Experience_Date
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	 <!-- 新手体验标设置-->  
+      <select id="NewbieExperienceSet"  statementType="CALLABLE" parameterType="Map">  
+  	     {call Newbie_Experience_Set(
+  				#{project_ID,	             mode=IN,	jdbcType=BIGINT}, 
+  				#{Experience_Name ,	         mode=IN,	jdbcType=VARCHAR}, 
+  				#{Experience_Describe,	     mode=IN,	jdbcType=VARCHAR}, 
+  				#{Experience_Url,	         mode=IN,	jdbcType=VARCHAR},  
+  				#{Repay_Way,	             mode=IN,	jdbcType=INTEGER}, 
+  				#{Year_Rate,	             mode=IN,	jdbcType=INTEGER},  
+ 				#{Deadline,	                 mode=IN,	jdbcType=INTEGER}, 
+  				#{Deadline_Type,	         mode=IN,	jdbcType=INTEGER},  
+  				#{Vouchers_Amount,	         mode=IN,	jdbcType=VARCHAR},  
+  				#{Statu,	                 mode=IN,	jdbcType=INTEGER}, 
+  				#{result,	                 mode=OUT,	jdbcType=INTEGER} 
+      		)}
+  	</select> 
+    <!--   	查询新手体验标设置  -->
+  	<select id="getNewbieExperienceSet"  resultType="cn.invitemastermng.model.NewbieExperienceSetEntity">
+	   select Project_ID as projectID,Experience_Name as experienceName,
+	   Experience_Describe as experienceDescribe,Experience_Url as experienceUrl, 
+	   Repay_Way as repayWay,Year_Rate as yearRate,Deadline as deadline,Deadline_Type as deadlineType,
+	   Vouchers_Amount as vouchersAmount,Statu as statu 
+	   from Newbie_Experience_Set nes 
+	</select>
+</mapper>

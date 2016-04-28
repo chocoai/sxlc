@@ -54,7 +54,8 @@
     </delete>    
      <!-- 停用或启用项目审批活动点 -->  
 	<update id="updateActivitiesProjectStatuByID"  parameterType="cn.springmvc.model.ActivitiesProjectEntity">
-	   update Activities_Project  set   Statu=#{statu} where Process_ID=#{id}  and Process_ID not in ( select Process_ID from  Process_Project )  
+	   update Activities_Project  set   Statu=#{statu} where Process_ID=#{id}  
+	   and Process_ID not in ( select Process_ID from  Process_Project )  
     </update> 
     <!-- 根据ID查询审批活动点-->  
 	<select id="selectActivitiesProjectByID"  parameterType="int" resultMap="resultListActivitiesProject" >

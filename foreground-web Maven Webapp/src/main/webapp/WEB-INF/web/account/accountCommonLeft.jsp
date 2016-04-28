@@ -38,7 +38,7 @@
 	</div>
 	<div class="accountLeftBottom" onselectstart="return false">
 		<ul class="clearfix">
-			<li class="TA" onclick="window.location='accountOverview.html'">
+			<li class="TA" onclick="window.location='accountOverview/accountOverview.html'">
 				<div class="level1Tip">
 					<label class="icon1"></label>
 					<span>账户总览</span>
@@ -51,18 +51,18 @@
 					<label class="icon0"></label>
 				</div>
 				<ul class="clearfix">
-					<li class="TB1" onclick="window.location='baseInformationForPerson.html'">基本信息</li>
-					<li class="TB2" onclick="window.location='securityCenter.html'">安全中心</li>
-					<li class="TB3" onclick="window.location='bankCard.html'">银行卡</li>
-					<li class="TB4" onclick="window.location='myVIP.html'">我的VIP</li>
-					<li class="TB5" onclick="window.location='integralManagement.html'">积分管理</li>
-					<li class="TB6" onclick="window.location='friendManagement.html'">好友管理</li>
-					<li class="TB7" onclick="window.location='loanCertification.html'">借款认证</li>
-					<li class="TB8" onclick="window.location='mail.html'">站内信</li>
-					<li class="TB9" onclick="window.location='stationMessage.html'">站内信息</li>
-					<li class="TB10" onclick="window.location='messageAlert.html'">消息提醒</li>
-					<li class="TB11" onclick="window.location='recommendedTalent.html'">推荐达人</li>
-					<li class="TB12" onclick="window.location='financialAdvisor.html'">理财顾问</li>
+					<li class="TB1" onclick="window.location='personalCenter/baseInformationForPerson.html'">基本信息</li>
+					<li class="TB2" onclick="window.location='personalCenter/securityCenter.html'">安全中心</li>
+					<li class="TB3" onclick="window.location='personalCenter/bankCard.html'">银行卡</li>
+					<li class="TB4" onclick="window.location='personalCenter/myVIP.html'">我的VIP</li>
+					<li class="TB5" onclick="window.location='personalCenter/integralManagement.html'">积分管理</li>
+					<li class="TB6" onclick="window.location='personalCenter/friendManagement.html'">好友管理</li>
+					<li class="TB7" onclick="window.location='personalCenter/loanCertification.html'">借款认证</li>
+					<li class="TB8" onclick="window.location='personalCenter/mail.html'">站内信</li>
+					<li class="TB9" onclick="window.location='personalCenter/stationMessage.html'">站内信息</li>
+					<li class="TB10" onclick="window.location='personalCenter/messageAlert.html'">消息提醒</li>
+					<li class="TB11" onclick="window.location='personalCenter/recommendedTalent.html'">推荐达人</li>
+					<li class="TB12" onclick="window.location='personalCenter/financialAdvisor.html'">理财顾问</li>
 				</ul>
 			</li>
 			<li class="TC">
@@ -72,10 +72,10 @@
 					<label class="icon0"></label>
 				</div>
 				<ul class="clearfix">
-					<li class="TC1" onclick="window.location='recharge.html'">我要充值</li>
-					<li class="TC2" onclick="window.location='cash.html'">我要提现</li>
-					<li class="TC3" onclick="window.location='incomeExpenditure.html'">收支明细</li>
-					<li class="TC4" onclick="window.location='award.html'">赠送奖励</li>
+					<li class="TC1" onclick="window.location='fundManagement/recharge.html'">我要充值</li>
+					<li class="TC2" onclick="window.location='fundManagement/cash.html'">我要提现</li>
+					<li class="TC3" onclick="window.location='fundManagement/incomeExpenditure.html'">收支明细</li>
+					<li class="TC4" onclick="window.location='fundManagement/award.html'">赠送奖励</li>
 				</ul>
 			</li>
 			<li class="TD">
@@ -85,10 +85,10 @@
 					<label class="icon0"></label>
 				</div>
 				<ul class="clearfix">
-					<li class="TD1" onclick="window.location='myInvestment.html'">我的投资</li>
-					<li class="TD2" onclick="window.location='investmentZone.html'">我要投资</li>
-					<li class="TD3" onclick="window.location='autoBid.html'">自动投标</li>
-					<li class="TD4" onclick="window.location='debtAttorn.html'">债权转让</li>
+					<li class="TD1" onclick="window.location='investmentManagement/myInvestment.html'">我的投资</li>
+					<li class="TD2" onclick="window.location='invest/investmentZone.html'">我要投资</li>
+					<li class="TD3" onclick="window.location='investmentManagement/autoBid.html'">自动投标</li>
+					<li class="TD4" onclick="window.location='investmentManagement/debtAttorn.html'">债权转让</li>
 				</ul>
 			</li>
 			<li class="TE">
@@ -98,10 +98,10 @@
 					<label class="icon0"></label>
 				</div>
 				<ul class="clearfix">
-					<li class="TE1" onclick="window.location='LR_financing.html'">我的借款</li>
-					<li class="TE2" onclick="window.location='loan.html'">我要借款</li>
-					<li class="TE3" onclick="window.location='repayManagement.html'">还款管理</li>
-					<li class="TE4" onclick="window.location='autoRepay.html'">自动还款</li>
+					<li class="TE1" onclick="window.location='loanManagement/LR_financing.html'">我的借款</li>
+					<li class="TE2" onclick="window.location='loan/loan.html'">我要借款</li>
+					<li class="TE3" onclick="window.location='loanManagement/repayManagement.html'">还款管理</li>
+					<li class="TE4" onclick="window.location='loanManagement/autoRepay.html'">自动还款</li>
 				</ul>
 			</li>
 		</ul>

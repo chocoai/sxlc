@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="OrderManage">  
+   <resultMap type="cn.integralmall.model.OrderRecordsEntity" id="resultOrderManage"> 
+		<result column="Exchange_Time" 			property="exchangeTime" />
+		<result column="Delivery_Time"	 		property="deliveryTime" /> 
+		<result column="Receive_Time"   		property="receiveTime" /> 
+		<result column="Logname" 				property="logname" />  
+		<result column="Personal_Name" 			property="personalName" />
+		<result column="Personal_Phone" 		property="personalPhone" /> 
+		<result column="Commodity_NO"   		property="commodityNO" /> 
+		<result column="Commodity_Name" 		property="commodityName" /> 
+		<result column="Quantity" 				property="quantity" />
+		<result column="Need_Point" 			property="needPoint" /> 
+		<result column="realPoint"   			property="realPoint" />   
+		<result column="Order_Type"   			property="orderType" />   
+    </resultMap> 
+    
+    <!-- 所有订单-->  
+	<select id="selectalldOrder" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultOrderManage">
+	    select orc.Exchange_Time,orc.Delivery_Time, mi.Logname,
+			case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  
+			     when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) end 
+			as Personal_Name ,
+			case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8)  
+			     when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(pbicom.Personal_Phone),#{map.skey})) using utf8) end 
+			as Personal_Phone,
+			comminfo.Commodity_NO,comminfo.Commodity_Name,cor.Quantity,comminfo.Need_Point,orc.Order_Type,
+			(select Quantity  from Integral_Records  where Integral_Direction = -1 and Integral_Event_ID = orc.Order_ID and Delete_Flag = 1 and Integral_Type =5) as realPoint
+			from Order_Records orc 
+			left join Member_Info mi on mi.Member_ID =  orc.Member_ID
+			left join Personal_Base_Info  pbi  on pbi.Personal_ID = mi.Personal_ID and mi.Member_Type =0
+			left join Company_Info  ci  on ci.Company_ID = mi.Company_ID and mi.Member_Type =1
+			left join Personal_Base_Info pbicom on pbicom.Personal_Id = ci.Legal_ID 
+			join Commodity_Order cor on  cor.Order_ID = orc.Order_ID
+			left join Commodity_Info  comminfo on comminfo.Commodity_ID =  cor.Commodity_ID
+         <where>  
+                orc.Order_Type = 3  
+                <!--            商品名称 -->
+	            <if test="map !=null and  map.commodityName != null and  map.commodityName != ''">  
+	                comminfo.Commodity_Name like  '%${map.commodityName}%'  
+	            </if>  
+	              <!--           商品编号 --> 
+	            <if test="map !=null and  map.commodityNO != null and  map.commodityNO != ''">  
+	                and comminfo.Commodity_NO=#{map.commodityNO}
+	            </if> 
+	             <!--          兑换时间 --> 
+	            <if test="map !=null and  map.ExchangestartTime != null and map.ExchangestartTime != ''">  
+	                and orc.Exchange_Time >#{map.ExchangestartTime}
+	            </if> 
+	            <!--           兑换时间 --> 
+	            <if test="map !=null and  map.ExchangeendTime != null and map.ExchangeendTime != ''">  
+	                and orc.Exchange_Time &lt;#{map.ExchangeendTime}
+	            </if> 
+	             <!--         发货时间 --> 
+	            <if test="map !=null and  map.DeliverystartTime != null and map.DeliverystartTime != ''">  
+	                and orc.Delivery_Time >#{map.DeliverystartTime}
+	            </if> 
+	            <!--           发货时间--> 
+	            <if test="map !=null and  map.DeliveryendTime != null and map.DeliveryendTime != ''">  
+	                and orc.Delivery_Time &lt;#{map.DeliveryendTime}
+	            </if> 
+	            <!--            会员用户名 -->
+	            <if test="map !=null and  map.logname != null and  map.logname != ''">  
+	                and mi.Logname like  '%${map.logname}%'  
+	            </if>  
+	             <!--            会员姓名-->
+	            <if test="map !=null and  map.memberName != null and  map.memberName != ''">  
+	                and (ci.Compang_Name like  '%${map.memberName}%'  or  pbi.Personal_Name like  '%${map.memberName}%')
+	            </if>  
+	             <!--           联系电话-->
+	            <if test="map !=null and  map.personalPhone != null and  map.personalPhone != ''">  
+	                and (pbi.Personal_Phone like  '%${map.personalPhone}%'  or  pbicom.Personal_Phone like  '%${map.personalPhone}%')
+	            </if> 
+	              <!--           商品状态-->
+	            <if test="map !=null and  map.orderType != -1 ">  
+	               and orc.Order_Type = #{map.orderType}
+	            </if>   
+         </where> 
+            <!--            	兑换时间 -->
+            <if test="map !=null and  map.backorder == 1">  
+	                order by   orc.Exchange_Time desc
+	        </if>   
+	        <!--            	兑换时间 -->
+	         <if test="map !=null and  map.backorder == -1">  
+	                order by  orc.Exchange_Time asc
+	        </if>  
+	        <!--            	发货时间-->
+	         <if test="map !=null and  map.backorder == 2">  
+	                order by   orc.Delivery_Time desc
+	        </if>  
+	         <!--            	发货时间-->
+	         <if test="map !=null and  map.backorder == -2">  
+	                order by   orc.Delivery_Time asc
+	        </if> 
+	         <!--            	兑换数量-->
+	         <if test="map !=null and  map.backorder == 3">  
+	                order by   cor.Quantity desc
+	         </if>  
+	         <!--            	兑换数量-->
+	         <if test="map !=null and  map.backorder == -3">  
+	                order by   cor.Quantity asc
+	        </if>    
+	         <!--            	发货时间-->
+	         <if test="map !=null and  map.backorder == 4">  
+	                order by   orc.Delivery_Time desc
+	         </if>  
+	         <!--            	发货时间-->
+	         <if test="map !=null and  map.backorder == -4">  
+	                order by   orc.Delivery_Time asc
+	        </if>   
+	         <!--            	应付积分-->
+	         <if test="map !=null and  map.backorder == 5">  
+	                order by   comminfo.Need_Point desc
+	         </if>  
+	         <!--            	应付积分-->
+	         <if test="map !=null and  map.backorder == -5">  
+	                order by   comminfo.Need_Point asc
+	        </if>    
+    </select>  
+    <!-- 发货 -->
+	<select	id="deliverGoods" statementType="CALLABLE" parameterType="map">
+		call deliverGoods(
+			#{adminID,					mode=IN,						jdbcType=BIGINT}, 
+			#{OrderID,					mode=IN,						jdbcType=BIGINT}, 
+			#{logisticsCompany,			mode=IN,						jdbcType=VARCHAR}, 
+			#{logisticsNO,				mode=IN,						jdbcType=VARCHAR}, 
+			#{InformationIN,			mode=IN,						jdbcType=VARCHAR},  
+			#{result,					mode=OUT,						jdbcType=INTEGER}
+		)
+	</select>
+	  <!-- 撤销订单 -->
+	<select	id="CancelOrder" statementType="CALLABLE" parameterType="map">
+		call CancelOrder(
+			#{OrderID,					mode=IN,						jdbcType=BIGINT},
+			#{adminID,					mode=IN,						jdbcType=BIGINT}, 
+			#{revocationReason,			mode=IN,						jdbcType=VARCHAR}, 
+			#{result,					mode=OUT,						jdbcType=INTEGER}
+		)
+	</select>
+	<!-- 收件地址列表 -->
+	<select id="ShippingAddressByID" parameterType="long" resultType="cn.integralmall.model.ShippingAddress">
+		select	sa.Address_ID					as addressId		,
+			sa.Member_ID					as memberId			,
+			Province						as province			,
+			pd.Province_Name				as provinceName		,
+			cd.City_Name					as cityName			,
+			cod.County_Name					as countyName		,
+			City							as city				,
+			County							as county			,
+			Street							as street			,
+			Detailed_Address				as detailedAddress	,
+			Postcode						as postcode			,
+			Contact_Name					as contactName		,
+			Contact_Phone					as contactPhone		,
+			Contact_Email					as contactEmail		,
+			Delivery_Choice					as deliveryChoice	,
+			IS_Default_Address				as iSDefaultAddress
+		from  Order_Records orc 
+        left join Shipping_address sa  on orc.Address_ID= sa.Address_ID
+		left join Province_Dictionary pd on sa.Province = pd.province_Id
+		left join City_Dictionary cd on	cd.City_id = sa.City
+		left join County_Dictionary cod on cod.County_Id = sa.County 
+		where orc.Order_ID =#{orderID}
+		
+	</select>
+</mapper>   

@@ -6,18 +6,9 @@
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
   <display-name></display-name>	
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>web/loginInterface/longinInterface.jsp</welcome-file>
   </welcome-file-list>
 
-	
-	<context-param>
-	    <param-name>log4jConfigLocation</param-name>
-	    <param-value>classpath:conf/log4j.properties</param-value>
-	</context-param>
-	
-	<listener>
-	  	 <listener-class>org.springframework.web.util.Log4jConfigListener </listener-class>
-	</listener>
   
   <!-- 读取spring配置文件 -->
   <context-param>
@@ -28,13 +19,12 @@
 	      classpath:map/mapper_entity.xml -->
 	  </param-value>
   </context-param>
-  
+
   <!-- 设计路径变量值 -->
   <context-param>
   	<param-name>webAppRootKey</param-name>
     <param-value>springmvc.root</param-value>
   </context-param>
-  
   <!-- Spring字符集过滤器 -->
   <filter>
   	<filter-name>SpringEncodingFilter</filter-name>
@@ -81,7 +71,7 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>spring</servlet-name>
-    <url-pattern>*.do</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
   
 	<!-- 单文件上传附件 ↓-->

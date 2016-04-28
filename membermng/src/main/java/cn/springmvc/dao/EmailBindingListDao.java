@@ -31,5 +31,25 @@ public interface EmailBindingListDao {
 	 * @date 2016-3-29 上午11:44:07
 	 */
 	public int selectEmailIsExist(Map<String,Object> map);
+	/**
+	 * 查看原绑定的邮箱
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return String 返回类型 
+	 * @date 2016-4-25 下午7:45:52
+	 */
+	public String selectOldEmail(Map<String,Object> map);
+	/**
+	 * 查看原有邮箱是否输入正确 
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return int 返回类型 
+	 * @date 2016-4-25 下午8:10:04
+	 */
+	public int checkEmail(Map<String,Object> map);
 }
 

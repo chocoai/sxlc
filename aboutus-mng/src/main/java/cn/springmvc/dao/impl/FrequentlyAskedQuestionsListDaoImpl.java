@@ -22,11 +22,9 @@ public class FrequentlyAskedQuestionsListDaoImpl  extends SqlSessionDaoSupport  
 	}
 
 	@Override
-	public FrequentlyAskedQuestionsEntity selectFrequentlyAskedQuestions(int statu) {
+	public FrequentlyAskedQuestionsEntity selectFrequentlyAskedQuestions() {
 		
-		FrequentlyAskedQuestionsEntity frequentlyAskedQuestionsEntity=new  FrequentlyAskedQuestionsEntity();
-		frequentlyAskedQuestionsEntity = getSqlSession().selectOne("frequentlyAskedQuestions.selectFrequentlyAskedQuestions",statu);
-		return frequentlyAskedQuestionsEntity;
+		return  getSqlSession().selectOne("frequentlyAskedQuestions.selectFrequentlyAskedQuestions"); 
 	}
 
 	@Override

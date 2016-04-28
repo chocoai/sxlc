@@ -8,7 +8,7 @@ fieldset{
 	margin:10px auto 20px auto;
 	border:1px solid #D4D4D4;
 	border-radius:3px;
-	width: 550px;
+	max-width: 960px;
 }
 legend{
 	padding:0 10px;
@@ -39,4 +39,222 @@ legend{
 #manageAdmainMod .fieldsetitem .remark{
 	height:50px;
 	display:inline-block;
+}
+.textRight{
+	display:inline-block;
+	min-width:239px;
+	text-align:right;
+}
+.stateSelect {
+    width: 174px;
+}
+.statebtn{
+	margin-left:20px;
+}
+.textRight3{
+	display:inline-block;
+	min-width:360px;
+	text-align:right;
+	margin-right:40px;
+}
+.textRight4{
+	width: 310px;
+    text-align: right;
+    display: inline-block;
+}
+.stateassetbtn{
+	margin-left:45px;
+}
+.assetbtn{
+	text-align:right;
+	margin-right:50px;
+}
+.assetspecial{
+	margin-right:50px;
+}
+/* .selectpayment{
+	margin-left:43px;
+} */
+/* 添加 */
+#manageAdd table {
+    overflow: scroll;
+}
+.addmanagetd{
+	text-align:right;
+}
+.assettype{
+	width:186px;
+	height:29px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+}
+.manageAddtitle {
+    margin: 20px 0 35px 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    max-width: 950px;
+}
+.addmanageinput{
+	width:430px;
+}
+td.tt{
+	font-size:13px;
+}
+.rec-dimensions{
+	vertical-align:-webkit-baseline-middle;
+}
+/* 查看 */
+#checkDetail td.tt{
+	text-align:left !important;
+	padding:5px 0px;
+	font-size:13px;
+	width:320px;
+}
+legend{
+	min-width:100px;
+	padding:0 10px;
+	max-width:200px;
+	text-align:center;
+	border:none;
+	font-size:13px;
+	font-weight:700;
+}
+table{
+	margin:0 auto;
+}
+.notOpen{
+	font-size:16px;
+	text-align:center;
+	margin-bottom:30px;
+}
+.tt a{
+	display:block;
+	text-align:center;
+}
+.tt samp{
+	margin:0 5px;
+	font-size:18px;
+}
+.line{
+	display:inline-block;
+	width:20px;
+	height:1px;
+	vertical-align:middle;
+	border-top:1px solid #ccc;
+}
+.dateInput{
+	width:120px;
+}
+.checkdetailtable{
+	width:960px;
+	overflow:scroll;
+}
+.configinfospan{
+	display:inline-block;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.guacheckform{
+	margin-left:25px;
+}
+#checkDetail{
+	margin:20px 0;
+}
+#checkDetail .form-inline{
+	width:960px;
+	margin-left:auto;
+	margin-right:auto;
+	
+}
+.guaranteespan{
+	width:145px;
+}
+.textRight{
+	display:inline-block;
+	min-width:239px;
+	text-align:right;
+}
+.stateSelect {
+    width: 174px;
+}
+.statebtn{
+	margin-left:20px;
+}
+.textRight2{
+	display:inline-block;
+	min-width:320px;
+	text-align:right;
+}
+.textRight3{
+	display:inline-block;
+	min-width:360px;
+	text-align:right;
+	margin-right:40px;
+}
+.checkstatebtn{
+	text-align:right;
+	margin-right:50px;
+}
+.selectpayment{
+	margin-left:43px;
+}
+.imgpreview{
+	float:left;
+	margin-right:20px;
+}
+#fileList .file-item{
+	float:left;
+}
+/* 管理员管理 */
+/* .assetadmincontent{
+	width:90%;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:30px;
+} */
+.assetimg img{
+	transform:scale(0.8);  
+}
+#fileList .file-item {
+    margin-right: 10px;
+    margin-top:10px;
+    width: 400px;
+    float: left;
+}
+.containerbtndiv{
+	max-width:1000px;
+}
+.cmbtncontainer{
+	padding: 0 10px 12px;
+    pointer-events: auto;
+    margin-top: 30px;
+    margin-left: 20px;
+    text-align: center;
+}
+.cmbtncontainer a {
+    height: 28px;
+    line-height: 28px;
+    margin: 0 6px;
+    padding: 0 15px;
+    border: 1px solid #dedede;
+    background-color: #f1f1f1;
+    color: #333;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: top;
+}
+.cmbtncontainer a:hover {
+    opacity: .9;
+    text-decoration: none;
+}
+.cmbtncontainer .commonbtn0{
+	border-color: #4898d5;
+    background-color: #2e8ded;
+    color: #fff;
 }

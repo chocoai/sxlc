@@ -11,8 +11,7 @@
 * @version V5.0 */
  
 package cn.springmvc.dao.impl; 
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +27,9 @@ import cn.springmvc.model.LoanRealRepayEntity;
 import cn.springmvc.model.LoanRepayEntity;
 import cn.springmvc.model.MemberAttestTypeEntity;
 import cn.springmvc.model.MemberInfoEntity;
-import cn.springmvc.model.PersonalBaseInfoEntity;
-import cn.springmvc.model.ProjectAfterLoanAttachmentEntity;
+import cn.springmvc.model.PersonalBaseInfoEntity; 
 import cn.springmvc.model.ProjectAppProcessEntity;
-import cn.springmvc.model.ProjectAppRecordEntity;
-import cn.springmvc.model.ProjectBaseInformationEntity;
+import cn.springmvc.model.ProjectAppRecordEntity; 
 import cn.springmvc.model.ProjectCheckAttachEntity;
 
 /** 
@@ -77,10 +74,10 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
 	 
 	
 	@Override
-	public MemberAttestTypeEntity selectMemberAttestByProjectID(int id) {
+	public MemberAttestTypeEntity selectMemberAttestByprojectType(long id) {
 		
 		MemberAttestTypeEntity memberAttestTypeEntity = null;
-		memberAttestTypeEntity = getSqlSession().selectOne("projectDetail.selectMemberAttestByProjectID",id);
+		memberAttestTypeEntity = getSqlSession().selectOne("projectDetail.selectMemberAttestByprojectType",id);
 		return  memberAttestTypeEntity;
 		
 	}
@@ -106,7 +103,7 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
 	}
  
 	@Override
-	public ProjectAppProcessEntity selectProjectAppProcess(int id) {
+	public ProjectAppProcessEntity selectProjectAppProcess(long id) {
 		
 		ProjectAppProcessEntity projectAppProcessEntity = null;
 		projectAppProcessEntity = getSqlSession().selectOne("projectDetail.selectProjectAppProcess",id);
@@ -125,7 +122,7 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
 
 	  
 	@Override
-	public List<ProjectCheckAttachEntity> selectProjectCheckAttach(int projectID) {
+	public List<ProjectCheckAttachEntity> selectProjectCheckAttach(long projectID) {
 		
 		List<ProjectCheckAttachEntity>  projectCheckAttachList = null;
 		projectCheckAttachList = getSqlSession().selectList("projectCheckAttach.selectProjectCheckAttach",projectID);
@@ -135,24 +132,12 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
 
 	 
 	@Override
-	public String selectProjectDescript(int projectID) {
+	public String selectProjectDescript(long projectID) {
 		 
 		return getSqlSession().selectOne("projectDetail.selectProjectDescript",projectID);
 		  
 	}
-
-	 
-	@Override
-	public List<ProjectAfterLoanAttachmentEntity> selectProjectAfterLoanAttach(
-			int projectID) {
-		
-		List<ProjectAfterLoanAttachmentEntity>  projectAfterLoanAttachmentList = null;
-		projectAfterLoanAttachmentList=getSqlSession().selectList("ProjectAfterLoanAttach.selectProjectAfterLoanAttach",projectID);
-		return projectAfterLoanAttachmentList;
-		
-	}
-
-	 
+ 
 	@Override
 	public PersonalBaseInfoEntity selectMemberInfoPersonByID(long personalID) {
 		

@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
+import cn.dictionaries.model.CityInfoEntity;
+import cn.dictionaries.model.CountyInfoEntity;
+import cn.dictionaries.model.NationInfoEntity;
+import cn.dictionaries.model.ProvinceInfoEntity;
 import cn.membermng.model.CompanyInfo;
 import cn.membermng.model.IntegralRecords;
 import cn.membermng.model.MemberInfo;
@@ -11,6 +15,7 @@ import cn.membermng.model.MemberVouchers;
 import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.PersonalBaseInfo;
 import cn.membermng.model.RadPackage;
+import cn.membermng.model.SecurityInfo;
 
 
 
@@ -59,9 +64,8 @@ public interface IMemberService {
 	 * @param sourceUrl 					访问来源
 	 * @return	0登录成功  -1登录失败
 	 */
-	public int login(String userName, String password, int userType,String ip,String[] ipInfo,String sourceUrl);
+	public int login(String userName, String password, int userType,String ip,String[] ipInfo,String sourceUrl,String sSessionId);
 
-	
 	
 	/***
 	 * 检查电话号码是否存在
@@ -113,7 +117,7 @@ public interface IMemberService {
 	* @param provinceId							省
 	* @param cityId								市
 	* @param countyId							县
-	* @return
+	* @return 0成功  -1失败
 	* @Description: TODO
 	* @date 2016-3-29 下午7:39:49
 	 */
@@ -210,8 +214,6 @@ public interface IMemberService {
 	
 	
 	
-	
-	
 	/***
 	* 获取一个会员的红包列表
 	* 
@@ -224,8 +226,6 @@ public interface IMemberService {
 	* @date 2016-3-30 下午2:05:05
 	 */
 	public List<RadPackage> redPackages(PageEntity entity);
-
-
 
 	
 	/***
@@ -242,7 +242,6 @@ public interface IMemberService {
 	public MemberVouchers myVouchers(long memberId, int memberType);
 
 
-
 	/***
 	* 我的代金券列表
 	* vouchers(这里用一句话描述这个方法的作用)
@@ -256,7 +255,76 @@ public interface IMemberService {
 	 */
 	public List<MemberVouchers> vouchers(PageEntity entity);
 	
+	/***
+	* 获取省份列表
+	* 
+	* @author 李杰
+	* @Title: getProvinceList
+	* @return
+	* @date 2016-4-25 下午5:43:50
+	 */
+	public List<ProvinceInfoEntity> getProvinceList();
 	
+	/***
+	* 获取城市列表
+	* 
+	* @author 李杰
+	* @Title: getCityList
+	* @param pId				省编号
+	* @return
+	* @date 2016-4-25 下午5:44:34
+	 */
+	public List<CityInfoEntity> getCityList(int pId);
+	
+	
+	/***
+	* 获取区县列表
+	* 
+	* @author 李杰
+	* @Title: getCountyList
+	* @param cId					城市编号
+	* @return
+	* @date 2016-4-25 下午5:45:14
+	 */
+	public List<CountyInfoEntity> getCountyList(int cId);
+
+	
+
+
+	/***
+	* 根据条件查询会员信息
+	* 
+	* @author 李杰	
+	* @param logname				登录名有可能为手机号
+	* @param memberPwd				登录密码
+	* @param memberType				会员类型
+	* @return
+	* @date 2016-4-26 上午10:33:53
+	 */
+	public MemberInfo findMemberInfoByParam(String logname, String memberPwd,int memberType);
+
+
+	/**
+	* 获取民族列表
+	* @author 李杰
+	* @date 2016-4-26 下午3:33:38
+	 */
+	public List<NationInfoEntity> GetNationList();
+
+
+
+	/***
+	* 获取认证信息
+	* 
+	* @author 李杰
+	* @param memberId 				会员编号
+	* @param memberType				会员类型
+	* @return
+	* @date 2016-4-26 下午5:40:42
+	 */
+	public SecurityInfo securityInfo(long memberId, int memberType);
+
+
 	
 	
 	

@@ -37,9 +37,13 @@ public class MemberInfo {
 	private String		invitateCode;			//邀请码
 	private String		beinvitateCode;			//被邀请码
 	private Integer		provinceId;				//所属省份
+	private String		provinceName;			//
 	private Integer		cityId;					//所属市区
+	private String		cityName;				//
 	private Integer		countyId;				//所属区县
+	private String		countyName;				//
 	private Integer		townId;					//所属乡镇
+	private String		townName;				//
 	private Integer		integral;				//当前积分
 	private Integer		creditIntegral;			//当前信用积分
 	
@@ -296,6 +300,46 @@ public class MemberInfo {
 
 	public void setRecordDate(String recordDate) {
 		this.recordDate = recordDate;
+	}
+
+
+	public String getProvinceName() {
+		return provinceName;
+	}
+
+
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+
+
+	public String getCityName() {
+		return cityName;
+	}
+
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+
+	public String getCountyName() {
+		return countyName;
+	}
+
+
+	public void setCountyName(String countyName) {
+		this.countyName = countyName;
+	}
+
+
+	public String getTownName() {
+		return townName;
+	}
+
+
+	public void setTownName(String townName) {
+		this.townName = townName;
 	}
 	
 	

@@ -11,14 +11,12 @@
 * @version V5.0 */
  
 package cn.springmvc.dao.impl; 
-
-import java.util.HashMap;
+ 
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
-import org.apache.ibatis.session.RowBounds;
+ 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -27,8 +25,7 @@ import cn.springmvc.dao.projectPublishDao;
 import cn.springmvc.model.ProjectAppProcessEntity;
 import cn.springmvc.model.ProjectImageEntity;
 
-import product_p2p.kit.datatrans.IntegerAndString;
-import product_p2p.kit.pageselect.PageEntity;  
+import product_p2p.kit.datatrans.IntegerAndString; 
 
 /** 
  * @author 刘利 

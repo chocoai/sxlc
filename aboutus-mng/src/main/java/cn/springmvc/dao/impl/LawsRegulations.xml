@@ -12,12 +12,7 @@
 	<!-- 查询法律法规 -->  
 	<select id="selectLawsRegulations"  parameterType="int" resultMap="resultListLawsRegulations" >
 	   select Law_ID,   Content,   Statu,   CreateTime,  Opt_Date, Admin_ID
-	   from  Laws_Regulations  
-	   <where>  
-            <if test="statu != -1">  
-                Statu= #{statu}
-            </if>  
-	   </where>
+	   from  Laws_Regulations   
     </select> 
     <!-- 新增法律法规 -->  
 	<insert id="insertLawsRegulations"  parameterType="cn.springmvc.model.LawsRegulationsEntity" >    

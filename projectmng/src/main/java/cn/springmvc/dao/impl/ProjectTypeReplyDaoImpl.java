@@ -26,16 +26,16 @@ public class ProjectTypeReplyDaoImpl extends SqlSessionDaoSupport  implements Pr
 	}
 
 	@Override
-	public int updateProjectTypeReplyByID(ProjectTypeReplyEntity entity) {
+	public int updateProjectTypeReplyByIndex(ProjectTypeReplyEntity entity) {
 		int result=0;
 		result=getSqlSession().update("projectTypeReply.updateProjectTypeReplyByIndex", entity);
 		return result;
 	}
 
 	@Override
-	public int deleteProjectTypeReplyByID(int id) {
+	public int deleteProjectTypeReplyByIndex(int ptIndex) {
 		int result=0;
-		result=getSqlSession().delete("projectTypeReply.deleteProjectTypeReplyByIndex", id);
+		result=getSqlSession().delete("projectTypeReply.deleteProjectTypeReplyByIndex", ptIndex);
 		return result;
 	}
  

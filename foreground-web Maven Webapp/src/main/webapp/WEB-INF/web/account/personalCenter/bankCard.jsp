@@ -1,20 +1,27 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>银行卡</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/bankCard.css">
 </head>
 <body> 
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../../common/top.jsp"></jsp:include>
+   	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
    	<div class="main">
    		<div class="clearfix">
-		   	<jsp:include page="/web/account/accountCommonLeft.jsp"></jsp:include>
+		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
    			<div class="accountRight">
-			   	<jsp:include page="/web/account/accountCommonRightTop.jsp"></jsp:include>
+			   	<jsp:include page="../../account/accountCommonRightTop.jsp"></jsp:include>
    				<div class="accountMain clearfix">
    				<!-- 在此处写入代码 -->
 	   				<!--伍成然2016-4-1  -->
@@ -78,9 +85,10 @@
    			</div>
    		</div>
    	</div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<!--弹出层  -->
    	<div class="addBankCard">
+   			<form id="bankId">
    		<div class="BCremind">亲爱的用户，为了您的财产安全，请认真仔细填写您的银行卡信息</div>
    		<div class="bankcard-top">
    			<div class="input-group">
@@ -97,10 +105,10 @@
    					<input class="selectValue" value="0" >
 					<input class="selectInput select1" type="text" lang="请选择开户行" readOnly="true"/>
 				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">1<li>
-				        <li class="selectOption" value="2">2<li>
-				        <li class="selectOption" value="3">3<li>
-				        <li class="selectOption" value="4">4<li>
+				        <li class="selectOption" value="1">成都<li>
+				        <li class="selectOption" value="2">广元<li>
+				        <li class="selectOption" value="3">北京<li>
+				        <li class="selectOption" value="4">上海<li>
 				    </ul>
 				</div> 
    			</div>
@@ -110,55 +118,58 @@
    					<input class="selectValue" value="0" >
 					<input class="selectInput" type="text" lang="请选择省" readOnly="true"/>
 				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">1<li>
-				        <li class="selectOption" value="2">2<li>
-				        <li class="selectOption" value="3">3<li>
-				        <li class="selectOption" value="5">4<li>
+				        <li class="selectOption" value="1">北京<li>
+				        <li class="selectOption" value="2">北京<li>
+				        <li class="selectOption" value="3">北京<li>
+				        <li class="selectOption" value="5">北京<li>
 				    </ul>
 				</div> 
 				<div class="selectArea">
 					<input class="selectValue" value="0" >
 					<input class="selectInput" type="text" lang="请选择市" readOnly="true"/>
 				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">1<li>
-				        <li class="selectOption" value="2">2<li>
-				        <li class="selectOption" value="3">3<li>
-				        <li class="selectOption" value="4">4<li>
+				        <li class="selectOption" value="1">北京<li>
+				        <li class="selectOption" value="2">北京<li>
+				        <li class="selectOption" value="3">北京<li>
+				        <li class="selectOption" value="4">北京<li>
 				    </ul>
 				</div> 
 				<div class="selectArea">
 					<input class="selectValue" value="0" >
 					<input class="selectInput" type="text" lang="请选择区" readOnly="true"/>
 				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">1<li>
-				        <li class="selectOption" value="2">2<li>
-				        <li class="selectOption" value="3">3<li>
-				        <li class="selectOption" value="5">4<li>
+				        <li class="selectOption" value="1">北京<li>
+				        <li class="selectOption" value="2">北京<li>
+				        <li class="selectOption" value="3">北京<li>
+				        <li class="selectOption" value="5">北京<li>
 				    </ul>
 				</div> 
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户行支行:</div>
-   				<input type="text" class="select1" lang="请输入开户行支行" maxlength="25">
+   				<input type="text" datatype="zbank" class="select1" lang="请输入开户行支行" maxlength="25">
    			</div>
    			<div class="input-group">
    				<div class="left-title">银行卡号:</div>
-   				<input type="text" class="select1 numberReg cardId1" lang="请输入银行卡号" maxlength="18">
+   				<input type="text" datatype="zbankNum" name="passID_card" class="select1 numberReg cardId1" lang="请输入银行卡号" maxlength="19">
    			</div>
    			<div class="input-group">
    				<div class="left-title">确认银行卡号:</div>
-   				<input type="text" class="select1 numberReg cardId2" lang="请再次输入银行卡号" maxlength="18">
+   				<input type="text" datatype="*" recheck="passID_card"
+   				 class="select1 numberReg cardId2" lang="请再次输入银行卡号" maxlength="19">
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户手机号:</div>
-   				<input type="text" class="select1 numberReg phoneBind" lang="请输入开户手机号" maxlength="11">
+   				<input type="text" datatype="zPhone" class="select1 numberReg phoneBind" lang="请输入开户手机号" maxlength="11">
    			</div>
    		</div>
    		<div class="bankcard-bottom">
    			<input type="button" value="立即添加" class="btn" onclick="layer.closeAll()">
    		</div>
+   		</form>
    	</div>
    	<div class="changeBankCard">
+   		<form id="xiuGai_Kard">
    		<div class="BCremind">亲爱的用户，为了您的财产安全，请认真仔细填写您的银行卡信息</div>
    		<div class="bankcard-top">
    			<div class="input-group">
@@ -217,20 +228,21 @@
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户行支行:</div>
-   				<input type="text" class="select1" lang="成都武侯支行">
+   				<input type="text" datatype="enteraddr" class="select1" lang="成都武侯支行">
    			</div>
    			<div class="input-group">
    				<div class="left-title">银行卡号:</div>
-   				<input type="text" class="select1" lang="6217903100018605618">
+   				<input type="text" datatype="zbankNum" class="select1" lang="6217903100018605618">
    			</div> 		
    			<div class="input-group">
    				<div class="left-title">开户手机号:</div>
-   				<input type="text" class="select1" lang="12399809870">
+   				<input type="text" datatype="zPhone" class="select1" maxlength="11" lang="12399809870">
    			</div>
    		</div>
    		<div class="bankcard-bottom">
-   			<input type="button" class="btn" value="立即添加" onclick="layer.closeAll()">
+   			<input type="button" class="btn btn_tian" value="立即添加" ">
    		</div>
+   		</form>
    	</div>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/bankCard.js"></script>

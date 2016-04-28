@@ -12,12 +12,7 @@
 	<!-- 查询产品介绍 -->  
 	<select id="selectProductIntroduce"  parameterType="int" resultMap="resultListProductIntroduceAnnouncement" >
 	   select Introduce_ID,   Content,   Statu,   CreateTime,  Opt_Date, Admin_ID
-	   from  Product_Introduce 
-	   <where>    
-            <if test=" statu != -1">  
-                 Statu=#{ statu}
-            </if>   
-        </where> 
+	   from  Product_Introduce  
     </select> 
     <!-- 新增产品介绍 -->  
 	<insert id="insertProductIntroduce"  parameterType="cn.springmvc.model.ProductIntroduceEntity" >    

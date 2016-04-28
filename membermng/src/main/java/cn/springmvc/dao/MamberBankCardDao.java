@@ -12,6 +12,8 @@
  
 package cn.springmvc.dao; 
 
+import java.util.Map;
+
 import cn.membermng.model.BankCardInfoEntity;
 import cn.membermng.model.MemberBankCardEntity;
  
@@ -55,11 +57,11 @@ public interface MamberBankCardDao {
 	 * 移除银行卡
 	 * @author 刘利   
 	 * @Description: TODO 
-	 * @param @param receiveCard
+	 * @param  map{receiveCard,memberID}
 	 * @param @return 设定文件 
 	 * @return int 返回类型 1:成功，0失败
 	 * @date 2016-3-28 下午4:17:58
 	 */
-	public int deleteMemberBankCard(int receiveCard);
+	public int deleteMemberBankCard(Map<String,Object> map);
 }
 

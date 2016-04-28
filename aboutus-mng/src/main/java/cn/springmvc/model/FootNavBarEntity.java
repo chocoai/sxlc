@@ -44,7 +44,11 @@ public class FootNavBarEntity {
 	/**
 	 * 最后一次操作员名称
 	 */
-	private String adminName;
+	private String adminName; 
+	/**
+	 * 最后一次操作员id	
+	 */
+	private long optId;
 	public long getId() {
 		return id;
 	}
@@ -87,16 +91,7 @@ public class FootNavBarEntity {
 	public void setOptDate(String optDate) {
 		this.optDate = optDate;
 	}
-	/**
-	 * 最后一次操作员id	
-	 */
-	private int optId;
-	public int getOptId() {
-		return optId;
-	}
-	public void setOptId(int optId) {
-		this.optId = optId;
-	}
+	 
 	public FootNavBarTypeEntity getFootNavBarType() {
 		return footNavBarType;
 	}
@@ -114,6 +109,12 @@ public class FootNavBarEntity {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public long getOptId() {
+		return optId;
+	}
+	public void setOptId(long optId) {
+		this.optId = optId;
 	}		
 
 }

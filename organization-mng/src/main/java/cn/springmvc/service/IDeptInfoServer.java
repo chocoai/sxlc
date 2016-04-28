@@ -26,7 +26,7 @@ public interface IDeptInfoServer {
 	 * @param statu						部门状态   0停用、1启用
 	 * @return
 	 */
-	public List<DeptInfo> getListByParam(PageEntity entity);
+	public void  getListByParam(PageEntity entity);
 	
 	
 	/***
@@ -84,7 +84,15 @@ public interface IDeptInfoServer {
 	 */
 	public List<DeptInfo> findDeptInfoByParentId(long parentId);
 	
-	
-	
+	/***
+	 * 
+	 * TODO
+	 * 创建日期：2016-4-22下午6:53:02
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<DeptInfo>
+	 */
+	public List<DeptInfo> getDeptList() ;
 }
 

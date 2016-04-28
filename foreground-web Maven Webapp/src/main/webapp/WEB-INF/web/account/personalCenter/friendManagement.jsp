@@ -1,22 +1,29 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>好友管理</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/friendManagement.css">
 	<script type="text/javascript" src="http://img3.job1001.com/js/ZeroClipboard/jquery.zclip.min.js"></script> 
 </head>
 <body> 
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../../common/top.jsp"></jsp:include>
+   	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
    	<div class="main">
    		<div class="clearfix">
-		   	<jsp:include page="/web/account/accountCommonLeft.jsp"></jsp:include>
+		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
    			<div class="accountRight">
-			   	<jsp:include page="/web/account/accountCommonRightTop.jsp"></jsp:include>
+			   	<jsp:include page="../../account/accountCommonRightTop.jsp"></jsp:include>
    				<div class="accountMain clearfix">
    				<!-- 在此处写入代码 -->
    				<!--伍成然2016-4-1  -->
@@ -25,7 +32,7 @@
 						<li class="tab-li my-friends">我的好友</li>
 					</ul>
 					<div class="tab-content">
-						<div class="content content-active">
+						<div class="c-content content-active">
 							<div class="share-box">
 								<div class="copy-share">
 									<img src="resource/img/account/personalCenter/grzx_9.png">
@@ -97,7 +104,7 @@
 		   					</ul>
 		   					<div id="pager"></div>
 						</div>
-						<div class="content">
+						<div class="c-content">
 							<div class="friend-deal">
 								<input type="button" class="unprocessed" value="未处理申请">
 								<input type="button" class="add-friends" value="添加好友">
@@ -152,7 +159,7 @@
    			</div>
    		</div>
    	</div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<!-- 弹出层 -->
    	<div class="undeal">
    		<ul class="undeal-info">

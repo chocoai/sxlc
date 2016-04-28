@@ -1,12 +1,13 @@
 package cn.springmvc.service.impl;
 
-import cn.springmvc.model.CommodityTypeEntity;
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import cn.integralmall.model.CommodityTypeEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 import javax.annotation.Resource;

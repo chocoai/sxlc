@@ -44,6 +44,12 @@ public class ProjectTypeTermEntity {
 	}
 	public void setMaxDaytime(int maxDaytime) {
 		this.maxDaytime = maxDaytime;
+	}
+	@Override
+	public String toString() {
+		return "ProjectTypeTermEntity [projectType=" + projectType + ", unit="
+				+ unit + ", minDaytime=" + minDaytime + ", maxDaytime="
+				+ maxDaytime + "]";
 	}		
 
 }

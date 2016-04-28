@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
  
 
 import cn.springmvc.dao.RecruitmentDao;
@@ -112,8 +113,8 @@ public class RecruitmentServiceImpl implements RecruitmentListService {
 
 	@Override
 	public List<RecruitmentEntity> selectRecruitmentsList(PageEntity pageEntity) {
-		List<RecruitmentEntity> recruitmentList = null;    
-		recruitmentList = recruitmentListDaoImpl.selectRecruitmentList(pageEntity);    
+		List<RecruitmentEntity> recruitmentList  = recruitmentListDaoImpl.selectRecruitmentList(pageEntity);    
+		PageUtil.ObjectToPage(pageEntity, recruitmentList);
 		return recruitmentList; 
 	}
  

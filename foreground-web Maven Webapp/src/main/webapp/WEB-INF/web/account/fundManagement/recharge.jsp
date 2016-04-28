@@ -1,20 +1,27 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>我要充值</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/fundManagement/recharge.css">
 </head>
 <body> 
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../../common/top.jsp"></jsp:include>
+   	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
    	<div class="main">
    		<div class="clearfix">
-		   	<jsp:include page="/web/account/accountCommonLeft.jsp"></jsp:include>
+		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
    			<div class="accountRight">
-			   	<jsp:include page="/web/account/accountCommonRightTop.jsp"></jsp:include>
+			   	<jsp:include page="../../account/accountCommonRightTop.jsp"></jsp:include>
    				<div class="accountMain clearfix">
    					<!-- 李丽梅 -->
    					<!-- 我要充值 -->
@@ -23,11 +30,12 @@
    						<span class="rechargeHeadFont">我要充值</span>
    					</div>
    					<div class="rechargeContent">
-						<ul>
+						<form id="chongZhi">
+							<ul>
 							<li class="rechargeContentLi_one">
 								<label>充值方式：</label>
 								<div class="selectArea rechargeSelect clearfix">
-									<input class="selectValue" value="0" >
+									<input class="selectValue" value="1" >
    									<input class="selectInput rechargeMethod" type="text" lang="" readOnly="true"/>
 								    <ul class="select" onselectstart="return false">
 								        <li class="selectOption selectOptionAab" value="1">个人网银<li>
@@ -39,11 +47,11 @@
 							</li>
 							<li class="rechargeContentLi">
 								<label>充值金额：</label>
-								<div class="amount"><input class="rechargeInput rechargeInputFocus format cashFormat" type="text" lang="请输入充值金额" maxlength="10"><span class="rechargeDistance">元</span></div>					
+								<div class="amount"><input  class="rechargeInput rechargeInputFocus format cashFormat" type="text" lang="请输入充值金额" maxlength="10"><span class="rechargeDistance">元</span></div>					
 							</li>
 							<li class="rechargeContentLi">
 								<label>备注：</label>
-								<input class="rechargeInput" type="text" lang="请输入备注内容" maxlength="25">
+								<input class="rechargeInput rechargeRemarks" type="text" lang="请输入备注内容" maxlength="25">
 							</li>
 							<li class="rechargeContentLi">
 								<label>支付充值费用：</label>
@@ -57,6 +65,7 @@
 							</li>
 						</ul>
    						<div class="btn rechargeBtn" onselectstart="return false"><span>充值</span></div>
+						</form>
    					</div>
    					<div class="rechargeButtom">
    						<div class="rechargeButtomCunt">
@@ -76,7 +85,7 @@
    			</div>
    		</div>
    	</div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/fundManagement/recharge.js"></script>
 </body>

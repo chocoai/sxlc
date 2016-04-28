@@ -15,6 +15,7 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.springmvc.model.CreditorTransferListEntity;
 import cn.springmvc.model.InvestEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;
 
@@ -30,10 +31,11 @@ public interface IndexService {
 	 * @author 刘利   
 	 * @Description: TODO  
 	 * @param @return 设定文件 
-	 * @return Map<String,Object> 返回类型  {IncomeTotal（总收益），countmember（总会员），totalLoanAmount（总的借款）}
+	 * @return String 返回类型 
+	 *  {总会员,总收益,总的借款,风险备用金 用逗号分隔}
 	 * @date 2016-4-8 上午11:35:42
 	 */
-	public Map<String, Object> selectIndexStatistic();
+	public String selectIndexStatistic();
 	/**
 	 * 首页投资列表 
 	 * @author 刘利   
@@ -53,5 +55,14 @@ public interface IndexService {
 	 * @date 2016-4-8 下午2:44:09
 	 */
 	public List<InvestEntity> selectInvestRecordIndex(Map<String,Object> map);
+	/**
+	 * 首页债权转让列表 
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @return 设定文件 
+	 * @return List<CreditorTransferListEntity> 返回类型 
+	 * @date 2016-4-8 下午2:00:25
+	 */
+	public List<CreditorTransferListEntity> selectCreditorTransferListIndex();
 }
 

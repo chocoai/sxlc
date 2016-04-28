@@ -5,7 +5,7 @@
 				view: {
 					dblClickExpand: false,
 					showLine: false,
-					expandSpeed: ($.browser.msie && parseInt($.browser.version)<=6)?"":"fast"
+					expandSpeed: true
 				},
 				data: {
 					key: {
@@ -26,7 +26,8 @@
 		/** 用于捕获节点被点击的事件回调函数  **/
 		function zTreeOnClick(event, treeId, treeNode) {
 			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-			
+			//
+			showListOfDataTable(treeNode.resourceID); //显示datatable 
 			// 如果节点路径为空或者为"#"，不允许单击操作
 			if(treeNode.accessPath=="" || treeNode.accessPath=="#"){
 				//alert("节点路径为空或者为'#'哦...");

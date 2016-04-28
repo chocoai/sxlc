@@ -5,9 +5,11 @@
 	color:#72c0f3;
 }
 /*伍成然2016-3-28  */
-.main{
+body .main{
 	width:1200px;
+	padding-top:0;
 	padding-bottom:20px;
+	background-color:#f6f6f6;
 }
 /*链接区域  */
 .link-area{
@@ -229,13 +231,15 @@
 	color:#ff6e04;
 }
 /*输入框组  */
+.input-group{
+	position:relative;
+}
 .charge-input{
 	padding:0 10px;
 	float:left;
 	height:40px;
-	width:200px;
+	width:220px;
 	border:1px solid #ddd;
-	border-right:none;
 }
 .logined .charge-input{
 	background-color:#fbfbfb;
@@ -243,12 +247,11 @@
 }
 .charge-addon{
 	line-height:37px;
-	height:40px;
+	height:38px;
 	width:20px;
 	float:left;
-	border:1px solid #ddd;
-	border-left:none;
-	background-color:#fbfbfb;
+	position:absolute;
+	right:74px;
 }
 .charge-btn{
 	height:28px;
@@ -257,7 +260,7 @@
 	background-color:#6eb7e8;
 	border:none;
 	border-radius:1px;
-	margin:6px 0 0 11px;
+	margin:6px 0 9px 11px;
 	cursor:pointer;
 }
 .charge-btn:hover{
@@ -311,18 +314,20 @@
 .not-logined .charge-input{
 	height:40px;
 	font-size:14px;
-	width:275px;
-	margin:14px 0 30px 0;
+	width:297px;
+	margin:14px 0 8px 0;
 	color:#9c9c9c;
 	background-color:#fbfbfb;
 }
-.not-logined .charge-addon{
-	height:40px;
+.not-logined .charge-addon1{
 	margin:14px 0 30px 0;
-	background-color:#fbfbfb;
 	color:#393939;
+	position:absolute;
+	right:19px;
+	top:10px;
 }
 .login-now{
+	margin-top:22px;
 	cursor:pointer;
 	height:37px;
 	width:100%;
@@ -330,7 +335,6 @@
 	background-color:#72c0f3;
 	color:#fff;
 	font-size:18px;
-	margin:10px 0;
 }
 .login-now:hover{
 	background-color:#38aaf4;
@@ -407,7 +411,7 @@
 .tab-content .content-active{
 	display:block;
 }
-.content{
+.c-content{
 	padding:20px 40px;
 	display:none;
 }
@@ -418,16 +422,16 @@
 	width:16%;
 	float:left;
 }
-.content .left-head{
+.c-content .left-head{
     width:100%;
     text-align:left;
     font-size:16px;
     color:#3f3f3f;
 }
-.content .left-title{
+.c-content .left-title{
 	color:#9c9c9c;
 }
-.content .info-label label{
+.c-content .info-label label{
 	color:#5c5c5c;
 }
 .statistics-info{
@@ -674,11 +678,15 @@
 }
 .info{
 	height:40px;
+	line-height:40px;
 	margin:5px 0;
 }
 .inputDJJ{
 	height:30px;
 	width:60px;
+}
+.djj{
+	font-size:14px !important;
 }
 .info span{
 	font-size:18px;
@@ -687,7 +695,6 @@
 }
 .orange{
 	color:#ff6e04;
-	
 }
 /*红包金额选择样式 */
 .leftTitle{
@@ -700,7 +707,6 @@
 }
 .select label{
 	font-weight:normal;
-	display: inline-block;
     zoom: 1;
     cursor: pointer;
     padding: 1px 10px;
@@ -733,7 +739,7 @@
 }
 .btn-group{
 	height:40px;
-	width:260px;
+	width:290px;
 }
 .confirm{
 	height:40px;
@@ -744,6 +750,7 @@
 	border:1px solid #72c0f3;
 	border-radius:2px;
 	cursor:pointer;
+	margin:0 10px;
 }
 .cancel{
 	height:40px;
@@ -754,6 +761,7 @@
 	border:1px solid #72c0f3;
 	border-radius:2px;
 	cursor:pointer;
+	margin:0 10px;
 }
 /*红包弹窗结束*/
 /* 弹出窗口样式  */

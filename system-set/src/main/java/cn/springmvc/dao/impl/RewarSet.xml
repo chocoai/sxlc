@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="RewarSetXML" >
   <resultMap id="RewarSet" type="cn.springmvc.model.RewardSetEntity" >
-    <result column="ID" property="id"/>
+    <result column="Grade_ID" property="id"/>
+    <result column="Reward_ID" property="id"/>
     <result column="Grade_Name" property="gradeName"/>
     <result column="Total_Invest" property="totalInvest"/>
     <result column="Grade_Remark" property="gradeRemark"/>
@@ -12,8 +13,11 @@
     <result column="Invest_Reward" property="investReward"/>
     <result column="Statu" property="statu"/>
   </resultMap>
+  <!--modified by TGF @2016-4-25修改id列名  -->
   <sql id="RewarSet_Column_List" >
-    ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward,Statu	
+   	<if test="map.type==0">Grade_ID,</if>
+  	<if test="map.type==1">Reward_ID,</if>
+   	 Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward,Statu	
   </sql>
   <select id="selectRewarSetByType" resultMap="RewarSet" parameterType="product_p2p.kit.pageselect.PageEntity">
   	select <include refid="RewarSet_Column_List"></include> 
@@ -34,10 +38,10 @@
   <insert id="insertRewarSet" parameterType="cn.springmvc.model.RewardSetEntity">
   	insert into 
   	<if test="type==0">
-  		InviteMaster_Reward_Set(ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward)
+  		InviteMaster_Reward_Set(Grade_ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward)
   	</if>
   	<if test="type==1">
-  		FinancialAdvisor_Reward_Set(ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward)
+  		FinancialAdvisor_Reward_Set(Reward_ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward)
   	</if>
   	values(#{id},#{gradeName},#{totalInvest},#{gradeRemark},#{vIPReward},#{borrowReward},#{repayReward},#{investReward});
   </insert>
@@ -50,10 +54,23 @@
 		  		FinancialAdvisor_Reward_Set
 		  	</if>
 	<set>
-		Grade_Name=#{gradeName},Total_Invest=#{totalInvest},Grade_Remark=#{gradeRemark},VIP_Reward=#{vIPReward},Borrow_Reward=#{borrowReward}
-		,Repay_Reward=#{repayReward},Invest_Reward=#{investReward}
+		<if test="gradeName != null">
+  				Grade_Name=#{gradeName},
+		  </if>
+		<if test="totalInvest != null">
+  				Total_Invest=#{totalInvest},
+		  </if>
+		<if test="gradeRemark != null">
+  				Grade_Remark=#{gradeRemark},
+		  </if>
+		VIP_Reward=#{vIPReward},Borrow_Reward=#{borrowReward},Repay_Reward=#{repayReward},Invest_Reward=#{investReward}
 	</set>
-	where ID=#{id}
+	 <if test="type==0">
+  				where Grade_ID=#{id}
+		  	</if>
+		  	<if test="type==1">
+		  		where Reward_ID=#{id}
+		  	</if>
   </update>
   <!-- 删除提奖设置 -->
   <update id="deleteRewarSet" parameterType="cn.springmvc.model.RewardSetEntity">
@@ -64,7 +81,10 @@
 		  		FinancialAdvisor_Reward_Set
 		  	</if>
 	<set>Statu=0</set>
-	where ID=#{id}
+	where 
+	<if test="map.type==0">Grade_ID</if>
+  	<if test="map.type==1">Reward_ID</if>
+	=#{id}
   </update>
   
 </mapper>

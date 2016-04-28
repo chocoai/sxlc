@@ -24,13 +24,24 @@ left JOIN SmsSend_Set ss ON mt.Type_ID=ss.Type_ID
 LEFT JOIN LetterSend_Set ls ON mt.Type_ID=ls.Type_ID
 LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
   </select>
+  
+  <!-- 分页查看消息类型设置 -->
+  <select id="selectChannelSetByPage" resultMap="MessageType" parameterType="product_p2p.kit.pageselect.PageEntity" >
+    select mt.Type_ID,mt.Type_Name,mt.Statu,mf.Msg_Detail,ss.Statu AS SmsSendStatu
+    ,ls.Statu AS LetterSendStatu,es.Statu AS EmailSendStatu  from Message_Type mt 
+left join Message_Format mf on mt.Type_ID=mf.Type_ID
+left JOIN SmsSend_Set ss ON mt.Type_ID=ss.Type_ID
+LEFT JOIN LetterSend_Set ls ON mt.Type_ID=ls.Type_ID
+LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
+  </select>
+  
+  
   <!-- 设置是否发送该类型消息 -->
   <select id="updateChannelSet" resultType="Map" statementType="CALLABLE">
   <!-- type 1短信发送设置 2站内信发送设置 3邮件发送设置 -->
   		<![CDATA[{call setMassage(
 				#{type,	 mode=IN,	jdbcType=INTEGER},
-				#{statu,	 mode=IN,	jdbcType=INTEGER},
-				#{messagetype,	 mode=IN,	jdbcType=INTEGER},
+				#{messagetypes,	 mode=IN,	jdbcType=VARCHAR},
 				#{rulset,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
@@ -49,31 +60,32 @@ LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
   
   <!-- 短信接口设置 -->
   <resultMap id="SmsSettings" type="cn.springmvc.model.SmsSettingsEntity" >
-    <result column="ID" property="id"/>
+    <result column="Setting_ID" property="id"/>
     <result column="Sms_Interface" property="smsInterface"/>
     <result column="Sms_SerialNumber" property="smsSerialNumber"/>
     <result column="Sms_Password" property="smsPassword"/>
     <result column="Record_Date" property="recordDate"/>
     <result column="Opt_Date" property="optDate"/>
-    <result column="Opt_Id" property="optId"/>
     <result column="Statu" property="statu"/>
+    <result column="adminName" property="optName"/>
+    <result column="Sms_Interface_Type" property="smsInterfaceType"/>
   </resultMap>
   <sql id="SmsSettings_Column_List">
-  ID,Sms_Interface,Sms_SerialNumber,Sms_Password,Record_Date,Opt_Date,Opt_Id,Statu
+  Sms_Interface_Type,Setting_ID,Sms_Interface,Sms_SerialNumber,Sms_Password,Record_Date,Opt_Date,Statu,adminName
   </sql>
   <!-- 分页查询短信通道设置 -->
   <select id="selectSmsSettings" resultMap="SmsSettings" parameterType="product_p2p.kit.pageselect.PageEntity">
-  	select <include refid="SmsSettings_Column_List"></include> from Sms_Settings
+  	select <include refid="SmsSettings_Column_List"></include> from Sms_Settings left join Admin on Admin.Admin_ID=Sms_Settings.Admin_ID 
   </select>
   <!-- 根据id查询单个短信通道设置 -->
   <select id="findSmsSettingsById" resultMap="SmsSettings" parameterType="Map">
-  	select <include refid="SmsSettings_Column_List"></include> from Sms_Settings where ID=#{id}
+  	select <include refid="SmsSettings_Column_List"></include> from Sms_Settings left join Admin on Admin.Admin_ID=Sms_Settings.Admin_ID  where Sms_Settings.Setting_ID=#{id} 
   </select>
   <!-- 添加单个短信通道设置 -->
   <insert id="insertSmsSettings" parameterType="cn.springmvc.model.SmsSettingsEntity">
-  	insert into Sms_Settings(ID,Sms_Interface
-  	,Sms_SerialNumber,Sms_Password,
-  	Opt_Id,Statu) values(#{id},#{smsInterface},#{smsSerialNumber},#{smsPassword},#{optId},#{statu})
+  	insert into Sms_Settings(Setting_ID,Sms_Interface
+  	,Sms_SerialNumber,Sms_Password,Sms_Interface_Type,
+  	Admin_ID,Statu) values(#{id},#{smsInterface},#{smsSerialNumber},#{smsPassword},#{smsInterfaceType},#{optId},#{statu})
   </insert>
   <!-- 根据id修改单个短信通道设置 -->
   <update id="updateSmsSettingsById" parameterType="cn.springmvc.model.SmsSettingsEntity">
@@ -83,14 +95,15 @@ LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
   		Sms_SerialNumber=#{smsSerialNumber},
   		Sms_Password=#{smsPassword},
   		Opt_Date=now(),
-  		Opt_Id=#{optId},
+  		Admin_ID=#{optId},
   		Statu=#{statu},
+  		Sms_Interface_Type=#{smsInterfaceType}
   	</set>
-  	where ID=#{id}
+  	where Setting_ID=#{id}
   </update>
   <!-- 启用禁用单个短信通道设置 -->
   <update id="updteSmsSettingsStatu" parameterType="Map">
-  			update Sms_Settings <set>Statu=#{statu}</set> where ID=#{ID}
+  			update Sms_Settings <set>Statu=#{statu},Admin_ID=#{optId}</set> where Setting_ID=#{ID}
   </update>
   <!-- 查询已启用短信通道个数 -->
   <select id="countSmsSettings" resultType="INT" parameterType="Map">
@@ -162,6 +175,103 @@ LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
   	insert into QianDuoDuo_Url_Set(Escrow_ID,Interface_ID,Interface_Url)
   		values(#{escrowID},#{interfaceID},#{interfaceUrl});
   </insert>
+  <resultMap id="MailHistoryEntity" type="cn.springmvc.model.MailHistoryEntity" >
+  	 <result column="Personal_Email" property="personalEmail"/>
+  	 <result column="Personal_Name" property="personalName"/>
+  	 <result column="Msg_Detail" property="msgDetail"/>
+  	 <result column="Record_Type" property="recordType"/>
+  	 <result column="Record_Date" property="recordDate"/>
+  	 <result column="adminName" property="adminName"/>
+  </resultMap>
+  <!-- 分页查询邮件发送历史记录 -->
+  <select id="MailHistory" resultMap="MailHistoryEntity"  parameterType="product_p2p.kit.pageselect.PageEntity">
+  	SELECT mi.Logname logname,pbi.Personal_Email,pbi.Personal_Name,Msg_Detail,Record_Type,Record_Date,a.adminName
+  	,mi.Member_No Member_No,pbi.Personal_Phone
+  	 FROM Email_Record er 
+	LEFT JOIN Member_Info mi ON er.Member_ID = mi.Member_ID 
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_ID=mi.Personal_ID
+			LEFT JOIN Admin a ON a.Admin_ID = er.Admin_ID
+		WHERE er.Member_Type=0
+UNION ALL
+SELECT gi.Guarantee_Name logname,pbi.Personal_Email,pbi.Personal_Name,Msg_Detail,Record_Type,Record_Date,a.adminName 
+  	,mi.Guarantee_NO Member_No,pbi.Personal_Phone
+	FROM Email_Record er 
+	LEFT JOIN Guarantee_Info gi ON gi.Guarantee_ID = er.Member_ID 
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_ID=gi.Personal_ID
+			LEFT JOIN Admin a ON a.Admin_ID = er.Admin_ID
+		WHERE er.Member_Type=1
+		<where>
+			<if test="#{map.MemberNo}!=null">Member_No like '%#{map.MemberNo}%'</if>
+			<if test="#{map.personalPhone}!=null">Personal_Phone like '%#{map.personalPhone}%'</if>
+			<if test="#{map.personalName}!=null">Personal_Name like '%#{map.personalName}%'</if>
+			<if test="#{map.logname}!=null">logname like '%#{map.logname}%'</if>
+		</where>
+  </select>
+  
+  <resultMap id="SMSHistoryEntity" type="cn.springmvc.model.SMSHistoryEntity" >
+  	 <result column="Short_Phone" property="personalPhone"/>
+  	 <result column="Personal_Name" property="personalName"/>
+  	 <result column="Msg_Detail" property="msgDetail"/>
+  	 <result column="Record_Type" property="recordType"/>
+  	 <result column="Record_Date" property="recordDate"/>
+  	 <result column="adminName" property="adminName"/>
+  </resultMap>
+  <!-- 分页查询短信发送历史记录 -->
+  <select id="SMSHistory" resultMap="SMSHistoryEntity"  parameterType="product_p2p.kit.pageselect.PageEntity">
+  	SELECT mi.Logname logname,Short_Phone,pbi.Personal_Name,Msg_Detail,Record_Type,Record_Date,a.adminName
+  	,mi.Member_No Member_No,pbi.Personal_Phone
+  	 FROM SMS_Record er 
+	LEFT JOIN Member_Info mi ON er.Member_ID = mi.Member_ID 
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_ID=mi.Personal_ID
+			LEFT JOIN Admin a ON a.Admin_ID = er.Admin_ID
+		WHERE er.Member_Type=0
+UNION ALL
+SELECT gi.Guarantee_Name logname,Short_Phone,pbi.Personal_Name,Msg_Detail,Record_Type,Record_Date,a.adminName 
+  	,mi.Guarantee_NO Member_No,pbi.Personal_Phone
+	FROM SMS_Record er 
+	LEFT JOIN Guarantee_Info gi ON gi.Guarantee_ID = er.Member_ID 
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_ID=gi.Personal_ID
+			LEFT JOIN Admin a ON a.Admin_ID = er.Admin_ID
+		WHERE er.Member_Type=1
+		<where>
+			<if test="#{map.MemberNo}!=null">Member_No like '%#{map.MemberNo}%'</if>
+			<if test="#{map.personalPhone}!=null">Short_Phone like '%#{map.personalPhone}%'</if>
+			<if test="#{map.personalName}!=null">Personal_Name like '%#{map.personalName}%'</if>
+			<if test="#{map.logname}!=null">logname like '%#{map.logname}%'</if>
+		</where>
+  </select>
   
   
+  <resultMap id="SendHistoryEntity" type="cn.springmvc.model.SendHistoryEntity" >
+  	 <result column="logname" property="logname"/>
+  	 <result column="Personal_Name" property="personalName"/>
+  	 <result column="Msg_Detail" property="msgDetail"/>
+  	 <result column="Record_Type" property="recordType"/>
+  	 <result column="Record_Date" property="recordDate"/>
+  	 <result column="adminName" property="adminName"/>
+  </resultMap>
+  <!-- 分页查询站内信发送历史记录 -->
+  <select id="SendHistory" resultMap="SMSHistoryEntity"  parameterType="product_p2p.kit.pageselect.PageEntity">
+  	SELECT mi.Logname logname,pbi.Personal_Name,Msg_Detail,Record_Type,Record_Date,a.adminName
+  	,mi.Member_No Member_No,pbi.Personal_Phone
+  	 FROM Letter_Record er 
+	LEFT JOIN Member_Info mi ON er.Member_ID = mi.Member_ID 
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_ID=mi.Personal_ID
+			LEFT JOIN Admin a ON a.Admin_ID = er.Admin_ID
+		WHERE er.Member_Type=0
+UNION ALL
+SELECT gi.Guarantee_Name logname,pbi.Personal_Name,Msg_Detail,Record_Type,Record_Date,a.adminName 
+  	,mi.Guarantee_NO Member_No,pbi.Personal_Phone
+	FROM Letter_Record er 
+	LEFT JOIN Guarantee_Info gi ON gi.Guarantee_ID = er.Member_ID 
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_ID=gi.Personal_ID
+			LEFT JOIN Admin a ON a.Admin_ID = er.Admin_ID
+		WHERE er.Member_Type=1
+		<where>
+			<if test="#{map.MemberNo}!=null">Member_No like '%#{map.MemberNo}%'</if>
+			<if test="#{map.personalPhone}!=null">Personal_Phone like '%#{map.personalPhone}%'</if>
+			<if test="#{map.personalName}!=null">Personal_Name like '%#{map.personalName}%'</if>
+			<if test="#{map.logname}!=null">logname like '%#{map.logname}%'</if>
+		</where>
+  </select>
 </mapper>

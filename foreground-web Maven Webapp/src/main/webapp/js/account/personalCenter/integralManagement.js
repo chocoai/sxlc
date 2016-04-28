@@ -4,9 +4,9 @@ $(function(){
 	$(".tab-head li").each(function(index){
 		var liNode =$(this);
 		$(this).click(function(){
-			$(".tab-content .content").removeClass("content-active");
+			$(".tab-content .c-content").removeClass("content-active");
 			$(".tab-head li").removeClass("tab-ing");
-			$(".tab-content .content").eq(index).addClass("content-active");
+			$(".tab-content .c-content").eq(index).addClass("content-active");
 			liNode.addClass("tab-ing");
 		});
 	});

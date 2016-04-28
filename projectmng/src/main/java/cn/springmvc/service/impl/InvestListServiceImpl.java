@@ -19,8 +19,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.pageselect.PageEntity; 
-import cn.springmvc.dao.InvestListDao;
-import cn.springmvc.dao.impl.InvestListDaoImpl; 
+import cn.springmvc.dao.InvestListDao; 
 import cn.springmvc.model.ProjectAppRecordEntity; 
 import cn.springmvc.service.InvestListService;
 

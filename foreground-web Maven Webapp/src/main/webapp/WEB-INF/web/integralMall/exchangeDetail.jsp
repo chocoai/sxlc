@@ -1,18 +1,25 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>兑换详情</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/integralMall/exchangeDetail.css">
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/integralMall/intergralMallCommon.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../integralMall/intergralMallCommon.jsp"></jsp:include>
     <!-- 在这里加入页面内容 -->
     <!-- 兑换详情界面     胥福星      2016-03-29 -->
     <div class="nowPosition">
-    	<div class="nowPositionContent">您当前位置 > <a href="mallIndex.html">积分商城</a> > <span>兑换详情</span></div>
+    	<div class="nowPositionContent">您当前位置 > <a href="integralMall/mallIndex.html">积分商城</a> > <span>兑换详情</span></div>
     </div>
     <div class="productListArea">
     	<div class="main">
@@ -20,7 +27,7 @@
     			<div class="productInfo">
     				<div class="infoHeader">
     					<span>商品信息</span>
-    					<a href="itemList.html">返回商品列表</a>
+    					<a href="integralMall/itemList.html">返回商品列表</a>
     				</div>
     				<div class="infoDetail">
     					<div class="head">
@@ -187,10 +194,10 @@
     				</div>
     				<div class="addressWhite">
     					<p>新增收货地址</p>
-    					<form>
+    					<form id="zeng_shouHuo">
     						<div class="list">
 	    						<label>收货人姓名</label>
-	    						<input maxlength="20"/>
+	    						<input datatype="z2_20" maxlength="20"/>
     						</div>
     						<div class="list">
 	    						<label>所在地址</label>
@@ -224,11 +231,11 @@
     						</div>
     						<div class="list">
 	    						<label>详细地址</label>
-	    						<input class="addressDetail" maxlength="50"/>
+	    						<input class="addressDetail" datatype="enteraddr" maxlength="50"/>
     						</div>
     						<div class="list">
 	    						<label>收件人手机</label>
-	    						<input class="numberReg" maxlength="11"/>
+	    						<input class="numberReg" datatype="zphone" maxlength="11"/>
     						</div>
     						<div class="list">
 	    						<label>送件时间</label>
@@ -253,13 +260,35 @@
     						<p>兑换数量：2件</p>
     						<p>积分总数：<samp>700000</samp></p>
     					</div>
-    					<a href="itemList.html">提交兑换申请</a>
+    					<a class="clickUp" href="javascript:clickDown();">提交兑换申请</a>
+    					<!-- 兑换成功使用clickUp();    兑换失败则使用 clickDown()  -->
     				</div>
     			</div>
     		</div>
     	</div>
     </div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
-	<script type="text/javascript" src="js/integralMall/exchangeDetail.js"></script>
+    <div class="applyTalent">
+   		<div class="apply-top">
+   			<label>兑换成功！</label>
+   			<br>
+   			<span>请等待发货！</span>
+   		</div>
+   		<div class="apply-bottom">
+   			<input type="button" class="btn" value="确定" onclick="window.location.href='integralMall/itemList.html';">
+   		</div>
+   	</div>
+    <div class="applyTalent2">
+   		<div class="apply-top">
+   			<label>兑换失败！</label>
+   			<br>
+   			<span>请重新检查您的兑换申请！</span>
+   		</div>
+   		<div class="apply-bottom">
+   			<input type="button" class="btn" value="确定" onclick="window.location.href='integralMall/itemList.html';">
+   		</div>
+   	</div>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
+	<script type="text/javascript" src="<%=basePath %>/js/integralMall/exchangeDetail.js"></script>
+	<script type="text/javascript" src="js/plugs/valid/valid.js"></script>
 </body>
 </html>

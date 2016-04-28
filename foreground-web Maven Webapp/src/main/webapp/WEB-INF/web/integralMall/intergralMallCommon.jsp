@@ -10,9 +10,9 @@
 		<div class="notMainLogo">
 			<img src="resource/img/integralMall/jfsc_1.png">
 		</div>
-		<a class="mainPageTop1" href="mallIndex.html">商城首页</a>
-		<a class="mainPageTop2" href="itemList.html">商品列表</a>
-		<a class="mainPageTop3" href="integralManagement.html">我的积分</a>
-		<a class="mainPageTop4" href="bigWheel.html">幸运抽奖</a>
+		<a class="mainPageTop1" href="integralMall/mallIndex.html">商城首页</a>
+		<a class="mainPageTop2" href="integralMall/itemList.html">商品列表</a>
+		<a class="mainPageTop3" href="personalCenter/integralManagement.html">我的积分</a>
+		<a class="mainPageTop4" href="integralMall/bigWheel.html">幸运抽奖</a>
 	</div>
 </div>

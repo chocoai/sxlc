@@ -12,6 +12,7 @@
  
 package cn.springmvc.service.impl; 
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -29,7 +30,7 @@ import cn.springmvc.service.EmailBindingService;
 
 /** 
  * @author 刘利 
- * @Description: 会员手机号绑定 
+ * @Description: 会员邮箱绑定 
  * @since 
  * @date 2016-3-29 上午11:49:19  */
 @Service("emailBindingServiceImpl")
@@ -48,15 +49,39 @@ public class EmailBindingServiceImpl implements EmailBindingService {
 
 	@Override
 	public int updatepersonEmail(Map<String, Object> map) {
-		 map.put("sKey", DbKeyUtil.GetDbCodeKey());
+	   
+		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		int result = emailBindingListDaoImpl.selectEmailIsExist(map);
+		if (result >0 ) {
+			return -1;
+		}
 		return emailBindingDaoImpl.updatepersonEmail(map);
 		
 	}
 
+//	@Override
+//	public int updatecompanyEmail(Map<String, Object> map) {
+//		
+//		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+//		return emailBindingDaoImpl.updatecompanyEmail(map);
+//		
+//	}
+
 	@Override
-	public int updatecompanyEmail(Map<String, Object> map) {
-		 map.put("sKey", DbKeyUtil.GetDbCodeKey());
-		return emailBindingDaoImpl.updatecompanyEmail(map);
+	public String selectOldEmail(long memberId) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		map.put("memberId",              memberId);
+		return emailBindingListDaoImpl.selectOldEmail(map);
+		
+	}
+
+	@Override
+	public int checkEmail(Map<String, Object> map) {
+		 
+		map.put("sKey", DbKeyUtil.GetDbCodeKey()); 
+		return emailBindingListDaoImpl.checkEmail(map);
 		
 	}
 

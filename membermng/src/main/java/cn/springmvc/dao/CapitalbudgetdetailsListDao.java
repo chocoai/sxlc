@@ -108,5 +108,24 @@ public interface CapitalbudgetdetailsListDao {
 	 * @date 2016-3-30 下午7:41:30
 	 */
 	public long selectTotalWithdrawalReal(Map<String,Object> map);
+	/**
+	 * 总的充值手续费-实际到账总额  
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param map {memberID,memberType }
+	 * @return Map 返回类型 {totalfee(充值手续费),totalrecharge(实际到账总额 )}
+	 * @date 2016-4-14 下午3:49:49
+	 */
+	public Map<String,Object> selectTotalRechargeInfo(Map<String,Object> map);
+	/**
+	 * 总的提现金额 -提现手续费
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param {memberID,memberType }
+	 * @param @return 设定文件 
+	 * @return Map 返回类型 {totalfee(充值手续费),totalWithdrawal(实际到账总额 )}
+	 * @date 2016-4-14 下午4:00:18
+	 */
+	public Map<String,Object> selectTotalWithdrawalInfo(Map<String,Object> map);
 }
 

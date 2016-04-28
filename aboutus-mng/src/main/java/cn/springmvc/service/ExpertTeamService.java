@@ -47,7 +47,7 @@ public interface ExpertTeamService {
 	 * @param pageEntity 分页实体 map 包含(mngName,statu:(0无效，1有效,-1全部)) 
 	 * @return 专家顾问列表
 	 */
-	public List<ExpertTeamEntity> selectExpertTeamListpage(PageEntity pageEntity);
+	public void selectExpertTeamListpage(PageEntity pageEntity);
 	/**
 	 * 根据ID查询的专家顾问
 	 * @param id 专家顾问id

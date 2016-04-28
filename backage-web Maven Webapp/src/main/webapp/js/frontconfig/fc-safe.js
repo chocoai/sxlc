@@ -249,11 +249,26 @@ function appendImg(imgURL,fileListObj){
  * @returns
  */
 function viewPic(btn){
+	var _w = parseInt($(window).width());//获取浏览器的宽度 
 	var imgRealURL ="http://cdsxlc.com:21000/";
     var data = $('#partnerTb').DataTable().row($(btn).parents('tr')).data();
     var url = data.sgPic;
+    var $img = $("#picView"); 
+    var realWidth;//真实的宽度 
+    var realHeight;//真实的高度 
     if(data!=""){
-    	$("#picView").attr("src",imgRealURL+url);
+    	$img.attr("src",imgRealURL+url);
+    	/*$("<img/>").attr("src", $(img).attr("src")).load(function() { 
+	     如果要获取图片的真实的宽度和高度有三点必须注意 1、需要创建一个image对象：如这里的$("<img/>") 2、指定图片的src路径 3、一定要在图片加载完成后执行如.load()函数里执行 
+	   	realWidth =  this.width; 
+	   	realHeight = this.height; 
+	   	//如果真实的宽度大于浏览器的宽度就按照100%显示 
+	   	if(realWidth>=_w){ 
+	   		$(img).css("width","100%").css("height","auto"); 
+	    }else{//如果小于浏览器的宽度按照原尺寸显示 
+	   		$(img).css("width",realWidth+'px').css("height",realHeight+'px');
+	   	} 
+	   	}); */
     	$(".hideHtml").hide();
     }else{
     	$(".hideHtml").show();

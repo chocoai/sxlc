@@ -12,8 +12,7 @@
  
 package cn.springmvc.dao.impl; 
 
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 
 import javax.annotation.Resource;  
 
@@ -29,9 +28,7 @@ import cn.invitemastermng.model.AwardRecordEntity;
 import cn.invitemastermng.model.BayVIPEntity;
 import cn.invitemastermng.model.BorrowingDetailedEntity;
 import cn.invitemastermng.model.InvestDetailedEntity;
-import cn.springmvc.dao.CommissionissuedListDao;
-import cn.springmvc.dao.InviteMasterApplyDao;
-import cn.springmvc.dao.InviteMasterApplyListDao;
+import cn.springmvc.dao.CommissionissuedListDao; 
 
 /** 
  * @author 刘利 
@@ -48,70 +45,80 @@ public class CommissionissuedListDaoImpl extends SqlSessionDaoSupport implements
 	@Override
 	public List<AwardRecordEntity> getAwardAdvisor(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getAward_Advisor",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getAward_Advisor",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	}
 
 	@Override
 	public List<AwardRecordEntity> getAwardInvite(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getAward_Invite",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getAward_Invite",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	}
 
 	@Override
 	public List<BorrowingDetailedEntity> getBorrowingAdvisor(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getBorrowing_Advisor",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getBorrowing_Advisor",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	}
 
 	@Override
 	public List<BorrowingDetailedEntity> getBorrowingInvite(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getBorrowing_Invite",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getBorrowing_Invite",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	}
 
 	@Override
 	public List<InvestDetailedEntity> getInvestAdvisor(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getInvest_Advisor",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getInvest_Advisor",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	}
 
 	@Override
 	public List<InvestDetailedEntity> getInvestInvite(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getInvest_Invite",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getInvest_Invite",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	}
 
 	@Override
 	public List<BayVIPEntity> getBayVIPAdvisor(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getBayVIP_Advisor",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getBayVIP_Advisor",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	}
 
 	@Override
 	public List<BayVIPEntity> getBayVIPInvite(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getBayVIP_Invite",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getBayVIP_Invite",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	}
 
 	@Override
 	public List<AwardPaymentRecordEntity> getAwardRecordAdvisor(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getAwardRecord_Advisor",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getAwardRecord_Advisor",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	}
 
 	@Override
 	public List<AwardPaymentRecordEntity> getAwardRecordsInvite(PageEntity page) {
 		
-		return getSqlSession().selectList("Commissionissued.getAwardRecord_Invite",page.getMap(),new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("Commissionissued.getAwardRecord_Invite",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	} 
 }

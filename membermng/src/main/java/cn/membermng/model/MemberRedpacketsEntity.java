@@ -65,7 +65,7 @@ public class MemberRedpacketsEntity {
 	 */
 	private long validGiftAmount;
 	/**
-	 * 已使用红包
+	 * 有效的红包金额
 	 */
 	private String validGiftAmounts;
 	public long getValidGiftAmount() {

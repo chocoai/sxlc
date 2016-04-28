@@ -22,12 +22,12 @@ import product_p2p.kit.datatrans.IntegerAndString;
 
 public class InvestDetailedEntity {
 	private String projectTitle;//借款名称
-	private long investAmountValid;//投资金额
+	private long   investAmountValid;//投资金额
 	private String investAmountValids;//投资金额
 	private String logname;//用户名
 	private String personalName;//会员名称
-	private long sdRecvPrincipal;//预期本金
-	private long sdRecvInterest;//预期收益
+	private long   sdRecvPrincipal;//预期本金
+	private long   sdRecvInterest;//预期收益
 	private String sdRecvPrincipals;//预期本金
 	private String sdRecvInterests;//预期收益
 	private String holdDate;//投资成功时间

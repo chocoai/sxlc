@@ -5,26 +5,34 @@
 	
 	<!-- 查询结果集toPoJo -->
 	<resultMap type="cn.springmvc.model.PostInfo" id="postInfo">
-		<id column="ID" property="id" />
+		<id column="Post_Id" property="id" />
 		<result column="Dept_Id" 		property="deptId"/>
 		<result column="Post_No" 		property="postNo"/>
 		<result column="Post_Name" 		property="postName"/>
 		<result column="Post_Remark" 	property="postRemark"/>
-		<result column="Add_Date" 		property="addDate"/>
+		<result column="Add_Date" 		property="addTime"/>
 		<result column="Post_Statu"	 	property="postStatu"/>
+		<result column="Dept_Name"	 	property="deptName"/>
 	</resultMap>
 	
 	<!-- 获取列表 -->
 	<select id="getListByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="postInfo">
-		select * from Post_Info
+		SELECT PIN.*,DI.Dept_Name FROM Post_Info PIN LEFT JOIN  Dept_Info  DI ON PIN.Dept_Id = DI.Dept_Id
 		<where>
-			<if test="map.deptId != null">
-				Dept_Id = #{map.deptId}
+			<if test="map!=null and map.deptName != null and map.deptName !='' ">
+				DI.Dept_Name  LIKE '%${map.deptName}%' 
 			</if>
-			<if test="map.postName != null">
-				Post_Name = #{map.postName}
+			<if test="map!=null and map.postName != null and map.postName != ''">
+				PIN.Post_Name LIKE '%${map.postName}%'
+			</if>
+			<if test="map!=null and map.startTime != null and map.startTime !='' ">
+				PIN.Add_Date between #{map.startTime} and #{map.endTime}
+			</if>
+			<if test="map!=null and map.deptId >0">
+				DI.Dept_Id =#{map.deptId}
 			</if>
 		</where>
+		 ORDER BY Add_Date  DESC
 	</select>
 	
 	<!-- 获取部门-->
@@ -41,7 +49,7 @@
 	</select>
 	
 	<!-- 保存职务 -->
-	<select id="savePost" statementType="CALLABLE" parameterType="cn.springmvc.model.PostInfo" resultType="Integer">
+	<select id="savePost" statementType="CALLABLE" parameterType="Map" >
 		call savePostInfo(
 			#{id,			mode=IN,				jdbcType=BIGINT},
 			#{deptId,		mode=IN,				jdbcType=BIGINT},
@@ -53,16 +61,18 @@
 	</select>
 	
 	<!-- 修改职务名称 -->
-	<select id="editPost" statementType="CALLABLE" parameterType="cn.springmvc.model.PostInfo" resultType="Integer">
+	<select id="editPost" statementType="CALLABLE" parameterType="Map">
 		call editPostInfo(
 			#{id,			mode=IN,				jdbcType=BIGINT},
 			#{postName,		mode=IN,				jdbcType=VARCHAR},
+			#{deptId,		mode=IN,				jdbcType=BIGINT},
+			#{postRemark,	mode=IN,				jdbcType=VARCHAR},
 			#{result,		mode=OUT,				jdbcType=INTEGER}
 		)
 	</select>
 	
 	<!-- 停用启用职务 -->	
-	<select id="ofPostInfo" statementType="CALLABLE" parameterType="cn.springmvc.model.PostInfo" resultType="Integer">
+	<select id="ofPostInfo" statementType="CALLABLE" parameterType="Map">
 		call ofPostInfo(
 			#{id,			mode=IN,				jdbcType=BIGINT},
 			#{postStatu,	mode=IN,				jdbcType=INTEGER},
@@ -71,7 +81,7 @@
 	</select>
 	
 	<!-- 删除职务 -->
-	<select id="delPostInfo" statementType="CALLABLE" parameterType="cn.springmvc.model.PostInfo" resultType="Integer">
+	<select id="delPostInfo" statementType="CALLABLE" parameterType="Map">
 		call delPostInfo(
 			#{id,			mode=IN,				jdbcType=BIGINT},
 			#{result,		mode=OUT,				jdbcType=INTEGER}
@@ -81,7 +91,7 @@
 	
 	<!-- 根据编号获取某个部门信息 -->
 	<select id="findById" parameterType="Long" resultMap="postInfo">
-		select * from dept_info where Dept_id = #{id}
+		select * from Post_Info where Post_Id = #{id}
 	</select>
 	
 </mapper>

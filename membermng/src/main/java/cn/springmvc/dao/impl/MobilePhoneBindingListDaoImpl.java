@@ -42,5 +42,19 @@ public class MobilePhoneBindingListDaoImpl extends SqlSessionDaoSupport implemen
 		
 	}
 
+	@Override
+	public String selectOldPhone(Map<String, Object> map) {
+		
+		return getSqlSession().selectOne("mobileBinding.selectOldPhone",map);
+		
+	}
+
+	@Override
+	public int checkPhone(Map<String, Object> map) {
+		
+		return getSqlSession().selectOne("mobileBinding.checkPhone",map);
+		
+	}
+
 }
 

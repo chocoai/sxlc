@@ -9,6 +9,7 @@ import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberVouchers;
 import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.RadPackage;
+import cn.membermng.model.SecurityInfo;
 
 
 /**
@@ -176,8 +177,29 @@ public interface IMemberReadDao {
 	public List<MemberVouchers> vouchers(PageEntity entity);
 
 
+	/**
+	* 查询会员信息
+	* 
+	* @author 李杰
+	* @param param
+	* @return
+	* @date 2016-4-26 上午10:36:37
+	 */
+	public MemberInfo findMemberInfoByParam(Map<String, Object> param);
+
+
 	
-	
-	
+	/***
+	* 获取安全中心信息
+	* 
+	* @author 李杰
+	* @param param
+	* @return
+	* @date 2016-4-26 下午6:52:20
+	 */
+	public SecurityInfo securityInfo(Map<String, Object> param);
+
+
+
 	
 }

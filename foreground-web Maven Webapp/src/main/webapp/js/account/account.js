@@ -49,6 +49,7 @@ $(function(){
 
 /*  胥福星    2016-04-07  弹出提示层   */
 jQuery.fn.layoutHover = function(str){
+	$(this).layoutClean2();
 	var s = str;
 	var m = '<div class="tipUp"><div class="contentUp">' + s + '<div class="imgUp"></div></div></div>';
 	this.parent().css('position','relative');
@@ -57,6 +58,7 @@ jQuery.fn.layoutHover = function(str){
 	this.parent().find(".tipUp").css("bottom", this.innerHeight() + 15 );
 };
 jQuery.fn.layoutHover2 = function(str){
+	$(this).layoutClean2();
 	var s = str;
 	var m = '<div class="tipDown"><div class="contentDown">' + s + '<div class="imgDown"></div></div></div>';
 	this.parent().css('position','relative');
@@ -65,6 +67,7 @@ jQuery.fn.layoutHover2 = function(str){
 	this.parent().find(".tipDown").css("top",this.offset().top - this.parent().offset().top + 30  );
 };
 jQuery.fn.layoutHover3 = function(str){
+	$(this).layoutClean2();
 	var s = str;
 	var m = '<div class="tipLeft"><div class="contentLeft">' + s + '<div class="imgLeft"></div></div></div>';
 	this.parent().css('position','relative');
@@ -73,21 +76,31 @@ jQuery.fn.layoutHover3 = function(str){
 	this.parent().find(".tipLeft").css("top",this.offset().top - this.parent().offset().top - this.innerHeight() );
 };
 jQuery.fn.layoutHover4 = function(str){
+	$(this).layoutClean2();
 	var s = str;
-	var m = '<div class="tipLeft"><div class="contentLeft">' + s + '<div class="imgLeft"></div></div></div>';
+	var m = '<div class="tipLeft"><span class="tipLeftDiv"></span><div class="contentLeft">' + s + '<div class="imgLeft"></div></div></div>';
 	this.parent().css('position','relative');
 	this.parent().append(m);
-	this.parent().find(".tipLeft").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() - 10);
+	this.parent().find(".tipLeft").css("left",this.offset().left - this.parent().offset().left  - 10);
 	this.parent().find(".tipLeft").css("top",this.offset().top - this.parent().offset().top);
 };
 /* 较小的弹出提示框   */
 jQuery.fn.layoutHover5 = function(str){
+	$(this).layoutClean2();
 	var s = str;
 	var m = '<div class="tipDown2"><div class="contentDown2">' + s + '<div class="imgDown"></div></div></div>';
 	this.parent().css('position','relative');
 	this.parent().append(m);
 	this.parent().find(".tipDown2").css("left",this.offset().left - this.parent().offset().left - 15);
 	this.parent().find(".tipDown2").css("top",this.offset().top - this.parent().offset().top + this.innerHeight() - 10 );
+};
+
+/* 清除所有的弹出提示框     */
+jQuery.fn.layoutClean2 = function(){
+	this.parent().find(".tipUp").remove();
+	this.parent().find(".tipLeft").remove();
+	this.parent().find(".tipDown").remove();
+	this.parent().find(".tipDown2").remove();
 };
 $(function(){
 	$(".whatever1").mouseover(function(){
@@ -128,17 +141,32 @@ $(function(){
 });
 $(function(){
 	/* 当鼠标移动到mark1、mark2、mark3、mark4、mark5上时，出现提示窗口*/
-	$(".ALT3 > .mark1").mouseover(function(){
-		if($(this).parent().find(".tipLeft")){
-			$(this).parent().find(".tipLeft").remove();
-		}
+	$(".ALT3 > .mark1").mouseenter(function(){
 		$(this).layoutHover4("11111");
+		//alert(1);		
+		$(".tipLeftDiv").mouseenter(function(){
+			$(".ALT3 > .mark1").layoutHover4("11111");
+		});
 	});
+	$(".tipLeft").mouseleave(function(){
+		alert(3);
+		$(".tipLeft").remove();
+			
+		$(".ALT3 > .mark1").mouseleave(function(){
+			$(this).parent().find(".tipLeft").remove();
+			//alert(4);
+		});
+	});
+	
+	
 	$(".ALT3 > .mark2").mouseover(function(){
 		if($(this).parent().find(".tipLeft")){
 			$(this).parent().find(".tipLeft").remove();
 		}
 		$(this).layoutHover4("2");
+	});
+	$(".ALT3 > .mark2").mouseout(function(){
+		$(this).parent().find(".tipLeft").remove();
 	});
 	$(".ALT3 > .mark3").mouseover(function(){
 		if($(this).parent().find(".tipLeft")){
@@ -146,11 +174,17 @@ $(function(){
 		}
 		$(this).layoutHover4("3");
 	});
+	$(".ALT3 > .mark3").mouseout(function(){
+		$(this).parent().find(".tipLeft").remove();
+	});
 	$(".ALT3 > .mark4").mouseover(function(){
 		if($(this).parent().find(".tipLeft")){
 			$(this).parent().find(".tipLeft").remove();
 		}
 		$(this).layoutHover4("4");
+	});
+	$(".ALT3 > .mark4").mouseout(function(){
+		$(this).parent().find(".tipLeft").remove();
 	});
 	$(".ALT3 > .mark5").mouseover(function(){
 		if($(this).parent().find(".tipLeft")){
@@ -158,17 +192,20 @@ $(function(){
 		}
 		$(this).layoutHover4("未开通第三方" + '<a class="third">立即开通</a>');
 	});
+	$(".ALT3 > .mark5").mouseout(function(){
+		$(this).parent().find(".tipLeft").remove();
+	});
 });
 
 
 /*以下为封装内容*/
 /* input标签的输入改变      */
 $(function(){
-	inputText();
+	inputText("");
 	inputSelect();
 });
-function inputText(){
-	$(":text").each(function(){
+function inputText(str){
+	$(str+" :text").each(function(){
 		$(this).val($(this).attr("lang"));
 		$(this).css('color','#999');
 		$(this).focus(function(){
@@ -263,11 +300,11 @@ function addElement(sourceId){
 	num++;
 	if($("#"+sourceId).parent().next().length == 0){
 		$("#"+sourceId).parent().parent().append('<div class="previewPicture">'
-				+'<img class="previewImgHold" id="previewImgHold'+num+'" src="resource/img/account/common/opacity.png">'
-					+'<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput'+num+'" onchange="preImg(this.id,\'previewImgHold'+num+'\');addElement(this.id);" onblur="if(document.getElementById(\'previewImgHold'+num+'\').src==null)document.getElementById(\'previewImgHold'+num+'\').src=\'resource/img/account/common/opacity.png\'" >'
+				+'<img class="previewImg" id="previewImg'+num+'" src="resource/img/account/common/opacity.png">'
+					+'<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput'+num+'" onchange="preImg(this.id,\'previewImg'+num+'\');" onblur="if(document.getElementById(\'previewImg'+num+'\').src==null)document.getElementById(\'previewImg'+num+'\').src=\'resource/img/account/common/opacity.png\'" >'
 				+'</div>');
 	}
-/*	$(".labelChange").css("display","block");*/
+	$(".mustLabel").css("display","block");
 }
 /*          end              */
 /*签到成功弹出层伍成然2016-4-7*/
@@ -284,43 +321,6 @@ $(function(){
 	});
 });
 /*签到成功弹出层结束伍成然2016-4-7*/
-/* 弹出提示框的js代码  */
-jQuery.fn.layoutWarning = function(str){
-	var s = str;
-	var m = '<div class="tipError"><div class="pre"></div><div class="after">' + s + '</div></div>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".tipError").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
-	this.parent().find(".tipError").css("top",this.offset().top - this.parent().offset().top - 2 );
-};
-jQuery.fn.layoutFocus = function(str){
-	var s = str;
-	var m = '<div class="tip"><div class="preTip"></div><div class="afterTip">' + s + '</div></div>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".tip").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
-	this.parent().find(".tip").css("top",this.offset().top - this.parent().offset().top - 2 );
-};
-jQuery.fn.layoutSuccess = function(){
-	var m = '<div class="tipOk"></div>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".tipOk").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
-	this.parent().find(".tipOk").css("top",this.offset().top - this.parent().offset().top + 12 );
-};
-
-/* 获取动态验证码的弹出提示层js代码  */
-jQuery.fn.layoutCode = function(str){
-	var s = str;
-	var m = '<span class="dynamicVerificationSpan">' + s + '</span>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".dynamicVerificationSpan").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 10);
-	this.parent().find(".dynamicVerificationSpan").css("top",this.offset().top - this.parent().offset().top );
-};
-
-
-
 
 /* 判断是否为数字   */
 $(function(){

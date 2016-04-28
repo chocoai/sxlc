@@ -63,7 +63,7 @@
 	   from project_base_info pbi 
        left join project_app_record par on  par.Project_Base_ID =pbi.Project_Base_ID
        where   par.Invest_Statu>=3 ) as totalLoanAmount ,
-       (select Risk_Reserve_Fund from System_Info_Set limit 1) as  RiskReserveFund
+       (select ifnull(Risk_Reserve_Fund,0) from System_Info_Set limit 1) as  RiskReserveFund
 	</select>
 	 <!-- 首页预热投资项目列表 -->  
 	<select id = "selectInvestListIndex"   resultMap = "resultProjectDetailIndex">
@@ -81,11 +81,11 @@
      <!-- 首页查询债权转让项目列表 -->  
 	<select id = "selectCreditorTransferListIndex"   resultMap = "resultCreditorTransfer">
 	    select pbi.Project_Title,par.Project_No,cta.Surplus_Time,
-	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal,
-	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed) Trans_Discount,
+	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{sKey})) as signed) Trans_Principal,
+	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{sKey})) as signed) Trans_Discount,
 		cta.Surplus_Time_Type,cta.Cta_Invest_Rate,replayway.name1 as repalyways,
 		transStatu.name1  as transStatus,cta.CTA_Id,cta.Statu as transStatu,cta.End_Date,
-		((par.Rate_Add_Rate + pbi.Year_Rate)*1000000/CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed)) as expectYearrate
+		((par.Rate_Add_Rate + pbi.Year_Rate)*1000000/CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{sKey})) as signed)) as expectYearrate
 		from Creditor_Trans_App cta 
 		left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id 
 		left join Project_App_Record par  on par.Apply_Id = ir.Apply_Id
@@ -93,7 +93,7 @@
 		left join ProjectBaseInfo pty     on par.Project_ID=pty.Project_ID  
 		left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 		left join DICT transStatu on  transStatu.code1= cta.Statu  and transStatu.tcode = 'DICT_ZRZT'
-		 order by  cta.Statu asc limit 6
+		order by  cta.Statu asc limit 6
 	</select>
 	  <!-- 查询项目直投投资记录-->  
 	<select id="selectInvestRecordIndex" parameterType="map"  resultMap="resultListInvestRecord">
@@ -112,5 +112,6 @@
 	          and  YEARWEEK(date_format(ir.Invest_Date,'%Y-%m-%d')) = YEARWEEK(now());
 	        </if> 
 	     </where>
+	     limit 6
     </select>    
 </mapper>

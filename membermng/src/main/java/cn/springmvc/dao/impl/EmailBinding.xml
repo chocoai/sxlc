@@ -13,15 +13,23 @@
 	   select count(pbi.Personal_Email)
 	   from  Personal_Base_Info  pbi  
 	   where   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{keys})) using utf8)=#{personalEmail}
+	   and Personal_ID !=#{personalID}
     </select> 
     <!-- 修改个人会员邮箱-->  
 	<update id="updatepersonEmail" parameterType="Map" >
          UPDATE Personal_Base_Info set  Personal_Email =HEX(AES_ENCRYPT(#{personalEmail},#{keys})) 
          where Personal_ID=#{personalID}
-    </update>     
-    <!-- 修改企业会员邮箱-->  
-	<update id="updatecompanyEmail" parameterType="Map" >
+    </update>      
+      <!-- 查询原绑定的邮箱-->  
+	<select id="selectOldEmail" parameterType="Map"  resultType="String">
+	   select  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{keys})) using utf8) as Personal_Email  
+		from Member_Info mi
+		left join Personal_Base_Info pbi on mi.Personal_ID = pbi.Personal_Id 
+		where mi.member_id = #{memberId}  
+    </select>
+     <!-- 修改企业会员邮箱-->  
+	<!-- <update id="updatecompanyEmail" parameterType="Map" >
          UPDATE Personal_Base_Info set  Personal_Email =HEX(AES_ENCRYPT(#{personalEmail},#{keys})) 
          where Personal_ID=(select Legal_ID from Company_Info where Company_ID=#{personalID} limit 1) 
-    </update>         
+    </update>  -->      
 </mapper>   

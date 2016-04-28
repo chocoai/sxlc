@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="CreditorTrans">
+
+	<!-- 获取当前最大投资金额 -->
+	<select id="CreditorMaxInvestAmount"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call getCreditorMaxInvestAmount(
+				#{lProjectId,			mode=IN,	jdbcType=BIGINT},
+				#{lMemberId,			mode=IN,	jdbcType=BIGINT},
+				#{lCreditorTransAppId,	mode=IN,	jdbcType=BIGINT},
+				#{sKey,					mode=IN,	jdbcType=VARCHAR},
+				#{result,				mode=OUT,	jdbcType=BIGINT}
+    		)}
+    	]]>
+	</select>
+	
+	<!-- 会员投资债权前验证信息 -->
+	<select id="checkCreditorRecordByMember"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call checkCreditorRecordByMember(
+				#{lMemberId,			mode=IN,	jdbcType=BIGINT},
+				#{lProjectId,			mode=IN,	jdbcType=BIGINT},
+				#{lCreditorTransAppId,	mode=IN,	jdbcType=BIGINT},
+				#{sIsAuto,				mode=IN,	jdbcType=TINYINT},
+				#{lTotalAmount,			mode=IN,	jdbcType=BIGINT},
+				#{sRedpacketsInfo,		mode=IN,	jdbcType=VARCHAR},
+				#{lVouchers,			mode=IN,	jdbcType=BIGINT},
+				#{sKey,					mode=IN,	jdbcType=VARCHAR},
+				#{lRedpackets,			mode=OUT,	jdbcType=BIGINT},
+				#{result,				mode=OUT,	jdbcType=BIGINT},
+    		)}
+    	]]>
+	</select>
+
+	<!-- 投资返回 -->
+	<select id="processCreditorTransResult"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call processCreditorTransResult(
+				#{iStatu,			    mode=IN,	jdbcType=TINYINT},
+				#{iType,			    mode=IN,	jdbcType=TINYINT},
+				#{orderNo,			    mode=IN,	jdbcType=VARCHAR},
+				#{vBillNo,			    mode=IN,	jdbcType=VARCHAR},
+				#{iInvestId,		    mode=IN,	jdbcType=BIGINT},
+				#{lProjectId,		    mode=IN,	jdbcType=BIGINT},
+				#{lMemberId,		    mode=IN,	jdbcType=BIGINT},
+				#{lCreditorTransAppId,	mode=IN,	jdbcType=BIGINT},
+				#{iMoney,			    mode=IN,	jdbcType=BIGINT},
+				#{isAuto,			    mode=IN,	jdbcType=TINYINT},
+				#{iClient,			    mode=IN,	jdbcType=TINYINT},
+				#{sKey,				    mode=IN,	jdbcType=VARCHAR},
+				#{lRedpackets,		    mode=IN,	jdbcType=BIGINT},
+				#{lVouchers,		    mode=IN,	jdbcType=BIGINT},
+				#{lMngFee,			    mode=IN,	jdbcType=BIGINT},
+				#{result,			    mode=OUT,	jdbcType=BIGINT},
+    		)}
+    	]]>
+	</select>
+</mapper>

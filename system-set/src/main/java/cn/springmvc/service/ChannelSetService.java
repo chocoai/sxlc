@@ -6,8 +6,11 @@ import java.util.Map;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.springmvc.model.MailHistoryEntity;
 import cn.springmvc.model.MailSettingsEntity;
 import cn.springmvc.model.MessageTypeEntity;
+import cn.springmvc.model.SMSHistoryEntity;
+import cn.springmvc.model.SendHistoryEntity;
 import cn.springmvc.model.SmsSettingsEntity;
 import cn.springmvc.model.ThreeInterfaceEntity;
 
@@ -38,6 +41,19 @@ public interface ChannelSetService {
 	public List<MessageTypeEntity> selectChannelSet();
 	
 	
+	/** 
+	* selectChannelSetByPage 分页查看消息类型设置 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: selectChannelSetByPage 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<MessageTypeEntity> 返回类型 
+	* @date 2016-4-26 下午4:28:50
+	* @throws 
+	*/
+	public List<MessageTypeEntity> selectChannelSetByPage(PageEntity pageEntity);
 	/** 
 	* selectSmsSettings 分页查询短信通道设置 
 	* TODO(这里描述这个方法适用条件 – 可选) 
@@ -95,11 +111,11 @@ public interface ChannelSetService {
 	* * @Title: updateChannelSet 
 	* @Description: TODO 
 	* @param @param map
-	* @param @return 设定文件 
+	* @param @return 设定文件 	0:失败 1：成功
 	* @return List<Object> 返回类型 
 	* @throws 
 	*/
-	public List<Object> updateChannelSet(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	public int updateChannelSet(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -115,7 +131,7 @@ public interface ChannelSetService {
 	* @return List<Object> 返回类型 
 	* @throws 
 	*/
-	public List<Object> updateMessage(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	public int updateMessage(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -255,5 +271,47 @@ public interface ChannelSetService {
 	* @throws 
 	*/
 	public int insertThreeInterface(Map<String, Object> map);
+	
+	/** 
+	* MailHistory 分页查询邮件发送历史记录分页查询邮件发送历史记录 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: MailHistory 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<MailHistoryEntity> 返回类型 
+	* @date 2016-4-28 上午11:35:40
+	* @throws 
+	*/
+	public List<MailHistoryEntity> MailHistory(PageEntity pageEntity);
+	
+	/** 
+	* SMSHistory 分页查询短信发送历史记录
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: SMSHistory 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<SMSHistoryEntity> 返回类型 
+	* @date 2016-4-28 下午12:01:37
+	* @throws 
+	*/
+	public List<SMSHistoryEntity> SMSHistory(PageEntity pageEntity);
+	
+	/** 
+	* SMSHistory 分页查询站内信发送历史记录
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: SMSHistory 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<SMSHistoryEntity> 返回类型 
+	* @date 2016-4-28 下午12:01:37
+	* @throws 
+	*/
+	public List<SendHistoryEntity> SendHistory(PageEntity pageEntity);
 }
 

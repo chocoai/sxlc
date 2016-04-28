@@ -16,24 +16,49 @@
 		<result column="Pic_Url"       property="picUrl" /> 
 		<result column="Pic_Icon"      property="picIcon" />
 		<result column="Is_Mortgage"   property="isMortgage" />
-		<result column="Statu"         property="statu" /> 
+		<result column="Statu"         property="statu" />
+		<result column="tminDaytime"      property="tminDaytime" />
+		<result column="tmaxDaytime"      property="tmaxDaytime" /> 
+		<result column="mminDaytime"      property="mminDaytime" />
+		<result column="mmaxDaytime"      property="mmaxDaytime" />
+		<result column="yminDaytime"      property="yminDaytime" />
+		<result column="ymaxDaytime"      property="ymaxDaytime" /> 
     </resultMap> 
     <!-- 分页查询项目类型列表 -->  
 	<select id="selectProjectBaseInfoList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProjectBaseInfo">
-	   select Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
-	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage, Statu
-	   from  ProjectBaseInfo   
+	    select Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
+	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage, Statu,
+	 (
+        select  Min_Daytime  
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=0
+      ) as tminDaytime,
+     ( select   Max_Daytime  
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=0 
+     ) as tmaxDaytime,
+      ( select  Min_Daytime as minDaytime 
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=1 
+      ) as mminDaytime,
+      ( select   Max_Daytime  as maxDaytime
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=1
+      ) as mmaxDaytime,
+      (  select  Min_Daytime as minDaytime 
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=2 
+      ) as yminDaytime,
+      ( select   Max_Daytime  as maxDaytime
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=2 
+      ) as ymaxDaytime 
+	   from  ProjectBaseInfo     
            <where>  
-	            <if test="map.projectName != null">  
+	               <if test="map.projectName != null and map.projectName!= '' ">  
 	                Project_Name like  '%${map.projectName}%'  
 	            </if>   
-	            <if test="map.statu != -1">  
+	            <if test="map.statu != -1 and map.statu != null and map.statu!= '' "> 
 	                and Statu=#{map.statu}
 	            </if>   
            </where>  
             order by  Min_Amount
-    </select>       
-	<!-- 新增项目类型 -->  
+    </select>    
+   	<!-- 新增项目类型 -->  
 	<insert id="insertProjectBaseInfo"  parameterType="cn.springmvc.model.ProjectBaseInfoEntity">    
 		insert into ProjectBaseInfo 
 		(Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
@@ -93,7 +118,7 @@
 	   where Project_ID=#{id}   
     </update>   
     <!-- 删除项目类型信息 -->  
-	<delete id="deleteProjectBaseInfoByID"  parameterType="int">
+	<delete id="deleteProjectBaseInfoByID"  parameterType="long">
 	   delete from  ProjectBaseInfo where Project_ID=#{id}   
     </delete>    
      <!-- 停用或启用项目类型 -->  
@@ -101,14 +126,87 @@
 	   update  ProjectBaseInfo  set   Statu=#{statu} where Project_ID=#{id}   
     </update>  
     <!-- 根据id查询项目类型 -->  
-	<select id="selectProjectBaseInfoentity" parameterType="int"  resultMap="resultListProjectBaseInfo">
-	   select ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
-	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage, Statu
-	   from  ProjectBaseInfo  where Project_ID=#{id}   
+	<select id="selectProjectBaseInfoentitybyID" parameterType="long"  resultMap="resultListProjectBaseInfo">
+	   select pbi.Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
+	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage,ptg.Content as  contentG,pty.Content as  contentR
+	   from  ProjectBaseInfo  pbi 
+       left join Project_Type_Guide ptg  on pbi.Project_ID = ptg.Project_ID
+       left join Project_Type_Reply pty  on pbi.Project_ID = pty.Project_ID
+       where pbi.Project_ID=#{id}   
     </select> 
     <!--  项目类型列表 -->  
 	<select id="selectProjectBaseInfo"   resultMap="resultListProjectBaseInfo">
-	   select Project_ID,Project_Name 
+	   select Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
+	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage
 	   from  ProjectBaseInfo   where Statu = 1
-    </select>                  
+    </select>    
+     <!--  项目类型列表 下拉-->  
+	<select id="selectProjectBaseInfoCombox"   resultMap="resultListProjectBaseInfo">
+	   select Project_ID, Project_Name 
+	   from  ProjectBaseInfo   where Statu = 1
+    </select>  
+       <!-- 新增项目类型-->  
+    <select id="addProjectBaseType"  statementType="CALLABLE" parameterType="Map"> 
+	     {call addProjectBaseType(
+				#{lId ,	             mode=IN,	jdbcType=BIGINT},
+				#{projectName ,	     mode=IN,	jdbcType=VARCHAR},
+				#{minAmount,	     mode=IN,	jdbcType=BIGINT},
+				#{maxAmount,	     mode=IN,	jdbcType=BIGINT},
+				#{minRate,	         mode=IN,	jdbcType=INTEGER},
+				#{maxRate,	         mode=IN,	jdbcType=INTEGER},
+				#{singleMin,	     mode=IN,	jdbcType=INTEGER},
+				#{investMax,	     mode=IN,	jdbcType=INTEGER},
+				#{minStart,	         mode=IN,   jdbcType=INTEGER},
+				#{briefIntroduction, mode=IN,	jdbcType=VARCHAR},
+				#{applyMember,	     mode=IN,	jdbcType=INTEGER},
+				#{picUrl,	         mode=IN,	jdbcType=VARCHAR},  
+				#{picIcon,	         mode=IN,	jdbcType=VARCHAR}, 
+				#{isMortgage,	     mode=IN,	jdbcType=INTEGER}, 
+				#{contentg,	         mode=IN,	jdbcType=VARCHAR}, 
+				#{contentr,	         mode=IN,	jdbcType=VARCHAR},  
+				#{unitD,             mode=IN,	jdbcType=INTEGER},
+				#{minDaytimeD,	     mode=IN,	jdbcType=INTEGER},
+				#{maxDaytimeD,       mode=IN,	jdbcType=INTEGER},
+				#{unitM,	         mode=IN,	jdbcType=INTEGER},
+				#{minDaytimeM,	     mode=IN,	jdbcType=INTEGER},
+				#{maxDaytimeM,	     mode=IN,	jdbcType=INTEGER},
+				#{unitY,	         mode=IN,	jdbcType=INTEGER},
+				#{minDaytimeY,	     mode=IN,	jdbcType=INTEGER},
+				#{maxDaytimeY,	     mode=IN,	jdbcType=INTEGER},
+				#{Datum,	         mode=IN,	jdbcType=VARCHAR},
+		    	#{result,	         mode=OUT,	jdbcType=INTEGER}
+    		)}
+	</select>       
+	    <!-- 修改项目类型-->  
+    <select id="updateProjectBaseType"  statementType="CALLABLE" parameterType="Map"> 
+	     {call updateProjectBaseType(
+				#{lId ,	             mode=IN,	jdbcType=BIGINT},
+				#{projectName ,	     mode=IN,	jdbcType=VARCHAR},
+				#{minAmount,	     mode=IN,	jdbcType=BIGINT},
+				#{maxAmount,	     mode=IN,	jdbcType=BIGINT},
+				#{minRate,	         mode=IN,	jdbcType=INTEGER},
+				#{maxRate,	         mode=IN,	jdbcType=INTEGER},
+				#{singleMin,	     mode=IN,	jdbcType=INTEGER},
+				#{investMax,	     mode=IN,	jdbcType=INTEGER},
+				#{minStart,	         mode=IN,   jdbcType=INTEGER},
+				#{briefIntroduction, mode=IN,	jdbcType=VARCHAR},
+				#{applyMember,	     mode=IN,	jdbcType=INTEGER},
+				#{picUrl,	         mode=IN,	jdbcType=VARCHAR},  
+				#{picIcon,	         mode=IN,	jdbcType=VARCHAR}, 
+				#{isMortgage,	     mode=IN,	jdbcType=INTEGER}, 
+				#{contentg,	         mode=IN,	jdbcType=VARCHAR}, 
+				#{contentr,	         mode=IN,	jdbcType=VARCHAR},  
+				#{unitD,             mode=IN,	jdbcType=INTEGER},
+				#{minDaytimeD,	     mode=IN,	jdbcType=INTEGER},
+				#{maxDaytimeD,       mode=IN,	jdbcType=INTEGER},
+				#{unitM,	         mode=IN,	jdbcType=INTEGER},
+				#{minDaytimeM,	     mode=IN,	jdbcType=INTEGER},
+				#{maxDaytimeM,	     mode=IN,	jdbcType=INTEGER},
+				#{unitY,	         mode=IN,	jdbcType=INTEGER},
+				#{minDaytimeY,	     mode=IN,	jdbcType=INTEGER},
+				#{maxDaytimeY,	     mode=IN,	jdbcType=INTEGER},
+				#{Datum,	         mode=IN,	jdbcType=VARCHAR},
+		    	#{result,	         mode=OUT,	jdbcType=INTEGER}
+    		)}
+	</select>                         
 </mapper>   

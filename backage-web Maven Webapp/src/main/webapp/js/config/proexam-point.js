@@ -7,7 +7,7 @@ $(function(){
 	$(".obtn-proexam-point-add").on("click touchstart",function(){
 		layer.open({
 		    type: 1,
-		    area: ['400px', '280px'], //高宽
+		    area: ['460px', '260px'], //高宽
 		    title: "添加审批点",
 		    content: $(".proexam-point-add"),//DOM或内容
 		    btn:['确定', '取消']
@@ -23,7 +23,7 @@ $(function(){
 	$(".obtn-proexam-point-mod").on("click touchstart",function(){
 		layer.open({
 		    type: 1,
-		    area: ['400px', '280px'], //高宽
+		    area: ['460px', '260px'], //高宽
 		    title: "修改审批点",
 		    content: $(".proexam-point-mod"),//DOM或内容
 		    btn:['确定', '取消']
@@ -65,6 +65,15 @@ $(function(){
 		}, function(index){
 			//按钮【按钮二】的回调
 		});
+	});
+	/* 下拉框内字体颜色 */
+	$(".msginterfaceselect").css("color","#aaa");
+	$(".msginterfaceselect").change(function(){
+		if($(this).val()!="请选择"){
+			$(this).css("color","#000");
+		}else{
+			$(this).css("color","#aaa");
+		}
 	});
 });
 

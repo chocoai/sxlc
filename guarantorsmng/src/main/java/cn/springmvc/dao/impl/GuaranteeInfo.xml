@@ -23,6 +23,8 @@
     <result column="Add_Time" property="cddTime"/>
     <result column="Record_Status" property="recordStatus"/>
     <result column="Delete_Flag" property="deleteFlag"/>
+    <result column="Personal_Name" property="personalName"/>
+    <result column="Personal_IDCard" property="personalIDCard"/>
   </resultMap>
   <sql id="GuaranteeInfo_Column_List" >
     	Guarantee_ID,Personal_Id,Guarantee_NO,Guarantee_Name,
@@ -33,7 +35,13 @@
   </sql>
   <!-- 根据担保机构id 查询担保机构信息 -->
   <select id="selectGuaranteeInfoById" resultMap="GuaranteeInfo" parameterType="Map" >
-   	select <include refid="GuaranteeInfo_Column_List"></include> from Guarantee_Info where Guarantee_ID=#{guaranteeID};
+   	select Guarantee_ID,gi.Personal_Id,Guarantee_NO,Guarantee_Name,
+    	Companye_BLN,Company_OC,Tax_RegNo,Establishments,
+    	Company_Capital,Company_Address,Company_Source,
+    	Company_Business,Company_Profile,Contact_Name,
+    	Contact_Phone,Contact_Email,Add_Time,Record_Status,Delete_Flag
+    	,pbi.Personal_Name,pbi.Personal_IDCard
+    from Guarantee_Info gi left join personal_base_info pbi on gi.Personal_Id=pbi.Personal_Id where Guarantee_ID=#{guaranteeID};
   </select>
   
   <!-- 分页查询所有担保机构信息 -->
@@ -271,7 +279,7 @@
   	<result column="Max_Amount" property="maxAmount"/>
   </resultMap>
   <!-- 根据保荐机构id查询担保机构担保借款范围 -->
-  <select id="selectGuaranteeBorrowing" resultType="GuaranteeBorrowing" parameterType="Map">
+  <select id="selectGuaranteeBorrowing" resultMap="GuaranteeBorrowing" parameterType="Map">
   	select Guarantee_ID,Min_Amount,Max_Amount
   	 from Guarantee_Borrowing 
   	<where>
@@ -304,7 +312,7 @@
   	<result column="Deadline_Type" property="deadlineType"/>
   </resultMap>
   <!-- 根据保荐机构id,期限类型查询担保机构期限范围 -->
-  <select id="selectGuaranteePeriod" resultType="GuaranteePeriod" parameterType="Map">
+  <select id="selectGuaranteePeriod" resultMap="GuaranteePeriod" parameterType="Map">
   	select Guarantee_ID,Min_Deadline,Max_Deadline,Deadline_Type
   	 from Guarantee_Period 
   	<where>
@@ -334,7 +342,7 @@
   	<result column="Project_Name" property="projectName"/>
   </resultMap>
   <!-- 根据保荐机构id,查询担保项目类型 -->
-  <select id="selectGuaranteeRelational" resultType="GuaranteeRelational" parameterType="Map">
+  <select id="selectGuaranteeRelational" resultMap="GuaranteeRelational" parameterType="Map">
   	select gr.Guarantee_ID,gr.Project_ID,pi.Project_Name
   	 from Guarantee_Relational gr left join ProjectBaseInfo pi on pi.Project_ID=gr.Project_ID 
   	<where>
@@ -355,5 +363,85 @@
   	delete from Guarantee_Period
   		where Guarantee_ID=#{guaranteeID}
   </delete>
+  <!-- 根据担保机构id查询管理员信息 -->
+  <select id="findGuaranteeAdmin" resultType="cn.springmvc.model.GuaranteeAdminEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+  		SELECT a.Admin_ID adminID,a.adminName adminName,gmi.Add_Time addTime,gim.Status status FROM Guarantee_Manage_Info gmi LEFT JOIN Admin a ON gmi.Admin_ID=a.Admin_ID
+	WHERE gim.Guarantee_ID=#{map.guaranteeID}
+  </select>
+  <!-- 启用 停用 担保机构管理员 -->
+  <update id="updateGuaranteeAdmin"  parameterType="Map">
+  		update Guarantee_Manage_Info set Status=#{statu} where Guarantee_ID=#{guaranteeID} and Admin_ID=#{adminId}
+  </update>
+  <!-- 添加担保机构管理员 -->
+  <insert id="insertGuaranteeAdmin" parameterType="Map">
+  		insert into Guarantee_Manage_Info(Admin_ID,Guarantee_ID,Add_Time,Status)
+  			values(#{adminId},#{guaranteeID},now(),1)
+  </insert>
+  <resultMap id="GuaranteeInfoToRaiseCashRecords" type="cn.springmvc.model.InstitutionsRecordsEntity" >
+  	 <result column="RealMoney" property="realAmount"/>
+  	 <result column="WithdrawalMoney" property="WithdrawalMoney"/>
+  	 <result column="feeAmount" property="feeAmount"/>
+  	 <result column="Receive_Date" property="dealTime"/>
+  	 <result column="Mer_Billno" property="orderNumber"/>
+  	 <result column="Third_Mer_Billno" property="loanNumber"/>
+  	 <result column="Statu" property="statu"/>
+  </resultMap>
+  <!-- 分页查询担保机构充值、提现记录 -->
+  <select id="InstitutionsToRaiseCashRecords" resultMap="GuaranteeInfoToRaiseCashRecords" parameterType="product_p2p.kit.pageselect.PageEntity">
+  	select 
+		CAST(((AES_DECRYPT(UNHEX(Real_Money),#{map.skey}))) as signed) RealMoney,
+		CAST(((AES_DECRYPT(UNHEX(Withdrawal_Money),#{map.skey}))) as signed) amount,
+		CAST(((AES_DECRYPT(UNHEX(Third_Mng_Fee),#{map.skey}))) as signed)-CAST(((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{map.skey}))) as signed) feeAmount,
+		Receive_Date,Mer_Billno,Third_Mer_Billno,Statu
+ 	from Member_Withdrawal_Recharge 
+  	<where>
+  		Member_Type = 1 and
+  		Deal_Type = #{map.dealType}
+  		<if test="#{map.startdealTime}!=null">
+  			Receive_Date>=#{map.startdealTime}
+  		</if>
+  		<if test="#{map.enddealTime}!=null">
+  			and #{map.enddealTime}>=Receive_Date
+  		</if>
+  		<if test="#{map.merBillno}!=null">
+  			and Mer_Billno like '%#{map.merBillno}%'
+  		</if>
+  		<if test="#{map.thirdMerBillno}!=null">
+  			and Third_Mer_Billno like '%#{map.thirdMerBillno}%'
+  		</if>
+  		<if test="#{map.statu}!=-1">
+  			and Statu = #{map.statu}
+  		</if>
+  	</where>
+  	<if test="#{map.amountStatu}==1">
+  		order by amount desc
+  	</if>
+  	<if test="#{map.amountStatu}==2">
+  		order by amount asc
+  	</if>
+  	<if test="#{map.feeStatu}==1">
+  		order by feeAmount desc
+  	</if>
+  	<if test="#{map.feeStatu}==2">
+  		order by feeAmount asc
+  	</if>
+  	<if test="#{map.RealMoney}==1">
+  		order by RealMoney desc
+  	</if>
+  	<if test="#{map.RealMoney}==2">
+  		order by RealMoney asc
+  	</if>
+  </select>
+  
+  
+  <!-- 查询担保机构银行卡信息 -->
+<!--   <select id=""> -->
+<!--   	 select mbc.Receive_Card,mbc.Bank_Card_Id, bci.Bank_No,bci.Bank_Phone,bci.Branch,bci.Branch_Address, -->
+<!-- 	 bci.Bank_Id,bci.Card_Province,bci.Card_City,mbc.Bank_Card_Id -->
+<!-- 	 from Member_Bank_Card mbc -->
+<!-- 	 left join Bank_Card_Info bci on mbc.Bank_Card_Id= mbc.Bank_Card_Id -->
+<!--   </select> -->
+	
+
   
 </mapper>

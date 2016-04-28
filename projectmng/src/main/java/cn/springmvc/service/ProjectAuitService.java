@@ -11,14 +11,13 @@
 * @version V5.0 */
  
 package cn.springmvc.service; 
-
-import java.util.HashMap;
+ 
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity; 
-import cn.springmvc.model.ProjectAppAttachmentEntity;
-import cn.springmvc.model.ProjectAppProcessEntity;
+import cn.springmvc.model.ProjectAppAttachmentEntity; 
 import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectCheckAttachDealEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
@@ -60,7 +59,8 @@ public interface ProjectAuitService {
 	 * @return int 返回类型  -1 该项目已审核通过；-3 该项目该审核批次已审核；-2 借款标题已存在 ； 1  审核通过  
 	 * @date 2016-3-23 下午3:46:38
 	 */
-	public int projectAudit(Map<String,Object> map);
+	public int projectAudit(Map<String,Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo);
 	
 	/**
 	 *  根据项目申请id查询项目申请审核附件
@@ -70,7 +70,7 @@ public interface ProjectAuitService {
 	 * @return List<ProjectAppAttachmentEntity> 返回类型 
 	 * @date 2016-3-23 下午4:04:47
 	 */
-	public List<ProjectAppAttachmentEntity> selectProjectAppAttachment(int projectID);
+	public List<ProjectAppAttachmentEntity> selectProjectAppAttachment(long projectID);
 	/**
 	 *  分页查询审核记录
 	 *  @param pageEntity  分页实体 map{applyId(项目申请ID)}
@@ -104,7 +104,7 @@ public interface ProjectAuitService {
 	 * @Description: 审核项目  
 	 * @param map #{ApplyId}项目申请ID
 	  			#{Indexs}当前审批流程序号
-				#{projectTitle}项目编号
+				#{projectTitle}项目名称
 				#{uses}借款用途
 				#{repaySource}还款来源
 				#{amount}借款金额
@@ -117,17 +117,19 @@ public interface ProjectAuitService {
 				#{increaseRange},加价幅度 0：表示无限制
 				#{investMax},最大投资比例 
 				#{investCountMax},最大投资笔数 0
-				#{checkStatu} 1：通过 -1：打回
+				#{checkStatu} 1：通过 -1：打回  2通过需补齐资料
 				#{CheckRemark},审核意见
 				#{adminID},操作员
 				#{checkid},审核意见ID
 				#{ProcessID},审批点ID
 				#{sIndexs},上一审批流程序号 
-	 * @param projectCheckAttachList 附件列表
+	 * @param affix 附件列表  附件名称,附件路径 ;附件名称,附件路径 ;附件名称,附件路径 
+	 * @param adminID 操作员 
 	 * @return int 返回类型  -1 该项目已审核通过；-3 该项目该审核批次已审核；-2 借款标题已存在 ； 1  审核通过  ,-4 上级审核批次未通过
 	 * @date 2016-3-23 下午3:46:38
 	 */
-	public int projectAudit(Map<String,Object> map,List<ProjectCheckAttachEntity> projectCheckAttachList);
+	public int projectAudit(Map<String,Object> map,String affix,long adminID,InsertAdminLogEntity 
+			logentity,String[] sIpInfo);
 	
 	/**
 	 *  根据项目申请id查询项目审核附件
@@ -137,7 +139,7 @@ public interface ProjectAuitService {
 	 * @return List<selectProjectCheckAttachTotal> 返回类型 
 	 * @date 2016-3-23 下午4:04:47
 	 */
-	public List<ProjectCheckAttachEntity> selectProjectCheckAttachTotal(int projectID);
+	public List<ProjectCheckAttachEntity> selectProjectCheckAttachTotal(long projectID);
 	/**
 	 *  新增审核附件
 	 * @author 刘利   
@@ -156,7 +158,8 @@ public interface ProjectAuitService {
 	 * @return int 返回类型 
 	 * @date 2016-3-23 下午6:34:20
 	 */
-	public int deleteProjectCheckAttachone(Map<String,Object> map);
+	public int deleteProjectCheckAttachone(Map<String,Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo);
 	/**
 	 * 插入附件操作记录
 	 * @author 刘利   

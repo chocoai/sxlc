@@ -33,20 +33,15 @@ legend{
 	padding:0 10px;
 	border:0;
 	width:auto;
-	font-size: 14px;
-    color: #0F741A;
-    font-weight: 600;
+	font-size: 13px;
+    font-weight:400;
 }
 .config{
 	padding:15px;
 	width:100%;
 }
-.col3{
-	min-width: 210px;
-	padding-left:20px;
-}
 .offset-col3{
-	margin-left:200px;
+	margin-left:180px;
 	margin-top:10px;
 }
 .form-control{
@@ -59,9 +54,9 @@ span.sign,
     height: 100%;
     margin-left: 4px;
 }
-span.sign{
+/* span.sign{
     font-weight: bold;
-}
+} */
 .input-alert{
     color:red;
     float:left;
@@ -83,19 +78,208 @@ span.sign>i{
 	margin-left:50px;
 }
 /* 复选框 */
-.morecheck{
+/* .morecheck{
 	margin-left:20px;
-}
+} */
 .morecheck>label{
 	margin-right:15px;
 }
-
-
-
-
-
-
-
-
-
-
+.frontinfodiv input{
+	vertical-align:sub;
+}
+/* 财务设置-自动投标奖励设置 */
+.autobidbtn,
+.investfeebtn,
+.redvoucherbtn{
+	margin-top:0px;
+}
+/* 短信设置-消息内容配置开始部分 */
+.msgconfigtext{
+	display: inline-block;
+    vertical-align: middle;
+}
+.msgformgroup {
+    text-align: right;
+    margin: 5px 0;
+    width: 45%;
+}
+.msgcontentbtn{
+	text-align:center;
+	margin:25px;
+}
+.msgcontentbtn button{
+	font-size:13px;
+}
+/* 短信设置-消息内容配置结束部分 */
+/* 短信设置-消息提醒配置开始部分 */
+.msgalertform .form-group{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.control-label{
+	display:inline-block;
+	width:120px;
+	text-align:right;
+}
+.msgalertform input{
+	margin:0;
+}
+.msgalerttab li a{
+	cursor:pointer;
+}
+/* 短信设置-消息提醒配置开始部分 */
+/* 短信设置-消息接口配置 */
+.msgp-add table .con,.msgp-modify table .con{
+	width:335px;
+}
+/* 前台借款信息填写配置 */
+.frontinfodiv{
+	display:inline-block;
+	width:120px; 
+	text-align:left;
+	line-height:20px;
+}
+.frontinfobtn{
+	text-align:center;
+	margin:25px auto 20px auto;
+}
+.frontinfobtn button{
+	font-size:13px;
+	padding:5px 11px;
+}
+/* vip配置 */
+.formsettinglabel{
+	width:200px;
+    text-align: right;
+}
+/* 协议配置 */
+/* .linkedoperation{
+	width:150px;
+	height:30px;
+} */
+/* 账单催收 */
+.collectbill{
+	text-align:center;
+}
+.investfeediv,
+.autobiddiv,
+.redvoucherdiv{
+	margin-bottom:0 !important;
+}
+.billtextarea{
+	width:95%;
+}
+/* 托管平台设置 */
+.testinterfaceselect,
+.msginterfaceselect,
+.linkedoperation{
+	width:186px;
+	height:29px;
+	border-color:#ccc;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    padding: 4px 8px;
+}
+.agreementinput{
+	width:186px;
+	float:left;
+}
+.recaltextarea{
+	width:185px;
+	height:69px;
+}
+.billfiel{
+	max-width:960px;
+	margin:20px auto;
+}
+.billconfig{
+	text-align:center;
+}
+.billfiel .offset-col3{
+	margin-top:0 !important;
+}
+.billfiel .form-group{
+	margin-bottom:15px;
+}
+.billbtn{
+	margin-left:auto;
+}
+.billbtn button{
+	margin-top:25px;
+}
+.interfacepath{
+	width:300px;
+}
+.frontloanlabel{
+	width:180px;
+}
+.vipsetting{
+	text-align:center;
+	max-width:960px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.vipsetting .offset-col3{
+	margin-left:0;
+	margin-top:0;
+}
+.vipsetting .form-group{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.addproprocessbtn{
+	margin-top:30px;
+}
+.masgtip{
+	text-align:right;
+	margin-right:35px;
+}
+.autobidbtn{
+	max-width:360px;
+}
+.autobidfd,.configfd,.investfd{
+	max-width:960px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.chargefeebtn{
+	max-width:650px;
+}
+.controlabel{
+	width:130px;
+	float:left;
+	line-height:38px;
+}
+/* 公共按钮 */
+.cmbtncontainer{
+	padding: 0 10px 12px;
+    pointer-events: auto;
+    margin-top: 30px;
+    margin-left: 20px;
+    text-align: center;
+}
+.cmbtncontainer a {
+    height: 28px;
+    line-height: 28px;
+    margin: 0 6px;
+    padding: 0 15px;
+    border: 1px solid #dedede;
+    background-color: #f1f1f1;
+    color: #333;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: top;
+}
+.cmbtncontainer a:hover {
+    opacity: .9;
+    text-decoration: none;
+}
+.cmbtncontainer .commonbtn0{
+	border-color: #4898d5;
+    background-color: #2e8ded;
+    color: #fff;
+}

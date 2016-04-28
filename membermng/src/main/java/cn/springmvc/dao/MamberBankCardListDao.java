@@ -81,6 +81,26 @@ public interface MamberBankCardListDao {
 	 * @return BankCardInfoEntity 返回类型 
 	 * @date 2016-3-28 下午3:36:48
 	 */
-	public BankCardInfoEntity selectMemberBankCardByID(int bankCardId);
+	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId);
+	/**
+	 * 查询该会员银行卡数量
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return int 返回类型 
+	 * @date 2016-4-14 下午3:23:08
+	 */
+	public int selectMemberBankCardCount(Map<String,Object> map);
+	/**
+	 * 查询该该银行卡是否存在
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return int 返回类型 
+	 * @date 2016-4-27 下午9:15:41
+	 */
+	public int selectMemberBankCardisExist(Map<String,Object> map);
 }
 

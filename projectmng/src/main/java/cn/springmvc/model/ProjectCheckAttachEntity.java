@@ -66,7 +66,7 @@ public class ProjectCheckAttachEntity {
     /**
      * 操作员ID
      */
-    private int adminID;
+    private long adminID;
     /**
      * 备注
      */
@@ -142,12 +142,7 @@ public class ProjectCheckAttachEntity {
 	public void setDeleteapName(String deleteapName) {
 		this.deleteapName = deleteapName;
 	}
-	public int getAdminID() {
-		return adminID;
-	}
-	public void setAdminID(int adminID) {
-		this.adminID = adminID;
-	}
+ 
 	public String getDealRecord() {
 		return dealRecord;
 	}
@@ -159,6 +154,12 @@ public class ProjectCheckAttachEntity {
 	}
 	public void setProcessID(int processID) {
 		this.processID = processID;
+	}
+	public long getAdminID() {
+		return adminID;
+	}
+	public void setAdminID(long adminID) {
+		this.adminID = adminID;
 	}	 		
 
 }

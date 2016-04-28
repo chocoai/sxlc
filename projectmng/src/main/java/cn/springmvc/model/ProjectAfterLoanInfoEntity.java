@@ -19,7 +19,7 @@ package cn.springmvc.model;
  * @date 2016-3-22 上午11:50:23  */
 
 public class ProjectAfterLoanInfoEntity {
-	private long ID;	
+	private long id;	
 	/**
 	 * 项目申请ID	
 	 */
@@ -40,12 +40,6 @@ public class ProjectAfterLoanInfoEntity {
 	 * 详情描述
 	 */
 	private long  detail;
-	public long getID() {
-		return ID;
-	}
-	public void setID(long iD) {
-		ID = iD;
-	}
 	public long getApplyId() {
 		return applyId;
 	}
@@ -75,6 +69,18 @@ public class ProjectAfterLoanInfoEntity {
 	}
 	public void setDetail(long detail) {
 		this.detail = detail;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	@Override
+	public String toString() {
+		return "ProjectAfterLoanInfoEntity [id=" + id + ", applyId=" + applyId
+				+ ", adminID=" + adminID + ", recordDate=" + recordDate
+				+ ", abstracts=" + abstracts + ", detail=" + detail + "]";
 	}		
 
 }

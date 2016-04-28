@@ -14,11 +14,13 @@ import org.springframework.stereotype.Component;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.SelectGuaranteeInfoDao;
+import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
 import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoEntity;
 import cn.springmvc.model.GuaranteePeriodEntity;
 import cn.springmvc.model.GuaranteeRelationalEntity;
+import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
 
@@ -129,6 +131,18 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 		return getSqlSession().selectList("GuaranteeInfoXML.selectGuaranteeRelational",map);
 	}
 	
-	
+	@Override
+	public List<GuaranteeAdminEntity> findGuaranteeAdmin(PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("GuaranteeInfoXML.findGuaranteeAdmin", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+	}
+	@Override
+	public List<InstitutionsRecordsEntity> InstitutionsToRaiseCashRecords(
+			PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("GuaranteeInfoXML.selectAllGuaranteeInfo", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+	}
 }
 

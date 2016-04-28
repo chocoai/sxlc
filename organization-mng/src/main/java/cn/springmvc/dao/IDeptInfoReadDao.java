@@ -58,5 +58,16 @@ public interface IDeptInfoReadDao {
 	* @date 2016-4-20 下午1:46:06
 	 */
 	public List<DeptInfo> findDeptInfoByParentId(Map<String,Object> param);
+	
+	/**
+	 * 无条件不分页获取部门列表信息
+	 * TODO
+	 * 创建日期：2016-4-22下午6:50:19
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<DeptInfo>
+	 */
+	public List<DeptInfo> getDeptList();
 }
 

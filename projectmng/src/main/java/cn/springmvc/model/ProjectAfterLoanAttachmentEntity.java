@@ -60,6 +60,13 @@ public class ProjectAfterLoanAttachmentEntity {
 	public void setAttachUrl(String attachUrl) {
 		this.attachUrl = attachUrl;
 	}
+	@Override
+	public String toString() {
+		return "ProjectAfterLoanAttachmentEntity [infoId=" + infoId
+				+ ", projectAfterLoanInfoEntity=" + projectAfterLoanInfoEntity
+				+ ", attachTitle=" + attachTitle + ", attachUrl=" + attachUrl
+				+ "]";
+	}
 
 }
 

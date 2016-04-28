@@ -14,6 +14,18 @@ $(function(){
 	});
 });
 /*   end     */
+
+/*      婚姻认证的切换             */
+$(function(){
+	$(".radioLabel").each(function(){
+		$(this).click(function(){
+			$(this).addClass("checked").siblings(".radioLabel").removeClass("checked");
+			$(this).prev().attr("checked",true);
+			$(this).siblings(".radioLabel").prev().attr("checked",false);
+		});
+	});
+});
+/*         end           */
 /*  已认证、未认证等显示的链接页面不一的代码         */
 $(function(){
 	$(".tdSpan").each(function(){
@@ -40,13 +52,15 @@ $(function(){
 /*   end    */
 /* 添加认证      */
 $(function(){
-	/*  end   */
-	/*  认证收缩         */
-	$(".addAuthen").click(function(){
-		var content = $(".authen").clone();
+	var content = $(".addAuthen").parent().next().html();
+	content = "<div class='cloneDiv'>" + content + "</div>";
+	$(".addAuthen").on("click",function(){
 		$(this).parent().parent().append(content);
+		inputText(".cloneDiv:last");
+		checkCAR();
 	});
 });
+
 function scale(obj){
 	if(!$(obj).hasClass("authenScaleClick")){
 		$(obj).addClass("authenScaleClick").removeClass("authenScaleBtn");
@@ -57,68 +71,159 @@ function scale(obj){
 	}
 }
 /*    图片上传预览             */
+//function getFileUrl(sourceId) { 
+//	var url; 
+//	if(navigator.userAgent.indexOf("Firefox")>0) { // Firefox 
+//		url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0)); 
+//	} else if(navigator.userAgent.indexOf("Chrome")>0) { // Chrome 
+//		url = window.URL.createObjectURL(document.getElementById(sourceId).files.item(0)); 
+//	} else {
+//		var file = document.getElementById(sourceId);
+//		file.select();
+//		file.blur();
+//        var url = document.selection.createRange().text;
+//	}
+//	return url; 
+//} 
+//var countli =0;
+//$(function(){
+//	$(".subPicture-Area").each(function(){countli++;});
+//	$(".subPicture-Area").each(function(){
+//		if($(this).find('img').attr('src') != undefined){
+//			$(this).find('button').show();
+//		}else{
+//			$(this).find('button').hide();
+//		}
+//	});
+//});
+//function preImg(path,sourceId, targetId) { 
+//	var url = getFileUrl(sourceId);
+//	countli++;
+//	var stringli = 
+//		'<li>'+
+//		'<div class="input-Area">'+
+//		'<input type="text" placeholder="请输入上传类型">'+
+//		'</div>'+
+//		'<div class="subPicture-Area">'+
+//		'<div></div>'+
+//		'<span>添加图片</span>'+
+//		'<img id="img-'+countli+'" class="img"/>'+ 
+//		'<input name="uploadFile" type="file"  class="file" id="file-'+countli+'" size="28"  onchange="preImg(\''+path+'\',this.id,\'img-'+countli+'\');" />'+
+//		'<button onclick="$(this).parent().parent().remove();"></button>'+
+//		'</div>'+
+//		'<div class="infor-Area">'+
+//		'<input type="hidden" value="" name="imgURL">'+
+//		'</div>'+
+//		'</li>';
+//	var imgPre = document.getElementById(targetId); 
+//	var isIE = navigator.userAgent.match(/MSIE/)!= null;
+//	if(isIE) {
+//		imgPre.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale',src=\"" + url + "\")";
+//		imgPre.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+//	} else{
+//		imgPre.src = url; 
+//	}
+//	$("#"+sourceId).parent().next().find('input').val(url);
+//	if($("#"+sourceId).prev('img').attr('src') != undefined){
+//		if($("#"+sourceId).prev('img').attr('src') != 'null'){
+//			if($("#"+sourceId).next('button').length > 0){
+//				$("#"+sourceId).parent().parent().parent().append(stringli);
+//				$("#file-"+(countli)).next('button').hide();
+//				$("#"+sourceId).next('button').show();
+//			}
+//		}else if($("#"+sourceId).next('button').length > 0){
+//			$("#"+sourceId).parent().parent().remove();
+//		}
+//	}
+//	uploadProjectImg(path,sourceId,targetId);
+//}
+//function shoppreImg(path,sourceId, targetId) { 
+//	var url = getFileUrl(sourceId);
+//	var temp_index=parseInt($(".shopImagsCount:last").val())+1;
+//	countli++;
+//	var stringli = 
+//		'<li>'+
+//		'<div class="input-Area">'+
+//		'<input type="hidden" value="'+temp_index+'" class="shopImagsCount">'+
+//		'<input type="hidden" value="2" name="projectInfoEntity.projectInfoShopEntity['+temp_index+'].shopType">'+
+//		'<input type="text" placeholder="请输入上传类型" maxlength="10" name="projectInfoEntity.projectInfoShopEntity['+temp_index+'].shopName">'+
+//		'</div>'+
+//		'<div class="subPicture-Area">'+
+//		'<div></div>'+
+//		'<span>添加图片</span>'+
+//		'<img id="img-'+countli+'" class="img"/>'+ 
+//		'<input name="uploadFile" type="file"  class="file" id="file-'+countli+'" size="28"  onchange="shoppreImg(\''+path+'\',this.id,\'img-'+countli+'\');" />'+
+//		'<button onclick="$(this).parent().parent().remove();"></button>'+
+//		'</div>'+
+//		'<div class="infor-Area">'+
+//		'<input type="hidden" value="" name="projectInfoEntity.projectInfoShopEntity['+temp_index+'].shopUrl">'+
+//		'</div>'+
+//		'</li>';
+//	var imgPre = document.getElementById(targetId); 
+//	var isIE = navigator.userAgent.match(/MSIE/)!= null;
+//	if(isIE) {
+//		imgPre.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale',src=\"" + url + "\")";
+//		imgPre.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+//	} else{
+//		imgPre.src = url; 
+//	}
+//	$("#"+sourceId).parent().next().find('input').val(url);
+//	if($("#"+sourceId).prev('img').attr('src') != undefined){
+//		if($("#"+sourceId).prev('img').attr('src') != 'null'){
+//			if($("#"+sourceId).next('button').length > 0){
+//				$("#"+sourceId).parent().parent().parent().append(stringli);
+//				$("#file-"+(countli)).next('button').hide();
+//				$("#"+sourceId).next('button').show();
+//			}
+//		}else if($("#"+sourceId).next('button').length > 0){
+//			$("#"+sourceId).parent().parent().remove();
+//		}
+//	}
+//	uploadProjectImg(path,sourceId,targetId);
+//}
+//function creapreImg(path,sourceId, targetId) { 
+//	var url = getFileUrl(sourceId);
+//	var temp_index=parseInt($(".creadImagsCount:last").val())+1;
+//	countli++;
+//	var stringli = 
+//		'<li>'+
+//		'<div class="input-Area">'+
+//		'<input type="hidden" value="'+temp_index+'" class="creadImagsCount">'+
+//		'<input type="hidden" value="2" name="projectInfoEntity.projectInfoCreditEntity['+temp_index+'].annexType">'+
+//		'<input type="text" placeholder="请输入上传类型" maxlength="10" name="projectInfoEntity.projectInfoCreditEntity['+temp_index+'].annexName">'+
+//		'</div>'+
+//		'<div class="subPicture-Area">'+
+//		'<div></div>'+
+//		'<span>添加图片</span>'+
+//		'<img id="img-'+countli+'" class="img"/>'+ 
+//		'<input name="uploadFile" type="file"  class="file" id="file-'+countli+'" size="28"  onchange="creapreImg(\''+path+'\',this.id,\'img-'+countli+'\');" />'+
+//		'<button onclick="$(this).parent().parent().remove();"></button>'+
+//		'</div>'+
+//		'<div class="infor-Area">'+
+//		'<input type="hidden" value="" name="projectInfoEntity.projectInfoCreditEntity['+temp_index+'].annexUrl">'+
+//		'</div>'+
+//		'</li>';
+//	var imgPre = document.getElementById(targetId); 
+//	var isIE = navigator.userAgent.match(/MSIE/)!= null;
+//	if(isIE) {
+//		imgPre.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale',src=\"" + url + "\")";
+//		imgPre.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+//	} else{
+//		imgPre.src = url; 
+//	}
+//	$("#"+sourceId).parent().next().find('input').val(url);
+//	if($("#"+sourceId).prev('img').attr('src') != undefined){
+//		if($("#"+sourceId).prev('img').attr('src') != 'null'){
+//			if($("#"+sourceId).next('button').length > 0){
+//				$("#"+sourceId).parent().parent().parent().append(stringli);
+//				$("#file-"+(countli)).next('button').hide();
+//				$("#"+sourceId).next('button').show();
+//			}
+//		}else if($("#"+sourceId).next('button').length > 0){
+//			$("#"+sourceId).parent().parent().remove();
+//		}
+//	}
+//	uploadProjectImg(path,sourceId,targetId);
+//}
 /*      end      */
-$(function(){
-	/* 手机验证js代码     */
-	$(".phoneBind").focus(function(){
-		if(this.value == ""){
-			$(this).layoutFocus("请输入手机号");
-			$(this).parent().find(".tipError").remove();
-			$(this).parent().find(".tipOk").remove();
-		}
-	});
-	$(".phoneBind").keyup(function(){
-		var str = this.value;
-		var reg = new RegExp("^[0-9]{11}$");
-		$(this).parent().find(".tip").remove();
-		if(reg.test(str)){
-			if($(this).parent().find(".tipOk").length > 0){
-				return false;
-			}else{
-				$(this).layoutSuccess();
-				$(this).parent().find(".tipError").remove();
-			}
-		}else{
-			if($(this).parent().find(".tipError").length > 0){
-				return false;
-			}else{
-				$(this).layoutWarning("11位数字");
-				$(this).parent().find(".tipOk").remove();
-			}
-		}
-	});
-	$(".phoneBind").blur(function(){
-		$(this).parent().find(".tip").remove();
-	});
-	/* 法人身份认证 身份证验证js */
-	$(".personId").focus(function(){
-		if($(this).val() == ""){
-			$(this).layoutFocus("请输入您的身份证号");
-			$(this).parent().find(".tipError").remove();
-			$(this).parent().find(".tipOk").remove();
-		}
-	});
-	$(".personId").keyup(function(){
-		var str = this.value;
-		var reg = new RegExp(/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/); 
-		$(this).parent().find(".tip").remove();
-		if(reg.test(str)){
-			if($(this).parent().find(".tipOk").length > 0){
-				return false;
-			}else{
-				$(this).layoutSuccess();
-				$(this).parent().find(".tipError").remove();
-			}
-		}else{
-			if($(this).parent().find(".tipError").length > 0){
-				return false;
-			}else{
-				$(this).layoutWarning("请输入正确的身份证号");
-				$(this).parent().find(".tipOk").remove();
-			}
-		}
-	});
-	$(".personId").blur(function(){
-		$(this).parent().find(".tip").remove();
-	});
-});
+

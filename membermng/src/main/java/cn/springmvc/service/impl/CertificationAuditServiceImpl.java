@@ -50,6 +50,7 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 
 	@Override
 	public Map<String, Object> handleEnterpriseCerAudit(Map<String, Object> map,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("操作企业营业执照认证 审核:"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
 		return handleCertificationAuditDaoImpl.handleEnterpriseCerAudit(map);
@@ -57,6 +58,7 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 
 	@Override
 	public Map<String, Object> handleEnterpriseBLAttest(Map<String, Object> map,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("操作企业会员工商执照认证信息审核:"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
 		return handleCertificationAuditDaoImpl.handleEnterpriseBLAttest(map);
@@ -64,6 +66,7 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 
 	@Override
 	public Map<String, Object> handleAttest(Map<String, Object> map,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("会员相关认证操作:"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
 		return handleCertificationAuditDaoImpl.handleAttest(map);
@@ -71,6 +74,7 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 
 	@Override
 	public Map<String, Object> handlequalification(Map<String, Object> map,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("个人会员最高学历认证操作:"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
 		return handleCertificationAuditDaoImpl.handlequalification(map);
@@ -78,6 +82,7 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 
 	@Override
 	public Map<String, Object> handlenameAuthentication(Map<String, Object> map,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("个人会员实名认证操作:"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
 		return handleCertificationAuditDaoImpl.handlenameAuthentication(map);
@@ -85,6 +90,7 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 
 	@Override
 	public Map<String, Object> handlemarriage(Map<String, Object> map,InsertAdminLogEntity entity, String[] sIpInfo) {
+		entity.setsDetail("个人会员婚姻认证操作:"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
 		return handleCertificationAuditDaoImpl.handlemarriage(map);
@@ -92,7 +98,8 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 
 	@Override
 	public Map<String, Object> handleAddress(Map<String, Object> map,InsertAdminLogEntity entity, String[] sIpInfo) {
-		//optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		entity.setsDetail("个人会员住址认证操作:"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
 		return handleCertificationAuditDaoImpl.handleAddress(map);
 	}

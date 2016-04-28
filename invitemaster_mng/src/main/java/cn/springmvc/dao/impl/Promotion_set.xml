@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="Promotion_set">     
+	
+	<!-- 查询结果封装 -->
+    <resultMap type = "cn.invitemastermng.model.MemberInfoEntity" id = "IM_apply">
+        <id property = "memberID"				column = "Member_ID" />
+		<result property = "memberNo"       	column = "Member_No" />
+		<result property = "logname"    	    column = "Logname" />
+		<result property = "memberType"  	    column = "Member_Type" />
+		<result property = "personalName" 	    column = "Personal_Name" />  
+		<result property = "regDate"       	    column = "Reg_Date" />
+		<result property = "houseAddress"    	column = "House_Address" />
+		<result property = "personalPhone"  	column = "Personal_Phone" />
+		<result property = "totalInvite" 	    column = "Total_Invite" /> 
+		<result property = "checkStatu" 	    column = "Check_Statu" /> 
+    </resultMap> 
+	<!-- 推荐达人申请记录查询:
+		Member_ID,会员ID
+		Member_No,会员编号
+		Logname,会员用户名
+		Member_Type,会员类型
+		Personal_Name,姓名
+		Reg_Date,注册时间
+		House_Address,所在地
+		Personal_Phone,手机号
+		Total_Invite,累计邀请人数
+		Check_Statu,状态
+	--> 
+	<!--传入参数整理
+		#{skey}#{Member_No}#{Logname}#{Reg_Date_Min}#{Reg_Date_Max}#{Personal_Name}#{House_Address}#{Check_Statu}
+	-->
+	<select id="getIM_apply" parameterType="Map" resultMap="IM_apply">
+		SELECT 
+		  mi.Member_ID,
+		  mi.Member_No,
+		  mi.Logname,
+		  mi.Member_Type,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
+		  mi.Reg_Date,
+		  pbi.House_Address,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
+		  (select count(1) from Member_Info mif where mif.BeinvitateCode = mi.InvitateCode) Total_Invite,
+		  ia.Check_Statu
+		FROM InviteMaster_Apply ia
+		JOIN Member_Info mi
+		  ON ia.Member_ID = mi.Member_ID
+		JOIN personal_base_info pbi	
+		  ON mi.Personal_Id = pbi.Personal_Id																											
+		WHERE IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+		  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+		  AND IF(#{Reg_Date_Min} IS NULL OR #{Reg_Date_Min} = '', 1=1, mi.Reg_Date>=#{Reg_Date_Min})
+		  AND IF(#{Reg_Date_Max} IS NULL OR #{Reg_Date_Max} = '', 1=1, mi.Reg_Date&lt;=#{Reg_Date_Max})
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
+		  AND IF(#{House_Address} IS NULL, 1=1, LOCATE(#{House_Address},pbi.House_Address)>0)
+		  AND IF(#{Check_Statu} IS NULL OR #{Check_Statu} = '', 1=1, ia.Check_Statu = #{Check_Statu})
+		ORDER BY mi.Reg_Date
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	<!-- 查询结果封装 -->
+    <resultMap type = "cn.invitemastermng.model.MemberInfoEntity" id = "IM_Invite"> 
+		<result property = "memberNo"       	column = "Member_No" />
+		<result property = "logname"    	    column = "Logname" />  
+		<result property = "houseAddress"    	column = "House_Address" /> 
+		<result property = "personalPhone"  	column = "Personal_Phone" />
+		<result property = "personalName" 	    column = "Personal_Name" />  
+		<result property = "regDate"       	    column = "Reg_Date" />
+		<result property = "iSThird" 	        column = "IS_Third" /> 
+		<result property = "investAmount" 	    column = "Invest_Amount" /> 
+		<result property = "repayAmount" 	    column = "Repay_Amount" /> 
+		<result property = "imNo" 	            column = "Im_No" /> 
+		<result property = "inviteLogname" 	    column = "Invite_Logname" />  
+    </resultMap> 
+	<!-- 推荐达人邀请记录查询:
+		Member_No,会员编号
+		Logname,会员用户名
+		Personal_Name,姓名
+		House_Address,所在地
+		Personal_Phone,手机号
+		IS_Third,是否开通第三方:1是0否
+		Reg_Date,注册时间
+		Invest_Amount,累计成功投资
+		Repay_Amount,累计成功借款
+		Im_No,推荐达人编号
+		Invite_Logname,推荐达人
+	--> 
+	<!--传入参数整理
+		#{skey}#{Im_No}
+	-->
+	<select id="getIM_Invite" parameterType="Map" resultMap="IM_Invite">
+		SELECT 
+		  mi.Member_ID,
+		  mi.Member_No,
+		  mi.Logname,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
+		  pbi.House_Address,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
+		  (SELECT (CASE COUNT(1) WHEN 0 THEN 0 ELSE 1 END) FROM Member_Third_Info mti where mti.Member_ID = mi.Member_ID) IS_Third,
+		  (select sum(ifnull(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) AS SIGNED),0)) FROM Invest_Record ir WHERE ir.Member_ID = mi.Member_ID) Invest_Amount,
+		  (select sum(ifnull(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) AS SIGNED),0)) FROM Invest_Record ir JOIN Project_App_Record pa ON ir.Apply_Id = pa.Apply_Id WHERE pa.Member_ID = mi.Member_ID) Repay_Amount,
+		  im.Im_No,
+		  mif.Logname Invite_Logname
+		FROM Member_Info mi	<!--推荐达人推荐会员的信息-->
+		JOIN Member_Info mif <!--推荐达人的信息-->
+		  ON mi.BeinvitateCode = mif.InvitateCode
+		JOIN Invite_Master im
+		  ON mif.Member_ID = im.Member_ID
+		JOIN personal_base_info pbi	
+		  ON mi.Personal_Id = pbi.Personal_Id																											
+		WHERE IF(#{Im_No} IS NULL OR #{Im_No} = '', 1=1, im.Im_No = #{Im_No})
+		ORDER BY im.Im_No
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	<!-- 查询结果封装 -->
+    <resultMap type = "cn.invitemastermng.model.SeoSetEntity" id = "SEO_Display"> 
+        <id property = "SeoSetID"           column = "Seo_Set_ID" />
+        <result property = "Seo_Type_ID"    column = "seoTypeID" />
+		<result property = "seoTitle"       column = "Seo_Title" />
+		<result property = "seoDescription" column = "Seo_Description" />  
+		<result property = "seoKeyword"    	column = "Seo_Keyword" /> 
+		<result property = "seoTypeName"  	column = "Seo_Type_Name" />
+		<result property = "optDate" 	    column = "Opt_Date" />  
+		<result property = "adminName"      column = "adminName" /> 
+    </resultMap> 
+	<!-- SEO设置信息展示:
+		Seo_Title,title内容
+		Seo_Description,描述
+		Seo_Keyword,关键词
+		Seo_Type_Name,关联类型
+		Opt_Date,操作时间
+		adminName,最近一次操作管理员
+	-->
+	<select id="getSEO_Display" parameterType="Map" resultMap="SEO_Display">
+		SELECT 
+		  ss.Seo_Set_ID, 
+		  ss.Seo_Title,
+		  ss.Seo_Description,
+		  ss.Seo_Keyword,
+		  sst.Seo_Type_Name,
+		  ss.Opt_Date,
+		  (select a.adminName from Admin a where a.Admin_ID = ss.Admin_ID) adminName
+		FROM Seo_Set ss
+		JOIN (SELECT Seo_Type_ID,max(Opt_Date) Opt_Date from Seo_Set where Statu =1 group by Seo_Type_ID) s
+		  ON ss.Seo_Type_ID = s.Seo_Type_ID AND ss.Opt_Date = s.Opt_Date
+		JOIN Seo_Set_Type sst
+		  ON ss.Seo_Type_ID = sst.Seo_Type_ID AND sst.Statu = 1
+		ORDER BY sst.Seo_Type_Name
+
+	</select>
+	<!-- 查询结果封装 -->
+    <resultMap type = "cn.invitemastermng.model.RedpacketsAffairEntity" id = "Redpackets_Affair"> 
+        <id property = "affairID"            column = "Affair_ID" />
+		<result property = "createTime"       column = "CreateTime" />
+		<result property = "startDate"        column = "Start_Date" />  
+		<result property = "endDate"    	  column = "End_Date" /> 
+		<result property = "affairName"  	  column = "Affair_Name" />
+		<result property = "quantity" 	      column = "Quantity" />  
+		<result property = "affairAccount"    column = "Affair_Account" /> 
+		<result property = "receiveAffair"    column = "Receive_Affair" /> 
+		<result property = "remainingAffair"  column = "Remaining_Affair" /> 
+		<result property = "statu"            column = "Statu" /> 
+    </resultMap> 
+	<!--红包活动记录查询:
+		CreateTime,活动添加时间
+		Start_Date,活动开始时间
+		End_Date,活动结束时间
+		Affair_Name,活动名称
+		Quantity,活动红包总个数
+		Affair_Account,活动红包总金额
+		Receive_Affair,已领取活动红包总金额	
+		Remaining_Affair,剩余活动红包总金额
+		Statu,状态
+	--> 
+	<!--传入参数整理
+		#{CreateTime_Min}#{CreateTime_Max}#{Start_Date_Min}#{Start_Date_Max}#{End_Date_Min}#{End_Date_Max}#{Statu}
+	-->
+	<select id="getRedpackets_Affair" parameterType="Map" resultMap="Redpackets_Affair">
+		SELECT 
+		    ra.Affair_ID,
+			ra.CreateTime,
+			ra.Start_Date,
+			ra.End_Date,
+			ra.Affair_Name,
+			(select sum(rdr.Quantity) from Redpackets_Detail_Record rdr where rdr.Affair_ID = ra.Affair_ID) Quantity,
+			ra.Affair_Account,
+			(select sum((rdr.Quantity-rdr.Remain_Quantity)*rdr.Gift_Amount) from Redpackets_Detail_Record rdr where rdr.Affair_ID = ra.Affair_ID ) Receive_Affair,
+			(select sum(rdr.Gift_Amount*rdr.Remain_Quantity) from Redpackets_Detail_Record rdr where rdr.Affair_ID = ra.Affair_ID ) Remaining_Affair,
+			ra.Statu
+		 FROM Redpackets_Affair ra
+		WHERE IF(#{CreateTime_Min} IS NULL OR #{CreateTime_Min} = '', 1=1, ra.CreateTime>=#{CreateTime_Min})
+			  AND IF(#{CreateTime_Max} IS NULL OR #{CreateTime_Max} = '', 1=1, ra.CreateTime&lt;=#{CreateTime_Max})
+			  AND IF(#{Start_Date_Min} IS NULL OR #{Start_Date_Min} = '', 1=1, ra.Start_Date>=#{Start_Date_Min})
+			  AND IF(#{Start_Date_Max} IS NULL OR #{Start_Date_Max} = '', 1=1, ra.Start_Date&lt;=#{Start_Date_Max})
+			  AND IF(#{End_Date_Min} IS NULL OR #{End_Date_Min} = '', 1=1, ra.End_Date>=#{End_Date_Min})
+			  AND IF(#{End_Date_Max} IS NULL OR #{End_Date_Max} = '', 1=1, ra.End_Date&lt;=#{End_Date_Max})
+			  AND IF(#{Statu} IS NULL OR #{Statu} = '', 1=1, ra.Statu=#{Statu})
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'CREATETIME' THEN ra.CreateTime
+				WHEN 'START_DATE' THEN ra.Start_Date
+				WHEN 'END_DATE' THEN ra.End_Date
+				ELSE ra.CreateTime
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	 <resultMap type="cn.invitemastermng.model.MemberRedpacketsEntity" id="Redpackets_receive"> 
+		<result column="Receive_Date"    property="receiveDate" />
+		<result column="Logname"         property="logname" /> 
+		<result column="Gift_Amount" 	 property="giftAmount" /> 
+		<result column="Statu" 	         property="statu" /> 
+    </resultMap>  
+	<!--红包领取明细查询:
+		Receive_Date,领取时间
+		Logname,会员用户名
+		Gift_Amount,领取红包面额
+		Statu,使用状态（2已使用、0未用、1部分使用、3未使用已过期）
+	--> 
+	<!--传入参数整理
+		#{Affair_ID}
+	-->
+	<select id="getRedpackets_receive" parameterType="Map" resultMap="Redpackets_receive">
+		<!--统计已使用和部分使用红包-->
+		SELECT 
+			mr.Receive_Date,
+			(select mi.Logname from Member_Info mi where mi.Member_ID = mr.Member_ID) Logname, 
+			mr.Gift_Amount,
+			mr.Statu  
+		 FROM Member_Redpackets mr
+		 JOIN Redpackets_Detail_Record rdr
+		   ON mr.Project_Id = rdr.RP_Detail_ID
+		  AND mr.Gift_Type = 0
+		  AND MR.Statu BETWEEN 1 AND 2 
+		WHERE rdr.Affair_ID = #{Affair_ID}
+		UNION ALL
+		<!--统计未使用和未使用已过期红包-->
+		SELECT 
+			mr.Receive_Date,
+			(select mi.Logname from Member_Info mi where mi.Member_ID = mr.Member_ID) Logname, 
+			mr.Gift_Amount,
+			(case when mr.End_Date > now() then 3
+			else 0 end )Statu
+		 FROM Member_Redpackets mr
+		 JOIN Redpackets_Detail_Record rdr
+		   ON mr.Project_Id = rdr.RP_Detail_ID
+		  AND mr.Gift_Type = 0
+		  AND mr.Statu = 0 
+		WHERE rdr.Affair_ID = #{Affair_ID}
+	</select>
+	<!--  查询会员红包赠送配置表-->  
+    <select id="selectMemberRedpacketsSet"  resultType="cn.invitemastermng.model.MemberRedpacketsSetEntity"> 
+	     select Open_Account_RP as openAccountRP,Open_Account_RP as firstRechargeRP 
+	     from  Member_Redpackets_Set limit 1
+	</select>
+	<!--  根据ID查询会员首次投资红包赠送配置-->  
+    <select id="selectFIInvestRedSetByID" parameterType="long"  resultType="cn.invitemastermng.model.FirstInvestRedpacketsSetEntity"> 
+	     select FI_RP_ID as firpID,Invest_Amount as investAmount,RP_Rate as rpRate 
+	     from  Member_FirstInvest_Redpackets_Set where  FI_RP_ID = #{fiRpID}
+	</select>
+	<!--  分页查询会员首次投资红包赠送配置-->  
+    <select id="selectFIInvestRedSetList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultType="cn.invitemastermng.model.FirstInvestRedpacketsSetEntity"> 
+	     select FI_RP_ID as firpID,Invest_Amount as investAmount,RP_Rate as rpRate 
+	     from  Member_FirstInvest_Redpackets_Set 
+         <where>
+           <if test="map.statu == -1">
+              Statu = #{map.statu}
+           </if>
+         </where> 
+	</select>
+	<!--  cps推荐配置-->  
+    <select id="selectCpsInviteSet"  resultType="cn.invitemastermng.model.CpsInviteSetEntity"> 
+	     select First_Invest_Set as firstInvestSet,Invite_Set as inviteSet,
+	      First_Borrow_Set as firstBorrowSet ,First_Recharge_Set as firstRechargeSet 
+	     from  Cps_Invite_Set  
+	</select>
+	<!--  根据ID查询SEO信息配置-->
+	<select id="getSEOSetByID" parameterType="long" resultMap="SEO_Display">
+		SELECT 
+		  ss.Seo_Set_ID,
+		  ss.Seo_Type_ID,
+		  ss.Seo_Title,
+		  ss.Seo_Description,
+		  ss.Seo_Keyword, 
+		  ss.Opt_Date 
+		FROM Seo_Set ss where ss.Seo_Set_ID = #{seoSetID} 
+	</select>
+	<!--  查询SEO类型- 下拉选择-->
+	<select id="getSeoSetType" resultType="cn.invitemastermng.model.SeoSetTypeEntity">
+		SELECT 
+		  Seo_Type_ID as seoTypeID,
+		  Seo_Type_Name as seoTypeName 
+		FROM Seo_Set_Type   where Statu = 1 
+	</select> 
+	<!--  查询推荐达人配置-->
+	<select id="getInviteMasterSet" resultType="Integer">
+		 SELECT 
+		 Validity_Period
+		 FROM Invite_Master_Set limit 1 
+	</select>
+    <!-- 	根据ID查询红包活动详情 -->
+	<select id="selectRedpacketsAffairbyID" parameterType="long" resultType="cn.invitemastermng.model.RedpacketsAffairEntity">
+	    select Affair_ID as affairID,Affair_Name as affairName,Affair_Account as affairAccount,
+	    Start_Date as startDate,End_Date as endDate,User_End_Date as userEndDate,Remark as remark
+	     from Redpackets_Affair where Affair_ID = #{affairID} 
+	</select>
+	<!-- 	根据红包活动ID查询活动红包明细纪录 -->
+	<select id="selectRedpacketsDetailbyaffairID" parameterType="long" resultType="cn.invitemastermng.model.RedpacketsDetailRecordEntity">
+	    select RP_Detail_ID as rpDetailID,Affair_ID as affairID,Gift_Amount as giftAmount,
+	    Quantity as quantity,Remain_Quantity as remainQuantity 
+	     from Redpackets_Detail_Record where Affair_ID = #{affairID} 
+	</select>
+</mapper>

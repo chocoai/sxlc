@@ -1,6 +1,5 @@
 package  cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -23,23 +22,21 @@ public class ProjectTypeReplyListDaoImpl extends SqlSessionDaoSupport implements
 	@Override
 	public ProjectTypeReplyEntity selectProjectTypeReplyIsExistByNAme(
 			ProjectTypeReplyEntity entity) {
-		ProjectTypeReplyEntity projectTypeReplyEntity=null;
-		projectTypeReplyEntity=(ProjectTypeReplyEntity) getSqlSession().selectOne("projectTypeReply.selectProjectTypeReplyIsExistByNAme",entity);
-		return projectTypeReplyEntity;
+		
+		return getSqlSession().selectOne("projectTypeReply.selectProjectTypeReplyIsExistByNAme",entity); 
 	}
 
 	@Override
 	public List<ProjectTypeReplyEntity> selectProjectTypeReplyList(
 			PageEntity pageEntity) {
-		List<ProjectTypeReplyEntity> projectTypeReplyList=null;
-		projectTypeReplyList=getSqlSession().selectList("projectTypeReply.selectProjectTypeReplyList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
-		return projectTypeReplyList;
+		
+		return getSqlSession().selectList("projectTypeReply.selectProjectTypeReplyList",
+				pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize())); 
 	}
 	@Override
-	public ProjectTypeReplyEntity selectProjectTypeReplyByindex(int id) {
-		ProjectTypeReplyEntity projectTypeReplyEntity=null;
-		projectTypeReplyEntity=(ProjectTypeReplyEntity) getSqlSession().selectOne("projectTypeReply.selectProjectTypeReplyByindex",id);
-		return projectTypeReplyEntity;
+	public ProjectTypeReplyEntity selectProjectTypeReplyByindex(int ptIndex) {
+		
+		return getSqlSession().selectOne("projectTypeReply.selectProjectTypeReplyByindex",ptIndex); 
 	}
 	@Override
 	public int selectProjectTypeReplyEntityindex() {
@@ -49,6 +46,13 @@ public class ProjectTypeReplyListDaoImpl extends SqlSessionDaoSupport implements
 			index = (int)0;
 		}
 		return index;
+	}
+	@Override
+	public  ProjectTypeReplyEntity  selectProjectTypeReplyListfront(
+			long projectType) {
+		
+		return getSqlSession().selectOne("projectTypeReply.selectProjectTypeReplyListfront",projectType);
+		
 	}
 
 }

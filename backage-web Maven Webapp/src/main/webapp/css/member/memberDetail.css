@@ -1,0 +1,213 @@
+td.tt{
+	text-align:left !important;
+	padding:5px 20px;
+	font-size:15px;
+}
+fieldset{
+	max-width:960px;
+	margin:40px auto;
+	border:1px solid #ccc;
+}
+legend{
+	width:auto;
+	padding:0 10px;
+	margin-left:30px;
+	border:none;
+	font-size:16px;
+	font-weight:700;
+}
+table{
+	margin-bottom:30px;
+}
+.notOpen{
+	font-size:15px;
+	text-align:center;
+	margin-bottom:30px;
+}
+.tt a{
+	display:block;
+	text-align:center;
+	cursor:pointer;
+}
+.tt samp{
+	margin:0 5px;
+	font-size:18px;
+}
+.line{
+	display:inline-block;
+	width:20px;
+	height:1px;
+	vertical-align:middle;
+	border-top:1px solid #ccc;
+}
+.dateInput{
+	width:95px;
+}
+.recommenber{
+	padding:15px 10px;
+}
+.recommenber span{
+	margin-right:20px;
+}
+.message{
+	padding:20px 50px; 
+	font-size:15px;
+}
+.linkMan{
+	display:inline-block;
+	margin-right:50px;
+	margin-bottom:20px;
+}
+.mode{
+	margin-bottom:20px;
+}
+.mode label{
+	margin-right:15px;
+	cursor:pointer;
+}
+.mode input{
+	margin-right:5px;
+}
+textarea{
+	display:inline-block;
+	width:60%;
+	min-width:100px;
+	vertical-align:top;
+}
+textarea.cancelCause{
+	min-height:80px;
+	margin-left:20px;
+}
+textarea.sentContent{
+	min-height:300px;
+}
+.buttonSet button,
+.buttonSet2 button{
+	min-width:75px;
+	border-radius:4px;
+	margin-left:10px;
+}
+.buttonSet button:nth-of-type(2),
+.buttonSet2 button:nth-of-type(2){
+	background:#bbb;
+}
+.buttonSet{
+	width:65%;
+	min-width:100px;
+	vertical-align:top;
+	text-align:right;
+	margin-bottom:20px;
+}
+.buttonSet2{
+	width:100%;
+	min-width:100px;
+	text-align:center;
+	margin-bottom:20px;
+	padding-right:20px;
+}
+.textRight{
+	display:inline-block;
+	min-width:330px;
+	text-align:right;
+}
+.textRight2{
+	display:inline-block;
+	min-width:360px;
+	text-align:right;
+}
+.inquiryBtn{
+	margin-top:10px;
+	margin-right:10px;
+}
+.stateSelect{
+	width:174px;
+}
+/*   拉黑会员权限限制     */
+#prohibitedItem{
+	margin-left:15px;
+}
+#prohibitedItem span{
+	display:inline-block;
+	width:30%;
+	margin-top:10px;
+}
+#prohibitedItem label{
+	margin-top:0;
+	margin-left:5px;
+	vertical-align:text-bottom;
+}
+
+
+/*   vip会员历史记录显示         */
+.vipHistory{
+	width:100%;
+	text-align:center;
+	margin-top:20px;
+	font-size:15px;
+}
+.vipHistory th{
+	text-align:center;
+	border-bottom:1px solid #000;
+}
+.vipHistory td{
+	border-bottom:1px dashed #ccc;
+}
+.vipDetail{
+	font-size:15px;
+	margin-right:20px;
+}
+
+
+/*  显示与隐藏的控制    */
+.hide{
+	display:none;
+}
+
+
+
+/* 查看提交认证信息样式   */
+.authen{
+	width:80%;
+	padding:0 20px;
+	font-size:14px;
+	margin:0 auto;
+}
+.authen span,
+.authen button{
+	margin-left:15px;
+}
+.detailTitle{
+	padding:8px 10px;
+	background:#f8f8f8;
+	margin:20px 0;
+}
+.authen button{
+	background:none;
+	padding:5px 10px;
+	border:0;
+	border-radius:3px;
+	outline:none;
+}
+.authen button:hover{
+	color:#724bfe;
+	text-decoration:underline;
+}
+.detailAuthen div{
+	margin:5px 15px;
+}
+.introduce{
+	display:inline-block;
+	width:30%;
+}
+.introduce span{
+	display:block;
+	margin-top:10px;
+	margin-left:0;
+	font-size:14px;
+}
+samp{
+	font-weight:700;
+}
+img{
+	margin-right:20px;
+}

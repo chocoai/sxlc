@@ -11,26 +11,20 @@
 * @version V5.0 */
  
 package cn.springmvc.dao.impl; 
-
-import java.util.HashMap;
+ 
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
-import org.apache.ibatis.session.RowBounds;
+ 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
-import product_p2p.kit.datatrans.IntegerAndString;
-import product_p2p.kit.pageselect.PageEntity; 
-import cn.springmvc.dao.ProjectAuitDao;
-import cn.springmvc.model.ProjectAppAttachmentEntity;
-import cn.springmvc.model.ProjectAppProcessEntity;
+import product_p2p.kit.datatrans.IntegerAndString; 
+import cn.springmvc.dao.ProjectAuitDao; 
 import cn.springmvc.model.ProjectCheckAttachDealEntity;
-import cn.springmvc.model.ProjectCheckAttachEntity;
-import cn.springmvc.model.ProjectCheckRecordEntity;
+import cn.springmvc.model.ProjectCheckAttachEntity; 
 
 /** 
  * @author 刘利 

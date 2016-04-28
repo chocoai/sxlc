@@ -1,20 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
-<mapper namespace="mobileBinding">   
+<mapper namespace="mobileBinding"> 
+    <!-- 查询原有手机号是否输入正确 -->  
+	<select id="checkPhone" parameterType="Map"  resultType="int">
+	   select count(pbi.Personal_Phone)
+	   from  Personal_Base_Info  pbi  
+	   where  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{keys})) using utf8)=#{personalPhone}
+	   and  Personal_ID=#{personalID}
+    </select>    
      <!-- 查询手机号是否已存在 -->  
 	<select id="selectPhoneIsExist" parameterType="Map"  resultType="int">
 	   select count(pbi.Personal_Phone)
 	   from  Personal_Base_Info  pbi  
 	   where   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{keys})) using utf8)=#{personalPhone}
+	   and Personal_ID != #{personalID}
     </select> 
     <!-- 修改个人会员手机号-->  
 	<update id="updatepersonPhone" parameterType="Map" >
          UPDATE Personal_Base_Info set  Personal_Phone =HEX(AES_ENCRYPT(#{personalPhone},#{keys})) 
          where Personal_ID=#{personalID}
     </update>     
-    <!-- 修改企业会员手机号-->  
-	<update id="updatecompanyPhone" parameterType="Map" >
+   
+     <!-- 查询原绑定的手机号-->  
+	<select id="selectOldPhone" parameterType="Map"  resultType="String">
+	   select  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{keys})) using utf8)  as Personal_Phone  
+		from Member_Info mi
+		left join Personal_Base_Info pbi on mi.Personal_ID = pbi.Personal_Id 
+		where mi.member_id = #{memberId}  
+    </select>     
+      <!-- 查询修改原绑定的手机号-->  
+	<!-- <select id="selectOldPhone" parameterType="Map"  resultType="String">
+	   select 
+	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{keys})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(pbicom.Personal_Phone),#{keys})) using utf8) end 
+            as Personal_Phone  
+		from Member_Info mi
+		left join Personal_Base_Info pbi on mi.Personal_ID = pbi.Personal_Id
+		left join Company_Info ci on ci.Company_ID = mi.Company_ID 
+		left join Personal_Base_Info pbicom on pbicom.Personal_Id = ci.Legal_ID
+		where mi.member_id = #{memberId}  
+    </select>  -->    
+     <!-- 修改企业会员手机号-->  
+<!-- 	<update id="updatecompanyPhone" parameterType="Map" >
          UPDATE Personal_Base_Info set  Personal_Phone =HEX(AES_ENCRYPT(#{personalPhone},#{keys})) 
          where Personal_ID=(select Legal_ID from Company_Info where Company_ID=#{personalID} limit 1) 
-    </update>         
+    </update>   -->   
 </mapper>   

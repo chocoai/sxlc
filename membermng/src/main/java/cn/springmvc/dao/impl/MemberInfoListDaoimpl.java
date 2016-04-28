@@ -11,8 +11,7 @@
 * @version V5.0 */
  
 package cn.springmvc.dao.impl; 
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -44,14 +43,16 @@ public class MemberInfoListDaoimpl extends SqlSessionDaoSupport  implements Memb
  	public List<MemberInfoEntity> selectMemberInfoAllpage(PageEntity pageEntity) {
 		
  		List<MemberInfoEntity> memberInfoList = null;
- 		memberInfoList=getSqlSession().selectList("memberInfo.selectMemberInfoList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+ 		memberInfoList=getSqlSession().selectList("memberInfo.selectMemberInfoList",pageEntity,
+ 				new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		return memberInfoList;
 		
 	}
 	@Override
 	public PersonalBaseInfoEntity selectMemberInfoPersonByID(long personID) {
 		
-		PersonalBaseInfoEntity personalBaseInfoEntity = getSqlSession().selectOne("memberInfo.selectMemberInfoPersonByID",personID);
+		PersonalBaseInfoEntity personalBaseInfoEntity = getSqlSession().
+				selectOne("memberInfo.selectMemberInfoPersonByID",personID);
 		return personalBaseInfoEntity;
 	
 		
@@ -61,7 +62,8 @@ public class MemberInfoListDaoimpl extends SqlSessionDaoSupport  implements Memb
 	@Override
 	public CompanyInfoEntity selectMemberInfoCompanByID(long personID) {
 		
-		CompanyInfoEntity companyInfoEntity = getSqlSession().selectOne("memberInfo.selectMemberInfoCompanByID",personID);
+		CompanyInfoEntity companyInfoEntity = getSqlSession().
+				selectOne("memberInfo.selectMemberInfoCompanByID",personID);
 		return companyInfoEntity;
 		
 	}

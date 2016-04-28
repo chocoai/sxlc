@@ -41,7 +41,8 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 	public Map<String, Object> handleGuaranteeInfo(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("GuaranteeInfoXML.handleGuaranteeInfo", map);
+		getSqlSession().selectOne("GuaranteeInfoXML.handleGuaranteeInfo", map);
+		return map;
 	}
 
 	@Override
@@ -76,7 +77,8 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 	public Map<String, Object> handleManagementInfo(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("GuaranteeInfoXML.handleManagementInfo",map);
+		getSqlSession().selectOne("GuaranteeInfoXML.handleManagementInfo",map);
+		return map;
 	}
 
 	@Override
@@ -137,6 +139,17 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 	}
 
 
-	
+	@Override
+	public int insertGuaranteeAdmin(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return 0;
+		return getSqlSession().insert("GuaranteeInfoXML.insertGuaranteeAdmin", map);
+	}
+	@Override
+	public int updateGuaranteeAdmin(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return 0;
+		return getSqlSession().update("GuaranteeInfoXML.updateGuaranteeAdmin",map);
+	}
 }
 

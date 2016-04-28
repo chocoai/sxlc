@@ -1,15 +1,20 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>专家顾问</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/aboutUs/expertAdvisor.css">
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
-   	<jsp:include page="/web/aboutUs/aboutUsCommon.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
+   	<jsp:include page="../aboutUs/aboutUsCommon.jsp"></jsp:include>
    	
     <!-- 在这里加入页面内容 -->
     <div class="expertAdvisor">
@@ -50,7 +55,7 @@
     	</div>
     </div>
     
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/aboutUs/expertAdvisor.js"></script>
 </body>
 </html>

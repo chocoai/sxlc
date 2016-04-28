@@ -22,11 +22,9 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.pageselect.PageEntity;
-
-import cn.springmvc.dao.ProjectAuitDao;
+ 
 import cn.springmvc.dao.ProjectAuitListDao;
-import cn.springmvc.model.ProjectAppAttachmentEntity;
-import cn.springmvc.model.ProjectAppProcessEntity;
+import cn.springmvc.model.ProjectAppAttachmentEntity; 
 import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
 import cn.springmvc.model.ProjectCheckRecordEntity;
@@ -52,7 +50,7 @@ public class ProjectAuditListDaoImpl extends SqlSessionDaoSupport implements Pro
 
 	}
  	@Override
-	public ProjectAppRecordEntity selectProjectDetailByID(int id) {
+	public ProjectAppRecordEntity selectProjectDetailByID(long id) {
 
  		ProjectAppRecordEntity ProjectAppRecordEntity = null;
  		ProjectAppRecordEntity = getSqlSession().selectOne("projectAudit.selectProjectdetail",id);
@@ -61,7 +59,7 @@ public class ProjectAuditListDaoImpl extends SqlSessionDaoSupport implements Pro
 	}
  	@Override
 	public List<ProjectAppAttachmentEntity> selectProjectAppAttachment(
-			int projectID) {
+			long projectID) {
 		
 		List<ProjectAppAttachmentEntity>  projectAppAttachmentList = getSqlSession().selectList("projectAppAttachment.selectProjectAuitList",projectID);
 		return  projectAppAttachmentList;
@@ -95,7 +93,7 @@ public class ProjectAuditListDaoImpl extends SqlSessionDaoSupport implements Pro
 	}
 	@Override
 	public List<ProjectCheckAttachEntity> selectProjectCheckAttachTotal(
-			int projectID) {
+			long projectID) {
 		
 		return getSqlSession().selectList("projectCheckAttach.selectProjectCheckAttachTotal",projectID);
 		

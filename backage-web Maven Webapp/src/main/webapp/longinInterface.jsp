@@ -36,10 +36,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用css -->
 	<link rel="stylesheet" type="text/css" href="css/longinInterface.css">
 	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
 	<script type="text/javascript">
 		//刷新图形验证码参数
 		var currentTimeMillis = "<%=System.currentTimeMillis()%>";
-		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>	    
 </head>
 
@@ -97,6 +97,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="WEB-INF/web/common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/login.js"></script>
 	<script type="text/javascript" src="js/loginInterface.js"></script>
 </body>

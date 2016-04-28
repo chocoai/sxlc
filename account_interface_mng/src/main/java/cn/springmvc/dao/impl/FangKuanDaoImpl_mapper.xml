@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="FangKuanDao">     
+	
+	<!-- 放款前订单查询映射 -->
+	<resultMap id="sLoanTransaction" type="cn.sxlc.account.manager.model.LoanTransactionEntity" >
+    	<result column="Invest_Id" property="inversId"/>
+    	<result column="Bill_No" property="billNo"/>
+    	<result column="GiftBill_No" property="giftBillNo"/>
+    	<result column="fBill_No" property="sBillNo"/>
+    	<result column="fGiftBill_No" property="sGiftBillNo"/>
+  	</resultMap>
+	
+	<!-- 获取当前最大投资金额 -->
+	<select id="GetProjectFangKuanOrderList" parameterType="Map" resultMap="sLoanTransaction">
+		select ir.Invest_Id,ir.Bill_No,ir.GiftBill_No,irf.Bill_No as fBill_No,irf.GiftBill_No as fGiftBill_No
+			from Invest_Record ir 
+			left join Invest_Record_FangKuan irf on ir.Invest_Id = irf.Invest_Id
+			where Apply_Id=#{applyId} and IsValid=0 and (irf.Bill_No is null or irf.GiftBill_No is null)
+	</select>
+		
+</mapper>

@@ -10,14 +10,9 @@
 		<result column="Admin_ID"              property="optId" />
     </resultMap> 
 	<!-- 查询常见问题-->  
-	<select id="selectFrequentlyAskedQuestions"  parameterType="int" resultMap="resultListFrequentlyAskedQuestionsAnnouncement" >
+	<select id="selectFrequentlyAskedQuestions"  resultMap="resultListFrequentlyAskedQuestionsAnnouncement" >
 	   select Question_ID,   Content,   Statu,   CreateTime,  Opt_Date, Admin_ID
-	   from  Frequently_Asked_Questions
-       <where>  
-            <if test="statu != -1">  
-                Statu= #{statu}
-            </if>  
-	   </where>
+	   from  Frequently_Asked_Questions 
     </select> 
     <!-- 新增常见问题-->  
 	<insert id="insertFrequentlyAskedQuestions"  parameterType="cn.springmvc.model.FrequentlyAskedQuestionsEntity" >    

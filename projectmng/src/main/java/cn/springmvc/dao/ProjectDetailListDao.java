@@ -21,11 +21,9 @@ import cn.springmvc.model.LoanRealRepayEntity;
 import cn.springmvc.model.LoanRepayEntity;  
 import cn.springmvc.model.MemberAttestTypeEntity;
 import cn.springmvc.model.MemberInfoEntity;
-import cn.springmvc.model.PersonalBaseInfoEntity;
-import cn.springmvc.model.ProjectAfterLoanAttachmentEntity;
+import cn.springmvc.model.PersonalBaseInfoEntity; 
 import cn.springmvc.model.ProjectAppProcessEntity; 
-import cn.springmvc.model.ProjectAppRecordEntity;
-import cn.springmvc.model.ProjectBaseInformationEntity;
+import cn.springmvc.model.ProjectAppRecordEntity; 
 import cn.springmvc.model.ProjectCheckAttachEntity;
 
 /** 
@@ -65,12 +63,12 @@ public interface ProjectDetailListDao {
    
     /** 
 	 * @author 刘利   
-	 * @Description: 根据项目申请记录id查询项目所需会员认证项 
-	 * @param id  项目申请记录id 
+	 * @Description: 根据项目类型ID查询项目所需会员认证项 
+	 * @param id  项目类型ID
 	 * @return ProjectAppRecordEntity 返回类型 
 	 * @date 2016-3-21 下午1:55:21 
 	 */
-	public  MemberAttestTypeEntity  selectMemberAttestByProjectID(int id);
+	public  MemberAttestTypeEntity  selectMemberAttestByprojectType(long id);
 	/**  
 	 * @author 刘利   
 	 * @Description: 通过项目id查询还款计划
@@ -94,7 +92,7 @@ public interface ProjectDetailListDao {
 	 * @return ProjectAppProcessEntity 项目进程实体
 	 * @date 2016-3-21 下午1:55:21 
 	 */
-	public  ProjectAppProcessEntity  selectProjectAppProcess(int id);
+	public  ProjectAppProcessEntity  selectProjectAppProcess(long id);
 	/**  
 	 * @author 刘利   
 	 * @Description: 通过项目id查询真实还款记录
@@ -112,7 +110,7 @@ public interface ProjectDetailListDao {
 	 * @return List<ProjectCheckAttachEntity>  审核附件列表
 	 * @date 2016-3-22 上午11:23:46 
 	 */
-	public List<ProjectCheckAttachEntity>  selectProjectCheckAttach(int projectID);
+	public List<ProjectCheckAttachEntity>  selectProjectCheckAttach(long projectID);
 	/** 
 	 * 根据项目申请id查询借款描述
 	 * @author 刘利   
@@ -121,16 +119,8 @@ public interface ProjectDetailListDao {
 	 * @return String 项目基本信息实体类
 	 * @date 2016-3-22 上午11:40:00 
 	 */
-	public  String selectProjectDescript(int projectID);
-	/** 
-	 * 根据项目id查询贷后监管信息
-	 * @author 刘利   
-	 * @Description: TODO 
-	 * @param projectID 项目申请ID
-	 * @return List<ProjectAfterLoanAttachmentEntity> 项目贷后信息附件资料实体
-	 * @date 2016-3-22 下午12:04:10 
-	 */
-	public List<ProjectAfterLoanAttachmentEntity> selectProjectAfterLoanAttach(int projectID);
+	public  String selectProjectDescript(long projectID);
+	 
 	/** 
 	 * 查询借款个人会员基本信息 
 	 * @author 刘利   

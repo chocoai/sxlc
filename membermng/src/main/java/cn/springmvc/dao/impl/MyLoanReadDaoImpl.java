@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.pageselect.PageEntity;
+import cn.membermng.model.Cleared;
 import cn.membermng.model.Financing;
 import cn.membermng.model.FlowLabel;
 import cn.membermng.model.InvestmentRecord;
+import cn.membermng.model.LoanApplyRecord;
 import cn.membermng.model.LoanRepay;
 import cn.membermng.model.RepaymentIn;
+import cn.membermng.model.StayStillPlan;
 
 /***
 * 我的借款查询实现
@@ -72,9 +75,25 @@ public class MyLoanReadDaoImpl extends SqlSessionDaoSupport implements IMyLoanRe
 	} 
 	
 	
+	@Override
+	public List<Cleared> cleared(PageEntity entity) {
+		
+		return getSqlSession().selectList("myLoanReadDaoImpl.cleared", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+	}
 	
 	
+	@Override
+	public List<LoanApplyRecord> loanApplyRecord(PageEntity entity) {
+		
+		return getSqlSession().selectList("myLoanReadDaoImpl.loanApplyRecord", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+	}
 	
+	
+	@Override
+	public List<StayStillPlan> stayStillPlans(PageEntity entity) {
+
+		return getSqlSession().selectList("myLoanReadDaoImpl.stayStillPlans", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+	}
 	
 	
 	

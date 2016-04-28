@@ -16,9 +16,9 @@ public class LawsRegulationsListDaoImpl  extends SqlSessionDaoSupport  implement
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
 	@Override
-	public LawsRegulationsEntity selectLawsRegulations(int statu) {
+	public LawsRegulationsEntity selectLawsRegulations() {
 		LawsRegulationsEntity platroductIntroduceentity = new  LawsRegulationsEntity();
-		platroductIntroduceentity = getSqlSession().selectOne("lawsRegulations.selectLawsRegulations",statu);
+		platroductIntroduceentity = getSqlSession().selectOne("lawsRegulations.selectLawsRegulations");
 		return platroductIntroduceentity;
 	}
 	@Override

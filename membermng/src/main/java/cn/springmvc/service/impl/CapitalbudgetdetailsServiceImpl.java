@@ -101,5 +101,21 @@ public class CapitalbudgetdetailsServiceImpl implements CapitalbudgetdetailsServ
 		
 	}
 
+	@Override
+	public Map<String,Object> selectTotalRechargeInfo(Map<String, Object> map) {
+		
+		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		return capitalbudgetdetailsListDao.selectTotalRechargeInfo(map); 
+		
+	}
+
+	@Override
+	public Map<String, Object> selectTotalWithdrawalInfo(Map<String, Object> map) {
+		
+		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		return capitalbudgetdetailsListDao.selectTotalWithdrawalInfo(map); 
+		
+	}
+
 }
 

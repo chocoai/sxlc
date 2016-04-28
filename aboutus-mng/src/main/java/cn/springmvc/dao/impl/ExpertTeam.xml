@@ -19,14 +19,14 @@
 	    et.Admin_ID,et.CreateTime,et.Opt_Date, a.adminName 
 	   from  Expert_Team et
 	   LEFT JOIN Admin a on a.Admin_ID=et.Admin_ID
-           <where>  
+<!--            <where>  
 	            <if test="map.mngName != null and  map.mngName != ''">  
 	                Mng_Name like  '%${map.mngName}%'  
 	            </if>   
 	            <if test="map.statu != -1">  
 	                and et.Statu=#{map.statu}
 	            </if>   
-           </where>
+           </where> -->
            order by et.CreateTime desc
     </select>       
 	<!-- 新增专家顾问 -->  
@@ -74,7 +74,7 @@
     <!-- 根据ID查询专家顾问 -->  
 	<select id="selectExpertTeamByID" parameterType="long"  resultMap="resultListExpertTeam">
 	    select et.Expert_ID,et.Mng_Name,et.Mng_Post,et.Portrait_Url,et.Profile,et.Statu,
-	    et.Opt_Id,et.CreateTime,et.Opt_Date 
+	    et.CreateTime,et.Opt_Date 
 	    from  Expert_Team et  where  et.Expert_ID=#{id}
     </select>  
     <!-- 前台查询专家顾问列表 -->  

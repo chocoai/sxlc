@@ -87,27 +87,31 @@
 	</select>
   
     <!-- 查询会员成功借款项目 -->  
-	<select id="selectMemberInfoByMemberID" parameterType="int"  resultType="int">
+	<select id="selectMemberInfoByMemberID" parameterType="long"  resultType="int">
 	   select  count(1) from Project_App_Record par where  par.Member_ID=#{memberId} and par.Invest_Statu>=3
-    </select>
- 
+    </select> 
+   
+    <resultMap type="cn.springmvc.model.MemberAttestTypeEntity" id="resultListMemberAttestType">
+        <id column="Attest_Type_ID"    property="attestTypeID" />
+		<result column="Member_Type"   property="memberType" />
+		<result column="Attest_TypeName" property="attestTypeName" /> 
+    </resultMap>
      <!-- 查询项目所需认证项-->  
-	<select id="selectMemberAttestByProjectID" parameterType="int"  resultMap="memberAttestType.resultListMemberAttestType">
-	    select  mat.Attest_TypeName,ptd.Attest_Type_ID  from Project_App_Record par
-	    left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
-	    left join Project_Type_Datum ptd on ptd.Project_ID=pty.Project_ID
-	    left join Member_Attest_Type mat on  mat.Attest_Type_ID= ptd.Attest_Type_ID
-	    where   par.Apply_Id =#{id}
+	<select id="selectMemberAttestByprojectType" parameterType="long"  resultMap="resultListMemberAttestType">
+	     select  mat.Attest_TypeName,ptd.Attest_Type_ID,mat.Member_Type 
+	    from   Member_Attest_Type mat   
+	    left join Project_Type_Datum ptd on  mat.Attest_Type_ID= ptd.Attest_Type_ID
+	    where   ptd.Project_ID =#{projectType}
     </select> 
     <!--  根据项目申请ID查询项目历程 -->  
-	<select id="selectProjectAppProcess"  parameterType="int" resultMap="resultProjectAppProcess" >
+	<select id="selectProjectAppProcess"  parameterType="long" resultMap="resultProjectAppProcess" >
 	   select pap.Start_Date,pap.End_Date,pap.Record_Date,pap.Real_End_Date,
 	   pap.Hold_Date,pap.ProEnd_Date,pap.Settle_Date
 	   from  Project_App_Process pap  
 	   where  pap.Apply_Id=#{ID} and pap.Hold_Date is not null 
     </select> 
      <!--  根据项目申请ID查询借款描述-->  
-	<select id="selectProjectDescript"  parameterType="int" resultType="String" >
+	<select id="selectProjectDescript"  parameterType="long" resultType="String" >
 	   select  pbi.Project_Descript as projectDescript
 	   from  Project_App_Record par 
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID 

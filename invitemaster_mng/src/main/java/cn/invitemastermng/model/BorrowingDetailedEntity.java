@@ -22,11 +22,11 @@ import product_p2p.kit.datatrans.IntegerAndString;
 
 public class BorrowingDetailedEntity {
 	private String projectTitle;//借款名称
-	private long amount;//借款金额
+	private long   amount;//借款金额
 	private String amounts;//借款金额 
-	private int deadline;//借款期限
-	private String  name1;//借款期限类型
-	private int yearRate;//年化利率
+	private int    deadline;//借款期限
+	private String name1;//借款期限类型
+	private int    yearRate;//年化利率
 	private String yearRates;//年化利率
 	private String logname;//借款人用户名
 	private String personalName;//会员名称

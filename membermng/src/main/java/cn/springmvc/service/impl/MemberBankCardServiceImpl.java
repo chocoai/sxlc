@@ -82,6 +82,16 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 	    	
 	    	return -2;
 	    }
+	    Map<String,Object> map2 = new HashMap<String,Object>();
+		map2.put("memberID",   memberBankCardEntity.getMemberID());
+		map2.put("memberType", memberBankCardEntity.getMemberType()); 
+		//查询该会员的银行卡数量
+	    result = memberBankCardListDaoimpl.selectMemberBankCardCount(map2);
+	    //每个会员最多绑定15张银行卡
+	    if( result >= 15 ) {
+	    	
+	    	return -3;
+	    }
 	    IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		Long id = generatorUtil.GetId();
 		bankCardInfoEntity.setBankCardId(id);
@@ -90,10 +100,12 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 	    if(result == 0) {
 			generatorUtil.SetIdUsedFail(id);
 		}else{
+			memberBankCardEntity.setBankCardId(id);
 			generatorUtil.SetIdUsed(id);
 		}
 		//银行卡信息添加成功，添加会员银行卡信息表
 		if(result ==1 ){
+			
 		    id = generatorUtil.GetId();
 		    memberBankCardEntity.setReceiveCard(id);
 			result = memberBankCardDaoImpl.insertMemberBankCard(memberBankCardEntity);
@@ -115,13 +127,13 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 		
 	}
 	@Override
-	public BankCardInfoEntity selectMemberBankCardByID(int bankCardId) {
+	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId) {
 		
 		return memberBankCardListDaoimpl.selectMemberBankCardByID(bankCardId);
 		
 	}
 	@Override
-	public int updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity,Map<String,Object> map) {
+	public int updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity,Map<String,Object> map,long memberID) {
 		
 		int result = -1; 
 		
@@ -135,13 +147,20 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 	    	
 	    	return -2;
 	    }
+	    Map<String,Object> map2 = new HashMap<String,Object>();
+	    map2.put("memberID", memberID);
+	    map2.put("bankCardId", bankCardInfoEntity.getBankCardId());
+	    result = memberBankCardListDaoimpl.selectMemberBankCardisExist(map2);
+	    if(result == 0){
+	    	return -3;
+	    }
 	    result = memberBankCardDaoImpl.updateBankCardInfo(bankCardInfoEntity);
 	    return result;
 	}
 	@Override
-	public int deleteMemberBankCard(int receiveCard) {
+	public int deleteMemberBankCard(Map<String,Object> map) {
 		
-		return memberBankCardDaoImpl.deleteMemberBankCard(receiveCard);
+		return memberBankCardDaoImpl.deleteMemberBankCard(map);
 		
 	}
 

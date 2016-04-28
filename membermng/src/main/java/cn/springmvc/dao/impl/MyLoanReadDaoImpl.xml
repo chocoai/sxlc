@@ -3,7 +3,7 @@
 <mapper namespace="myLoanReadDaoImpl">  
    
    <!-- 融资中 -->
-   <select id="financings" parameterType="Map" resultType="cn.membermng.model.Financing">
+   <select id="financings" 		parameterType="Map" resultType="cn.membermng.model.Financing">
    	select 
    	
    	par.Apply_Id as loanId, par.Project_No as projectNo,pbi.Project_Title as projectName,
@@ -19,7 +19,7 @@
    </select>
    
    <!-- 融资结束 -->
-   <select id="endOfFinancing" parameterType="Map" resultType="cn.membermng.model.Financing">
+   <select id="endOfFinancing" 	parameterType="Map" resultType="cn.membermng.model.Financing">
    	select 
    	
    	par.Apply_Id as loanId, par.Project_No as projectNo,pbi.Project_Title as projectName,
@@ -36,7 +36,7 @@
    </select>
    
    <!-- 还款中的借款 -->
-   <select id="repaymentIns" parameterType="Map" resultType="cn.membermng.model.RepaymentIn">
+   <select id="repaymentIns" 	parameterType="Map" resultType="cn.membermng.model.RepaymentIn">
    	select par.Project_No as projectNo,pbi.Project_Title as projectName,pbi.Amount,
 	(select sum(Invest_Amount) from Invest_Record where Apply_Id = par.Apply_Id and IsValid = 0) as sjAmount,
 	pbi.Year_Rate as yearRate, pap.End_Date as endTime, pap.Hold_Date as startTime,
@@ -61,7 +61,7 @@
    </select>
    
    <!-- 还款计划查询 -->
-   <select id="loanRepay"	parameterType="Map" resultType="cn.membermng.model.LoanRepay">
+   <select id="loanRepay"		parameterType="Map" resultType="cn.membermng.model.LoanRepay">
 	select lr.Repay_ID as lid,lr.indexs,lr.SDRepay_Principal as loanAmount,lr.SDRepay_Interest as loanInterest,lr.Repay_MaxTime as loanTime,
 	lr.Statu as statu,lr.IsCompensatory as isCompensatory,
 	(select sum(Repay_Principal) from Loan_Real_Repay lrr where lrr.Loa_Repay_ID =lr.Repay_ID) as paidAmount,
@@ -71,9 +71,8 @@
 	from Loan_Repay lr where Apply_Id = #{applyId} and IsValid = 0
    </select>
    
-   
    <!-- 已流标 -->
-   <select id="flowLabelS" parameterType="Map" resultType="cn.membermng.model.FlowLabel">
+   <select id="flowLabelS" 		parameterType="Map" resultType="cn.membermng.model.FlowLabel">
    	select 
 	par.Apply_Id as loanId, 
 	par.Project_No as projectNo, 
@@ -93,11 +92,74 @@
 	left join ProjectBaseInfo prbi on prbi.Project_ID = par.Project_ID
 	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
 	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
-	where par.Invest_Statu = 1 and par.Member_ID = #{memberId}
+	where par.Invest_Statu = 1 and par.Member_ID = #{memberId} order by pap.Record_Date desc
    </select>
    
+   <!-- 已结清 -->
+   <select id="cleared" 		parameterType="Map" resultType="cn.membermng.model.Cleared">
+   	select
+	par.Apply_Id as loanId,
+	par.Project_No as projectNo,
+	pbi.Project_Title as projectName,
+	pbi.Amount as amount,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Invest_Amount),#{skey}) as signed)) from Invest_Record ir where ir.Apply_Id = par.Apply_Id and ir.IsValid = 0) as sjAmount,
+	pbi.Year_Rate as yearRate,
+	pap.Hold_Date as holdDate,
+	pap.Settle_Date as settleDate,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Principal),#{skey}) as signed)) 
+	from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayPrincipal,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Interest),#{skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayInterest,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue_Interest),#{skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayOverdueInterest,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue),#{skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayOverdue,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Penalty),#{skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayPenalty
+	from Project_App_Record par
+	left join Project_Base_Info pbi on par.Project_Base_ID = pbi.Project_Base_ID
+	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+	where par.Invest_Statu = 4 and par.Member_ID = #{memberId} order by pap.Record_Date desc
+   </select>
    
+   <!-- 借款申请记录 -->
+   <select id="loanApplyRecord" parameterType="Map"	resultType="cn.membermng.model.LoanApplyRecord">
+   	select par.Project_No as projectNo,
+   	pbi.Project_Title as projectName,
+   	par.Project_ID as projectType, 
+	prbi.Project_Name as projectTypeName,
+	pbi.Deadline as deadline, 
+	pbi.Deadline_Type as deadlineType,
+	pbi.Amount,
+	prbi.Min_Amount,
+	pbi.Year_Rate,
+	par.Check_Statu as statu,
+	d.name1 as statuName
+	from Project_App_Record par 
+	left join ProjectBaseInfo prbi on prbi.Project_ID = par.Project_ID 
+	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+	left join DICT d on d.code1 = par.Check_Statu and d.tcode = 'DICT_SQZT'
+	
+	where par.Member_ID = #{memberId} order by pap.Record_Date desc
+   </select>
    
+   <!-- 待还计划 -->
+   <select id="stayStillPlans"	parameterType="Map"	resultType="cn.membermng.model.StayStillPlan">
+   	select 
+	lr.indexs as 'index',lr.Repay_ID as lrId,
+	lr.SDRepay_Principal as sdRepayPrincipal,
+	lr.SDRepay_Interest as sdRepayInterest,
+	lr.Repay_MaxTime as repayMaxTime,
+	lr.Statu as statu,
+	d.name1 as statuName,
+	lr.IsCompensatory as isCompensatory,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Principal)			,#{skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as repayPrincipal,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Interest)			,#{skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as repayInterest,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue_Interest)	,#{skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as yiHuanYuQiLiXi,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue)			,#{skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as yiHuanYuQiFaJin,
+	(select pbi.Project_Title from Project_App_Record par left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID) as projectName
+	from Loan_Repay lr 
+	left join Project_App_Record par on par.Apply_Id = lr.Apply_Id
+	left join DICT d on d.code1 = lr.statu and d.tcode = 'DICT_HKJD'
+	where lr.IsValid = 0 and par.member_id = #{memberId} and lr.Statu != 2
+   </select>
    
    
 </mapper>

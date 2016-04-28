@@ -32,28 +32,31 @@
 	</select>
 	
 	<!-- 获取列表 -->
-	<select id="getListByParam" parameterType="Map" resultMap="deptResult">
-		select * from dept_info
+	<select id="getListByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="deptResult">
+		select * from dept_info WHERE Dept_Statu = true 
 		<where>
-			<if test="deptNo != null and deptNo !=''">
-				and	Dept_No = #{deptNo}
+			<if test="map!=null and  map.deptNo != null and map.deptNo !=''">
+				and	Dept_No  LIKE '%${map.deptNo}%'
 			</if>
-			<if test="deptName != null and deptName !=''">
-				and	Dept_Name = #{deptName}
+			<if test="map!=null and map.deptName != null and map.deptName !=''">
+				and	Dept_Name LIKE '%${map.deptName}%'
 			</if>
-			<if test="principalName != null and principalName != ''">
-				and	Principal_Name = #{principalName}
+			<if test="map!=null and map.principalName != null and map.principalName != ''">
+				and	Principal_Name LIKE '%${map.principalName}%'
 			</if>
-			<if test="principalPhone != null and principalPhone !='' ">
-				and	Principal_Phone = #{principalPhone}
+			<if test="map!=null and map.principalPhone != null and map.principalPhone !='' ">
+				and	Principal_Phone LIKE '%${map.principalPhone}%'
 			</if>
-			<if test="statu != 0 and statu !='' and staut != null ">
+			<if test="map!=null and map.statu !=''">
 				and	 Dept_Statu = #{statu}
 			</if>
 		</where>
 	</select>
 	
-	
+		<!-- 获取列表 -->
+	<select id="getDeptList" resultMap="deptResult">
+		select * from dept_info
+	</select>
 	<!-- 修改 -->
 	<select id="editDept" statementType="CALLABLE" parameterType="Map">
 		call editDept(

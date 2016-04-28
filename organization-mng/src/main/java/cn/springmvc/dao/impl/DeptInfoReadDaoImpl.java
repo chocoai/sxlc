@@ -52,6 +52,18 @@ public class DeptInfoReadDaoImpl extends SqlSessionDaoSupport implements IDeptIn
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
+
+
+
+
+	/* (non-Javadoc)
+	 * @see cn.springmvc.dao.IDeptInfoReadDao#getDebtList()
+	 */
+	@Override
+	public List<DeptInfo> getDeptList() {
+		// TODO Auto-generated method stub
+		return 	 getSqlSession().selectList("DeptInfoDaoImpl.getListByParam");
+	}
 	
 }
 

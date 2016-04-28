@@ -1,4 +1,4 @@
-/* 伍成然2016-3-27 */
+/* 濞寸厧绉甸崹姘舵倿閿燂拷16-3-27 */
 @charset "UTF-8";
 .main{
 	width:1100px;
@@ -14,7 +14,7 @@
 	float:left;
 	margin-left:22px;
 }
-/* 登录框 */
+/* 闁谎嗩嚙缂嶅秴顪涢敓锟�  */
 .login-box{
 	background-color:#fff;
 	margin-left:22px;
@@ -25,7 +25,7 @@
 	float:left;
 	padding:20px;
 }
-/* 企业个人切换 */
+/* 濞撮棿妞掔粭鐔哥▔椤忓啯鐪介柛鎺戞处瀹曪拷 */
 .person-enterprise{
 	width:100%;
 	height:19px;
@@ -60,22 +60,33 @@
 	background-repeat: no-repeat;
 	background-position: 0 4px;
 }
-/* 企业个人切换结束 */
-/* 输入框组 */
+/* 濞撮棿妞掔粭鐔哥▔椤忓啯鐪介柛鎺戞处瀹曡尙绱掗幘瀛樺皢 */
+/* 閺夊牊鎸搁崣鍡楊湜閸℃瑧鐭�*/
+input{
+	outline:none;
+}
 .input-group{
 	padding:10px;
 	margin-top:20px;
 }
 .input-group .input-user-name,.input-password{
-	width:100%;
+	width:308px;
 	height:40px;
 	line-height:40px;
 	margin:10px 0;
+}
+.codeDiv{
+	
 }
 .login-btn{
 	width:100%;
 	height:40px;
 	margin:10px 0;
+}
+.inputUserName,
+.inputPassword,
+.inputImgCheck{
+	width:500px;
 }
 .input-user-name{
 	background-image: url("../../resource/img/loginRegister/yhm.png");
@@ -113,9 +124,9 @@
 	margin:10px 0;
 }
 .inputImgCheck img{
-	float:right;
 	width:96px;
 	height:40px;
+	margin-left:31px;
 }
 .checkbox-link{
 	margin:10px 0;
@@ -150,7 +161,7 @@
 	background-repeat: no-repeat;
 	background-position: 0 3px;
 }
-/* 忘记密码 */
+/* 闊洦顭堥鍥╋拷閸℃瑧鍨�*/
 .forgetPassword{
 	width:50%;
 	float:right;
@@ -175,7 +186,7 @@
 	background-color:#38aaf4;
 }
 
-/* 2016-04-06 用span模拟placeholder*/
+/* 2016-04-06 闁烩懇鏆瀙an婵☆垪鍓濈�妾杔aceholder*/
 .hint{
 	position:absolute;
 	top:20px;
@@ -184,84 +195,3 @@
 	font-size:14px;
 }
 /* end */
-/* 胥福星    2016-04-06  提示框共用样式*/
-.tipError,
-.after,
-.pre{
-	display:inline-block;
-	vertical-align:middle;
-}
-.tipError{
-	position: absolute;
-}
-.after{
-	height:42px;
-	background:#fce3e3;
-	border-top:1px solid #fd0202;
-	border-bottom:1px solid #fd0202;
-	border-right:1px solid #fd0202;
-	line-height:42px;
-	padding:0 10px 0 5px;
-	margin-top:2px;
-	color:#fd0202;
-	max-width:300px;
-	margin-right:-300px;
-	overflow:hidden;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-}
-.after,
-.pre{
-	float:left;
-}
-.pre{
-	width:40px;
-	height:45px;
-	background:url(../../resource/img/account/common/tipsError_03.png) no-repeat;
-}
-/* 提示框进入焦点时的样式  */
-.tip,
-.afterTip,
-.preTip{
-	display:inline-block;
-	vertical-align:middle;
-}
-.tip{
-	position:absolute;
-}
-.afterTip{
-	height:42px;
-	max-width:300px;
-	margin-right:-300px;
-	overflow:hidden;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	background:#fff;
-	border-top:1px solid #72c0f3;
-	border-right:1px solid #72c0f3;
-	border-bottom:1px solid #72c0f3;
-	line-height:42px;
-	padding:0 10px 0 2px;
-	margin-top:2px;
-	color:#7c7c7c;
-}
-.afterTip,
-.preTip{
-	float:left;
-}
-.preTip{
-	width:20px;
-	height:45px;
-	background:url(../../resource/img/account/common/tip_07.png) no-repeat;
-}
-/* 成功后的样式 */
-.tipOk{
-	position:absolute;
-}
-.tipOk{
-	display:inline-block;
-	width:15px;
-	height:15px;
-	vertical-align:middle;
-	background:url(../../resource/img/account/common/zq.png) no-repeat;
-}

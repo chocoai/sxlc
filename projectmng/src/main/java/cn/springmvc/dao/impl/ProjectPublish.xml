@@ -79,7 +79,7 @@
 	   left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
 	   left join Member_Info mi on mi.Member_ID = par.Member_ID   
-	    left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id 
+	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id 
 	   left join Company_Info  ci  on ci.Company_ID=mi.Company_ID
 	    <where>  
           and par.Publish_Statu=1
@@ -102,20 +102,25 @@
 	       and  #{map.pushendTime} > pap.Release_Date 
 	     </if>
 	     <if test = "map.name !=  null"> 
-	       and ( mi.Company_ID in ( select Company_ID from Company_Info where Compang_Name like '%${map.name}%') 
-	       or mi.Personal_ID in (select Personal_Id from Personal_Base_Info where Personal_Name like  '%${map.name}%' )
-	       )
+	       and ( ci.Compang_Name like '%${map.name}%'
+	       or pbiper.Personal_Name like  '%${map.name}%' ) 
 	     </if> 
-	       <if test = "map.investStatu !=  -1"> 
+	     <if test = "map.investStatu !=  -1"> 
 	       and par.Invest_Statu = #{map.investStatu}
-	       </if>
+	     </if>
 	    </where> 
 	      <if test = "map.order ==  1"> 
-	        order by  pbi.Amount
+	        order by  pbi.Amount desc
+	      </if>
+	       <if test = "map.order ==  -1"> 
+	        order by  pbi.Amount asc
 	      </if>
 	       <if test = "map.order ==  2"> 
-	        order by  pap.Release_Date
+	        order by  pap.Release_Date desc
 	      </if>
+	       <if test = "map.order ==  -2"> 
+	        order by  pap.Release_Date asc
+	      </if> 
     </select>
     
     

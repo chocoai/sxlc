@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="memberMsgRecord">
- 
+       <!--     站内信记录实体 -->
+     <resultMap type="cn.membermng.model.MemberMsgRecordEntity" id="resultMemberMsgRecord">
+        <id column="Member_ID" 				property="memberID" />
+		<result column="Msg_Type" 			property="msgType" />
+		<result column="Msg_Detail" 		property="msgDetail" /> 
+		<result column="Short_Phone" 		property="shortPhone" />
+		<result column="Record_Date" 		property="recordDate" /> 
+		<result column="Statu" 			    property="statu" /> 
+		<result column="Read_Date" 			property="readDate" /> 
+		<result column="Read_Statu" 	    property="readStatu" /> 
+    </resultMap> 
     <!-- 根据会员ID查询会员发件箱信息-->  
-	<select id="selectMemberMsgList"  parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="memberMsgRecordMap.resultMemberMsgRecord">
-	 select msr.Msg_Detail,msr.Record_Date ,msr.Read_Statu,msr.Read_Date,msr.Msg_Type
+	<select id="selectMemberMsgList"  parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="resultMemberMsgRecord">
+	 select msr.member_ID,msr.Msg_Detail,msr.Record_Date ,msr.Read_Statu,msr.Read_Date,msr.Msg_Type
      from Member_MsgRecord msr
       <where>
          msr.Member_ID = #{map.memberID} and  msr.Msg_Type =2

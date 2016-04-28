@@ -1,22 +1,29 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>网站公告详情</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/aboutUs/webBoard.css">
 	<link rel="stylesheet" href="css/aboutUs/webBoardDetail.css"></link>
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
-   	<jsp:include page="/web/aboutUs/aboutUsCommon.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
+   	<jsp:include page="../aboutUs/aboutUsCommon.jsp"></jsp:include>
    	
     <!-- 在这里加入页面内容 -->
     <div class="notice_Detail">
    	 	<div class="Detail_title">
 	   	 	<span class="notice_Detail_title">关于农业银行暂时关闭P2P充值接口的公告</span>
-	   	   	<a href="webBoard.html" class="back_list">返回公告列表>></a>
+	   	   	<a href="aboutUs/webBoard.html" class="back_list">返回公告列表>></a>
    	   	</div>
    	   	<div class="notice_Detail_word">
    	   		<p class="detailWordTime">时间：2016-03-08</p>
@@ -34,11 +41,11 @@
    	   	</div>
    	   	<div class="notice_Detail_foot">
    	   		<a href="javascript:" onclick="history.back();">上一篇</a>
-	   	    <a href="#">下一篇</a>
-	   	    <a href="webBoard.html" class="back_list">返回公告列表>></a>
+	   	    <a href="aboutUs/webBoard.html#">下一篇</a>
+	   	    <a href="aboutUs/webBoard.html" class="back_list">返回公告列表>></a>
    	   	</div>
    	 </div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/aboutUs/webBoard.js"></script>
 </body>
 </html>

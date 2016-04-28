@@ -20,7 +20,7 @@ import product_p2p.kit.datatrans.IntegerAndString;
  * @since 
  * @date 2016-4-6 上午10:56:03  */
 
-public class CreditorTransferListEntity {
+public class CreditorTransferListEntity { 
 	private String  projectTitle;//项目标题
 	private String  ProjectNo;//项目编号
 	private long    transPrincipal;//转让本金

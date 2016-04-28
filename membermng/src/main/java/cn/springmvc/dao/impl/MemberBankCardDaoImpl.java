@@ -12,6 +12,8 @@
  
 package cn.springmvc.dao.impl; 
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -51,9 +53,9 @@ public class MemberBankCardDaoImpl extends SqlSessionDaoSupport implements Mambe
 		
 	}
 	@Override
-	public int deleteMemberBankCard(int receiveCard) {
+	public int deleteMemberBankCard(Map<String,Object> map) {
 		
-		return getSqlSession().update("bankInfo.deleteMemberBankCard",receiveCard);
+		return getSqlSession().update("bankInfo.deleteMemberBankCard",map);
 		
 	}
 

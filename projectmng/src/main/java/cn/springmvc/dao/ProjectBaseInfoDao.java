@@ -1,4 +1,6 @@
 package cn.springmvc.dao;
+import java.util.Map;
+
 import  cn.springmvc.model.ProjectBaseInfoEntity;
 /**
  * 项目类型
@@ -26,11 +28,24 @@ public interface ProjectBaseInfoDao {
 	 * @param id 项目类型id
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteProjectBaseInfoByID(int id); 
+	public  int  deleteProjectBaseInfoByID(long id); 
 	/**
 	 * 停用或启用项目类型
 	 * @param entity 项目类型实体
 	 * @return 0:失败 1：成功 
 	 */
 	public  int  updateProjectBaseInfoStatuByID(ProjectBaseInfoEntity entity);
+	
+	/**
+	 * 添加项目类型
+	 * @param map  
+	 * @return	0：失败	1：成功
+	 */
+	public int addProjectBaseType(Map<String,Object> map); 
+	/**
+	 * 通过ID修改项目类型信息
+	 * @param map
+	 * @return  0:失败 1：成功 
+	 */
+	public  int  updateProjectBaseType(Map<String,Object> map); 
 }

@@ -12,7 +12,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
-
+import cn.membermng.model.BorrowingType;
+import cn.membermng.model.RealNameAuth;
 import cn.springmvc.dao.IBorrowingCertificationReadDao;
 
 
@@ -22,16 +23,16 @@ public class BorrowingCertificationReadDaoImpl extends SqlSessionDaoSupport impl
 
 
 	@Override
-	public Map<String, Object> showAuthRealName(Map<String, Object> param) {
+	public List<BorrowingType> getAllByMember(Map<String, Object> param) {
+		
+		return getSqlSession().selectList("borrowingCertificationDaoImpl.allAuthType",param);
+	}
+	
+	@Override
+	public RealNameAuth showAuthRealName(Map<String, Object> param) {
 		
 		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showAuthRealName",param);
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	@Override
@@ -40,24 +41,12 @@ public class BorrowingCertificationReadDaoImpl extends SqlSessionDaoSupport impl
 		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showCurrencyAuth",param);
 	}
 	
-	
-	
-	
-	
-	
-	
 
 	@Override
 	public Map<String, Object> showAuthAddress(Map<String, Object> param) {
 		
 		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showAuthAddress",param);
 	}
-	
-	
-	
-	
-	
-	
 	
 
 	@Override
@@ -66,20 +55,10 @@ public class BorrowingCertificationReadDaoImpl extends SqlSessionDaoSupport impl
 		return getSqlSession().selectList("borrowingCertificationDaoImpl.showAuthHousing",param);
 	}
 
-
-
-	
-	
-
 	@Override
 	public List<Map<String, Object>> showAuthProduction(long memberId) {
 		return getSqlSession().selectList("borrowingCertificationDaoImpl.showAuthProduction", memberId);
 	}
-	
-		
-	
-	
-	
 	
 	
 	@Override

@@ -1,6 +1,5 @@
 package  cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -23,23 +22,21 @@ public class ProjectTypeGuideListDaoImpl extends SqlSessionDaoSupport implements
 	@Override
 	public ProjectTypeGuideEntity selectProjectTypeGuideIsExistByNAme(
 			ProjectTypeGuideEntity entity) {
-		ProjectTypeGuideEntity projectTypeGuideEntity=null;
-		projectTypeGuideEntity=(ProjectTypeGuideEntity) getSqlSession().selectOne("projectTypeGuide.selectProjectTypeGuideIsExistByNAme",entity);
-		return projectTypeGuideEntity;
+		
+		return getSqlSession().selectOne("projectTypeGuide.selectProjectTypeGuideIsExistByNAme",entity); 
 	}
 
 	@Override
 	public List<ProjectTypeGuideEntity> selectProjectTypeGuideList(
 			PageEntity pageEntity) {
-		List<ProjectTypeGuideEntity> projectTypeGuideList=null;
-		projectTypeGuideList=getSqlSession().selectList("projectTypeGuide.selectProjectTypeGuideList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
-		return projectTypeGuideList;
+		
+		return getSqlSession().selectList("projectTypeGuide.selectProjectTypeGuideList",
+				pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize())); 
 	}
 	@Override
-	public ProjectTypeGuideEntity selectProjectTypeGuideByindex(int id) {
-		ProjectTypeGuideEntity projectTypeGuideEntity=null;
-		projectTypeGuideEntity=(ProjectTypeGuideEntity) getSqlSession().selectOne("projectTypeGuide.selectProjectTypeGuideEntityByindex",id);
-		return projectTypeGuideEntity;
+	public ProjectTypeGuideEntity selectProjectTypeGuideByindex(int ptIndex) {
+		
+		return getSqlSession().selectOne("projectTypeGuide.selectProjectTypeGuideEntityByindex",ptIndex); 
 	}
 	@Override
 	public int selectProjectTypeGuideEntityindex() {
@@ -49,6 +46,13 @@ public class ProjectTypeGuideListDaoImpl extends SqlSessionDaoSupport implements
 			index = 0;
 		}
 		return index;
+	}
+	@Override
+	public  ProjectTypeGuideEntity  selectProjectTypeGuideListfront(
+			long projectType) {
+		
+		return getSqlSession().selectOne("projectTypeGuide.selectProjectTypeGuideListfront",projectType);
+		
 	}
 
 }

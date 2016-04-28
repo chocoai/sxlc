@@ -70,10 +70,10 @@
 		select roleID,Role_No,Role_Name,Add_Date,Role_Remark,Role_Statu from Role_Info
 		<where>
 			<if test="map!=null and  map.roleNo != null">
-				Role_No = #{map.roleNo}
+				Role_No LIKE '%${map.roleNo}%' 
 			</if>
 			<if test="map!=null and  map.roleName != null">
-				Role_Name = #{map.roleName}
+				Role_Name  LIKE '%${map.roleName}%' 
 			</if>
 			<if test="map!=null and  map.startTime != null">
 				Add_Date between #{map.startTime} and #{map.endTime}
@@ -87,7 +87,7 @@
 	
 	<!-- 获取角色列表 -->
 	<select id="getRoleList" 	resultMap="roleinfo">
-		select roleID,Role_No,Role_Name,Add_Date,Role_Remark,Role_Statu from Role_Info
+		select roleID,Role_No,Role_Name,Add_Date,Role_Remark,Role_Statu from Role_Info where Role_Statu=0
 	</select>
 	
 	<!-- 添加角色信息 -->

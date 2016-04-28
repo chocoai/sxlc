@@ -4,12 +4,15 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
 import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoEntity;
 import cn.springmvc.model.GuaranteePeriodEntity;
 import cn.springmvc.model.GuaranteeRelationalEntity;
+import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
 
@@ -122,7 +125,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:33:39
 	* @throws 
 	*/
-	public Map<String, Object> handleGuaranteeInfo(Map<String, Object> map);
+	public int handleGuaranteeInfo(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -137,7 +140,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:34:20
 	* @throws 
 	*/
-	public int deleteOrStopGuaranteeInfo(Map<String, Object> map);
+	public int deleteOrStopGuaranteeInfo(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -152,7 +155,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:35:48
 	* @throws 
 	*/
-	public int insertGuaranteeCertificate(List<ManagementCertificateEntity> list);
+	public int insertGuaranteeCertificate(List<ManagementCertificateEntity> list,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -167,7 +170,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:36:38
 	* @throws 
 	*/
-	public int deleteGuaranteeCertificate(Map<String, Object> map);
+	public int deleteGuaranteeCertificate(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -182,7 +185,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:38:24
 	* @throws 
 	*/
-	public int deleteOrStopManagementInfo(Map<String, Object> map);
+	public int deleteOrStopManagementInfo(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -197,7 +200,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:39:17
 	* @throws 
 	*/
-	public Map<String, Object> handleManagementInfo(Map<String, Object> map);
+	public Map<String, Object> handleManagementInfo(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -212,7 +215,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:42:01
 	* @throws 
 	*/
-	public int insertManagementCertificate(List<ManagementCertificateEntity> entities);
+	public int insertManagementCertificate(List<ManagementCertificateEntity> entities,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -227,7 +230,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:43:21
 	* @throws 
 	*/
-	public int deleteManagementCertificate(Map<String, Object> map);
+	public int deleteManagementCertificate(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* selectGuaranteeBorrowing(根据保荐机构id查询担保机构担保借款范围) 
@@ -284,7 +287,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 下午5:11:37
 	* @throws 
 	*/
-	public int insertGuaranteeBorrowing(Map<String, Object> map);
+	public int insertGuaranteeBorrowing(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* updateGuaranteeBorrowingByID(根据保荐机构id修改担保机构担保借款范围) 
@@ -298,7 +301,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 下午5:12:10
 	* @throws 
 	*/
-	public int updateGuaranteeBorrowingByID(Map<String, Object> map);
+	public int updateGuaranteeBorrowingByID(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* insertGuaranteePeriod(添加担保机构期限范围) 
@@ -312,7 +315,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 下午5:13:26
 	* @throws 
 	*/
-	public int insertGuaranteePeriod(Map<String, Object> map);
+	public int insertGuaranteePeriod(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* updateGuaranteePeriodByID(根据保荐机构id,期限类型修改担保机构担保借款范围) 
@@ -326,7 +329,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 下午5:14:00
 	* @throws 
 	*/
-	public int  updateGuaranteePeriodByID(Map<String, Object> map);
+	public int  updateGuaranteePeriodByID(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -341,7 +344,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 下午5:15:46
 	* @throws 
 	*/
-	public int insertGuaranteeRelational(List<GuaranteeRelationalEntity> list);
+	public int insertGuaranteeRelational(List<GuaranteeRelationalEntity> list,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -356,7 +359,66 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 下午5:18:29
 	* @throws 
 	*/
-	public int deleteGuaranteeRelationalByID(Map<String, Object> map);
+	public int deleteGuaranteeRelationalByID(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	
+	/** 
+	* updateGuaranteeAdmin 启用 停用 担保机构管理员
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: updateGuaranteeAdmin 
+	* @Description: TODO 
+	* @param @param map statu:1:启用 0：停用  guaranteeID:担保机构id  adminId:管理员id
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-4-20 上午10:44:51
+	* @throws 
+	*/
+	public int updateGuaranteeAdmin(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	
+	
+	/** 
+	* insertGuaranteeAdmin 添加担保机构管理员 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: insertGuaranteeAdmin 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-4-20 上午10:46:30
+	* @throws 
+	*/
+	public int insertGuaranteeAdmin(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	/** 
+	* findGuaranteeAdmin(根据保荐机构id,查询担保机构管理员信息) 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findGuaranteeAdmin 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return List<GuaranteeAdminEntity> 返回类型 
+	* @date 2016-4-20 上午10:39:11
+	* @throws 
+	*/
+	public List<GuaranteeAdminEntity> findGuaranteeAdmin(PageEntity pageEntity);
+	
+	/** 
+	* InstitutionsToRaiseCashRecords 分页查询担保机构 充值或提现记录
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: InstitutionsToRaiseCashRecords 
+	* @Description: TODO 
+	* @param @param pageEntity map:{dealType:交易类型 0：充值 1：提现;
+	* startdealTime:交易时间 开始；enddealTime：交易时间结束；merBillno：平台订单号；thirdMerBillno：第三方流水号
+	* statu：状态： 0：失败 1：成功； 排序 ：amountStatu 1：降序 2 升序}
+	* @param @return 设定文件 
+	* @return List<InstitutionsRecordsEntity> 返回类型 
+	* @date 2016-4-25 下午4:57:19
+	* @throws 
+	*/
+	public List<InstitutionsRecordsEntity> InstitutionsToRaiseCashRecords(PageEntity pageEntity);
+
 }
 
 

@@ -80,6 +80,11 @@ public class ProjectBaseInformationEntity {
 	 * 借款期限类型
 	 */
 	private String deadlineTypes;
+	/**
+	 * 实际借款金额
+	 */
+	private long   realAmount;
+	private String realAmounts;
 	public long getId() {
 		return id;
 	}
@@ -171,6 +176,19 @@ public class ProjectBaseInformationEntity {
 	}
 	public void setDeadlineTypes(String deadlineTypes) {
 		this.deadlineTypes = deadlineTypes;
+	}
+	public long getRealAmount() {
+		return realAmount;
+	}
+	public void setRealAmount(long realAmount) {
+		this.realAmount = realAmount;
+		this.realAmounts= IntegerAndString.LongToString(realAmount);
+	}
+	public String getRealAmounts() {
+		return realAmounts;
+	}
+	public void setRealAmounts(String realAmounts) {
+		this.realAmounts = realAmounts;
 	}
 }
 

@@ -198,6 +198,31 @@ function addOrModify(type){
  * @returns
  */
 function enableOrDisable(type,id){
+	var title="";
+	if(type==1){
+		title ='确定启用？';
+	}else if(type==0){
+		title ='确定停用？';
+	}
+	layer.confirm(title, {
+		btn: ['确定', '取消']
+	}, function(index, layero){
+	
+	
+//	 NetUtil.ajax(
+//			  appPath+"/front/enableMngTeam.do",
+//			  {"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id)},
+//			  function(data) { 
+//					if(data==1){
+//						layer.alert("操作成功",{icon:1});
+//						var table = $('#teamTb').DataTable();
+//						table.ajax.reload();
+//					}else if(data==0){
+//						layer.alert("操作失败",{icon:2});  
+//					}
+//				}
+//	 );
+	
 	$.ajax( {  
 		url:appPath+"/front/enableMngTeam.do",
 		data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id)},
@@ -217,6 +242,9 @@ function enableOrDisable(type,id){
 			layer.alert("服务器异常",{icon:2});  
 		}  
 	});
+	
+	}, function(index){
+  }); 
 }
 
 /**

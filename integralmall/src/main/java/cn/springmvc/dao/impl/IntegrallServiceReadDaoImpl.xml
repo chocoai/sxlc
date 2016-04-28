@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="IntegrallServiceReadDaoImpl">
+	
+	
+	<!-- 获取所有商品类型 -->
+	<select id="indexList" resultType="cn.integralmall.model.CommodityType">
+		select 
+		Commodity_Type_ID 				as	commodityTypeId		,
+		Admin_ID						as 	adminId				,
+		Commodity_Type					as 	commodityType		,
+		Super_ID						as 	superId				,
+		Commodity_Classify				as 	commodityClassify	,
+		Commodity_Classify_Des			as 	commodityClassifyDes,	
+		Commodity_Classify_Pic			as	commodityClassifyPic,
+		Status							as	status				,
+		Add_Time						as	addTime				,
+		Delete_Flag						as	deleteFlag			
+		from Commodity_Type where Delete_Flag = 1
+	</select>
+	
+	
+	<!-- 获取最新4条商品信息 -->
+	<select id="goods_4" resultType="cn.integralmall.model.CommodityInfo" parameterType="Map">
+		select
+		Commodity_ID					as	commodityId			,	
+		Commodity_Type_ID				as	commodityTypeId		,
+		Commodity_NO					as	commodityNO			,
+		Commodity_Name					as	commodityName		,
+		Brand							as	brand				,
+		Manufacturer					as	manufacturer		,
+		Specifications_models			as	specificationsModels,
+		Commodity_Describe				as	commodityDescribe	,
+		Market_Price					as	marketPrice			,
+		Need_Point						as	needPoint			,
+		Is_VIP_Exclusive				as	isVIPExclusive		,
+		Discount						as	discount			,
+		VIP_Discount					as	vIPDiscount			,
+		Commodity_large_Icon			as	commodityLargeIcon	,
+		Commodity_Small_Icon			as	commoditySmallIcon	,
+		Add_Time						as	addTime				,
+		Commodity_Statu					as	commodityStatu		,
+		Is_Active						as	isActive			,
+		Active_Type						as	activeType			,
+		End_Date						as	endDate				,
+		Delete_Flag						as	deleteFlag			
+		from Commodity_Info 
+		where Delete_Flag = 1 and Commodity_Type_ID = #{commodityTypeId} order by Add_Time desc limit 0,4
+	</select>
+
+
+	<!-- 获取商品详细信息 -->
+	<select id="commodityInfo" parameterType="Long" resultType="cn.integralmall.model.CommodityInfo">
+		select
+		Commodity_ID					as	commodityId			,	
+		Commodity_Type_ID				as	commodityTypeId		,
+		Commodity_NO					as	commodityNO			,
+		Commodity_Name					as	commodityName		,
+		Brand							as	brand				,
+		Manufacturer					as	manufacturer		,
+		Specifications_models			as	specificationsModels,
+		Commodity_Describe				as	commodityDescribe	,
+		Market_Price					as	marketPrice			,
+		Need_Point						as	needPoint			,
+		Is_VIP_Exclusive				as	isVIPExclusive		,
+		Discount						as	discount			,
+		VIP_Discount					as	vIPDiscount			,
+		Commodity_large_Icon			as	commodityLargeIcon	,
+		Commodity_Small_Icon			as	commoditySmallIcon	,
+		Add_Time						as	addTime				,
+		Commodity_Statu					as	commodityStatu		,
+		Is_Active						as	isActive			,
+		Active_Type						as	activeType			,
+		End_Date						as	endDate				,
+		Delete_Flag						as	deleteFlag			
+		from Commodity_Info where Delete_Flag = 1 
+		and Commodity_ID = #{commodityId}
+	</select>	
+	
+	
+	<!-- 获取商品列表 -->
+	<select id="goods" parameterType="Map" resultType="cn.integralmall.model.CommodityInfo">
+		select
+		Commodity_ID					as	commodityId			,	
+		Commodity_Type_ID				as	commodityTypeId		,
+		Commodity_NO					as	commodityNO			,
+		Commodity_Name					as	commodityName		,
+		Brand							as	brand				,
+		Manufacturer					as	manufacturer		,
+		Specifications_models			as	specificationsModels,
+		Commodity_Describe				as	commodityDescribe	,
+		Market_Price					as	marketPrice			,
+		Need_Point						as	needPoint			,
+		Is_VIP_Exclusive				as	isVIPExclusive		,
+		Discount						as	discount			,
+		VIP_Discount					as	vIPDiscount			,
+		Commodity_large_Icon			as	commodityLargeIcon	,
+		Commodity_Small_Icon			as	commoditySmallIcon	,
+		Add_Time						as	addTime				,
+		Commodity_Statu					as	commodityStatu		,
+		Is_Active						as	isActive			,
+		Active_Type						as	activeType			,
+		End_Date						as	endDate				,
+		Delete_Flag						as	deleteFlag			
+		from Commodity_Info where Delete_Flag = 1 
+		<where>
+			<if test="minPoint != null">
+				Need_Point >= ${minPoint}
+			</if>
+			<if test="maxPoint != null">
+				Need_Point &lt; ${maxPoint} 
+			</if>
+			<if test="commodityTypeId != null">
+				Commodity_Type_ID = ${commodityTypeId}
+			</if>
+		</where>
+		
+	</select>	
+	
+	
+	<!-- 保存收件地址信息 -->
+	<select id="saveShippingAddress" statementType="CALLABLE" parameterType="map" >
+		call saveShippingAddress(
+			#{sid,						mode=IN,						jdbcType=BIGINT},
+			#{mid,						mode=IN,						jdbcType=BIGINT},
+			#{contactName,				mode=IN,						jdbcType=VARCHAR},
+			#{provinceId,				mode=IN,						jdbcType=INTEGER},
+			#{cityId,					mode=IN,						jdbcType=INTEGER},
+			#{countyId,					mode=IN,						jdbcType=INTEGER},
+			#{detailedAddress,			mode=IN,						jdbcType=VARCHAR},
+			#{contactPhone,				mode=IN,						jdbcType=VARCHAR},
+			#{deliveryChoice,			mode=IN,						jdbcType=INTEGER},
+			#{isDefaultAddress,			mode=IN,						jdbcType=INTEGER},
+			#{result,					mode=OUT,						jdbcType=INTEGER}	
+		)
+	</select>
+	
+	
+	<!-- 提交积分兑换 -->
+	<select	id="pointxchange" statementType="CALLABLE" parameterType="map">
+		call pointxchange(
+			#{orderId,					mode=IN,						jdbcType=BIGINT},
+			#{mid,						mode=IN,						jdbcType=BIGINT},
+			#{commodityId,				mode=IN,						jdbcType=BIGINT},
+			#{myquantity,				mode=IN,						jdbcType=INTEGER},
+			#{addressId,				mode=IN,						jdbcType=BIGINT},
+			#{result,					mode=OUT,						jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	<!-- 收件地址列表 -->
+	<select id="ShippingAddressList" parameterType="long" resultType="cn.integralmall.model.ShippingAddress">
+		select
+			Address_ID						as addressId		,
+			Member_ID						as memberId			,
+			Province						as province			,
+			pd.Province_Name				as provinceName		,
+			cd.City_Name					as cityName			,
+			cod.County_Name					as countyName		,
+			City							as city				,
+			County							as county			,
+			Street							as street			,
+			Detailed_Address				as detailedAddress	,
+			Postcode						as postcode			,
+			Contact_Name					as contactName		,
+			Contact_Phone					as contactPhone		,
+			Contact_Email					as contactEmail		,
+			Delivery_Choice					as deliveryChoice	,
+			IS_Default_Address				as iSDefaultAddress
+		from Shipping_address sa
+		left join Province_Dictionary pd on sa.Province = pd.province_Id
+		left join City_Dictionary cd on	cd.City_id = sa.City
+		left join County_Dictionary cod on cod.County_Id = sa.County
+		where member_id = #{memberId}
+		
+	</select>
+	
+	
+	<!-- 修改个人收件地址信息 -->
+	<select id="editShippingAddress" statementType="CALLABLE" parameterType="Map">
+		call editShippingAddress(
+			#{sid,						mode=IN,						jdbcType=BIGINT},
+			#{mid,						mode=IN,						jdbcType=BIGINT},
+			#{contactName,				mode=IN,						jdbcType=VARCHAR},
+			#{provinceId,				mode=IN,						jdbcType=INTEGER},
+			#{cityId,					mode=IN,						jdbcType=INTEGER},
+			#{countyId,					mode=IN,						jdbcType=INTEGER},
+			#{detailedAddress,			mode=IN,						jdbcType=VARCHAR},
+			#{contactPhone,				mode=IN,						jdbcType=VARCHAR},
+			#{deliveryChoice,			mode=IN,						jdbcType=INTEGER},
+			#{isDefaultAddress,			mode=IN,						jdbcType=INTEGER},
+			#{result,					mode=OUT,						jdbcType=INTEGER}
+		)
+	</select>
+	
+</mapper>   

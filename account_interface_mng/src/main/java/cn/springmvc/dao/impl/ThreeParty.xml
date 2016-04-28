@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 第三方交互相关 -->
+<mapper namespace="ThreePartyXML" >
+	<!-- 开户查询相关信息 -->
+  <resultMap id="sAccountInterface" type="cn.sxlc.account.manager.model.AccountInterfaceEntity" >
+    <result column="Personal_Id" property="email"/>
+    <result column="pphone" property="phone"/>
+    <result column="pname" property="name"/>
+    <result column="pidcard" property="idcard"/>
+    <result column="Logname" property="logName"/>
+  </resultMap>
+  <!-- 查询个人会员开户所需基本信息 -->
+  <select id="selectpAccountById" resultMap="sAccountInterface" parameterType="Map" >
+   	select mi.Logname,pbi.Personal_Name AS pname,pbi.Personal_IDCard AS pidcard,
+   	pbi.Personal_Phone AS pphone,pbi.Personal_Email AS pemail
+   	 from Member_Info mi left join Personal_Base_Info pbi on pbi.Personal_Id=mi.Personal_Id
+   		<where>
+   			mi.Member_ID=#{memberId} and mi.Member_Type=0
+   		</where>
+  </select>
+  <!-- 查询企业会员开户所需基本信息 -->
+  <select id="selectcAccountById" resultMap="sAccountInterface" parameterType="Map" >
+   	select mi.Logname,pbi.Personal_Phone AS pphone,pbi.Personal_Email AS pemail,
+   	ci.Compang_Name AS pname,ci.Companye_BLN AS pidcard
+   	 from Member_Info mi 
+   	 left join Company_Info ci on ci.Company_ID=mi.Company_ID
+   	 left join Personal_Base_Info pbi on pbi.Personal_Id=mi.Personal_Id
+   		<where>
+   			mi.Member_ID=#{memberId} and mi.Member_Type=1
+   		</where>
+  </select>
+  <!-- 查询平台账号信息 -->
+  <select id="findThirdPartyMark" resultType="String" parameterType="Map">
+  	select ThirdParty_Mark from Own_Account_Info 
+  		<where>Account_Type_ID=#{accountTypeID}</where>
+  </select>
+  <!-- 添加第三方交互操作信息 -->
+  <insert id="insertThirdInterfaceRecord" parameterType="Map">
+  	insert into ThirdInterface_Record(Third_Trade_Id,Merbill_No,Type,Record_Date,Interface_Type,Detail,Detail_Encrypt,Remark) 
+  		values(#{id},#{merbillNo},#{type},now(),#{interfaceType},#{detail},#{detailEncrypt},#{remark})
+  </insert>
+  <!-- 开户成功处理 -->
+  <select id="openAccountBack" resultType="Map" statementType="CALLABLE">
+  <!-- -->
+  		<![CDATA[{call OpenAccountBack(
+				#{tid,	 mode=IN,	jdbcType=BIGINT},
+				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetailEncrypt,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail,	 mode=IN,	jdbcType=VARCHAR},
+				#{type,	 mode=IN,	jdbcType=INTEGER},
+				#{memberid,	 mode=IN,	jdbcType=BIGINT},
+				#{account ,	 mode=IN,	jdbcType=VARCHAR},
+				#{thirdPartymark ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  
+   <!-- 根据会员类型和id查询会员乾多多标识 -->
+  <select id="findMemberThirdPartyMark" resultType="String" parameterType="Map">
+  	select ThirdParty_Mark from Member_Third_Info 
+  		<where>Member_Type=#{memberType} and Member_ID=#{memberID}</where>
+  </select>
+  <!-- 根据会员类型查询手续费支付方式 -->
+  <select id="payRechargeSet" resultType="String" parameterType="Map">
+  	select Fee_Payment_Method from Recharge_Set 
+  		<where>Payment_Member_Type=#{memberType}</where>
+  </select>
+  
+  <!-- 充值成功处理 -->
+  <select id="rechargeBack" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call RechargeBack(
+				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{rechargeID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberType,	 mode=IN,	jdbcType=INTEGER},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{thirdMerBillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{withdrawalMoney,	 mode=IN,	jdbcType=BIGINT},
+				#{mngFeeRepay ,	 mode=IN,	jdbcType=BIGINT},
+				#{userFee ,	 mode=IN,	jdbcType=VARCHAR},
+				#{remark ,	 mode=IN,	jdbcType=VARCHAR},
+				#{tradeID ,	 mode=IN,	jdbcType=BIGINT},
+				#{tradeIDtow ,	 mode=IN,	jdbcType=BIGINT},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{integralID ,	 mode=IN,	jdbcType=BIGINT},
+				#{memberRPID ,	 mode=IN,	jdbcType=BIGINT},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  
+  <!-- 授权成功处理 -->
+  <select id="authorizeBack" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call AuthorizeBack(
+				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{memberType,	 mode=IN,	jdbcType=INTEGER},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{statu,	 mode=IN,	jdbcType=INTEGER},
+				#{handleStatu,	 mode=IN,	jdbcType=INTEGER},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  	<!-- 流水号相关信息 -->
+  <resultMap id="sLoanTransaction" type="cn.sxlc.account.manager.model.LoanTransactionEntity" >
+    <result column="Invest_Id" property="inversId"/>
+    <result column="Bill_No" property="billNo"/>
+    <result column="GiftBill_No" property="giftBillNo"/>
+  </resultMap>
+  <!-- 根据项目id查询所有放款或流标操作流水号 -->
+  <select id="GetInvestListByProId" resultMap="sLoanTransaction" parameterType="Map">
+  	select Invest_Id,Bill_No,GiftBill_No from Invest_Record where Apply_Id=#{applyId} and IsValid=0
+  </select>
+  
+  <!-- 流标返回处理 -->
+  <select id="ProjectFail" resultType="Map" statementType="CALLABLE">
+  <!-- 
+   -->
+  		<![CDATA[{call ProjectFail(
+				#{applyId,	 mode=IN,	jdbcType=BIGINT},
+				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{sInvest ,	 mode=IN,	jdbcType=VARCHAR},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  
+  <resultMap id="Withdrawal" type="cn.sxlc.account.manager.model.WithdrawalsFeeEntity" >
+    <result column="Withdrawal_Fee_Third" property="withdrawal_Fee_Third"/>
+    <result column="Withdrawal_Type_Third" property="withdrawal_Type_Third"/>
+    <result column="Withdrawal_Fee_Pingtai" property="withdrawal_Fee_Pingtai" />
+    <result column="Check_Type" property="check_Type" />
+    <result column="Payment_Member_Type" property="payment_Member_Type" />
+  </resultMap>
+  <!-- 根据会员类型查询提现规则设置 -->
+  <select id="isWithdrawalsCheak" resultMap="Withdrawal" parameterType="Map">
+  		select Withdrawal_Fee_Third,Withdrawal_Type_Third,Withdrawal_Fee_Pingtai,Check_Type,Payment_Member_Type from Withdrawal_Set where Payment_Member_Type=#{paymentMemberType}
+  </select>
+  
+  
+   <resultMap id="sWithdraws" type="cn.sxlc.account.manager.model.WithdrawsEntity" >
+    <result column="Bank_No" property="sCardNo"/>
+    <result column="BankCode" property="sBankCode"/>
+    <result column="Branch_Address" property="sBankName" />
+    <result column="Card_City" property="iCity" />
+    <result column="Card_Province" property="iProvince" />
+  </resultMap>
+  <!-- 根据银行卡id查询银行信息 -->
+  <select id="finBankCode" resultMap="sWithdraws" parameterMap="Map">
+  	SELECT Bank_No,Branch_Address,BankCode,Card_Province,Card_City FROM
+ 		Bank_Card_Info bci LEFT JOIN Bank_Code bc ON bci.Bank_Id=bc.Bank_ID 
+ 		WHERE bci.Bank_Card_Id=#{bankCardId}
+  </select>
+  
+  <!-- 提现成功返回 -->
+  <select id="MemberWithdrawalBack_Qianduoduo" resultType="Map" statementType="CALLABLE">
+  <!--
+   -->
+  		<![CDATA[{call MemberWithdrawalBack_Qianduoduo(
+				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{rechargeID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberType ,	 mode=IN,	jdbcType=INTEGER},
+				#{memberID ,	 mode=IN,	jdbcType=BIGINT},
+				#{thirdMerBillno ,	 mode=IN,	jdbcType=VARCHAR},
+				#{withdrawalMoney ,	 mode=IN,	jdbcType=BIGINT},
+				#{mngFeeRepay ,	 mode=IN,	jdbcType=BIGINT},
+				#{userFee ,	 mode=IN,	jdbcType=BIGINT},
+				#{remark ,	 mode=IN,	jdbcType=VARCHAR},
+				#{tradeID ,	 mode=IN,	jdbcType=BIGINT},
+				#{tradeIDtow ,	 mode=IN,	jdbcType=BIGINT},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{integralID ,	 mode=IN,	jdbcType=BIGINT},
+				#{memberRPID ,	 mode=IN,	jdbcType=BIGINT},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  
+  <!-- 提现平台审核返回 、银行打回 -->
+  <select id="WithdraBack" resultType="Map" statementType="CALLABLE">
+  <!-- retType：1：提现银行打回 2：提现，平台拒绝   3：提现，平台审核通过
+  		tradeID：交易记录id
+   -->
+  		<![CDATA[{call WithdraBack(
+  				#{tradeID,	 mode=IN,	jdbcType=BIGINT},
+				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{thirdBillNo ,	 mode=IN,	jdbcType=VARCHAR},
+				#{retType ,	 mode=IN,	jdbcType=INTEGER},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  <!-- 根据提现申请记录id 查询提现申请交易流水号 -->
+  <select id="findWithdrawalRecharge" parameterType="Map" resultType="String">
+  	select Third_Mer_Billno from Member_Withdrawal_Recharge where Withdrawal_ID=#{withdrawalID} limit 1
+  </select>
+  
+  
+  <!-- 生成订单号 -->
+  <select id="generateorderNo" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call generate_orderNo(
+				#{orderNamePre ,	 mode=IN,	jdbcType=VARCHAR},
+				#{num ,	 mode=IN,	jdbcType=INTEGER},
+				#{newOrderNo ,	 mode=OUT,	jdbcType=VARCHAR}
+    		)}
+    	]]>
+  </select>
+  
+  <!-- 判断是否满足提前还款规则-->
+  <select id="EarlyRepayment" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call EarlyRepayment(
+				#{applyId ,	 mode=IN,	jdbcType=BIGINT},
+				#{result ,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  <!-- 根据项目申请id查询出提前还款应还的所有本金 -->
+  <select id="selectAllmoneyForEarlyRepayment" resultType="LONG" parameterType="Map">
+  	select SUM(CAST(((AES_DECRYPT(UNHEX(SDRepay_Principal),#{skey}))) as signed)) from Loan_Repay where Apply_Id=#{applyId} and IsValid=0 and IsCompensatory=0 and Statu=0
+  </select>
+  
+  <resultMap id="sRepayDetail" type="cn.sxlc.account.manager.model.RepayDetailEntity">
+    <result column="Member_ID" property="iMemberId"/>
+    <result column="Invest_Id" property="iInvestId"/>
+  </resultMap>
+  
+  <!-- 根据项目申请id查询所有投资记录 -->
+  <select id="selectAllInvestForEarlyRepayment" resultMap="sRepayDetail" parameterType="Map">
+  	select Member_ID,Invest_Id from Invest_Record where Apply_Id=#{applyId} and IsValid=0 
+  </select>
+  <!-- 根据投资id查询会员未收总本金 -->
+  <select id="selectRevenuePlan" resultType="LONG" parameterType="Map">
+  	select SUM(CAST(((AES_DECRYPT(UNHEX(SDRecv_Principal),#{skey}))) as signed)) from Invest_Income where Invest_Id=#{investId} and IsValid=0 and Statu=0
+  </select>
+  <!-- 根据投资id、还款计划id查询会员当期未收总本金 -->
+  <select id="selectPrincipalByID" resultType="LONG" parameterType="Map">
+  	select SUM(CAST(((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{skey}))) as signed)) -
+  	SUM(CAST(((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{skey}))) as signed))
+  	from Invest_Income ii
+  	left join Invest_Real_Income iri on iri.Income_Id=ii.Income_Id 
+  	where ii.Invest_Id=#{investId} and ii.Repay_ID=#{repayId} and ii.IsValid=0 
+  </select>
+  
+  <!-- 查询出提前还款 单个投资会员最近一期未收收益 -->
+  <select id="findInterestByMember" resultType="LONG" parameterType="Map">
+  	select CAST(((AES_DECRYPT(UNHEX(SDRecv_Interest),#{skey}))) as signed) from Invest_Income where Invest_Id=#{investId} and IsValid=0 and Statu=0 order by SDRecv_MaxTime desc limit 1
+  </select>
+  
+   <!-- 查询还款 单个投资会员未收总利息 -->
+  <select id="findInterestByOne" resultType="LONG" parameterType="Map">
+  	select SUM(CAST(((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{skey}))) as signed)) -
+  	SUM(CAST(((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey}))) as signed))
+  	from Invest_Income ii
+  	left join Invest_Real_Income iri on iri.Income_Id=ii.Income_Id 
+  	where ii.Invest_Id=#{investId} and ii.Repay_ID=#{repayId} and ii.IsValid=0 
+  </select>
+  <!-- 根据收益计划id查询出实际已收的所有罚息和罚金 -->
+  <select id="allInvestRealIncome" parameterType="Map" resultType="Map">
+  	select sum(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey})) as signed)) as Repay_Overdue_Interest,
+				sum(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{skey})) as signed)) as Repay_Overdue
+			from Invest_Real_Income iiof where Income_Id=#{incomeId}
+  </select>
+  
+  <!-- 查询出提前还款 单个投资会员最近一期应收收益时间，月标 -->
+  <select id="findTimesByMember" resultType="LONG" parameterType="Map">
+  	select IFNULL(datediff(SDRecv_MaxTime, NOW()))  from Invest_Income where Invest_Id=#{investId} and IsValid=0 and Statu=0 order by SDRecv_MaxTime desc limit 1
+  </select>
+  
+  <!-- 查询提前还款违约金设置 -->
+  <select id="findPenaltyRate" resultType="Map">
+  	select Penalty_Invest_Rate,Penalty_PingTai_Rate from System_Set
+  </select>
+  <!-- 查询出该项目的期限类型 -->
+  <select id="projectDurationType" resultType="LONG" parameterType="Map">
+  	select Deadline from Project_App_Record par left join Project_Base_Info pbi on par.Project_Base_ID=pbi.Project_Base_ID where par.Apply_Id=#{applyId} limit 1
+  </select>
+  
+  
+  <!-- 查询还款逾期天数 大于0视为逾期-->
+  <select id="findDayByOverdue" resultType="LONG" parameterType="Map">
+  	select datediff(NOW(),SDRecv_MaxTime)  from Invest_Income where Invest_Id=#{investId} 
+  	and IsValid=0 and Repay_ID=#{repayId} order by SDRecv_MaxTime desc limit 1
+  </select>
+  <!-- 根据投资记录id和还款计划id查询单个会员收益计划id -->
+  <select id="findIncomeId" resultType="LONG" parameterType="Map">
+  	select Income_Id  from Invest_Income where Invest_Id=#{investId} 
+  	and IsValid=0 and Repay_ID=#{repayId} order by SDRecv_MaxTime desc limit 1
+  </select>
+  
+   <!-- 计算出逾期费-->
+  <select id="GetLoanRepayOverdueInfo" resultType="Map" statementType="CALLABLE">
+  		<!-- lId 还款计划id -->
+  		<![CDATA[{call GetLoanRepayOverdueInfo(
+				#{lId ,	 mode=IN,	jdbcType=BIGINT},
+				#{sKey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{lOverdueInterest ,	 mode=OUT,	jdbcType=BIGINT},
+				#{lOverdue ,	 mode=OUT,	jdbcType=BIGINT}
+    		)}
+    	]]>
+  </select>
+  <!-- 根据逾期天数查询逾期费率 -->
+  <select id="findOverdueFees" resultType="LONG" parameterType="Map">
+  	SELECT Price INTO lPrice FROM Overdue_Fees WHERE  
+  		Statu = 0 AND #{iDays}>=Overdue_Min AND Overdue_Max>= #{iDays}  ORDER BY Price DESC LIMIT 0,1;
+  </select>
+  
+  <!-- 根据收益计划id查询投资人预计还款逾期罚息和罚金 -->
+  <select id="InvestIncomeOverdueFee" parameterType="Map" resultType="Map">
+  	select sum(CAST((AES_DECRYPT(UNHEX(iiof.Repay_Overdue_Interest),#{skey})) as signed)) as Repay_Overdue_Interest,
+						sum(CAST((AES_DECRYPT(UNHEX(iiof.Repay_Overdue),#{skey})) as signed)) as Repay_Overdue
+						from Invest_Income_Overdue_Fee iiof where Income_Id=#{incomeId}
+  </select>
+  <!-- 根据还款计划id查询最近一次逾期还款时间 -->
+  <select id="overdueRecvTime" parameterType="Map" resultType="String">
+  	select iiof.Recv_Time from Invest_Income_Overdue_Fee iiof where Income_Id in
+				(select distinct id from Invest_Income where Repay_Id=#{repayId}) order by Recv_Time desc limit 0,1
+  </select>
+  
+  <!-- 根据还款计划id查询当期预计还款时间 -->
+  <select id="overdueRepayMaxTime" parameterType="Map" resultType="String">
+  	select Repay_MaxTime from Loan_Repay where Repay_Id=#{repayId}
+  </select>
+  <!-- 根据项目申请id查询 项目年化 -->
+  <select id="ProjectBaseInfoYearRate" parameterType="Map" resultType="long">
+  	select pbi.Year_Rate from Project_App_Record par left join Project_Base_Info pbi on par.Project_Base_ID=pbi.Project_Base_ID where par.Apply_Id=#{applyId} limit 1
+  </select>
+  
+  <!-- 根据还款计划id查询还款状态 0未还 1部分还款 2 已还清 -->
+  <select id="RepayStatu" parameterType="Map" resultType="long">
+  	select IFNULL(Statu,-1) from Loan_Repay where Repay_Id=#{repayId}
+  </select>
+  
+  <!-- 还款返回处理 -->
+  <select id="RepayBackQianduoduo" resultType="Map" statementType="CALLABLE">
+  <!-- -->
+  		<![CDATA[{call RepayBack_Qianduoduo(
+				#{detail,	 mode=IN,	jdbcType=VARCHAR},
+				#{applyId,	 mode=IN,	jdbcType=BIGINT},
+				#{newrepaythredId,	 mode=IN,	jdbcType=BIGINT},
+				#{repayMemberId,	 mode=IN,	jdbcType=BIGINT},
+				#{thirdBillNo,	 mode=IN,	jdbcType=VARCHAR},
+				#{repalyId ,	 mode=IN,	jdbcType=BIGINT},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  <!-- 代偿前判断 -->
+  <select id="CompensatoryJudgment" resultType="Map" statementType="CALLABLE">
+  <!-- result -1:已还款 -2 该还款计划已代偿 -3 该还款计划为无效 -4 该还款计划为还款中-->
+  		<![CDATA[{call CompensatoryJudgment(
+				#{replayId ,	 mode=IN,	jdbcType=BIGINT},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+   <!-- 代偿回款前判断 -->
+  <select id="CompensatoryPaymentJudgment" resultType="Map" statementType="CALLABLE">
+  <!-- result -1:无效的还款计划 -2 已还清-->
+  		<![CDATA[{call CompensatoryPaymentJudgment(
+				#{replayId ,	 mode=IN,	jdbcType=BIGINT},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  <!-- 查询出代偿回款代偿方代偿的金额信息 -->
+  <select id="sumJudgmentMoney" resultType="Map" parameterType="Map">
+  	select SUM(CAST(((AES_DECRYPT(UNHEX(Corpus_Enc),#{skey}))) as signed)) Corpus
+  	,SUM(CAST(((AES_DECRYPT(UNHEX(Interest_Enc),#{skey}))) as signed)) Interes
+  	,SUM(CAST(((AES_DECRYPT(UNHEX(Overdue_Interest_Enc),#{skey}))) as signed)) OverdueInterest
+  	,SUM(CAST(((AES_DECRYPT(UNHEX(Overdue_Fee_Enc),#{skey}))) as signed)) OverdueFee
+  	,SUM(Out_Day) outDay
+  	,Record_Date
+  	,Repay_Type
+  	,Guarantee_ID
+  	from Instead_RePay_Record where Repay_ID=#{repayId}
+  </select>
+  
+  
+  <!-- 查询还款逾期天数 大于0视为逾期-->
+  <select id="findDayByOverdueNow" resultType="long" parameterType="Map">
+  	select datediff(NOW(),Repay_MaxTime)  from Loan_Repay where 
+  	 IsValid=0 and Repay_ID=#{repayId} order by Repay_MaxTime desc limit 1
+  </select>
+  
+  <!-- 代偿回款返回处理 -->
+  <select id="CompensatoryPaymentBack" resultType="Map" statementType="CALLABLE">
+  <!-- -->
+  		<![CDATA[{call CompensatoryPaymentBack(
+				#{detail,	 mode=IN,	jdbcType=VARCHAR},
+				#{applyId,	 mode=IN,	jdbcType=BIGINT},
+				#{newrepaythredId,	 mode=IN,	jdbcType=BIGINT},
+				#{repayMemberId,	 mode=IN,	jdbcType=BIGINT},
+				#{thirdBillNo,	 mode=IN,	jdbcType=VARCHAR},
+				#{repalyId ,	 mode=IN,	jdbcType=BIGINT},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  
+  <!-- 根据债权转让申请id查询所有放款或流标操作流水号 --> 
+  <select id="GetCreditorTransId" resultMap="sLoanTransaction" parameterType="Map">
+  		select Bill_No,GiftBill_No,ir.Invest_Id from invest_record ir 
+		LEFT JOIN Creditor_Trans ct ON ct.Invest_Id=ir.Invest_Id
+		where ct.CTA_Id=#{ctaId} and not exists (select 1 from Invest_Record_FangKuan irf where irf.invest_id = ir.invest_id)
+  </select>
+   <!-- 债权转让放款返回处理 -->
+  <select id="CreditorTransfer" resultType="Map" statementType="CALLABLE">
+  <!-- -->
+  		<![CDATA[{call CreditorTransfer(
+  				#{lId,  mode=IN, jdbcType=BIGINT},
+				#{applyId,	 mode=IN,	jdbcType=BIGINT},
+				#{sMerBillNo,	 mode=IN,	jdbcType=VARCHAR},
+				#{sOrderNos,	 mode=IN,	jdbcType=VARCHAR},
+				#{iStatu,	 mode=IN,	jdbcType=INTEGER},
+				#{backInfoenc ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backinfo ,	 mode=IN,	jdbcType=VARCHAR},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  <!-- 查询债权转让所有投资记录 -->
+  <select id="GetTransInvestList" parameterType="Map" resultType="cn.sxlc.account.manager.model.InvestRecordEntity">
+  	select ir.Invest_Id investId,Apply_Id applyId,Member_ID memberID,CAST(((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{skey}))) as signed) investAmountValid
+		from Invest_Record ir where ir.Invest_Id in (select Invest_Id from Creditor_Trans where CTA_Id=#{ctaId});
+  </select>
+  <!-- 查询债权转让 利息生成方式 -->
+  <select id="InterestType" resultType="INTEGER">
+  	select Interest_Type from Trans_Setting limit 1
+  </select>
+  <!-- 查询债权转让原项目的还款方式 -->
+  <select id="getRepaymentByCTAId" resultType="INTEGER" parameterType="Map">
+  	<!-- 0	等额本息 1	先息后本 2	到期还本付息  3等额本金
+  	 -->
+  	 select pbi.Deadline_Type,pi.Apply_Id from Project_App_Record pi LEFT JOIN Project_Base_Info pbi ON pbi.Project_Base_ID=pi.Project_Base_ID where Apply_Id = (select Apply_Id from Invest_Record where
+				Invest_Id = (select Invest_Id from Creditor_Trans_App where CTA_Id = #{ctaId}))
+  </select>
+  <!-- 查询债权转让原投资的剩余期限以及期限类型 -->
+  <select id="getDateInstallments" resultType="Map" parameterType="Map">
+  	 select Surplus_Time,Surplus_Time_Type from Creditor_Trans_App where CTA_Id = #{ctaId})) limit 1
+  </select>
+  
+  <!-- 查询出最近一次回款时间（作为生成收益计划的投标结束时间） 如果一次都未还则为原项目放款时间 -->
+  <select id="GetProdateTrans" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call GetProdateTrans(
+				#{ctaId ,	 mode=IN,	jdbcType=BIGINT},
+				#{tim ,		 mode=OUT,	jdbcType=VARCHAR},
+				#{yearRate ,	 mode=OUT,	jdbcType=BIGINT},
+				#{timNum ,	 mode=OUT,	jdbcType=INTEGER},
+				#{memberId ,	 mode=OUT,	jdbcType=BIGINT},
+				#{InvId ,	 mode=OUT,	jdbcType=BIGINT},
+    		)}
+    	]]>
+  </select>
+  <!-- 新增收益计划 -->
+  <select id="addInvestIncome"  statementType="CALLABLE" parameterType="Map"> 
+  {call insertInvestIncome(
+	#{iId  ,	             mode=IN,	jdbcType=BIGINT},
+	#{repayId,	             mode=IN,	jdbcType=BIGINT}, 
+	#{investId,	             mode=IN,	jdbcType=BIGINT}, 
+	#{memberId,	             mode=IN,	jdbcType=BIGINT},
+	#{sPrincipal,	         mode=IN,	jdbcType=INTEGER}, 
+	#{sInterest,	         mode=IN,	jdbcType=INTEGER}, 
+	#{ttDate,	             mode=IN,	jdbcType=VARCHAR},
+	#{sKey,	                 mode=IN,	jdbcType=VARCHAR},
+	#{result,	             mode=OUT,	jdbcType=INTEGER}
+ 		)}
+	</select>
+	
+	<!-- 根据项目申请id查询所有未还还款计划id -->
+	<select id="selectLoanId" resultType="List">
+		select ID from Loan_Repay where Apply_Id =#{applyId}  and Statu=0 and IsCompensatory=0 order by Repay_MaxTime asc
+	</select>
+	<!-- 修改债权转让项目状态为还款中 -->
+	<update id="updateProjrctTransStatu" parameterType="Map">
+		UPDATE Creditor_Trans_App SET Statu = 3 WHERE CTA_Id =#{ctaId}
+	</update>
+	
+	<!-- 债权转让流标返回处理 -->
+  <select id="TransFail" resultType="Map" statementType="CALLABLE">
+  <!-- 
+   -->
+  		<![CDATA[{call TransFail(
+				#{applyId,	 mode=IN,	jdbcType=BIGINT},
+				#{tid,	 mode=IN,	jdbcType=BIGINT},
+				#{traId,	 mode=IN,	jdbcType=BIGINT},
+				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{sInvest ,	 mode=IN,	jdbcType=VARCHAR},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+   <!-- 保证金退还判断 -->
+  <select id="JudgmentRefundDeposit" resultType="Map" statementType="CALLABLE">
+  <!-- result -1:该项目还未结清 -2:已存在逾期不得退还 1:成功 -->
+  		<![CDATA[{call JudgmentRefundDeposit(
+				#{applyId,	 mode=IN,	jdbcType=BIGINT},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER},
+				#{memberId,	 mode=OUT,	jdbcType=BIGINT},
+				#{amount,	 mode=OUT,	jdbcType=BIGINT}
+    		)}
+    	]]>
+  </select>
+  
+  
+   <!-- 保证金退还成功处理 -->
+  <select id="ReturnOfDeposit" resultType="Map" statementType="CALLABLE">
+  <!--
+-->
+  		<![CDATA[{call ReturnOfDeposit(
+  				#{merbillno ,	 mode=IN,	jdbcType=VARCHAR},
+  				#{thredId,	 mode=IN,	jdbcType=BIGINT},
+				#{applyID,	 mode=IN,	jdbcType=BIGINT},
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{thirdMerBillno ,	 mode=IN,	jdbcType=VARCHAR},
+				#{amount,	 mode=IN,	jdbcType=BIGINT},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  <!-- 查询出项目使用惊喜红包的使用记录 -->
+  <select id="findListSurpriseRed" resultType="cn.sxlc.account.manager.model.SurpriseRedEntity" parameterType="Map">
+  	SELECT CAST(((AES_DECRYPT(UNHEX(ii.RedPackage_Amount),#{skey}))) as signed) amount,
+		ir.Member_ID memberId,ir.Invest_Id investId,irt.IRT_ID irtid
+		FROM Invest_Record_Tmp irt LEFT JOIN Invest_Record ir ON ir.Invest_Id=irt.Invest_Id
+		 WHERE irt.Statu=1 AND ir.Apply_Id=#{applyId} AND ir.IsValid=0
+		 	AND irt.IRT_ID not in(select IRT_ID from Invest_Record_Surprised_Deal WHERE Statu=2 OR Statu=1) limit 200
+  </select>
+  
+  
+  <select id="SurpriseRedBack" resultType="Map" statementType="CALLABLE">
+  <!--惊喜红包返回处理
+-->
+  		<![CDATA[{call SurpriseRedBack(
+  				#{istatu,	 mode=OUT,	jdbcType=INTEGER}
+  				#{merbillno ,	 mode=IN,	jdbcType=VARCHAR},
+				#{applyID,	 mode=IN,	jdbcType=BIGINT},
+				#{thredId,	 mode=IN,	jdbcType=BIGINT},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{subStrin ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  <!-- 标记本批次处理的惊喜红包投资 -->
+  <select id="DataTagBySurpriseRed" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call ReturnOfDeposit(
+				#{subTem,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  <!--好友转账 判断出账好友余额是否满足当前转账金额 -->
+  <select id="AccountBalance" resultType="Map" statementType="CALLABLE">
+  	<!-- -1 余额不足 -->
+  		<![CDATA[{call ReturnOfDeposit(
+				#{inMemberId,	 mode=IN,	jdbcType=BIGINT},
+				#{amount,	 	 mode=IN,	jdbcType=BIGINT},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  <!-- 添加一条好友转账交易记录 -->
+  <insert id="insertMemberTransferRecord" parameterType="Map">
+  		insert into Member_Transfer_Record
+  			(Member_ID_Out,Member_ID_In,Amount,Record_Date,Statu,Record_No,Third_Trade_Id)
+  			values(#{outMember},#{inMember},HEX(AES_ENCRYPT(#{amount},#{skey})),NOW(),0,#{recordNo},#{thirdTradeId});
+  </insert>
+  <!-- 好友转账返回 -->
+  <select id="MemberTransferBack" resultType="Map" statementType="CALLABLE">
+  	<!-- -->
+  	<![CDATA[{call MemberTransferBack(
+  				#{istatu,	 	 mode=IN,	jdbcType=INTEGER},
+  				#{merbillno ,	 mode=IN,	jdbcType=VARCHAR},
+  				#{loanNo ,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{amount,	 	 mode=IN,	jdbcType=BIGINT},
+				#{inMemberId,	 mode=IN,	jdbcType=BIGINT},
+				#{outMemberId,	 mode=IN,	jdbcType=BIGINT},
+				#{thredIdone,	 mode=IN,	jdbcType=BIGINT},
+				#{thredIdtow,	 mode=IN,	jdbcType=BIGINT},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{skey ,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  <!-- 推荐达人 提奖会员应提奖金额查询 -->
+  <select id="RecommendedTalentAward" resultType="cn.sxlc.account.manager.model.AwardEntity" parameterType="Map">
+  	select CAST(((AES_DECRYPT(UNHEX(Project_Amount),#{skey}))) as signed) sjmoney,
+  				CAST(((AES_DECRYPT(UNHEX(Award_Amount),#{skey}))) as signed) tjmoney,
+  			Award_Type awardType from InviteMaster_Award_Record 
+  		where Award_Date >= #{startTime} and #{endTime}>=Award_Date and Pay_Statu not in(1,2)
+  		and Member_ID=#{memberId}
+  		GROUP BY Award_Type
+  </select>
+   <!-- 理财顾问  提奖会员应提奖金额查询 -->
+  <select id="FinancialAdvisorAward" resultType="cn.sxlc.account.manager.model.AwardEntity" parameterType="Map">
+  	select CAST(((AES_DECRYPT(UNHEX(Project_Amount),#{skey}))) as signed) sjmoney,
+  				CAST(((AES_DECRYPT(UNHEX(Award_Amount),#{skey}))) as signed) tjmoney,
+  			Award_Type awardType from FinancialAdvisor_Award_Record 
+  		where Award_Date >= #{startTime} and #{endTime}>=Award_Date and Pay_Statu not in(1,2)
+  		and Member_ID=#{memberId}
+  		GROUP BY Award_Type
+  </select>
+  
+  
+   <!--平台提奖操作第三方返回处理 -->
+  <select id="PlatformAwardMoneyBack" resultType="Map" statementType="CALLABLE">
+  	<!-- 
+  	istatu int,itype 1：理财顾问
+  	-->
+  	<![CDATA[{call PlatformAwardMoneyBack(
+  				#{istatu,	 	 mode=IN,	jdbcType=INTEGER},
+  				#{itype,	 	 mode=IN,	jdbcType=INTEGER},
+  				#{payID,	 	 mode=IN,	jdbcType=BIGINT},
+  				#{merbillno ,	 mode=IN,	jdbcType=VARCHAR},
+  				#{loanNo ,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{amount,	 	 mode=IN,	jdbcType=BIGINT},
+				#{memberId,	 	 mode=IN,	jdbcType=BIGINT},
+				#{startTime,	 mode=IN,	jdbcType=VARCHAR},
+				#{endTime,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{thredId,	 	 mode=IN,	jdbcType=BIGINT},
+				#{thredIdtow,	 mode=IN,	jdbcType=BIGINT},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{skey ,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{subStrin ,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  <!-- 添加vip购买记录 -->
+  <insert id="AddVipPurchaseRecord" parameterType="Map">
+  	insert into Member_VIP_Pay_Record(MV_Pay_ID,Member_ID,Amount,Record_Date
+  		,Statu,Record_No,Third_Trade_Id,Recieved_Date,Remark) 
+  			values(#{mvPayId},#{memberId},HEX(AES_ENCRYPT(#{amount},#{skey})),now(),0,#{recordNo}
+  					,#{thirdId},now(),'')
+  </insert>
+  
+  <!-- 购买vip返回处理 -->
+  <select id="PurchaseVipBack" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call PurchaseVipBack(
+				#{istatu,	 	 mode=IN,	jdbcType=INTEGER},
+  				#{years,	 	 mode=IN,	jdbcType=INTEGER},
+  				#{merbillno ,	 mode=IN,	jdbcType=VARCHAR},
+  				#{loanNo ,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{amount,	 	 mode=IN,	jdbcType=BIGINT},
+				#{memberId,	 	 mode=IN,	jdbcType=BIGINT},
+				#{thredId,	 	 mode=IN,	jdbcType=BIGINT},
+				#{thredIdtow,	 mode=IN,	jdbcType=BIGINT},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
+				#{skey ,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{subStrin ,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+</mapper>

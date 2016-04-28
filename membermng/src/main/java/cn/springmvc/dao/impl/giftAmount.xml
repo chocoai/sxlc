@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="giftAmount">  
-    <resultMap type="cn.membermng.model.MemberRedpacketsEntity" id="resultGIftAmount">
-        <id column="Trade_ID" property="tradeID" />
-		<result column="User_Balance" property="userBalance" />
-		<result column="Frozen_Balance" property="frozenBalance" />
-		<result column="User_Gift" property="userGift" />
-		<result column="Frozen_Gift" property="frozenGift" /> 
-		<result column="useGiftAmount" property="useGiftAmount" /> 
+    <resultMap type="cn.membermng.model.MemberRedpacketsEntity" id="resultGIftAmount"> 
+		<result column="Gift_Amount"    property="giftAmount" />
+		<result column="End_Date"       property="endDate" /> 
+		<result column="useGiftAmount" 	property="useGiftAmount" /> 
     </resultMap>  
     <!-- 查询会员红包信息-->  
 	<select id="selectMembergift" parameterType="int"  resultMap="resultGIftAmount">
-	   select  mr.Gift_Amount,mr.End_Date,mru.Gift_Amount as useGiftAmount 
-	   from  Member_Redpackets   mr 
-	   left join Member_Redpackets_UseRecord mru on  mru.Member_RP_ID=mr.Member_RP_ID
-       where mr.Member_ID=#{memberID} and  mr.Statu !=2 and mr.End_Date > now() and mru.Statu!=-1
+	   select  mr.Gift_Amount,mr.End_Date,
+	   (select mru.Gift_Amount from  Member_Redpackets_UseRecord mru where 
+	     mru.Member_RP_ID=mr.Member_RP_ID and mru.Statu!=-1) as useGiftAmount
+	   from  Member_Redpackets   mr   
+       where mr.Member_ID=#{memberID} and  mr.Statu !=2 and mr.End_Date > now() 
     </select> 
     <!-- 查询会员红包个数-->  
 	<select id="selectMembergiftCount" parameterType="int"  resultType="int">

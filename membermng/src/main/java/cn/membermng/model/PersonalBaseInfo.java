@@ -22,12 +22,16 @@ public class PersonalBaseInfo {
 	@Pattern(regexp="",message="请输入18位身份证号")
 	private String		personalIDCard;			//联系人身份证
 	private Integer		sexId;					//性别
+	private String		sexName;				
 	private Integer		maritalStatus;			//婚姻状况
+	private String		maritalName;			
 	private Integer		education;				//最高学历
+	private String		educationName;			//
 	private String		graduatedSchool;		//毕业学校
 	private	String		graduatedProfessionals;	//毕业专业
 	private Date		graduatedDATE;			//毕业时间
 	private Integer		nationId;				//名族
+	private String		nationName;				//名族
 	private String		homeTown;				//籍贯
 	private String		census;					//户口所在地
 	private String		monthlyIncome;			//月均收入
@@ -49,7 +53,8 @@ public class PersonalBaseInfo {
 	private String		personalEmail;			//邮箱
 	@Pattern(regexp="\\d{5,12}",message="请输入5-12位QQ号码")
 	private String		qq;						//联系QQ
-	
+	private String		birthday;				//出生日期
+	private Integer		age;					//年龄
 	
 	
 	public PersonalBaseInfo() {}
@@ -259,6 +264,41 @@ public class PersonalBaseInfo {
 	public void setQq(String qq) {
 		this.qq = qq;
 	}
+	public String getNationName() {
+		return nationName;
+	}
+	public void setNationName(String nationName) {
+		this.nationName = nationName;
+	}
+	public void setSexName(String sexName) {
+		this.sexName = sexName;
+	}
+	public String getSexName() {
+		return sexName;
+	}
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+	public String getBirthday() {
+		return birthday;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+	public Integer getAge() {
+		return age;
+	}
+	public String getEducationName() {
+		return educationName;
+	}
+	public void setEducationName(String educationName) {
+		this.educationName = educationName;
+	}
+	public void setMaritalName(String maritalName) {
+		this.maritalName = maritalName;
+	}
+	public String getMaritalName() {
+		return maritalName;
+	}
 	
-
 }

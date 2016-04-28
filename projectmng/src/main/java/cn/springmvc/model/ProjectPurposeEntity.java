@@ -8,11 +8,11 @@ public class ProjectPurposeEntity {
 	/**
 	 * 借款意向id
 	 */
-	private long id	;
+	private Long id	;
 	/**
 	 * 会员ID
 	 */
-	private long memberID;
+	private Long memberID;
 	/**
 	 * 借款用途
 	 */
@@ -24,7 +24,11 @@ public class ProjectPurposeEntity {
 	/**
 	 * 借款金额
 	 */
-	private String amount;	
+	private Long amount;	
+	/**
+	 * 借款金额
+	 */
+	private String amountStr;	
 	/**
 	 * 项目描述
 	 */
@@ -32,19 +36,19 @@ public class ProjectPurposeEntity {
 	/**
 	 * 借款期限 单位：月/天	
 	 */
-	private int deadline;
+	private Integer deadline;
 	/**
 	 * 期限类型  0：天标 1：月标 2：年标
 	 */
-	private int deadlineType;	
+	private Integer deadlineType;	
 	/**
 	 * 还款方式  0：等额本息，1：每月还息，到期还本 2：到期还息本 3:等额本金
 	 */
-	private int repayWay;
+	private Integer repayWay;
 	/**
 	 * 预计年化收益率(万分之)
 	 */
-	private int yearRate;
+	private Integer yearRate;
 	/**
 	 * 申请时间
 	 */
@@ -52,19 +56,25 @@ public class ProjectPurposeEntity {
 	/**
 	 * 提交申请管理员ID
 	 */
-	private long adminId;	
+	private Long adminId;	
 	/**
 	 * 意向处理状态 0：未处理 1：提交申请 -1：打回	
 	 */
-	private int dealStatu;
+	private Integer dealStatu;
 	/**
 	 * 积分处理时间
 	 */
-	private String dealDate; 
-	public long getMemberID() {
+	private String dealDate;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getMemberID() {
 		return memberID;
 	}
-	public void setMemberID(long memberID) {
+	public void setMemberID(Long memberID) {
 		this.memberID = memberID;
 	}
 	public String getUses() {
@@ -79,11 +89,18 @@ public class ProjectPurposeEntity {
 	public void setRepaySource(String repaySource) {
 		this.repaySource = repaySource;
 	}
-	public String getAmount() {
+
+	public Long getAmount() {
 		return amount;
 	}
-	public void setAmount(String amount) {
+	public void setAmount(Long amount) {
 		this.amount = amount;
+	}
+	public String getAmountStr() {
+		return amountStr;
+	}
+	public void setAmountStr(String amountStr) {
+		this.amountStr = amountStr;
 	}
 	public String getProjectDescript() {
 		return projectDescript;
@@ -91,28 +108,28 @@ public class ProjectPurposeEntity {
 	public void setProjectDescript(String projectDescript) {
 		this.projectDescript = projectDescript;
 	}
-	public int getDeadline() {
+	public Integer getDeadline() {
 		return deadline;
 	}
-	public void setDeadline(int deadline) {
+	public void setDeadline(Integer deadline) {
 		this.deadline = deadline;
 	}
-	public int getDeadlineType() {
+	public Integer getDeadlineType() {
 		return deadlineType;
 	}
-	public void setDeadlineType(int deadlineType) {
+	public void setDeadlineType(Integer deadlineType) {
 		this.deadlineType = deadlineType;
 	}
-	public int getRepayWay() {
+	public Integer getRepayWay() {
 		return repayWay;
 	}
-	public void setRepayWay(int repayWay) {
+	public void setRepayWay(Integer repayWay) {
 		this.repayWay = repayWay;
 	}
-	public int getYearRate() {
+	public Integer getYearRate() {
 		return yearRate;
 	}
-	public void setYearRate(int yearRate) {
+	public void setYearRate(Integer yearRate) {
 		this.yearRate = yearRate;
 	}
 	public String getRecordDate() {
@@ -121,16 +138,16 @@ public class ProjectPurposeEntity {
 	public void setRecordDate(String recordDate) {
 		this.recordDate = recordDate;
 	}
-	public long getAdminId() {
+	public Long getAdminId() {
 		return adminId;
 	}
-	public void setAdminId(long adminId) {
+	public void setAdminId(Long adminId) {
 		this.adminId = adminId;
 	}
-	public int getDealStatu() {
+	public Integer getDealStatu() {
 		return dealStatu;
 	}
-	public void setDealStatu(int dealStatu) {
+	public void setDealStatu(Integer dealStatu) {
 		this.dealStatu = dealStatu;
 	}
 	public String getDealDate() {
@@ -138,12 +155,7 @@ public class ProjectPurposeEntity {
 	}
 	public void setDealDate(String dealDate) {
 		this.dealDate = dealDate;
-	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}	
-
+	} 
+	
+	
 }

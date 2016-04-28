@@ -1,7 +1,7 @@
 package cn.springmvc.dao;
 
-import cn.springmvc.model.BaseCommodityTypeEntity;
-import cn.springmvc.model.CommodityTypeEntity;
+import cn.integralmall.model.BaseCommodityTypeEntity;
+
 
 /**
  * @author 黄勇

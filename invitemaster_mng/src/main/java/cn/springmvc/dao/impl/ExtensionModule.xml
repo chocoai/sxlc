@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="ExtensionModule"> 
+    <resultMap type = "cn.invitemastermng.model.InviteMasterApplyEntity" id = "resultInviteMasterApply">
+        <id property = "imApplyID"				column = "Im_Apply_ID" />
+		<result property = "memberID"       	column = "Member_ID" />
+		<result property = "applyDate"    	    column = "Apply_Date" />
+		<result property = "checkStatu"  	    column = "Check_Statu" />
+		<result property = "checkDate" 	        column = "Check_Date" /> 
+    </resultMap> 
+    <!-- SEO信息配置表设置-->  
+    <select id="SEOSet"  statementType="CALLABLE" parameterType="Map"> 
+	     {call SEO_Set(
+				#{title ,	             mode=IN,	jdbcType=BIGINT},
+				#{description ,	         mode=IN,	jdbcType=BIGINT},
+				#{keyword,	             mode=IN,	jdbcType=INTEGER},
+				#{seotype,	             mode=IN,	jdbcType=INTEGER},
+				#{adminID,	             mode=IN,	jdbcType=BIGINT},
+				#{lId,	                 mode=IN,	jdbcType=BIGINT },
+				#{result,	             mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+	 <!-- SEO信息配置表删除-->  
+    <select id="SEODelete"  statementType="CALLABLE" parameterType="Map"> 
+	     {call SEO_Delete(
+				#{lId ,	                 mode=IN,	jdbcType=BIGINT}, 
+				#{result,	             mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+	 <!--  CPS推荐配置表修改，如果传入参数值为-1，不修改该参数-->  
+    <select id="CPSPromote"  statementType="CALLABLE" parameterType="Map"> 
+	     {call CPS_Promote(
+				#{first_Invest ,	       mode=IN,	jdbcType=BIGINT},
+				#{invite ,	               mode=IN,	jdbcType=BIGINT},
+				#{first_Borrow,	           mode=IN,	jdbcType=INTEGER},
+				#{first_Recharge,	       mode=IN,	jdbcType=INTEGER}, 
+				#{result,	               mode=OUT,jdbcType=INTEGER} 
+    		)}
+	</select>
+	 <!-- 推荐达人配置表修改-->  
+    <select id="inviteMasterSet"  statementType="CALLABLE" parameterType="Map"> 
+	     {call Invite_Master_Set(
+				#{validity_Period ,	       mode=IN,	jdbcType=INTEGER}, 
+				#{result,	               mode=OUT,jdbcType=INTEGER} 
+    		)}
+	</select>
+	<!-- 推荐达人申请审核-->  
+    <select id="inviteMasterApplyCheck"  statementType="CALLABLE" parameterType="Map"> 
+	     {call InviteMaster_Apply_Check(
+				#{apply_ID ,	         mode=IN,	jdbcType=BIGINT},
+				#{aimID,	             mode=IN,	jdbcType=INTEGER},
+				#{checkStatu,	         mode=IN,	jdbcType=INTEGER},
+				#{adminID,	             mode=IN,	jdbcType=BIGINT},
+				#{remark,	             mode=IN,	jdbcType=VARCHAR},
+				#{lId,	                 mode=IN,	jdbcType=BIGINT },
+				#{attach_Name,	         mode=IN,	jdbcType=VARCHAR},
+				#{attach_Url,	         mode=IN,	jdbcType=VARCHAR},
+				#{result,	             mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+	   <!-- 会员首次投资红包赠送配置表设置-->  
+    <select id="FirstInvestRedpacketsSet"  statementType="CALLABLE" parameterType="Map"> 
+	     {call FirstInvest_Redpackets_Set(
+				#{invest_Amount ,	         mode=IN,	jdbcType=BIGINT},
+				#{rp_Rate,	                 mode=IN,	jdbcType=INTEGER},
+				#{lId,	                     mode=IN,	jdbcType=BIGINT}, 
+				#{result,	                 mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+	<!-- 会员首次投资红包赠送配置表删除-->  
+    <select id="deleteFirstInvestRedpacketsSet"  statementType="CALLABLE" parameterType="Map"> 
+	     {call FirstInvest_Redpackets_Setdelete(
+				#{lId,	                     mode=IN,	jdbcType=BIGINT}, 
+				#{result,	                 mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+	<!--  会员红包赠送配置表设置 -->  
+    <select id="MemberRedpacketsSet"  statementType="CALLABLE" parameterType="Map"> 
+	     {call Member_Redpackets_Set(
+				#{open_Account,	                     mode=IN,	jdbcType=INTEGER}, 
+				#{first_Recharge,	                 mode=IN,	jdbcType=INTEGER}, 
+				#{result,	                         mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select> 
+	<!--  红包活动新增记录 -->  
+    <select id="RedpacketsAffairinsert"  statementType="CALLABLE" parameterType="Map"> 
+	     {call Redpackets_Affair_insert(
+				#{startDate,	                     mode=IN,	jdbcType=VARCHAR}, 
+				#{endDate,	                         mode=IN,	jdbcType=VARCHAR}, 
+				#{userendDate,	                     mode=IN,	jdbcType=VARCHAR}, 
+				#{affairName,	                     mode=IN,	jdbcType=VARCHAR}, 
+				#{giftAmount,	                     mode=IN,	jdbcType=VARCHAR}, 
+				#{quantity,	                         mode=IN,	jdbcType=VARCHAR}, 
+				#{lId,	                             mode=IN,	jdbcType=BIGINT}, 
+				#{result,	                         mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+	<!--  红包活动修改记录 -->  
+    <select id="RedpacketsAffairupdate"  statementType="CALLABLE" parameterType="Map"> 
+	     {call Redpackets_Affair_update(
+				#{startDate,	                     mode=IN,	jdbcType=VARCHAR}, 
+				#{endDate,	                         mode=IN,	jdbcType=VARCHAR}, 
+				#{userendDate,	                     mode=IN,	jdbcType=VARCHAR}, 
+				#{affairName,	                     mode=IN,	jdbcType=VARCHAR}, 
+				#{giftAmount,	                     mode=IN,	jdbcType=VARCHAR}, 
+				#{quantity,	                         mode=IN,	jdbcType=VARCHAR}, 
+				#{affairID,	                         mode=IN,	jdbcType=BIGINT},  
+				#{detailID,	                         mode=IN,	jdbcType=VARCHAR},  
+				#{result,	                         mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+	<!--   红包活动发布 -->  
+    <select id="RedpacketsAffairrelease"  statementType="CALLABLE" parameterType="Map"> 
+	     {call Redpackets_Affair_release( 
+				#{affairID,	                         mode=IN,	jdbcType=BIGINT}, 
+				#{result,	                         mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+</mapper>

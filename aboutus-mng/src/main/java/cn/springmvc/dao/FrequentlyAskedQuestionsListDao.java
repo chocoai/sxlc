@@ -14,7 +14,7 @@ public interface FrequentlyAskedQuestionsListDao {
 	 * @param statu 常见问题状态 0无效，1有效,-1全部
 	 * @return
 	 */
-	public  FrequentlyAskedQuestionsEntity  selectFrequentlyAskedQuestions(int statu); 
+	public  FrequentlyAskedQuestionsEntity  selectFrequentlyAskedQuestions(); 
 	/**
 	 * 查询常见问题是否存在 
 	 * @return  0：不存在	大于0：存在

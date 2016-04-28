@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="projectTypeGuide">  
    <resultMap type="cn.springmvc.model.ProjectTypeGuideEntity" id="resultListProjectTypeGuide"> 
-		<result column="Project_Type" property="projectType" />
+		<result column="Project_ID"   property="projectType" />
 		<result column="Content"      property="content" />
 		<result column="Pt_Index"     property="ptIndex" /> 
     </resultMap> 
@@ -10,11 +10,12 @@
 	<select id="selectProjectTypeGuideList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProjectTypeGuide">
 	   select Project_ID,Content,Pt_Index
 	   from  Project_Type_Guide 
+	   where Project_ID = #{map.projectType}
     </select>       
 	<!-- 新增项目类型申请指南 -->  
 	<insert id="insertProjectTypeGuide"  parameterType="cn.springmvc.model.ProjectTypeGuideEntity">    
 		insert into Project_Type_Guide (Project_ID, Content,    Pt_Index) 
-		                     values  (#{projectType},#{content},#{ptIndex})    
+		                       values  (#{projectType},#{content},#{ptIndex})    
 	</insert> 
 	<!-- 查询项目类型申请指南是否存在 -->  
 	<select id="selectProjectTypeGuideIsExistByNAme"  parameterType="cn.springmvc.model.ProjectTypeGuideEntity" resultMap="resultListProjectTypeGuide" >
@@ -33,9 +34,15 @@
 	<select id="selectProjectTypeGuideEntityByindex" parameterType="int"  resultMap="resultListProjectTypeGuide">
 	   select Project_ID,Content,Pt_Index
 	   from  Project_Type_Guide  where Pt_Index=#{ptIndex}   
-    </select>  
+    </select>   
     <!-- 查询指南序号-->  
 	<select id="selectProjectTypeGuideEntityindex"  resultType="integer" >
 	   select Pt_Index   from  Project_Type_Guide  order by Pt_Index desc limit 1
-    </select>             
+    </select>   
+      <!-- 前台查询项目类型 申请指南列表 -->  
+	<select id="selectProjectTypeGuideListfront" parameterType="long"  resultMap="resultListProjectTypeGuide">
+	   select Project_ID,Content,Pt_Index
+	   from  Project_Type_Guide 
+	   where Project_ID = #{projectType}
+    </select>               
 </mapper>   

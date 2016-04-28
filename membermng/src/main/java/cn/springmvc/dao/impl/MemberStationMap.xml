@@ -14,7 +14,8 @@
 	    <result column="Read_Date" 			 property="readDate" />  
 		<result column="Delete_Flag_Send" 	 property="deleteFlagSend" />
 		<result column="Delete_Flag_Recieve" property="deleteFlagRecieve" /> 
-		<result column="membername"          property="membername" />   
+		<result column="membername"          property="membername" />  
+		<result column="Logname"             property="logname" />  
     </resultMap>    
   
 </mapper>   

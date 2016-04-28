@@ -7,7 +7,7 @@ $(function(){
 	$(".obtn-loanitem-add").on("click touchstart",function(){
 		layer.open({
 		    type: 1,
-		    area: ['400px', '240px'], //高宽
+		    area: ['500px', '300px'], //高宽
 		    title: "添加个人认证项",
 		    content: $(".loanitem-add"),//DOM或内容
 		    btn:['确定', '取消']
@@ -23,7 +23,7 @@ $(function(){
 	$(".obtn-loanitem-mod").on("click touchstart",function(){
 		layer.open({
 		    type: 1,
-		    area: ['400px', '240px'], //高宽
+		    area: ['500px', '300px'], //高宽
 		    title: "修改个人借款认证项",
 		    content: $(".loanitem-mod"),//DOM或内容
 		    btn:['确定', '取消']

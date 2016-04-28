@@ -1,9 +1,14 @@
 package cn.springmvc.model;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
+
+import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 
 /***
@@ -21,6 +26,7 @@ public class PostInfo {
 	private String				postName;	//职务名称
 	@Length(max=125,message="职务描述不能超过125个字符")
 	private String 				postRemark;	//职务备注
+	private Date 				addTime;	//职务添加时间	
 	private String				addDate;	//职务添加时间
 	private int					postStatu;	//状态 0无效、1有效
 	
@@ -28,26 +34,32 @@ public class PostInfo {
 	
 	
 	public PostInfo() {}
-	
-	
-	public PostInfo(Long iD, Long deptId, String postNo, String postName,
-			String postRemark, String addDate, int postStatu,String  deptName) {
+	public PostInfo(Long id, Long deptId, String postNo, String postName,
+			String postRemark, Date addTime, String addDate, int postStatu,
+			String deptName) {
 		super();
-		this.id = iD;
+		this.id = id;
 		this.deptId = deptId;
 		this.postNo = postNo;
 		this.postName = postName;
 		this.postRemark = postRemark;
+		this.addTime = addTime;
 		this.addDate = addDate;
 		this.postStatu = postStatu;
-		this.deptName =deptName;
+		this.deptName = deptName;
 	}
+
+	public Date getAddTime() {
+		return addTime;
 	
+	}
+	public void setAddTime(Date addTime) {
+		this.addTime = addTime;
+		this.addDate = TimestampAndString.DateToString(addTime);
+	}
 	public Long getId() {
 		return id;
 	}
-
-
 	public void setId(Long id) {
 		this.id = id;
 	}

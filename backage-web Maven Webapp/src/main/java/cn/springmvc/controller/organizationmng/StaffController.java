@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
@@ -236,6 +237,28 @@ public class StaffController  {
 			return 1;
 		}
 	}
+	
+	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 获取所有职务信息
+	 * @param request
+	 * @return PageEntity  
+	 * @date 2016-4-28 上午9:30:24
+	 * @throws 
+	 */
+	@RequestMapping(value ="/getPostAll")
+	@ResponseBody
+	public PageEntity getPostAll(HttpServletRequest req){
+		int start = 0;
+		int length = 10000;//模拟不分页效果
+		PageEntity pager = new PageEntity();
+		pager.setPageNum(start/length+1);
+		pager.setPageSize(length);
+		iPostInfoServer.getListByParam(pager);
+		return pager;
+	}
+	
 	
 }
 

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="CommodityInfo">  
+   <resultMap type="cn.integralmall.model.CommodityInfoEntity" id="resultCommodityInfo">
+        <id column="Commodity_ID"  			property="commodityID" />
+		<result column="Add_Time" 			property="addTime" />
+		<result column="Commodity_NO"	 	property="commodityNO" /> 
+		<result column="Commodity_Name"   	property="commodityName" /> 
+		<result column="CommodityTypename" 	property="commodityTypename" /> 
+		
+		<result column="Commodity_Classify" property="commodityClassify" />
+		<result column="Market_Price" 		property="marketPrice" /> 
+		<result column="Is_VIP_Exclusive"   property="isVIPExclusive" /> 
+		<result column="Commodity_Statu" 	property="commodityStatu" />
+		
+		<result column="CommodityStatus" 	property="commodityStatus" />
+		<result column="Discount" 			property="discount" /> 
+		<result column="VIP_Discount"   	property="vipDiscount" /> 
+		<result column="Is_Active" 			property="isActive" />
+		
+		
+		<result column="sumQuantity" 		property="sumQuantity" />
+		<result column="backorder" 			property="backorder" />
+		
+		<result column="Commodity_Type" 	property="commodityType" />
+		<result column="Super_ID" 			property="superID" />  
+		
+		<result column="Commodity_Type_ID" 	property="commodityTypeID" />  
+    </resultMap> 
+    <!-- 分页查询项目商品信息列表 -->  
+	<select id="selectCommodityInfoList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultCommodityInfo">
+	    select ci.Commodity_ID,ci.Add_Time,ci.Commodity_NO,ci.Commodity_Name,CommodityType.name1 as  CommodityTypename ,ct.Commodity_Classify,
+		ci.Market_Price,ci.Is_VIP_Exclusive,ci.Commodity_Statu, CommodityStatu.name1 as CommodityStatus,ci.Discount,ci.VIP_Discount,
+		ci.Is_Active,
+		(select ifnull(sum(cor.Quantity),0) from  Commodity_Order cor 
+		left join Order_Records orc  on  orc.Order_ID = cor.Order_ID 
+		where (orc.Order_Type = 3 or orc.Order_Type = 2 ) and cor.Commodity_ID = ci.Commodity_ID ) as  sumQuantity,
+		
+		(select ifnull(sum(cor.Quantity),0) from  Commodity_Order cor 
+		left join Order_Records orc  on  orc.Order_ID = cor.Order_ID 
+		where orc.Order_Type = 0  and cor.Commodity_ID = ci.Commodity_ID ) as  backorder
+ 
+		from Commodity_Info ci
+		left join Commodity_Type ct on ct.Commodity_Type_ID = ci.Commodity_Type_ID 
+		left join DICT CommodityType on   CommodityType.code1= ct.Commodity_Type  and CommodityType.tcode = 'DICT_SPFL' 
+		left join DICT CommodityStatu on   CommodityStatu.code1= ci.Commodity_Statu  and CommodityStatu.tcode = 'DICT_SPZT' 
+         <where>  
+                <!--            商品名称 -->
+	            <if test="map !=null and  map.commodityName != null and  map.commodityName != ''">  
+	                ci.Commodity_Name like  '%${map.commodityName}%'  
+	            </if>  
+	              <!--           商品名称 --> 
+	            <if test="map !=null and  map.commodityNO != null and  map.commodityNO != ''">  
+	                and ci.Commodity_NO=#{map.commodityNO}
+	            </if> 
+	             <!--           商品种类（实物和电子礼券） --> 
+	            <if test="map !=null and  map.commodityType != -1">  
+	                and ct.Commodity_Type=#{map.commodityType}
+	            </if> 
+	             <!--            状态（待上架、兑换中、已下架） --> 
+	            <if test="map !=null and  map.commodityStatu != -1">  
+	                and ci.Commodity_Statu=#{map.commodityStatu}
+	            </if>     
+         </where>
+            <!--            	添加时间 -->
+            <if test="map !=null and  map.order == 1">  
+	                order by   ci.Add_Time desc
+	        </if>   
+	        <!--            	已兑换-->
+	         <if test="map !=null and  map.sumQuantity == 2">  
+	                order by  sumQuantity desc
+	        </if>  
+	        <!--            	待发货-->
+	         <if test="map !=null and  map.backorder == 3">  
+	                order by   backorder desc
+	        </if>    
+    </select> 
+    <!--     	查询商品类别（实物和电子礼券）   -->
+    <select id="selectCommodityTypeDiCT" parameterType="String" resultType="cn.integralmall.model.CommodityTypeEntity">
+     select code1 ,name1  from DICT where tcode=#{tcode}
+    </select> 
+    <!--级联查询商品类型 -->
+     <select id="selectCommodityType" parameterType="Map"  resultType="cn.integralmall.model.CommodityTypeEntity">
+      select ct.Commodity_Type_ID as commodityTypeID,ct.Commodity_Classify as commodityClassify
+      from Commodity_Type ct
+      where ct.Commodity_Type =#{commodityType} and  ct.Super_ID=#{superID} and ct.Status =1
+    </select>
+    <!-- 添加商品信息 -->  
+    <insert id="insertCommodityInfo" parameterType="cn.integralmall.model.CommodityTypeEntity">
+     insert into Commodity_Info
+     (Commodity_ID,Commodity_Type_ID,Commodity_NO,Commodity_Name,Brand,Manufacturer,
+     Specifications_models,Commodity_Describe,Market_Price,Need_Point,Is_VIP_Exclusive,
+     Discount,VIP_Discount,Commodity_large_Icon,Commodity_Small_Icon,Is_Active,Active_Type,
+     Vouchers_Amount,Back_Amount,End_Date,IS_Push)
+     values 
+     (#{commodityID},#{commodityTypeID},#{commodityNO},#{commodityName},#{brand},#{manufacturer},
+     #{specificationsmodels},#{commodityDescribe},#{marketPrice},#{needPoint},#{isVIPExclusive},
+     #{discount}, #{vipDiscount}, #{commoditylargeIcon}, #{commoditySmallIcon}, #{isActive}, #{activeType},
+     #{vouchersAmount},#{backAmount},#{endDate},#{isPush})
+    </insert> 
+     <!--            根据商品ID查询商品基本信息 -->
+    <select id="selectCommodityInfoByID" parameterType="long" resultMap="resultCommodityInfo">
+     select ci.Commodity_ID, ci.Commodity_Type_ID,ci.Commodity_NO,ci.Commodity_Name,Brand,ci.Manufacturer,
+     ci.Specifications_models,ci.Commodity_Describe,ci.Market_Price,ci.Need_Point,ci.Is_VIP_Exclusive,
+     ci.Discount,ci.VIP_Discount,ci.Commodity_large_Icon,ci.Commodity_Small_Icon,ci.Is_Active,ci.Active_Type,
+     ci.End_Date, ct.Commodity_Type,ct.Super_ID,ci.Vouchers_Amount,ci.Back_Amount,ci.IS_Push
+	 from Commodity_Info ci
+     left join Commodity_Type ct on ct.Commodity_Type_ID = ci.Commodity_Type_ID  
+	 where 	 ci.Commodity_ID = #{commodityID}    
+    </select> 
+      <!--            修改商品信息 -->
+     <update id="updateCommodityInfo" parameterType="cn.integralmall.model.CommodityInfoEntity">
+     update Commodity_Info
+       <set>
+	       <if test="commodityTypeID != 0" >
+	         Commodity_Type_ID=#{commodityTypeID},
+	       </if> 
+	       <if test="commodityName != null and commodityName != ''" >
+	         Commodity_Name=#{commodityName},
+	       </if> 
+	       <if test="brand != null and brand != ''" >
+	         brand=#{brand},
+	       </if> 
+	       <if test="manufacturer != null and manufacturer !=''" >
+	         Manufacturer=#{manufacturer},
+	       </if> 
+	       <if test="specificationsmodels != null and specificationsmodels!=''" >
+	         Specifications_models=#{specificationsmodels},
+	       </if> 
+	       <if test="commodityDescribe != null and commodityDescribe !=''" >
+	         Commodity_Describe=#{commodityDescribe},
+	       </if> 
+	       <if test="marketPrice != 0" >
+	         Market_Price=#{marketPrice},
+	       </if> 
+	       
+	        <if test="needPoint != 0" >
+	         Need_Point=#{needPoint},
+	       </if>  
+	        <if test="isVIPExclusive != 0" >
+	         Is_VIP_Exclusive=#{isVIPExclusive},
+	        </if> 
+	        <if test="discount != 0" >
+	         Discount=#{discount},
+	       </if>  
+	       <if test="vipDiscount != 0" >
+	         VIP_Discount=#{vipDiscount},
+	       </if>  
+	        <if test="commoditylargeIcon != null and commoditylargeIcon != ''" >
+	         Commodity_large_Icon=#{commoditylargeIcon},
+	       </if> 
+	        <if test="commoditySmallIcon != null and commoditySmallIcon!=''" >
+	         Commodity_Small_Icon=#{commoditySmallIcon},
+	       </if> 
+	        <if test="isActive != 0" >
+	         Is_Active=#{isActive},
+	       </if> 
+	       
+	       <if test="activeType != 0" >
+	         Active_Type=#{activeType},
+	       </if> 
+	        <if test="endDate != null and endDate!=''" >
+	         End_Date=#{endDate},
+	        </if>  
+	        
+	         <if test="vouchersAmount != -1" >
+	         Vouchers_Amount=#{vouchersAmount},
+	       </if> 
+	        <if test="backAmount != -1" >
+	         Back_Amount=#{backAmount},
+	        </if>  
+	        <if test="isPush != -1" >
+	         IS_Push=#{isPush},
+	        </if>  
+	   </set>
+	   where Commodity_ID = #{commodityID}
+    </update>
+    <!--            上架下架 -->
+    <update id="updateCommodityStatu" parameterType="Map">
+     update Commodity_Info 
+     <set>  
+          <if test="commodityStatu != -1" >
+	          Commodity_Statu = #{commodityStatu}, 
+	      </if>
+          <!-- 	               商品下架，修改商品不推荐到商城首页 -->
+          <if test="commodityStatu == 2" >
+	          IS_Push = 0,
+	      </if> 
+     </set>
+     where  Commodity_ID = #{commodityID} 
+   <!--     	上架时 剩余商品数量不能为0 -->
+     <if test="commodityStatu == 1" >
+	       and  Quantity !=0
+	 </if> 
+    </update>
+     <!--         上架下架记录 -->
+    <insert id="insertCommodityUpDown" parameterType="Map">
+       insert into Commodity_Up_Down(Commodity_ID,Admin_ID,Commodity_Statu)
+       values(#{commodityID},#{adminID},#{commodityStatu})
+    </insert>
+     <!--             查看入库记录 -->
+    <select id="selectInventoryrecordsIn" resultType="cn.integralmall.model.InventoryRecordsEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+     select ir.Commodity_ID as commodityID,ir.Operation_Time as operationTime,
+     ir.Quantity as quantitys,ir.Total_Quantity as totalQuantity,a.adminName 
+     
+     from  Inventory_records ir
+     left join admin a on a.admin_ID = ir.Admin_ID
+     where Commodity_ID = #{map.commodityID} and Operation_Direction = 1 and Delete_Flag = 1
+    </select> 
+     <!-- 添加商品库存记录 -->  
+    <select id="insertInventoryrecords"  statementType="CALLABLE" parameterType="cn.integralmall.model.InventoryRecordsEntity"> 
+	     {call addInventoryrecords(
+				#{commodityID  ,	     mode=IN,	jdbcType=BIGINT},
+				#{adminID  ,	         mode=IN,	jdbcType=BIGINT},
+				#{operationDirection ,	 mode=IN,	jdbcType=INTEGER},
+				#{quantitys,	         mode=IN,	jdbcType=INTEGER},
+				#{result ,	             mode=OUT,	jdbcType=INTEGER}
+    		)}
+	</select>
+	<!--            推荐到商城首页 -->
+     <select id="updateCommodityISPush"  statementType="CALLABLE" parameterType="Map"> 
+     {call CommodityISPush(
+				#{commodityID  ,	     mode=IN,	jdbcType=BIGINT },
+				#{isPush  ,	             mode=IN,	jdbcType=INTEGER}, 
+				#{result ,	             mode=OUT,	jdbcType=INTEGER} 
+    		)}
+     </select>
+    <!--            设置VIP折扣 -->
+    <update id="updateCommodityVIPDiscount" parameterType="Map">
+     update Commodity_Info 
+     set VIP_Discount = #{vipDiscount}
+     where  Commodity_ID = #{commodityID}  
+    </update>
+     <!-- 添加商品信息 -->  
+    <select id="insertCommodityInfocall"  statementType="CALLABLE" parameterType="cn.integralmall.model.CommodityInfoEntity" > 
+	     {call insertCommodityInfo( 
+				#{commodityID,			 mode=IN,	jdbcType=BIGINT},
+				#{commodityTypeID,		 mode=IN,	jdbcType=BIGINT}, 
+				#{commodityName,		 mode=IN,	jdbcType=VARCHAR},
+				#{brand,			     mode=IN,	jdbcType=VARCHAR},
+				#{manufacturer,			 mode=IN,	jdbcType=VARCHAR},
+                #{specificationsmodels,	 mode=IN,	jdbcType=VARCHAR},
+                #{commodityIntroduction, mode=IN,	jdbcType=VARCHAR},
+                #{commodityDescribe,	 mode=IN,	jdbcType=VARCHAR},
+                #{marketPrice,			 mode=IN,	jdbcType=INTEGER},
+                #{needPoint,             mode=IN,	jdbcType=INTEGER},
+                #{isVIPExclusive,        mode=IN,	jdbcType=INTEGER},
+    			#{discount,              mode=IN,	jdbcType=INTEGER},
+    			#{vipDiscount,			 mode=IN,	jdbcType=INTEGER}, 
+    			#{commoditylargeIcon,	 mode=IN,	jdbcType=VARCHAR}, 
+    			#{commoditySmallIcon,	 mode=IN,	jdbcType=VARCHAR}, 
+    			#{isActive,	 		     mode=IN,	jdbcType=INTEGER}, 
+    			#{activeType,	         mode=IN,	jdbcType=INTEGER},
+     			#{vouchersAmount,		 mode=IN,	jdbcType=BIGINT}, 
+     			#{backAmount,			 mode=IN,	jdbcType=BIGINT}, 
+     			#{endDate ,              mode=IN,	jdbcType=VARCHAR}, 
+     			#{isPush ,				 mode=IN,	jdbcType=INTEGER}, 
+     			#{result ,				 mode=OUT,	jdbcType=INTEGER}  
+    		)} 
+	</select>
+</mapper>   

@@ -4,10 +4,10 @@ $(function(){
 	$(".tab-head li").each(function(index){
 		var liNode =$(this);
 		$(this).click(function(){
-			$(".tab-content .content").removeClass("content-active");
+			$(".tab-content .c-content").removeClass("content-active");
 			$(".page-link .current-page").removeClass("on");
 			$(".tab-head .tab-li").removeClass("tab-ing");	
-			$(".tab-content .content").eq(index).addClass("content-active");
+			$(".tab-content .c-content").eq(index).addClass("content-active");
 			$(".page-link .current-page").eq(index).addClass("on");
 			liNode.addClass("tab-ing");
 		});
@@ -28,18 +28,22 @@ $(function(){
 	$.changeColor(".grid-table1");
 	$.changeColor(".grid-table2");
 	$.changeColor(".proli-table");
-	/*登录与未登录状态*/	/*逻辑待改*/	
+	
+	/*****登录状态到未登录状态*******/	
+	/******加入到ajax中*******/	
 	$(".login-now").click(function(){
 		$(".not-logined").css("display","none");
 		$(".logined").css("display","block");
 		$(".after-inv-li").css("display","none");
 	});
-	/*未登录与还款中状态*/	/*逻辑待改*/
+	/*******未登录到还款中状态*********/
+	/****** 加入到ajax中 *******/	
 	$(".inv-now").click(function(){
 		$(".logined").css("display","none");
 		$(".repaying").css("display","block");
 		$(".after-inv-li").css("display","block");
 	});
+	
     /*债后监管展开*/
 	$(".info-bottom-content").click(function(){
 		$(".info-top").hide();
@@ -108,28 +112,47 @@ $(function(){
 		});
 	});
 });
-
-
-
-/*   胥福星     2016-04-11   input中对输入金额的显示样式的控制     */
+/* 验证     */
 $(function(){
-	$(".format").each(function(){
-		$(this).focus(function(){			
-			this.value = (this.value + '').replace(/\,/g, '');
-			$(this).keyup(function(){
-				if(this.value.length > 0){
-					this.value = this.value.replace(/[^0-9.]/g,'');
-				}
-			});
-		});
-		$(this).blur(function(){
-			if(this.value != ""){
-				this.value = parseFloat(this.value).toFixed(2);
-				this.value = (this.value + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
-			}
-		});
-		$(this).change(function(){
-			this.value = this.value.replace(/[^0-9.]/g,'');
-		});
+	$("#notLoginBox").Validform({
+		tiptype:3,//提示信息类型
+		btnSubmit:".login-now", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
+		//btnReset:"#btnreset1",
+		datatype: extdatatype,//扩展验证类型
+		//showAllError:true,//提交前验证显示所有错误
+		ajaxPost:{//使用ajax提交时
+			url:"http://182.150.178.88:8031/GEB_P2P_Foreqround/selectmemberProvince.action",
+			datatype:"jsonp",
+			success:function(data,obj){
+	            //data是返回的json数据;
+	            //obj是当前表单的jquery对象;
+	        },
+	        error:function(data,obj){
+	            //data是{ status:**, statusText:**, readyState:**, responseText:** };
+	            //obj是当前表单的jquery对象;
+	            console.log(data.status);
+	        }
+		}
+	});
+	$("#loginedBox").Validform({
+		tiptype:3,//提示信息类型
+		btnSubmit:".inv-now", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
+		//btnReset:"#btnreset1",
+		datatype: extdatatype,//扩展验证类型
+		//showAllError:true,//提交前验证显示所有错误
+		ajaxPost:{//使用ajax提交时
+			url:"http://182.150.178.88:8031/GEB_P2P_Foreqround/selectmemberProvince.action",
+			datatype:"jsonp",
+			success:function(data,obj){
+	            //data是返回的json数据;
+	            //obj是当前表单的jquery对象;
+	        },
+	        error:function(data,obj){
+	            //data是{ status:**, statusText:**, readyState:**, responseText:** };
+	            //obj是当前表单的jquery对象;
+	            console.log(data.status);
+	        }
+		}
 	});
 });
+

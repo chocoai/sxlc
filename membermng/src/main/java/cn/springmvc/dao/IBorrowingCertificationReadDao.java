@@ -3,6 +3,9 @@ package cn.springmvc.dao;
 import java.util.List;
 import java.util.Map;
 
+import cn.membermng.model.BorrowingType;
+import cn.membermng.model.RealNameAuth;
+
 
 /***
 * 会员借款认证
@@ -50,7 +53,7 @@ public interface IBorrowingCertificationReadDao {
 	* status			认证状态<br>
 	* @date 2016-3-24 上午10:13:00
 	 */
-	public Map<String, Object> showAuthRealName(Map<String, Object> param);
+	public RealNameAuth showAuthRealName(Map<String, Object> param);
 	
 	
 	
@@ -307,6 +310,17 @@ public interface IBorrowingCertificationReadDao {
 	* @date 2016-3-28 下午8:03:21
 	 */
 	public Map<String, Object> showAuthApproval(long memberId);
+
+
+	/***
+	* 根据会员获取会员认证信息列表
+	* 
+	* @author 李杰
+	* @param param
+	* @return
+	* @date 2016-4-26 下午1:55:13
+	 */
+	public List<BorrowingType> getAllByMember(Map<String, Object> param);
 	
 	
 

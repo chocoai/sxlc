@@ -19,10 +19,10 @@ package cn.invitemastermng.model;
  * @date 2016-4-5 上午10:52:22  */
 
 public class InviteMasterApplyEntity {
-	private long imApplyID;//ID																					
-	private long memberID;//会员ID	
+	private long   imApplyID;//ID																					
+	private long   memberID;//会员ID	
 	private String applyDate;//理财师申请时间	
-	private int checkStatu	; //审核状态 0：审核中 1：通过 -1：打回	
+	private int    checkStatu	; //审核状态 0：审核中 1：通过 -1：打回	
 	private String checkDate;	 //审核时间	
 	public long getImApplyID() {
 		return imApplyID;

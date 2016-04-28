@@ -165,5 +165,6 @@
 	background-position:center left;
 }
 .cashPhoneCodeGet{
+	min-width:280px;
 	display:inline-block;
 }

@@ -6,8 +6,11 @@ import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
 
+import cn.springmvc.model.MailHistoryEntity;
 import cn.springmvc.model.MailSettingsEntity;
 import cn.springmvc.model.MessageTypeEntity;
+import cn.springmvc.model.SMSHistoryEntity;
+import cn.springmvc.model.SendHistoryEntity;
 import cn.springmvc.model.SmsSettingsEntity;
 import cn.springmvc.model.ThreeInterfaceEntity;
 
@@ -35,6 +38,20 @@ public interface SelectChannelSetDao {
 	*/
 	public List<MessageTypeEntity> selectChannelSet();
 	
+	
+	/** 
+	* selectChannelSet 分页查看消息类型设置 
+	* TODO(这里描述这个方法适用条件 – 可选) 
+	* TODO(这里描述这个方法的执行流程 – 可选) 
+	* TODO(这里描述这个方法的使用方法 – 可选) 
+	* TODO(这里描述这个方法的注意事项 – 可选) 
+	* * @Title: selectChannelSet 
+	* @Description: TODO 
+	* @param @return 设定文件 
+	* @return List<MessageTypeEntity> 返回类型 
+	* @throws 
+	*/
+	public List<MessageTypeEntity> selectChannelSetByPage(PageEntity pageEntity);
 	
 	/** 
 	* selectSmsSettings 分页查询短信通道设置 
@@ -112,5 +129,49 @@ public interface SelectChannelSetDao {
 	* @throws 
 	*/
 	public List<ThreeInterfaceEntity> selectThreeInterface();
+	
+	
+	/** 
+	* MailHistory 分页查询邮件发送历史记录分页查询邮件发送历史记录 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: MailHistory 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<MailHistoryEntity> 返回类型 
+	* @date 2016-4-28 上午11:35:40
+	* @throws 
+	*/
+	public List<MailHistoryEntity> MailHistory(PageEntity pageEntity);
+	
+	
+	/** 
+	* SMSHistory 分页查询短信发送历史记录
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: SMSHistory 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<SMSHistoryEntity> 返回类型 
+	* @date 2016-4-28 下午12:01:37
+	* @throws 
+	*/
+	public List<SMSHistoryEntity> SMSHistory(PageEntity pageEntity);
+	
+	/** 
+	* SMSHistory 分页查询站内信发送历史记录
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: SMSHistory 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<SMSHistoryEntity> 返回类型 
+	* @date 2016-4-28 下午12:01:37
+	* @throws 
+	*/
+	public List<SendHistoryEntity> SendHistory(PageEntity pageEntity);
 }
 

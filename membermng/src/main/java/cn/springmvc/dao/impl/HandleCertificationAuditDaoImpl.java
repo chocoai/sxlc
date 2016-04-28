@@ -24,49 +24,56 @@ public class HandleCertificationAuditDaoImpl extends SqlSessionDaoSupport implem
 	public Map<String, Object> handleEnterpriseCerAudit(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("EnterpriseCAXML.handleEnterpriseCerAudit", map);
+		getSqlSession().selectOne("EnterpriseCAXML.handleEnterpriseCerAudit", map);
+		return map;
 	}
 
 	@Override
 	public Map<String, Object> handleEnterpriseBLAttest(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("EnterpriseCAXML.handleEnterpriseBLAttest", map);
+		getSqlSession().selectOne("EnterpriseCAXML.handleEnterpriseBLAttest", map);
+		return map;
 	}
 
 	@Override
 	public Map<String, Object> handleAttest(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("EnterpriseCAXML.handleAttest", map);
+		getSqlSession().selectOne("EnterpriseCAXML.handleAttest", map);
+		return map;
 	}
 
 	@Override
 	public Map<String, Object> handlequalification(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("EnterpriseCAXML.handlequalification", map);
+		getSqlSession().selectOne("EnterpriseCAXML.handlequalification", map);
+		return map;
 	}
 
 	@Override
 	public Map<String, Object> handlenameAuthentication(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("EnterpriseCAXML.handlenameAuthentication", map);
+		getSqlSession().selectOne("EnterpriseCAXML.handlenameAuthentication", map);
+		return map;
 	}
 
 	@Override
 	public Map<String, Object> handlemarriage(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("EnterpriseCAXML.handlemarriage", map);
+		getSqlSession().selectOne("EnterpriseCAXML.handlemarriage", map);
+		return map;
 	}
 
 	@Override
 	public Map<String, Object> handleAddress(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("EnterpriseCAXML.handleAddress", map);
+		getSqlSession().selectOne("EnterpriseCAXML.handleAddress", map);
+		return map;
 	}
 
 

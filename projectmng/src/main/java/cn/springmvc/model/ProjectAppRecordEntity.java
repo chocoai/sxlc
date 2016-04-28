@@ -216,6 +216,10 @@ public class ProjectAppRecordEntity {
 	 */
 	private String memberName;
 	/**
+	 * 借款会员电话
+	 */
+	private String personalPhone;
+	/**
 	 * 项目类型小图标
 	 */
 	private String picIcon;
@@ -240,6 +244,37 @@ public class ProjectAppRecordEntity {
 	private int    statu;//项目状态
 	private String guaranteeName;//担保机构
 	private String apName;//借款审核阶段
+	private long principalAmount;//未还本金
+	private long interestAmount;//未还利息
+	private String principalAmounts;//未还本金
+	private String interestAmounts;//未还利息
+	private String repayMaxTime;//合同约定下一个还款日 
+	public long getPrincipalAmount() {
+		return principalAmount;
+	}
+	public void setPrincipalAmount(long principalAmount) {
+		this.principalAmount = principalAmount;
+		this.principalAmounts= IntegerAndString.LongToString(principalAmount);
+	}
+	public long getInterestAmount() {
+		return interestAmount;
+	}
+	public void setInterestAmount(long interestAmount) {
+		this.interestAmount = interestAmount;
+		this.interestAmounts= IntegerAndString.LongToString(interestAmount);
+	}
+	public String getPrincipalAmounts() {
+		return principalAmounts;
+	}
+	public void setPrincipalAmounts(String principalAmounts) {
+		this.principalAmounts = principalAmounts;
+	}
+	public String getInterestAmounts() {
+		return interestAmounts;
+	}
+	public void setInterestAmounts(String interestAmounts) {
+		this.interestAmounts = interestAmounts;
+	}
 	public int getStatu() {
 		return statu;
 	}
@@ -673,6 +708,18 @@ public class ProjectAppRecordEntity {
 	}
 	public void setApName(String apName) {
 		this.apName = apName;
+	}
+	public String getPersonalPhone() {
+		return personalPhone;
+	}
+	public void setPersonalPhone(String personalPhone) {
+		this.personalPhone = personalPhone;
+	}
+	public String getRepayMaxTime() {
+		return repayMaxTime;
+	}
+	public void setRepayMaxTime(String repayMaxTime) {
+		this.repayMaxTime = repayMaxTime;
 	}
 	
 }

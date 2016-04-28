@@ -16,7 +16,7 @@
 		<result property = "dealRecord"  	    column = "Deal_Record" />
     </resultMap> 
     <!-- 根据项目申请id查询资质证照 -->  
-	<select id = "selectProjectCheckAttach" parameterType = "int"  resultMap = "resultProjectCheckAttach">
+	<select id = "selectProjectCheckAttach" parameterType = "long"  resultMap = "resultProjectCheckAttach">
 	   select  pca.Attach_Index,pca.Attach_Title,pca.Attach_Url 
 	   from Project_Check_Attach pca 
 	   left join Project_Check_Record pcr on pca.App_Check_Id = pcr.App_Check_Id
@@ -70,7 +70,7 @@
         </foreach> 
     </update> 
     <!-- 根据项目申请id查询审核附件 -->  
-	<select id = "selectProjectCheckAttachTotal" parameterType = "int"  resultMap ="resultProjectCheckAttach">
+	<select id = "selectProjectCheckAttachTotal" parameterType = "long"  resultMap ="resultProjectCheckAttach">
 	   select  pca.Attach_Index,pca.Attach_Title,pca.Attach_Url 
 	   from Project_Check_Attach pca 
 	   left join Project_Check_Record pcr on pca.App_Check_Id = pcr.App_Check_Id

@@ -1,15 +1,22 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>产品介绍</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/aboutUs/productIntroduction.css">
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
-   	<jsp:include page="/web/aboutUs/aboutUsCommon.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
+   	<jsp:include page="../aboutUs/aboutUsCommon.jsp"></jsp:include>
    	
     <!-- 在这里加入页面内容 -->
     <div class="production">
@@ -33,7 +40,7 @@
 					</p>
 				</div>
    	 		</div>
-   	 		<button type="button" class="btn btn-primary" onclick="window.location='loan.html';">申请借款</button>
+   	 		<button type="button" class="btn btn-primary" onclick="window.location='loan/loan.html';">申请借款</button>
    	 	</div>
    	 	<div class="production_main">
    	   		<img class="product_03" src="resource/img/aboutUs/product.jpg"></img>
@@ -52,7 +59,7 @@
 					</p>
 				</div>
    	 		</div>
-   	 		<button type="button" class="btn btn-primary" onclick="window.location='loan.html';">申请借款</button>
+   	 		<button type="button" class="btn btn-primary" onclick="window.location='loan/loan.html';">申请借款</button>
    	 	</div>
    	 	<div class="production_main mainThird">
    	   		<img class="product_03" src="resource/img/aboutUs/product_08.jpg"></img>
@@ -71,11 +78,11 @@
 					</p>
 				</div>
    	 		</div>
-   	 		<button type="button" class="btn btn-primary" onclick="window.location='loan.html';">申请借款</button>
+   	 		<button type="button" class="btn btn-primary" onclick="window.location='loan/loan.html';">申请借款</button>
    	 	</div>
    	 </div>
     
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/aboutUs/productIntroduction.js"></script>
 </body>
 </html>

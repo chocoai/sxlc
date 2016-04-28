@@ -6,9 +6,9 @@
 				<div class="linkArea">
 					<div class="linkAreaLine">
 						<div class="linkAreaTh">关于我们</div>
-						<div class="linkAreaTd"><a href="platformIntroduction.html">公司简介</a></div>
+						<div class="linkAreaTd"><a href="aboutUs/platformIntroduction.html">公司简介</a></div>
 						<div class="linkAreaTd"><a href="">组织架构</a></div>
-						<div class="linkAreaTd"><a href="webBoard.html">网站公告</a></div>
+						<div class="linkAreaTd"><a href="aboutUs/webBoard.html">网站公告</a></div>
 						<div class="linkAreaTd"><a href="">公司证照</a></div>
 					</div>				
 					<div class="linkAreaLine">
@@ -16,14 +16,14 @@
 						<div class="linkAreaTd"><a href="">投资安全</a></div>
 						<div class="linkAreaTd"><a href="">信息安全</a></div>
 						<div class="linkAreaTd"><a href="">资金安全</a></div>
-						<div class="linkAreaTd"><a href="legalRegulation.html">政策法规</a></div>
+						<div class="linkAreaTd"><a href="aboutUs/legalRegulation.html">政策法规</a></div>
 					</div>				
 					<div class="linkAreaLine">
 						<div class="linkAreaTh">帮助中心</div>
-						<div class="linkAreaTd"><a href="newbieGuide.html">新手指引</a></div>
-						<div class="linkAreaTd"><a href="investmentZone.html">我要投资</a></div>
-						<div class="linkAreaTd"><a href="loan.html">我要借款</a></div>
-						<div class="linkAreaTd"><a href="commonProblem.html">常见问题</a></div>
+						<div class="linkAreaTd"><a href="aboutUs/newbieGuide.html">新手指引</a></div>
+						<div class="linkAreaTd"><a href="aboutUs/investmentZone.html">我要投资</a></div>
+						<div class="linkAreaTd"><a href="aboutUs/loan.html">我要借款</a></div>
+						<div class="linkAreaTd"><a href="aboutUs/commonProblem.html">常见问题</a></div>
 					</div>				
 				</div>
 				<div class="qrcodeArea">
@@ -68,7 +68,7 @@
 			</div>
 			<div class="bottomBottomLine1">
 				<span>Copyright(c)蜀ICP备10201230号-1 成都四象联创科技有限公司 .All rights reserved.</span>
-				<span class="technicalSupport" onclick="window.location='platformIntroduction.html'">技术支持：成都四象联创科技有限公司</span>
+				<span class="technicalSupport" onclick="window.location='aboutUs/platformIntroduction.html'">技术支持：成都四象联创科技有限公司</span>
 			</div>
 			<div class="bottomBottomLine2">
 				<div>

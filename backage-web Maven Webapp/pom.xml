@@ -84,7 +84,7 @@
 	   <groupId>javax.servlet</groupId> 
 	   <artifactId>servlet-api</artifactId> 
 	   <version>2.5</version> 
-	   <scope>provided</scope> 
+<!-- 	   <scope>provided</scope>  -->
 	</dependency>
   
 	<!-- mybatis核心包 -->
@@ -181,6 +181,18 @@
     <dependency> 
 	     <groupId>product_p2p</groupId>
 	     <artifactId>system-set</artifactId>
+	     <version>0.0.1-SNAPSHOT</version> 
+    </dependency> 
+    <!--会员管理  -->
+    <dependency> 
+	     <groupId>product_p2p</groupId>
+	     <artifactId>membermng</artifactId>
+	     <version>0.0.1-SNAPSHOT</version> 
+    </dependency> 
+    <!--项目管理  -->
+    <dependency> 
+	     <groupId>product_p2p</groupId>
+	     <artifactId>projectMngx</artifactId>
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency> 
 	

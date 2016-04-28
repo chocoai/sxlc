@@ -1,0 +1,24 @@
+td.tt{
+	text-align:left !important;
+	padding:5px 20px;
+}
+fieldset{
+	padding:10px;
+	margin:20px auto;
+	border:1px solid #D4D4D4;
+	border-radius:3px;
+	max-width: 1040px;
+	font-size:15px;
+}
+legend{
+	width:auto;
+	padding:0 10px;
+	margin-left:30px;
+	border:none;
+	font-size:15px;
+	font-weight:700;
+	text-align:center;
+}
+table{
+	margin:0 auto;
+}

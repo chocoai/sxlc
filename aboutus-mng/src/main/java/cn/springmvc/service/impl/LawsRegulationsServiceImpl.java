@@ -86,9 +86,9 @@ public class LawsRegulationsServiceImpl implements LawsRegulationsService {
 	}
 
 	@Override
-	public LawsRegulationsEntity selectLawsRegulationsList(int statu) {
+	public LawsRegulationsEntity selectLawsRegulationsList() {
 		
-		LawsRegulationsEntity lawsRegulationsEntity = lawsRegulationsListDaoImpl.selectLawsRegulations(statu);
+		LawsRegulationsEntity lawsRegulationsEntity = lawsRegulationsListDaoImpl.selectLawsRegulations();
 		return lawsRegulationsEntity;
 	}
 

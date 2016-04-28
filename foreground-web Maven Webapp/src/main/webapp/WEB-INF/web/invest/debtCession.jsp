@@ -1,15 +1,22 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>债权转让</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/invest/debtCession.css">
 	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
     <!-- 此处加入代码 -->
     <!--伍成然2016-3-28-->
     <div class="main">
@@ -21,7 +28,7 @@
     	</div>
     	<!--tab区域  -->
     	<ul class="tab-head">
-			<li class="tab-li"><a href="investmentZone.html">投资专区</a></li>
+			<li class="tab-li"><a href="invest/investmentZone.html">投资专区</a></li>
 			<li class="tab-ing">债权转让</li>
 		</ul>
 		<!--轮播图区域  -->
@@ -120,7 +127,7 @@
 				<div class="inv-head clearfix">
 					<div class="inv-head-left">
 						<img src="resource/img/invest/dan.png"><!--担dan/抵di/信xin-->
-						<a href="debtDetail.html">化工企业研发资金借款</a>
+						<a href="invest/debtDetail.html">化工企业研发资金借款</a>
 						<span>【NO.20160306121】</span>
 					</div>
 				</div>
@@ -149,7 +156,7 @@
 					</div>
 					<div class="inv-time-count">
 						<div class="repay-method">还款方式:<span>到期还本息</span></div><!--还款方式有:到期还本息，等额本金，等额本息，先息后本，到期还本息 -->
-						<input type="button" class="buy-now" value="立即购买" onclick="window.location.href='debtDetail.html'"> 
+						<input type="button" class="buy-now" value="立即购买" onclick="window.location.href='invest/debtDetail.html'"> 
 					</div>
 				</div>
 			</li>
@@ -157,7 +164,7 @@
 		</ul>
 		<div id="pager"></div>		
     </div><!--main  -->
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
    	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/invest/debtCession.js"></script>
 </body>

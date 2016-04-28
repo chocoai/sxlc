@@ -24,7 +24,15 @@
 	 select mbc.Receive_Card,mbc.Bank_Card_Id, bci.Bank_No,bci.Bank_Phone,bci.Branch,bci.Branch_Address,
 	 bci.Bank_Id,bci.Card_Province,bci.Card_City,mbc.Bank_Card_Id
 	 from Member_Bank_Card mbc
-	 left join Bank_Card_Info bci on mbc.Bank_Card_Id= mbc.Bank_Card_Id
+	 left join Bank_Card_Info bci on mbc.Bank_Card_Id= bci.Bank_Card_Id
+	 where mbc.Member_ID=#{memberID} and mbc.Member_Type=#{memberType}  
+	 and mbc.Statu=1
+    </select>   
+     <!-- 查询会员银行卡总数量-->  
+	<select id="selectMemberBankCardCount"  parameterType="Map"   resultType="int">
+	 select count(Receive_Card) 
+	 from Member_Bank_Card mbc
+	 left join Bank_Card_Info bci on mbc.Bank_Card_Id= bci.Bank_Card_Id
 	 where mbc.Member_ID=#{memberID} and mbc.Member_Type=#{memberType}  
 	 and mbc.Statu=1
     </select>   
@@ -68,26 +76,32 @@
 	         Bank_Phone= #{bankPhone}
 	       </if> 
 	     </set> 
-	     where Bank_Card_Id=#{bankCardId}
+	     where Bank_Card_Id=#{bankCardId} 
      </update>  
       <!--     删除会员银行卡信息    -->
-    <update id="deleteMemberBankCard" parameterType="int">
+    <update id="deleteMemberBankCard" parameterType="Map">
       update Member_Bank_Card set Remove_Date=now(), Statu=0 
-      where Receive_Card=#{receiveCard}
+      where Receive_Card=#{receiveCard} and   Member_ID = #{memberID}
      </update> 
      <!-- 查询会员银行卡是否已存在信息-->  
 	<select id="selectMemberBankCardByNo"  parameterType="Map"   resultType="int">
 	 select count(bci.Bank_No) 
 	 from Member_Bank_Card mbc
-	 left join Bank_Card_Info bci on mbc.Bank_Card_Id= mbc.Bank_Card_Id
-	 where  mbc.Statu=1  and  bci.Bank_No = #{bankNo} and  mbc.Receive_Card !=#{receiveCard}
- 
+	 left join Bank_Card_Info bci on mbc.Bank_Card_Id= bci.Bank_Card_Id
+	 where  mbc.Statu=1  and  bci.Bank_No = #{bankNo} and  mbc.Receive_Card !=#{receiveCard} 
     </select> 
     <!-- 根据银行卡ID查询会员银行卡信息 用于信息修改-->  
-	<select id="selectMemberBankCardByID"  parameterType="Map"   resultMap="bankInfoMap.resultBankCardInfo">
+	<select id="selectMemberBankCardByID"  parameterType="long"   resultMap="bankInfoMap.resultBankCardInfo">
 	 select bci.Bank_No,bci.Bank_Phone,bci.Branch,bci.Branch_Address,
 	 bci.Bank_Id,bci.Card_Province,bci.Card_City
 	 from  Bank_Card_Info bci 
 	 where bci.Bank_Card_Id = #{bankCardId}
-    </select>      
+    </select>   
+     <!-- 查询该银行卡是否是该会员的-->  
+	<select id="selectMemberBankCardisExist"  parameterType="Map"   resultType="int">
+	   select count(mbc.Receive_Card)
+	   from Member_Bank_Card mbc
+	   left join Bank_Card_Info bci on mbc.Bank_Card_Id= bci.Bank_Card_Id
+	   where  mbc.Statu=1 and   mbc.Member_ID =#{memberID} and  bci.Bank_Card_Id  = #{bankCardId}  
+    </select>    
 </mapper>   

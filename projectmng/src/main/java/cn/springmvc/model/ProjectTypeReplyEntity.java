@@ -35,4 +35,10 @@ public class ProjectTypeReplyEntity {
 	public void setPtIndex(int ptIndex) {
 		this.ptIndex = ptIndex;
 	}
+	@Override
+	public String toString() {
+		return "ProjectTypeReplyEntity [projectType=" + projectType
+				+ ", content=" + content + ", ptIndex=" + ptIndex + "]";
+	}
+	
 }

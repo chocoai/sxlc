@@ -1,14 +1,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>投资详情</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/invest/investmentDetail.css">
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
     <!-- 此处加入代码 -->
     <!--伍成然2016-3-28  -->
     <div class="main">
@@ -16,15 +23,15 @@
 			<div class="link-parents">
 				您当前的位置&gt;
 				<a href="index.html">首页</a>&gt;
-				<a href="investmentZone.html" class="dq">投资专区</a>&gt;
+				<a href="invest/investmentZone.html" class="dq">投资专区</a>&gt;
 			</div>
 			<div class="page-link">
-				<a href="#" class="current-page on">项目详情</a>
-				<a href="#" class="current-page">风控措施</a>
-				<a href="#" class="current-page">还款计划</a>
-				<a href="#" class="current-page">投资列表</a>
-				<a href="#" class="current-page">项目历程</a>
-				<a href="#" class="current-page">贷后监管</a>
+				<a class="current-page on">项目详情</a>
+				<a class="current-page">风控措施</a>
+				<a class="current-page">还款计划</a>
+				<a class="current-page">投资列表</a>
+				<a class="current-page">项目历程</a>
+				<a class="current-page">贷后监管</a>
 			</div>
 		</div>
 		<!--inv-box  -->
@@ -85,12 +92,13 @@
 				</div>
 			</div><!--top-box结束  -->
 			<!--inv-deal-box未登录状态  -->
+			<form id="notLoginBox">
 			<div class="inv-deal-box not-logined">
 				<div class="login-remind">
-					<a href="login.html">登录</a>后可查看可用余额
+					<a href="login.html">登录</a>&nbsp;&nbsp;后可查看可用余额
 				</div>
 				<div class="input-group">
-				    <input type="text" class="charge-input format" maxlength="10" value="50元起投且金额为整数" 
+				    <input type="text" class="charge-input" datatype="acountM" maxlength="10" value="50元起投且金额为整数" 
 					onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 					onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 					style="color:#bfbfbf">
@@ -98,13 +106,15 @@
 				 </div>
 				 <input type="button" class="login-now" value="立即登录">
 			</div>
+			</form>
 			<!--inv-deal-box未登录状态结束  -->
 			<!--inv-deal-box已登录状态  -->
+			<form id="loginedBox">
 			<div class="inv-deal-box logined">
 				<div class="inv-available">本次可投金额<div class="right"><span>1600</span>元</div></div>
 				<div class="amount-available">可用余额<div class="right"><span>220.00</span>元</div></div>
-				<div class="input-group">
-				    <input type="text" class="charge-input format" maxlength="10" value="50元起投且金额为整数" 
+				<div class="input-group" style="height:50px;">
+				    <input type="text" class="charge-input" datatype="acountM" maxlength="10" value="50元起投且金额为整数" 
 					onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 					onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 					style="color:#bfbfbf">
@@ -115,6 +125,7 @@
 				<input type="button" class="inv-now" value="立即投资">
 				<div class="remain-vouchers">剩余代金券&nbsp;500.00元<div class="right">剩余红包&nbsp;3个</div></div>
 			</div>
+			</form>
 			<!--deal-box已登录状态结束  -->
 			<!--inv-deal-box还款中状态  -->
 			<div class="inv-deal-box repaying">
@@ -138,29 +149,29 @@
 					<li class="tab-li after-inv-li">贷后监管</li><!--投资后显现  -->
 				</ul>
 				<div class="tab-content clearfix">
-					<div class="content content-active">
+					<div class="c-content content-active">
 						<jsp:include page="projectDetail.jsp"></jsp:include>
 					</div>
-					<div class="content">
+					<div class="c-content">
 						<jsp:include page="riskControl.jsp"></jsp:include>
 					</div>
-					<div class="content contentList">
+					<div class="c-content contentList">
 						<jsp:include page="repaymentPlan.jsp"></jsp:include>
 					</div>
-					<div class="content contentList">
+					<div class="c-content contentList">
 						<jsp:include page="investmentList.jsp"></jsp:include>
 					</div>
-					<div class="content">
+					<div class="c-content">
 						<jsp:include page="projectCourse.jsp"></jsp:include>
 					</div>
-					<div class="content after-inv"><!--投资后显现  -->
+					<div class="c-content after-inv"><!--投资后显现  -->
 						<jsp:include page="postLoanSupervision.jsp"></jsp:include>
 					</div>
 				</div>		
 			</div>
 		</div>	
     </div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<!--弹出层  -->
 	<div class="red-packets">
 		<div class="red-packets-top">

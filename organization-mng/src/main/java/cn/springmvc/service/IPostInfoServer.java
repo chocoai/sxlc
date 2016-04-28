@@ -20,7 +20,7 @@ public interface IPostInfoServer {
 	 * @param postName					职务名称
 	 * @return
 	 */																												
-	public List<PostInfo> getListByParam(PageEntity page);
+	public void getListByParam(PageEntity page);
 	
 	
 	

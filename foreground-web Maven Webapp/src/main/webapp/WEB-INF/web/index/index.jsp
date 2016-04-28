@@ -172,7 +172,7 @@
 								<h3>即投即获息</h3>
 							</div>
 							<div class="tryNow">
-								<button class="taste" onclick="window.location='investmentDetail.html';">立即体验</button>
+								<button class="taste" onclick="clickUp();">立即体验</button>
 							</div>
 						</div>
 					</div>
@@ -185,7 +185,7 @@
 							<label></label>
 							投资专区
 						</span>
-						<span class="indexConHMore" onclick="window.location='investmentZone.html'">更多<label></label></span>
+						<span class="indexConHMore" onclick="window.location='invest/investmentZone.html'">更多<label></label></span>
 					</div>
 					<div class="row">
 						<div class="rowContent">
@@ -227,12 +227,12 @@
 										<span class="progress_totle">20%</span>
 									</div>
 									<p class="openBidTime">开标时间：<em>2016年3月2日 15:00</em></p>
-									 <span class="investOpenT" onclick="window.location='investmentDetail.html'">
+									 <span class="investOpenT" onclick="window.location='invest/investmentDetail.html'">
 										<label class="clock clockBlue"></label>
 										<span id="endTimeValue-d"></span>
 									</span>
-									<a class="investBtn" href="investmentDetail.html">立即投资</a>
-									<a class="detail" href="investmentDetail.html">查看详情</a>
+									<a class="investBtn" href="invest/investmentDetail.html">立即投资</a>
+									<a class="detail" href="invest/investmentDetail.html">查看详情</a>
 									<label class="money_ing"></label>
 								</div>
 							</div>
@@ -273,12 +273,12 @@
 										<span class="progress_totle">60%</span>
 									</div>
 									<p class="openBidTime">开标时间：<em>2016年3月2日 15:00</em></p>
-									 <span class="investOpenT" onclick="window.location='investmentDetail.html'">
+									 <span class="investOpenT" onclick="window.location='invest/investmentDetail.html'">
 										<label class="clock clockBlue"></label>
 										<span></span>
 									</span>
-									<a class="investBtn" href="investmentDetail.html">立即投资</a>
-									<a class="detail" href="investmentDetail.html">查看详情</a>
+									<a class="investBtn" href="invest/investmentDetail.html">立即投资</a>
+									<a class="detail" href="invest/investmentDetail.html">查看详情</a>
 									<label class="money_ing"></label>
 								</div>
 							</div>
@@ -319,12 +319,12 @@
 										<span class="progress_totle">20%</span>
 									</div>
 									<p class="openBidTime">开标时间：<em>2016年3月2日 15:00</em></p>
-									 <span class="investOpenT" onclick="window.location='investmentDetail.html'">
+									 <span class="investOpenT" onclick="window.location='invest/investmentDetail.html'">
 										<label class="clock clockBlue"></label>
 										<span></span>
 									</span>
-									<a class="investBtn" href="investmentDetail.html">立即投资</a>
-									<a class="detail" href="investmentDetail.html">查看详情</a>
+									<a class="investBtn" href="invest/investmentDetail.html">立即投资</a>
+									<a class="detail" href="invest/investmentDetail.html">查看详情</a>
 									<label class="money_ing"></label>
 								</div>
 							</div>
@@ -339,7 +339,7 @@
 							<label></label>
 							债权转让
 						</span>
-						<span class="indexConHMore" onclick="window.location='debtCession.html'">更多<label></label></span>
+						<span class="indexConHMore" onclick="window.location='invest/debtCession.html'">更多<label></label></span>
 					</div>
 					<div class="debtContent">
 						<div>
@@ -371,7 +371,7 @@
 											</span> 
 										</span>
 									</div>
-									<div class="debtsetting"><a class="table_operate_buy" href="debtDetail.html">立即购买</a></div>
+									<div class="debtsetting"><a class="table_operate_buy" href="invest/debtDetail.html">立即购买</a></div>
 								</li>
 								<%} %>
 								<%for(int i = 0;i<2;i++){ %>
@@ -392,7 +392,7 @@
 											</span> 
 										</span>
 									</div>
-									<div class="debtsetting"><a class="table_operate_zhuan" href="debtDetail.html">转让成功</a></div>
+									<div class="debtsetting"><a class="table_operate_zhuan" href="invest/debtDetail.html">转让成功</a></div>
 								</li>
 								<%} %>
 							</ul>
@@ -411,7 +411,7 @@
 						<div class="secBottomH">
 							<div>
 								<span class="sec_b_title">新闻动态</span>
-								<span class="indexConHMore" onclick="window.location='mediaCoverage.html'">更多<label></label></span>
+								<span class="indexConHMore" onclick="window.location='aboutUs/mediaCoverage.html'">更多<label></label></span>
 							</div>
 						</div>
 						<div>
@@ -421,7 +421,7 @@
 									<ul>
 										<%for(int j = 0;j<2;j++){ %>
 									<li class="clearfix">
-										<a href="mediaCoverageDetail.html" target="_blank">
+										<a href="aboutUs/mediaCoverageDetail.html" target="_blank">
 											<label class="noRuleCircle"></label>【环球新闻】合规与创新同合规与创新同合规与创新同</a>
 										<span>2016-07-06</span>
 									</li>
@@ -434,14 +434,14 @@
 					<div class="secBottomFirst secBottomCon1">
 						<div>
 							<span class="sec_b_title">网站公告</span>
-							<span class="indexConHMore" onclick="window.location='webBoard.html'">更多<label></label></span>
+							<span class="indexConHMore" onclick="window.location='aboutUs/webBoard.html'">更多<label></label></span>
 						</div>
 						<div class="artical_content webSite">
 							<div class="artical_main">
 								<ul>
 								<%for(int j = 0;j<5;j++){ %>
 									<li class="clearfix">
-										<a href="webBoardDetail.html" target="_blank">
+										<a href="aboutUs/webBoardDetail.html" target="_blank">
 											<label class="noRuleCircle"></label>关于汇付天下暂停交通银行网银充关于汇付天下暂停交通银行网银充</a>
 										<span>2016-07-06</span>
 									</li>
@@ -507,7 +507,7 @@
 				<div class="indexContFooter" id="indexContFooter">
 					<div class="indexConH clearfix">
 						<span class="sec_b_title">合作伙伴</span>
-						<span class="indexConHMore" onclick="window.location='expertAdvisor.html'">更多<label></label></span>
+						<span class="indexConHMore" onclick="window.location='aboutUs/expertAdvisor.html'">更多<label></label></span>
 					</div>
 					<div class="partner">
 						<div class="divMain-divWindow" id="divMain-divWindow">
@@ -549,20 +549,32 @@
 				<!-- 左侧边部分开始 -->
 				<div class="asideLeft" onselectstart="return false">
 					<div class="asideLeftCont">
-						<a class="asideLeftCircle asideNewer after" href="#newMember">新手<br>体验</a>
+						<a class="asideLeftCircle asideNewer indexAfter" href="index.html#newMember">新手<br>体验</a>
 						<label class="asideLeftLine"></label>
-						<a class="asideLeftCircle asideInvest after" href="#invest">投资<br>专区</a>
+						<a class="asideLeftCircle asideInvest indexAfter" href="index.html#invest">投资<br>专区</a>
 						<label class="asideLeftLine"></label>
-						<a class="asideLeftCircle asideDebet after" href="#debt">债权<br>转让</a>
+						<a class="asideLeftCircle asideDebet indexAfter" href="index.html#debt">债权<br>转让</a>
 						<label class="asideLeftLine"></label>
-						<a class="asideLeftCircle asideNews after" href="#secBottom">新闻<br>动态</a>
+						<a class="asideLeftCircle asideNews indexAfter" href="index.html#secBottom">新闻<br>动态</a>
 						<label class="asideLeftLine"></label>
-						<a class="asideLeftCircle asidePaterner after" href="#indexContFooter">合作<br>伙伴</a>	
+						<a class="asideLeftCircle asidePaterner indexAfter" href="index.html#indexContFooter">合作<br>伙伴</a>	
 					</div>
 				</div>
 				<!-- 左侧边部分结束 -->
 	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<jsp:include page="../common/aside.jsp"></jsp:include>
+	<div class="applyTalent">
+   		<div class="apply-top">
+   		    <b>￥<span>2.00</span></b>
+   		    <br>
+   			<label>恭喜您获得<span>2.00</span>元的收益，</label>
+   			<br>
+   			<span>请到<a href="accountOverview/accountOverview.html">我的账户</a>查看！</span>
+   		</div>
+   		<div class="apply-bottom">
+   			<input type="button" class="btn" value="确定" onclick="layer.closeAll();">
+   		</div>
+   	</div>
 	<script type="text/javascript" src="js/common/countdown.js"></script>
 	<script type="text/javascript" src="js/index/index.js"></script>
 </body>

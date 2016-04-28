@@ -1,14 +1,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>商城首页</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/integralMall/mallIndex.css">
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/integralMall/intergralMallCommon.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../integralMall/intergralMallCommon.jsp"></jsp:include>
     <!-- 在这里加入页面内容 -->
     <!-- 商城首页界面      胥福星     2016-03-28 -->
     <div class="bannerArea">
@@ -40,7 +47,7 @@
 	    			<div class="approachList">
 	    				<p>邀好友送积分！！</p>
 	    				<span>有钱一起赚</span>
-	    				<a class="friendInvest" href="friendManagement.html"></a>
+	    				<a class="friendInvest" href="personalCenter/friendManagement.html"></a>
 	    			</div>
 	    			<div class="flowImg2"></div>
 	    		</div>
@@ -48,7 +55,7 @@
 	    			<div class="approachList">
 	    				<p>投资送积分啦</p>
 	    				<span>投资马上送好礼</span>
-	    				<a class="investGo" href="investmentZone.html"></a>
+	    				<a class="investGo" href="invest/investmentZone.html"></a>
 	    			</div>
 	    			<div class="flowImg3"></div>
 	    		</div>
@@ -56,7 +63,7 @@
 	    	<div class="productIntegral">
 	    		<div class="productHeader">
 	    			<span class="liftTitle">趣味生活</span>
-	    			<a href="itemList.html">更多></a>
+	    			<a href="integralMall/itemList.html">更多></a>
 	    		</div>
 	    		<ul class="productList clearfix">
 	    			<li class="productLi includeFlow">
@@ -68,90 +75,90 @@
 	    			</li>
 	    			<li class="productDetail">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/sp_3.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/sp_3.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		    				<span><samp>所需积分：</samp><em>25000</em></span>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<div class="flowTop">
-		   					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    			<li class="productDetail">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/sp_7.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/sp_7.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		    				<span><samp>所需积分：</samp><em>25000</em></span>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<div class="flowTop">
-		   					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    			<li class="productDetail">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/sp_6.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/sp_6.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		    				<span><samp>所需积分：</samp><em>25000</em></span>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<div class="flowTop">
-		   					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    			<li class="productDetail">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/sp_1.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/sp_1.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		    				<span><samp>所需积分：</samp><em>25000</em></span>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<div class="flowTop">
-		   					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    		</ul>
@@ -159,7 +166,7 @@
 	    	<div class="productIntegral">
 	    		<div class="productHeader">
 	    			<span class="foodTitle">精品零食</span>
-	    			<a href="itemList.html">更多></a>
+	    			<a href="integralMall/itemList.html">更多></a>
 	    		</div>
 	    		<ul class="productList clearfix">
 	    			<li class="productLi includeFlow">
@@ -171,90 +178,90 @@
 	    			</li>
 	    			<li class="productDetail productFood">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/sp_9.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/sp_9.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		    				<span><samp>所需积分：</samp><em>25000</em></span>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<div class="flowTop">
-		   					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    			<li class="productDetail productFood">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/sp_8.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/sp_8.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		    				<span><samp>所需积分：</samp><em>25000</em></span>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<div class="flowTop">
-		   					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    			<li class="productDetail productFood">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/sp_10.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/sp_10.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		    				<span><samp>所需积分：</samp><em>25000</em></span>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<div class="flowTop">
-		   					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    			<li class="productDetail productFood">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/sp_5.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/sp_5.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		    				<span><samp>所需积分：</samp><em>25000</em></span>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<div class="flowTop">
-		   					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    		</ul>
@@ -262,7 +269,7 @@
 	    	<div class="productIntegral">
 	    		<div class="productHeader">
 	    			<span class="cardTitle">卡券兑换</span>
-	    			<a href="itemList.html">更多></a>
+	    			<a href="integralMall/itemList.html">更多></a>
 	    		</div>
 	    		<ul class="productList clearfix">
 	    			<li class="productLi includeFlow">
@@ -274,90 +281,90 @@
 	    			</li>
 	    			<li class="productDetail productCard">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/jfsc_14.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/jfsc_14.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		   					<span><samp>所需积分：</samp><em>25000</em></span>
-		   					<a href="exchangeDetail.html">立即兑换</a>
+		   					<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		   				</div>
 		    			<div class="flowTop">
-		    				<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		    				<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		   					<a href="exchangeDetail.html">立即兑换</a>
+		   					<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 	    				<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    			<li class="productDetail productCard">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/jfsc_15.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/jfsc_15.png" />
 		    			</div>
 		    			<div class="detailProduct">
 		   					<p>坚果百味礼包礼盒1420g</p>
 		   					<span><samp>所需积分：</samp><em>25000</em></span>
-		   					<a href="exchangeDetail.html">立即兑换</a>
+		   					<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		   				</div>
 	    				<div class="flowTop">
-	    					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+	    					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 	    				<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    			<li class="productDetail productCard">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/jfsc_16.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/jfsc_16.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		   					<span><samp>所需积分：</samp><em>25000</em></span>
-		   					<a href="exchangeDetail.html">立即兑换</a>
+		   					<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		   				</div>
 	    				<div class="flowTop">
-		    				<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+		    				<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 	    				<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    			<li class="productDetail productCard">
 		    			<div class="productImg">
-		    				<img onclick="window.location.href='itemDetail.html'" src="resource/img/integralMall/jfsc_14.png" />
+		    				<img onclick="window.location.href='integralMall/itemDetail.html'" src="resource/img/integralMall/jfsc_14.png" />
 		    			</div>
 		    			<div class="detailProduct">
-		   					<p onclick="window.location.href='itemDetail.html'">坚果百味礼包礼盒1420g</p>
+		   					<p onclick="window.location.href='integralMall/itemDetail.html'">坚果百味礼包礼盒1420g</p>
 		   					<span><samp>所需积分：</samp><em>25000</em></span>
-		   					<a href="exchangeDetail.html">立即兑换</a>
+		   					<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		   				</div>
 	    				<div class="flowTop">
-	    					<p onclick="window.location.href='itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
+	    					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">可爱卡通U型枕头超舒适柔软</p>
 		    				<p><samp>所需积分：</samp><span>35000</span></p>
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
-		    				<a href="exchangeDetail.html">立即兑换</a>
+		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
 	    				<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 	    				<div class="sellOutArea">
 			    			<div class="sellOut">
 		    				</div>
-		    				<img src="resource/img/integralMall/jfsc_17.png" />
+		    				<div class="sellOutImg"></div>
 		    			</div>
 	    			</li>
 	    		</ul>
@@ -382,9 +389,9 @@
 	    		</ul>
 	    	</div>
 	    </div>
-	    <a class="link" href="bigWheel.html"></a>
+	    <a class="link" href="integralMall/bigWheel.html"></a>
     </div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/integralMall/mallIndex.js"></script>
 </body>
 </html>

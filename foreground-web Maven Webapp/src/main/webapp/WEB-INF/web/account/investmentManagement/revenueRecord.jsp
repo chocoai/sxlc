@@ -1,27 +1,34 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>收益记录</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/investmentManagement/myInvestment.css">
 </head>
 <body> 
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../../common/top.jsp"></jsp:include>
+   	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
    	<div class="main">
    		<div class="clearfix">
-		   	<jsp:include page="/web/account/accountCommonLeft.jsp"></jsp:include>
+		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
    			<div class="accountRight">
-			   	<jsp:include page="/web/account/accountCommonRightTop.jsp"></jsp:include>
+			   	<jsp:include page="../../account/accountCommonRightTop.jsp"></jsp:include>
    				<div class="accountMain clearfix">
    				<!-- 在此处写入代码 -->
    				<!-- 主体部分开始 王延君 2016-04-01-->
    				<div class="myInvestment">
    					<div class="revenueRecordContent">
    						<div class="myInvestmentH">
-	   						<div class="revenueRecord">已结清的投资-收益记录</div>
+	   						<div class="revenueRecord"><span class="backDebt" onclick="window.location.href='investmentManagement/myInvestment.html'">已结清的投资</span>-收益记录</div>
 	   					</div>
 	   					<div class="myInvestmentM">
 	   						<ul class="revenueRecordUl">
@@ -84,7 +91,7 @@
    			</div>
    		</div>
    	</div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/investmentManagement/myInvestment.js"></script>
 </body>

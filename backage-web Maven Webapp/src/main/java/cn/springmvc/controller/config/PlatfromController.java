@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.SystemInfoSetEntity;
 import cn.springmvc.service.SystemSetService;
+import cn.springmvc.util.LoadUrlUtil;
 
 
 /**
@@ -99,16 +101,19 @@ public class PlatfromController {
 		systemInfoSetEntity.setIntegralAlias(integralAlias);
 		systemInfoSetEntity.setWelcomeTitle(welcomeTitle);
 		
-		//
 		InsertAdminLogEntity  entity = new InsertAdminLogEntity(); //以后加
-		/*HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 	    Admin admin = (Admin)session.getAttribute("LoginPerson");
-	    long moduleId = IntegerAndString.StringToLong(request.getParameter("moduleId"),0);
-		long operationId = IntegerAndString.StringToLong(request.getParameter("operationId"),0);
-		entity.setiAdminId(admin.getId());
-		entity.setlModuleId(moduleId);
-		entity.setlOptId(operationId);*/
-		String[] sIpInfo ={};
+		if(admin !=null && admin.getId()>0){
+			entity.setiAdminId(admin.getId());
+		}
+		String[] sIpInfo = new String[6];
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac("");
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		entity.setlModuleId(602);
+		entity.setlOptId(60201);
+		
 		
 		systemSetService.updateSystemInfoSet();	//保存之前删除
 		int iResult = systemSetService.insertSystemInfoSet(systemInfoSetEntity, entity, sIpInfo);//保存

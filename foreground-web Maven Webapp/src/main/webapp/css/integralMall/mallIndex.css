@@ -202,7 +202,7 @@
 .productDetail{
 	height:341px;
 	width:239px;
-	border-top:1px solid #27a9f5;
+	border-top:1px solid #dcdcdc;
 	border-bottom:1px solid #dcdcdc;
 	border-right:1px solid #dcdcdc;
 	text-align: center;
@@ -273,10 +273,10 @@
 	text-align:center;
 }
 .productCard{
-	border-top:1px solid #b285ef;
+	border-top:1px solid #dcdcdc;
 }
 .productFood{
-	border-top:1px solid #f68b22;
+	border-top:1px solid #dcdcdc;
 }
 .productSock{
 	border-top:2px solid #f68b22;
@@ -308,14 +308,12 @@
 	top:0;
 	left:0;
 	background-color:#fff;
-	/* background:url("../../resource/img/integralMall/jfsc_17.png") no-repeat right bottom; */
-	/* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99ffffff,endColorstr=#99ffffff); */
 	filter:alpha(opacity=60);   
       -moz-opacity:0.6;   
       -khtml-opacity: 0.6;   
       opacity: 0.6; 
 	z-index:1;
-    background-image: url("../../resource/img/integralMall/jfsc_17.png");
+    background-image: url("../../resource/img/integralMall/jfsc_background.png");
     background-position-x: 91%;
     background-position-y: 79%;
     background-size: initial;
@@ -326,10 +324,14 @@
     background-origin: initial;
     background-clip: initial;
 }
-.sellOut + img{
+.sellOutImg{
+	width:137px;
+	height:134px;
+	background:url(../../resource/img/integralMall/jfsc_17.png) no-repeat;
 	position:absolute;
 	right:10px;
 	bottom: 44px;
+	z-index:1;
 }
 .sellOutHide{
 	display:none;

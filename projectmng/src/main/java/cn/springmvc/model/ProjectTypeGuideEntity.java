@@ -35,5 +35,10 @@ public class ProjectTypeGuideEntity {
 	public void setPtIndex(int ptIndex) {
 		this.ptIndex = ptIndex;
 	}
+	@Override
+	public String toString() {
+		return "ProjectTypeGuideEntity [projectType=" + projectType
+				+ ", content=" + content + ", ptIndex=" + ptIndex + "]";
+	}
 
 }

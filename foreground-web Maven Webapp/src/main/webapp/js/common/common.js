@@ -78,7 +78,7 @@ function rt() {
 }
 /* 金额格式转换伍成然2016-4-11 */
 jQuery.fn.format=function(num){
-	return (num.toFixed(2) + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+	return (parseFloat(num).toFixed(2) + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
 };
 $(function(){
 	$(".moneyFormat").each(function(){
@@ -88,3 +88,52 @@ $(function(){
 		$(this).text(n);
 	});
 });
+/* 弹出提示框的js代码  */
+jQuery.fn.layoutWarning = function(str){
+	$(this).layoutClean();
+	var s = str;
+	var m = '<div class="tipError"><div class="pre"></div><div class="after">' + s + '</div></div>';
+	this.parent().css('position','relative');
+	this.parent().append(m);
+	this.parent().find(".tipError").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
+	this.parent().find(".tipError").css("top",this.offset().top - this.parent().offset().top - 2 );
+};
+jQuery.fn.layoutFocus = function(str){
+	$(this).layoutClean();
+	var s = str;
+	var m = '<div class="tip"><div class="preTip"></div><div class="afterTip">' + s + '</div></div>';
+	this.parent().css('position','relative');
+	this.parent().append(m);
+	this.parent().find(".tip").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
+	this.parent().find(".tip").css("top",this.offset().top - this.parent().offset().top - 2 );
+};
+jQuery.fn.layoutSuccess = function(){
+	$(this).layoutClean();
+	var m = '<div class="tipOk"></div>';
+	this.parent().css('position','relative');
+	this.parent().append(m);
+	this.parent().find(".tipOk").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
+	this.parent().find(".tipOk").css("top",this.offset().top - this.parent().offset().top + 12 );
+};
+/* 获取动态验证码的弹出提示层js代码  */
+jQuery.fn.layoutCode = function(str){
+	$(this).layoutClean();
+	var s = str;
+	var m = '<span class="dynamicVerificationSpan">' + s + '</span>';
+	this.parent().css('position','relative');
+	this.parent().append(m);
+	this.parent().find(".dynamicVerificationSpan").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 10);
+	this.parent().find(".dynamicVerificationSpan").css("top",this.offset().top - this.parent().offset().top );
+};
+jQuery.fn.layoutClean = function(){
+	$(this).parent().find(".tipError").remove();
+	$(this).parent().find(".tip").remove();
+	$(this).parent().find(".tipOk").remove();
+	$(this).parent().find(".dynamicVerificationSpan").remove();
+}
+jQuery.fn.layoutCleanAll = function(){
+	$(".tipError").remove();
+	$(".tip").remove();
+	$(".tipOk").remove();
+	$(".dynamicVerificationSpan").remove();
+}

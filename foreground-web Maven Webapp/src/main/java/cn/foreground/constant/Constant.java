@@ -12,6 +12,11 @@ package cn.foreground.constant;
 public class Constant {
 
 	
+	/***
+	 *登录会员 
+	 */
+	public static String LOGINUSER = "loginUser";
+	
 	
 }
 

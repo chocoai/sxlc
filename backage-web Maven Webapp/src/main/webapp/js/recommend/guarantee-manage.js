@@ -1,51 +1,8 @@
-/**
- * 
- */
-/* 添加担保机构信息部分开始 */
-function manageAdd(){
-	layer.open({
-	    type: 1,
-	    area: ['700px', '480px'], //高宽
-	    title: "添加担保机构信息",
-	    maxmin: true,
-	    content: $("#manage-add"),//DOM或内容
-	    btn:['确定', '取消']
-		  ,yes: function(index, layero){ //或者使用btn1
-		    //确定的回调
-		  	//判断执行不同方法
-		  	
-		  },cancel: function(index){//或者使用btn2（concel）
-		  	//取消的回调
-		  }
-	});
-}
-/* 添加担保机构信息部分结束 */
-
-/* 修改担保机构信息部分开始 */
-function manageMod(){
-	layer.open({
-		type: 1,
-		area: ['700px', '480px'], //高宽
-		title: "修改担保机构信息",
-		maxmin: true,
-		content: $("#manageMod"),//DOM或内容
-		btn:['确定', '取消']
-	,yes: function(index, layero){ //或者使用btn1
-		//确定的回调
-		//判断执行不同方法
-		
-	},cancel: function(index){//或者使用btn2（concel）
-		//取消的回调
-	}
-	});
-}
-/* 修改担保机构信息部分结束 */
-
 /* 添加担保机构管理员管理部分开始 */
 function manageAdmainAdd(){
 	layer.open({
 		type: 1,
-		area: ['700px', '430px'], //高宽
+		area: ['550px', '430px'], //高宽
 		title: "添加管理员",
 		/*maxmin: true,*/
 		content: $("#manageAdmainAdd"),//DOM或内容
@@ -65,7 +22,7 @@ function manageAdmainAdd(){
 function manageAdmainMod(){
 	layer.open({
 		type: 1,
-		area: ['650px', '450px'], //高宽
+		area: ['550px', '430px'], //高宽
 		title: "修改管理员",
 		maxmin: true,
 		content: $("#manageAdmainMod"),//DOM或内容
@@ -90,6 +47,16 @@ function enable(){
 	  layer.close(index);
 	});
 }
+/* 添加担保机构信息部分开始 */
+function manageAdd(){
+	$(".right_col").load("web/recommend/re-add/gua-manage-add.jsp");
+}
+/* 添加担保机构信息部分结束*/
+/* 修改担保机构信息部分开始 */
+function manageMod(){
+	$(".right_col").load("web/recommend/re-add/gua-manage-mod.jsp");
+}
+/* 修改担保机构信息部分结束*/
 /* 查看担保机构信息部分开始 */
 function checkDetail(){
 	$(".right_col").load("web/recommend/re-add/gua-checkDetail.jsp");

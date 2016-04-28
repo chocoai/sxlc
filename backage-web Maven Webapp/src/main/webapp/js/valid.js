@@ -35,6 +35,7 @@ var amcountM = /^[1-9]([0-9]{0,26})(\.[0-9]{1,2})?$/; //金额
 var mail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;//邮箱 
 var QQ= /^\d{5,12}$/;  //QQ验证，可为空，5~12位数字
 var roleName= /^[\u4E00-\u9FA5]{0,10}$/;  //角色名称，10字以下
+var agreementName= /^[\u4E00-\u9FA5]{0,15}$/;  //角色名称，15字以下
 var roleMark= /^[\u4E00-\u9FA5]{0,125}$/;  //角色描述 ，125字以下
 var hundrednum = /^(100|[1-9]?\d(\.\d\d?)?)$/ ; //百分数验证不包含%
 //url 路径
@@ -43,6 +44,15 @@ var strRegex = /^((https|http|ftp|rtsp|mms)?:\/\/)?(([0-9a-z_!~*'().&=+$%-]+: )?
 var unnormal = /^[^ &',;=?$\\]+$/;
 var orgcodefmt = /^([0-9A-Z]){8}-[0-9|X]$/;//组织机构代码格式
 var day = /^[1-9][0-9]{0,2}$/;//天数：大于0的整数，最大3位数字
+var port = /^([1-9]|[1-9]\\d{1,3}|[1-6][0-5][0-5][0-3][0-5])$/;//端口：大于0的整数，最大6位数字
+var server= /^[^ &',;=?$\\]+$/;//SMTP服务器
+var nnum0 = /^[0-9]*[0-9][0-9]*$/;//0~无限大的整数    [1-9]{1}\d{0,4}
+
+var describe= /^[\u4E00-\u9FA5]{0,200}$/;  //项目描述 ，200字以下
+var roleNameA= /^[\u4E00-\u9FA5]{0,6}$/;  //角色名称，6字以下
+var enterNR = /^[\u4E00-\u9FA5A-Za-z0-9]{1,16}$/;//项目名称,1~16位的数字、字母或中文；
+var roleNameB= /^[\u4E00-\u9FA5]{0,30}$/;  //附加标题，30字以下
+var numberOf = /^[0-9]{0,200}$/;//项目名称,200位的数字以下；
 
 var days = function(gets,obj,curform,datatype){
 	if(!gets){
@@ -54,8 +64,18 @@ var days = function(gets,obj,curform,datatype){
 	else{
 		return true;
 	}
-}
-
+};
+var hundredNum  = function(gets,obj,curform,datatype){
+	if(!gets){
+		return "不可为空";
+	}
+	else if(!hundrednum.test(gets)){  
+	    return "请输入3位数内的正整数";
+	}
+	else{
+		return true;
+	}
+};
 var logname = function(gets,obj,curform,datatype) {
 				var name="chen";    //模拟已存在的用户名 
 				console.log("chulai");
@@ -112,6 +132,19 @@ var zPhone = function (gets,obj,curform,datatype) {
 					return true;
 				}
 		};
+		
+var nNum0 = function (gets,obj,curform,datatype) {	
+		if(!gets){
+			return "不可为空";
+		}
+		else if(!nnum0.test(gets)){  
+		    return "请输入正确的范围";  
+		}
+		else {
+			return true;
+		}
+};
+
 var Z6 = function (gets,obj,curform,datatype) {
 				var z = '123456';
 				if(!gets){
@@ -137,7 +170,8 @@ var newpass = function (gets,obj,curform,datatype) {
 				else {
 					return true;
 				}
-		};		
+		};	
+		
 var repass = function(gets,obj,curform,datatype) {
 				var passValue = $("input[title='newpass']").val();
 				if(!gets){
@@ -177,17 +211,36 @@ var checkMemberPhone = function(gets,obj,curform,datatype) {//异步验证用户
 						});
 						return sResult;
 					};
-var entername = function(gets,obj,curform,datatype) {
+var enterNameR = function(gets,obj,curform,datatype) {
 			if(!gets){
 				return "部门不可为空";
 			}
-			else if(!enterNameReg.test(gets)) {
-				return "请输入1~12位中文、数字或字母组合";
+			else if(!enterNR.test(gets)) {
+				return "请输入1~16位中文、数字或字母组合";
 			}else {
 				return true;
 			}
 		};
-		
+var numOf = function(gets,obj,curform,datatype) {
+	if(!gets){
+		return "不可为空";
+	}
+	else if(!numberOf.test(gets)) {
+		return "200人以下";
+	}else {
+		return true;
+	}
+};
+var entername = function(gets,obj,curform,datatype) {
+	if(!gets){
+		return "部门不可为空";
+	}
+	else if(!enterNameReg.test(gets)) {
+		return "请输入1~12位中文、数字或字母组合";
+	}else {
+		return true;
+	}
+};
 var enterperson = function(gets,obj,curform,datatype) {
 	if(!gets){
 		return "部门负责人不可为空";
@@ -353,8 +406,37 @@ var rolename = function(gets,obj,curform,datatype) {
 		return true;
 	}
 };
-var rolemark = function(gets,obj,curform,datatype) {
-	if(!roleMark.test(gets)) {
+
+var roleNamea = function(gets,obj,curform,datatype) {
+	if(!roleNameA.test(gets)) {
+		return "6字以下";
+	}else {
+		return true;
+	}
+};
+
+var roleNameb = function(gets,obj,curform,datatype) {
+	if(!roleNameB.test(gets)) {
+		return "30字以下";
+	}else {
+		return true;
+	}
+};
+
+var rolemarkC = function(gets,obj,curform,datatype) {
+	if(!gets){
+		return "不可为空";
+	}else if(!roleMark.test(gets)) {
+		return "125字以内";
+	}else {
+		return true;
+	}
+};
+
+var describeC = function(gets,obj,curform,datatype) {
+	if(!gets){
+		return "不可为空";
+	}else if(!describe.test(gets)) {
 		return "125字以内";
 	}else {
 		return true;
@@ -413,6 +495,16 @@ var tell = function(gets,obj,curform,datatype) {
 		return true;
 	}
 };
+var bankNum = function(gets,obj,curform,datatype) {
+	if(!gets){
+		return "请输入信息";
+	}
+	if(!zbankNum.test(gets)) {
+		return "银行卡号不正确";
+	}else {
+		return true;
+	}
+};
 /**======================2015122添加输入验证end========================**/						
 				
 /**
@@ -426,7 +518,7 @@ var tell = function(gets,obj,curform,datatype) {
  * 调用： validform5(btn,formId,postonce,tipsType,fun);
  */
 function validform5(btn,formId,postonce,tipsType) {
-	console.log(btn);
+	//console.log(btn);
 	$("#"+formId).Validform({
 		btnSubmit:btn,//提交按钮
 		tiptype:tipsType,//提示信息类型
@@ -455,7 +547,7 @@ function validform5(btn,formId,postonce,tipsType) {
 			"qq" : qq,
 			"enteraddr" : enteraddr,
 			"rolename" : rolename,
-			"rolemark" : rolemark,
+			"rolemarkC" : rolemarkC,
 			"z2_8":z2_8,
 			"enterAddress":enterAddress,
 			"unNormal":unNormal,		//正常
@@ -474,7 +566,20 @@ function validform5(btn,formId,postonce,tipsType) {
 			"enterNameReg":enterNameReg,
 			"strRegex":strRegex,
 			"notSpecial":notSpecial,
-			"isSpecial":isSpecial
+			"isSpecial":isSpecial,
+			"logPass":logPass,
+			"bankNum":bankNum,
+			"mail":mail,
+			"port":port,
+			"server":server,
+			"agreementName":agreementName,
+			"nNum0":nNum0 ,
+			"hundredNum":hundredNum ,
+			"roleNamea":roleNamea ,
+			"enterNameR":enterNameR ,
+			"describeC":describeC ,
+			"roleNameb":roleNameb ,
+			"numOf":numOf     //两百以下
 
 		},
 		beforeSubmit:function(curform){//提交借款申请时添加家庭成员和家庭成员信息拼接

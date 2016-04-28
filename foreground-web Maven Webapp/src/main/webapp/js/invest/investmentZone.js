@@ -63,10 +63,56 @@ $(function(){
 		        "endTime":endTimeValue,
 		        "nowTime":date,
 		        "startTips":'',
-		        "endTips":'',
+		        "endTips":''
 		        /*"timeStamp": false*/
 		    });
 	    }
 	}
+
+
+//	2016-4-28付晨早
+//	查询出借款类型
+	
+	var investmentZone = {
+//		//加密
+//		addEncrypt:function(str){
+//			return encrypt.encrypt(str+"");
+//		},
+		getInvestmentList : function(wd,projectStatu,reward,loanType,
+									 annualInterest,repayment,deadlineType,
+									 deadlinemin,page){
+			//String wd				=	request.getParameter("wd");						//赛选条件名称(项目名称)
+			//String projectStatu		= 	request.getParameter("projectStatu");			//项目状态
+			//String reward			=	request.getParameter("reward");					//奖励
+			//String loanType			=	request.getParameter("loanType");				//借款类型
+			//String annualInterest	=	request.getParameter("annualInterest");			//年利率
+			//String repayment 		=	request.getParameter("repayment");				//还款方式
+			//String deadlineType		= 	request.getParameter("deadlineType");			//借款期限
+			//String deadline			= 	request.getParameter("deadlinemin");			//期限
+			//int page				=	Integer.parseInt(request.getParameter("page"));	//页码
+			var url = "invest/fundList.html";
+//			var data = {};
+//			data.wd = investmentZone.addEncrypt(wd);
+//			var encrypt = new JSEncrypt();
+//			encrypt.setPublicKey(publickey);
+			var data = {wd:wd,projectStatu:projectStatu,reward:reward,
+				loanType:loanType,annualInterest:annualInterest,
+				repayment:repayment,deadlineType:deadlineType,
+				deadlinemin:deadlinemin,page:page};
+			console.log(data);
+
+			NetUtil.ajax(
+				url,
+				data,
+				function(r){
+					console.log(r)
+				}
+			)
+		}
+	};
+
+	//初始化
+	investmentZone.getInvestmentList(null,"-1","-1","-1","-1","-1","-1","-1","0");
+
 });
 

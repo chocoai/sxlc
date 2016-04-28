@@ -1,10 +1,10 @@
 /* CSS Document */
 @charset "UTF-8";
-/* ������start ���� 20160326 */
+/* 锟斤拷锟斤拷锟斤拷start 锟斤拷锟斤拷 20160326 */
 *{
 	font-family: "Microsoft YaHei" ! important;
 }
-/* 统一禁止中文输入到金额框中 */
+/* 缁熶竴绂佹涓枃杈撳叆鍒伴噾棰濇涓�*/
 input.format{
 	ime-mode:disabled;
 }
@@ -13,8 +13,8 @@ body{
 	min-width: 1200px;
 	background-color: #f8f8f8;
 }
-/* ������end */
-/* top start ���� 20160326 */
+/* 锟斤拷锟斤拷锟斤拷end */
+/* top start 锟斤拷锟斤拷 20160326 */
 .top{
 	width: 100%;
 	min-width: 1200px;
@@ -132,8 +132,8 @@ body{
 	color:#5e5d5d;
 	cursor: pointer;
 }
-/* top end ���� 20160326 */
-/* bottom start ���� 20160326 */
+/* top end 锟斤拷锟斤拷 20160326 */
+/* bottom start 锟斤拷锟斤拷 20160326 */
 .bottom{
 	width: 100%;
 	min-width: 1200px;
@@ -299,8 +299,8 @@ body{
 	background:url(../../resource/img/common/bottom4.png) no-repeat;
 	background-position:center;
 }
-/* bottom end ���� 20160326 */
-/* mainPageTop start ���� 20160326 */
+/* bottom end 锟斤拷锟斤拷 20160326 */
+/* mainPageTop start 锟斤拷锟斤拷 20160326 */
 .mainPageTop{
 	width: 100%;
 	min-width: 1200px;
@@ -336,8 +336,8 @@ body{
 	text-decoration: none;
 	color:#72c0f3;
 }
-/* mainPageTop end ���� 20160326 */
-/* intergralMallCommon start ���� 20160328 */
+/* mainPageTop end 锟斤拷锟斤拷 20160326 */
+/* intergralMallCommon start 锟斤拷锟斤拷 20160328 */
 .intergralMallCommon{
 	width: 100%;
 	min-width: 1200px;
@@ -386,8 +386,8 @@ body{
 	text-decoration: none;
 	color:#72c0f3;
 }
-/* intergralMallCommon end ���� 20160328 */
-/* ������߿�ʼ */
+/* intergralMallCommon end 锟斤拷锟斤拷 20160328 */
+/* 锟斤拷锟斤拷锟斤拷呖锟绞�*/
 .cm_aside{
 	position:fixed;
 	bottom:0;
@@ -466,4 +466,191 @@ body{
 	background:url(../../resource/img/index/fhdb.png) no-repeat;
 	background-position:center;
 }
-/* ������߽���
+/* 锟斤拷锟斤拷锟斤拷呓锟斤拷锟�
+
+
+
+
+/*    胥福星    20160419    弹出层样式     */
+/* 输入错误时弹出的样式  */
+.tipError,
+.after,
+.pre{
+	display:inline-block;
+	vertical-align:middle;
+}
+.tipError{
+	position: absolute;
+	margin-right:-300px;
+}
+.after{
+	height:42px;
+	background:#fce3e3;
+	border-top:1px solid #fd0202;
+	border-bottom:1px solid #fd0202;
+	border-right:1px solid #fd0202;
+	line-height:42px;
+	padding:0 10px 0 5px;
+	margin-top:2px;
+	color:#fd0202;
+	max-width:300px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+.after,
+.pre{
+	float:left;
+}
+.pre{
+	width:40px;
+	height:45px;
+	background:url(../../resource/img/account/common/tipsError_03.png) no-repeat;
+}
+/* 获取焦点时弹出的样式  */
+.tip,
+.afterTip,
+.preTip{
+	display:inline-block;
+	vertical-align:middle;
+}
+.tip{
+	position:absolute;
+	margin-right:-350px;
+}
+.afterTip{
+	height:42px;
+	max-width:300px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	background:#fff;
+	border-top:1px solid #72c0f3;
+	border-right:1px solid #72c0f3;
+	border-bottom:1px solid #72c0f3;
+	line-height:42px;
+	padding:0 10px 0 2px;
+	margin-top:2px;
+	color:#7c7c7c;
+}
+.afterTip,
+.preTip{
+	float:left;
+}
+.preTip{
+	width:20px;
+	height:45px;
+	background:url(../../resource/img/account/common/tip_07.png) no-repeat;
+}
+/* 输入正确的提示弹出层 */
+.tipOk{
+	position:absolute;
+}
+.tipOk{
+	display:inline-block;
+	width:15px;
+	height:15px;
+	margin-left:10px;
+	vertical-align:middle;
+	background:url(../../resource/img/account/common/zq.png) no-repeat;
+}
+/* 获取动态验证码的弹出提示层样式  */
+.dynamicVerificationSpan{
+	display:inline-block;
+	position:absolute;
+	max-width:270px;
+	height:45px;
+	line-height:46px;
+	padding-left:30px;
+	font-size:12px;
+	color:#777777 !important;
+	background:url(../../resource/img/loginRegister/forgetPwd.png) no-repeat;
+	background-position:center left;
+}
+
+
+.successCC .successBox{
+	width:485px;
+	height:430px;
+	margin:0 auto;
+	padding:165px 0 165px 145px;
+	background: url("../../resource/img/common/cg.png") left center no-repeat; 
+}
+.successCC .successBox .congratulation{
+	font-size: 28px;
+	color: #8c8c8c;
+	line-height: 50px;
+	float: left;
+}
+.successCC .successBox  .tiss{
+	font-size:18px;
+	color: #8c8c8c;
+	line-height: 50px;
+	float: left;
+}
+.successCC .successBox  .tiss a{
+	color:#72c0f3;
+}
+.successCC{
+	width: 1200px;
+	height:430px;
+	background-color: #fff;
+	margin: 50px auto;
+}
+.input-info .successCC .successBox{
+	width:485px;
+	height:200px;
+	margin:0 auto;
+	padding:50px 0 50px 145px;
+	background: url("../../resource/img/common/cg.png") left center no-repeat; 
+}
+.input-info .successCC .successBox .congratulation{
+	font-size: 28px;
+	color: #8c8c8c;
+	line-height: 50px;
+	float: left;
+}
+.input-info .successCC .successBox  .tiss{
+	font-size:18px;
+	color: #8c8c8c;
+	line-height: 50px;
+	float: left;
+}
+.input-info .successCC .successBox  .tiss a{
+	color:#72c0f3;
+}
+.input-info .successCC{
+	width: 600px;
+	height:200px;
+	background-color: #fff;
+	margin: 50px auto;
+}
+.successCD .successBox{
+	width:485px;
+	height:430px;
+	margin:0 auto;
+	padding:165px 0 165px 145px;
+	background: url("../../resource/img/common/sb.png") left center no-repeat; 
+}
+.successCD .successBox .congratulation{
+	font-size: 28px;
+	color: #8c8c8c;
+	line-height: 50px;
+	float: left;
+}
+.successCD .successBox  .tiss{
+	font-size:18px;
+	color: #8c8c8c;
+	line-height: 50px;
+	float: left;
+	width: 100%;
+}
+.successCD .successBox  .tiss a{
+	color:#72c0f3;
+}
+.successCD{
+	width: 1200px;
+	height:430px;
+	background-color: #fff;
+	margin: 50px auto;
+}

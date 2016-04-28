@@ -1,0 +1,30 @@
+select{
+	margin-left:5px;
+	margin-right:10px;
+	border:1px solid #ccc;
+	min-width:50px;
+	height:25px;
+}
+input[type="text"]{
+	height:25px;
+	margin-top:10px;
+}
+input[type="radio"]{
+	box-shadow:none;
+	border:none;
+}
+.glyphicon-chevron-down{
+	vertical-align:bottom;
+}
+.resetPwd .tt,
+.resetPwd .con{
+	padding:11px 0;
+}
+.resetPwd .con{
+	position:relative;
+}
+.resetPwd .con input + span{
+	position:absolute;
+	top:40px;
+	left:-30px;
+}

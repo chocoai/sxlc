@@ -78,11 +78,11 @@ public class AuthCodeController {
 	        StringBuffer logsu = new StringBuffer();  
 	        for(int j=0,k = randomString.length(); j < k; j++){  
 		          int chid = 0;  
-		          if(j==1){  
+		          if(j==1){
 		              chid = OPMap.get(String.valueOf(randomString.charAt(j)));  
-		          }else{  
+		          }else{
 		              chid = Integer.parseInt(String.valueOf(randomString.charAt(j)));  
-		          }  
+		          }
 		          String ch = String.valueOf(CVCNUMBERS.charAt(chid));  
 		          logsu.append(ch);  
 		          drawRandomString((Graphics2D)g,ch, j);  

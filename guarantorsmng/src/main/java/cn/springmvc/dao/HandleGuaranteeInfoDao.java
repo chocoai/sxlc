@@ -231,5 +231,35 @@ public interface HandleGuaranteeInfoDao {
 	* @throws 
 	*/
 	public int deleteGuaranteeRelationalByID(Map<String, Object> map);
+	
+	
+	/** 
+	* updateGuaranteeAdmin 启用 停用 担保机构管理员
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: updateGuaranteeAdmin 
+	* @Description: TODO 
+	* @param @param map statu:1:启用 0：停用  guaranteeID:担保机构id  adminId:管理员id
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-4-20 上午10:44:51
+	* @throws 
+	*/
+	public int updateGuaranteeAdmin(Map<String, Object> map);
+	
+	
+	/** 
+	* insertGuaranteeAdmin 添加担保机构管理员 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: insertGuaranteeAdmin 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-4-20 上午10:46:30
+	* @throws 
+	*/
+	public int insertGuaranteeAdmin(Map<String, Object> map);
 }
 

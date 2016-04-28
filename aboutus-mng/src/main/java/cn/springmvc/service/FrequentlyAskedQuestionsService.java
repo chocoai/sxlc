@@ -37,5 +37,5 @@ public interface FrequentlyAskedQuestionsService {
 	 * @param statu 常见问题状态(0:无效 1：有效-1：全部)
 	 * @return FrequentlyAskedQuestionsEntity 常见问题实体
 	 */
-	public  FrequentlyAskedQuestionsEntity selectFrequentlyAskedQuestionsList(int statu);
+	public  FrequentlyAskedQuestionsEntity selectFrequentlyAskedQuestionsList();
 }

@@ -21,7 +21,14 @@ $(function(){
 		$(this).next().hide();
 	});
 });
-
+jQuery.fn.changeRemarks = function(){//用来剔除特殊字符
+	var remarks2 = $(this).val() ;
+	var cont = remarks2.length;
+	for(var c = 0;c < cont ; c++){
+		remarks2=remarks2.replace(/["'<>%;)(&+]/,"");//暂时使用！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+	}
+	$(this).val(remarks2);
+};
 
 /*   胥福星     2016-04-11   input中对输入金额的显示样式的控制     */
 $(function(){
@@ -35,7 +42,7 @@ $(function(){
 			});
 		});
 		$(this).blur(function(){
-			if(this.value < 300000){
+			if(this.value < 300000 && this.value != ""){
 				this.value = parseFloat(this.value).toFixed(2);
 				this.value = (this.value + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
 			}else if(parseFloat(this.value) > 300000.00){
@@ -79,12 +86,12 @@ $(function(){
 		$(this).focus(function(){
 			$(this).keyup(function(){
 				if(this.value.length > 0){
-					this.value = this.value.replace(/[^0-9.]/g,'');
+					this.value = this.value.replace(/[^0-9]/g,'');
 				}
 			});
 		});
 		$(this).change(function(){
-			this.value = this.value.replace(/[^0-9.]/g,'');
+			this.value = this.value.replace(/[^0-9]/g,'');
 		});
 	});
 });
@@ -185,52 +192,6 @@ function inputSelect(){
 		});
 	});
 }
-
-/* 胥福星    2016-04-06   弹出提示框的js代码  */
-jQuery.fn.layoutWarning = function(str){
-	var s = str;
-	var m = '<div class="tipError"><div class="pre"></div><div class="after">' + s + '</div></div>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".tipError").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
-	this.parent().find(".tipError").css("top",this.offset().top - this.parent().offset().top - 2 );
-};
-jQuery.fn.layoutFocus = function(str){
-	var s = str;
-	var m = '<div class="tip"><div class="preTip"></div><div class="afterTip">' + s + '</div></div>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".tip").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
-	this.parent().find(".tip").css("top",this.offset().top - this.parent().offset().top - 2 );
-};
-jQuery.fn.layoutSuccess = function(){
-	var m = '<div class="tipOk"></div>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".tipOk").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
-	this.parent().find(".tipOk").css("top",this.offset().top - this.parent().offset().top + 12 );
-};
-$(function(){
-	$(".rate").focus(function(){
-		$(this).layoutFocus("年化利率为10.00%-18.00%");
-	});
-	$(".rate").blur(function(){
-		$(this).parent().find(".tip").remove();
-	});
-});
-
-/* 输入金额提示框   */
-$(function(){
-	$(".loanSum").focus(function(){
-		if(this.value == ""){
-			$(this).layoutFocus("额度范围：0-30万");
-		}
-	});
-	$(".loanSum").blur(function(){
-		$(this).parent().find(".tip").remove();
-	});
-});
-
 /* 点击查看详情时指南标题改变   胥福星      20160412    */
 $(function(){
 	$(".credit").click(function(){
@@ -242,4 +203,41 @@ $(function(){
 	$(".guaranty").click(function(){
 		$(".guideTitle").html("抵押贷");
 	});
+	$("#personInfo").Validform({
+		tiptype:3,//提示信息类型
+		btnSubmit:".submit", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
+		datatype:extdatatype,//扩展验证类型
+		ajaxPost:{//使用ajax提交时
+			url:"http://182.150.178.88:8031/GEB_P2P_Foreqround/selectmemberProvince.action",
+			datatype:"jsonp",
+			success:function(data,obj){
+	        },
+	        error:function(data,obj){
+	            console.log(data.status);
+	        }
+		}
+	});
 });
+
+function clickUp(){
+	layer.open({
+		title :' ',//标题
+		skin: 'layer-ext-myskin',//皮肤
+		type: 1,
+		area: ['540px', '373px'],//大小宽*高
+		shadeClose: true, //点击遮罩关闭
+		content: $('.applyTalent')//内容，里边是包含内容的div的class
+	});
+	$('.layui-layer-title').css("border-bottom","none");
+}
+function clickDown(){
+	layer.open({
+		title :' ',//标题
+		skin: 'layer-ext-myskin',//皮肤
+		type: 1,
+		area: ['540px', '373px'],//大小宽*高
+		shadeClose: true, //点击遮罩关闭
+		content: $('.applyTalent2')//内容，里边是包含内容的div的class
+	});
+	$('.layui-layer-title').css("border-bottom","none");
+}

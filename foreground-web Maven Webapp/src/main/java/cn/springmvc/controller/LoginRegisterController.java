@@ -1,18 +1,27 @@
 package cn.springmvc.controller; 
 
+import java.security.KeyPair;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.RSA.RSAPlugn;
 import product_p2p.kit.StringUtil.StringUtils;
+import product_p2p.kit.constant.Constant;
 import product_p2p.kit.redisPlug.Core;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.PersonalBaseInfo;
@@ -32,8 +41,7 @@ import com.alibaba.fastjson.JSONObject;
 */
 @Controller
 public class LoginRegisterController {
-	
-	
+
 	private Logger logger = Logger.getLogger(LoginRegisterController.class);
 	
 	
@@ -49,9 +57,7 @@ public class LoginRegisterController {
 	* @date 2016-4-14 下午2:18:38
 	*/
 	@RequestMapping(value="register",method=RequestMethod.GET)
-	public String toRegPage(){
-		return "loginRegister/register";
-	}
+	public String toRegPage(){return "loginRegister/register";}
 	
 	
 	/***
@@ -64,6 +70,7 @@ public class LoginRegisterController {
 	@RequestMapping(value="register",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String register(HttpServletRequest request,String logname,String memberPwd,String confirmPassword,String beinvitateCode,String personalPhone,String checkCoede,String phoneCheckCode,int memberType){
+		logger.debug("注册会员:logname(登录名)="+logname+",memberPwd(登录密码)="+memberPwd+",confirmPassword(确认密码)="+confirmPassword+",beinvitateCode(被邀请码)="+beinvitateCode+",personalPhone(手机号)="+personalPhone+",checkCoede(验证码)="+checkCoede+",phoneCheckCode(手机验证码)="+phoneCheckCode+",memberType(会员类型)="+memberType);
 		Map<String,Object> param = new HashMap<String,Object>();
 		String message = "";
 		if(logname == null || logname.trim().length() == 0){
@@ -123,40 +130,49 @@ public class LoginRegisterController {
 	 * 检查电话号码是否存在
 	 * @return
 	 */
-	@RequestMapping(value="checkPhone")
+	@RequestMapping(value="checkPhone",produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String checkPhone(HttpServletRequest request,String phone){
+	public String checkPhone(HttpServletRequest request){
+		String phone = request.getParameter("param");
 		Map<String,Object> message = new HashMap<String, Object>();
-		if(phone == null || phone.trim().length() > 0){
-			message.put("message", "请输入有效电话号码");
-			message.put("statu", 1);
+		if(phone == null || phone.trim().length() <= 0){
+			message.put("info", "请输入有效电话号码");
+			message.put("status", "n");
 			return JSONObject.toJSONString(message);
 		}
 		int result = memberService.chechPhone(phone);
 		if(result == 0){
-			message.put("statu", 0);
-			message.put("message", "可以使用该电话号码");
+			message.put("status", "y");
+			message.put("info", "");
+		}else{
+			message.put("status", "n");
+			message.put("info", "已被使用");
 		}
 		return JSONObject.toJSONString(message);
 	}
+	
 	
 	/*** 
 	 * 检查用户名是否存在
 	 * @return
 	 */
-	@RequestMapping(value="checkName")
+	@RequestMapping(value="checkName",produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String checkName(HttpServletRequest request,String userName){
+	public String checkName(HttpServletRequest request){
+		String param = request.getParameter("param");
 		Map<String,Object> message = new HashMap<String, Object>();
-		if(userName == null || userName.trim().length() < 6 || userName.trim().length() > 16){
-			message.put("message", "用户名无效");
-			message.put("statu", 1);
+		if(param == null || !StringUtils.checkCarLogName(param)){
+			message.put("info", "用户名无效");
+			message.put("status", "n");
 			return JSONObject.toJSONString(message);
 		}
-		int result = memberService.countName(userName);
+		int result = memberService.countName(param);
 		if(result == 0){
-			message.put("statu", 0);
-			message.put("message", "可以使用该昵称");
+			message.put("status", "y");
+			message.put("info", "");
+		}else{
+			message.put("status", "n");
+			message.put("info", "用户名已被使用");
 		}
 		return JSONObject.toJSONString(message);
 	}
@@ -168,7 +184,8 @@ public class LoginRegisterController {
 	 */
 	@RequestMapping(value="countInvitateCode")
 	@ResponseBody
-	public String countInvitateCode(HttpServletRequest request,String invitateCode){
+	public String countInvitateCode(HttpServletRequest request){
+		String invitateCode = request.getParameter("param");
 		Map<String,Object> message = new HashMap<String, Object>();
 		if(invitateCode == null || invitateCode.trim().length() != 12){
 			message.put("message", "邀请码无效");
@@ -268,7 +285,123 @@ public class LoginRegisterController {
 		}
 	}
 	
+	/***
+	* 去登录界面
+	* 
+	* @author 李杰
+	* @Title: loginUser
+	* @return
+	* @date 2016-4-18 上午10:12:11
+	*/
+	@RequestMapping(value="login",method=RequestMethod.GET)
+	public String loginUser(){return "loginRegister/login";}
 	
+	/***
+	* 用户登录
+	* 
+	* @author 李杰
+	* @Title: login
+	* @param memberType				会员类型
+	* @param memberName				会员名称
+	* @param password				会员登录密码
+	* @param checkCode				验证码
+	* @param rememberMe				是否记住我
+	* @return
+	* @date 2016-4-18 上午10:27:55
+	 */
+	@RequestMapping(value="login",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String login(HttpServletRequest request,HttpServletResponse response,
+			int memberType,String memberName,String password,String checkCode,
+			int rememberMe,@RequestHeader String referer){
+		logger.debug("会员登录:memberName(用户名)="+memberName+",password(登录密码)="+password+",memberType(会员类型)="+memberType+",checkCode(验证码)="+checkCode+"rememberMe(记住我)="+rememberMe);
+		
+		Map<String,Object> param = new HashMap<String, Object>();
+		boolean isExit = false;
+		if(memberType > 1){
+			isExit = true;
+			param.put("memberType", "请选择正确的会员类型");
+		}else{
+			param.put("memberType", "");
+		}
+		
+		if(memberName == null || memberName.trim().length() == 0){
+			isExit = true;
+			param.put("memberName", "请输入用户名");
+		}else if(!StringUtils.checkCarLogName(memberName) && !StringUtils.checkPhone(memberName)){
+			isExit = true;
+			param.put("memberName", "请输入正确用户名");
+		}else{
+			param.put("memberName", "");
+		}
+		
+		if(password == null || password.trim().length() == 0){
+			isExit = true;
+			param.put("password", "请输入登录密码");
+		}else{
+			param.put("password", "");
+		}
+		
+		if(checkCode == null || checkCode.trim().length() == 0){
+			isExit = true;
+			param.put("checkCode", "请输入验证码");
+		}else if(!checkCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
+			isExit = true;
+			param.put("message", "验证码错误");
+		}else{
+			param.put("checkCode", "");
+		}
+		
+		if(isExit){
+			param.put("statu", -2);
+			return JSONObject.toJSONString(param);
+		}
+		
+		String[] sIpInfo = new String[6];
+		String ip = AddressUtils.GetRemoteIpAddr(request, sIpInfo);
+		String sSessionId = request.getSession().getId();
+		int result = memberService.login(memberName, password, memberType, ip, sIpInfo, referer,sSessionId);
+		if(result == 0){
+			//查询个人信息
+			param.put("statu", 1);
+			param.put("message", "登录成功");
+			MemberInfo memberinfo = memberService.findMemberInfoByParam(memberName, password, memberType);
+			if(rememberMe == 1 || memberinfo != null){
+				request.getSession().setAttribute(Constant.LOGINUSER, memberinfo);
+				KeyPair keyPair =  RSAPlugn.GetKeyPair();
+				request.getSession().setAttribute(Constant.publicKey, RSAPlugn.PublicKeyToString((RSAPublicKey)keyPair.getPublic()));
+				request.getSession().setAttribute(Constant.privateKey, RSAPlugn.PrivateKeyToString((RSAPrivateKey)keyPair.getPrivate()));
+				
+				Cookie cookie = new Cookie("rememberMeInfo", memberName+"-"+memberType);
+				cookie.setMaxAge(30*24*60*60);
+				response.addCookie(cookie);
+			}else{
+				param.put("statu", 0);
+				param.put("message", "登录失败");
+			}
+		}else{
+			param.put("statu", -3);
+			param.put("message", "账号或密码错误");
+		}
+		return JSONObject.toJSONString(param);
+	}
+	
+	/***
+	* 去注册成功界面
+	* 
+	* @author 黄鑫
+	* @Title: registerSuccess
+	* @return
+	* @date 2016-4-18 上午10:12:11
+	*/
+	@RequestMapping(value="forgetPWDSuccess",method=RequestMethod.GET)
+	public String forgetPWDSuccess(){return "loginRegister/forgetPWDSuccess";}
+	
+	@RequestMapping(value="forgetPWD",method=RequestMethod.GET)
+	public String forgetPWD(){return "loginRegister/forgetPWD";}
+	
+	@RequestMapping(value="registerSuccess",method=RequestMethod.GET)
+	public String registerSuccess(){return "loginRegister/registerSuccess";}
 	
 }
 

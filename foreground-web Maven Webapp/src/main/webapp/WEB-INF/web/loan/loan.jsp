@@ -1,14 +1,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>我要借款</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/loan/loan.css">
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
     <!-- 在这里加入页面内容 -->
     <!-- 我要借款静态界面     胥福星     2016-03-27 -->
     <div class="nowPosition">
@@ -59,7 +66,7 @@
     			<div class="inputArea">
 	    			<label class="modeSelectL">借款类型</label>
 	    			<div class="selectArea selectArea1">
-					    <input class="selectValue" value="1" >
+					    <input class="selectValue selectType" value="1" >
 					    <input class="selectInput selectInput1" type="text" lang="请选择借款类型" readOnly="true"/>
 					    <ul class="select" onselectstart="return false">
 					        <li class="selectOption" value="1">担保贷</li>
@@ -70,31 +77,33 @@
     			</div>
     			<div class="inputArea">
 	    			<label>借款金额</label>
-	    			<input class="format loanSum" type="text" lang="请输入借款金额" maxlength="10"/>
+	    			<input class="loanSum" datatype="acountM" type="text" lang="请输入借款金额" maxlength="10"/>
 	    			<samp>元</samp>
     			</div>
     			<div class="inputArea">
 	    			<label class="modeSelectL">借款期限</label>
-	    			<input type="text" class="selectDate numberReg" lang="请输入借款期限" maxlength="2"/>
-	    			<div class="selectArea selectArea2">
-	    				<input class="selectValue" value="1" >
-					    <input class="selectInput selectInput1" type="text" lang="月" readOnly="true"/>
-					    <ul class="select" onselectstart="return false">
-					        <li class="selectOption" value="1">月</li>
-					        <li class="selectOption" value="2">天</li>
-					        <li class="selectOption" value="3">年</li>
-					    </ul>
+	    			<div class="dateSelectDiv">
+	    				<input type="text" class="selectDate numberReg" datatype="acountM" lang="请输入借款期限" maxlength="2"/>
+	    				<div class="selectArea selectArea2">
+		    				<input class="selectValue selectDateUnit" value="1" >
+						    <input class="selectInput selectInput1" type="text" lang="月" readOnly="true"/>
+						    <ul class="select" onselectstart="return false">
+						        <li class="selectOption" value="1">月</li>
+						        <li class="selectOption" value="2">天</li>
+						        <li class="selectOption" value="3">年</li>
+						    </ul>
+					    </div>
 					</div>
     			</div>
     			<div class="inputArea">
 		    		<label>年化利率</label>
-		    		<input type="text" class="rate" lang="请输入年化利率" maxlength="10"/>
+		    		<input type="text" class="rate" datatype="acountM" lang="请输入年化利率" maxlength="10"/>
 		    		<samp>%</samp>
     			</div>
     			<div class="inputArea">
 	    			<label class="modeSelectL">还款方式</label>
 	    			<div class="selectArea selectArea1">
-	    				<input class="selectValue" value="1" >
+	    				<input class="selectValue repaymentMethod" value="1" >
 					    <input class="selectInput selectInput1" type="text" lang="等额本金" readOnly="true"/>
 					    <ul class="select" onselectstart="return false">
 					        <li class="selectOption" value="1">等额本金</li>
@@ -106,18 +115,19 @@
     			</div>
     			<div class="inputArea">
 	    			<label>借款用途</label>
-	    			<input type="text" lang="请输入借款用途" maxlength="20"/>
+	    			<input class="yongTu" ignore="ignore" type="text" lang="请输入借款用途" maxlength="20"/>
     			</div>
     			<div class="inputArea">
 	    			<label>还款来源</label>
-	    			<input type="text" lang="请输入还款来源" maxlength="20"/>
+	    			<input class="laiYuan" ignore="ignore" type="text" lang="请输入还款来源" maxlength="20"/>
     			</div>
     			<div class="inputArea">
 	    			<label>借款描述</label>
-	    			<textarea class="input" lang="请输入借款描述"></textarea>
+	    			<textarea class="input miaoShu" ignore="ignore" lang="请输入借款描述"></textarea>
     			</div>
     			<div>
-    				<div class="submit">提交申请</div>
+    				<div class="submit" onclick="clickUp();">提交申请</div>
+    				<!-- 成功使用clickUp();    失败则使用 clickDown()  -->
     			</div>
     		</form>
     	</div>
@@ -127,7 +137,7 @@
 	    			<img src="resource/img/loan/mode1.png" />
 	    			<div class="borrowDetail">
 	    				<p>信用贷款是为政府公务员、事业单位员工、个体户主、企业高管、白领阶层等量身定制的一款借款产品。帮助满足个人消费需求，提高生活品质。</p>
-	    				<a class="more credit" href="#guide">查看详情</a>
+	    				<a class="more credit" href="loan/loan.html#guide">查看详情</a>
 	    			</div>
 	    			<div class="flowTop">
 	    				<img src="resource/img/loan/xyd.png" />
@@ -157,7 +167,7 @@
 	    			<img src="resource/img/loan/mode2.png" />
 	    			<div class="borrowDetail">
 	    				<p>担保贷是为小微企业、个人等打造的一款借款产品。帮助资金周转等燃眉之急。</p>
-	    				<a class="more assure" href="#guide">查看详情</a>
+	    				<a class="more assure" href="loan/loan.html#guide">查看详情</a>
 	    			</div>
 	    			<div class="flowTop">
 	    				<img src="resource/img/loan/dbd.png" />
@@ -187,7 +197,7 @@
 	    			<img src="resource/img/loan/mode3.png" />
 	    			<div class="borrowDetail">
 	    				<p>信用贷款是为政府公务员、事业单位员工、个体户主、企业高管、白领阶层等量身定制的一款借款产品。帮助满足个人消费需求，提高生活品质。</p>
-	    				<a class="more guaranty" href="#guide">查看详情</a>
+	    				<a class="more guaranty" href="loan/loan.html#guide">查看详情</a>
 	    			</div>
 	    			<div class="flowTop">
 	    				<img src="resource/img/loan/dyd.png" />
@@ -216,7 +226,7 @@
     	<div class="loan" id="guide">
     		<div class="quickLoan">
     			<span class="guideTitle">信用贷</span>
-    			<a class="back" href="#productMode">返回类型选择</a>
+    			<a class="back" href="loan/loan.html#productMode">返回类型选择</a>
     		</div>
     		<div class="guideList">
 	    		<div class="guideLi">
@@ -314,11 +324,32 @@
 					    </div>
 			    	</div>
 	    		</div>
-	    		<div class="applyDiv"><a href="#personInfo" class="apply">立即申请</a></div>
+	    		<div class="applyDiv"><a href="loan/loan.html#personInfo" class="apply">立即申请</a></div>
     		</div>
     	</div>
     </div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+    <div class="applyTalent">
+   		<div class="apply-top">
+   			<label>您的申请已经成功提交！</label>
+   			<br>
+   			<span>我们将很快进行审核！</span>
+   		</div>
+   		<div class="apply-bottom">
+   			<input type="button" class="btn" value="确定" onclick="window.location.href='integralMall/itemList.html';">
+   		</div>
+   	</div>
+    <div class="applyTalent2">
+   		<div class="apply-top">
+   			<label>抱歉，提交失败！</label>
+   			<br>
+   			<span>请重新检查您的借款申请！</span>
+   		</div>
+   		<div class="apply-bottom">
+   			<input type="button" class="btn" value="确定" onclick="window.location.href='integralMall/itemList.html';">
+   		</div>
+   	</div>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/loan/loan.js"></script>
+	<script type="text/javascript" src="js/common/valid.js"></script>
 </body>
 </html>

@@ -12,22 +12,45 @@ $(function(){
 	        content: $('.autoBidSet')//内容，里边是包含内容的div的class
 	    });
 	});
-	/*radio切换*/
+	/*...项目期限单独绑定验证...*/
 	$(".info label").click(function(){
 		$(this).parent().children().removeClass("active"); 
 		$(this).addClass("active");
 	});
-});
-
-
-/* 胥福星     2016-04-08   弹窗的tips的js代码    */
-$(function(){
-	$(".input-group input").each(function(){
-		$(this).focus(function(){
-			$(this).parent().layoutFocus("请输入项目期限");
+	$('.numberReg').focus(function(){
+		$(this).parent().siblings().children('.numberReg').attr('disabled',true);
+		$('.numberReg').blur(function(){
+			var dangQ=$(this).val();
+			if(dangQ == ''){
+				$(this).parent().siblings().children('.numberReg').attr('disabled',false);
+				$('.numberReg').focus(function(){
+					$(this).parent().layoutWarning("请输入项目期限");
+				});
+			}
+			else{
+				$(this).parent().layoutClean();
+			}
 		});
-		$(this).blur(function(){
-			$(this).parent().parent().find(".tip").remove();
-		});
+	});	
+	
+	//验证
+	$("#touBao").Validform({
+		tiptype:3,//提示信息类型
+		btnSubmit:".autoBtn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
+		datatype:extdatatype,//扩展验证类型
+		ajaxPost:{//使用ajax提交时
+			url:"",
+			datatype:"json",
+			success:function(data,obj){
+	        },
+	        error:function(data,obj){
+	            console.log(data.status);
+	        }
+		}
 	});
 });
+
+
+
+
+

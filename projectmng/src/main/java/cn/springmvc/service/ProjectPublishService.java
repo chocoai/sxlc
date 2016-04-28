@@ -15,6 +15,7 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;  
 import cn.springmvc.model.ProjectAppProcessEntity; 
 import cn.springmvc.model.ProjectAppRecordEntity;
@@ -46,7 +47,8 @@ public interface ProjectPublishService {
 	 * @return int 返回类型 
 	 * @date 2016-3-23 下午6:34:20
 	 */
-	public int insertProjectImage(List<ProjectImageEntity> ProjectImage);
+	public int insertProjectImage(List<ProjectImageEntity> ProjectImage,InsertAdminLogEntity 
+			logentity,String[] sIpInfo);
 	/**
 	 * 发布
 	 * @author 刘利   
@@ -63,7 +65,8 @@ public interface ProjectPublishService {
 	 * @return int 返回类型   -1 该项目已审核通过；-3 该项目该审核批次已审核； 1  审核通过  ,-4 上级审核批次未通过
 	 * @date 2016-3-23 下午6:34:20
 	 */
-	public int publishProject(Map<String,Object> map);
+	public int publishProject(Map<String,Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo);
 	/**
 	 * 根据查询项目申请ID企业形象图 
 	 * @author 刘利   
@@ -82,7 +85,8 @@ public interface ProjectPublishService {
 	 * @return int 返回类型 
 	 * @date 2016-3-23 下午6:34:20
 	 */
-	public int updateEndtime(ProjectAppProcessEntity projectAppProcessEntity);
+	public int updateEndtime(ProjectAppProcessEntity projectAppProcessEntity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo);
 	/**
 	 *  查询借款结束日期
 	 *  @param projectID  项目申请ID

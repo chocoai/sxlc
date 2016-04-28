@@ -1,14 +1,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>大转盘</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/integralMall/bigWheel.css">
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/integralMall/intergralMallCommon.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../integralMall/intergralMallCommon.jsp"></jsp:include>
     <!-- 此处添加代码 -->
     <!-- 大转盘内容    伍成然    2016-04-7 -->
     <div class="main">
@@ -36,7 +43,7 @@
 			(6) 获得活动现金奖励的用户，将在中奖后的7个工作日内发放至其平台账号中(提现免费)。“新用户”是指完成了注册认证且从未投资过的用户。新手体验标和项目优选标不参与此活动<br>
     	</div>
     </div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/integralMall/bigWheel.js"></script>
 </body>
 </html>

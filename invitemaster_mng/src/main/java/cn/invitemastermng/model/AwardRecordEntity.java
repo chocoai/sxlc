@@ -28,27 +28,27 @@ public class AwardRecordEntity {
 	private String logname;//用户名
 	private String personalPhone;//联系电话
 	private String personalIDCard;//身份证号
-	private long  awardAmountBorrowing;//推荐借款提奖
-	private String  awardAmountBorrowings;//推荐借款提奖
-	private long awardAmountInvest;//推荐投资提奖
+	private long   awardAmountBorrowing;//推荐借款提奖
+	private String awardAmountBorrowings;//推荐借款提奖
+	private long   awardAmountInvest;//推荐投资提奖
 	private String awardAmountInvests;//推荐投资提奖
-	private long awardAmountVIP;//推荐购买VIP提奖
+	private long   awardAmountVIP;//推荐购买VIP提奖
 	private String awardAmountVIPs;//推荐购买VIP提奖
-	private long awardAmountRepay;//推荐还本提奖
+	private long   awardAmountRepay;//推荐还本提奖
 	private String awardAmountRepays;//推荐还本提奖
-	private long  awardAmount;//推荐提奖总额
+	private long   awardAmount;//推荐提奖总额
 	private String awardAmounts;//提奖金额	
-	private int Statu;//佣金发放状态:1发放 0未发
+	private int    Statu;//佣金发放状态:1发放 0未发
 	
-	private long faid;//理财顾问ID																					
-	private int awardType	;//提奖类型 0：借款提奖 1：投资提奖 2：还本提奖 3：VIP购买提奖																					
-	private long projectId	;//	提奖事件ID																					
-	private long memberID;//会员ID																					
-	private long projectAmount;//事件金额		
+	private long   faid;//理财顾问ID																					
+	private int    awardType	;//提奖类型 0：借款提奖 1：投资提奖 2：还本提奖 3：VIP购买提奖																					
+	private long   projectId	;//	提奖事件ID																					
+	private long   memberID;//会员ID																					
+	private long   projectAmount;//事件金额		
 	private String projectAmounts;//事件金额	 
 	
 	private String awardDate;///提奖时间																					
-	private int payStatu;///发放状态 0：未发放 1：发放中 2：发放成功																					
+	private int    payStatu;///发放状态 0：未发放 1：发放中 2：发放成功																					
 	private String payDate;//	 发放时间			
 	 
 	

@@ -7,11 +7,13 @@
 		<result property = "applyDate"    	    column = "Apply_Date" />
 		<result property = "checkStatu"  	    column = "Check_Statu" />
 		<result property = "checkDate" 	        column = "Check_Date" /> 
-    </resultMap> 
+    </resultMap>
+     <!--          添加推荐达人申请  -->
     <insert id="insertInviteMasterApply" parameterType="Map">
       insert InviteMaster_Apply (Im_Apply_ID , Member_ID)
                          values (#{imApplyID},#{memberID})
     </insert>
+    <!--              查看该会员是否存在推荐达人申请 -->
     <select id="selectInviteMasterApplyIsExist" parameterType="long" resultType="int">
        select count(Im_Apply_ID) from  InviteMaster_Apply where  Member_ID = #{memberID} and Check_Statu !=-1
     </select>

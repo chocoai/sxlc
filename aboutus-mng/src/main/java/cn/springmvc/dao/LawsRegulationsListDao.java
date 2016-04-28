@@ -14,7 +14,7 @@ public interface LawsRegulationsListDao {
 	 * @param statu 状态
 	 * @return
 	 */
-	public  LawsRegulationsEntity  selectLawsRegulations(int statu); 
+	public  LawsRegulationsEntity  selectLawsRegulations(); 
 	/**
 	 * 查询法律法规是否存在 
 	 * @return  0：不存在	大于0：存在

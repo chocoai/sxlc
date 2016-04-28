@@ -1,4 +1,9 @@
 package cn.springmvc.model;
+
+import java.util.Date;
+
+import product_p2p.kit.datatrans.TimestampAndString;
+
 /**
  * 招贤纳士实体类
  * @author 刘利
@@ -32,11 +37,18 @@ public class RecruitmentEntity {
 	/**
 	 * 添加时间
 	 */
-	private String createTime;
 	/**
-	 * 最后一次操作时间
+	 * 添加时间
 	 */
-	private String optDate;	
+	private Date createTime; 
+	
+	private String sCreateTime;
+	
+	/**
+	 * 最后一次添加时间
+	 */
+	private Date optDate; 
+	private String sOptDate;
 	/**
 	 * 最后一次操作员id	
 	 */
@@ -93,16 +105,24 @@ public class RecruitmentEntity {
 	public void setStatu(int statu) {
 		this.statu = statu;
 	}
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+		this.sCreateTime = TimestampAndString.DateToString(createTime);
 	}
-	public String getOptDate() {
+	public String getsCreateTime() {
+		return sCreateTime;
+	}
+	public Date getOptDate() {
 		return optDate;
 	}
-	public void setOptDate(String optDate) {
+	public void setOptDate(Date optDate) {
 		this.optDate = optDate;
-	} 	 
+		this.sOptDate = TimestampAndString.DateToString(optDate);
+	}
+	public String getsOptDate() {
+		return sOptDate;
+	}
 }

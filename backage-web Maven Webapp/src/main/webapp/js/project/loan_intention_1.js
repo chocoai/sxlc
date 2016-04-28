@@ -1,5 +1,32 @@
 
 $(function(){
+	//默认禁用搜索和排序
+	/* $.extend( $.fn.dataTable.defaults, {
+	    searching: true,
+	    ordering:  false
+	} ); */
+	$('#pro_table').DataTable({
+		"autoWidth" : false,
+		//scrollY : 500,
+		//paging : false,//分页
+		//"searching" : false,
+		"info" : false,//左下角信息
+		//"ordering": false,//排序
+		"aaSorting" : [ [ 5, "desc" ],[ 12, "desc" ],[ 14, "desc" ] ],//默认第几个排序
+		"aoColumnDefs" : [
+		//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
+		{
+			"orderable" : false,
+			"aTargets" : [ 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 13 ]
+		} // 制定列不参与排序
+		],
+		colReorder : false,
+		"sScrollX" : "100%",
+		"sScrollXInner" : "100%",
+		"bScrollCollapse" : true
+	});
+	
+	
 	/*验证*/
 	validform5("layui-layer-btn0","saveNotice",true,"3");
 	//分配理财顾问
@@ -7,47 +34,12 @@ $(function(){
 		layer.open({
 			  type: 1,
 			  title:'理财顾问分配',
+			  btn: ['确定','取消'],
 			  //skin: 'layui-layer-rim', //加上边框
 			  area: ['320px', '200px'], //宽高
-			  content: '<div class="allocation">'+
-						  '<div class="form-group">'+
-								'<label>请选择理财顾问：</label>'+
-								'<select>'+
-									'<option>顾问1</option>'+
-									'<option>顾问2</option>'+
-									'<option>顾问3</option>'+
-									'<option>顾问4</option>'+
-								'</select>'+
-							'</div>'+
-							'<div class="form-group">'+
-								'<button type="submit" class="btn btn-success select">提交</button>'+
-							'</div>'+
-						'</div>'
+			  content: $(".allocation"),
 			});
-	});
-	
-	
-	//补充资料弹出层
-	$('#add_information').on('click', function(){
-	    layer.open({
-	        type: 2,
-	        title: '补充资料',
-	        maxmin: true,
-	        shadeClose: true, //点击遮罩关闭层
-	        area : ['980px' , '620px'],
-	        content: 'web/project/add_information.jsp'
-	    });
-	});
-	//添加到借款申请
-	//$('#add_loan_apply').on('click', function(){});
-	
-	
-	
-	//借款会员拉黑
-	$("#loan_member_black").on("click",function(){
-		prompt("请输入拉黑原因？");
-	});
-	
+	});	
 	//查看审批记录
 	$('#loan_exam_record').on('click', function(){
 	    layer.open({
@@ -56,12 +48,23 @@ $(function(){
 	        maxmin: true,
 	        shadeClose: true, //点击遮罩关闭层
 	        area : ['800px' , '520px'],
-	        content: 'web/project/loan_exam_record.jsp'
+	        content: 'web/project/pro-add/loan_exam_record.jsp'
 	    });
 	});
-	
-	
-	
+	//拒绝借款
+	$('#refuse_payment').on('click', function(){
+		layer.confirm('确定拒绝借款？', {
+			btn: ['确定','取消'] //按钮
+			}, function(){
+			  layer.msg('已拒绝', {icon: 1});
+			});
+	});
+	//借款会员拉黑
+	$("#loan_member_black").on("click",function(){
+        layer.prompt({title: '填写拉黑原因', formType: 2}, function(text){
+          layer.msg('拉黑原因：'+text);
+        });	      
+	});
 	//查看借款项目详情
 	$('#loan_detail').on('click', function(){
 	    layer.open({
@@ -70,16 +73,13 @@ $(function(){
 	        maxmin: true,
 	        shadeClose: true, //点击遮罩关闭层
 	        area : ['620px' , '500px'],
-	        content: 'web/project/loan_pro_detail.jsp'
+	        content: 'web/project/pro-add/loan_pro_detail.jsp'
 	    });
 	});
-	
-	//拒绝借款
-	$('#refuse_payment').on('click', function(){
-		layer.confirm('确定拒绝借款？', {
-			  btn: ['确定','取消'] //按钮
-			}, function(){
-			  layer.msg('已拒绝', {icon: 1});
-			});
-	});
 });
+/******补充资料*******/
+function addInfo(){
+	$(".right_col").load("web/project/pro-add/add_information.jsp");
+}
+
+

@@ -11,6 +11,8 @@ public class GuaranteeInfoEntity {
 	private String guaranteeNo;//担保机构编号
 	private long guaranteeID;//担保机构ID
 	private long personalID;//法人信息ID
+	private String personalName;//法人姓名
+	private String personalIDCard;//法人身份证号
 	private String guaranteeName;//担保机构名称
 	private String companyeBLN;//营业执照号码
 	private String companyOC;//组织机构代码
@@ -141,6 +143,19 @@ public class GuaranteeInfoEntity {
 	public void setDeleteFlag(int deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
+	public String getPersonalName() {
+		return personalName;
+	}
+	public void setPersonalName(String personalName) {
+		this.personalName = personalName;
+	}
+	public String getPersonalIDCard() {
+		return personalIDCard;
+	}
+	public void setPersonalIDCard(String personalIDCard) {
+		this.personalIDCard = personalIDCard;
+	}
+	
 
 }
 

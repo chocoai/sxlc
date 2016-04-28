@@ -25,7 +25,7 @@ public class BayVIPEntity {
 	private String personalName;//会员名称
 	private String certifySDate;//购买有效时间段起始时间
 	private String certifyEDate;//购买有效时间段终止时间
-	private long amount;//购买金额
+	private long   amount;//购买金额
 	private String amounts;//购买金额
 	private String recordDate;//支付时间
 	public String getLogname() {

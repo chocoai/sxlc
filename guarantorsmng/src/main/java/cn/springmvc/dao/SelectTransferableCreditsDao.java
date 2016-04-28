@@ -6,13 +6,6 @@ import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
 
-import cn.springmvc.model.GuaranteeBorrowingEntity;
-import cn.springmvc.model.GuaranteeCertificateEntity;
-import cn.springmvc.model.GuaranteeInfoEntity;
-import cn.springmvc.model.GuaranteePeriodEntity;
-import cn.springmvc.model.GuaranteeRelationalEntity;
-import cn.springmvc.model.ManagementCertificateEntity;
-import cn.springmvc.model.ManagementInfoEntity;
 import cn.springmvc.model.TransferRulesEntity;
 import cn.springmvc.model.TransferableCreditsEntity;
 

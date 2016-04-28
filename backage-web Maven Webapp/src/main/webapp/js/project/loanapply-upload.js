@@ -9,11 +9,11 @@ $(function(){
 	    fileNumLimit: 1,												//个数限制
 		//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
 		fileSingleSizeLimit: 1024*512,
-	    accept: {														//只允许选择图片文件
+/*	    accept: {														//只允许选择图片文件
 	        title: 'Images',
-	        extensions: 'gif,jpg,jpeg,bmp,png',
+	        extensions: 'gif,jpg,jpeg,bmp,png,txt,zip,word,rar',
 	        mimeTypes: 'image/*'
-	    },
+	    },*/
 	    resize: false													//不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
 	});
 	

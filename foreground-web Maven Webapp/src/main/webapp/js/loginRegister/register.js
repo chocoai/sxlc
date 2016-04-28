@@ -38,227 +38,12 @@ $(function(){
 	});
 });
 
-/*弹出层:提示输入手机号&提示密码*/	
-/* 弹出提示框的js代码  */
-jQuery.fn.layoutWarning = function(str){
-	var s = str;
-	var m = '<div class="tipError"><div class="pre"></div><div class="after">' + s + '</div></div>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".tipError").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
-	this.parent().find(".tipError").css("top",this.offset().top - this.parent().offset().top - 2 );
-};
-jQuery.fn.layoutFocus = function(str){
-	var s = str;
-	var m = '<div class="tip"><div class="preTip"></div><div class="afterTip">' + s + '</div></div>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".tip").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
-	this.parent().find(".tip").css("top",this.offset().top - this.parent().offset().top - 2 );
-};
-jQuery.fn.layoutSuccess = function(){
-	var m = '<div class="tipOk"></div>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".tipOk").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 5);
-	this.parent().find(".tipOk").css("top",this.offset().top - this.parent().offset().top + 12 );
-};
-/* 获取动态验证码的弹出提示层js代码  */
-jQuery.fn.layoutCode = function(str){
-	var s = str;
-	var m = '<span class="dynamicVerificationSpan">' + s + '</span>';
-	this.parent().css('position','relative');
-	this.parent().append(m);
-	this.parent().find(".dynamicVerificationSpan").css("left",this.offset().left - this.parent().offset().left + this.innerWidth() + 10);
-	this.parent().find(".dynamicVerificationSpan").css("top",this.offset().top - this.parent().offset().top );
-};
+/*弹出层:提示输入手机号&提示密码*/
 
-/* 胥福星   2016-04-06  注册弹出提示框js*/
-$(function(){
-	/* 用户名弹出提示框代码*/
-	/* 用户名弹出提示框代码*/
-	$(".input-user-name").focus(function(){
-		if($(this).val() == ""){
-			$(this).layoutFocus("6~16位的数字、字母、至少2种");
-			$(this).parent().find(".tipError").remove();
-			$(this).parent().find(".tipOk").remove();
-		}
-	});
-	$(".input-user-name").keyup(function(){
-		var str = this.value;
-		var reg = new RegExp("(?!^(\\d+|[a-zA-Z]+|[\u4e00-\u9fa5]+)$)^[\\w\u4e00-\u9fa5]{6,16}$");
-		$(this).parent().find(".tip").remove();
-		if(reg.test(str)){
-			if($(this).parent().find(".tipOk").length > 0){
-				return false;
-			}else{
-				$(this).layoutSuccess();
-				$(this).parent().find(".tipError").remove();
-			}
-		}else{
-			if($(this).parent().find(".tipError").length > 0){
-				return false;
-			}else{
-				$(this).layoutWarning("6~16位的数字、字母、或汉字至少2种");
-				$(this).parent().find(".tipOk").remove();
-			}
-		}
-	});
-	$(".input-user-name").blur(function(){
-		$(this).parent().find(".tip").remove();
-	});
-	/* 验证手机号码js */
-	$(".input-tel-num").focus(function(){
-		if($(this).val() == ""){
-			$(this).layoutFocus("11位手机号");
-			$(this).parent().find(".tipError").remove();
-			$(this).parent().find(".tipOk").remove();
-		}
-	});
-	$(".input-tel-num").keyup(function(){
-		$(this).parent().find(".tip").remove();
-		var str = this.value;
-		var reg = new RegExp("^[0-9]{11}$");
-		$(this).parent().find(".tip").remove();
-		if(reg.test(str)){
-			if($(this).parent().find(".tipOk").length > 0){
-				return false;
-			}else{
-				$(this).layoutSuccess();
-				$(this).parent().find(".tipError").remove();
-			}
-		}else{
-			if($(this).parent().find(".tipError").length > 0){
-				return false;
-			}else{
-				$(this).layoutWarning("请输入正确手机号");
-				$(this).parent().find(".tipOk").remove();
-			}
-		}
-	});
-	$(".input-tel-num").blur(function(){
-		$(this).parent().find(".tip").remove();
-	});
-	/* 密码验证    */
-	$(".input-password").focus(function(){
-		if(this.value == ""){
-			$(this).layoutFocus("6~16位的数字和字母组成");
-			$(this).parent().find(".tipError").remove();
-			$(this).parent().find(".tipOk").remove();
-		}
-	});
-	$(".input-password").blur(function(){
-		var str = this.value;
-		var reg = new RegExp(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/);
-		$(this).parent().find(".tip").remove();
-		if(reg.test(str)){
-			$(this).layoutSuccess();
-			$(this).parent().find(".tipError").remove();
-		}else{
-			$(this).layoutWarning("密码输入格式错误，请重新输入！");
-			$(this).parent().find(".tipOk").remove();
-		}
-	});
-	/* 确认密码  */
-	$(".input-password2").focus(function(){
-		if($(this).val() == ""){
-			$(this).layoutFocus("6~16位的数字和字母组成");
-			$(this).parent().find(".tipError").remove();
-			$(this).parent().find(".tipOk").remove();
-		}
-		$(this).css("border-color","#ddd");
-	});
-	$(".input-password2").blur(function(){
-		$(this).parent().find(".tip").remove();
-		if($(this).val() == $(".input-password").val() && $(".input-password").val() != ""){
-			$(this).layoutSuccess();
-			$(this).css("border-color","#ddd");
-		}else{
-			$(this).layoutWarning("两次输入的密码不一致");
-			$(this).css("border-color","red");
-		}
-	});
 
-	$(".registerCode > .img-check").focus(function(){
-		if($(this).val() == ""){
-			$(this).parent().layoutFocus("请输入验证码");
-			$(this).parent().parent().find(".tipError").remove();
-			$(this).parent().parent().find(".tipOk").remove();
-		}
-	});
-	$(".registerCode > .img-check").blur(function(){
-		var str = this.value;
-		var reg = new RegExp("^[a-zA-Z0-9]{4}$");
-		$(this).parent().parent().find(".tip").remove();
-		if(reg.test(str)){
-			$(this).parent().layoutSuccess();
-			$(this).parent().parent().find(".tipError").remove();
-		}else{
-			$(this).parent().layoutWarning("验证码错误");
-			$(this).parent().parent().find(".tipOk").remove();
-		}
-	});
-	/* 验证码提示层      */
-	$(".ctnt").each(function(){
-		var csp = $(this);
-		$(this).find(".get-tel-check").click(function(){
-			if($(this).parent().parent().find(".dynamicVerificationSpan").length > 0){
-				return false;
-			}else{
-				var phone = $(".content1 .input-tel-num").val();
-				$.ajax({
-					url:"sendRegisterPhoneVarCode.html",
-					type:"post",
-					dataType:"json",
-					data:{codePhone:phone},
-					success:function(json){
-						if(json.statu == 1){
-							csp.find(".get-tel-check").parent().layoutCode("已发送，3分钟后可重新获取");
-							csp.find(".get-tel-check").parent().parent().find(".tipOk").remove();
-							csp.find(".get-tel-check").parent().parent().find(".tipError").remove();
-						}else{
-							csp.find(".get-tel-check").parent().layoutCode(json.message);
-							csp.find(".get-tel-check").parent().parent().find(".tipOk").remove();
-							csp.find(".get-tel-check").parent().parent().find(".tipError").remove();
-						}
-					}
-				});
-			}
-			setTimeout(function(){
-				$(".telCode").parent().parent().find(".dynamicVerificationSpan").remove();
-				$(".get-tel-check").html("重新获取");
-			},30000);
-		});
-	});
-	$(".tel-check").blur(function(){
-		var str = this.value;
-		var reg = new RegExp("^[0-9]{5,6}$");
-		if(reg.test(str)){
-			$(this).parent().layoutSuccess();
-			$(this).parent().parent().find(".tipError").remove();
-			$(this).css("border-color","#ddd");
-			$(".telCode").parent().parent().find(".dynamicVerificationSpan").remove();
-		}else{
-			$(this).parent().layoutWarning("验证码错误,请重新输入");
-			$(this).parent().parent().find(".tipOk").remove();
-			$(this).css("border-color","red");
-			$(".telCode").parent().parent().find(".dynamicVerificationSpan").remove();
-		}
-		$(this).parent().find(".tip").remove();
-	});
-});
-/* 判断是否为数字   */
-$(function(){
-	$(".numberReg").each(function(){
-		$(this).focus(function(){
-			$(this).keyup(function(){
-				if(this.value.length > 0){
-					this.value = this.value.replace(/[^0-9]/g,'');
-				}
-			});
-		});
-	});
-});
+
+
+
 /* 胥福星     2016-04-06  密码框提示span模拟   */
 $(function(){
 	$(".hint1").click(function(){
@@ -287,125 +72,269 @@ $(function(){
 			$(this).parent().find(".hint").hide();
 		}
 	});
-	
-	//个人登录
-	$(".content1 .register-btn").on("click",function(){
-		
-		
-		
-		var userName = $(".content1 .input-user-name").val();
-		var userPhone= $(".content1 .input-tel-num").val();
-		var userpassword= $(".content1 .input-password").val();
-		var ruserpassword = $(".content1 .input-password2").val();
-		var inviteCode= $(".content1 .input-invite-code").val();
-		var imgCheck = $(".content1 .img-check").val();
-		var telCheck = $(".content1 .tel-check").val();
-		var optionsRadios = $("input[name='optionsRadios']:checked").val();
-		
-		
-		var doorCtrl = true;
-		
-		
-		var reg1 = new RegExp("^[a-zA-Z0-9]{6,30}$");
-		if(!reg1.test(userName)){
-			doorCtrl = false;
-			$(".content1 .input-user-name").css("border-color","red");
-			if($(".content1 .input-user-name").parent().find(".tipError").length > 0){
-			}else{
-				$(".content1 .input-user-name").layoutWarning("请输入数字或名字");
-				$(".content1 .input-user-name").parent().find(".tipOk").remove();
-			}
-		}
-		var reg2 = new RegExp("^[0-9]{11}$");
-		if(!reg2.test(userPhone)){
-			doorCtrl = false;
-			$(".content1 .input-tel-num").css("border-color","red");
-			if($(".content1 .input-tel-num").parent().find(".tipError").length > 0){
-			}else{
-				$(".content1 .input-tel-num").layoutWarning("11位数字");
-				$(".content1 .input-tel-num").parent().find(".tipOk").remove();
-			}
-		}
-		var reg3 = new RegExp(/^[a-zA-Z0-9]{6,16}$/);
-		if(!reg3.test(userpassword)){
-			doorCtrl = false;
-			$(".content1 .input-password").layoutWarning("密码输入格式错误，请重新输入！");
-			$(".content1 .input-password").parent().find(".tipOk").remove();
-			$(".content1 .input-password").css("border-color","red");
-		}
-		if(!(ruserpassword == userpassword && userpassword != "")){
-			doorCtrl = false;
-			$(".content1 .input-password2").layoutWarning("输入的密码不一致");
-			$(".content1 .input-password2").css("border-color","red");
-		}
-		var reg4 = new RegExp(/^[0-9]{12}$/);
-		if(inviteCode != ""  && !reg4.test(inviteCode) && $(".content1 .input-invite-code").attr("value") != inviteCode){
-			doorCtrl = false;
-			$(".content1 .input-invite-code").layoutWarning("邀请码错误");
-			$(".content1 .input-invite-code").css("border-color","red");
-		}
-		
-	
-		var reg5 = new RegExp("/^\d$/");
-		if(!reg5.test(imgCheck)){
-			doorCtrl = false;
-			$(".content1 .img-check").css("border-color","red");
-			$(".content1 .img-check").parent().layoutWarning("验证码错误");
-			$(".content1 .img-check").parent().parent().find(".tipOk").remove();
-		}
+});	
 
-		var reg6 = new RegExp("/^[0-9]{5,6}$/");
-		if(reg6.test(telCheck)){
-			doorCtrl = false;
-			$(".content1 .tel-check").parent().layoutSuccess();
-			$(".content1 .tel-check").parent().parent().find(".tipError").remove();
-			$(".content1 .tel-check").css("border-color","#ddd");
-			$(".content1 .tel-check").parent().parent().find(".dynamicVerificationSpan").remove();
-		}else{
-			$(".content1 .tel-check").parent().layoutWarning("验证码错误,请重新输入");
-			$(".content1 .tel-check").parent().parent().find(".tipOk").remove();
-			$(".content1 .tel-check").css("border-color","red");
-			$(".content1 .tel-check").parent().parent().find(".dynamicVerificationSpan").remove();
-		}
-		
-		
-		
-		if(!doorCtrl){
-			return false;
-		}
-		
+/* 手机动态验证码      */
+$(function(){
+	$(".get-tel-check").on("click",function(){
+		$item = $(this);
+		var phone = $(this).parent().parent().parent().find(".input-tel-num").val();
+		alert(phone);
 		$.ajax({
-			url:"register.html",
+			url:"sendRegisterPhoneVarCode.html",
 			type:"post",
 			dataType:"json",
-			data:{logname:userName,memberPwd:userpassword,confirmPassword:ruserpassword,beinvitateCode:inviteCode,personalPhone:userPhone,checkCoede:imgCheck,phoneCheckCode:telCheck,memberType:optionsRadios},
+			data:{codePhone:phone},
 			success:function(json){
-				if(json.statu == 0){
-					alert("注册成功");
+				if(json.statu == 1){
+					$item.val("已发送");
 				}else{
-					alert(json.message);
+					$item.val("发送失败");
 				}
 			}
 		});
 	});
+	setTimeout(function(){
+		$(".get-tel-check").val("重新获取")
+	},30000);
+});
+
 	
-	//企业登录
-	$(".content2 .register-btn").on("click",function(){
-		
+	
+function checkPersonalName(memberName){
+	if(memberName == undefined || memberName == null || memberName == ""){
+		return false;
+	}
+	$.ajax({
+		url:"checkName.html",
+		type:"post",
+		data:{userName:memberName},
+		success:function(json){
+			return json;
+		}
+	});
+}
+
+function checkPersonalPhone(phone){
+	if(phone == undefined || phone == null || phone == ""){
+		return false;
+	}
+	$.ajax({
+		url:"checkPhone.html",
+		type:"post",
+		data:{phone:phone},
+		success:function(json){
+			return json;
+		}
+	});
+}
+
+function checkCountInvitateCode(sinvitateCode){
+	if(invitateCode == undefined || invitateCode == null || invitateCode == ""){
+		return false;
+	}
+	$.ajax({
+		url:"countInvitateCode.html",
+		type:"post",
+		data:{invitateCode:sinvitateCode},
+		success:function(json){
+			return json;
+		}
+	});
+}
+
+
+/* 验证     */
+$(function(){
+	var data = {};
+	var app = $("#testbox").Validform({
+		tiptype:3,//提示信息类型
+		btnSubmit:".ctntRegisterSub", 
+		datatype:extdatatype,//扩展验证类型
+		//showAllError:true,//提交前验证显示所有错误
+		timeout:1000,
+		ajaxPost:true, 
+		beforeSubmit:function(curform){
+			/*getData();
+			app.config({
+				ajaxpost:{
+					url:"register.html",
+					type:"post",
+					datatype:"json",
+					data:getData(),
+					success:function(data,obj){
+						if(data.statu == 0){
+							alert("注册成功");
+						}else{
+							alert(json.message);
+						}
+					},
+					error:function(data,obj){
+						console.log(data.status);
+					}
+				}
+			});
+			return true;
+			*/
+			
+			
+			
+			var userName = $(".content1 .input-user-name").val();
+			var userPhone= $(".content1 .input-tel-num").val();
+			var userpassword= $(".content1 .input-password").val();
+			var ruserpassword = $(".content1 .input-password2").val();
+			var inviteCode= $(".content1 .input-invite-code").val();
+			var imgCheck = $(".content1 .img-check").val();
+			var telCheck = $(".content1 .tel-check").val();
+			var optionsRadios = $("input[name='optionsRadios']:checked").val();
+			
+			userpassword = hex_md5(userpassword);
+			ruserpassword = hex_md5(ruserpassword);
+			
+			//加密
+			var sendDate = {};
+			sendDate.logname = userName;
+			sendDate.memberPwd = userpassword;
+			sendDate.confirmPassword = ruserpassword;
+			sendDate.beinvitateCode = inviteCode;
+			sendDate.personalPhone = userPhone;
+			sendDate.checkCoede = imgCheck;
+			sendDate.phoneCheckCode = telCheck;
+			sendDate.memberType = optionsRadios;
+			
+			
+			var vsign = sendBef(sendDate);
+			console.log(vsign);
+			$.ajax({
+				url:"register.html",
+				type:"post",
+				dataType:"json",
+				data:{sign:vsign,logname:userName,memberPwd:userpassword,confirmPassword:ruserpassword,beinvitateCode:inviteCode,personalPhone:userPhone,checkCoede:imgCheck,phoneCheckCode:telCheck,memberType:optionsRadios},
+				success:function(json){
+					if(json.statu == 0){
+						alert("注册成功");
+					}else{
+						alert(json.message);
+					}
+				}
+			});
+			return false;
+	    }
+	});
+	
+	app.addRule([{
+        ele: ".input-user-name",
+        //datatype: "logname",
+        nullmsg: "请输入用户名！",
+        ajaxurl: "checkName.html",
+        errormsg: "用户名由 6-18位的字母下划线和数字组成！至少6个字符,最多18个字符！"
+    },{
+        ele: ".input-tel-num",
+        //datatype: "logname",
+        //nullmsg: "请输入用户名！",
+        ajaxurl: "checkPhone.html",
+        //errormsg: "用户名由 6-18位的字母下划线和数字组成！至少6个字符,最多18个字符！"
+    }]);
+	
+	function getData(){
+		//var data = {};
+		data.logname = $(".content1 .input-user-name").val();
+		data.personalPhone= $(".content1 .input-tel-num").val();
+		data.memberPwd = hex_md5("123123123123");
+		data.confirmPassword = hex_md5("123123123123");
+		data.beinvitateCode= $(".content1 .input-invite-code").val();
+		data.checkCoede = $(".content1 .img-check").val();
+		data.phoneCheckCode = $(".content1 .tel-check").val();
+		data.memberType = $("input[name='optionsRadios']:checked").val();
+		//return data;
+	}
+});
+
+
+
+$(function(){
+	var app2 = $("#companyCheck").Validform({
+		tiptype:3,//提示信息类型
+		btnSubmit:".companySubmit", 
+		datatype:extdatatype,//扩展验证类型
+		ajaxPost:true,
+		beforeSubmit:function(){
+			var userName = $(".content2 .input-user-name").val();
+			var userPhone= $(".content2 .input-tel-num").val();
+			var userpassword= $(".content2 .input-password").val();
+			var ruserpassword = $(".content2 .input-password2").val();
+			var inviteCode= $(".content2 .input-invite-code").val();
+			var imgCheck = $(".content2 .img-check").val();
+			var telCheck = $(".content2 .tel-check").val();
+			var optionsRadios = $("input[name='optionsRadios']:checked").val();
+			
+			userpassword = hex_md5(userpassword);
+			ruserpassword = hex_md5(ruserpassword);
+			
+			//加密
+			var sendDate = {};
+			sendDate.logname = userName;
+			sendDate.memberPwd = userpassword;
+			sendDate.confirmPassword = ruserpassword;
+			sendDate.beinvitateCode = inviteCode;
+			sendDate.personalPhone = userPhone;
+			sendDate.checkCoede = imgCheck;
+			sendDate.phoneCheckCode = telCheck;
+			sendDate.memberType = optionsRadios;
+			
+			
+			var vsign = sendBef(sendDate);
+			console.log(vsign);
+			$.ajax({
+				url:"register.html",
+				type:"post",
+				dataType:"json",
+				data:{sign:vsign,logname:userName,memberPwd:userpassword,confirmPassword:ruserpassword,beinvitateCode:inviteCode,personalPhone:userPhone,checkCoede:imgCheck,phoneCheckCode:telCheck,memberType:optionsRadios},
+				success:function(json){
+					if(json.statu == 0){
+						alert("注册成功");
+					}else{
+						alert(json.message);
+					}
+				}
+			});
+			return false;
+		}
 	});
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	app2.addRule([{
+        ele: ".input-user-name",
+        //datatype: "logname",
+        nullmsg: "请输入用户名！",
+        ajaxurl: "checkName.html",
+        errormsg: "用户名由 6-18位的字母下划线和数字组成！至少6个字符,最多18个字符！"
+    },{
+        ele: ".input-tel-num",
+        //datatype: "logname",
+        //nullmsg: "请输入用户名！",
+        ajaxurl: "checkPhone.html",
+        //errormsg: "用户名由 6-18位的字母下划线和数字组成！至少6个字符,最多18个字符！"
+    }]);
 	
 });
-//验证
-/*$(function(){
-	validform5(".register-btn",,postonce,tipsType,fun)
-})*/
+
+function sendBef(params){
+	 if (params) {
+        var code = "";
+        var keys = [];
+        for (var x in params) {
+            keys.push(x);
+        }
+        keys.sort();
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            code += key;
+            code += params[key];
+        }
+        var md5_value = hex_md5(code).toUpperCase();
+        console.log("string to sign:" + code);
+        return md5_value;
+    }
+    return null;
+}

@@ -1,0 +1,81 @@
+//加密设置
+var encrypt = new JSEncrypt();
+encrypt.setPublicKey(publicKey_common);
+
+$(function(){
+	
+	//页面初始化,默认为手机短信标签页
+	$(".optionDiv").each(function () {
+		var $this = $(this);
+		var iSSmsSend = $this.attr("iSSmsSend");
+		$this.find("input[type='radio'][value="+iSSmsSend+"]").attr('checked','true');
+	});
+	
+});
+
+
+function changePg(type){
+	if(type==1){
+		$("#title").html("手机短信");
+		$("#title").attr("submitType",1);
+		//循环赋值
+		$(".optionDiv").each(function () {
+			var $this = $(this);
+			var iSSmsSend = $this.attr("iSSmsSend");
+			$this.find("input[type='radio'][value="+iSSmsSend+"]").prop('checked','true');
+		});
+	}else if(type==2){
+		$("#title").html("站内消息");
+		$("#title").attr("submitType",2);
+		//循环赋值
+		$(".optionDiv").each(function () {
+			var $this = $(this);
+			var iSLetterSend = $this.attr("iSLetterSend");
+			$this.find("input[type='radio'][value="+iSLetterSend+"]").prop('checked','true');
+		});
+		
+	}else if(type==3){
+		$("#title").html("邮件");
+		$("#title").attr("submitType",3);
+		//循环赋值
+		$(".optionDiv").each(function () {
+			var $this = $(this);
+			var iSEmailSend = $this.attr("iSEmailSend");
+			$this.find("input[type='radio'][value="+iSEmailSend+"]").prop('checked','true');
+		});
+	}
+};
+
+/**
+ * 提交按钮
+ */
+function saveData(){
+	var data={};
+	var type = encrypt.encrypt($("#title").attr("submitType"));
+	data.type=type;
+	var ids="";
+	$(".optionDiv").each(function () {
+		var $this = $(this);
+		var id = $this.attr("typeID");
+		var statu = $this.find("input[type='radio']:checked").val();
+		if(statu ==1 ){
+			ids +=id+",";
+		}
+	});
+	data.ids = encrypt.encrypt(ids.substring(0, ids.length-1));
+	
+	$.ajax( {  
+		url:appPath+"/config/updateMsgSet.do",
+		data:data,
+		type:'post',  
+		cache:false,  
+		dataType:'json',  
+		success:function(data) { 
+		},  
+		error : function() {  
+			layer.alert("服务器异常",{icon:2}); 
+		}  
+	});
+	
+}
+

@@ -54,7 +54,7 @@ public interface IndexDao {
 	 * @return List<CreditorTransferListEntity> 返回类型 
 	 * @date 2016-4-8 下午2:00:25
 	 */
-	public List<CreditorTransferListEntity> selectCreditorTransferListIndex();
+	public List<CreditorTransferListEntity> selectCreditorTransferListIndex(Map<String, Object> map);
 	/**
 	 * 查询当前，当月，本周投资排名
 	 * @author 刘利   

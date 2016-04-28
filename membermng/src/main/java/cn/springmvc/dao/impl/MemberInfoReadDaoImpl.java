@@ -16,6 +16,7 @@ import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberVouchers;
 import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.RadPackage;
+import cn.membermng.model.SecurityInfo;
 import cn.springmvc.dao.IMemberReadDao;
 
 
@@ -107,6 +108,7 @@ public class MemberInfoReadDaoImpl extends SqlSessionDaoSupport implements IMemb
 		return getSqlSession().selectOne("memberInfoDaoImpl.myVouchers", param);
 	}
 	
+	
 	@Override
 	public List<MemberVouchers> vouchers(PageEntity entity) {
 		
@@ -114,9 +116,16 @@ public class MemberInfoReadDaoImpl extends SqlSessionDaoSupport implements IMemb
 	}
 	
 	
+	@Override
+	public MemberInfo findMemberInfoByParam(Map<String, Object> param) {
+		return getSqlSession().selectOne("memberInfoDaoImpl.findMemberInfoByParam",param);
+	}
 	
 	
-	 
+	@Override
+	public SecurityInfo securityInfo(Map<String, Object> param) {
+		return getSqlSession().selectOne("memberInfoDaoImpl.securityInfo",param);
+	}
 	
 	@Autowired
 	@Override

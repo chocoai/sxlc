@@ -33,12 +33,13 @@ $(function(){
 	//
 	$(".apply").click(function(){
 		layer.open({
-			title :'申请成为推荐达人',//标题
+			title :' ',//标题
 			skin: 'layer-ext-myskin',//皮肤
 	        type: 1,
-	        area: ['488px', '375px'],//大小宽*高
+	        area: ['540px', '373px'],//大小宽*高
 	        shadeClose: true, //点击遮罩关闭
 	        content: $('.applyTalent')//内容，里边是包含内容的div的class
 	    });
+		$('.layui-layer-title').css("border-bottom","none");
 	});
 });

@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="Guarantee_agencies">     
+	
+	<!-- 查询结果封装 -->
+   <resultMap type = "cn.springmvc.model.GuranteeRecordEntity" id = "Guarantee_project">
+        <id property = "applyId"					column = "Apply_Id" />
+		<result property = "projectNo"       	    column = "Project_No" />
+		<result property = "projectTitle"    	    column = "Project_Title" />
+		<result property = "amount"  	            column = "Amount" />
+		<result property = "riskMarginFee"  	    column = "RiskMargin_Fee" />
+		<result property = "guaranteeName" 	        column = "Guarantee_Name" />
+		<result property = "recordDate"             column = "Record_Date" />
+		<result property = "isCompensatory" 		column = "IsCompensatory" />
+		<result property = "compensatoryTime" 		column = "Compensatory_Time" /> 
+	</resultMap>
+	<!-- 查询担保项目信息
+		Apply_Id,项目申请记录ID
+		Project_No,项目编号
+		Project_Title,项目名称
+		Amount,借款金额
+		RiskMargin_Fee,项目保证金
+		Guarantee_Name,担保机构名称
+		Record_Date,担保登记时间
+		IsCompensatory,是否代偿
+		Compensatory_Time,最近代偿时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Guarantee_Name}#{Record_Date_Min}#{Record_Date_Max}
+		#{IsCompensatory}#{Compensatory_Time_Min}#{Compensatory_Time_Max}#{ordercolumn}
+	-->
+	<select id="getGuarantee_project" parameterType="Map" resultMap="Guarantee_project">
+		SELECT
+		 p.Apply_Id,
+		 p.Project_No,
+		 p.Project_Title,
+		 p.Amount,
+		 p.RiskMargin_Fee,
+		 p.Guarantee_Name,
+		 p.Record_Date,
+		 p.IsCompensatory,
+		 p.Compensatory_Time
+		FROM
+			(SELECT	<!--先利用其它条件统计担保项目记录数，再用实是否代偿和最近代偿时间过滤结果集-->
+			  pa.Apply_Id,
+			  pa.Project_No,
+			  prbi.Project_Title,
+			  pp.Amount,
+			  CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8) Guarantee_Name,
+			  pp.Record_Date,
+			  (SELECT	<!--统计是否代偿：0未代偿 1代偿-->
+				  (CASE SIGN(COUNT(1))
+					  WHEN 0 THEN 0 ELSE 1
+					END) 
+				FROM loan_repay lr
+				WHERE lr.IsValid = 0 AND lr.IsCompensatory = 1
+					  AND lr.Apply_Id = pa.Apply_Id) IsCompensatory,
+			  (SELECT	<!--统计最近代偿时间-->
+				  MAX(lr.Compensatory_Time)
+				FROM loan_repay lr
+				WHERE lr.IsValid = 0 AND lr.IsCompensatory = 1
+					  AND lr.Apply_Id = pa.Apply_Id) Compensatory_Time,
+			  (SELECT	<!--统计项目保证金-->
+				  MAX(pam.RiskMargin_Fee)
+				FROM Project_App_MngFee pam
+				WHERE pam.Apply_Id = pa.Apply_Id) RiskMargin_Fee
+			FROM project_app_record pa
+			  JOIN Guarantee_Info gi
+				ON pa.Guarantee_ID = gi.Guarantee_ID
+			  JOIN project_purpose pp
+				ON pp.Purpose_ID = pa.Purpose_ID
+			  JOIN project_base_info prbi
+				ON pa.Project_Base_ID = prbi.Project_Base_ID
+			WHERE IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No = #{Project_No})
+				  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+				  AND IF(#{Guarantee_Name} IS NULL, 1=1, LOCATE(#{Guarantee_Name},CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8))>0)
+				  AND IF(#{Record_Date_Min} IS NULL OR #{Record_Date_Min} = '', 1=1, pp.Record_Date>=#{Record_Date_Min})
+				  AND IF(#{Record_Date_Max} IS NULL OR #{Record_Date_Max} = '', 1=1, pp.Record_Date&lt;=#{Record_Date_Max})) p
+		WHERE IF(#{IsCompensatory} IS NULL OR #{IsCompensatory} = '', 1=1, p.IsCompensatory = #{IsCompensatory})
+			  AND IF(#{Compensatory_Time_Min} IS NULL OR #{Compensatory_Time_Min} = '', 1=1, p.Compensatory_Time>=#{Compensatory_Time_Min})
+			  AND IF(#{Compensatory_Time_Max} IS NULL OR #{Compensatory_Time_Max} = '', 1=1, p.Compensatory_Time&lt;=#{Compensatory_Time_Max})
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'RECORD_DATE' then p.Record_Date 
+				WHEN 'RISKMARGIN_FEE' then p.RiskMargin_Fee 
+				WHEN 'COMPENSATORY' then p.Compensatory_Time 
+				ELSE p.Record_Date 
+			END)		  
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	<!-- 查询结果封装 -->
+   <resultMap type = "cn.springmvc.model.GuranteeRecordEntity" id = "Compensatory_record">
+        <id property = "applyId"					column = "Apply_Id" />
+		<result property = "projectNo"       	    column = "Project_No" />
+		<result property = "projectTitle"    	    column = "Project_Title" />
+		<result property = "projectName" 		    column = "Project_Name" />
+		<result property = "indexs"  	            column = "Indexs" />
+		<result property = "personalName"  	        column = "Personal_Name" />
+		<result property = "logname" 	            column = "Logname" />
+		<result property = "personalPhone"          column = "Personal_Phone" /> 
+		<result property = "guaranteeName"          column = "Guarantee_Name" /> 
+		<result property = "endAmount" 		        column = "Invest_Amount_Valid" /> 
+		
+		<result property = "repayMaxTime"       	column = "Repay_MaxTime" />
+		<result property = "compensatoryTime"    	column = "Compensatory_Time" />
+		<result property = "corpusEnc"  	        column = "Corpus_Enc" />
+		<result property = "interestEnc"  	        column = "Interest_Enc" />
+		<result property = "overdueInterestEnc" 	column = "Overdue_Interest_Enc" />
+		<result property = "overdueFeeEnc"          column = "Overdue_Fee_Enc" />
+		<result property = "amountEnc" 		        column = "Amount_Enc" />
+		<result property = "statu" 		            column = "Statu" /> 
+	
+	</resultMap>
+	<!-- 查询代偿记录信息/历史代偿记录信息
+		Apply_Id,项目申请记录ID
+		Project_No,项目编号
+		Project_Title,项目名称
+		Project_Name,产品类型
+		Indexs,代偿期数
+		Personal_Name,借款人姓名
+		Logname,借款人用户名
+		Personal_Phone,借款人手机号
+		Guarantee_Name,担保机构名称
+		Invest_Amount_Valid,实际借款金额
+		Repay_MaxTime,当期合约还款时间
+		Compensatory_Time,代偿时间
+		Corpus_Enc,代偿本金
+		Interest_Enc,代偿利息
+		Overdue_Interest_Enc,代偿逾期利息
+		Overdue_Fee_Enc,代偿逾期罚金
+		Amount_Enc,代偿总金额
+		Statu是否回款
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Personal_Name}#{Logname}#{Personal_Phone}#{Guarantee_Name}
+		#{Repay_MaxTime_Min}#{Repay_MaxTime_Max}#{Compensatory_Time_Min}#{Compensatory_Time_Max}#{Statu}#{ordercolumn}
+	-->
+	<select id="getCompensatory_record" parameterType="Map" resultMap="Compensatory_record">
+		SELECT 
+		  p.Apply_Id,
+		  p.Project_No,
+		  p.Project_Title,
+		  p.Project_Name,
+		  p.Indexs,
+		  p.Personal_Name,
+		  p.Logname,
+		  p.Personal_Phone,
+		  p.Guarantee_Name,
+		  p.Invest_Amount_Valid,
+		  p.Repay_MaxTime,
+		  p.Compensatory_Time,
+		  p.Corpus_Enc,
+		  p.Interest_Enc,
+		  p.Overdue_Interest_Enc,
+		  p.Overdue_Fee_Enc,
+		  p.Amount_Enc,
+		  p.Statu
+		FROM  
+			(SELECT		<!--因为要排序字段需要计算得到，先用子查询得到计算结果-->
+			  pa.Apply_Id,
+			  pa.Project_No,
+			  prbi.Project_Title,
+			  pb.Project_Name,
+			  lr.Indexs,
+			  CASE
+				  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+				  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+			  END Personal_Name,
+			  mi.Logname,
+			  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
+			  CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8) Guarantee_Name,
+			  (SELECT	<!--统计实际借款金额-->
+				  SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) AS SIGNED),0))
+				FROM invest_record ir
+				WHERE ir.Apply_Id = pa.Apply_Id AND ir.IsValid = 0) Invest_Amount_Valid,
+			  lr.Repay_MaxTime,
+			  lr.Compensatory_Time,
+			  CONVERT((AES_DECRYPT(UNHEX(irr.Corpus_Enc),#{skey})) using utf8) Corpus_Enc,
+			  CONVERT((AES_DECRYPT(UNHEX(irr.Interest_Enc),#{skey})) using utf8) Interest_Enc,
+			  CONVERT((AES_DECRYPT(UNHEX(irr.Overdue_Interest_Enc),#{skey})) using utf8) Overdue_Interest_Enc,
+			  CONVERT((AES_DECRYPT(UNHEX(irr.Overdue_Fee_Enc),#{skey})) using utf8) Overdue_Fee_Enc,
+			  CAST((AES_DECRYPT(UNHEX(irr.Corpus_Enc),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(irr.Interest_Enc),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(irr.Overdue_Interest_Enc),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(irr.Overdue_Fee_Enc),#{skey})) AS SIGNED) Amount_Enc,
+			  CASE lr.Statu  <!--判断回款状态，1是回款0是未回款-->
+				  WHEN 2 THEN 1
+				  ELSE 0
+			  END Statu
+			FROM Instead_RePay_Record irr
+			  JOIN Loan_Repay lr
+				ON irr.Repay_ID = lr.Repay_ID
+			  JOIN Project_App_Record pa
+				ON pa.Apply_Id = lr.Apply_Id
+			  JOIN projectbaseinfo pb
+				ON pa.Project_Id = pb.Project_Id
+			  JOIN project_base_info prbi
+				ON pa.Project_Base_ID = prbi.Project_Base_ID
+			  JOIN project_purpose pp
+				ON pa.Purpose_ID = pp.Purpose_ID
+			  JOIN member_info mi
+				ON pp.Member_ID = mi.Member_ID
+			  LEFT JOIN guarantee_info gi
+				ON pa.Guarantee_ID = gi.Guarantee_ID
+			  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+					ON mi.Personal_Id = pbi.Personal_Id
+			  LEFT JOIN Company_Info ci
+				ON mi.Personal_Id = ci.Company_ID
+			WHERE IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No = #{Project_No})
+				  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+				  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+				  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Phone} IS NULL, 1=1, LOCATE(#{Personal_Phone},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8))>0)
+			  AND IF(#{Guarantee_Name} IS NULL, 1=1, LOCATE(#{Guarantee_Name},CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Repay_MaxTime_Min} IS NULL OR #{Repay_MaxTime_Min} = '', 1=1, lr.Repay_MaxTime>=#{Repay_MaxTime_Min})
+			  AND IF(#{Repay_MaxTime_Max} IS NULL OR #{Repay_MaxTime_Max} = '', 1=1, lr.Repay_MaxTime&lt;=#{Repay_MaxTime_Max})
+			  AND IF(#{Compensatory_Time_Min} IS NULL OR #{Compensatory_Time_Min} = '', 1=1, lr.Compensatory_Time>=#{Compensatory_Time_Min})
+			  AND IF(#{Compensatory_Time_Max} IS NULL OR #{Compensatory_Time_Max} = '', 1=1, lr.Compensatory_Time&lt;=#{Compensatory_Time_Max})
+			  AND IF(#{Statu} IS NULL OR #{Statu} = '', 1=1, CASE #{Statu}
+																WHEN 1 THEN lr.Statu = 2
+																ELSE lr.Statu between 0 and 1
+															  END)) p
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'INVEST_AMOUNT_VALID' THEN p.Invest_Amount_Valid
+				WHEN 'REPAY_MAXTIME' then p.Repay_MaxTime
+				WHEN 'COMPENSATORY_TIME' then p.Compensatory_Time
+				WHEN 'CORPUS_ENC' then p.Corpus_Enc
+				WHEN 'INTEREST_ENC' then p.Interest_Enc
+				WHEN 'OVERDUE_INTEREST_ENC' then p.Overdue_Interest_Enc
+				WHEN 'OVERDUE_FEE_ENC' then p.Overdue_Fee_Enc
+				WHEN 'AMOUNT_ENC' then p.Amount_Enc
+				ELSE p.Invest_Amount_Valid
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+		<!-- 查询结果封装 -->
+   <resultMap type = "cn.springmvc.model.GuranteeRecordEntity" id = "Receivable_records">
+        <id property = "applyId"					column = "Apply_Id" />
+		<result property = "projectNo"       	    column = "Project_No" />
+		<result property = "projectTitle"    	    column = "Project_Title" />
+		<result property = "indexs"  	            column = "Indexs" />
+		<result property = "logname"  	            column = "Logname" />
+		<result property = "personalName"  	        column = "Personal_Name" />
+		<result property = "guaranteeName" 	        column = "Guarantee_Name" />
+		<result property = "repayAmount"            column = "Repay_Amount" />  
+		<result property = "repayTime" 		        column = "Repay_Time" /> 
+	</resultMap>
+		<!-- 查询代偿回款记录信息
+		Apply_Id,项目申请记录ID
+		Project_No,项目编号
+		Project_Title,项目名称
+		Indexs,回款项目期数
+		Logname,借款人用户名
+		Personal_Name,借款人姓名
+		Guarantee_Name,担保机构名称
+		Repay_Amount,回款金额
+		Repay_Time,回款时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Personal_Name}#{Logname}#{Guarantee_Name}#{Repay_Time_Min}#{Repay_Time_Max}#{ordercolumn}
+	-->
+	<select id="getReceivable_records" parameterType="Map" resultMap="Receivable_records">
+		SELECT 
+		  p.Apply_Id,
+		  P.Project_No,
+		  P.Project_Title,
+		  P.Indexs,
+		  P.Logname,
+		  P.Personal_Name,
+		  P.Guarantee_Name,
+		  P.Repay_Amount,
+		  P.Repay_Time
+		 FROM
+			(SELECT	<!--因为要排序字段需要计算得到，先用子查询得到计算结果-->
+			  pa.Apply_Id,
+			  pa.Project_No,
+			  prbi.Project_Title,
+			  lr.Indexs,
+			  CASE
+				  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+				  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+			  END Personal_Name,
+			  mi.Logname,
+			  CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8) Guarantee_Name,
+			  CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(lrr.Repay_Penalty),#{skey})) AS SIGNED) Repay_Amount,
+			  lrr.Repay_Time
+			FROM Loan_Real_Repay lrr
+			  JOIN Loan_Repay lr
+				ON lrr.Repay_ID = lr.Repay_ID
+			  JOIN Project_App_Record pa
+				ON pa.Apply_Id = lr.Apply_Id
+			  JOIN project_base_info prbi
+				ON pa.Project_Base_ID = prbi.Project_Base_ID
+			  JOIN project_purpose pp
+				ON pa.Purpose_ID = pp.Purpose_ID
+			  JOIN member_info mi
+				ON pp.Member_ID = mi.Member_ID
+			  LEFT JOIN guarantee_info gi
+				ON pa.Guarantee_ID = gi.Guarantee_ID
+			  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+					ON mi.Personal_Id = pbi.Personal_Id
+			  LEFT JOIN Company_Info ci
+				ON mi.Personal_Id = ci.Company_ID
+			WHERE IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No = #{Project_No})
+				  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+				  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+				  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+				  AND IF(#{Guarantee_Name} IS NULL, 1=1, LOCATE(#{Guarantee_Name},CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8))>0)
+				  AND IF(#{Repay_Time_Min} IS NULL OR #{Repay_Time_Min} = '', 1=1, lrr.Repay_Time>=#{Repay_Time_Min})
+				  AND IF(#{Repay_Time_Max} IS NULL OR #{Repay_Time_Max} = '', 1=1, lrr.Repay_Time&lt;=#{Repay_Time_Max})
+				)p
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+			WHEN 'REPAY_AMOUNT' THEN p.Repay_Amount
+			WHEN 'REPAY_TIME' then p.Repay_Time
+			ELSE p.Repay_Amount
+		END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+		<!-- 查询结果封装 -->
+   <resultMap type = "cn.springmvc.model.MemberTradingRecordsEntity" id = "Transaction">
+        <id property = "tradeID"					column = "Trade_ID" />
+		<result property = "recordNo"       	    column = "Record_No" />
+		<result property = "typeName"    	        column = "Type_Name" />
+		<result property = "amount"  	            column = "Amount" />
+		<result property = "frozenBalance"  	    column = "Frozen_Balance" />
+		<result property = "userBalance"  	        column = "User_Balance" />
+		<result property = "guaranteeName" 	        column = "Guarantee_Name" />
+		<result property = "recordDate"             column = "Record_Date" />   
+	</resultMap>
+		<!-- 查询交易记录信息
+		Trade_ID,交易记录ID
+		Record_No,序号ID
+		Type_Name,交易类型
+		Amount,交易金额
+		Frozen_Balance,冻结金额
+		User_Balance,可用余额
+		Guarantee_Name,交易对方
+		Record_Date,交易时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Type_Name}#{Record_Date_Min}#{Record_Date_Max}#{ordercolumn}
+	-->
+	<select id="getTransaction" parameterType="Map" resultMap="Transaction">
+		SELECT	
+		  mtr.Trade_ID,
+		  mtr.Record_No,
+		  tts.Type_Name,
+		  CAST((AES_DECRYPT(UNHEX(mtr.Amount),#{skey})) AS SIGNED) Amount,
+		  CAST((AES_DECRYPT(UNHEX(mtrb.Frozen_Balance),#{skey})) AS SIGNED) Frozen_Balance,
+		  CAST((AES_DECRYPT(UNHEX(mtrb.User_Balance),#{skey})) AS SIGNED) User_Balance,
+		  CASE mtr.Trade_Object_Type	<!--根据第三方类型确定第三方名称（平台、担保机构名称、个人会员名、企业名）-->
+			  WHEN 0 THEN '平台'
+			  WHEN 1 THEN (SELECT
+							  CASE mi.Member_Type
+								WHEN 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+								WHEN 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+							  END Personal_Nam
+						   FROM member_info mi
+							  LEFT JOIN personal_base_info pbi
+								ON mi.Personal_Id = pbi.Personal_Id
+							  LEFT JOIN company_info ci
+								ON mi.Personal_Id = ci.Company_ID
+						   WHERE mi.Member_ID = mtr.Trade_Object_Id)
+			  WHEN 2 THEN (SELECT CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8) FROM Guarantee_Info gi where gi.Guarantee_ID = mtr.Trade_Object_Id)
+		  END Personal_Name,
+		  mtr.Record_Date
+		FROM Member_Trading_Records mtr
+		  JOIN Member_Trading_Records_Balance mtrb
+			ON mtr.Trade_ID = mtrb.Trade_ID
+		  JOIN Trade_Type_Second tts
+		    ON mtr.Trade_Type_Id = tts.Trade_Type_Id
+		WHERE IF(#{Type_Name} IS NULL, 1=1, LOCATE(#{Type_Name},tts.Type_Name)>0)
+			  AND IF(#{Record_Date_Min} IS NULL OR #{Record_Date_Min} = '', 1=1, mtr.Record_Date>=#{Record_Date_Min})
+			  AND IF(#{Record_Date_Max} IS NULL OR #{Record_Date_Max} = '', 1=1, mtr.Record_Date&lt;=#{Record_Date_Max})
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'AMOUNT' then mtr.Amount
+				WHEN 'FROZEN_BALANCE' then Frozen_Balance
+				WHEN 'USER_BALANCE' then User_Balance 
+				ELSE mtr.Amount
+			END)		  
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+		
+	
+</mapper>

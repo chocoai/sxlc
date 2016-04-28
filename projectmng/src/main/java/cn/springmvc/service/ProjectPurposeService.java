@@ -1,7 +1,7 @@
 package cn.springmvc.service;
-
-import java.util.List;
  
+ 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import cn.springmvc.model.ProjectPurposeEntity;
   
 /**
@@ -17,6 +17,13 @@ public interface ProjectPurposeService {
 	 * @param entity 会员认证类型实体
 	 * @return 0：数据为空;1:添加成功
 	 */
-	public int insertProjectPurpose(ProjectPurposeEntity entity); 
+	public int insertProjectPurpose(ProjectPurposeEntity entity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo); 
+	/**
+	 * 新增借款意向-前台会员
+	 * @param entity 会员认证类型实体
+	 * @return 0：数据为空;1:添加成功
+	 */
+	public int insertProjectPurposeFront(ProjectPurposeEntity entity); 
 	 
 }

@@ -32,7 +32,7 @@ public interface MemberMsgSetService {
 	 * @Description: TODO 
 	 * @param   sendSetEntity
 	 * @param @return 设定文件 
-	 * @return int 返回类型 
+	 * @return int 返回类型 -1数据为空 -2平台未开通该类型的消息设置，0失败1成功
 	 * @date 2016-3-30 上午11:47:00
 	 */
 	public int insertMemberSmsSendSet(SendSetEntity sendSetEntity);
@@ -42,7 +42,7 @@ public interface MemberMsgSetService {
 	 * @Description: TODO 
 	 * @param  sendSetEntity
 	 * @param @return 设定文件 
-	 * @return int 返回类型 
+	 * @return int 返回类型 -1数据为空 -2平台未开通该类型的消息设置，0失败1成功
 	 * @date 2016-3-30 上午11:47:00
 	 */
 	public int insertMemberEmailSendSet(SendSetEntity sendSetEntity);
@@ -52,7 +52,7 @@ public interface MemberMsgSetService {
 	 * @Description: TODO 
 	 * @param  sendSetEntity
 	 * @param @return 设定文件 
-	 * @return int 返回类型 
+	 * @return int 返回类型 -1数据为空 -2平台未开通该类型的消息设置，0失败1成功
 	 * @date 2016-3-30 上午11:47:00
 	 */
 	public int insertMemberLetterSendSet(SendSetEntity sendSetEntity);
@@ -62,7 +62,7 @@ public interface MemberMsgSetService {
 	 * @Description: TODO 
 	 * @param   sendSetEntity
 	 * @param @return 设定文件 
-	 * @return int 返回类型 
+	 * @return int 返回类型 -1数据为空 -2平台未开通该类型的消息设置，0失败1成功  
 	 * @date 2016-3-30 上午11:54:31
 	 */
 	public int updateMemberSmsSendSet(SendSetEntity sendSetEntity);
@@ -72,7 +72,7 @@ public interface MemberMsgSetService {
 	 * @Description: TODO 
 	 * @param  sendSetEntity
 	 * @param @return 设定文件 
-	 * @return int 返回类型 
+	 * @return int 返回类型 -1数据为空 -2平台未开通该类型的消息设置，0失败1成功
 	 * @date 2016-3-30 上午11:55:16
 	 */
 	public int updateMemberEmailSendSet(SendSetEntity sendSetEntity);
@@ -82,7 +82,7 @@ public interface MemberMsgSetService {
 	 * @Description: TODO 
 	 * @param   sendSetEntity
 	 * @param @return 设定文件 
-	 * @return int 返回类型 
+	 * @return int 返回类型 -1数据为空 -2平台未开通该类型的消息设置，0失败1成功
 	 * @date 2016-3-30 上午11:56:03
 	 */
 	public int updateMemberLetterSendSet(SendSetEntity sendSetEntity);

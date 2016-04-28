@@ -11,8 +11,7 @@
 * @version V5.0 */
  
 package cn.springmvc.dao; 
-
-import java.util.HashMap;
+ 
 import java.util.List;
 import java.util.Map;
 

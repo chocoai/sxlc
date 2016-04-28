@@ -11,16 +11,14 @@
 * @version V5.0 */
  
 package cn.springmvc.dao.impl; 
-
-import java.util.Map;
+ 
 
 import javax.annotation.Resource;  
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
- 
-import cn.springmvc.dao.InviteMasterApplyDao;
+  
 import cn.springmvc.dao.InviteMasterApplyListDao;
 
 /** 

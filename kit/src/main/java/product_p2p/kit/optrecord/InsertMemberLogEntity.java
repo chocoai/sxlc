@@ -7,6 +7,9 @@ public class InsertMemberLogEntity {
 	private String sUrl;				//访问url
 	private String sReferrUrl;			//页面来源
 	private String sKeyWord;			//页面关键词
+	
+	
+	
 	public String getsKeyWord() {
 		return sKeyWord;
 	}

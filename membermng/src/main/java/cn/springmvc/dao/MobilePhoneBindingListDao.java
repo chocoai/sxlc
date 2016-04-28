@@ -31,5 +31,25 @@ public interface MobilePhoneBindingListDao {
 	 * @date 2016-3-29 上午11:44:07
 	 */
 	public int selectPhoneIsExist(Map<String,Object> map);
+	/**
+	 * 查询原绑定的手机号
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return String 返回类型 
+	 * @date 2016-4-25 下午7:09:39
+	 */
+	public String selectOldPhone(Map<String,Object> map);
+	/**
+	 * 查询原有电话号码是否输入正确
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return int 返回类型 
+	 * @date 2016-4-25 下午8:19:21
+	 */
+	public int checkPhone(Map<String,Object> map);
 }
 

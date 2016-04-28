@@ -43,6 +43,7 @@ public class CapitalbudgetdetailsListDaoImpl extends SqlSessionDaoSupport  imple
 	public List<MemberTradingRecordsEntity> selectMemberTradingRecords(
 			PageEntity pageEntity) {
 		
+		//memberTradingMap MemberTradingRecords.xml
 		return getSqlSession().selectList("memberTradingMap.selectMemberTradingRecords",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		
 	}
@@ -51,6 +52,7 @@ public class CapitalbudgetdetailsListDaoImpl extends SqlSessionDaoSupport  imple
 	public MemberTradingRecordsEntity selectTradingRecordsdetail(
 			Map<String, Object> map) {
 		
+		//memberTradingMap MemberTradingRecords.xml
 		return getSqlSession().selectOne("memberTradingMap.selectTradingRecordsdetail",map);
 		
 	}
@@ -59,6 +61,7 @@ public class CapitalbudgetdetailsListDaoImpl extends SqlSessionDaoSupport  imple
 	public List<MemberWithdrawalRechargeEntity> selectRechargeList(
 			PageEntity pageEntity) {
 		
+		//memberTradingMap MemberTradingRecords.xml
 		return getSqlSession().selectList("memberTradingMap.selectRechargeList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		
 	}
@@ -67,6 +70,7 @@ public class CapitalbudgetdetailsListDaoImpl extends SqlSessionDaoSupport  imple
 	public List<MemberWithdrawalRechargeEntity> selectWithdrawalList(
 			PageEntity pageEntity) {
 		
+		//memberTradingMap MemberTradingRecords.xml
 		return getSqlSession().selectList("memberTradingMap.selectWithdrawalList",pageEntity);
 		
 	}
@@ -74,6 +78,7 @@ public class CapitalbudgetdetailsListDaoImpl extends SqlSessionDaoSupport  imple
 	@Override
 	public long selectTotalRechargeFee(Map<String, Object> map) {
 		
+		//memberTradingMap MemberTradingRecords.xml
 		return getSqlSession().selectOne("memberTradingMap.selectTotalRechargeFee",map); 
 		
 	}
@@ -81,6 +86,7 @@ public class CapitalbudgetdetailsListDaoImpl extends SqlSessionDaoSupport  imple
 	@Override
 	public long selectTotalRechargeReal(Map<String, Object> map) {
 		
+		//memberTradingMap MemberTradingRecords.xml
 		return getSqlSession().selectOne("memberTradingMap.selectTotalRechargeReal",map);
 		
 	}
@@ -88,6 +94,7 @@ public class CapitalbudgetdetailsListDaoImpl extends SqlSessionDaoSupport  imple
 	@Override
 	public long selectTotalWithdrawalFee(Map<String, Object> map) {
 		
+		//memberTradingMap MemberTradingRecords.xml
 		return getSqlSession().selectOne("memberTradingMap.selectTotalWithdrawalFee",map);
 		
 	}
@@ -95,7 +102,24 @@ public class CapitalbudgetdetailsListDaoImpl extends SqlSessionDaoSupport  imple
 	@Override
 	public long selectTotalWithdrawalReal(Map<String, Object> map) {
 		
+		//memberTradingMap MemberTradingRecords.xml
 		return getSqlSession().selectOne("memberTradingMap.selectTotalWithdrawalReal",map);
+		
+	}
+
+	@Override
+	public Map<String,Object> selectTotalRechargeInfo(Map<String, Object> map) {
+		
+		//memberTradingMap MemberTradingRecords.xml
+		return getSqlSession().selectOne("memberTradingMap.selectTotalRechargeInfo",map);
+		
+	}
+
+	@Override
+	public Map<String, Object> selectTotalWithdrawalInfo(Map<String, Object> map) {
+		
+		//memberTradingMap MemberTradingRecords.xml
+		return getSqlSession().selectOne("memberTradingMap.selectTotalWithdrawalInfo",map);
 		
 	}
 

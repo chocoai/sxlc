@@ -53,7 +53,7 @@ and pi.Apply_Id not in (select Apply_Id from Loan_Repay where (Statu=0 or Statu=
 				#{investId,	 mode=IN,	jdbcType=BIGINT},
 				#{transPrincipal,	 mode=IN,	jdbcType=BIGINT},
 				#{transDiscount,	 mode=IN,	jdbcType=BIGINT},
-				#{transMaxTime,	 mode=IN,	jdbcType=DATETIME},
+				#{transMaxTime,	 mode=IN,	jdbcType=VARCHAR},
 				#{surplusTime ,	 mode=IN,	jdbcType=INTEGER},
 				#{surplusTimeType ,	 mode=IN,	jdbcType=INTEGER},
 				#{skey ,	 mode=IN,	jdbcType=VARCHAR},

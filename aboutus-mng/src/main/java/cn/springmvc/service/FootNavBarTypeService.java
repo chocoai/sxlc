@@ -55,4 +55,13 @@ public interface FootNavBarTypeService {
 	 * @return  FootNavBarTypeEntity 
 	 */
 	public  FootNavBarTypeEntity  selectFootNavBarTypeByID(long id);
+	/**
+	 * 列表展示底部导航条类型
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @return 设定文件 
+	 * @return List<FootNavBarTypeEntity> 返回类型 
+	 * @date 2016-4-26 上午10:38:52
+	 */
+	public  List<FootNavBarTypeEntity>  selectFootNavBarType();
 }

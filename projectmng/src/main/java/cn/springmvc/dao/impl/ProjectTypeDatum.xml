@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="projectTypeDatum">  
    <resultMap type="cn.springmvc.model.ProjectTypeDatumEntity" id="resultListProjectTypeDatum"> 
-		<result column="Project_Type"   property="projectType" />
+		<result column="Project_ID"   property="projectType" />
 		<result column="Attest_Type"    property="attestType" />
 		<result column="Attest_Type_ID" property="attestTypeID" /> 
     </resultMap> 
     <!-- 项目类型申请条件-->  
 	<select id="selectProjectTypeDatumList"  parameterType="cn.springmvc.model.ProjectTypeDatumEntity" resultMap="resultListProjectTypeDatum">
-	   select Project_Type,Attest_Type,Attest_Type_ID  from Project_Type_Datum  
+	   select Project_ID,Attest_Type,Attest_Type_ID  from Project_Type_Datum  
 	   <where>  
-            Project_Type=#{projectType}  
+            Project_ID=#{projectType}  
             <if test="attestType != -1">  
                 and Attest_Type=#{attestType}
             </if>   
@@ -18,7 +18,7 @@
     </select>       
 	<!-- 批量新增借款项目类型申请条件-->  
 	<insert id="insertProjectTypeDatum"  parameterType="java.util.List">    
-		insert into Project_Type_Datum (Project_Type,Attest_Type,Attest_Type_ID) 
+		insert into Project_Type_Datum (Project_ID,Attest_Type,Attest_Type_ID) 
 		values 
 	   <foreach collection="list" item="item" index="index" separator="," >  
          (#{item.projectType},#{item.attestType},#{item.attestTypeID})  
@@ -26,6 +26,19 @@
 	</insert>   
     <!-- 批量修改借款项目类型申请条件状态-->  
 	<delete id="deleteProjectTypeDatumByOptionType"  parameterType="int">
-	    delete from   Project_Type_Datum  where  Project_Type=#{projectType} 
-    </delete>        
+	    delete from   Project_Type_Datum  where  Project_ID=#{projectType} 
+    </delete> 
+    
+     <resultMap type="cn.springmvc.model.MemberAttestTypeEntity" id="resultListMemberAttestType">
+        <id column="Attest_Type_ID"    property="attestTypeID" />
+		<result column="Member_Type"   property="memberType" />
+		<result column="Attest_TypeName" property="attestTypeName" /> 
+    </resultMap> 
+    <!-- 查询项目类型所需认证项 -->  
+	<select id="selectMemberAttestByprojectType" parameterType="long"  resultMap="resultListMemberAttestType">
+	    select  mat.Attest_TypeName,ptd.Attest_Type_ID,mat.Member_Type 
+	    from   Member_Attest_Type mat   
+	    left join Project_Type_Datum ptd on  mat.Attest_Type_ID= ptd.Attest_Type_ID
+	    where   ptd.Project_ID =#{projectType}
+    </select>        
 </mapper>   

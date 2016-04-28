@@ -18,10 +18,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import product_p2p.kit.datatrans.IntegerAndString;
- 
+import product_p2p.kit.datatrans.IntegerAndString; 
 import cn.springmvc.dao.InviteMasterApplyDao;  
-import cn.springmvc.dao.InviteMasterApplyListDao;
+import cn.springmvc.dao.InviteMasterApplyListDao; 
 import cn.springmvc.service.InviteMasterApplyService;
 
 /** 
@@ -34,8 +33,7 @@ public class InviteMasterApplyServiceImpl implements InviteMasterApplyService {
 	@Resource(name="inviteMasterApplyDaoImpl")
 	private  InviteMasterApplyDao inviteMasterApplyDao;
 	@Resource(name="inviteMasterApplyListDaoImpl")
-	private  InviteMasterApplyListDao inviteMasterApplyListDaoImpl;
-
+	private  InviteMasterApplyListDao inviteMasterApplyListDaoImpl; 
 	@Override
 	public int insertInviteMasterApply(Map<String, Object> map) {
 		
@@ -46,8 +44,8 @@ public class InviteMasterApplyServiceImpl implements InviteMasterApplyService {
 		if(result >0 ) {
 			return -1;
 		}
-		return inviteMasterApplyDao.insertInviteMasterApply(map);
-		
+		result = inviteMasterApplyDao.insertInviteMasterApply(map); 
+		return result;
 	}  
 	 
 

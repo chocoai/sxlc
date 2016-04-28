@@ -3,12 +3,12 @@
 <mapper namespace="projectTypeTerm">   
     <!--  查询项目类型期限 -->  
 	<select id="selectProjectTypeTermentity" parameterType="cn.springmvc.model.ProjectTypeTermEntity"  resultType="cn.springmvc.model.ProjectTypeTermEntity">
-	   select Project_Type as projectType,Unit as unit,Min_Daytime as minDaytime ,Max_Daytime  as maxDaytime
-       from  Project_Type_Term  where   Project_Type=#{projectType} and Unit=#{unit}
+	   select Project_ID as projectType,Unit as unit,Min_Daytime as minDaytime ,Max_Daytime  as maxDaytime
+       from  Project_Type_Term  where   Project_ID=#{projectType} and Unit=#{unit}
     </select>       
 	<!-- 新增项目类型期限 -->  
 	<insert id="insertProjectTypeTerm"  parameterType="cn.springmvc.model.ProjectTypeTermEntity">    
-		insert into Project_Type_Term (Project_Type,   Unit,  Min_Daytime,  Max_Daytime  ) 
+		insert into Project_Type_Term (Project_ID,   Unit,  Min_Daytime,  Max_Daytime  ) 
 		                       values (#{projectType},#{unit},#{minDaytime},#{maxDaytime})    
 	</insert>  
     <!-- 修改项目类型期限信息 -->  
@@ -22,6 +22,11 @@
 	         Max_Daytime=#{maxDaytime},
 	       </if>  
 	    </set>
-	     where Project_Type=#{projectType} and  Unit=#{unit}   
+	     where Project_ID=#{projectType} and  Unit=#{unit}   
     </update>
+     <!--  查询项目类型期限 -->  
+	<select id="selectProjectTypeTermByID" parameterType="long"  resultType="cn.springmvc.model.ProjectTypeTermEntity">
+	   select Unit as unit,Min_Daytime as minDaytime ,Max_Daytime  as maxDaytime
+       from  Project_Type_Term  where   Project_ID=#{projectID}
+    </select>  
 </mapper>   

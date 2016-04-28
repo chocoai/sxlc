@@ -50,9 +50,9 @@ public class IndexDaoImpl extends SqlSessionDaoSupport implements IndexDao{
 		
 	}
 	@Override
-	public List<CreditorTransferListEntity> selectCreditorTransferListIndex() {
+	public List<CreditorTransferListEntity> selectCreditorTransferListIndex(Map<String, Object> map) {
 		
-		return getSqlSession().selectList("Index.selectCreditorTransferListIndex");
+		return getSqlSession().selectList("Index.selectCreditorTransferListIndex",map);
 		
 	}
 	@Override

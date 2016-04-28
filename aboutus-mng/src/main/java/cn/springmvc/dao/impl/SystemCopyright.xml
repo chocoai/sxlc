@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD footNavBar 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="SystemCopyright"> 
+    <!-- 新增网站版权信息-->  
+	<insert id="insertSystemCopyright"  parameterType="String" >    
+		insert into 
+		System_Copyright( Content) 
+		       values (#{content})    
+	</insert> 
+	<!-- 查询网站版权信息是否存在 -->  
+	<select id="selectSystemCopyrightIsExist"   resultType="int" >
+	   select count(*) from  System_Copyright  
+    </select> 
+    <!-- 查询网站版权信息-->  
+	<select id="selectSystemCopyright"   resultType="String" >
+	   select Content from  System_Copyright  
+    </select> 
+    <!-- 修改网站版权信息-->  
+    <update  id="updateSystemCopyright"  parameterType="String" >    
+		update System_Copyright set Content =#{content} 
+	</update> 
+     
+</mapper>

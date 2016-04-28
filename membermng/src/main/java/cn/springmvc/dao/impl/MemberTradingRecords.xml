@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="memberTradingMap">
-     <!--             交易记录 -->
+     <!--             交易记录  memberTradingRecordsMap - TransactionRecordMap.xml-->
 	<select id="selectMemberTradingRecords" parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="memberTradingRecordsMap.resultMemberTradingRecords">
 	 select mtr.Trade_ID,mtr.Trade_Type_Id,tradeType.name1 as tradeType,
 	 CAST((AES_DECRYPT(UNHEX(mtr.Amount),#{map.sKey})) as signed)                     Amount,
@@ -200,6 +200,15 @@
 		from  Member_Withdrawal_Recharge mwr
 	    where mwr.Member_ID =#{memberID} and mwr.Member_Type =#{memberType} and mwr.Deal_Type=0 
 	  </select>
+	    <!-- 	     总的充值手续费-实际到账总额  -->
+	  <select id="selectTotalRechargeInfo" parameterType="Map" resultType="Map">
+	    select  
+		(ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee),#{sKey})) as signed)),0) +
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Third_Mng_Fee),#{sKey})) as signed)),0) ) as totalfee,
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Real_Money),#{sKey})) as signed)),0) as totalrecharge
+		from  Member_Withdrawal_Recharge mwr
+	    where mwr.Member_ID =#{memberID} and mwr.Member_Type =#{memberType} and mwr.Deal_Type=0 
+	  </select>
         <!-- 	       提现记录列表 -->
 	   <select id="selectWithdrawalList" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="memberTradingRecordsMap.resultMemberWithdrawalRecharge">
 		select 
@@ -258,6 +267,16 @@
 	  <select id="selectTotalWithdrawalReal" parameterType="Map" resultType="long">
 		select  
 		ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Real_Money),#{sKey})) as signed)),0) as totalrecharge
+		from  Member_Withdrawal_Recharge mwr
+	    where mwr.Member_ID =#{memberID} and mwr.Member_Type =#{memberType} and mwr.Deal_Type=1 
+	  </select>
+	   <!-- 	     总的提现金额 -提现手续费 -->
+	  <select id="selectTotalWithdrawalInfo" parameterType="Map" resultType="Map">
+		select  
+		(ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee),#{sKey})) as signed)),0) +
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Third_Mng_Fee),#{sKey})) as signed)),0) ) as totalfee,
+		
+		ifnull(sum(CAST((AES_DECRYPT(UNHEX(mwr.Real_Money),#{sKey})) as signed)),0) as totalWithdrawal
 		from  Member_Withdrawal_Recharge mwr
 	    where mwr.Member_ID =#{memberID} and mwr.Member_Type =#{memberType} and mwr.Deal_Type=1 
 	  </select>

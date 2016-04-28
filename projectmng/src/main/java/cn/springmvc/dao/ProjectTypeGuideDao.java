@@ -20,12 +20,12 @@ public interface ProjectTypeGuideDao {
 	 * @param entity 项目类型申请指南实体
 	 * @return  0:失败 1：成功 
 	 */
-	public  int  updateProjectTypeGuideByID(ProjectTypeGuideEntity entity); 
+	public  int  updateProjectTypeGuideByIndex(ProjectTypeGuideEntity entity); 
 	/**
 	 * 通过index删除项目类型申请指南
-	 * @param id 项目类型申请指南id
+	 * @param index 指南序号
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteProjectTypeGuideByID(int id); 
+	public  int  deleteProjectTypeGuideByIndex(int index); 
 	
 }

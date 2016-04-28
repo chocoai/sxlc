@@ -126,6 +126,10 @@
 .processStep7Success{
 	background:url(../../resource/img/loan/xzcgfk.png) no-repeat;
 }
+.dateSelectDiv{
+	display:inline-block;
+	min-width:450px;
+}
 .process p{
 	text-align:center;
 	width:100%;
@@ -279,9 +283,8 @@ label{
 	background:#25a9ff;
 }
 .personInfo span{
-	position:absolute;
+	
 	top:11px;
-	left:38.4%;
 	color:#a2a2a2;
 }
 .personInfo samp{
@@ -550,91 +553,61 @@ input[type="text"]:focus{
 	border-color:#a5d7f7;
 }
 /* end */
-/* 弹出提示的样式 */
-/* 输入错误时弹出的样式  */
-.tipError,
-.after,
-.pre{
-	display:inline-block;
-	vertical-align:middle;
-}
-.tipError{
-	position: absolute;
-}
-.after{
-	height:42px;
-	background:#fce3e3;
-	border-top:1px solid #fd0202;
-	border-bottom:1px solid #fd0202;
-	border-right:1px solid #fd0202;
-	line-height:42px;
-	padding:0 10px 0 5px;
-	margin-top:2px;
-	color:#fd0202;
-	max-width:300px;
-	overflow:hidden;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-}
-.after,
-.pre{
-	float:left;
-}
-.pre{
-	width:40px;
-	height:45px;
-	background:url(../../resource/img/account/common/tipsError_03.png) no-repeat;
-}
-/* 获取焦点时弹出的样式  */
-.tip,
-.afterTip,
-.preTip{
-	display:inline-block;
-	vertical-align:middle;
-}
-.tip{
-	position:absolute;
-}
-.afterTip{
-	height:42px;
-	max-width:300px;
-	overflow:hidden;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	background:#fff;
-	border-top:1px solid #72c0f3;
-	border-right:1px solid #72c0f3;
-	border-bottom:1px solid #72c0f3;
-	line-height:42px;
-	padding:0 10px 0 2px;
-	margin-top:2px;
-	color:#7c7c7c;
-}
-.afterTip,
-.preTip{
-	float:left;
-}
-.preTip{
-	width:20px;
-	height:45px;
-	background:url(../../resource/img/account/common/tip_07.png) no-repeat;
-}
-/* 输入正确的提示弹出层 */
-.tipOk{
-	position:absolute;
-}
-.tipOk{
-	display:inline-block;
-	width:15px;
-	height:15px;
-	margin-left:10px;
-	vertical-align:middle;
-	background:url(../../resource/img/account/common/zq.png) no-repeat;
-}
+
 .selectDate{
 	width:292px !important;
 }
 .selectArea2{
 	width:100px;
 	margin-left:18px;
+}
+
+.applyTalent{
+	display:none;
+}
+.applyTalent2{
+	display:none;
+}
+.apply-top{
+	height:203px;
+	width:435px;
+	text-align:center;
+	font-size:18px;
+/* 	border-bottom:1px solid #ddd; */
+	background-image: url("../../resource/img/common/cg.png");
+	background-repeat: no-repeat;
+	background-position: 165px 0px;
+	color:#262626;
+	padding-top: 110px;
+}
+.applyTalent2 .apply-top{
+	background-image: url("../../resource/img/common/sb.png");
+}
+.apply-top label{
+	color:#8c8c8c;
+	font-size:28px;
+    margin-right: 0;
+}
+.apply-top span{
+	color:#535353;
+	font-size:18px;
+	line-height: 70px;
+}
+.apply-bottom{
+	margin-top:20px;
+	width:252px;
+}
+.apply-bottom input{	
+	height:42px;
+	width:252px;
+	background-color:#72c0f3;
+	color:#fff;
+	font-size:16px;
+	border:none;
+	border-radius:1px;
+	margin:0;
+}
+.apply-bottom input:hover{
+	background-color: #38aaf4;
+	cursor: pointer;
 }

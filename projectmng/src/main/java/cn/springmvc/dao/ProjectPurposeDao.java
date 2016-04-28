@@ -1,7 +1,6 @@
 
 package cn.springmvc.dao; 
-
-import cn.springmvc.model.ProjectBaseInfoEntity;
+ 
 import cn.springmvc.model.ProjectPurposeEntity;
 /**
  * 

@@ -3,6 +3,7 @@
  * 内容介绍：
  */
 $(function(){
+	
 	/*添加协议配置*/
 	$(".obtn-agreement-add").on("click touchstart",function(){
 		layer.open({
@@ -65,6 +66,15 @@ $(function(){
 		}, function(index){
 			//按钮【按钮二】的回调
 		});
+	});
+	/* 下拉框内字体颜色 */
+	$(".linkedoperation").css("color","#aaa");
+	$(".linkedoperation").change(function(){
+		if($(this).val()!="请选择"){
+			$(this).css("color","#000");
+		}else{
+			$(this).css("color","#aaa");
+		}
 	});
 });
 

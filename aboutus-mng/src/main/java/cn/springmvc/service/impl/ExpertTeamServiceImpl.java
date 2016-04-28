@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity; 
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.ExpertTeamDao;
 import cn.springmvc.dao.ExpertTeamListDao; 
 import cn.springmvc.dao.impl.IdGeneratorUtil;
@@ -106,11 +107,10 @@ public class ExpertTeamServiceImpl implements ExpertTeamService {
 	}
 
 	@Override
-	public List<ExpertTeamEntity> selectExpertTeamListpage(PageEntity pageEntity) {
+	public void selectExpertTeamListpage(PageEntity pageEntity) {
 		
-		List<ExpertTeamEntity> expertTeamList = null;    
-	 	expertTeamList = expertTeamListDaoImpl.selectExpertTeamAllpage(pageEntity);  
-		return expertTeamList; 
+		List<ExpertTeamEntity> expertTeamList =  expertTeamListDaoImpl.selectExpertTeamAllpage(pageEntity);  
+		PageUtil.ObjectToPage(pageEntity, expertTeamList); 
 	}
 	 
 	@Override

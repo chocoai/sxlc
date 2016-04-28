@@ -21,10 +21,10 @@
 .revenueRecordUl .divOutside{
 	height:78px;
 }
-.myInvestmentH>div:hover{
+/* .myInvestmentH>div:hover{
 	color:#45a7e6;
 	border-bottom:2px solid #72c0f3;
-}
+} */
 .myInvestmentM{
 	display:inline-block;
 	width:100%;
@@ -178,17 +178,20 @@
 .bidEndUl{
 	display:none;
 }
-/* �ѽ����Ͷ��-�����¼��ʼ���� */
+/* 锟窖斤拷锟斤拷锟酵讹拷锟�锟斤拷锟斤拷锟铰硷拷锟绞硷拷锟斤拷锟�*/
 .revenueRecord{
 	width:198px !important;
 	color: #72c0f3;
     border-bottom: 2px solid #72c0f3 !important;
 }
+.revenueRecord span:hover{
+	color:#45a7e6;
+}
 .revenueRecordContent .myInvestmentM ul{
 	display:inline-block;
 }
-/* �ѽ����Ͷ��-�����¼����� */
-/* �ѻ����е�Ͷ��-����ƻ���ʼ���� */
+/* 锟窖斤拷锟斤拷锟酵讹拷锟�锟斤拷锟斤拷锟铰硷拷锟斤拷锟斤拷 */
+/* 锟窖伙拷锟斤拷锟叫碉拷投锟斤拷-锟斤拷锟斤拷苹锟斤拷锟绞硷拷锟斤拷锟�*/
 .revenuePlanContent .myInvestmentM ul{
 	display:inline-block;
 	text-align: center;
@@ -199,9 +202,9 @@
 .unRepayment{
 	color:#fe7407;
 }
-/* �ѽ����Ͷ��-�����¼��ʼ���� */
+/* 锟窖斤拷锟斤拷锟酵讹拷锟�锟斤拷锟斤拷锟铰硷拷锟绞硷拷锟斤拷锟�*/
 
-/* 分页 */
+/* 鍒嗛〉 */
 .page{
 	width:100%;
 	height:162px !important;

@@ -5,4 +5,8 @@
 	<select id="selectLiveBroadcast" resultType="cn.springmvc.model.LiveBroadcastEntity">
 	  select Content as content,Record_Date as recordDate  from  Live_Broadcast
 	</select>
+	 <insert id="insertLiveBroadcast" parameterType="String">
+	 insert into Live_Broadcast(Content)
+	                   values (#{content})
+	</insert>
 </mapper>

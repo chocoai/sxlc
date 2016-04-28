@@ -5,8 +5,7 @@ import java.util.Map;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
-import cn.springmvc.model.ProcessProjectEntity;
-import cn.springmvc.model.ProcessProjectEntity;
+import cn.springmvc.model.ProcessProjectEntity; 
  
 
 public interface ProcessProjectService {
@@ -22,13 +21,15 @@ public interface ProcessProjectService {
 	 * @param id 项目审批流程id
 	 * @return 0：失败；1成功
 	 */
-	public int deleteProcessProjectByID(int id);   
+	public int deleteProcessProjectByID(int id,InsertAdminLogEntity 
+			entityLog, String[] sIpInfo);   
    /**
 	 * 停用或启用项目审批流程信息
 	 * @param entity 项目审批流程实体,实体里包含审批流程ID,与审批流程状态
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  updateProcessProjectStatuByID(ProcessProjectEntity entity);
+	public  int  updateProcessProjectStatuByID(ProcessProjectEntity entity,
+			InsertAdminLogEntity entityLog, String[] sIpInfo);
 	/**
 	 * 分页查询项目审批流程
 	 * @param pageEntity 分页实体 
@@ -40,7 +41,8 @@ public interface ProcessProjectService {
 	 * @param map集合 map集合   {iid(ID),flag(大于0上移,小于0下移)} 
 	 * @return -1失败，1成功
 	 */
-	public int moveAndDownProcessProjectByID(Map<String, Object> map); 
+	public int moveAndDownProcessProjectByID(Map<String, Object> map,
+			InsertAdminLogEntity entityLog, String[] sIpInfo); 
 	/**
 	 * 根据id查询审批流程
 	 * @param ProcessProjectEntity 审批流程实体

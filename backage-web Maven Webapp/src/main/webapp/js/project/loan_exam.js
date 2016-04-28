@@ -1,19 +1,4 @@
-
-$(document).ready(function() {
-	/**��***************项目审核*******************  **/
-    /*** *************状态改变功能״̬********* ***/
-    $('#loan_pro_exam').click(function(){
-    	layer.open({
-            type: 2,
-            title: '项目审核',
-            maxmin: true,
-            shadeClose: true, //点击遮罩关闭层
-            area : ['900px' , '580px'],
-            content: 'web/project/loan_pro_exam.jsp'
-        });
-    });
-    
-    
+$(document).ready(function() { 
     /******************查看项目详情**********************/
     $('#loan_pro_detail').on('click', function(){
     	layer.open({
@@ -38,3 +23,19 @@ $(document).ready(function() {
     	});
     });
 });
+function del(){
+	layer.confirm('删除?', {title:'提示'}, function(index){
+		  //do something
+	  layer.close(index);
+	});
+}
+function down(){
+	layer.confirm('下载?', {title:'提示'}, function(index){
+		  //do something
+	  layer.close(index);
+	});
+}
+function proAudit(){
+	/*******项目审核*******/
+	$(".right_col").load("web/project/pro-add/loan_pro_exam.jsp");
+}

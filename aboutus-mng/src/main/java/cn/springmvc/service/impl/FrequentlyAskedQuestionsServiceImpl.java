@@ -85,9 +85,9 @@ public class FrequentlyAskedQuestionsServiceImpl implements FrequentlyAskedQuest
 	}
 
 	@Override
-	public FrequentlyAskedQuestionsEntity selectFrequentlyAskedQuestionsList(int statu) {
+	public FrequentlyAskedQuestionsEntity selectFrequentlyAskedQuestionsList() {
 		
-		FrequentlyAskedQuestionsEntity productIntroduceEntity = frequentlyAskedQuestionsListDaoImpl.selectFrequentlyAskedQuestions(statu);
+		FrequentlyAskedQuestionsEntity productIntroduceEntity = frequentlyAskedQuestionsListDaoImpl.selectFrequentlyAskedQuestions();
 		return productIntroduceEntity;
 	}
 

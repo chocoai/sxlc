@@ -6,9 +6,11 @@
 }
 /*伍成然2016-3-28*/
 /*main部分  */
-.main{
+body .main{
+	padding-top:0;
 	padding-bottom:20px;
 	width:1200px;
+	background-color:#f6f6f6;
 }
 /*链接区域  */
 .link-area{

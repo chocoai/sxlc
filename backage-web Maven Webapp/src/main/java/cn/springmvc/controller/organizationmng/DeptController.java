@@ -104,9 +104,8 @@ public class DeptController {
 		pager.setMap(req);
 		
 		logger.info("开始调用查询部门列表接口......req=" + req);
-		List<DeptInfo> deptList = deptInfoServer.getListByParam(pager);
-		logger.info("结束调用查询部门列表接口......接口返回：result=" + deptList);
-		pager.setResults(deptList);
+		deptInfoServer.getListByParam(pager);
+		logger.info("结束调用查询部门列表接口......接口返回：result=" + pager);
 		
 		return pager;
 		
@@ -368,15 +367,15 @@ public class DeptController {
 			for (DeptInfo deptInfo : deptlist) {
 				sPath = "/role/treeList.do?deptId=" + parentId;
 				entity = new Trui();
-				entity.setResourceID(String.valueOf(deptInfo.getId()));
-				entity.setParentID(String.valueOf(deptInfo.getPreDeptId()));
+				entity.setResourceID(deptInfo.getId());
+				entity.setParentID(deptInfo.getPreDeptId());
 				entity.setResourceCode("");
 				entity.setResourceDesc("");
-				entity.setResourceOrder("0");
+				entity.setResourceOrder(0);
 				entity.setResourceType("0");
 				entity.setAccessPath(sPath);
 				entity.setResourceName(deptInfo.getDeptName());
-				entity.setResourceGrade(String.valueOf(deptInfo.getDeptLevel()));
+				entity.setResourceGrade(deptInfo.getDeptLevel());
 				treeList.add(entity);
 			}
 		}

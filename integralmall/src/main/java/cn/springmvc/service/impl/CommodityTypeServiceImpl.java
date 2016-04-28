@@ -1,9 +1,8 @@
 package cn.springmvc.service.impl;
-
-import cn.springmvc.dao.CommodityTypeDao;
+ 
+import cn.integralmall.model.CommodityTypeEntity;
 import cn.springmvc.dao.CommodityTypeListDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
-import cn.springmvc.model.CommodityTypeEntity;
 import cn.springmvc.service.CommodityTypeService;
 import org.springframework.stereotype.Service;
 import product_p2p.kit.pageselect.PageEntity;

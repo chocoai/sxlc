@@ -20,12 +20,12 @@ public interface ProjectTypeReplyDao {
 	 * @param entity 项目类型还款指南实体
 	 * @return  0:失败 1：成功 
 	 */
-	public  int  updateProjectTypeReplyByID(ProjectTypeReplyEntity entity); 
+	public  int  updateProjectTypeReplyByIndex(ProjectTypeReplyEntity entity); 
 	/**
 	 * 通过index删除项目类型还款指南
-	 * @param id 项目类型还款指南id
+	 * @param index 序号
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  deleteProjectTypeReplyByID(int id); 
+	public  int  deleteProjectTypeReplyByIndex(int index); 
 	
 }

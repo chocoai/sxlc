@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="LuckyDraw">  
+     <!-- 抽奖等级奖品设置-->  
+    <select id="LotteryManageSet"  statementType="CALLABLE" parameterType="Map"> 
+	     {call Lottery_Manage_Set(
+				#{LotteryID ,	     mode=IN,	jdbcType=BIGINT},
+				#{PrizeID ,	         mode=IN,	jdbcType=BIGINT},
+				#{grade,	         mode=IN,	jdbcType=INTEGER},
+				#{GradeOdds,	     mode=IN,	jdbcType=INTEGER},
+				#{WinningOdds,	     mode=IN,	jdbcType=BIGINT},
+				#{lID,	             mode=IN,	jdbcType=BIGINT},
+				#{result,	         mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+	 <!-- 抽奖设置-->  
+    <select id="LotterySet"  statementType="CALLABLE" parameterType="Map"> 
+	     {call Lottery_Set(
+				#{statu,	             mode=IN,	jdbcType=BIGINT},
+				#{startDate ,	         mode=IN,	jdbcType=VARCHAR},
+				#{endDate,	             mode=IN,	jdbcType=VARCHAR},
+				#{integra,	             mode=IN,	jdbcType=INTEGER},
+				#{adminID,	             mode=IN,	jdbcType=BIGINT},
+				#{lId,	                 mode=IN,	jdbcType=BIGINT}, 
+				#{result,	             mode=OUT,	jdbcType=INTEGER}
+    		)}
+	</select>
+	
+	<!-- 奖品删除-->  
+    <select id="PrizeDelete"  statementType="CALLABLE" parameterType="Map"> 
+	     {call Prize_Delete(
+				#{lId,	             mode=IN,	jdbcType=BIGINT}, 
+				#{result,	         mode=OUT,	jdbcType=INTEGER} 
+    		)}
+	</select>
+	
+	<!-- 奖品设置-->  
+    <select id="PrizeSet"  statementType="CALLABLE" parameterType="Map"> 
+	     {call Prize_Set(
+				#{prizetype,	         mode=IN,	jdbcType=INTEGER},
+				#{prizename ,	         mode=IN,	jdbcType=VARCHAR},
+				#{prizeWorth,	         mode=IN,	jdbcType=BIGINT},
+				#{prizeQuantity,	     mode=IN,	jdbcType=BIGINT},
+				#{prizeUrl,	             mode=IN,	jdbcType=VARCHAR},
+				#{lId,	                 mode=IN,	jdbcType=BIGINT}, 
+				#{result,	             mode=OUT,	jdbcType=INTEGER}
+    		)}
+	</select>
+   <resultMap type = "cn.invitemastermng.model.LotteryRecordsEntity" id = "LotteryRecord">
+        <id property = "period"				    column = "Period" />
+		<result property = "startDate"       	column = "Start_Date" />
+		<result property = "integra"    	    column = "Integra" />
+		<result property = "grade"    	        column = "Grade" />
+		<result property = "prizeType"  	    column = "Prize_Type" />
+		<result property = "prizeName" 	        column = "Prize_Name" />
+		<result property = "prizeWorth" 	    column = "Prize_Worth" /> 
+		<result property = "lotteryTime" 	    column = "Lottery_Time" /> 
+		<result property = "memberNo" 	        column = "Member_No" /> 
+		<result property = "logname" 	        column = "Logname" /> 
+		<result property = "personalPhone" 	    column = "Personal_Phone" /> 
+    </resultMap> 	
+	<!-- 查询历史中奖纪录 --> 
+		<!-- 
+		Period,抽奖期数
+		Start_Date,抽奖活动开始时间
+		Integra,消耗积分
+		Grade,获奖等级
+		Prize_Type,奖品类型
+		Prize_Name,奖品名称
+		Prize_Worth,奖品价值
+		Lottery_Time,中奖时间
+		Member_No,中奖会员编号
+		Logname,中奖会员用户名
+		Personal_Phone,中奖会员手机号
+	--> 
+	<!--传入参数整理
+		#{skey}#{Period}#{Grade}#{Prize_Type}#{Prize_Name}#{Lottery_Time_Min}#{Lottery_Time_Max}#{Member_No}#{Logname}
+		#{Personal_Phone}#{Start_Date_Min}#{Start_Date_Max}#{ordercolumn}
+	-->
+	<select id="getLotteryRecord" parameterType="Map" resultMap="LotteryRecord">
+		 SELECT
+		  la.Period,
+		  la.Start_Date,
+		  la.Integra,
+		  lm.Grade,
+		  p.Prize_Type,
+		  p.Prize_Name,
+		  p.Prize_Worth,
+		  lr.Lottery_Time,
+		  mi.Member_No,
+		  mi.Logname,
+		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone
+		FROM Lottery_Records lr
+		  JOIN Lottery_Manage lm
+		    ON lr.Manage_ID = lm.Manage_ID
+		  JOIN Lottery_Activity la
+			ON lm.Lottery_ID = la.Lottery_ID
+		  JOIN Prize_Information p
+			ON lm.Prize_ID = p.Prize_ID
+		  JOIN Member_Info mi
+			ON lr.Member_ID = mi.Member_ID
+		  LEFT JOIN Personal_Base_Info pbi
+		    ON mi.Personal_Id = pbi.Personal_Id
+		WHERE IF(#{Period} IS NULL OR #{Period} = '', 1=1, la.Period = #{Period})
+		  AND IF(#{Grade} IS NULL OR #{Grade} = '', 1=1, lm.Grade = #{Grade})
+		  AND IF(#{Prize_Type} IS NULL OR #{Prize_Type} = '', 1=1, p.Prize_Type = #{Prize_Type})
+		  AND IF(#{Prize_Name} IS NULL, 1=1, LOCATE(#{Prize_Name},P.Prize_Name)>0)
+		  AND IF(#{Lottery_Time_Min} IS NULL OR #{Lottery_Time_Min} = '', 1=1, lr.Lottery_Time>=#{Lottery_Time_Min})
+		  AND IF(#{Lottery_Time_Max} IS NULL OR #{Lottery_Time_Max} = '', 1=1, lr.Lottery_Time&lt;=#{Lottery_Time_Max})
+		  AND IF(#{Member_No} IS NULL OR #{Member_No} = '', 1=1, mi.Member_No = #{Member_No})
+		  AND IF(#{Logname} IS NULL OR #{Logname} = '', 1=1, mi.Logname = #{Logname})
+		  AND IF(#{Personal_Phone} IS NULL OR #{Personal_Phone} = '', 1=1, CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) = #{Personal_Phone})
+		  AND IF(#{Start_Date_Min} IS NULL OR #{Start_Date_Min} = '', 1=1, la.Start_Date>=#{Start_Date_Min})
+		  AND IF(#{Start_Date_Max} IS NULL OR #{Start_Date_Max} = '', 1=1, la.Start_Date&lt;=#{Start_Date_Max})
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'START_DATE' THEN la.Start_Date
+				WHEN 'LOTTERY_TIME' THEN lr.Lottery_Time
+				ELSE la.Start_Date
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select> 
+	
+    <!-- 	列表查询抽奖活动 -->
+	<select id="selectLotteryActivity" parameterType="product_p2p.kit.pageselect.PageEntity" 
+	resultType="cn.invitemastermng.model.LotteryActivityEntity">
+	   select Lottery_ID as projectID,Admin_ID as adminID,Period as period,Integra as integra,
+	   Start_Date as startDate,End_Date as endDate,Status  as status
+	   from  Lottery_Activity 
+	   <where>
+	      <if test="map.statu != -1">
+	          Status = #{map.statu}
+	      </if>
+	   </where>  
+	</select>
+	
+	 <!-- 	列表查询奖品信息-->
+	<select id="selectPrizeInformation" parameterType="product_p2p.kit.pageselect.PageEntity" 
+	resultType="cn.invitemastermng.model.PrizeInformationEntity">
+	   select Prize_ID as prizeID,Prize_Type as prizeType,Prize_Name as prizeName,
+	   Prize_Worth as prizeWorth,Prize_Quantity as prizeQuantity,Prize_Url as prizeUrl,Status as status
+	   from  Prize_Information 
+	   <where>
+	      <if test="map.statu != -1">
+	          Status = #{map.statu}
+	      </if>
+	   </where>  
+	</select>
+	
+	 <!-- 	根据ID查询抽奖活动 信息-->
+	<select id="selectLotteryActivityByID" parameterType="long" 
+	 resultType="cn.invitemastermng.model.LotteryActivityEntity">
+	   select Lottery_ID as projectID,Admin_ID as adminID,Period as period,Integra as integra,
+	   Start_Date as startDate,End_Date as endDate,Status  as status
+	   from  Lottery_Activity 
+	   where  Lottery_ID = #{lotteryID}
+	</select>
+	
+	<!-- 	根据ID查询奖品信息-->
+	<select id="selectPrizeInformationByID" parameterType="long" 
+	 resultType="cn.invitemastermng.model.PrizeInformationEntity">
+	   select Prize_ID as prizeID,Prize_Type as prizeType,Prize_Name as prizeName,
+	   Prize_Worth as prizeWorth,Prize_Quantity as prizeQuantity,Prize_Url as prizeUrl,Status as status
+	   from  Prize_Information 
+	   where Prize_ID = #{prizeID}
+	</select>
+	
+	<!-- 	根据抽奖活动ID查询该活动的奖品信息-->
+	<select id="selectPrizeByActID" parameterType="product_p2p.kit.pageselect.PageEntity" 
+	 resultType="cn.invitemastermng.model.PrizeInformationEntity">
+	   select Prize_ID as prizeID,Prize_Type as prizeType,Prize_Name as prizeName,
+	   Prize_Worth as prizeWorth,Prize_Quantity as prizeQuantity,Prize_Url as prizeUrl,
+	   Status as status,lm.Grade as grade,lm.Grade_Odds as gradeOdds,lm.Winning_Odds as winningOdds
+	   from Lottery_Manage  lm 
+	   left join Prize_Information  pif on  lm.Prize_ID = pif.Prize_ID
+	   where Prize_ID = #{map.prizeID}
+	</select>
+</mapper>

@@ -19,14 +19,14 @@
 	   rt.Statu, rt.CreateTime,rt.Opt_Date,rt.Admin_ID,a.adminName 
 	   from  Recruitment rt
 	   LEFT JOIN Admin a on a.Admin_ID=rt.Admin_ID
-         <where>  
+        <!--  <where>  
             <if test="map.name != null and map.name != ''">  
                 rt.Name like  '%${map.name}%'  
             </if>   
             <if test="map.statu != -1">  
                 and rt.Statu=#{map.statu}
             </if>  
-        </where> 
+        </where>  -->
             order by rt.CreateTime desc
     </select> 
     <!-- 新增招贤纳士 -->  
@@ -53,8 +53,8 @@
 	       <if test="jobResponsibilities != null" >
 	       Job_Responsibilities=#{jobResponsibilities},
 	       </if> 
-	        <if test="jobResponsibilities != null" >
-	        Job_Responsibilities=#{jobResponsibilities},
+	        <if test="jobRequirements != null" >
+	        Job_Requirements=#{jobRequirements},
 	       </if> 
 	        <if test="optId != 0" >
 	           Admin_ID=#{optId},

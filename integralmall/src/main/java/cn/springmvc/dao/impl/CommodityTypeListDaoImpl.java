@@ -1,7 +1,7 @@
 package cn.springmvc.dao.impl;
 
+import cn.integralmall.model.BaseCommodityTypeEntity;
 import cn.springmvc.dao.CommodityTypeListDao;
-import cn.springmvc.model.BaseCommodityTypeEntity;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -46,7 +46,7 @@ public class CommodityTypeListDaoImpl<K extends BaseCommodityTypeEntity>
 
     @Override
     public K selectCommodityTypeIsExistByName(K entity) {
-        return (K) getSqlSession().selectOne("CommodityType.selectCommodityTypeIsExistByName", entity);
+        return  getSqlSession().selectOne("CommodityType.selectCommodityTypeIsExistByName", entity);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CommodityTypeListDaoImpl<K extends BaseCommodityTypeEntity>
 
     @Override
     public K selectCommodityTypeByID(int id) {
-        return (K) getSqlSession().selectOne("CommodityType.selectCommodityTypeByID", id);
+        return getSqlSession().selectOne("CommodityType.selectCommodityTypeByID", id);
     }
 
     @Override

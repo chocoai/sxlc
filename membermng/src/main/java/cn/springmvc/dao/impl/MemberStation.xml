@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="memberStationLetter">   
+	<!--     站内信记录实体 -->
+     <resultMap type="cn.membermng.model.MemberStationLetterEntity" id="resultMemberStationLetter">
+        <id column="Letter_ID" 				 property="letterID" />
+		<result column="Member_ID" 			 property="memberID" />
+		<result column="Member_ID_Rec" 		 property="memberIDRec" /> 
+		<result column="Pre_ID" 			 property="preID" />
+		<result column="Title" 				 property="title" /> 
+		<result column="Detail" 			 property="detail" />
+		<result column="Send_Date" 			 property="sendDate" /> 
+		<result column="Is_Read" 			 property="isRead" /> 
+	    <result column="Read_Date" 			 property="readDate" />  
+		<result column="Delete_Flag_Send" 	 property="deleteFlagSend" />
+		<result column="Delete_Flag_Recieve" property="deleteFlagRecieve" /> 
+		<result column="membername"          property="membername" />   
+    </resultMap> 
     <!-- 根据会员ID查询会员发件箱信息-->  
-	<select id="selectSendLetter"  parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="StationLetterMap.resultMemberStationLetter">
+	<select id="selectSendLetter"  parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="resultMemberStationLetter">
 	        select case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
             as membername, 
 			mi.Member_ID,mi.Member_Type ,mi.Logname,msl.Letter_ID,
-			msl.Title,msl.Read_Date
+			msl.Title,msl.Read_Date,msl.Send_Date 
 			from Member_Station_Letter msl
 			left join member_info mi on mi.Member_ID = msl.Member_ID_Rec
 			left join personal_base_info pbi on mi.Personal_ID =  pbi.Personal_Id and mi.Member_Type=0
@@ -15,12 +30,12 @@
 	        where msl.Member_ID=#{map.memberID} and Delete_Flag_Send !=1
     </select>   
      <!-- 根据会员ID查询会员收件箱信息-->  
-	<select id="selectRecLetter"  parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="StationLetterMap.resultMemberStationLetter">
+	<select id="selectRecLetter"  parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="resultMemberStationLetter">
 	        select case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
             as membername, 
 			mi.Member_ID,mi.Member_Type ,mi.Logname,msl.Letter_ID,
-			msl.Title,msl.Read_Date
+			msl.Title,msl.Read_Date,msl.Send_Date 
 			from Member_Station_Letter msl
 			left join member_info mi on mi.Member_ID = msl.Member_ID
 			left join personal_base_info pbi on mi.Personal_ID =  pbi.Personal_Id and mi.Member_Type=0
@@ -32,8 +47,8 @@
 	          </if>
 	        </where>
     </select> 
-     <!-- 根据会员ID查询会员发件箱信息详情-->  
-	<select id="selectSendLetterDetail"  parameterType="Map"   resultMap="StationLetterMap.resultMemberStationLetter">
+     <!-- 根据发送站内信ID查询会员发件箱信息详情-->  
+	<select id="selectSendLetterDetail"  parameterType="Map"   resultMap="resultMemberStationLetter">
 	        select case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end 
             as membername, 
@@ -46,7 +61,7 @@
 	         where msl.Letter_ID = #{letterID}
     </select>   
      <!-- 根据站内信ID查询收件信息详情-->  
-	<select id="selectRecLetterDetail"  parameterType="Map"   resultMap="StationLetterMap.resultMemberStationLetter">
+	<select id="selectRecLetterDetail"  parameterType="Map"   resultMap="resultMemberStationLetter">
 	        select case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end 
             as membername, 

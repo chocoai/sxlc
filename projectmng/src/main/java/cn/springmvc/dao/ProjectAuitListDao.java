@@ -15,8 +15,8 @@ package cn.springmvc.dao;
 import java.util.List;
 
 import product_p2p.kit.pageselect.PageEntity;
-import cn.springmvc.model.ProjectAppAttachmentEntity;
-import cn.springmvc.model.ProjectAppProcessEntity;
+import cn.springmvc.model.ProjectAppAttachmentEntity; 
+import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
 import cn.springmvc.model.ProjectCheckRecordEntity;
 
@@ -32,10 +32,10 @@ public interface ProjectAuitListDao {
 	 *  @param pageEntity  分页实体
 	 *  @author 刘利 
 	 *  @Description: 实现审核列表查询 
-	 *  @return List<ProjectAppProcessEntity> 
+	 *  @return List<ProjectAppRecordEntity> 
 	 *  @date 2016-3-21 下午12:50:30
 	 */
-	public List<ProjectAppProcessEntity> selectProjectAuitList(PageEntity pageEntity);
+	public List<ProjectAppRecordEntity> selectProjectAuitList(PageEntity pageEntity);
 	/** 
 	 * 根据项目申请记录id查询项目详情  
 	 * @author 刘利   
@@ -44,7 +44,7 @@ public interface ProjectAuitListDao {
 	 * @return ProjectAppProcessEntity 返回类型 
 	 * @date 2016-3-21 下午1:55:21 
 	 */
-	public  ProjectAppProcessEntity  selectProjectDetailByID(int id);
+	public  ProjectAppRecordEntity  selectProjectDetailByID(long id);
 	/**
 	 *  根据项目申请id查询项目申请审核附件
 	 * @author 刘利   
@@ -54,7 +54,7 @@ public interface ProjectAuitListDao {
 	 * @return List<ProjectAppAttachmentEntity> 返回类型 
 	 * @date 2016-3-23 下午4:04:47
 	 */
-	public List<ProjectAppAttachmentEntity> selectProjectAppAttachment(int projectID);
+	public List<ProjectAppAttachmentEntity> selectProjectAppAttachment(long projectID);
 	/**
 	 *  分页查询审核记录
 	 *  @param pageEntity  分页实体
@@ -91,7 +91,7 @@ public interface ProjectAuitListDao {
 	 * @return List<selectProjectCheckAttachTotal> 返回类型 
 	 * @date 2016-3-23 下午4:04:47
 	 */
-	public List<ProjectCheckAttachEntity> selectProjectCheckAttachTotal(int projectID);
+	public List<ProjectCheckAttachEntity> selectProjectCheckAttachTotal(long projectID);
 	/**
 	 *  查询附件的最大编号
 	 * @author 刘利   

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 
 import cn.springmvc.dao.IPostInfoDao;
 import cn.springmvc.dao.IPostInfoReadDao;
@@ -63,8 +64,9 @@ public class PostInfoServerImpl implements IPostInfoServer{
 	}
 	
 	@Override
-	public List<PostInfo> getListByParam(PageEntity page) {
-		return postInfoReadDao.getListByParam(page);
+	public void  getListByParam(PageEntity page) {
+		List<PostInfo> list =  postInfoReadDao.getListByParam(page);
+		PageUtil.ObjectToPage(page, list);
 	}
 	
 	@Override
@@ -94,6 +96,7 @@ public class PostInfoServerImpl implements IPostInfoServer{
 		}else{
 			entity.setsDetail(entity.getsDetail()+",操作状态[失败]");
 		}
+		recordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		return result;
 	}
 	

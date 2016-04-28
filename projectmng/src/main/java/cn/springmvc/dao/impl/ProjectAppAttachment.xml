@@ -8,7 +8,7 @@
      <result property = "attachUrl"       	column = "Attach_Url" /> 
  </resultMap> 
     <!-- 根据项目申请ID查询申请附件列表-->  
-	<select id="selectProjectAuitList"  parameterType="int" resultMap="resultProjectAppAttachment" >
+	<select id="selectProjectAuitList"  parameterType="long" resultMap="resultProjectAppAttachment" >
 	   select Apply_Id,Attach_Info_Type,Attach_Title,Attach_Url
 	   from  Project_App_Attachment  where  Apply_Id = #{projectID}
    </select> 

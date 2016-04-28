@@ -67,6 +67,7 @@ public class MemberStationLetterEntity {
 	 * 发件人名称
 	 */
 	private String membername;
+	private String  logname;
 	public long getLetterID() {
 		return letterID;
 	}
@@ -148,6 +149,12 @@ public class MemberStationLetterEntity {
 				+ ", readDate=" + readDate + ", deleteFlagSend="
 				+ deleteFlagSend + ", deleteFlagRecieve=" + deleteFlagRecieve
 				+ ", membername=" + membername + "]";
+	}
+	public String getLogname() {
+		return logname;
+	}
+	public void setLogname(String logname) {
+		this.logname = logname;
 	}	
 
 }

@@ -123,4 +123,11 @@ public class FootNavBarTypeServiceImpl implements FootNavBarTypeService {
 		
 	}
 
+	@Override
+	public List<FootNavBarTypeEntity> selectFootNavBarType() {
+		
+		return footNavBarTypeListDaoImpl.selectFootNavBarType();
+		
+	}
+
 }

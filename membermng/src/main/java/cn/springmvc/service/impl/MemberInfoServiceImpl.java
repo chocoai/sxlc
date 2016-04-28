@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.dictionaries.model.CityInfoEntity;
+import cn.dictionaries.model.CountyInfoEntity;
+import cn.dictionaries.model.NationInfoEntity;
+import cn.dictionaries.model.ProvinceInfoEntity;
 import cn.membermng.model.CompanyInfo;
 import cn.membermng.model.IntegralRecords;
 import cn.membermng.model.MemberInfo;
@@ -18,8 +21,11 @@ import cn.membermng.model.MemberVouchers;
 import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.PersonalBaseInfo;
 import cn.membermng.model.RadPackage;
+import cn.membermng.model.SecurityInfo;
 import cn.springmvc.dao.IMemberReadDao;
 import cn.springmvc.dao.IMemberWriteDao;
+import cn.springmvc.dao.impl.DictionariesDaoImpl;
+import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.service.IMemberService;
 
 @Service
@@ -31,13 +37,16 @@ public class MemberInfoServiceImpl implements IMemberService{
 	@Resource(name="memberInfoWriteDaoImpl")
 	private IMemberWriteDao memberWriteDao;
 	
-	
+	@Resource
+	private DictionariesDaoImpl dictionariesDaoImpl;
 	
 	@Override
 	public int individualMember(MemberInfo member,PersonalBaseInfo baseInfo) {
 		Map<String,Object> param = new HashMap<String, Object>();
+		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+		long id	 = generatorUtil.GetId();
 		param.put("skey", 		DbKeyUtil.GetDbCodeKey());
-		param.put("mid", 		member.getId());
+		param.put("mid", 		id);
 		param.put("memberNo", member.getMemberNo());
 		param.put("lognName", 	member.getLogname());
 		param.put("personalPhone", baseInfo.getPersonalPhone());
@@ -45,8 +54,13 @@ public class MemberInfoServiceImpl implements IMemberService{
 		param.put("beinvitateCode", member.getBeinvitateCode());
 		param.put("invitateCode", member.getInvitateCode());
 		param.put("memberType", member.getMemberType());
-		param.put("result", 1);
-		return memberWriteDao.individualMember(param);
+		int result = memberWriteDao.individualMember(param);
+		if(result == 0){
+			generatorUtil.SetIdUsed(id);
+		}else {
+			generatorUtil.SetIdUsedFail(id);
+		}
+		return result;
 	}
 
 	
@@ -58,12 +72,9 @@ public class MemberInfoServiceImpl implements IMemberService{
 		return 0;
 	}
 
-
-
-	
 	
 	@Override
-	public int login(String userName, String password, int userType,String ipAddress,String[] ipInfo,String sourceUrl) {
+	public int login(String userName, String password, int userType,String ipAddress,String[] ipInfo,String sourceUrl,String sSessionId) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("skey", 				DbKeyUtil.GetDbCodeKey());
 		param.put("userName", 			userName);
@@ -77,12 +88,11 @@ public class MemberInfoServiceImpl implements IMemberService{
 		param.put("sarea", 				ipInfo[4]);
 		param.put("ISP", 				ipInfo[5]);
 		param.put("sourceUrl", 			sourceUrl);
+		param.put("sessionId", 			sSessionId);
 		param.put("result", 			1);
 		return memberWriteDao.login(param);
 	}
 
-	
-	
 	
 	@Override
 	public int chechPhone(String phone) {
@@ -92,16 +102,12 @@ public class MemberInfoServiceImpl implements IMemberService{
 		return memberDao.countPhone(param);
 	}
 
-
-	
 	
 	@Override
 	public int countName(String userName) {
 
 		return memberDao.countName(userName);
 	}
-
-
 
 	
 	@Override
@@ -110,7 +116,7 @@ public class MemberInfoServiceImpl implements IMemberService{
 		return memberDao.countInvitateCode(invitateCode);
 	}
 	
-
+	
 	@Override
 	public MemberInfo memberPersonalInfo(long memberId) {
 		Map<String,Object> param = new HashMap<String, Object>();
@@ -118,7 +124,7 @@ public class MemberInfoServiceImpl implements IMemberService{
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		return memberDao.memberPersonalInfo(param);
 	}
-	
+
 	
 	@Override
 	public int editMemberPersonalInfo(long memberId,int sexid, String qqNumber,String homeTown, String currAddress, int provinceId, int cityId,int countyId) {
@@ -134,8 +140,6 @@ public class MemberInfoServiceImpl implements IMemberService{
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		return memberWriteDao.editMemberPersonalInfo(param);
 	}
-	
-	
 	
 	
 	@Override
@@ -181,14 +185,12 @@ public class MemberInfoServiceImpl implements IMemberService{
 		return memberDao.points(param);
 	}
 	
+	
 	@Override
 	public List<IntegralRecords> addPoints(PageEntity entity) {
 		
 		return memberDao.addPoints(entity);
 	}
-	
-	
-	
 	
 	
 	@Override
@@ -198,6 +200,7 @@ public class MemberInfoServiceImpl implements IMemberService{
 		param.put("memberType", memberType);
 		return memberDao.myRedPackage(param);
 	}
+	
 	
 	@Override
 	public List<RadPackage> redPackages(PageEntity entity) {
@@ -222,4 +225,47 @@ public class MemberInfoServiceImpl implements IMemberService{
 	}
 	
 	
+	@Override
+	public List<CityInfoEntity> getCityList(int pId) {
+		return dictionariesDaoImpl.getCityList(pId);
+	}
+	
+	@Override
+	public List<CountyInfoEntity> getCountyList(int cId) {
+		return dictionariesDaoImpl.getCountyList(cId);
+	}
+	
+	@Override
+	public List<ProvinceInfoEntity> getProvinceList() {
+		return dictionariesDaoImpl.getProvinceList();
+	}
+	
+	
+	@Override
+	public List<NationInfoEntity> GetNationList() {
+		return dictionariesDaoImpl.GetNationList();
+	}
+	
+	
+	
+	@Override
+	public SecurityInfo securityInfo(long memberId, int memberType) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("memberId", memberId);
+		param.put("memberType", memberType);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		return memberDao.securityInfo(param);
+	}
+	
+	
+	
+	@Override
+	public MemberInfo findMemberInfoByParam(String logname, String memberPwd,int memberType) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("logName", logname);
+		param.put("memberPwd", memberPwd);
+		param.put("memberType", memberType);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		return memberDao.findMemberInfoByParam(param);
+	}
 }

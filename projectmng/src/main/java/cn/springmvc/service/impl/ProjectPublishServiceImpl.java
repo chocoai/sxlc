@@ -19,20 +19,15 @@ import javax.annotation.Resource;
  
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity; 
 import cn.springmvc.dao.ProjectPublishListDao;
 import cn.springmvc.dao.projectPublishDao;
-import cn.springmvc.dao.impl.IdGeneratorUtil;
-import cn.springmvc.dao.impl.ProjectAuditDaoImpl;
-import cn.springmvc.dao.impl.ProjectPublishDaoImpl;
-import cn.springmvc.dao.impl.ProjectPublishListDaoImpl;
-import cn.springmvc.model.ProjectAppAttachmentEntity;
+import cn.springmvc.dao.impl.IdGeneratorUtil; 
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.ProjectAppProcessEntity; 
-import cn.springmvc.model.ProjectAppRecordEntity;
-import cn.springmvc.model.ProjectCheckAttachEntity;
-import cn.springmvc.model.ProjectCheckRecordEntity;
-import cn.springmvc.model.ProjectImageEntity;
-import cn.springmvc.service.ProjectAuitService;
+import cn.springmvc.model.ProjectAppRecordEntity; 
+import cn.springmvc.model.ProjectImageEntity; 
 import cn.springmvc.service.ProjectPublishService;
 
 /** 
@@ -47,6 +42,8 @@ public class ProjectPublishServiceImpl implements ProjectPublishService {
 	private projectPublishDao projectPublishDaoImpl; 
 	@Resource(name="projectPublishListDaoImpl")
 	private ProjectPublishListDao projectPublishListDaoImpl; 
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	 
  
 	@Override
@@ -59,14 +56,20 @@ public class ProjectPublishServiceImpl implements ProjectPublishService {
 
 
 	@Override
-	public int insertProjectImage(List<ProjectImageEntity> ProjectImage) {
+	public int insertProjectImage(List<ProjectImageEntity> ProjectImage,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
-		return projectPublishDaoImpl.insertProjectImage(ProjectImage);
-		
+		int result = projectPublishDaoImpl.insertProjectImage(ProjectImage);
+		if(result > 0) {
+		    logentity.setsDetail("上传企业形象图");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
+		return result;
 	}
 
  	@Override
-	public int publishProject(Map<String,Object> map) {
+	public int publishProject(Map<String,Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
  		
  		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
@@ -74,6 +77,14 @@ public class ProjectPublishServiceImpl implements ProjectPublishService {
  		int result = projectPublishDaoImpl.publishProject(map);
  		if(result == 1) {
 			generatorUtil.SetIdUsed(id); 
+			StringBuffer detail =new StringBuffer("发布项目");
+		    if(map.get("checkStatu").toString().equals("1")) {
+		    	detail.append("通过");
+		    }else if(map.get("checkStatu").toString().equals("-1")){
+		    	detail.append("打回");
+		    } 
+		    logentity.setsDetail(detail.toString());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		}else{
 			generatorUtil.SetIdUsedFail(id);
 		} 
@@ -90,10 +101,15 @@ public class ProjectPublishServiceImpl implements ProjectPublishService {
 
 
 	@Override
-	public int updateEndtime(ProjectAppProcessEntity projectAppProcessEntity) {
+	public int updateEndtime(ProjectAppProcessEntity projectAppProcessEntity,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
-		return projectPublishDaoImpl.updateEndtime(projectAppProcessEntity);
-		
+		int result =  projectPublishDaoImpl.updateEndtime(projectAppProcessEntity);
+		if(result > 0) {
+		    logentity.setsDetail("修改借款结束时间:"+projectAppProcessEntity.getEndDate());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
+		return result;
 	}
 
 

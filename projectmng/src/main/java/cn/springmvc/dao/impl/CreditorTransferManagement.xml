@@ -1,0 +1,134 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace = "CreditorTransferManager">  
+   <resultMap type = "cn.springmvc.model.CreditorTransferCheckEntity" id = "resultCreditorTransfer">
+        <id property = "ctaId"						column = "CTA_Id" />
+        <result property = "billNo"       	        column = "Bill_No" />
+        <result property = "applyTime"       	    column = "Apply_Time" />
+		<result property = "projectTitle"       	column = "Project_Title" />
+		<result property = "ProjectNo"    	        column = "Project_No" />
+		<result property = "tranLogname"  	        column = "TranLogname" /> 
+		<result property = "loanLogname"  	        column = "LoanLogname" /> 
+		<result property = "loanMemberName" 	    column = "LoanmemberName" />
+		<result property = "tranMemberName" 	    column = "TranmemberName" />
+		<result property = "transPrincipal"         column = "Trans_Principal" />
+		<result property = "transDiscount" 			column = "Trans_Discount" />
+		<result property = "transferPrice" 		    column = "TransferPrice" />
+		<result property = "ctaInvestRate" 			column = "Cta_Invest_Rate" />
+		<result property = "transMaxTime" 		    column = "Trans_MaxTime" />
+		<result property = "Statu" 		            column = "Statu" />   
+    </resultMap> 
+    <!-- 分页查询债权转让项目列表 -->  
+	<select id = "selectCreditorTransferManager" parameterType = "product_p2p.kit.pageselect.PageEntity"  resultMap = "resultCreditorTransfer">
+	 select cta.CTA_Id,cta.Bill_No,cta.Apply_Time,pbi.Project_Title,par.Project_No,transmi.Logname as TranLogname,loanmi.Logname as LoanLogname,
+     case when loanmi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiloan.Personal_Name),#{map.sKey})) using utf8)  
+          when loanmi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ciloan.Compang_Name),#{map.sKey})) using utf8) end 
+           as LoanmemberName,
+     case when transmi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbitran.Personal_Name),#{map.sKey})) using utf8)  
+          when transmi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(citran.Compang_Name),#{map.sKey})) using utf8) end 
+           as TranmemberName,
+    
+		 CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal,
+		 CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed) Trans_Discount, 
+		 (CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed)* 
+		 CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed)/1000000 ) as  TransferPrice,
+		 cta.Cta_Invest_Rate,  cta.Trans_MaxTime,cta.Statu  
+		from Creditor_Trans_App cta 
+		left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id 
+        left join member_info transmi on transmi.Member_ID =ir.Member_ID
+        left join Personal_Base_Info  pbitran  on pbitran.Personal_ID=transmi.Personal_Id 
+	    left join Company_Info  citran  on citran.Company_ID=transmi.Company_ID 
+		left join Project_App_Record par  on par.Apply_Id = ir.Apply_Id
+        left join member_info loanmi on loanmi.Member_ID =par.Member_ID
+        left join Personal_Base_Info  pbiloan  on pbiloan.Personal_ID=loanmi.Personal_Id 
+	    left join Company_Info  ciloan  on ciloan.Company_ID=loanmi.Company_ID  
+		left join Project_Base_Info pbi   on par.Project_Base_ID=pbi.Project_Base_ID
+           <where>   
+                 <!-- 项目编号--> 
+	            <if test = "map.projectNo != null and map.projectNo != ''">  
+	               and  par.Project_No  like '%${map.projectNo}%' 
+	            </if> 
+                <!-- 债权转让申请编号 -->
+	            <if test = "map.billNo !=  null and map.billNo !=  ''">  
+	                and cta.Bill_No = #{map.billNo} 
+	            </if>  
+	             <!-- 转让会员 -->
+	             <if test = "map.Tranname !=  null and map.Tranname !=  ''"> 
+	                and ( citran.Compang_Name like '%${map.name}%'
+	                or pbitran.Personal_Name like  '%${map.name}%' ) 
+	             </if> 
+	              <!-- 转让金额-->
+	             <if test = "map.TransPrincipal !=  null"> 
+	                and CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal =  #{map.TransPrincipal}
+	             </if> 
+	     </where>
+	       <!-- 转让申请时间降序-->
+	      <if test = "map.order ==  1"> 
+	        order by  cta.Apply_Time desc
+	      </if>
+	        <!-- 转让申请时间升序-->
+	      <if test = "map.order ==  -1"> 
+	        order by  cta.Apply_Time asc
+	      </if>
+	        <!-- 转让金额降序-->
+	      <if test = "map.order ==  2"> 
+	        order by Trans_Principal desc
+	      </if>
+	        <!-- 转让金额升序-->
+	      <if test = "map.order ==  -2"> 
+	        order by  Trans_Principal asc
+	      </if>
+	         <!-- 转让价格降序-->
+	      <if test = "map.order ==  3"> 
+	        order by TransferPrice desc
+	      </if>
+	        <!-- 转让价格升序-->
+	      <if test = "map.order ==  -3"> 
+	        order by  TransferPrice asc
+	      </if>
+    </select>
+     <resultMap type = "cn.springmvc.model.CreditorTransferCheckEntity" id = "resultCreditorTransferdetails">
+        <id property = "ctaId"						column = "CTA_Id" />
+		<result property = "projectTitle"       	column = "Project_Title" />
+		<result property = "ProjectNo"    	        column = "Project_No" />
+	    <result property = "billNo"       	        column = "Bill_No" />
+	    <result property = "applyTime"       	    column = "Apply_Time" />
+		<result property = "transPrincipal"  	    column = "Trans_Principal" />
+		<result property = "surplusTime"  	        column = "Surplus_Time" />
+		<result property = "surplusTimeType" 	    column = "Surplus_Time_Type" />
+		<result property = "transDiscount"          column = "Trans_Discount" /> 
+		<result property = "transMaxTime" 		    column = "Trans_MaxTime" />
+    </resultMap> 
+      <!-- 查询债权转让项目详情 -->  
+	<select id = "selectCreditorTransferDetailCheck" parameterType = "Map"  resultMap = "resultCreditorTransferdetails"> 
+	select cta.CTA_Id,pbi.Project_Title,par.Project_No,cta.Bill_No,cta.Apply_Time,cta.Trans_Principal,cta.Surplus_Time,
+	cta.Surplus_Time_Type,cta.Trans_Discount,cta.Trans_MaxTime,
+	CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal,
+	CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed) Trans_Discount 
+	from Creditor_Trans_App cta 
+	left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id 
+	left join Project_App_Record par  on par.Apply_Id = ir.Apply_Id
+	left join Project_Base_Info pbi   on par.Project_Base_ID=pbi.Project_Base_ID  
+	where  cta.CTA_Id= #{ctaId}
+	</select> 
+	<!-- 债权转让审核-->  
+    <select id="creditorTransAppCheck"  statementType="CALLABLE" parameterType="Map"> 
+	     {call CreditorTransAppCheck(
+				#{ctaId,	     mode=IN,	jdbcType=BIGINT},
+				#{lID,	         mode=IN,	jdbcType=BIGINT},
+				#{checkstatu,	 mode=IN,	jdbcType=INTEGER},
+				#{adminID,	     mode=IN,	jdbcType=BIGINT},
+				#{checkRemark,	 mode=IN,	jdbcType=VARCHAR}, 
+				#{transMaxTime,	 mode=IN,	jdbcType=VARCHAR}, 
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)} 
+	</select>
+    <!-- 	修改最迟转让时间 -->
+	<update id="updateTransMaxTime" parameterType = "Map">
+	   update Creditor_Trans_App set Trans_MaxTime = #{transMaxTime} where  CTA_Id = #{ctaId}
+	</update>
+	 <!-- 	查询最迟转让时间 -->
+	<select id="selectTransMaxTime" parameterType = "long" resultType ="String">
+	 select Trans_MaxTime from Creditor_Trans_App where  CTA_Id = #{ctaId}
+	</select>
+</mapper>   

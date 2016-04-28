@@ -57,14 +57,26 @@
 			#{sarea,				mode=IN,					jdbcType=VARCHAR},	
 			#{ISP,					mode=IN,					jdbcType=VARCHAR},
 			#{sourceUrl,			mode=IN,					jdbcType=VARCHAR},
+			#{sessionId,			mode=IN,					jdbcType=VARCHAR},
 			#{result,				mode=OUT,					jdbcType=VARCHAR}	
 		)
 	</select>
 	
 	
+	<!-- 获取会员编号会员类型 -->
+	<select id="findMemberInfoByParam" parameterType="Map" resultType="cn.membermng.model.MemberInfo">
+		select Member_Id as id,Member_Type as memberType,pbi.Personal_ID as personalId
+		from member_info mi 
+		left join Personal_Base_Info pbi on pbi.Personal_ID = mi.Personal_ID 
+		where mi.Member_Pwd = #{memberPwd} 
+		and (pbi.Personal_Phone = HEX(AES_ENCRYPT(#{logName} ,#{skey})) or Logname = #{logName})
+		and member_Type = #{memberType}
+	</select>
+	
+	
 	<!-- 统计当前电话号码的个数 -->
 	<select id="countPhone" parameterType="Map" resultType="Integer">
-		select count(1) from Member_Info mi left join Personal_Base_Info pbi on pbi.id = mi.Personal_ID where pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}));
+		select count(1) from Member_Info mi left join Personal_Base_Info pbi on pbi.Personal_ID = mi.Personal_ID where pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}));
 	</select>
 	
 	
@@ -122,36 +134,58 @@
 		<result	column="Compang_Name"		property="companyInfo.compangName"/>
 		<result	column="Companye_BLN"		property="companyInfo.companyeBLN"/>
 		<result	column="Company_Address"	property="companyInfo.companyAddress"/>
+		<result column="Personal_Name2"		property="companyInfo.baseInfo.personalName"/>
+		<result	column="Personal_IDCard"	property="companyInfo.baseInfo.personalIDCard"/>
 		<result	column="Company_OC"			property="companyInfo.companyOC"/>
 		<result	column="Tax_RegNo"			property="companyInfo.taxRegNo"/>
 		<result	column="Company_Business"	property="companyInfo.companyBusiness"/>
 		<result	column="Establishments"		property="companyInfo.establishments"/>
 		<result	column="Company_Source"		property="companyInfo.companySource"/>
 		<result	column="Company_Capital"	property="companyInfo.companyCapital"/>
+		<result column="Personal_Name"		property="baseInfo.personalName"/>
 		<result	column="Personal_Phone"		property="baseInfo.personalPhone"/>
 		<result	column="QQ"					property="baseInfo.qq"/>
 		<result	column="Personal_Email"		property="baseInfo.personalEmail"/>
-		<result	column="Census"				property="baseInfo.census"/>
-		<result	column="House_Address"		property="baseInfo.houseAddress"/>
-		<result column="Personal_Name2"		property="companyInfo.baseInfo.personalName"/>
-		<result column="Personal_Phone2"	property="companyInfo.baseInfo.personalPhone"/>
+		<result	column="Province_Name"		property="provinceName"/>
+		<result column="City_Name"			property="cityName"/>
+		<result	column="County_Name"		property="countyName"/>
+		<result column="Town_Name"			property="townName"/>
 	</resultMap>
 	<!-- 获取企业会员信息 -->
 	<select id="memberComplanyInfo" parameterType="Map" resultMap="memberComplanyInfo">
-		select ci.Company_ID,ci.Compang_Name,ci.Companye_BLN,ci.Company_Address,
+		select 
+		ci.Company_ID,
+		ci.Compang_Name,
+		ci.Companye_BLN,
+		ci.Company_Address,
 		CONVERT(AES_DECRYPT(UNHEX(pbi2.Personal_Name),#{skey}) using utf8) as Personal_Name2,
-		CONVERT(AES_DECRYPT(UNHEX(pbi2.Personal_Phone),#{skey}) using utf8) as Personal_Phone2,
-		ci.Company_OC,ci.Tax_RegNo,ci.Company_Business,ci.Establishments,ci.Company_Source,ci.Company_Capital,
+		CONVERT(AES_DECRYPT(UNHEX(pbi2.Personal_IDCard),#{skey}) using utf8) as Personal_IDCard,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Company_OC),#{skey}) using utf8) as Company_OC,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Tax_RegNo),#{skey}) using utf8) as Tax_RegNo,
+		ci.Company_Business,
+		ci.Establishments,
+		ci.Company_Source,
+		ci.Company_Capital,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as Personal_Name, 
-		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey}) using utf8) as Personal_IDCard,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) as Personal_Phone,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.QQ),#{skey}) using utf8) as QQ,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) as Personal_Email,
-		mi.Province_Id,mi.City_Id,mi.County_Id,mi.Town_Id
+		mi.Province_Id,
+		mi.City_Id,
+		mi.County_Id,
+		mi.Town_Id,
+		pd.Province_Name,
+		cd.City_Name,
+		cod.County_Name,
+		td.Town_Name
 		from Member_Info mi
 		left join Company_Info ci on ci.Company_ID = mi.Company_ID
 		left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_ID
 		left join Personal_Base_Info pbi2 on pbi2.Personal_Id = ci.Legal_ID
+		left join Province_Dictionary 	pd 	on mi.Province_Id = pd.province_Id
+		left join City_Dictionary 		cd 	on	cd.City_id = mi.City_id
+		left join County_Dictionary 	cod on cod.County_Id = mi.County_Id
+		left join Town_Dictionary 		td 	on td.Town_id = mi.Town_id
 		where mi.member_id = #{memberId} and mi.member_Type = 1	
 	</select>
 	
@@ -274,6 +308,20 @@
 	<select id="addMyVouchers" parameterType="Map" resultType="cn.membermng.model.MemberVouchers">
 		select Gift_Amount as sgiftAmount,Invest_Typeas giftType,(select Invest_Date from Invest_Record ir where ir.Invest_Id = mvu.Invest_Id) as receiveDate ,statu from Member_Vouchers_UseRecord mvu 
 	</select>
+	
+	
+	<!-- 回去安全中心认证信息 -->
+	<select id="securityInfo"	parameterType="Map" resultType="cn.membermng.model.SecurityInfo">
+		select 
+		(select ThirdParty_Account from Member_Third_Info mti 
+			where mti.Member_ID = mi.member_id and mti.Member_Type = mi.Member_Type) as thirdPartyAccount,
+		(select 
+			CONVERT(AES_DECRYPT(UNHEX(Personal_Phone),#{skey}) using utf8) from Personal_Base_Info pbi where pbi.Personal_Id = mi.Personal_Id) as personalPhone,
+		(select 
+			CONVERT(AES_DECRYPT(UNHEX(Personal_Email),#{skey}) using utf8) from Personal_Base_Info pbi where pbi.Personal_Id = mi.Personal_Id) as personalEmail
+		from member_info mi where mi.member_id = #{memberId} and mi.member_type = #{memberType}
+	</select>
+	
 	
 	
 </mapper>

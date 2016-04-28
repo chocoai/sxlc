@@ -133,7 +133,7 @@
 		from invest_record ir  
 		left join Project_App_Record par on par.Apply_Id= ir.Apply_Id 
 		left join project_base_info pbi on pbi.Project_Base_ID = par.Project_Base_ID 
-		 left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
+		left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 		left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
 		left join member_info mi on par.Member_ID =mi.Member_ID 
 		left join personal_base_info pbiper on mi.Personal_ID =  pbiper.Personal_Id and mi.Member_Type=0

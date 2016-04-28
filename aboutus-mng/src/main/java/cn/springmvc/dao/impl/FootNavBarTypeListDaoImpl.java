@@ -44,5 +44,11 @@ public class FootNavBarTypeListDaoImpl extends SqlSessionDaoSupport implements F
 		footNavBarTypeEntity = (FootNavBarTypeEntity) getSqlSession().selectOne("footNavBarType.selectFootNavBarTypeByID",id);
 		return footNavBarTypeEntity;
 		
+	}
+	@Override
+	public List<FootNavBarTypeEntity> selectFootNavBarType() {
+		
+		return getSqlSession().selectList("footNavBarType.selectFootNavBarType");
+		
 	} 
 }

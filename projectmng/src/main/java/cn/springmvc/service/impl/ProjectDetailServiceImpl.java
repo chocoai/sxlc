@@ -11,8 +11,7 @@
 * @version V5.0 */
  
 package cn.springmvc.service.impl; 
-
-import java.util.ArrayList;
+ 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,17 +22,14 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
   
-import cn.springmvc.dao.ProjectDetailListDao;
-import cn.springmvc.dao.impl.ProjectDetailListDaoImpl;
+import cn.springmvc.dao.ProjectDetailListDao; 
 import cn.springmvc.model.InvestEntity;
 import cn.springmvc.model.LoanRealRepayEntity;
 import cn.springmvc.model.LoanRepayEntity;
 import cn.springmvc.model.MemberAttestTypeEntity;
-import cn.springmvc.model.MemberInfoEntity;
-import cn.springmvc.model.ProjectAfterLoanAttachmentEntity;
+import cn.springmvc.model.MemberInfoEntity; 
 import cn.springmvc.model.ProjectAppProcessEntity;
-import cn.springmvc.model.ProjectAppRecordEntity; 
-import cn.springmvc.model.ProjectBaseInformationEntity;
+import cn.springmvc.model.ProjectAppRecordEntity;  
 import cn.springmvc.model.ProjectCheckAttachEntity;
 import cn.springmvc.service.projectDetailService;
 
@@ -49,7 +45,7 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 	 
 	
 	@Override
-	public ProjectAppRecordEntity selectProjectDetailByID(int projectID) {
+	public ProjectAppRecordEntity selectProjectDetailByID(long projectID) {
 		
 		Map<String,Object> map =new HashMap<String,Object>();
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
@@ -62,7 +58,7 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 	 
 	
 	@Override
-	public MemberInfoEntity selectMemberInfo(int projectID) {
+	public MemberInfoEntity selectMemberInfo(long projectID) {
 		Map<String,Object> map =new HashMap<String,Object>();
 		map.put("keys", DbKeyUtil.GetDbCodeKey());
 		map.put("projectID", projectID);
@@ -75,17 +71,17 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 
   
 	@Override
-	public MemberAttestTypeEntity selectMemberAttestByProjectID(int id) {
+	public MemberAttestTypeEntity selectMemberAttestByprojectType(long projectType) {
 		
 		MemberAttestTypeEntity memberAttestTypeEntity  = null;
-		memberAttestTypeEntity=projectDetailListDaoImpl.selectMemberAttestByProjectID(id);
+		memberAttestTypeEntity=projectDetailListDaoImpl.selectMemberAttestByprojectType(projectType);
 		return memberAttestTypeEntity;
 		
 	}
 
   
 	@Override
-	public List<LoanRepayEntity> selectReplayByProjectID(int projectID) {
+	public List<LoanRepayEntity> selectReplayByProjectID(long projectID) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("projectID", projectID);
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
@@ -95,7 +91,7 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
  
 	
 	@Override
-	public List<InvestEntity> selectInvestRecordByProjectID(int projectID) {
+	public List<InvestEntity> selectInvestRecordByProjectID(long projectID) {
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("projectID", projectID);
@@ -108,7 +104,7 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
  
 
 	 @Override
-	public ProjectAppProcessEntity selectProjectAppProcess(int id) {
+	public ProjectAppProcessEntity selectProjectAppProcess(long id) {
 		
 		 ProjectAppProcessEntity projectAppProcessEntity = null;
 		 projectAppProcessEntity = projectDetailListDaoImpl.selectProjectAppProcess(id);
@@ -118,7 +114,7 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 
  
 	@Override
-	public List<LoanRealRepayEntity> selectLoanRealReplay(int projectID) {
+	public List<LoanRealRepayEntity> selectLoanRealReplay(long projectID) {
 		
 		List<LoanRealRepayEntity>  LoanRealRepayList=null;
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -130,7 +126,7 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 
 
 	@Override
-	public List<ProjectCheckAttachEntity> selectProjectCheckAttach(int projectID) {
+	public List<ProjectCheckAttachEntity> selectProjectCheckAttach(long projectID) {
 		
 		List<ProjectCheckAttachEntity> projectCheckAttachList = null;
 		projectCheckAttachList = projectDetailListDaoImpl.selectProjectCheckAttach(projectID);
@@ -140,23 +136,11 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 
  
 	@Override
-	public String selectProjectDescript(int projectID) {
+	public String selectProjectDescript(long projectID) {
 		 
 		return projectDetailListDaoImpl.selectProjectDescript(projectID); 
 	}
-
  
-	@Override
-	public List<ProjectAfterLoanAttachmentEntity> selectProjectAfterLoanAttach(
-			int projectID) {
-		
-		List<ProjectAfterLoanAttachmentEntity>  projectAfterLoanAttachmentList = null;
-		projectAfterLoanAttachmentList = projectDetailListDaoImpl.selectProjectAfterLoanAttach(projectID);
-		return projectAfterLoanAttachmentList;
-	}
-
-
-
 	@Override
 	public  ProjectAppRecordEntity  selectInvestAvailableaAmount(
 			long applyID) {

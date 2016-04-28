@@ -3,6 +3,11 @@
     height: 30px;
     padding: 4px 8px;
 }
+.ducumentType{
+	width: 185px;
+    height: 30px;
+    padding: 4px 8px;
+}
 #manageAdmainAdd .fieldsetitem,
 #manageAdmainMod .fieldsetitem{
 	margin:10px;
@@ -24,23 +29,6 @@
 #manageAdmainMod .fieldsetitem .remark{
 	height:50px;
 	display:inline-block;
-}
-#checkDetail table span{
-	display:inline-block;
-	width:100%;
-	text-align:right;
-}
-#checkDetail table{
-	width:90%;
-}
-#checkDetail table td{
-	padding-left:0;
-	padding-right:0;
-}
-#checkDetail div span{
-	display:inline-block;
-	width:192px;
-	text-align:right;
 }
 .settingrange{
 	margin:10px 0;
@@ -69,10 +57,10 @@
 }
 fieldset{
 	padding:10px;
-	margin:10px auto 20px auto;
+	margin:40px auto;
 	border:1px solid #D4D4D4;
 	border-radius:3px;
-	width: 730px;
+	max-width: 960px;
 }
 legend{
 	padding:0 10px;
@@ -244,36 +232,9 @@ button.obtn.obtn-query{
 .cashBank span,.daterange span{
 	display:inline !important;
 }
-#checkDetail{
-	margin:35px;
-}
-#checkDetail td span,#checkDetail td label{
-	height:30px;
-}
-.startstoprange{
-	display:inline-block;
-	margin-right:10px;
-}
-.fieldsetcontent{
-	height: 30px;
-}
-.setting span{
-	width:170px !important;
-}
-.accountinfotd{
-	text-align:right;
-	width:170px;
-}
-.accountinfo table{
-	width:255px !important;
-}
 #manageAdmainAdd fieldset,
 #manageAdmainMod fieldset{
 	width:600px;
-}
-.accountinfo td>div{
-	margin:5px 0;
-	width:170px;
 }
 .credentialsimg{
 	display:inline-block;
@@ -282,4 +243,119 @@ button.obtn.obtn-query{
 	margin:5px 6px;
 	text-align:center;
 	line-height:40px;
+}
+.addproprocessbtn{
+	margin-top:30px;
+	max-width:1000px;
+	margin-left:20px;
+	text-align:center !important;
+}
+/* 添加 */
+#manageAdd table {
+    overflow: scroll;
+}
+.addmanagetd{
+	text-align:right;
+}
+.manageAddtitle{
+	margin: 20px 0 35px 0;
+	text-align:center;
+	font-size:14px;
+	max-width: 950px;
+}
+.addmanageinput{
+	width:430px;
+}
+#manageAdd td.tt{
+	font-size:13px;
+}
+#manageAdd .rec-dimensions,#manageMod .rec-dimensions{
+	vertical-align:-webkit-baseline-middle;
+}
+/* 查看担保机构详情部分开始 */
+#checkDetail td.tt{
+	text-align:left !important;
+	padding:5px 20px;
+	font-size:13px;
+}
+legend{
+	min-width:100px;
+	padding:0 10px;
+	max-width:200px;
+	text-align:center;
+	border:none;
+	font-size:13px;
+	font-weight:700;
+}
+table{
+	margin:0 auto;
+}
+.notOpen{
+	font-size:16px;
+	text-align:center;
+	margin-bottom:30px;
+}
+.tt a{
+	display:block;
+	text-align:center;
+}
+.tt samp{
+	margin:0 5px;
+	font-size:18px;
+}
+.line{
+	display:inline-block;
+	width:20px;
+	height:1px;
+	vertical-align:middle;
+	border-top:1px solid #ccc;
+}
+.dateInput{
+	width:120px;
+}
+.checkdetailtable{
+	width:100%;
+}
+.checkdetailtable{
+	margin-bottom:20px;
+}
+.configinfospan{
+	display:inline-block;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.guacheckform{
+	margin-left:25px;
+}
+.guaranteespan{
+	width:91px;
+}
+.textRight{
+	display:inline-block;
+	min-width:239px;
+	text-align:right;
+}
+.stateSelect {
+    width: 174px;
+}
+.statebtn{
+	margin-left:20px;
+}
+.textRight2{
+	display:inline-block;
+	min-width:360px;
+	text-align:right;
+}
+.textRight3{
+	display:inline-block;
+	min-width:360px;
+	text-align:right;
+	margin-right:40px;
+}
+.checkstatebtn{
+	text-align:right;
+	margin-right:50px;
+}
+.selectpayment{
+	margin-left:43px;
 }

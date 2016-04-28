@@ -48,9 +48,11 @@ public class DecryptHttpServletRequest extends HttpServletRequestWrapper{
 		}
 		if (privateKey == null) {
 			return ciphertext;
-		}else{
-			return RSAPlugn.decryptByPrivateKey(ciphertext, privateKey);
-		} 
+		}else if (ciphertext == null) {
+			return null;
+		}else {
+				return RSAPlugn.decryptByPrivateKey(ciphertext, privateKey);
+		}
 	}
 
 	@Override

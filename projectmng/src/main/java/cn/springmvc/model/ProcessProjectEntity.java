@@ -6,7 +6,7 @@ package cn.springmvc.model;
  */
 public class ProcessProjectEntity {
 	/**
-	 * 审批活动id
+	 * 审批流程id
 	 */
 	private int id;
 	/**

@@ -55,8 +55,8 @@
 	   update  FootNavBar_Type  set   Statu = #{statu} where Type_Id = #{id}   
     </update>    
      <!-- 根据id查询底部导航条类型  -->  
-	<select id="selectFootNavBarTypeByID"  resultMap="resultListFootNavBarType"  parameterType="long">
+	<select id="selectFootNavBarType"  resultMap="resultListFootNavBarType">
 	   select Type_Id,Name,URL,Statu
-	   from  FootNavBar_Type  where ID = #{id} 
+	   from  FootNavBar_Type   where  Statu =1 
     </select>   
 </mapper>   

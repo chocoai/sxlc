@@ -1,7 +1,14 @@
 package cn.springmvc.model;
 
 import product_p2p.kit.datatrans.IntegerAndString;
-
+ 
+/**
+ * 项目类型实体
+ * @author 刘利 
+ * @Description: TODO 
+ * @since 
+ * @date 2016-4-22 下午2:08:04
+ */
 public class ProjectBaseInfoEntity {
 	/**
 	 * 项目类型id
@@ -14,19 +21,21 @@ public class ProjectBaseInfoEntity {
 	/**
 	 * 最低借款金额
 	 */
-	private long minAmount	;
+	private long minAmount	; 
 	/**
 	 * 最高借款金额 0：表示无上限
 	 */
-	private long maxAmount;
+	private long maxAmount; 
 	/**
 	 * 最低年化利率(‰)
 	 */
 	private int minRate;
+	private String minRates;
 	/**
 	 * 最高年化利率(‰)
 	 */
 	private int maxRate;
+	private String maxRates;
 	/**
 	 * 最小投资金额
 	 */
@@ -36,6 +45,8 @@ public class ProjectBaseInfoEntity {
 	 * （同一个会员投资总金额不能超过借款金额*最大投资比例）	
 	 */
 	private int investMax;
+	private String investMaxs;
+	
 	/**
 	 * 起投金额
 	 */
@@ -64,6 +75,52 @@ public class ProjectBaseInfoEntity {
 	 * 状态 0：停用 1：启用
 	 */
 	private int statu; 
+	private String contentR;//还款指南
+	private String contentG;//借款指南
+	private int tminDaytime;//天标最小借款时间
+	private int tmaxDaytime;//天标最大借款时间
+	private int mminDaytime;//月标最小借款时间
+	private int mmaxDaytime;//月标最大借款时间
+	private int yminDaytime;//年标最小借款时间
+	private int ymaxDaytime;//年标最大借款时间
+	private String typeString;
+	 
+	public int getTminDaytime() {
+		return tminDaytime;
+	}
+	public void setTminDaytime(int tminDaytime) {
+		this.tminDaytime = tminDaytime;
+	}
+	public int getTmaxDaytime() {
+		return tmaxDaytime;
+	}
+	public void setTmaxDaytime(int tmaxDaytime) {
+		this.tmaxDaytime = tmaxDaytime;
+	}
+	public int getMminDaytime() {
+		return mminDaytime;
+	}
+	public void setMminDaytime(int mminDaytime) {
+		this.mminDaytime = mminDaytime;
+	}
+	public int getMmaxDaytime() {
+		return mmaxDaytime;
+	}
+	public void setMmaxDaytime(int mmaxDaytime) {
+		this.mmaxDaytime = mmaxDaytime;
+	}
+	public int getYminDaytime() {
+		return yminDaytime;
+	}
+	public void setYminDaytime(int yminDaytime) {
+		this.yminDaytime = yminDaytime;
+	}
+	public int getYmaxDaytime() {
+		return ymaxDaytime;
+	}
+	public void setYmaxDaytime(int ymaxDaytime) {
+		this.ymaxDaytime = ymaxDaytime;
+	}
 	public long getId() {
 		return id;
 	}
@@ -94,12 +151,14 @@ public class ProjectBaseInfoEntity {
 	}
 	public void setMinRate(int minRate) {
 		this.minRate = minRate;
+		this.minRates = IntegerAndString.IntToString(minRate);
 	}
 	public int getMaxRate() {
 		return maxRate;
 	}
 	public void setMaxRate(int maxRate) {
 		this.maxRate = maxRate;
+		this.maxRates = IntegerAndString.IntToString(maxRate);
 	}
 	public int getSingleMin() {
 		return singleMin;
@@ -112,12 +171,13 @@ public class ProjectBaseInfoEntity {
 	}
 	public void setInvestMax(int investMax) {
 		this.investMax = investMax;
+		this.investMaxs = IntegerAndString.IntToString(investMax);
 	}
 	public int getMinStart() {
 		return minStart;
 	}
 	public void setMinStart(int minStart) {
-		this.minStart = minStart;
+		this.minStart = minStart; 
 	}
 	public String getBriefIntroduction() {
 		return briefIntroduction;
@@ -155,5 +215,64 @@ public class ProjectBaseInfoEntity {
 	public void setIsMortgage(int isMortgage) {
 		this.isMortgage = isMortgage;
 	}
+	public String getMinRates() {
+		return minRates;
+	}
+	public void setMinRates(String minRates) {
+		this.minRates = minRates;
+	}
+	public String getMaxRates() {
+		return maxRates;
+	}
+	public void setMaxRates(String maxRates) {
+		this.maxRates = maxRates;
+	}
+	public String getInvestMaxs() {
+		return investMaxs;
+	}
+	public void setInvestMaxs(String investMaxs) {
+		this.investMaxs = investMaxs;
+	} 
+	public String getContentG() {
+		return contentG;
+	}
+	public void setContentG(String contentG) {
+		this.contentG = contentG;
+	}
+	public String getContentR() {
+		return contentR;
+	}
+	public void setContentR(String contentR) {
+		this.contentR = contentR;
+	}
+	public String getTypeString() {
+		return typeString;
+	}
+	public void setTypeString(String typeString) {
+//		StringBuffer detail = new StringBuffer();
+//		detail.append("天标："+tminDaytime+"~"+tmaxDaytime+"天");
+//		detail.append("月标："+mminDaytime+"~"+mmaxDaytime+"月");
+//		detail.append("年标："+mminDaytime+"~"+mmaxDaytime+"年");
+		this.typeString = typeString;
+	}
+	@Override
+	public String toString() {
+		return "ProjectBaseInfoEntity [id=" + id + ", projectName="
+				+ projectName + ", minAmount=" + minAmount + ", maxAmount="
+				+ maxAmount + ", minRate=" + minRate + ", minRates=" + minRates
+				+ ", maxRate=" + maxRate + ", maxRates=" + maxRates
+				+ ", singleMin=" + singleMin + ", investMax=" + investMax
+				+ ", investMaxs=" + investMaxs + ", minStart=" + minStart
+				+ ", briefIntroduction=" + briefIntroduction + ", applyMember="
+				+ applyMember + ", picUrl=" + picUrl + ", picIcon=" + picIcon
+				+ ", isMortgage=" + isMortgage + ", statu=" + statu
+				+ ", contentR=" + contentR + ", contentG=" + contentG
+				+ ", tminDaytime=" + tminDaytime + ", tmaxDaytime="
+				+ tmaxDaytime + ", mminDaytime=" + mminDaytime
+				+ ", mmaxDaytime=" + mmaxDaytime + ", yminDaytime="
+				+ yminDaytime + ", ymaxDaytime=" + ymaxDaytime
+				+ ", typeString=" + typeString + "]";
+	}
+	
 	
 }

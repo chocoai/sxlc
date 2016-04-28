@@ -47,18 +47,18 @@
      <!--           佣金发放记录 -->
      <resultMap type = "cn.invitemastermng.model.AwardPaymentRecordEntity" id = "AwardRecord">
         <result property = "personalName"			    column = "Personal_Name" />
-		<result property = "logname"           column = "Logname" />
-		<result property = "personalPhone"    	    column = "Personal_Phone" />
+		<result property = "logname"                    column = "Logname" />
+		<result property = "personalPhone"    	        column = "Personal_Phone" />
 		<result property = "personalIDCard"  	        column = "Personal_IDCard" />
-		<result property = "startDate" 	            column = "Start_Date" />  
-		<result property = "endDate"             column = "End_Date" /> 
+		<result property = "startDate" 	            	column = "Start_Date" />  
+		<result property = "endDate"             		column = "End_Date" /> 
 		
 		<result property = "borrowAward"			    column = "Borrow_Award" />
-		<result property = "investAward"           column = "Invest_Award" />
-		<result property = "vipAward"    	    column = "Vip_Award" />
-		<result property = "repayAward"  	        column = "Repay_Award" />
+		<result property = "investAward"           		column = "Invest_Award" />
+		<result property = "vipAward"    	    		column = "Vip_Award" />
+		<result property = "repayAward"  	        	column = "Repay_Award" />
 		<result property = "awardAmount" 	            column = "Award_Amount" />  
-		<result property = "realAmount"             column = "Real_Amount" /> 
-		<result property = "payDate"             column = "Pay_Date" /> 
+		<result property = "realAmount"             	column = "Real_Amount" /> 
+		<result property = "payDate"             		column = "Pay_Date" /> 
     </resultMap>  
 </mapper>

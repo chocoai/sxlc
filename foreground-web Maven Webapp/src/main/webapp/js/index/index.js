@@ -111,46 +111,46 @@ $(function() {
 	/*新手体验部分开始*/
 	if (scrollet >= 450 && scrollet<=750) {
 		$(".asideNewer").html("新手"+"<br>"+"体验");
-		$(".asideNewer").removeClass("before").addClass("after");
+		$(".asideNewer").removeClass("before").addClass("indexAfter");
 	} else {
 		$(".asideNewer").html("");
-		$(".asideNewer").removeClass("after").addClass("before");
+		$(".asideNewer").removeClass("indexAfter").addClass("before");
 	}
 	/*新手体验部分结束*/
 	/*投资专区部分开始*/
 	if (scrollet >= 751 && scrollet<=1050) {
 		$(".asideInvest").html("投资"+"<br>"+"专区");
-		$(".asideInvest").removeClass("before").addClass("after");
+		$(".asideInvest").removeClass("before").addClass("indexAfter");
 	} else {
 		$(".asideInvest").html("");
-		$(".asideInvest").removeClass("after").addClass("before");
+		$(".asideInvest").removeClass("indexAfter").addClass("before");
 	}
 	/*投资专区部分结束*/
 	/*债权转让部分开始*/
 	if (scrollet >= 1051 && scrollet<=1700) {
 		$(".asideDebet").html("债权"+"<br>"+"转让");
-		$(".asideDebet").removeClass("before").addClass("after");
+		$(".asideDebet").removeClass("before").addClass("indexAfter");
 	} else {
 		$(".asideDebet").html("");
-		$(".asideDebet").removeClass("after").addClass("before");
+		$(".asideDebet").removeClass("indexAfter").addClass("before");
 	}
 	/*债权转让部分结束*/
 	/*新闻动态部分开始*/
 	if (scrollet >= 1850 && scrollet<=2200) {
 		$(".asideNews").html("新闻"+"<br>"+"动态");
-		$(".asideNews").removeClass("before").addClass("after");
+		$(".asideNews").removeClass("before").addClass("indexAfter");
 	} else {
 		$(".asideNews").html("");
-		$(".asideNews").removeClass("after").addClass("before");
+		$(".asideNews").removeClass("indexAfter").addClass("before");
 	}
 	/*新闻动态部分结束*/
 	/*合作伙伴部分开始*/
 	if (scrollet >= 2201 && scrollet<=2400) {
 		$(".asidePaterner").html("合作"+"<br>"+"伙伴");
-		$(".asidePaterner").removeClass("before").addClass("after");
+		$(".asidePaterner").removeClass("before").addClass("indexAfter");
 	} else {
 		$(".asidePaterner").html("");
-		$(".asidePaterner").removeClass("after").addClass("before");
+		$(".asidePaterner").removeClass("indexAfter").addClass("before");
 	}
 	/*if (scrollet >= 2400) {
 		$(".asideLeft").hide();
@@ -229,6 +229,16 @@ function ttCountDown() {
 /*倒计时结束*/
 
 
-
+function clickUp(){
+	layer.open({
+		title :' ',//标题
+		skin: 'layer-ext-myskin',//皮肤
+        type: 1,
+        area: ['540px', '373px'],//大小宽*高
+        shadeClose: true, //点击遮罩关闭
+        content: $('.applyTalent')//内容，里边是包含内容的div的class
+    });
+	$('.layui-layer-title').css("border-bottom","none");
+}
 
 

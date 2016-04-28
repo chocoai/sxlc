@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="AccountDao">
+	
+	<!-- 红包	查询结果封装 -->
+	<resultMap type="cn.sxlc.account.manager.model.UnUsedRedpacketsEntity" id="unUsedRedpacketsEntity">
+		<id column="Member_RP_ID" property="lId" />
+		<result column="End_Date" property="ttEndDate"/>
+		<result column="Gift_Amount" property="lAmount"/>
+		<result column="usedAmount" property="lUsedAmount"/>
+	</resultMap>
+
+	<!-- 获取可用代金券-->
+	<select id="GetRemainderVouchers"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call GetRemainderVouchers(
+				#{lMemberId,		mode=IN,	jdbcType=BIGINT},
+				#{result,			mode=OUT,	jdbcType=BIGINT}
+    		)}
+    	]]>
+	</select>
+	
+	<!-- 获取可用红包 -->
+	<select id="GetUnUsedRedpackets" parameterType="Map" resultMap ="unUsedRedpacketsEntity">
+		select mr.Member_RP_ID,mr.End_Date,mr.Gift_Amount,(select sum(Gift_Amount) from Member_Redpackets_UseRecord mru where mru.Member_RP_ID=mr.Member_RP_ID and mru.Statu!=-1) as usedAmount 
+			from Member_Redpackets mr where mr.Member_ID=#{memberId} and mr.End_Date > now() 
+			and (mr.Statu =0 or mr.Statu = 1) order by mr.End_Date asc
+	</select>
+	
+	<!-- 投资账户资金信息 结果封装 -->
+	<resultMap type="cn.sxlc.account.manager.model.InvestAccountFeeEntity" id="investAccountFeeEntity">
+		<id column="ThirdParty_Mark" property="sGuaranteeMark" />
+		<result column="bMark" property="sMemberMark"/>
+		<result column="Amount" property="lAmountTotal"/>
+		<result column="MngFee_Amount" property="lMngFee"/>
+		<result column="Guarantee_Fee" property="lGuaranteeFee"/>
+		<result column="RiskMargin_Fee" property="lRiskMarginFee"/>
+		<result column="Project_No" property="sProjectNo"/>
+		<result column="Reward_Rate" property="iRewardRate"/>
+	</resultMap>
+
+	<!-- 获取担保公司标识  及担保费 、风险保证金 、管理费、项目总金额 -->
+	<select id="GetGuaranteeInfo" parameterType="Map" resultMap ="investAccountFeeEntity">
+		select par.Project_No,pbi.Amount,pam.MngFee_Amount,pam.RiskMargin_Fee,pam.Guarantee_Fee,mtib.ThirdParty_Mark as bMark,mti.ThirdParty_Mark,par.Reward_Rate 
+			from Project_App_Record par 
+			left join Member_Third_Info mti on mti.Member_ID = par.Guarantee_ID and mti.Member_Type = 1
+			left join Member_Third_Info mtib on mtib.Member_ID = par.Member_ID and mtib.Member_Type = 0
+			left join Project_App_MngFee pam on pam.Apply_Id = par.Apply_Id
+			left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+			where par.Apply_Id = #{applyId} 
+	</select>
+	
+	<!-- 投资人账户标识-->
+	<select id="GetInvestMemberMark" parameterType="Map" resultType ="string">
+		select ThirdParty_Mark from Member_Third_Info where Member_Type = 0 and Member_ID = #{memberId} 
+	</select>
+
+</mapper>

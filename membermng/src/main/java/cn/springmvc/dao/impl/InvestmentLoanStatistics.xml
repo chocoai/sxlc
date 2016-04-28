@@ -143,10 +143,10 @@
 			<result property = "successInvest"               column = "successInvest" /> 
 			<result property = "successInvestAmount"         column = "successInvestAmount" />
 			<result property = "successRecvPrincipalTotal"   column = "successRecvPrincipalTotal" />
-			<result property = "incomeTotal"           column = "IncomeTotal" />
-			<result property = "notSDRecvPrincipal"    column = "NotSDRecvPrincipal" />
-			<result property = "notSDRecvPrincipal"    column = "NotSDRecvPrincipal" />
-			<result property = "notSDRecvInterest"     column = "NotSDRecvInterest" /> 
+			<result property = "incomeTotal"           		 column = "IncomeTotal" />
+			<result property = "notSDRecvPrincipal"    		 column = "NotSDRecvPrincipal" />
+			<result property = "notSDRecvPrincipal"          column = "NotSDRecvPrincipal" />
+			<result property = "notSDRecvInterest"           column = "NotSDRecvInterest" /> 
      </resultMap>  
     <!--           投资统计信息 -->
 <!--      successInvest 成功投资笔数、 -->

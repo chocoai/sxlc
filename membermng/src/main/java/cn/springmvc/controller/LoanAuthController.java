@@ -96,7 +96,7 @@ public class LoanAuthController {
 	 */
 	public String showAuthRealName(){
 		Long memberId = 1L;
-		Map<String,Object> authInfo = borrowingCertificationServer.showAuthRealName(memberId);
+//		Map<String,Object> authInfo = borrowingCertificationServer.showAuthRealName(memberId);
 		
 		return null;
 	}

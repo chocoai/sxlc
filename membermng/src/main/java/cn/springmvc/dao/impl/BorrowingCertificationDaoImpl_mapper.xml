@@ -3,6 +3,19 @@
 
 <mapper namespace="borrowingCertificationDaoImpl">     
 	
+	<select id="allAuthType" parameterType="Map" resultType="cn.membermng.model.BorrowingType">
+		select mat.Attest_typeName as typeName,mat.Attest_Type_Id as typeId,
+		(select case 
+			when (End_Date &lt; now() and status = 2) then 4 
+			when `status` is null then '0' 
+			else `status` end
+			from member_attest_info mai 
+			where mai.Attest_Type_ID = mat.Attest_Type_Id 
+			and mai.Member_ID = #{memberId}
+			and mai.Member_Type = mat.member_Type order by Record_Date desc limit 0,1
+		) as status 
+		from member_attest_type mat where mat.member_Type = #{memberType}
+	</select>
 	
 	
 	<!-- 个人会员实名认证 -->
@@ -24,14 +37,20 @@
 	</select>
 	
 	<!-- 获取个人会员实名认证信息 -->
-	<select id="showAuthRealName" parameterType="Map" resultType="Map">
+	<select id="showAuthRealName" parameterType="Map" resultType="cn.membermng.model.RealNameAuth">
 		select 
 		CONVERT(AES_DECRYPT(UNHEX(prc.Real_Name),#{skey}) using utf8) as realName,
-		CONVERT(AES_DECRYPT(UNHEX(prc.Personal_IDCard),#{skey}) using utf8) as personalIDCard,prc.SexID,
-		CONVERT(AES_DECRYPT(UNHEX(prc.Home_Town),#{skey}) using utf8) as homeTown,prc.Nation,mai.End_Date as endDate,
+		CONVERT(AES_DECRYPT(UNHEX(prc.Personal_IDCard),#{skey}) using utf8) as personalIDCard,
+		prc.SexID,
+		CONVERT(AES_DECRYPT(UNHEX(prc.Home_Town),#{skey}) using utf8) as homeTown,
+		prc.Nation as aationId,
+		mai.End_Date as endDate,
 		(select Attach_Path from personal_attest_attach where Attest_ID = mai.Certification_ID limit 0,1) as positive,
 		(select Attach_Path from personal_attest_attach where Attest_ID = mai.Certification_ID limit 1,2) as reverse,
-		status
+		(case 
+		when (End_Date &lt; now() and status = 2) then 4 
+		when `status` is null then '0' 
+		else `status` end) as status
 		from Member_Attest_Info mai 
 		left join Personal_RealName_Check prc on prc.Certification_ID = mai.Certification_ID
 		where mai.Member_ID = #{memberId} and Member_Type = 0 and Attest_Type_ID = 1
@@ -326,11 +345,15 @@
 	
 	<!-- 查看企业会员营业执照认证 -->
 	<select id="showBusinessLicense" parameterType="Map" resultType="Map">
-		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,
+		select status,if(mai.End_Date is null,'',mai.End_Date) as End_Date,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_BLN),#{skey}) using utf8) as Firm_BLN,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_Address),#{skey}) using utf8) as Firm_Address,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_Legal),#{skey}) using utf8) as Firm_Legal,Reg_Capital,
-		CONVERT(AES_DECRYPT(UNHEX(Reg_Business),#{skey}) using utf8) as Reg_Business,Firm_Type,Reg_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		CONVERT(AES_DECRYPT(UNHEX(Reg_Business),#{skey}) using utf8) as Reg_Business,
+		Firm_Type,
+		Reg_Date,
+		group_concat(paa.Attach_Name) as Attach_Name,
+		group_concat(paa.Attach_Path) as Attach_Path
 		from Member_Attest_Info mai
 		left join Enterprise_License_Attest ela on ela.Certification_ID = mai.Certification_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID

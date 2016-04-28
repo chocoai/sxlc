@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="projectInfoMap"> 
+ <!-- 成交项目列表:放款后所有项目 -->
+ <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectInfo">
+        <id property = "ID"						column = "Apply_Id" /> 
+        <result property = "projectNo" 			column = "Project_No" /> 
+        <result property = "logname" 		    column = "Logname" />  
+        <result property = "memberName" 		column = "Personal_Name" />
+        <result property = "personalPhone" 		column = "Personal_Phone" />
+        <result property = "projectName"       	column = "Project_Name" />
+        <result property = "statu"       	    column = "statu" />
+		<result property = "principalAmount"    column = "Principal_Amount" />
+		<result property = "interestAmount"     column = "Interest_Amount" /> 
+		<result property = "overdue"       	    column = "Overdue" />
+		<result property = "repayMaxTime"       column = "Repay_MaxTime" />
+		<result property = "recordDate"       	column = "Record_Date" /> 
+        <result property = "releaseDate"       	column = "Release_Date" />
+        <result property = "realEndDate"       	column = "Real_End_Date" />
+        <result property = "holdDate"       	column = "Hold_Date" />  
+		<result property = "settleDate"    	    column = "Settle_Date" /> 
+        <association property="projectBaseInfoentity"  resultMap="resultBaseInfoentity"></association>
+    </resultMap> 
+     <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity"> 
+			<result property = "projectTitle"    column = "Project_Title" /> 
+			<result property = "deadline" 		 column = "Deadline" />
+			<result property = "deadlineType"    column = "Deadline_Type" />
+			<result property = "amount" 		 column = "Amount" />
+			<result property = "realAmount"     column = "Real_Amount" />
+			<result property = "repayWay"        column = "Repay_Way" />
+			<result property = "yearRate"        column = "Year_Rate" /> 
+     </resultMap>
+       <!--  即将还款统计 -->
+	<resultMap type="cn.springmvc.model.ReplayStatisticsEntity" id="MaturingBill">   
+        <result property = "projectNo" 			column = "Project_No" /> 
+        <result property = "projectTitle" 		column = "Project_Title" /> 
+        <result property = "logname" 		    column = "Logname" />  
+        <result property = "memberName" 		column = "Personal_Name" />
+        <result property = "realAmount"         column = "Invest_Amount_Valid" />
+        <result property = "guaranteeName"      column = "Guarantee_Name" />
+        <result property = "repayMaxTime"       column = "Repay_MaxTime" />
+		<result property = "indexs"             column = "Indexs" />
+		<result property = "Amount"             column = "Amount" /> 
+		<result property = "overdue"       	    column = "Overdue" />
+		<result property = "repayMaxTime"       column = "Repay_MaxTime" />
+		<result property = "sdRepayPrincipal"   column = "SDRepay_Principal" /> 
+        <result property = "sdRepayInterest"    column = "SDRepay_Interest" /> 
+	</resultMap>	
+	  <!--  逾期还款统计 -->
+	<resultMap type="cn.springmvc.model.ReplayStatisticsEntity" id="LatePayments">   
+        <result property = "projectNo" 			column = "Project_No" /> 
+        <result property = "projectTitle" 		column = "Project_Title" /> 
+        <result property = "logname" 		    column = "Logname" />  
+        <result property = "memberName" 		column = "Personal_Name" />
+        <result property = "realAmount"         column = "Invest_Amount_Valid" />
+        <result property = "guaranteeName"      column = "Guarantee_Name" />
+        <result property = "repayMaxTime"       column = "Repay_MaxTime" />
+		<result property = "overdueDays"        column = "Overdue_Days" />
+		<result property = "indexs"             column = "Indexs" />
+		<result property = "amount"             column = "Amount" /> 
+		<result property = "overdueAmount"      column = "Overdue_Amount" />
+		<result property = "repayMaxTime"       column = "Repay_MaxTime" />
+		<result property = "sdRepayPrincipal"   column = "SDRepay_Principal" /> 
+        <result property = "sdRepayInterest"    column = "SDRepay_Interest" /> 
+	</resultMap>	
+	<!-- 催收 -->
+	<resultMap type="cn.springmvc.model.PostProjectEntity" id="ProjectCollection">
+		<id column="Repay_ID"          		property="repayID" />
+		<result column="Apply_Id"      		property="applyId"/>
+		<result column="Project_No"    		property="projectNo"/>
+		<result column="Project_Title" 		property="projectTitle"/>
+		<result column="memberName"    		property="memberName"/>
+		<result column="Amount"        		property="amount"/>
+		<result column="Indexs"        		property="indexs"/>
+		<result column="Repay_MaxTime" 		property="repayMaxTime"/>
+		<result column="Repay_Time"         property="repayTime"/>
+		<result column="overDay"       		property="overDay"/> 
+		<result column="Overdue_Amount"  	property="overdueAmount"/> 
+	</resultMap>	
+	<!-- 催款已还账单查询 -->
+	<resultMap type="cn.springmvc.model.PostProjectEntity" id="LoanRepay">
+		<result column="Apply_Id"      property="applyId"/>
+		<result column="Project_No"    property="projectNo"/>
+		<result column="Project_Title" property="projectTitle"/>
+		<result column="Personal_Name" property="memberName"/>
+		<result column="Hold_Date"     property="holdDate"/> 
+	</resultMap>	
+     <!-- 查看账单详情 -->
+	<resultMap type="cn.springmvc.model.PostProjectEntity" id="BillingDetails">  
+		<result column="Project_No"           property="projectNo"/>
+		<result column="Project_Title"        property="projectTitle"/>
+		<result column="Personal_Name"        property="memberName"/>
+		<result column="Merbill_No"           property="merbillNo"/>
+		<result column="Amount"               property="amount"/>
+		<result column="Indexs"               property="indexs"/>
+		<result column="Repay_Time"           property="repayTime"/>
+		<result column="overDay"              property="overDay"/> 
+		<result column="Overdue_Amount"       property="overdueAmount"/> 
+	</resultMap>	
+     
+</mapper>

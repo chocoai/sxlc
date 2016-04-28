@@ -1,6 +1,7 @@
 package cn.springmvc.controller.frontconfig; 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.MngTeamEntity;
+import cn.springmvc.model.Operation;
 import cn.springmvc.service.MngTeamService;
 import cn.springmvc.util.HttpSessionUtil;
 import cn.springmvc.util.LoadUrlUtil;
@@ -44,6 +46,12 @@ public class TeamController {
 	*/
 	@RequestMapping("/toTeamList")
 	public String toManagementTeamList(HttpServletRequest req){
+		HttpSession session = HttpSessionUtil.getSession(req);
+		List<Operation> operations = null;
+		if(session.getAttribute("operationList") != null){
+			operations=(List<Operation>)session.getAttribute("operationList");
+		}
+		req.setAttribute("operations", operations);
 		String hostPath = FtpClientUtil.getFtpFilePath();
 		hostPath = hostPath.substring(0, hostPath.length()-1);
 		req.setAttribute("hostPath", hostPath);

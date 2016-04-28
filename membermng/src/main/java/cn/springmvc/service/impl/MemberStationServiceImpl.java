@@ -95,7 +95,7 @@ public class MemberStationServiceImpl implements MemberStationService {
 		}else{
 			generatorUtil.SetIdUsed(id);
 		}
-        return memberStationDaoImpl.addStationLetter(memberStationLetterEntity);
+        return result;
 	}
 
 	@Override

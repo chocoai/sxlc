@@ -10,6 +10,7 @@
 	<select id="selectProjectTypeReplyList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProjectTypeReply">
 	   select Project_ID,Content,Pt_Index
 	   from  Project_Type_Reply 
+	   where Project_ID = #{projectType}
     </select>       
 	<!-- 新增项目类型还款指南 -->  
 	<insert id="insertProjectTypeReply"  parameterType="cn.springmvc.model.ProjectTypeReplyEntity">    
@@ -37,5 +38,11 @@
     <!-- 查询指南序号-->  
 	<select id="selectProjectTypeReplyEntityindex"  resultType="Integer" >
 	   select Pt_Index from  Project_Type_Reply  order by Pt_Index desc limit 1
-    </select>             
+    </select>  
+     <!--前台查询项目类型还款指南列表 -->  
+	<select id="selectProjectTypeReplyListfront" parameterType="long"  resultMap="resultListProjectTypeReply">
+	   select Project_ID,Content,Pt_Index
+	   from  Project_Type_Reply 
+	   where Project_ID = #{projectType}
+    </select>              
 </mapper>   

@@ -16,11 +16,10 @@ public interface ActivitiesProjectService {
 			InsertAdminLogEntity entityLog, String[] sIpInfo); 
 	/**
 	 * 删除项目审批活动点
-	 * @param id 项目审批活动点id
-	 * @param apname 审批活动点名称
+	 * @param id 项目审批活动点id 
 	 * @return 0：失败；1成功
 	 */
-	public int deleteActivitiesProjectByID(int id,String apname,InsertAdminLogEntity 
+	public int deleteActivitiesProjectByID(int id,InsertAdminLogEntity 
 			entityLog, String[] sIpInfo); 
 	/**
 	 * 修改项目审批活动点
@@ -31,10 +30,11 @@ public interface ActivitiesProjectService {
 			InsertAdminLogEntity entityLog, String[] sIpInfo);
 	 /**
 	 * 停用或启用项目审批活动点信息
-	 * @param entity 项目审批活动点实体
+	 * @param entity 项目审批活动点实体 (statu 0：无效 1：有效)
 	 * @return 0:失败 1：成功 
 	 */
-	public  int  updateActivitiesProjectStatuByID(ActivitiesProjectEntity entity);
+	public  int  updateActivitiesProjectStatuByID(ActivitiesProjectEntity entity,InsertAdminLogEntity 
+			entityLog, String[] sIpInfo);
 	/**
 	 * 分页查询项目审批活动点
 	 * @param pageEntity 分页实体  map{apName(活动点名称),statu( 0：无效 1：有效-1全部)}

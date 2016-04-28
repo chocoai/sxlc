@@ -1,15 +1,26 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>投资专区</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../common/top_meta.jsp"></jsp:include>
+	<script type="text/javascript">
+	var publickey = '<%=session.getAttribute("publicKey")%>';
+	</script>
 	<link rel="stylesheet" type="text/css" href="css/invest/investmentZone.css">
 	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 </head>
 <body>
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../common/top.jsp"></jsp:include>
+   	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
     <!-- 此处加入代码 -->
     <!--伍成然2016-3-28-->
     <div class="main">
@@ -22,7 +33,7 @@
     	<!--tab区域  -->
     	<ul class="tab-head">
 			<li class="tab-ing">投资专区</li>
-			<li class="tab-li"><a href="debtCession.html">债权转让</a></li>
+			<li class="tab-li"><a href="invest/debtCession.html">债权转让</a></li>
 		</ul>
 		<!--轮播图区域  -->
 		<div class="banner">
@@ -57,66 +68,66 @@
 				<div class="fliter-left"><!--筛选部分，active为选中 -->
 					<div class="tags-list-state tags-list">
 						<div class="left-title">项目状态:</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="预热中">预热中</label>
-						<label><input type="radio" name="tag" value="投标中">投标中</label>
-						<label><input type="radio" name="tag" value="投标完成">投标完成</label>
+						<label class="active"><input type="radio" name="tag" value="-1">全部</label>
+						<label><input type="radio" name="tag" value="">预热中</label>
+						<label><input type="radio" name="tag" value="0">投标中</label>
+						<label><input type="radio" name="tag" value="2">投标完成</label>
 					</div>
 					<div class="tags-list-reward tags-list">
 						<div class="left-title">奖励:</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="加息">加息</label>
-						<label><input type="radio" name="tag" value="返现">返现</label>
-						<label><input type="radio" name="tag" value="无奖励">无奖励</label>
+						<label class="active"><input type="radio" name="tag" value="-1">全部</label>
+						<label><input type="radio" name="tag" value="">加息</label>
+						<label><input type="radio" name="tag" value="">返现</label>
+						<label><input type="radio" name="tag" value="">无奖励</label>
 					</div>
 					<div class="tags-list-type tags-list">
 						<div class="left-title">借款类型:</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="担保贷">担保贷</label>
-						<label><input type="radio" name="tag" value="抵押贷">抵押贷</label>
-						<label><input type="radio" name="tag" value="信用贷">信用贷</label>
+						<label class="active"><input type="radio" name="tag" value="">全部</label>
+						<c:forEach items="${projectBaseInfos }" var="pb">
+							<label><input type="radio" name="tag" value="${pb.id }">${pb.projectName }</label>
+						</c:forEach>
 					</div>
 					<div class="tags-list-rate tags-list">
 						<div class="left-title">年化利率:</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="8%以下">8%以下</label>
-						<label><input type="radio" name="tag" value="8%-12%">8%-12%</label>
-						<label><input type="radio" name="tag" value="12%以上">12%以上</label>			
+						<label class="active"><input type="radio" name="tag" value="-1">全部</label>
+						<label><input type="radio" name="tag" value="8">8%以下</label>
+						<label><input type="radio" name="tag" value="8-12">8%-12%</label>
+						<label><input type="radio" name="tag" value="12">12%以上</label>
 					</div>
 				</div>
 				<div class="fliter-right">
 					<div class="tags-list-method tags-list">
 						<div class="left-title">还款方式:</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="等额本金">等额本金</label>
-						<label><input type="radio" name="tag" value="等额本息">等额本息</label>
-						<label><input type="radio" name="tag" value="先息后本">先息后本</label>
-						<label><input type="radio" name="tag" value="到期还本息">到期还本息</label>			
+						<label class="active"><input type="radio" name="tag" value="-1">全部</label>
+						<label><input type="radio" name="tag" value="0">等额本息</label>
+						<label><input type="radio" name="tag" value="1">先息后本</label>
+						<label><input type="radio" name="tag" value="2">到期还本息</label>
+						<label><input type="radio" name="tag" value="3">等额本金</label>
 					</div>
 					<div class="tags-list-day tags-list">
 						<div class="left-title">投资期限(天):</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="1-15天">1-15天</label>
-						<label><input type="radio" name="tag" value="16-30天">16-30天</label>
-						<label><input type="radio" name="tag" value="31-45天">31-45天</label>	
-						<label><input type="radio" name="tag" value="45天以上">45天以上</label>			
+						<label class="active"><input type="radio" name="tag" value="-1">全部</label>
+						<label><input type="radio" name="tag" value="1-15">1-15天</label>
+						<label><input type="radio" name="tag" value="16-30">16-30天</label>
+						<label><input type="radio" name="tag" value="31-45">31-45天</label>
+						<label><input type="radio" name="tag" value="45">45天以上</label>
 					</div>
 					<div class="tags-list-month tags-list">
 						<div class="left-title">投资期限(月):</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="1-3个月">1-3个月</label>
-						<label><input type="radio" name="tag" value="4-6个月">4-6个月</label>
-						<label><input type="radio" name="tag" value="7-9个月">7-9个月</label>
-						<label><input type="radio" name="tag" value="10-12个月">10-12个月</label>
-						<label><input type="radio" name="tag" value="12个月以上">12个月以上</label>				
+						<label class="active"><input type="radio" name="tag" value="-1">全部</label>
+						<label><input type="radio" name="tag" value="1-3">1-3个月</label>
+						<label><input type="radio" name="tag" value="4-6">4-6个月</label>
+						<label><input type="radio" name="tag" value="7-9">7-9个月</label>
+						<label><input type="radio" name="tag" value="10-12">10-12个月</label>
+						<label><input type="radio" name="tag" value="12">12个月以上</label>
 					</div>
 					<div class="tags-list-year tags-list">
 						<div class="left-title">投资期限(年):</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="1年">1年</label>
-						<label><input type="radio" name="tag" value="2年">2年</label>
-						<label><input type="radio" name="tag" value="3年">3年</label>	
-						<label><input type="radio" name="tag" value="3年以上">3年以上</label>			
+						<label class="active"><input type="radio" name="tag" value="-1">全部</label>
+						<label><input type="radio" name="tag" value="1">1年</label>
+						<label><input type="radio" name="tag" value="2">2年</label>
+						<label><input type="radio" name="tag" value="3">3年</label>
+						<label><input type="radio" name="tag" value="3+">3年以上</label>
 					</div>
 				</div>
 			</div>
@@ -128,7 +139,7 @@
 				<div class="inv-head clearfix">
 					<div class="inv-head-left">
 						<img src="resource/img/invest/dan.png">
-						<a href="investmentDetail.html">化工企业研发资金借款</a>
+						<a href="invest/investmentDetail.html">化工企业研发资金借款</a>
 						<span>【NO.20160306121】</span>
 					</div>
 					<div class="inv-head-right">
@@ -170,7 +181,7 @@
 				<div class="inv-head clearfix">
 					<div class="inv-head-left">
 						<img src="resource/img/invest/dan.png"><!--担dan/抵di/信xin-->
-						<a href="investmentDetail.html">化工企业研发资金借款</a>
+						<a href="invest/investmentDetail.html">化工企业研发资金借款</a>
 						<span>【NO.20160306121】</span>
 					</div>
 					<div class="inv-head-right">
@@ -205,7 +216,7 @@
 								<div class="barline"></div> 
 							</div>
 						</div>
-						<input type="button" class="inv-now" value="立即投资" onclick="window.location.href='investmentDetail.html'"> 
+						<input type="button" class="inv-now" value="立即投资" onclick="window.location.href='invest/investmentDetail.html'"> 
 					</div>
 				</div>
 			</li>
@@ -215,7 +226,7 @@
 				<div class="inv-head clearfix">
 					<div class="inv-head-left">
 						<img src="resource/img/invest/di.png">
-						<a href="investmentDetail.html">化工企业研发资金借款</a>
+						<a href="invest/investmentDetail.html">化工企业研发资金借款</a>
 						<span>【NO.20160306121】</span>
 					</div>
 					<div class="inv-head-right">
@@ -251,7 +262,7 @@
 								<div class="barline"></div> 
 							</div>	
 						</div>
-						<input type="button" class="view-details" value="查看详情" onclick="window.location.href='investmentDetail.html'"> 
+						<input type="button" class="view-details" value="查看详情" onclick="window.location.href='invest/investmentDetail.html'"> 
 					</div>
 				</div>
 			</li>
@@ -261,7 +272,7 @@
 				<div class="inv-head clearfix">
 					<div class="inv-head-left">
 						<img src="resource/img/invest/xin.png">
-						<a href="investmentDetail.html">化工企业研发资金借款</a>
+						<a href="invest/investmentDetail.html">化工企业研发资金借款</a>
 						<span>【NO.20160306121】</span>
 					</div>
 					<div class="inv-head-right">
@@ -297,7 +308,7 @@
 								<div class="barline"></div> 
 							</div>	
 						</div>
-						<input type="button" class="view-details" value="查看详情" onclick="window.location.href='investmentDetail.html'"> 
+						<input type="button" class="view-details" value="查看详情" onclick="window.location.href='invest/investmentDetail.html'"> 
 					</div>
 				</div>
 			</li>
@@ -305,7 +316,7 @@
 		</ul>
 		<div id="pager"></div>	
     </div><!--main  -->
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../common/bottom.jsp"></jsp:include>
    	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
    	<script type="text/javascript" src="js/common/countdown.js"></script>
 	<script type="text/javascript" src="js/invest/investmentZone.js"></script>

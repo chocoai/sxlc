@@ -9,12 +9,12 @@ $(function() {
 			"url": appPath+"/role/getAllStaff.do",   
 			"dataSrc": "results",   
 			"type": "POST",
-			"data": function ( d ) {  
+			"data": function ( d ) {
 				//加密
 				var personalName = encrypt.encrypt($("#personalNameQuery").val());
 				var personalPhone = encrypt.encrypt($("#personalPhoneQuery").val());
 				var personalIDCard = encrypt.encrypt($("#personalIDCardQuery").val());
-				var postId = encrypt.encrypt($("#postIdQuery").val());
+				var postId = encrypt.encrypt($("#postIdQuery").prop("postId"));
 				d.personalName = personalName;
 				d.personalPhone = personalPhone;
 				d.personalIDCard = personalIDCard;
@@ -165,73 +165,6 @@ $(function() {
 		});
 	});
 	
-	//选择职务按钮
-	$(".deptSelect").on("click",function(){
-		$('#deptTbList').DataTable(
-				{
-					autoWidth : false,
-					scrollY : 500,
-					pagingType: "simple_numbers",//设置分页控件的模式  
-					searching : false,
-					bLengthChange: false,
-					colReorder : false,
-					scrollX : true,
-					sScrollX : "100%",
-					sScrollXInner : "100%",
-					bScrollCollapse : true,  
-					processing: true, //打开数据加载时的等待效果  
-			        serverSide: true,//打开后台分页  
-			        ajax: {  
-			            "url": "",   
-			            "dataSrc": "results",   
-			            "data": function ( d ) {  
-//			                var level1 = $('#level1').val();  
-//			                //添加额外的参数传给服务器  
-//			                d.extra_search = level1;  
-			            }  
-			        },
-			        columns: [  
-			                  {title:'<input type="checkbox" class="table-checkbox"  value="1" />',
-			                	  "mRender": function (data, type, full) {
-			                		  sReturn = '<input type="checkbox" value="1" />';
-			                		  return sReturn;
-			                	  }
-//			                	  "sClass": "table-checkbox"
-			                  },
-			                  { title:"部门","data": "baseInfo.id"},  
-			                  { title:"职位","data": "id"}  
-			        ],
-			        rowCallback:function(row,data){//添加单击事件，改变行的样式      
-//			        	if($.inArray(data.DT_RowId,selected)!==-1){
-//			        		$(row).addClass('selected'); 
-//			        	}
-			        },
-			        oTableTools:{"sRowSelect":"multi"}
-		 
-		});
-		
-		 var table = $('#deptTbList').DataTable();
-		
-		 $('#deptTbList tbody').on( 'click', 'tr', function () {
-		        $(this).toggleClass('selected');
-		  });
-		
-		
-		layer.open({
-			type: 1,
-			area: ['500px', '300px'], //高宽
-			title: "职务列表",
-			content: $(".dept-select"),//DOM或内容
-			btn:['添加', '关闭']
-		,yes: function(index, layero){ //或者使用btn1
-			
-		},cancel: function(index){//或者使用btn2（concel）
-			//取消的回调
-		}
-		});
-	});
-	
-	
 	/**
 	 * 修改按钮
 	 */
@@ -353,10 +286,90 @@ $(function() {
 	$(".idCard").on("change",function(){
 		var idCard = $(this).val();
 		$("#birthday").val(getBirthday(idCard));
-		$("#birthday").attr("disabled",true);
+		$("#birthday").prop("disabled",true);
 		
 	});
-
+	
+	
+	//选择职务按钮
+	$(".deptSelect").on("click",function(){
+		var $this = $(this);
+		layer.open({
+			type: 1,
+			area: ['500px', '300px'], //高宽
+			title: "职务列表",
+			content: $(".dept-select"),//DOM或内容
+			btn:['添加', '关闭']
+		,yes: function(index, layero){ //或者使用btn1
+			var data = $('#deptTbList').DataTable().rows('.selected').data(); 
+			if(data.length<1){
+				layer.alert("请选择职务！",{icon:0});
+				return;
+			}
+			$this.parent().find(".postId").prop("postId",data[0].id);
+			$this.parent().find(".postId").val(data[0].postName);
+			layer.close(index);
+		},cancel: function(index){//或者使用btn2（concel）
+			//取消的回调
+		}
+		});
+	});
+	
+	
+	//职务列表初始化
+	$('#deptTbList').DataTable(
+			{
+		        ajax: {  
+		        	"url": appPath+"/role/getPostAll.do",   
+					"dataSrc": "results",   
+					"type": "POST",
+		            "data": function ( d ) {  
+		            	
+		            }  
+		        },
+		        columns: [  
+		                  {title:'',sWidth:"10%", 
+		                	  "mRender": function (data, type, full) {
+		                		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+		                		  return sReturn;
+		                	  }
+		                  },
+		                  { title:"部门","data": "deptName"},  
+		                  { title:"职位","data": "postName"}  
+		        ],
+//		        pagingType: "simple_numbers",//设置分页控件的模式  
+		        processing: true, //打开数据加载时的等待效果  
+//		        serverSide: true,//打开后台分页  
+		        info:false,
+		        searching: false,//关闭搜索
+		        paging:false,//关闭分页栏
+		        aoColumnDefs : [
+			                        {"bVisible": false, "aTargets": []}, //控制列的隐藏显示
+			                        {
+			                        	orderable : false,
+			                        	aTargets : [ 0, 1, 2]
+			                        } // 制定列不参与排序
+		                        ],
+                rowCallback:function(row,data){//添加单击事件，改变行的样式      
+                }
+	 
+	});
+	
+	//表格单选效果(有复选框)
+	 $('#deptTbList tbody').on( 'click', 'tr', function () {
+		    var $this = $(this);
+		    var $checkBox = $this.find("input:checkbox");
+	        if ( $this.hasClass('selected') ) {
+	        	 $checkBox.prop("checked",false);
+	        	$this.removeClass('selected');
+	        } else {
+	        	$(".tr-checkbox").prop("checked",false);
+	        	$checkBox.prop("checked",true);
+	        	$('#deptTbList tr.selected').removeClass('selected');
+	        	$this.addClass('selected');
+	        }
+	  });
+	
 	
 	
 });

@@ -15,7 +15,9 @@ public class SmsSettingsEntity {
 	private String recordDate;//	添加时间
 	private String optDate;//	最后一次操作时间
 	private long optId;//	最后一次操作员id
+	private String optName;//	最后一次操作员
 	private int statu;//	是否有效 0:无效 1：有效
+	private int smsInterfaceType;//接口类型 0：发送短信 1：接收短信 2：查询余额
 	public long getId() {
 		return id;
 	}
@@ -69,6 +71,18 @@ public class SmsSettingsEntity {
 		return "SmsSettingsEntity [id=" + id + ", smsInterface(短信接口地址)=" + smsInterface
 				+ ", smsSerialNumber(短信序列号)=" + smsSerialNumber + ", smsPassword(密码)="
 				+ smsPassword + ", optId(最后一次操作员id)=" + optId+"]";
+	}
+	public String getOptName() {
+		return optName;
+	}
+	public void setOptName(String optName) {
+		this.optName = optName;
+	}
+	public int getSmsInterfaceType() {
+		return smsInterfaceType;
+	}
+	public void setSmsInterfaceType(int smsInterfaceType) {
+		this.smsInterfaceType = smsInterfaceType;
 	}
 
 }

@@ -1,69 +1,76 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
+	<base href="<%=basePath%>">
     <title>待确认借款申请</title>
-    <jsp:include page="/web/common/top_meta.jsp"></jsp:include>
+    <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/loanManagement/myLoan.css">
 </head>
 <body> 
-    <jsp:include page="/web/common/top.jsp"></jsp:include>
-   	<jsp:include page="/web/common/mainPageTop.jsp"></jsp:include>
+    <jsp:include page="../../common/top.jsp"></jsp:include>
+   	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
    	<div class="main">
    		<div class="clearfix">
-		   	<jsp:include page="/web/account/accountCommonLeft.jsp"></jsp:include>
+		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
    			<div class="accountRight">
-			   	<jsp:include page="/web/account/accountCommonRightTop.jsp"></jsp:include>
+			   	<jsp:include page="../../account/accountCommonRightTop.jsp"></jsp:include>
    				<div class="accountMain clearfix">
    				<!-- 在此处写入代码 -->
    				<!--伍成然2016-3-31  -->
 	   				<ul class="my-loan-record">
-	   					<li><a href="LR_financing.html">借款记录</a></li>
-	   					<li><a href="applyRecord.html">借款申请记录</a></li>
+	   					<li><a href="loanManagement/LR_financing.html">借款记录</a></li>
+	   					<li><a href="loanManagement/applyRecord.html">借款申请记录</a></li>
 	   					<li class="loan-record-ing">待确认借款申请</li>
 	   				</ul>
 	   				<div class="my-loan-group clearfix">
 		   				<ul class="my-loan-table">
 		   					<li>
 		   						<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										项目申请编号
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										项目名称
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										产品类型
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										借款期限
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										借款金额
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										最低借款金额
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										年化利率
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										状态
 									</div>
 								</div>								
@@ -71,43 +78,43 @@
 		   					<% for(int j = 0; j<2;j++){ %>
 		   					<li>
 		   						<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										00000001
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										借款信用贷<br>
 										买房急需钱
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										抵押贷
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										2个月
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										1,000.00
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										100.00
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										8.00%
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content toConfirm submitToConfirm">
+									<div class="c-content toConfirm submitToConfirm">
 										提交审核待确认
 									</div>
 								</div>
@@ -116,43 +123,43 @@
 		   					<% for(int j = 0; j<2;j++){ %>
 		   					<li>
 		   						<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										00000001
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										借款信用贷<br>
 										买房急需钱
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										抵押贷
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										2个月
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										1,000.00
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										100.00
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										8.00%
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content toConfirm publishToConfirm">
+									<div class="c-content toConfirm publishToConfirm">
 										发布待确认
 									</div>
 								</div>
@@ -161,43 +168,43 @@
 		   					<% for(int j = 0; j<2;j++){ %>
 		   					<li>
 		   						<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										00000001
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										借款信用贷<br>
 										买房急需钱
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										抵押贷
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										2个月
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										1,000.00
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										100.00
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content">
+									<div class="c-content">
 										8.00%
 									</div>
 								</div>
 								<div class="contentOut4">
-									<div class="content viewDetails">
+									<div class="c-content viewDetails">
 										查看详情
 									</div>
 								</div>
@@ -210,7 +217,7 @@
    			</div>
    		</div>
    	</div>
-   	<jsp:include page="/web/common/bottom.jsp"></jsp:include>
+   	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<!--弹出层  -->
    	<div class="view-details">
    		<ul>

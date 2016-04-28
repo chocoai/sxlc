@@ -52,7 +52,7 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 			return -2;
 		} 
 		result = memberMsgSetDaoImpl.insertMemberSmsSendSet(sendSetEntity);
-		return result = 0;
+		return result;
 	}
 	@Override
 	public int insertMemberEmailSendSet(SendSetEntity sendSetEntity) {
@@ -68,7 +68,7 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 			return -2;
 		}
 		result = memberMsgSetDaoImpl.insertMemberEmailSendSet(sendSetEntity);
-		return result = 0;
+		return result;
 		
 	}
 	@Override
@@ -85,7 +85,7 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 			return -2;
 		}
 		result = memberMsgSetDaoImpl.insertMemberLetterSendSet(sendSetEntity);
-		return result = 0;
+		return result;
 		
 	}
 	@Override
@@ -102,7 +102,7 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 			return -2;
 		}
 		result = memberMsgSetDaoImpl.updateMemberSmsSendSet(sendSetEntity);
-		return result = 0;
+		return result;
 		
 	}
 	@Override
@@ -115,11 +115,11 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 		}
 		//查询平台是否开通该类型的消息设置
 		result = memberMsgSetListDaoImpl.selectIsOpenEmail(sendSetEntity.getTypeID());
-//		if( result == 0 ) {
-//			return -2;
-//		}
+		if( result == 0 ) {
+			return -2;
+		}
 		result = memberMsgSetDaoImpl.updateMemberEmailSendSet(sendSetEntity);
-		return result = 0;
+		return result;
 		
 	}
 	@Override
@@ -136,7 +136,7 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 			return -2;
 		}
 		result = memberMsgSetDaoImpl.updateMemberLetterSendSet(sendSetEntity);
-		return result = 0;
+		return result;
 		
 	}
 	@Override

@@ -135,12 +135,12 @@ b{font-weight:normal; display:inline-block; margin:0 8px; color:#f27f02;}
 .header .nav li a.current, .header .nav li a:hover {
 	border-bottom:5px solid #f27f02;
 }
-.gallery{
+/* .gallery{
 	height:496px;
 	overflow:hidden;
 	background:url(../images/gallerry-bg.gif) 0 0 repeat-x #ccc;
 	border-bottom:5px solid #EAEAEA; 
-}
+} */
 .gallery li{background-color:#fff; overflow:hidden;}
 .roundabout-holder  { 
 	width:646px;
@@ -287,7 +287,7 @@ b{font-weight:normal; display:inline-block; margin:0 8px; color:#f27f02;}
 }
 .questionlist dd{padding:6px 15px 15px; margin-bottom:10px; color:#666;}
 .questionlist p{margin:8px 0;}
-/*==========以下部分是Validform必须的===========*/
+/*==========浠ヤ笅閮ㄥ垎鏄疺alidform蹇呴』鐨�==========*/
 .Validform_checktip{
 	margin-left:8px;
 	line-height:20px;

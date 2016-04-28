@@ -27,11 +27,11 @@ public interface ProjectTypeReplyListDao {
 	public List<ProjectTypeReplyEntity> selectProjectTypeReplyList(
 			PageEntity pageEntity);
 	/**
-	 * 更具index查询项目类型还款指南
-	 * @param entity 项目类型还款指南实体
+	 * 根据index查询项目类型还款指南
+	 * @param index 序号
 	 * @return  ProjectTypeReplyEntity 
 	 */
-	public  ProjectTypeReplyEntity  selectProjectTypeReplyByindex(int id);
+	public  ProjectTypeReplyEntity  selectProjectTypeReplyByindex(int index);
 	/**
 	 * 查询还款指南序号
 	 * @author 刘利   
@@ -41,5 +41,11 @@ public interface ProjectTypeReplyListDao {
 	 * @date 2016-4-7 下午9:12:47
 	 */
     public int selectProjectTypeReplyEntityindex();
+    /**
+	 * 前台查询项目类型还款指南列表 
+	 * @param projectType 项目类型ID
+	 * @return
+	 */
+	public  ProjectTypeReplyEntity  selectProjectTypeReplyListfront(long projectType);
 	
 }

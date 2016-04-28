@@ -1,8 +1,6 @@
 package cn.springmvc.dao.impl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+ 
+import java.util.List; 
 
 import javax.annotation.Resource;
 
@@ -12,8 +10,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.pageselect.PageEntity;
-
-import cn.springmvc.dao.ProcessProjectDao;
+ 
 import cn.springmvc.dao.ProcessProjectListDao;
 import cn.springmvc.model.ProcessProjectEntity;
 @Repository("processProjectListDaoImpl")

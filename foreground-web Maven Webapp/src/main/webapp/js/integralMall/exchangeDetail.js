@@ -134,4 +134,42 @@ $(function(){
 			});
 		});
 	});
+	$("#zeng_shouHuo").Validform({
+		tiptype:3,//提示信息类型
+		btnSubmit:".saveBtn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
+		datatype:extdatatype,//扩展验证类型
+		ajaxPost:{//使用ajax提交时
+			url:"",
+			datatype:"json",
+			success:function(data,obj){
+	        },
+	        error:function(data,obj){
+	            console.log(data.status);
+	        }
+		}
+	});
 });
+
+
+function clickUp(){
+	layer.open({
+		title :' ',//标题
+		skin: 'layer-ext-myskin',//皮肤
+		type: 1,
+		area: ['540px', '373px'],//大小宽*高
+		shadeClose: true, //点击遮罩关闭
+		content: $('.applyTalent')//内容，里边是包含内容的div的class
+	});
+	$('.layui-layer-title').css("border-bottom","none");
+}
+function clickDown(){
+	layer.open({
+		title :' ',//标题
+		skin: 'layer-ext-myskin',//皮肤
+		type: 1,
+		area: ['540px', '373px'],//大小宽*高
+		shadeClose: true, //点击遮罩关闭
+		content: $('.applyTalent2')//内容，里边是包含内容的div的class
+	});
+	$('.layui-layer-title').css("border-bottom","none");
+}

@@ -19,10 +19,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
-
-import cn.springmvc.dao.impl.ActivitiesProjectDaoImpl;
-import cn.springmvc.dao.impl.InvestJudgeListDaoImpl;
-import cn.springmvc.service.ActivitiesProjectService;
+ 
+import cn.springmvc.dao.impl.InvestJudgeListDaoImpl; 
 import cn.springmvc.service.InvestJudgeService;
 
 /** 

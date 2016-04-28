@@ -3,6 +3,10 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.membermng.model.BorrowingType;
+import cn.membermng.model.RealNameAuth;
+
+
 /***
 * 会员的认证信息服务
 * 
@@ -14,6 +18,20 @@ import java.util.Map;
 */
 public interface IBorrowingCertificationServer {
 
+	
+	
+	/***
+	* 根据会员获取会员的认证列表
+	* 
+	* @author 李杰
+	* @param memberType
+	* @param memberId
+	* @return
+	* @date 2016-4-26 下午1:50:25
+	 */
+	public List<BorrowingType> getAllByMember(int memberType,long memberId);
+	
+	
 	
 	
 	/***
@@ -43,7 +61,7 @@ public interface IBorrowingCertificationServer {
 	* @return									会员实名认证信息
 	* @date 2016-3-24 上午10:09:36
 	*/
-	public Map<String, Object> showAuthRealName(Long memberId);
+	public RealNameAuth showAuthRealName(Long memberId);
 	
 	/***
 	* 个人会员实名认证修改

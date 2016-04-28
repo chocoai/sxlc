@@ -37,5 +37,5 @@ public interface LawsRegulationsService {
 	 * param statu状态 statu(0:无效 1：有效,-1全部)
 	 * @return LawsRegulationsEntity 法律法规实体
 	 */
-	public  LawsRegulationsEntity selectLawsRegulationsList(int statu);
+	public  LawsRegulationsEntity selectLawsRegulationsList();
 }

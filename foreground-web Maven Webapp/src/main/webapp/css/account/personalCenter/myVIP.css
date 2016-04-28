@@ -64,7 +64,7 @@
 	display:table;
 	float:left;
 }
-.content{
+.c-content{
 	font-size:14px;
 	vertical-align:middle;   
 	display:table-cell; 
@@ -87,24 +87,22 @@
 }
 .buy-input{
 	height:55px;
+	line-height:55px;
 }
 .buy-input .info{
-	width:275px;
-	height:30px;
-	line-height:30px;
+	height:55px;
+	line-height:55px;
 }
 .left-title{
 	width:136px;
-	height:30px;
-	line-height:30px;
+	height:55px;
+	line-height:55px;
 	text-align:right;
 	float:left;
 	margin-right:10px;
 }
-.input-time{
-	height:37px;
-}
 .select-time{
+	height:37px;
 	background-image: url("../../../resource/img/account/personalCenter/grzx_5.png");
 	background-repeat: no-repeat;
 	background-position: 130px 0;

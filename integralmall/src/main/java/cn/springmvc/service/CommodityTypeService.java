@@ -1,10 +1,10 @@
 package cn.springmvc.service;
-
-import cn.springmvc.model.BaseCommodityTypeEntity;
-import cn.springmvc.model.CommodityTypeEntity;
-import product_p2p.kit.pageselect.PageEntity;
+ 
+import cn.integralmall.model.CommodityTypeEntity;
 
 import java.util.List;
+
+import product_p2p.kit.pageselect.PageEntity;
 
 /**
  * @author 黄勇

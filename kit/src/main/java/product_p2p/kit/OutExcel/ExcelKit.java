@@ -21,7 +21,7 @@ import jxl.write.biff.RowsExceededException;
 * @author 李杰
 * @since 
 * @date 2016-3-21 下午2:15:41
- */
+*/
 public class ExcelKit<T> {
 
 	private WritableWorkbook 	workbook 	= null;

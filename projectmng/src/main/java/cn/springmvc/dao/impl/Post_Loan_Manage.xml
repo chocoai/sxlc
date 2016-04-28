@@ -1,0 +1,648 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="Post_Loan_Manage">     
+ <!-- 成交项目列表:放款后所有项目
+		Project_No,项目编号
+		Project_Title,项目名称
+		Logname,借款人用户名
+		Personal_Name,借款人姓名
+		Personal_Phone,电话号码
+		Project_Name,产品类型
+		Deadline,借款期限
+		Deadline_Type,借款期限类型
+		Amount,申领借款金额
+		Real_Amount,实际借款金额
+		Year_Rate,年华利率
+		Repay_Way,还款方式
+		Repay_MaxTime,合同约定下一个还款日
+		statu,还款状态:0未还款，1还款中，2已还清
+		Principal_Amount,未还本金
+		Interest_Amount,未还利息
+		Overdue,是否逾期
+		Record_Date,首次申请时间
+		Release_Date,发布时间
+		Real_End_Date,融资结束时间
+		Hold_Date,放款时间
+		Settle_Date,项目结清时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Logname}#{Personal_Name}#{Deadline}#{Real_Amount_Min}#{Real_Amount_Max}
+		#{Repay_Way}#{Repay_MaxTime_Min}#{Repay_MaxTime_Max}#{statu}#{Overdue}#{ordercolumn}
+	-->
+	<select id="getProjectLoanList" parameterType="Map" resultMap="projectInfoMap.resultProjectInfo">
+		SELECT 
+		  		p.Project_No,
+				p.Project_Title,
+				p.Logname,
+				p.Personal_Name,
+				p.Personal_Phone,
+				p.Project_Name,
+				p.Deadline,
+				p.Deadline_Type,
+				p.Amount,
+				p.Real_Amount,
+				p.Year_Rate,
+				p.Repay_Way,
+				p.Repay_MaxTime,
+				p.statu,
+				p.Principal_Amount,
+				p.Interest_Amount,
+				p.Overdue,
+				p.Record_Date,
+				p.Release_Date,
+				p.Real_End_Date,
+				p.Hold_Date,
+				p.Settle_Date
+		FROM (SELECT
+			  pa.Project_No,
+			  prbi.Project_Title,
+			  mi.Logname,
+			  CASE
+				  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+				  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+			  END Personal_Name,
+			  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
+			  pb.Project_Name,
+			  prbi.Deadline,
+			  prbi.Deadline_Type,
+			  prbi.Amount,
+			  prbi.Real_Amount,
+			  prbi.Year_Rate,
+			  prbi.Repay_Way,
+			  (select lr.Repay_MaxTime from Loan_Repay lr where lr.Apply_Id = pa.Apply_Id and lr.IsValid = 0 and lr.Repay_MaxTime > now() order by Repay_MaxTime limit 1) Repay_MaxTime,<!--计算下一次还款日期-->
+			  (SELECT CASE WHEN SUM(statu) = 0 THEN 0 
+			  WHEN 2*COUNT(1) = SUM(statu) THEN 2
+			 ELSE 1 END statu  FROM Loan_Repay lr where lr.Apply_Id = pa.Apply_Id and lr.IsValid = 0) statu,<!-- 根据每一次还款计划的还款状态计算整个项目还款状态-->
+			 (select SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)) from Loan_Repay lr where  lr.Apply_Id = pa.Apply_Id and lr.IsValid = 0)-(select SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{skey})) AS SIGNED),0)) from Loan_Real_Repay lrr join Loan_Repay lr on lr.Repay_ID = lrr.Repay_ID and lr.IsValid = 0 where lr.Apply_Id = pa.Apply_Id) Principal_Amount,<!--未还本金-->
+			 (select SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0)) from Loan_Repay lr where  lr.Apply_Id = pa.Apply_Id and lr.IsValid = 0)-(select SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{skey})) AS SIGNED),0)) from Loan_Real_Repay lrr join Loan_Repay lr on lr.Repay_ID = lrr.Repay_ID and lr.IsValid = 0 where lr.Apply_Id = pa.Apply_Id) Interest_Amount,<!--未还利息-->
+			 <!--统计是否逾期：0未逾期 1逾期-->
+			 CASE (select count(1) 
+					FROM loan_repay lr
+					WHERE lr.IsValid = 0 AND (lr.Statu between 0 and 1) AND lr.Repay_MaxTime &lt;= NOW()
+						  AND lr.Apply_Id = pa.Apply_Id)+
+					(select count(1) from loan_repay lr left join Loan_Real_Repay lrr on lr.Apply_Id = lrr.Apply_Id where lr.Apply_Id = pa.Apply_Id and lr.IsValid = 0 and lrr.Repay_Time > lr.Repay_MaxTime)	
+			WHEN 0 THEN 0
+			ELSE 1 END Overdue,
+			pap.Record_Date,
+			pap.Release_Date,
+			pap.Real_End_Date,
+			pap.Hold_Date,	
+			pap.Settle_Date
+			FROM Project_App_Record pa
+			JOIN ProjectBaseInfo pb
+			  ON pa.Project_ID = pb.Project_ID
+			JOIN Project_App_Process pap
+			  ON pa.Apply_Id = pap.Apply_Id
+			JOIN project_base_info prbi
+			  ON pa.Project_Base_ID = prbi.Project_Base_ID
+			JOIN member_info mi
+			  ON pa.Member_ID = mi.Member_ID
+			LEFT JOIN Personal_Base_Info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+			  ON mi.Personal_Id = pbi.Personal_Id
+			LEFT JOIN Company_Info ci
+			  ON mi.Personal_Id = ci.Company_ID
+			WHERE IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No=#{Project_No})
+			  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Deadline} IS NULL OR #{Deadline} = '', 1=1, prbi.Deadline=#{Deadline})
+			  AND IF(#{Real_Amount_Min} IS NULL OR #{Real_Amount_Min} = '', 1=1, prbi.Real_Amount>=#{Real_Amount_Min})
+			  AND IF(#{Real_Amount_Max} IS NULL OR #{Real_Amount_Max} = '', 1=1, prbi.Real_Amount&lt;=#{Real_Amount_Max}) 
+			  AND IF(#{Repay_Way} IS NULL OR #{Repay_Way} = '', 1=1, prbi.Repay_Way=#{Repay_Way}))p
+		WHERE IF(#{Repay_MaxTime_Min} IS NULL OR #{Repay_MaxTime_Min} = '', 1=1, p.Repay_MaxTime>=#{Repay_MaxTime_Min})
+		  AND IF(#{Repay_MaxTime_Max} IS NULL OR #{Repay_MaxTime_Max} = '', 1=1, p.Repay_MaxTime&lt;=#{Repay_MaxTime_Max}) 
+		  AND IF(#{statu} IS NULL OR #{statu} = '', 1=1, p.statu=#{statu})
+		  AND IF(#{Overdue} IS NULL OR #{Overdue} = '', 1=1, p.Overdue=#{Overdue})
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'HOLD_DATE' then p.Hold_Date
+				WHEN 'REPAY_MAXTIME' then p.Repay_MaxTime
+				WHEN 'RELEASE_DATE' then p.Release_Date
+				WHEN 'REAL_END_DATE' then p.Real_End_Date
+				WHEN 'SETTLE_DATE' then p.Settle_Date
+				ELSE p.Hold_Date
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	<!-- 即将还款统计:
+		Project_No,借款项目编号
+		Project_Title,借款项目名称
+		Logname,借款人用户名
+		Personal_Name,借款人姓名
+		Invest_Amount_Valid,借款金额
+		Guarantee_Name,担保机构
+		Repay_MaxTime,应还日期
+		Indexs,期数
+		Amount,当期应还总额
+		SDRepay_Principal,当期应还本金
+		SDRepay_Interest,当期应还利息
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Personal_Name}#{Repay_MaxTime_Min}#{Expiration_ReminderSet}
+		#{Repay_MaxTime_Max}#{Admin_ID}#{ordercolumn}
+	-->
+	<select id="getMaturingBillThiree" parameterType="Map" resultMap="projectInfoMap.MaturingBill">
+		SELECT
+		  pa.Project_No,
+		  prbi.Project_Title,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,
+		  (SELECT	<!--统计实际借款金额-->
+			  SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) AS SIGNED),0))
+			FROM invest_record ir
+			WHERE ir.Apply_Id = pa.Apply_Id AND ir.IsValid = 0) Invest_Amount_Valid,
+		  CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8) Guarantee_Name,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0) SDRepay_Principal,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) SDRepay_Interest,
+		  lr.Indexs,
+		  lr.Repay_MaxTime
+		FROM Loan_Repay lr 
+		JOIN Project_App_Record pa
+		  ON lr.Apply_Id = pa.Apply_Id 
+		JOIN Guarantee_Info gi
+		  ON pa.Guarantee_ID = gi.Guarantee_ID
+		JOIN project_base_info prbi
+		  ON pa.Project_Base_ID = prbi.Project_Base_ID
+		JOIN member_info mi
+		  ON pa.Member_ID = mi.Member_ID
+		LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+		  ON mi.Personal_Id = pbi.Personal_Id
+		LEFT JOIN Company_Info ci
+		  ON mi.Personal_Id = ci.Company_ID
+		WHERE lr.IsValid = 0
+		  AND IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No=#{Project_No})
+		  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+		  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+		  AND lr.Repay_MaxTime BETWEEN STR_TO_DATE(DATE_FORMAT(DATE_SUB(NOW(),INTERVAL #{day} DAY),'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s') AND STR_TO_DATE(DATE_FORMAT(DATE_SUB(NOW(),INTERVAL #{day}-1 DAY),'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s')
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'REPAY_MAXTIME' then lr.Repay_MaxTime
+				WHEN 'AMOUNT' then Amount
+				WHEN 'SDREPAY_PRINCIPAL' then SDRepay_Principal
+				WHEN 'SDREPAY_INTEREST' then SDRepay_Interest
+				ELSE lr.Repay_MaxTime
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>	
+	<!-- 逾期还款统计:此处统计未还款部分逾期记录
+		Project_No,借款项目编号
+		Project_Title,借款项目名称
+		Logname,借款人用户名
+		Personal_Name,借款人姓名
+		Invest_Amount_Valid,借款金额
+		Guarantee_Name,担保机构
+		Repay_MaxTime,应还日期
+		Overdue_Days,逾期天数
+		Indexs,期数
+		Amount,当期应还总额
+		SDRepay_Principal,当期应还本金
+		SDRepay_Interest,当期应还利息
+		Overdue_Amount,当期应还罚息：这里只计算当期未还金额对应的罚息
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Logname}#{Personal_Name}#{Repay_MaxTime_Min}#{Repay_MaxTime_Max}
+		#{Overdue_Day_Max}#{Overdue_Day_Min}#{ordercolumn}
+	-->
+	<select id="getLate_Payments" parameterType="Map" resultMap="projectInfoMap.LatePayments">
+		SELECT
+		P.Project_No,
+		P.Project_Title, 
+		P.Logname, 
+		P.Personal_Name, 
+		P.Invest_Amount_Valid, 
+		P.Guarantee_Name, 
+		P.Repay_MaxTime, 
+		P.Overdue_Days, 
+		P.Indexs, 
+		P.Amount, 
+		P.SDRepay_Principal, 
+		P.SDRepay_Interest, 
+		P.Overdue_Amount
+		FROM
+		  (SELECT 
+		  pa.Project_No,
+		  prbi.Project_Title,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,
+		  (SELECT	<!--统计实际借款金额-->
+			  SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) AS SIGNED),0))
+			FROM invest_record ir
+			WHERE ir.Apply_Id = pa.Apply_Id AND ir.IsValid = 0) Invest_Amount_Valid,
+		  CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8) Guarantee_Name,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0) SDRepay_Principal,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) SDRepay_Interest,
+		  TIMESTAMPDIFF(DAY,lr.Repay_MaxTime,now()) Overdue_Days,
+		  lr.Indexs,
+		  lr.Repay_MaxTime,
+		  <!--计算逾期罚金-->
+		  ((IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0) - SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{skey})) AS SIGNED),0)))*TIMESTAMPDIFF(DAY,lr.Repay_MaxTime,now())*(select Price from Overdue_Fees where Statu = 1 and Overdue_Min &lt;= TIMESTAMPDIFF(DAY,lr.Repay_MaxTime,now()) AND Overdue_Max >= TIMESTAMPDIFF(DAY,lr.Repay_MaxTime,now()) ORDER BY Price DESC LIMIT 1))/1000000+(select sum(IFNULL(CAST((AES_DECRYPT(UNHEX(lro.Repay_Overdue),#{skey})) AS SIGNED),0)) from Loan_Repay_Overdue_Fee lro where lro.Repay_ID = lr.Repay_ID)-(select sum(IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{skey})) AS SIGNED),0)) from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) Overdue_Amount
+		FROM Loan_Repay lr 
+		JOIN Project_App_Record pa
+		  ON lr.Apply_Id = pa.Apply_Id 
+		JOIN Guarantee_Info gi
+		  ON pa.Guarantee_ID = gi.Guarantee_ID
+		JOIN project_base_info prbi
+		  ON pa.Project_Base_ID = prbi.Project_Base_ID
+		JOIN member_info mi
+		  ON pa.Member_ID = mi.Member_ID
+		LEFT JOIN Loan_Real_Repay lrr
+		  ON lr.Repay_ID = lrr.Repay_ID
+		LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+		  ON mi.Personal_Id = pbi.Personal_Id
+		LEFT JOIN Company_Info ci
+		  ON mi.Personal_Id = ci.Company_ID
+		WHERE lr.IsValid = 0 AND (lr.Statu between 0 and 1) AND lr.Repay_MaxTime &lt;= NOW() <!--逾期未还-->
+		  AND IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No=#{Project_No})
+		  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+		  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+		  AND IF(#{Repay_MaxTime_Min} IS NULL OR #{Repay_MaxTime_Min} = '', 1=1, lr.Repay_MaxTime>=#{Repay_MaxTime_Min})
+		  AND IF(#{Repay_MaxTime_Max} IS NULL OR #{Repay_MaxTime_Max} = '', 1=1, lr.Repay_MaxTime&lt;=#{Repay_MaxTime_Max}) 
+		  AND lr.Repay_MaxTime BETWEEN DATE_SUB(NOW(),INTERVAL #{Overdue_Day_Max} DAY) AND DATE_SUB(NOW(),INTERVAL #{Overdue_Day_Min} DAY))p
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'OVERDUE_DAYS' then P.Overdue_Days
+				WHEN 'OVERDUE_AMOUNT' then P.Overdue_Amount
+				WHEN 'REPAY_MAXTIME' then P.Repay_MaxTime
+				ELSE P.Overdue_Days
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>	
+	<!-- 催款已还账单查询:
+		Apply_Id,项目ID
+		Project_No,借款项目编号
+		Project_Title,借款项目名称
+		Personal_Name,借款人
+		Hold_Date,放款时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Personal_Name}#{AdminID}
+	-->
+	<select id="getLoan_Repay" parameterType="Map" resultMap="projectInfoMap.LoanRepay">
+		SELECT
+		  pa.Apply_Id,
+		  pa.Project_No,
+		  prbi.Project_Title,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  pap.Hold_Date
+		FROM Project_App_Record pa
+		JOIN Project_App_Process pap
+		  ON pa.Apply_Id = pap.Apply_Id
+		JOIN project_base_info prbi
+		  ON pa.Project_Base_ID = prbi.Project_Base_ID
+		JOIN member_info mi
+		  ON pa.Member_ID = mi.Member_ID
+		LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+		  ON mi.Personal_Id = pbi.Personal_Id
+		LEFT JOIN Company_Info ci
+		  ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No=#{Project_No})
+		  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+		  AND exists (select 1 from Loan_Repay_UrgedRecord lru where lru.Apply_Id = pa.Apply_Id and lru.Admin_ID = #{AdminID})
+		  AND pap.Settle_Date &lt;= now() <!--通过关联催收表和项目结清来判断催收已还-->
+		ORDER BY pap.Hold_Date 
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+   <!--催收已还 查看账单详情:
+		Project_No,借款项目编号
+		Project_Title,借款项目名称
+		Personal_Name,借款人
+		Merbill_No,账单编号
+		Amount,账单金额
+		Indexs,账单期数
+		Repay_Time,实际还款时间
+		Interval_Time,逾期时长：单位秒
+		Overdue_Amount,逾期费用
+	    --> 
+	<!--传入参数整理
+		#{skey}#{Apply_Id}
+	-->
+	<select id="getRepayBillingDetails" parameterType="Map" resultMap="projectInfoMap.BillingDetails">
+		SELECT
+		  pa.Project_No,
+		  prbi.Project_Title,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  lrr.Merbill_No,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Penalty),#{skey})) AS SIGNED),0) Amount,
+		  lr.Indexs,
+		  lrr.Repay_Time,
+		  DATEDIFF(lr.Repay_MaxTime,lrr.Repay_Time) as overDay ,
+		  TIMESTAMPDIFF(SECOND,LR.Repay_MaxTime,lrr.Repay_Time) Interval_Time,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{skey})) AS SIGNED),0) Overdue_Amount
+		FROM Loan_Real_Repay lrr
+		JOIN Loan_Repay lr 
+		  ON lr.Repay_ID = lrr.Repay_ID
+		JOIN Loan_Repay_UrgedRecord lru 
+		  ON lr.Repay_ID = lru.Repay_ID
+		JOIN Project_App_Record pa
+		  ON lr.Apply_Id = pa.Apply_Id
+		JOIN project_base_info prbi
+		  ON pa.Project_Base_ID = prbi.Project_Base_ID
+		JOIN member_info mi
+		  ON pa.Member_ID = mi.Member_ID
+		LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+		  ON mi.Personal_Id = pbi.Personal_Id
+		LEFT JOIN Company_Info ci
+		  ON mi.Personal_Id = ci.Company_ID
+		WHERE lr.Apply_Id = #{Apply_Id}
+		ORDER BY lrr.Repay_Time
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	<!-- 根据管理员类型不同调用不同的查询语句：
+		Staff_Type = 0;调用语句getMaturing_Bill_0
+		Staff_Type = 1;调用语句getMaturing_Bill_1 暂时不用
+		Staff_Type = 2;调用语句getMaturing_Bill_2
+		Staff_Type = 3;调用语句getMaturing_Bill_3
+			-->	
+	<!-- 当管理员类型为0(会员)时查看即将到期账单:
+		Project_No,借款项目编号
+		Project_Title,借款项目名称
+		Personal_Name,借款人
+		Amount,账单金额
+		Indexs,账单期数
+		Repay_Time,还款时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Personal_Name}#{Repay_MaxTime_Min}#{Expiration_ReminderSet}
+		#{Repay_MaxTime_Max}#{Admin_ID}#{ordercolumn}
+	-->
+	<select id="getMaturing_Bill" parameterType="Map" resultMap="projectInfoMap.BillingDetails">
+		SELECT
+		  pa.Project_No,
+		  prbi.Project_Title,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END memberName,	
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
+		  lr.Indexs,
+		  lr.Repay_MaxTime
+		FROM Loan_Repay lr 
+		JOIN Project_App_Record pa
+		  ON lr.Apply_Id = pa.Apply_Id 
+		JOIN project_base_info prbi
+		  ON pa.Project_Base_ID = prbi.Project_Base_ID
+		JOIN member_info mi
+		  ON pa.Member_ID = mi.Member_ID
+		JOIN member_info mif 	<!-- 取管理员信息，管理员的邀请码等于被邀请人员的被邀请码-->
+		  ON mi.BeinvitateCode = mif.InvitateCode
+		JOIN Admin a
+		  ON a.Staff_Id = mif.Member_ID 
+		LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+		  ON mi.Personal_Id = pbi.Personal_Id
+		LEFT JOIN Company_Info ci
+		  ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No=#{Project_No})
+		  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+		  AND IF(#{Repay_MaxTime_Min} IS NULL OR #{Repay_MaxTime_Min} = '', 1=1, lr.Repay_MaxTime>=DATE_SUB(#{Repay_MaxTime_Min},INTERVAL #{Expiration_ReminderSet} DAY)) <!--Expiration_ReminderSet是即将到期时间，将系统设置表该字段取出并作为参数传入查询-->
+		  AND IF(#{Repay_MaxTime_Max} IS NULL OR #{Repay_MaxTime_Max} = '', 1=1, lr.Repay_MaxTime&lt;=#{Repay_MaxTime_Max})
+		  AND a.Admin_ID = #{Admin_ID}
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'AMOUNT' then Amount
+				WHEN 'REPAY_MAXTIME' then lr.Repay_MaxTime
+				ELSE lr.Repay_MaxTime 
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	 <!-- 当管理员类型为2(超级管理员)时查看即将到期账单:
+		Project_No,借款项目编号
+		Project_Title,借款项目名称
+		Personal_Name,借款人
+		Amount,账单金额
+		Indexs,账单期数
+		Repay_Time,还款时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Personal_Name}#{Repay_MaxTime_Min}#{Expiration_ReminderSet}
+		#{Repay_MaxTime_Max}#{ordercolumn}
+	-->
+	<select id="getMaturing_Bill_2" parameterType="Map" resultMap="projectInfoMap.BillingDetails">
+		SELECT
+		  pa.Project_No,
+		  prbi.Project_Title,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
+		  lr.Indexs,
+		  lr.Repay_MaxTime
+		FROM Loan_Repay lr 
+		JOIN Project_App_Record pa
+		  ON lr.Apply_Id = pa.Apply_Id 
+		JOIN project_base_info prbi
+		  ON pa.Project_Base_ID = prbi.Project_Base_ID
+		JOIN member_info mi
+		  ON pa.Member_ID = mi.Member_ID
+		LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+		  ON mi.Personal_Id = pbi.Personal_Id
+		LEFT JOIN Company_Info ci
+		  ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No=#{Project_No})
+		  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+		  AND IF(#{Repay_MaxTime_Min} IS NULL OR #{Repay_MaxTime_Min} = '', 1=1, lr.Repay_MaxTime>=DATE_SUB(#{Repay_MaxTime_Min},INTERVAL #{Expiration_ReminderSet} DAY)) <!--Expiration_ReminderSet是即将到期时间，将系统设置表该字段取出并作为参数传入查询-->
+		  AND IF(#{Repay_MaxTime_Max} IS NULL OR #{Repay_MaxTime_Max} = '', 1=1, lr.Repay_MaxTime&lt;=#{Repay_MaxTime_Max})
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'AMOUNT' then Amount
+				WHEN 'REPAY_MAXTIME' then lr.Repay_MaxTime
+				ELSE lr.Repay_MaxTime 
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	
+	<!-- 当管理员类型为3(理财顾问)时查看即将到期账单:
+		Project_No,借款项目编号
+		Project_Title,借款项目名称
+		Personal_Name,借款人
+		Amount,账单金额
+		Indexs,账单期数
+		Repay_Time,还款时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Personal_Name}#{Repay_MaxTime_Min}#{Expiration_ReminderSet}
+		#{Repay_MaxTime_Max}#{Admin_ID}#{ordercolumn}
+	-->
+	<select id="getMaturing_Bill_3" parameterType="Map" resultMap="projectInfoMap.BillingDetails">
+		SELECT
+		  pa.Project_No,
+		  prbi.Project_Title,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
+		  lr.Indexs,
+		  lr.Repay_MaxTime
+		FROM Loan_Repay lr 
+		JOIN Project_App_Record pa
+		  ON lr.Apply_Id = pa.Apply_Id 
+		JOIN project_base_info prbi
+		  ON pa.Project_Base_ID = prbi.Project_Base_ID
+		JOIN member_info mi
+		  ON pa.Member_ID = mi.Member_ID
+		JOIN Member_Financial_Advisor mfa 	
+		  ON mfa.Member_ID = mi.Member_ID
+		 AND (mfa.Remove_Date > now() OR  mfa.Remove_Date is null)
+		JOIN Financial_Advisor fa
+		  ON mfa.FA_ID = fa.FA_ID
+		JOIN Admin a
+		  ON a.Staff_Id = fa.FA_ID
+		LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+		  ON mi.Personal_Id = pbi.Personal_Id
+		LEFT JOIN Company_Info ci
+		  ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No=#{Project_No})
+		  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+		  AND IF(#{Repay_MaxTime_Min} IS NULL OR #{Repay_MaxTime_Min} = '', 1=1, lr.Repay_MaxTime>=DATE_SUB(#{Repay_MaxTime_Min},INTERVAL #{Expiration_ReminderSet} DAY)) <!--Expiration_ReminderSet是即将到期时间，将系统设置表该字段取出并作为参数传入查询-->
+		  AND IF(#{Repay_MaxTime_Max} IS NULL OR #{Repay_MaxTime_Max} = '', 1=1, lr.Repay_MaxTime&lt;=#{Repay_MaxTime_Max})
+		  AND a.Admin_ID = #{Admin_ID}
+		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'AMOUNT' then Amount
+				WHEN 'REPAY_MAXTIME' then lr.Repay_MaxTime
+				ELSE lr.Repay_MaxTime 
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>	 
+	<!--传入参数整理 账单详情
+		#{skey}#{repayID}
+	-->
+	<select id="getBillingDetails" parameterType="Map" resultMap="projectInfoMap.BillingDetails">
+		 SELECT pa.Apply_Id,lr.Repay_ID,pa.Project_No,prbi.Project_Title,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)
+		  END memberName,	
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{map.skey})) AS SIGNED),0)+
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{map.skey})) AS SIGNED),0) Amount,
+		  lr.Indexs, 
+          case 
+             when lr.Statu !=3 then 0 <!-- 计算逾期费 -->
+             when lr.Statu =3  then 
+             (select  IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{map.skey})) AS SIGNED)),0)
+                     + IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{map.skey})) AS SIGNED)),0)
+             from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID  )
+           end  Overdue_Amount,
+           
+           (select  lrr.Repay_Time  from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID order by Repay_Time desc limit 1) as Repay_Time, 
+		   
+		   case 
+             when lr.Statu !=3 then DATEDIFF(now(),lr.Repay_MaxTime) 
+             when lr.Statu =3  then (select DATEDIFF(lr.Repay_MaxTime,lrr.Repay_Time)  from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID order by Repay_Time desc limit 1)
+           end  overday
+           
+		  FROM Loan_Repay lr  
+		  JOIN Project_App_Record pa ON lr.Apply_Id = pa.Apply_Id 
+		  JOIN project_base_info prbi ON pa.Project_Base_ID = prbi.Project_Base_ID
+		  JOIN member_info mi ON pa.Member_ID = mi.Member_ID
+		  LEFT JOIN personal_base_info pbi	 ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci ON mi.Personal_Id = ci.Company_ID
+		  where  lr.Repay_ID = #{repayID}
+	</select> 
+	  
+   <!-- 	逾期催收 -->
+	<select id="getOverdueCollection" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="projectInfoMap.ProjectCollection">
+	      SELECT pa.Apply_Id,lr.Repay_ID,pa.Project_No,prbi.Project_Title,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)
+		  END memberName,	
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{map.skey})) AS SIGNED),0)+
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{map.skey})) AS SIGNED),0) Amount,
+		  lr.Indexs,
+          lr.Repay_MaxTime,
+          DATEDIFF(now(),lr.Repay_MaxTime) as overDay 
+		  FROM Loan_Repay lr  
+		  JOIN Project_App_Record pa ON lr.Apply_Id = pa.Apply_Id 
+		  JOIN project_base_info prbi ON pa.Project_Base_ID = prbi.Project_Base_ID
+		  JOIN member_info mi ON pa.Member_ID = mi.Member_ID
+		  LEFT JOIN personal_base_info pbi	 ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci ON mi.Personal_Id = ci.Company_ID
+          <where>
+          lr.Repay_MaxTime &lt; now() and  lr.Statu !=3 and lr.IsValid = 0 and
+          <!-- 绑定理财师的员工只可以看自己推荐的-->
+          (
+			  pa.Member_ID in 
+	         (
+	          select mfa.Member_ID from  Member_Financial_Advisor  mfa
+	          left join Financial_Advisor fa on  mfa.FA_ID =  fa.FA_ID
+	          left join Staff_Info sti on sti.Staff_Id =   fa.Staff_Id 
+	          where  sti.Staff_Id  in (
+	           select Staff_Id from  Admin where (Staff_Type = 0 and   Admin_ID =#{map.adminID})  
+	           )
+	          and  mfa.Record_Date &lt;NOW() and ( NOW()&lt;mfa.Remove_Date  or  mfa.Remove_Date is null)
+	          and fa.Service_Statu = 0
+	           ) 
+	      )  
+	      or  <!-- 未绑定理财师的员工可以看全部 -->
+           ( select count(Admin_ID) from  Admin where Admin_ID =#{map.adminID} and Staff_Id not in
+             (select Staff_Id  from   Financial_Advisor where Service_Statu = 0 ) and  Staff_Type = 0
+           )  >0 
+          or  <!-- 超级管理员可以看全部 -->
+           ( 
+             select Staff_Type from  Admin where Admin_ID =#{map.adminID} 
+           ) = 2
+            <if test="map.projectNo !=null and map.projectNo !='' ">
+              and pa.Project_No like '%${map.projectNo}%'
+            </if>
+            <if test="map.projectTitle !=null and map.projectTitle !='' ">
+              and prbi.Project_Title like '%${map.projectTitle}%'
+            </if>
+            <if test="map.personalName !=null and map.personalName !='' ">
+             and  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  like '%${map.personalName}%'
+                 or CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
+	        </if>
+	        <if test="map.startTime !=null and map.startTime !='' ">
+              and lr.Repay_MaxTime >${map.startTime}
+            </if>
+            <if test="map.endTime !=null and map.endTime !='' ">
+              and lr.Repay_MaxTime &lt; ${map.endTime}
+            </if>
+          </where>
+           <!--             	还款时间 -->
+           <if test="map.orderDsec == -1">
+              order by Repay_MaxTime desc
+           </if>
+            <if test="map.orderDsec == 1">
+              order by Repay_MaxTime asc
+           </if>
+           <!--             	逾期天数 -->
+           <if test="map.orderDsec == -2">
+              order by overDay desc
+           </if>
+            <if test="map.orderDsec == 2">
+              order by overDay asc
+           </if>
+	</select>
+    <!-- 	新增账单催收记录 -->
+	<insert id="insertLoanRepayUrgedRecord" parameterType="cn.springmvc.model.LoanRepayUrgedRecordEntity">
+	   insert into  Loan_Repay_UrgedRecord
+	   (Apply_Id,   Repay_ID,   Admin_ID,  Urged_Type,  Urged_Detail,Urged_Date)
+	   values
+	   (#{applyID},#{repayId},#{adminID},#{urgedType},#{urgedDetail},now()) 
+	</insert>
+</mapper>
+ 

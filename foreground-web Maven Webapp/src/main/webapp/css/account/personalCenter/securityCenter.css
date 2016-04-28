@@ -149,6 +149,13 @@
 .passwordCode{
 	display:inline-block;
 }
+.phoneCode,
+.dynamicValidationPhone,
+.captChaChange,
+.dynamicValidationChange,
+.dynamicValidation{
+	width:500px;
+}
 .codeBtn,
 .codeImg{
 	display:inline-block;
@@ -167,7 +174,9 @@
 .emailBtn{
 	width:245px;
 	display:inline-block;
-	margin-left:289px;
+}
+.nameBtn{
+	margin-left:220px !important;
 }
 /* 实名验证样式 */
 .authenContent{
@@ -240,7 +249,7 @@
 }
 .btn{
 	display:inline-block;
-	margin-left:223px;
+	margin-left:290px;
 }
 .gender{
 	display:inline-block;
@@ -285,17 +294,17 @@
 /*单选框  */
 .selectValidate{
 	width:100%;
-	padding:55px 70px;
+	padding:55px 90px;
 	height:140px;
 	border-bottom:1px solid #ddd;
 }
 .radio-select{
 	float:left;
-	margin-right:70px;
+	width:150px;
+	text-align:center;
 }
 .radio-select1,.radio-select2{
-	font-size:17px;
-	float: left;
+	font-size:17px;	
 	color:#1c1c1c;
 	cursor: pointer;
 	text-align: center;
@@ -315,16 +324,12 @@
 	background-position: 0 4px;
 }
 /*单选框结束  */
-.validateMethod .btn{
+.validateMethod .comfirmBtn{
 	font-size:18px;
 	width:290px;
-	height:50px;	
-	color:#fff;
-	background-color:#72c0f3;
-	border:none;
-	border-radius:2px;	
-	cursor:pointer;
-	margin:20px 85px;
+	height:50px;
+	margin-left:95px;
+	margin-top:20px;
 }
 /*选择登录验证方式结束  */
 /*弹出层样式结束伍成然2016-4-6  */
@@ -332,6 +337,7 @@
 
 /* 2016-04-06 胥福星  密码框的提示span模拟*/
 .spanSamP{
+	width:500px;
 	display:inline-block;
 	position:relative;
 }

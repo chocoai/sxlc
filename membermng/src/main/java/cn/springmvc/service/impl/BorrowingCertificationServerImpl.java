@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
+import cn.membermng.model.BorrowingType;
+import cn.membermng.model.RealNameAuth;
 import cn.springmvc.dao.IBorrowingCertificationReadDao;
 import cn.springmvc.dao.IBorrowingCertificationWriteDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
@@ -35,6 +37,14 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	private IBorrowingCertificationWriteDao borrowingCertificationWritedao;
 	
 	@Override
+	public List<BorrowingType> getAllByMember(int memberType, long memberId) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("memberType", memberType);
+		param.put("memberId", memberId);
+		return borrowingCertificationdao.getAllByMember(param);
+	}
+	
+	@Override
 	public int authRealName(Long mid, String realName, Integer sex,Integer national, String idCard, String birthplace,String positive, String reverse) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
@@ -49,7 +59,7 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 		param.put("homeTown", birthplace);
 		param.put("positive", positive);
 		param.put("reverse", reverse);
-		param.put("endTime", "2016-02-24 23:59:59");
+		param.put("endTime", "");
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		param.put("result", 1);
 		
@@ -63,13 +73,18 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	}
 
 	@Override
-	public Map<String, Object> showAuthRealName(Long memberId) {
+	public RealNameAuth showAuthRealName(Long memberId) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("memberId", memberId);
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
-		
-		return borrowingCertificationdao.showAuthRealName(param);
+		RealNameAuth realNameAuth = borrowingCertificationdao.showAuthRealName(param);
+		if(realNameAuth == null){
+			realNameAuth = new RealNameAuth();
+			realNameAuth.setStatus(0);//未认证
+		}
+		return realNameAuth;
 	}
+	
 
 	@Override
 	public int editAuthRealName(Long mid, String realName, Integer sex, Integer national,String idCard, String birthplace, String positive, String reverse) {

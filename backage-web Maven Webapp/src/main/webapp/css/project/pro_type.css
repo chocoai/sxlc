@@ -1,0 +1,44 @@
+/* 项目管理-项目类型管理 */
+/* 2016-04-26 */
+
+.proKindName{
+	width:234px;
+}
+.beginAccount,.endAccount,.beginRate,.endRate,.beginTime,.endTime{
+	width:100px;
+}
+select{
+	height:30px;
+}
+.person p ,
+.enterprise p{
+	display:inline-block;
+	width:7%;
+	vertical-align:top;
+}
+
+.person .con-next ,
+.enterprise .con-next{
+	display:inline-block;
+	width:79%;
+}
+.con textarea{
+	width:96% !important;
+}
+.con select{
+	display:inline-block;
+}
+.con .con-whole{
+	width:100%;
+	display:inline-block;
+}
+.con-next input{
+	margin:0 5px;
+}
+.con-next span{
+	display:inline-block;
+}
+.con .con-Div{
+	width:30%;
+	display:inline-block;
+}

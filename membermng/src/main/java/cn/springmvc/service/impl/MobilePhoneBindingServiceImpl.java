@@ -12,6 +12,7 @@
  
 package cn.springmvc.service.impl; 
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -49,15 +50,36 @@ public class MobilePhoneBindingServiceImpl implements MobilePhoneBindingService 
 	public int updatepersonPhone(Map<String, Object> map) {
 		
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		int result = mobilePhoneBindingListDaoImpl.selectPhoneIsExist(map);
+		if(result > 0) {
+			return -1;
+		}
 		return mobilePhoneBindingDaoImpl.updatepersonPhone(map);
 		
 	}
 
+//	@Override
+//	public int updatecompanyPhone(Map<String, Object> map) {
+//		
+//		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+//		return mobilePhoneBindingDaoImpl.updatecompanyPhone(map);
+//		
+//	}
+
 	@Override
-	public int updatecompanyPhone(Map<String, Object> map) {
-		
+	public String selectOldPhone(long memberId) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
-		return mobilePhoneBindingDaoImpl.updatecompanyPhone(map);
+		map.put("memberId",              memberId);
+		return mobilePhoneBindingListDaoImpl.selectOldPhone(map);
+		
+	}
+
+	@Override
+	public int checkPhone(Map<String, Object> map) {
+		 
+		map.put("sKey", DbKeyUtil.GetDbCodeKey()); 
+		return mobilePhoneBindingListDaoImpl.checkPhone(map);
 		
 	}
 

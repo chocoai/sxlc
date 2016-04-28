@@ -26,33 +26,34 @@ $(function(){
 	$(".delete").click(function(){
 		$(this).parent().parent().css("display","none");
 	});
-});
-
-
-
-/* 银行卡号确认    */
-$(function(){
-	$(".cardId2").blur(function(){
-		if(this.value != $(".cardId1").val()){
-			$(this).layoutWarning("银行卡号不一致");
-		}else{
-			$(this).parent().find(".tipError").remove();
+	//验证
+	$("#bankId").Validform({
+		tiptype:3,//提示信息类型
+		btnSubmit:".btn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
+		datatype:extdatatype,
+		ajaxPost:{//使用ajax提交时
+			url:"",
+			datatype:"json",
+			success:function(data,obj){
+	        },
+	        error:function(data,obj){
+	            console.log(data.status);
+	        }
 		}
 	});
-});
-
-/* 手机验证    */
-$(".phoneBind").keyup(function(){
-	var str = this.value;
-	var reg = new RegExp("^[0-9]{11}$");
-	$(this).parent().find(".tip").remove();
-	if(!reg.test(str)){
-		if($(this).parent().find(".tipError").length > 0){
-			return false;
-		}else{
-			$(this).layoutWarning("11位数字");
+	//debugger;
+	$("#xiuGai_Kard").Validform({
+		tiptype:3,//提示信息类型
+		btnSubmit:".btn_tian", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
+		datatype:extdatatype,//扩展验证类型
+		ajaxPost:{//使用ajax提交时
+			url:"",
+			datatype:"json",
+			success:function(data,obj){
+	        },
+	        error:function(data,obj){
+	            console.log(data.status);
+	        }
 		}
-	}else{
-		$(this).parent().find(".tipError").remove();
-	}
+	});
 });

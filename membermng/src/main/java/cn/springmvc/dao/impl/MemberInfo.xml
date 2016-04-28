@@ -12,8 +12,7 @@
 		<result column="Reg_Date"       property="regDate" />
 		<result column="InvitateCode"   property="invitateCode" />
 		<result column="BeinvitateCode" property="beinvitateCode" /> 
-		<result column="Province_Id"    property="provinceId" />
-		
+		<result column="Province_Id"    property="provinceId" /> 
 		<result column="City_Id" 			property="cityId" />
 		<result column="County_Id" 			property="countyId" />
 		<result column="Town_Id" 			property="townId" />
@@ -24,7 +23,7 @@
         <association property="personalBaseInfoEntity"  resultMap="personalBaseInfo"></association>
      </resultMap> 
      <resultMap type="cn.membermng.model.PersonalBaseInfoEntity" id="personalBaseInfo">
-		<id 	column="ID" 				property="id"/>
+		<id 	column="Personal_ID" 		property="id"/>
 		<result column="Personal_Name" 		property="personalName"/>
 		<result column="Personal_IDCard" 	property="personalIDCard"/>
 		<result column="SexID" 				property="sexID"/>
@@ -57,7 +56,7 @@
 		<result column="workYear" 		    property="workYear"/>   
 	</resultMap>
 	<resultMap type="cn.membermng.model.CompanyInfoEntity" id="companyInfoEntity">
-		<id 	column="ID" 				property="personalID"/>
+		<id 	column="Company_ID" 		property="id"/>
 		<result column="Compang_Name" 		property="compangName"/> 
 		<result column="Companye_BLN" 		property="companyeBLN"/>
 		<result column="Company_OC" 		property="companyOC"/> 

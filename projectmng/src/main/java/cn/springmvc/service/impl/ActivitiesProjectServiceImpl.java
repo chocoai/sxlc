@@ -1,6 +1,5 @@
 package  cn.springmvc.service.impl;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,9 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
  
 import cn.springmvc.dao.ActivitiesProjectDao;
-import cn.springmvc.dao.ActivitiesProjectListDao;
-import cn.springmvc.dao.impl.ActivitiesProjectDaoImpl;
-import cn.springmvc.dao.impl.ActivitiesProjectListDaoImpl;
+import cn.springmvc.dao.ActivitiesProjectListDao; 
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.ActivitiesProjectEntity;
@@ -28,18 +25,21 @@ public class ActivitiesProjectServiceImpl implements ActivitiesProjectService {
 	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
  
 	@Override
-	public int deleteActivitiesProjectByID(int id,String apname,InsertAdminLogEntity entityLog, String[] sIpInfo) {
+	public int deleteActivitiesProjectByID(int id,InsertAdminLogEntity entityLog, String[] sIpInfo) {
 		
+		ActivitiesProjectEntity activitiesProjectEntity= activitiesProjectListDaoImpl.
+				selectActivitiesProjectByID(id);
 		int result=activitiesProjectDaoImpl.deleteActivitiesProjectByID(id);
 		if(result == 1) {
-			entityLog.setsDetail("删除审批活动点"+apname);
+			entityLog.setsDetail("删除审批活动点"+activitiesProjectEntity.getApName());
 			optRecordWriteDaoImpl.InsertAdminOptRecord(entityLog, sIpInfo);
 		}
 		return result;
 	}
 
 	@Override
-	public int updateActivitiesProjectByID(ActivitiesProjectEntity entity,InsertAdminLogEntity entityLog, String[] sIpInfo) {
+	public int updateActivitiesProjectByID(ActivitiesProjectEntity entity,
+			InsertAdminLogEntity entityLog, String[] sIpInfo) {
 		if(entity == null){
 			return 0;
 		} 
@@ -62,9 +62,19 @@ public class ActivitiesProjectServiceImpl implements ActivitiesProjectService {
 	}
 
 	@Override
-	public int updateActivitiesProjectStatuByID(ActivitiesProjectEntity entity) {
+	public int updateActivitiesProjectStatuByID(ActivitiesProjectEntity entity,InsertAdminLogEntity 
+			entityLog, String[] sIpInfo) {
 		
-		int result=activitiesProjectDaoImpl.updateActivitiesProjectStatuByID(entity); 
+		ActivitiesProjectEntity activitiesProjectEntity= activitiesProjectListDaoImpl.
+				selectActivitiesProjectByID(entity.getId());
+		int result=activitiesProjectDaoImpl.updateActivitiesProjectStatuByID(entity);
+		if(result == 1 && entity.getStatu() == 1) {
+			entityLog.setsDetail("启用审批活动点:"+activitiesProjectEntity.getApName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(entityLog, sIpInfo);
+		}else if(result == 1 && entity.getStatu() == 0){
+			entityLog.setsDetail("停用审批活动点 :"+activitiesProjectEntity.getApName());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(entityLog, sIpInfo);
+		}
 		return result;
 	}
 
@@ -102,7 +112,7 @@ public class ActivitiesProjectServiceImpl implements ActivitiesProjectService {
 			generatorUtil.SetIdUsed(id);
 		} 
 		if(result == 1) {
-			entityLog.setsDetail("添加审批活动点"+entity.getApName());
+			entityLog.setsDetail("添加审批活动点："+entity.getApName());
 			optRecordWriteDaoImpl.InsertAdminOptRecord(entityLog, sIpInfo);
 		}
 		return result;

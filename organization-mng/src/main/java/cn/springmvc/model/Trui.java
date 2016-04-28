@@ -2,15 +2,15 @@ package cn.springmvc.model;
 
 public class Trui {
 	private String accessPath;						//访问路径
-	private String checked;							//true
-	private String delFlag;						
-	private String parentID;						//父节点id
+	private boolean checked;							//true
+	private long delFlag;						
+	private long   parentID;						//父节点id
 	private String resourceCode;					
 	private String resourceDesc;
-	private String resourceGrade;
-	private String resourceID;						//本级节点id
+	private long resourceGrade;
+	private long resourceID;						//本级节点id
 	private String resourceName;					//节点名
-	private String resourceOrder;
+	private long  resourceOrder;
 	private String resourceType;
 	
 	public String getAccessPath() {
@@ -21,27 +21,19 @@ public class Trui {
 		this.accessPath = accessPath;
 	}
 
-	public String getChecked() {
-		return checked;
-	}
-
-	public void setChecked(String checked) {
-		this.checked = checked;
-	}
-
-	public String getDelFlag() {
+	public long getDelFlag() {
 		return delFlag;
 	}
 
-	public void setDelFlag(String delFlag) {
+	public void setDelFlag(long delFlag) {
 		this.delFlag = delFlag;
 	}
 
-	public String getParentID() {
+	public long getParentID() {
 		return parentID;
 	}
 
-	public void setParentID(String parentID) {
+	public void setParentID(long parentID) {
 		this.parentID = parentID;
 	}
 
@@ -60,21 +52,20 @@ public class Trui {
 	public void setResourceDesc(String resourceDesc) {
 		this.resourceDesc = resourceDesc;
 	}
-
-	public String getResourceGrade() {
+	public long getResourceGrade() {
 		return resourceGrade;
 	}
 
-	public void setResourceGrade(String resourceGrade) {
+	public void setResourceGrade(long resourceGrade) {
 		this.resourceGrade = resourceGrade;
 	}
 
-	public String getResourceID() {
-		return resourceID;
+	public long getResourceOrder() {
+		return resourceOrder;
 	}
 
-	public void setResourceID(String resourceID) {
-		this.resourceID = resourceID;
+	public void setResourceOrder(long resourceOrder) {
+		this.resourceOrder = resourceOrder;
 	}
 
 	public String getResourceName() {
@@ -85,14 +76,7 @@ public class Trui {
 		this.resourceName = resourceName;
 	}
 
-	public String getResourceOrder() {
-		return resourceOrder;
-	}
-
-	public void setResourceOrder(String resourceOrder) {
-		this.resourceOrder = resourceOrder;
-	}
-
+	
 	public String getResourceType() {
 		return resourceType;
 	}
@@ -101,17 +85,20 @@ public class Trui {
 		this.resourceType = resourceType;
 	}
 
-	@Override
-	public String toString() {
-		return "trui [accessPath=" + accessPath + ", checked=" + checked
-				+ ", delFlag=" + delFlag + ", parentID=" + parentID
-				+ ", resourceCode=" + resourceCode + ", resourceDesc="
-				+ resourceDesc + ", resourceGrade=" + resourceGrade
-				+ ", resourceID=" + resourceID + ", resourceName="
-				+ resourceName + ", resourceOrder=" + resourceOrder
-				+ ", resourceType=" + resourceType + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + ", toString()="
-				+ super.toString() + "]";
+	public boolean isChecked() {
+		return checked;
 	}
-	
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
+	public long getResourceID() {
+		return resourceID;
+	}
+
+	public void setResourceID(long resourceID) {
+		this.resourceID = resourceID;
+	}
+
 }

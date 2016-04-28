@@ -115,9 +115,9 @@
     
     <!-- json数据 -->
     <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-mapper-asl</artifactId>
-        <version>1.9.13</version>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>1.2.7</version>
     </dependency>
     
     <!-- 日志文件管理包 -->
@@ -158,12 +158,7 @@
 	     <artifactId>kit</artifactId> 
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency>
-    <!-- 组织机构管理 -->
-    <dependency> 
-	     <groupId>product_p2p</groupId>
-	     <artifactId>organization-mng</artifactId> 
-	     <version>0.0.1-SNAPSHOT</version> 
-    </dependency> 
+ 
     <!-- 字典查询 -->
     <dependency> 
 	     <groupId>product_p2p</groupId>
@@ -172,7 +167,6 @@
     </dependency> 
     <!--前端配置  -->
      
-
     
     <dependency> 
 	     <groupId>product_p2p</groupId>
@@ -180,8 +174,42 @@
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency>
 
+    <dependency>
+    	<groupId>product_p2p</groupId>
+    	<artifactId>system-set</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+	<dependency>
+	     <groupId>product_p2p</groupId>
+ 		 <artifactId>projectmng</artifactId>
+ 		 <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+	<dependency>
+		<groupId>product_p2p</groupId>
+		<artifactId>cn.sxlc.account.manager</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+
+	
   </dependencies>
   <build>
     <finalName>foreground-web</finalName>
+    <plugins>
+    	<plugin>  
+		    <groupId>org.mortbay.jetty</groupId>  
+		    <artifactId>jetty-maven-plugin</artifactId>  
+		    <version>8.1.5.v20120716</version>  
+		    <configuration>  
+		        <stopPort>80</stopPort>  
+		        <stopKey>foo</stopKey>  
+		        <scanIntervalSeconds>10</scanIntervalSeconds>  
+		        <webApp>  
+		            <contextPath>/</contextPath>  
+		        </webApp>  
+		    </configuration>  
+		</plugin> 
+    </plugins>
   </build>
 </project>

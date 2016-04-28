@@ -60,7 +60,7 @@ public interface MamberBankCardService {
 	 * @param  bankCardInfoEntity
 	 * @param  memberBankCardEntity
 	 * @param @return 设定文件 
-	 * @return int 返回类型 -1失败，-2：该银行卡已存在,1 ,成功
+	 * @return int 返回类型 -1失败，-2：该银行卡已存在,1 ,成功 ，-3 该会员绑定银行卡已超过15张
 	 * @date 2016-3-28 下午2:55:17
 	 */
 	public int insertMemberBackCard(BankCardInfoEntity bankCardInfoEntity,MemberBankCardEntity memberBankCardEntity);
@@ -82,26 +82,27 @@ public interface MamberBankCardService {
 	 * @return BankCardInfoEntity 返回类型 
 	 * @date 2016-3-28 下午3:36:48
 	 */
-	public BankCardInfoEntity selectMemberBankCardByID(int bankCardId);
+	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId);
 	/**
 	 * 修改银行卡信息 
 	 * @author 刘利   
 	 * @Description: TODO 
-	 * @param   bankCardInfoEntity, map{bankNo(银行卡号),receiveCard(会员银行卡ID ) }
+	 * @param   bankCardInfoEntity, map{bankNo(银行卡号),receiveCard(会员银行卡ID )}
 	 * @param @return 设定文件 
-	 * @return int 返回类型 1：成功，0：失败,-2该银行卡号已存在
+	 * @return int 返回类型 1：成功，0：失败,-2该银行卡号已存在-3,该银行卡不存在不能修改
 	 * @date 2016-3-28 下午3:45:43
 	 */
-	public int updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity,Map<String,Object> map);
+	public int updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity,
+			Map<String,Object> map,long memberID);
 	/**
 	 * 移除银行卡
 	 * @author 刘利   
 	 * @Description: TODO 
-	 * @param  receiveCard 会员银行卡ID
+	 * @param  @param map{receiveCard 会员银行卡ID，memberID}
 	 * @param @return 设定文件 
 	 * @return int 返回类型 1:成功，0失败
 	 * @date 2016-3-28 下午4:17:58
 	 */
-	public int deleteMemberBankCard(int receiveCard);
+	public int deleteMemberBankCard(Map<String,Object> map);
 }
 

@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="MyBorrowAndInvest">      
+	 <resultMap type = "cn.membermng.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
+            <id property = "id" 	             column = "Project_Base_ID" />
+			<result property = "projectTitle"    column = "Project_Title" />  
+			<result property = "amount" 		 column = "Amount" /> 
+			<result property = "deadline" 		 column = "Deadline" /> 
+			<result property = "yearRate"        column = "Year_Rate" />  
+			<result property = "deadlineTypes" 	 column = "name1" />  
+     </resultMap>
+	  
+	 <resultMap type = "cn.membermng.model.ProjectAppRecordEntity" id = "Borrowing">
+        <id property = "applyId"				column = "Apply_Id" />
+		<result property = "projectNo"       	column = "Project_No" />
+		<result property = "recordDate"    	    column = "Record_Date" />  
+		<result property = "releaseDate"    	column = "Release_Date" /> 
+		<result property = "endamount"    	    column = "Invest_Amount_Valid" /> 
+		<result property = "holdDate"    	    column = "Hold_Date" />  
+		<result property = "settleDate"    	    column = "Settle_Date" /> 
+		<result property = "statu"    	        column = "Statu" />
+		<result property = "guaranteeName"    	column = "Guarantee_Name" />
+		<association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
+	    </association>  
+	</resultMap>  
+		<!-- 借款项目查询
+		Apply_Id,项目申请记录ID
+		Project_No,项目编号
+		Project_Title,项目名称
+		Record_Date,提交借款意向时间
+		Release_Date,审批通过时间
+		Amount,借款金额
+		Invest_Amount_Valid,实际借款金额
+		Guarantee_Name,担保机构名称
+		Statu,项目状态
+		Hold_Date,放款时间
+		Settle_Date,结清时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Record_Date_Min}#{Record_Date_Max}#{Release_Date_Min}#{Release_Date_Max}#{memberID}
+		#{Hold_Date_Min}#{Hold_Date_Max}#{Settle_Date_Min}#{Settle_Date_Max}#{Guarantee_Name}#{Statu}#{Type}#{ordercolumn}
+	-->
+	<select id="getBorrowing" parameterType="Map" resultMap="Borrowing">
+		SELECT
+		  pa.Apply_Id,
+		  pa.Project_No,
+		  prbi.Project_Title,
+		  pap.Record_Date,
+		  pap.Release_Date,
+		  pp.Amount,
+		  (SELECT	<!--统计实际借款金额-->
+			  SUM(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) AS SIGNED))
+			FROM invest_record ir
+			WHERE ir.Apply_Id = pa.Apply_Id AND ir.IsValid = 0) Invest_Amount_Valid,
+		  CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8) Guarantee_Name,
+		  CASE pa.Check_Statu	<!--项目状态由申请状态、发布状态、融资状态三个阶段共同决定-->
+			  WHEN 1 THEN (CASE pa.Publish_Statu
+				  WHEN 2 THEN pa.Invest_Statu ELSE pa.Publish_Statu
+				END) ELSE pa.Check_Statu
+			END Statu,
+		  pap.Hold_Date,
+		  pap.Settle_Date
+		FROM project_app_record pa
+		  JOIN project_base_info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		  JOIN project_purpose pp
+			ON pa.Purpose_ID = pp.Purpose_ID
+		  LEFT JOIN project_app_process pap
+			ON pa.Apply_Id = pap.Apply_Id
+		  LEFT JOIN guarantee_info gi
+			ON pa.Guarantee_ID = gi.Guarantee_ID
+		WHERE pa.Member_ID = #{memberID}
+		      AND IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No = #{Project_No})
+			  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+			  AND IF(#{Record_Date_Min} IS NULL OR #{Record_Date_Min} = '', 1=1, pap.Record_Date>=#{Record_Date_Min})
+			  AND IF(#{Record_Date_Max} IS NULL OR #{Record_Date_Max} = '', 1=1, pap.Record_Date&lt;=#{Record_Date_Max})
+			  AND IF(#{Release_Date_Min} IS NULL OR #{Release_Date_Min} = '', 1=1, pap.Release_Date>=#{Release_Date_Min})
+			  AND IF(#{Release_Date_Max} IS NULL OR #{Release_Date_Max} = '', 1=1, pap.Release_Date&lt;=#{Release_Date_Max})
+			  AND IF(#{Hold_Date_Min} IS NULL OR #{Hold_Date_Min} = '', 1=1, pap.Hold_Date>=#{Hold_Date_Min})
+			  AND IF(#{Hold_Date_Max} IS NULL OR #{Hold_Date_Max} = '', 1=1, pap.Hold_Date&lt;=#{Hold_Date_Max})
+			  AND IF(#{Settle_Date_Min} IS NULL OR #{Settle_Date_Min} = '', 1=1, pap.Settle_Date>=#{Settle_Date_Min})
+			  AND IF(#{Settle_Date_Max} IS NULL OR #{Settle_Date_Max} = '', 1=1, pap.Settle_Date&lt;=#{Settle_Date_Max})
+			  AND IF(#{Guarantee_Name} IS NULL, 1=1, LOCATE(#{Guarantee_Name},CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8))>0)
+		  <!--项目状态根据阶段分为申请状态(DICT_SQZT)、项目发布状态(DICT_XMFBZT)、融资状态(DICT_RZZT)、所以需要同时传入编码和类型来判断-->
+			  AND IF(#{Statu} IS NULL OR #{Statu} = '', 1=1, CASE #{Type}
+																WHEN 'DICT_SQZT' THEN pa.Check_Statu = #{Statu}
+																WHEN 'DICT_XMFBZT' THEN pa.Publish_Statu = #{Statu}
+																WHEN 'DICT_RZZT' THEN pa.Invest_Statu = #{Statu}
+															  END)
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'RECORD_DATE' THEN pap.Record_Date
+				WHEN 'RELEASE_DATE' then pap.Release_Date
+				WHEN 'HOLD_DATE' then pap.Hold_Date
+				WHEN 'SETTLE_DATE' then pap.Settle_Date
+				ELSE pap.Record_Date 
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	 <resultMap type = "cn.membermng.model.InvestEntity" id = "InvestmentProject">
+        <id property = "id"				       		column = "Invest_Id" />
+		<result property = "projectNo"       		column = "Project_No" />
+		<result property = "projectTitle"    		column = "Project_Title" />  
+		<result property = "investDate"    	    	column = "Invest_Date" />  
+		<result property = "investAmountValid"  	column = "Invest_Amount_Valid" /> 
+		<result property = "investGiftAmount"   	column = "Invest_Gift_Amount" /> 
+		<result property = "investVouchersAmount"  	column = "Invest_Vouchers_Amount" /> 
+		<result property = "backAmount"    	       	column = "Back_Amount" />  
+		<result property = "holdDate"    	    	column = "Hold_Date" /> 
+		<result property = "investRate"    	    	column = "Invest_Rate" /> 
+	</resultMap>  
+	<!-- 投资项目查询
+		Invest_Id,投资记录ID
+		Project_No,项目编号
+		Project_Title,项目名称
+		Invest_Date,投资时间
+		Invest_Amount_Valid,投资总金额
+		Invest_Gift_Amount,使用红包总金额
+		Invest_Vouchers_Amount,使用代金券总额
+		Back_Amount,使用返现券总额
+		Hold_Date,放款时间
+		Invest_Rate,投资总进度
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_No}#{Project_Title}#{Invest_Date_Min}#{Invest_Date_Max}#{Hold_Date_Min}#{Hold_Date_Max}#{ordercolumn}#{memberID}
+	-->
+	<select id="getInvestmentProject" parameterType="Map" resultMap="InvestmentProject">
+		SELECT
+		  ir.Invest_Id,
+		  pa.Project_No,
+		  prbi.Project_Title,
+		  ir.Invest_Date,
+		  CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) AS SIGNED) Invest_Amount_Valid,
+		  CAST((AES_DECRYPT(UNHEX(ir.Invest_Gift_Amount),#{skey})) AS SIGNED) Invest_Gift_Amount,
+		  CAST((AES_DECRYPT(UNHEX(ir.Invest_Vouchers_Amount),#{skey})) AS SIGNED) Invest_Vouchers_Amount,
+		  CAST((AES_DECRYPT(UNHEX(ir.Back_Amount),#{skey})) AS SIGNED) Back_Amount,
+		  ir.Hold_Date,
+		  pa.Invest_Rate
+		FROM invest_record ir
+		  JOIN project_app_record pa
+			ON ir.Apply_Id = pa.Apply_Id
+		  JOIN project_base_info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		WHERE ir.IsValid = 0 and ir.Member_ID = #{memberID}	<!--0代表有效-->
+			  AND IF(#{Project_No} IS NULL OR #{Project_No} = '', 1=1, pa.Project_No = #{Project_No})
+			  AND IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+			  AND IF(#{Invest_Date_Min} IS NULL OR #{Invest_Date_Min} = '', 1=1, ir.Invest_Date>=#{Invest_Date_Min})
+			  AND IF(#{Invest_Date_Max} IS NULL OR #{Invest_Date_Max} = '', 1=1, ir.Invest_Date&lt;=#{Invest_Date_Max})
+			  AND IF(#{Hold_Date_Min} IS NULL OR #{Hold_Date_Min} = '', 1=1, ir.Hold_Date>=#{Hold_Date_Min})
+			  AND IF(#{Hold_Date_Max} IS NULL OR #{Hold_Date_Max} = '', 1=1, ir.Hold_Date&lt;=#{Hold_Date_Max}) 
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'INVEST_DATE' THEN ir.Invest_Date
+				WHEN 'INVEST_AMOUNT_VALID' then Invest_Amount_Valid
+				WHEN 'INVEST_GIFT_AMOUNT' then Invest_Gift_Amount 
+				WHEN 'INVEST_VOUCHERS_AMOUNT' then Invest_Vouchers_Amount 
+				WHEN 'BACK_AMOUNT' then Back_Amount 
+				WHEN 'HOLD_DATE' THEN ir.Hold_Date
+				ELSE ir.Invest_Date
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select> 
+</mapper>

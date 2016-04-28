@@ -1,10 +1,10 @@
 package cn.springmvc.dao;
 
-import cn.springmvc.model.BaseCommodityTypeEntity;
-import cn.springmvc.model.CommodityTypeEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
 import java.util.List;
+
+import cn.integralmall.model.BaseCommodityTypeEntity;
 
 /**
  * @author 黄勇

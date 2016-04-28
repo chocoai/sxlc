@@ -192,7 +192,7 @@
     <!--项目管理  -->
     <dependency> 
 	     <groupId>product_p2p</groupId>
-	     <artifactId>projectMngx</artifactId>
+	     <artifactId>projectmng</artifactId>
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency> 
 	

@@ -17,12 +17,12 @@ import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.Upload.FtpClientUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.springmvc.Util.HttpSessionUtil;
+import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.MngTeamEntity;
 import cn.springmvc.model.Operation;
 import cn.springmvc.service.MngTeamService;
-import cn.springmvc.util.HttpSessionUtil;
-import cn.springmvc.util.LoadUrlUtil;
 
 /** 
 * @author 唐国峰

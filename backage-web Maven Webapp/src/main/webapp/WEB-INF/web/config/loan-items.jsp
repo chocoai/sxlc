@@ -1,8 +1,15 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@page import="cn.springmvc.model.Operation"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	/* 登录人操作权限 */
+	List<Operation> operations = null;
+	if(session.getAttribute("operationList") != null){
+		operations = (List<Operation>)session.getAttribute("operationList");
+
+	}
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -17,6 +24,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/config.css" />
+	<script type="text/javascript">
+		var on_off =false; //停用启用权限标记
+		<%
+			if(operations.size()>0){
+				for(int j=0;j<operations.size();j++){
+					if(operations.get(j).getOptID()==61203){
+		%>
+			   		on_off =true;
+		<%
+					}
+				}
+			}
+		%>
+	</script>
 </head>
 <!-- 配置中心--------会员信用等级配置-->
 <body class="nav-md">
@@ -24,12 +45,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
-				<jsp:param value="配置中心" name="loc6" />
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-config.jsp"></jsp:include>
+			<jsp:include page="../common/cm-config.jsp">
+				<jsp:param value="612" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			
 			<!-- 主要内容 -->
 			<div class="right_col role-content" role="main">
@@ -41,99 +64,98 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 						  <div class="panel-heading">
 					  		<div class="action_item">
-					  			<button class="obtn glyphicon glyphicon-plus obtn-loanitem-add">添加</button>
-					  			<button class="obtn glyphicon glyphicon-plus obtn-loanitem-mod">修改</button>
-							</div> 
+			     	<%
+						if(operations.size()>0){
+							for(int i = 0;i < operations.size(); i++){
+								if(operations.get(i).getOptID() == 61201){
+					%>				
+								<button class="obtn glyphicon glyphicon-plus obtn-loanitem-add" onclick="addOrModify(0)">添加</button>
+					<%      
+				      			}
+				      			if(operations.get(i).getOptID() == 61202){
+					%>				
+								<button class="obtn glyphicon glyphicon-pencil obtn-loanitem-mod" onclick="addOrModify(1)">修改</button>
+					<%      
+				      			}
+					  		 }
+						 }
+				     %>	
+						</div> 
 						</div>
+						<div class="search">
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<div class="i-fl search_title">条件查询</div>
+								<div class="i-fr action_item">
+									<ul class="list_item list-inline">
+										<li><a class="state">展开&nbsp;<span
+												class="glyphicon glyphicon-chevron-down"></span> </a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="panel-body">
+								<form id="" class="" action="">
+									<span class="con-item"><span>认证项名称</span><input type="text" name="identyName" id="identyName" class="" placeholder="角色编码" /></span>
+									<span class="con-item"><span>认证项状态</span>
+									<select class="linkedoperation" name="iStatu" id="iStatu">
+										<option value="-1">请选择</option>
+										<option value="1">有效</option>
+										<option value="0">无效</option>
+									</select></span>
+									<span class="con-item"><span>会员类型</span>
+									<select class="linkedoperation" name="membertype1" id="membertype1">
+										<option value="-1">请选择</option>
+										<option value="0">个人会员</option>
+										<option value="1">企业会员</option>
+									</select>
+									</span>
+									<button class="obtn obtn-query glyphicon glyphicon-search" type="button" >查询</button>
+								</form>
+							</div>
+						</div>
+					</div>
 						<div class="panel-body">
 							<table id="table_id" class="display">
 								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>认证项名称</th>
-										<th>附件格式</th>
-										<th>默认最高信用分数</th>
-										<th>状态</th>
-										<th>操作时间</th>
-										<th>最近一次操作管理员</th>
-										<th>操作</th>
-									</tr>
 								</thead>
 								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>身份证</td>
-										<td>img</td>
-										<td>2930</td>
-										<td>已启用</td>
-										<td>20160411</td>
-										<td>无名</td>
-										<td>
-											<a href="javascript:;" class="btn-enable">启用</a>
-											<a href="javascript:;" class="btn-disable">停用</a>
-										</td>
-									</tr>
-									<%
-										}
-									%>
 								</tbody>
 							</table>
 						</div>
 					</div>
 					<!-- 添加 个人借款认证项-->
+					
 					<div class="w-content loanitem-add">
+					<form class="form-horizontal" role="form" type="post" action="javascript:AddOrUpdate()" id="dataForm">
 						<table>
 							<tr>
-								<td class="tt"><label class="ineed">认证项名称：</label></td>
-								<td class="con">
-									<input type="text" class="" placeholder="认证项名称" value="" />
+								<td class="tt"><label class="ineed">会员类型：</label></td>
+								<td>
+									<select class="linkedoperation" name="membertype" id="membertype">
+										<option value="0">个人会员</option>
+										<option value="1">企业会员</option>
+									</select>
 								</td>
+							</tr>
+							<tr>
+								<td class="tt"><label class="ineed">认证项名称：</label></td>
+								<td class="con" id="addname"><input type="text" class="" name="attestTypeName" id="attestTypeName" placeholder="" value="" datatype="rolename"/></td>
 							</tr>
 							<tr>
 								<td class="tt"><label class="ineed">附件格式：</label></td>
 								<td class="con">
-									<input type="checkbox" name="img" value="图片"/> 图片
-									<input type="checkbox" name="file" value="文件"/> 文件
-									<input type="checkbox" name="audio" value="音频"/> 音频
-									<input type="checkbox" name="vidio" value="视频"/> 视频
+									<input type="checkbox" class="attach" name="attach" value="0"/> 图片
+									<input type="checkbox" class="attach" name="attach" value="1"/> 文件
+									<input type="checkbox" class="attach" name="attach" value="2"/> 音频
+									<input type="checkbox" class="attach" name="attach" value="3"/> 视频
 								</td>
 							</tr>
 							<tr>
 								<td class="tt"><label>默认最高信用分数：</label></td>
-								<td class="con">
-									<input type="text" class="" placeholder="默认最高信用分数" value="" />
-								</td>
+								<td class="con" id="addpercent"><input type="text" class="" name="creditScore" id="creditScore" placeholder="" value="" datatype="hundredNum"/></td>
 							</tr>
 						</table>
-					</div>
-					<!-- 修改个人借款认证项-->
-					<div class="w-content loanitem-mod">
-						<table>
-							<tr>
-								<td class="tt"><label class="ineed">认证项名称：</label></td>
-								<td class="con">
-									<input type="text" class="" placeholder="认证项名称" value="" />
-								</td>
-							</tr>
-							<tr>
-								<td class="tt"><label class="ineed">附件格式：</label></td>
-								<td class="con">
-									<input type="checkbox" name="img" value="图片"/> 图片
-									<input type="checkbox" name="file" value="文件"/> 文件
-									<input type="checkbox" name="audio" value="音频"/> 音频
-									<input type="checkbox" name="vidio" value="视频"/> 视频
-								</td>
-							</tr>
-							<tr>
-								<td class="tt"><label>默认最高信用分数：</label></td>
-								<td class="con">
-									<input type="text" class="" placeholder="默认最高信用分数" value="" />
-								</td>
-							</tr>
-						</table>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -142,33 +164,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<!-- 公用js -->
 		<jsp:include page="../common/cm-js.jsp"></jsp:include>
-		<script type="text/javascript" src="js/config/loan-items.js"></script>
+		<script type="text/javascript" src="js/configCenter/loan-itemsConfig.js"></script>
 		<!-- 私用js -->
-		<script type="text/javascript">
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#table_id').DataTable({
-						"autoWidth" : false,
-						//scrollY : 500,
-						//paging : false,//分页
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 7]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+	<!-- 	<script type="text/javascript">
+		$(function(){
+			/* 添加 */
+			validform5("layui-layer-btn0","addpercent",false,"3");
+			validform5("layui-layer-btn0","addname",false,"3");
+			validform5("layui-layer-btn0","modname",false,"3");
+			validform5("layui-layer-btn0","modpercent",false,"3");
+			/* 添加 */
+		});
+			</script> -->
 		</div>
 	</div>
 </body>

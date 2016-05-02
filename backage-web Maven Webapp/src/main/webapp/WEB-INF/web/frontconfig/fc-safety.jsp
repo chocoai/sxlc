@@ -47,7 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="container body">
 		<!-- 头部 -->
 		<jsp:include page="../common/cm-top.jsp">
-			<jsp:param value="5" name="top_menu_index"/>
+		<jsp:param value="5" name="top_menu_index"/>
 		</jsp:include>		
 		<!-- 左侧菜单 -->
 		<jsp:include page="../common/cm-frontconfig.jsp"></jsp:include>

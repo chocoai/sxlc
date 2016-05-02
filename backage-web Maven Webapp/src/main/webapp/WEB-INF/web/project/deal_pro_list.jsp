@@ -23,10 +23,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="3" name="top_menu_index"/>
+				<jsp:param value="3" name="_index_m1"/>
 			</jsp:include>
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-project.jsp"></jsp:include>
+			<jsp:include page="../common/cm-project.jsp">
+				<jsp:param value="306" name="_index_m2"/>
+				<jsp:param value="30601" name="_index_m3"/>
+			</jsp:include>
 			
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -46,13 +49,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>项目编号</span><input type="text" class="" value="项目编号" /></span>
-									<span class="con-item"><span>借款人用户名</span><input type="text" class="" value="借款人用户名" /></span>
-									<span class="con-item"><span>借款人姓名</span><input type="text" class="" value="借款人姓名" /></span>
-									<span class="con-item"><span>借款期限</span><input type="date" class="term" value="借款期限(天、月)" />-&nbsp;&nbsp;<input type="date" class="term" value="借款期限(天、月)" /></span>
-									<span class="con-item"><span>实际借款金额</span><input type="text" class="" value="实际借款金额" /></span>
-									<span class="con-item"><span>还款方式</span><input type="text" class="" value="还款方式" /></span>
-									<span class="con-item"><span>合同约定下一还款日</span><input type="date" class="" value="合同约定下一还款日" /></span>
+									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>借款人姓名</span><input type="text" class=""/></span>
+									<span class="con-item"><span>借款期限</span><input type="text" id="startDate1" class="term notspecial Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate1" class="term notspecial Wdate" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item"><span>实际借款金额</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>还款方式</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>合同约定下一还款日</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
 									<span class="con-item"><span>还款状态</span><select><option>请选择</option><option>已停用</option><option>已启用</option></select></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>

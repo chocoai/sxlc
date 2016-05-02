@@ -11,7 +11,6 @@ $(function(){
 					"type": "POST",
 					"data": function ( d ) {
 						//加密
-//						console.log($(".notspecial").val()+","+$("#statu").val());
 						var projectName = encrypt.encrypt($(".notspecial").val());
 						var statu = encrypt.encrypt($("#statu").val());
 						d.projectName = projectName;
@@ -19,6 +18,12 @@ $(function(){
 					}  
 				},
 				columns: [  
+				          {title:'',sWidth:"10%", 
+				        	  "mRender": function (data, type, full) {
+				        		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+				        		  return sReturn;
+				        	  }
+				          },
 				          { title:"id","data":"id"},  
 				          { title:"类型名称","data": "projectName"},  
 				          { title:"项目借款额度范围（万元）","data": "singleMin", 
@@ -39,30 +44,46 @@ $(function(){
 				        			  return "<font color='red'>已禁用</font>";
 				        		  }else if(data==1){
 				        			  return "已启用";
+				        		  }else{
+				        			  return data;
 				        		  }
 				        	  }
 				          },  
 				          { title:"项目类型简介","data": "briefIntroduction", 
 				        	  "mRender": function (data, type, full) {
-				        			  return ' <a href="javascript:;" class="introduce" title="项目详情">简介：信用贷sdf sdf sdf sdf sdf </a>';
+				        		  	var text = "简介：";
+				        		  	if(data == null || data ==""){
+				        	    		return "";
+				        	    	}else if(data.length>3){//当内容长度大于8时隐藏详细信息
+				        	    		text += data.substring(0,7);
+				        	    		return ' <a href="javascript:;" onclick="showText(this)" title="项目详情">'+text+'...</a>';
+				        	    	}else if(data.length < 9){
+				        	    		return data;
+				        	    	} 
 				        	  }
 				          },  
-				          { title:"产品展示小图标","data": "picIcon"},  
-				          { title:"操作","data": "", 
+				          { title:"产品展示小图标","data": "picIcon", 
 				        	  "mRender": function (data, type, full) {
-				        		  if(full.statu==0){
+				        		  return '<a href="javascript:void(0);" class="btn-det" onclick="viewPic(this)">查看图标</a>';
+				        	  }
+				          },  
+				          { title:"操作","data": "statu", 
+				        	  "mRender": function (data, type, full) {
+				        		  if(data==0){
 				        			  return "<a onclick=\"enableOrDisable(1,'"+full.id+"');\" href=\"javascript:void(0);\">启用</a>" ;
-				        		  }else if(full.statu==1){
+				        		  }else if(data==1){
 				        			  return "<a onclick=\"enableOrDisable(0,'"+full.id+"');\" href=\"javascript:void(0);\">停用</a>";
+				        		  }else{
+				        			  return "";
 				        		  }
 				        	  }
 				          }
 				          ],
 	          aoColumnDefs : [
-	                          {"bVisible": false, "aTargets": [0]}, //控制列的隐藏显示
+	                          {"bVisible": false, "aTargets": [1]}, //控制列的隐藏显示
 	                          {
 	                        	  "orderable" : false,
-	                        	  "aTargets" : [ 0, 1, 2, 3, 5, 6, 7, 8, 9 ]
+	                        	  "aTargets" : [ 0, 1, 2, 3,4, 6, 7, 8, 9,10 ]
 	                          } // 制定列不参与排序
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
@@ -74,17 +95,21 @@ $(function(){
 	 
 	});//表格初始化完毕
 	 
-	//表格单选效果
+	//表格单选效果(有复选框)
 	 $('#table_id tbody').on( 'click', 'tr', function () {
 		    var $this = $(this);
+		    var $checkBox = $this.find("input:checkbox");
 	        if ( $this.hasClass('selected') ) {
+	        	 $checkBox.prop("checked",false);
 	        	$this.removeClass('selected');
-	        }
-	        else {
+	        } else {
+	        	$(".tr-checkbox").prop("checked",false);
+	        	$checkBox.prop("checked",true);
 	        	$('#table_id tr.selected').removeClass('selected');
 	        	$this.addClass('selected');
 	        }
 	  });
+	 
 	
 	 /**
 	  * 查询按钮
@@ -92,73 +117,117 @@ $(function(){
 	 $(".glyphicon-search").on("click",function(){
 		$('#table_id').DataTable().ajax.reload();
 	 });
-	 
 	
-	//启用停用
-	$(".btn-enable").on("click touchstart",function(){
-		//获取选取对象
-		
-		layer.confirm('确定启用？', {
-			btn: ['确定', '取消']
-		}, function(index, layero){
-			//按钮【按钮一】的回调
-			
-			//执行完关闭
-			layer.close(index);
-		}, function(index){
-			//按钮【按钮二】的回调
-		});
-	});
-
-	$(".btn-disable").on("click touchstart",function(){
-		//获取选取对象
-		
-		layer.confirm('确定停用？', {
-			btn: ['确定', '取消']
-		}, function(index, layero){
-			//按钮【按钮一】的回调
-			
-			//执行完关闭
-			layer.close(index);
-		}, function(index){
-			//按钮【按钮二】的回调
-		});
-	});
 });	
+
+
+/**
+ * 启用/停用功能
+ * @param type 1：启用 0：停用
+ * @param id 项目类型id
+ * @returns
+ */
+function enableOrDisable(type,id){
+	var title="";
+	if(type==1){
+		title ='确定启用？';
+	}else if(type==0){
+		title ='确定停用？';
+	}
+	layer.confirm(title, {
+		btn: ['确定', '取消']
+	}, function(index, layero){
 	
+	$.ajax( {  
+		url:appPath+"/project/enableProType.do",
+		data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id)},
+		type:'post',  
+		cache:false,  
+		dataType:'json',  
+		success:function(data) { 
+			if(data==1){
+				layer.alert("操作成功",{icon:1});
+				var table = $('#table_id').DataTable();
+				table.ajax.reload();
+			}else if(data==0){
+				layer.alert("操作失败",{icon:2});  
+			}
+		},  
+		error : function() {  
+			layer.alert("服务器异常",{icon:2});  
+		}  
+	});
+	
+	}, function(index){
+  }); 
+}
 
 
 
-    /***********简介的显示和隐藏*************/
-$(function(){    
-    $(".introduce").each(function(index){
-    	var intro=$(this).text();    //回去项目类型简介描述内容
-    	if(intro.length>8){        //当内容长度大于8时隐藏详细信息，其中参数可以修改
-    		$(this).text(intro.substring(0,2));
-    		$(this).hover(function(e){
-    			$(".all").show().html(intro);   //将类型简介赋值到隐藏div
-    			var y = e.clientY-20;
-    			var x = e.clientX -212;
-    			$(".all").css({position:'absolute',top:y+"px",left:x+"px"});
-    		},function(){
-    			$(".all").hide();
-    		});
-    	}
-    	else{
-    		$(this).text(intro);
-    	}
-    });
-});
 
+/**
+ * 简介弹出框显示
+ */
+function showText(btn){
+	var data = $('#table_id').DataTable().row($(btn).parents('tr')).data();
+	layer.open({
+	    type: 1,
+	    area: ['400px', '300px'], //高宽
+	    title: "简介",
+	    content: data.briefIntroduction,//DOM或内容
+	    btn:['关闭']
+		  ,cancel: function(index){
+		  	//取消的回调
+		  }
+	});
+};
 
+/**
+ * 查看图片
+ * @returns
+ */
+function viewPic(btn){
+    var data = $('#table_id').DataTable().row($(btn).parents('tr')).data();
+    if(data.picIcon !=""){
+    	$("#picView").attr("src",$("#hostPath").val()+data.logo);
+    	$(".hideHtml").hide();
+    }else{
+    	$(".hideHtml").show();
+    	$("#picView").attr("src","");
+    }
+	layer.open({
+	    type: 1,
+	    area: ['400px', '300px'], //高宽
+	    title: "查看图标",
+//	    maxmin: true,
+	    content: $(".pic-view"),//DOM或内容
+	    btn:['关闭']
+		  ,cancel: function(index){
+		  	//取消的回调
+		  }
+	});
+
+}
+
+/**
+ * 添加或修改按钮
+ * @param type 操作类型：1 添加  2：修改
+ */
+function showDetail(type){
+	if(type==1){
+		$(".right_col").load("project/toProTypeDetail");
+	}else if(type==2){
+		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		if(data.length<1){
+			layer.alert("请选择要修改的数据！",{icon:0});
+			return;
+		}
+		var id = data[0].id;
+		$(".right_col").load("project/toProTypeDetail",{"id": encrypt.encrypt(id+"")});
+	}
+}
 
 /********项目类型管理2016-4-25伍成然*********/
-function addProType(){
-	$(".right_col").load("web/project/pro-add/add_type.jsp");
-}
-function modProType(){
-	$(".right_col").load("web/project/pro-add/modify_type.jsp");
-}
 function loanProExam(){
 	$(".right_col").load("web/project/pro-add/loan_pro_exam.jsp");
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.SelectGuaranteeInfoDao;
+import cn.springmvc.model.CompensationStatisticsEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
 import cn.springmvc.model.GuaranteeCertificateEntity;
@@ -143,6 +144,13 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("GuaranteeInfoXML.selectAllGuaranteeInfo", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+	}
+	@Override
+	public CompensationStatisticsEntity CompensationStatistics(
+			Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectOne("GuaranteeInfoXML.CompensationStatistics",map);
 	}
 }
 

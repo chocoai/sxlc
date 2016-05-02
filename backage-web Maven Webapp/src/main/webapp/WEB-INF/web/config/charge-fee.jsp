@@ -24,12 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-config.jsp">
-				<jsp:param value="config-0" name="config-index" />
+				<jsp:param value="601" name="_index_m2" />
+				<jsp:param value="60102" name="_index_m3" />
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -38,11 +39,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 			 	<!-- 快捷充值手续费设置 -->
 			 	<div class="config">
-			 		<fieldset>
+			 		<fieldset class="autobidfd">
 			 			<legend>会员</legend>
 			 			<form class="form-horizontal" role="form" name="" action="javascript:mchargefee()" id="member">
 			 				<div class="form-group">
-			 					<label for="lastname" class="i-fl control-label col3">充值手续费支付比例：</label>
+			 					<label for="lastname" class="i-fl controlabel col3 ">充值手续费支付比例：</label>
 				 				<div id="mdiv" class="i-fl">	
 				 					<label class="checkbox-inline">
 				 						<input type="radio" name="member" id="" value="1"> 扣除充值人千分之三
@@ -59,17 +60,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 				</div>
 			 				</div>
 			 				<div class="form-group">
-			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
-			 					</div>
-			 				</div>
+				 				<div class="cmbtncontainer chargefeebtn">
+									<a class="commonbtn0">保存</a>
+								</div>
+				 			</div>
 			 			</form>		
 			 		</fieldset>
-			 		<fieldset>
+			 		<fieldset class="autobidfd">
 			 			<legend>第三方合作机构</legend>
 			 			<form class="form-horizontal" role="form" name="" action="javascript:ochargefee()" id="orgnization">
 			 				<div class="form-group">
-			 					<label for="lastname" class="i-fl control-label col3">充值手续费支付比例：</label>
+			 					<label for="lastname" class="i-fl controlabel col3">充值手续费支付比例：</label>
 				 				<div id="odiv" class="i-fl">	
 				 					<label class="checkbox-inline">
 				 						<input type="radio" name="thirdpart" id="" value="1"> 扣除充值人千分之三
@@ -86,17 +87,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 				</div>
 			 				</div>
 			 				<div class="form-group">
-			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
-			 					</div>
-			 				</div>
+				 				<div class="cmbtncontainer chargefeebtn">
+									<a class="commonbtn0">保存</a>
+								</div>
+				 			</div>
 			 			</form>		
 			 		</fieldset>
-			 		<fieldset>
+			 		<fieldset class="autobidfd">
 			 			<legend>平台</legend>
 			 			<form class="form-horizontal" role="form" name="" action="javascript:pchargefee()" id="station">
 			 				<div class="form-group">
-			 					<label for="lastname" class="i-fl control-label col3">充值手续费支付比例：</label>
+			 					<label for="lastname" class="i-fl controlabel col3">充值手续费支付比例：</label>
 				 				<div id="sdiv" class="i-fl">	
 				 					<label class="checkbox-inline">
 				 						<input type="radio" name="platform" id="" value="1"> 扣除充值人千分之三
@@ -113,10 +114,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 				</div>
 			 				</div>
 			 				<div class="form-group">
-			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
-			 					</div>
-			 				</div>
+				 				<div class="cmbtncontainer chargefeebtn">
+									<a class="commonbtn0">保存</a>
+								</div>
+				 			</div>
 			 			</form>		
 			 		</fieldset>
 			 	</div>	

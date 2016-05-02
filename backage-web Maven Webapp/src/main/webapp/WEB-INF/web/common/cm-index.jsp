@@ -6,10 +6,9 @@
                     <div class="navbar nav_title">
                         <a href="javascript:;" class="site_title">
                         	<i class="fa fa-cog"></i>
-                        	<span>产品后台管理</span>
+                        	<span><!-- 产品后台管理 --></span>
                         </a>
                     </div>
-                    <div class="clearfix"></div>
 
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">

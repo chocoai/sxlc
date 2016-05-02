@@ -1,8 +1,15 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@page import="cn.springmvc.model.Operation"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+
+	/* 登录人操作权限 */
+	List<Operation> operations = null;
+	if(session.getAttribute("operationList") != null){
+		operations = (List<Operation>)session.getAttribute("operationList");
+	}
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -19,6 +26,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
 	<link rel="stylesheet" href="css/upload.css" />
 	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
+	<script type="text/javascript">
+		var on_off =false; //停用启用权限标记
+		<%
+			if(operations.size()>0){
+				for(int j=0;j<operations.size();j++){
+					if(operations.get(j).getOptID()==50503){
+		%>
+			   		on_off =true;
+		<%
+					}
+				}
+			}
+		%>
+</script>
 </head>
 
 <body class="nav-md">
@@ -42,7 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 					
 					<div class="w-content pic-add">
-							<form action="javascript:addMngTeam()" id="dataForm" method="post">
+							<form action="javascript:addOrUpdate()" id="dataForm" method="post">
 								<table>
 									<tr>
 										<td class="tt">姓名</td>
@@ -58,7 +79,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<!--dom结构部分-->
 											<div id="uploader">
 											    <!--用来存放item-->
-											    <div class="" id="fileList"></div>
+											    <div class="fileList" id="fileList"></div>
 											    <div id="filePicker">选择头像</div>
 											    <span class="rec-dimensions">建议尺寸：100*100</span>
 											    <img id="portrait" src="">
@@ -69,64 +90,51 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<tr>
 										<td class="tt" valign="top">简介</td>
 										<td class="con">
-											<textarea rows="6" cols="" name="profile" id="profile" class="ta-noresize w500">测试</textarea>
+											<textarea rows="6" cols="" name="profile" id="profile" class="ta-noresize w500" placeholder="简介"></textarea>
 										</td>
 									</tr>
 								</table>
 								</form>
 							</div>
-							<div class="w-content pic-view">
+						<!-- 弹出头像 -->
+						 <div class="w-content picture">
+								 <div class="w-content hideHtml">暂无头像</div>
 								<img id="picView" src="">
-							</div>
-					
-					
-					<div class="w-content pic-mod">
-							<form action="javascript:updateExpertTeamByID()" id="dataFor" method="post">
-								<table>
-									<tr>
-										<td class="tt">专家姓名</td>
-										<td class="con"><input type="text" name="mngName" id="mngNam" class="" datatype="z2_8" /></td>
-									</tr>
-									<tr>
-										<td class="tt">职务</td>
-										<td class="con"><input type="text" name="mngPost" id="mngPos" class="" /></td>
-									</tr>
-									<tr>
-										<td class="tt">头像</td>
-										<td class="con portrait-box">
-											<!--dom结构部分-->
-											<div id="uploader">
-											    <!--用来存放item-->
-											    <div class="" id="fileList"></div>
-											    <div id="filePickers">选择头像</div>
-											    <span class="rec-dimensions">建议尺寸：100*100</span>
-											    <img id="portrait" src="">
-											     <input type="hidden" name="portraitUrl" id="portraitUr" />
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="tt" valign="top">简介</td>
-										<td class="con">
-											<textarea rows="6" cols="" name="profile" id="profil" class="ta-noresize w500">测试</textarea>
-										</td>
-									</tr>
-								</table>
-								</form>
-							</div>
-							<div class="w-content pic-view">
-								<img id="picView" src="">
-							</div>
-					
+						</div>
+						<div class="w-content report-det">
+							详情
+						</div>
+						
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-experts-add" onclick="expAdd()">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-experts-mod" onclick="expMod()">修改</button>
+				<%
+					if(operations.size()>0){
+						for(int i = 0;i < operations.size(); i++){
+							
+			      			if(operations.get(i).getOptID() == 50501){
+				%>				
+								<button class="obtn glyphicon glyphicon-plus obtn-experts-add" onclick="addOrModify(0)">添加</button>
+				<%      
+			      			}
+			      				
+			      			if(operations.get(i).getOptID() == 50502){
+				%>				
+								<button class="obtn glyphicon glyphicon-pencil obtn-experts-mod" onclick="addOrModify(1)">修改</button>
+				<%     
+			      			}
+				  		 }
+					 }
+			     %>	
+				
 							</div>
 						</div>
 						
 						<div class="panel-body">
 							<table id="teamTb" class="display">
+								<thead>
+								</thead>
+								<tbody>
+								</tbody>
 							</table>
 						</div>
 						
@@ -146,11 +154,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/frontconfig/cf-experts.js"></script>
-	<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
-	<script type="text/javascript" src="js/exp-upload.js"></script>
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
-	<script type="text/javascript" src="js/exper/exper.js"></script>
+	<script type="text/javascript" src="js/exp-upload.js"></script>	
+	<script type="text/javascript" src="js/frontconfig/cf-exper.js"></script>
 
 </body>
 

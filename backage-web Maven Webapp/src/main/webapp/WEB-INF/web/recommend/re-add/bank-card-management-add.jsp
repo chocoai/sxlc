@@ -21,45 +21,46 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body class="nav-md">
 	<div class="container body">
 		<div class="container body">
-		<div class="main_container">
-		
-			<div class="w-content ishow pic-add">
-				<table>
-					<tr>
-						<td class="tt">专家姓名</td>
-						<td class="con"><input type="text" class="" /></td>
-					</tr>
-					<tr>
-						<td class="tt">职称</td>
-						<td class="con"><input type="text" class="" /></td>
-					</tr>
-					<tr>
-						<td class="tt">头像</td>
-						<td class="con portrait-box">
-							<!--dom结构部分-->
-							<div id="uploader">
-							    <!--用来存放item-->
-							    <div class="" id="fileList"></div>
-							    <div id="filePicker">选择头像</div>
-							    <span class="rec-dimensions">建议尺寸：100*100</span>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="tt" valign="top">简介</td>
-						<td class="con">
-							<textarea rows="6" cols="" class="ta-noresize w500">测试</textarea>
-						</td>
-					</tr>
-				</table>
-			</div>
+			<div class="main_container">
 			
+				<div class="w-content ishow pic-add">
+					<table id="card_id">
+						<tr>
+							<td class="tt">银行卡类型</td>
+							<td class="con" id="cardType">
+								<select class="cardTypeOption">
+									<option>借记卡</option>
+									<option>信用卡</option>
+									<option>储蓄卡</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="tt">开户银行</td>
+							<td class="con" id="depositBank"><input type="text" datatype="enterAddress" /></td>
+						</tr>
+						<tr>
+							<td class="tt">开户行城市</td>
+							<td class="con" id="depositCity"><input type="text" datatype="enterAddress" /></td>
+						</tr>
+						<tr>
+							<td class="tt">开户行支行</td>
+							<td class="con" id="subbranch"><input type="text" datatype="enterAddress" /></td>
+						</tr>
+						<tr>
+							<td class="tt">银行卡卡号</td>
+							<td class="con" id="bankNum"><input type="text" datatype="bankNum" /></td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/recommend/bank-card-management.js"></script>
 </body>
 
 </html>

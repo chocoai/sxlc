@@ -46,53 +46,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 						<div class="panel-body">
 							<table id="bottomnavtable" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>添加时间</th>
-										<th>导航标题</th>
-										<th>导航所属种类</th>
-										<th>导航标题链接</th>
-										<th>最近一次操作管理员</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-								<%for (int i=0;i<15;i++){ %>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>添加时间</td>
-										<td>导航标题</td>
-										<td>导航所属种类</td>
-										<td>导航标题链接</td>
-										<td>最近一次操作管理员</td>
-										<td>
-											<a href="javascript:;" class="btn-enable">启用</a>
-											<a href="javascript:;" class="btn-disable">停用</a>
-										</td>
-									</tr>
-									<%}%>
-								</tbody>
 							</table>
 						</div>
 						<!-- 添加部分开始 -->
 						<div class="w-content" id="bottomnav-add">
-							<form role="form" class="addnavform">
+							<form id="saveBoot" role="form" class="addnavform" action="javascript:addBoot()" type="post">
 								<table>
 									<tr>
 										<td><label>导航标题</label></td>
-										<td id="addnavtitle"><input type="text" value="" datatype="z2_8"/></td>
+										<td id="addnavtitle"><input id="stitle" type="text" value="" datatype="z2_8"/></td>
 									</tr>
 									<tr>
 										<td><label>导航标题链接</label></td>
-										<td id="addnavlink"><input type="text" value="" datatype="strRegex"/></td>
+										<td id="addnavlink"><input id="surl" type="text" value="" datatype="strRegex"/></td>
 									</tr>
 									<tr>
 										<td><label>导航所属种类</label></td>
-										<td>
-											<input type="radio" name="species" value=""/><label>关于我们</label>
-											<input type="radio" name="species" value=""/><label>我要投资</label>
-											<input type="radio" name="species" value=""/><label>我是新手</label>
+										<td id="bootType">
+											
 										</td>
 									</tr>
 								</table>
@@ -101,22 +72,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<!-- 添加部分结束 -->
 						<!-- 修改部分开始 -->
 						<div class="w-content" id="bottomnav-mod">
-							<form role="form" class="addnavform">
+							<form id="updateBoot" role="form" action="javascript:modBoot()" type="post" class="addnavform">
 								<table>
 									<tr>
 										<td><label>导航标题</label></td>
-										<td id="modnavtitle"><input type="text" value="" datatype="z2_8"/></td>
+										<td id="modnavtitle"><input id="mtitle" type="text" value="" datatype="z2_8"/></td>
 									</tr>
 									<tr>
 										<td><label>导航标题链接</label></td>
-										<td id="modnavlink"><input type="text" value="" datatype="strRegex"/></td>
+										<td id="modnavlink"><input id="murl" type="text" value="" datatype="strRegex"/></td>
 									</tr>
 									<tr>
 										<td><label>导航所属种类</label></td>
-										<td>
-											<input type="radio" name="species" value=""/><label>关于我们</label>
-											<input type="radio" name="species" value=""/><label>我要投资</label>
-											<input type="radio" name="species" value=""/><label>我是新手</label>
+										<td id="mtype">
 										</td>
 									</tr>
 								</table>
@@ -144,18 +112,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$(function(){
 			validform5("layui-layer-btn0","modnavlink",false,"3");
 		});
-		$('#bottomnavtable').DataTable({
-			//"scrollY": 400,
-			"scrollX": true,
-			"aaSorting" : [ ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,4,5,6]
-			} // 制定列不参与排序
-			],
-		});
+		
+	</script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 	
 </body>

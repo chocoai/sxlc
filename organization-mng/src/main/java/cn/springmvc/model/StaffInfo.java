@@ -26,6 +26,7 @@ public class StaffInfo {
 	/*----------add by TGF @2016-4-6 用于页面职务展示*/
 	private String				postId;		//职务id
 	private String				postName;		//职务名
+	private String				deptId;		//部门id(用于修改员工信息)
 	
 	
 	public StaffInfo() {}
@@ -46,13 +47,18 @@ public class StaffInfo {
 		this.endDate = endDate;
 		this.staffStatu = staffStatu;
 	}
-	
+
+	public String getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
 
 	public String getPostId() {
 		return postId;
 	}
-
-
 
 	public void setPostId(String postId) {
 		this.postId = postId;

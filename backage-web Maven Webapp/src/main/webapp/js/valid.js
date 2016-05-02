@@ -47,6 +47,7 @@ var day = /^[1-9][0-9]{0,2}$/;//天数：大于0的整数，最大3位数字
 var port = /^([1-9]|[1-9]\\d{1,3}|[1-6][0-5][0-5][0-3][0-5])$/;//端口：大于0的整数，最大6位数字
 var server= /^[^ &',;=?$\\]+$/;//SMTP服务器
 var nnum0 = /^[0-9]*[0-9][0-9]*$/;//0~无限大的整数    [1-9]{1}\d{0,4}
+var nnum1 = /^[0-9]*[1-9][0-9]*$/;//1~无限大的整数
 
 var describe= /^[\u4E00-\u9FA5]{0,200}$/;  //项目描述 ，200字以下
 var roleNameA= /^[\u4E00-\u9FA5]{0,6}$/;  //角色名称，6字以下
@@ -143,6 +144,18 @@ var nNum0 = function (gets,obj,curform,datatype) {
 		else {
 			return true;
 		}
+};
+
+var nNum = function (gets,obj,curform,datatype) {	
+	if(!gets){
+		return "不可为空";
+	}
+	else if(!nnum1.test(gets)){  
+	    return "请输入数字！";  
+	}
+	else {
+		return true;
+	}
 };
 
 var Z6 = function (gets,obj,curform,datatype) {
@@ -424,9 +437,7 @@ var roleNameb = function(gets,obj,curform,datatype) {
 };
 
 var rolemarkC = function(gets,obj,curform,datatype) {
-	if(!gets){
-		return "不可为空";
-	}else if(!roleMark.test(gets)) {
+	if(!roleMark.test(gets)) {
 		return "125字以内";
 	}else {
 		return true;
@@ -574,9 +585,10 @@ function validform5(btn,formId,postonce,tipsType) {
 			"server":server,
 			"agreementName":agreementName,
 			"nNum0":nNum0 ,
+			"nNum":nNum ,
 			"hundredNum":hundredNum ,
 			"roleNamea":roleNamea ,
-			"enterNameR":enterNameR ,
+			"enterNameR":enterNR ,
 			"describeC":describeC ,
 			"roleNameb":roleNameb ,
 			"numOf":numOf     //两百以下

@@ -6,7 +6,11 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+			<script type="text/javascript">
+				_index.m2 = '<%=request.getParameter("_index_m2")%>';
+				_index.m3 = '<%=request.getParameter("_index_m3")%>';
+				//console.log(_index.m2+";"+_index.m3);
+			</script>
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                 	<div class="navbar nav_title">
@@ -21,36 +25,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <ul class="nav side-menu">
-                                 <li id="admin" class="li_level_one active">
-                                <a><i class="fa fa-edit"></i>个人会员<span class="fa fa-chevron-down"></span></a>
+                                 <li data-id="201" id="admin" class="li_level_one active">
+                                	<a><i class="fa fa-edit"></i>个人会员<span class="fa fa-chevron-down"></span></a>
                                 	<ul class="nav child_menu ul_level_one" style="display: none">
-                                        <li class="allMembersCu active"><a>全部会员</a></li>
-                                        <li class="membersVipCu"><a>VIP会员</a></li>
-                                        <li class="registeredMemberCu"><a>注册会员</a></li>
-                                        <li class="authenticationInformation "><a>认证会员</a></li>
-                                        <li class="loanMemberCu"><a>借款会员</a></li>
-                                        <li class="investmentMemberCu"><a>投资会员</a></li>
-                                        <li class="compositeMemberCu"><a>复合会员</a></li>
-                                        <li class="memberBlackListCu"><a>会员黑名单</a></li>
-                                        <li class="dataAuthenticationCu"><a>资料认证</a></li>
-                                        <li class="memberFinancialAdvisorCu"><a>会员分配理财顾问</a></li>
-                                        <li class="changeOfFinancialAdvisorCu"><a>理财顾问变更</a></li>
+                                        <li data-id="20101"><a href="web/member/member.jsp"></i>全部会员</a></li>
+                                        <li data-id="20102"><a href="web/member/membersVip.jsp">VIP会员</a></li>
+                                        <li data-id="20103"><a href="web/member/registeredMember.jsp">注册会员</a></li>
+                                        <li data-id="20104"><a href="web/member/verifiedMember.jsp">认证会员</a></li>
+                                        <li data-id="20105"><a href="web/member/loanMember.jsp">借款会员</a></li>
+                                        <li data-id="20106"><a href="web/member/investmentMember.jsp">投资会员</a></li>
+                                        <li data-id="20107"><a href="web/member/compositeMember.jsp">复合会员</a></li>
+                                        <li data-id="20108"><a href="web/member/memberBlackList.jsp">会员黑名单</a></li>
+                                        <li data-id="20109"><a href="web/member/realNameAuthen.jsp">资料认证</a></li>
+                                        <li data-id="20110"><a href="web/member/memberFinancialAdvisor.jsp">会员分配理财顾问</a></li>
+                                        <li data-id="20111"><a href="web/member/changeOfFinancialAdvisor.jsp">理财顾问变更</a></li>
                                     </ul>
                                  </li> 
-                                 <li id="admin" class="li_level_one">
-                                <a><i class="fa fa-edit"></i>企业会员<span class="fa fa-chevron-down"></span></a>
+                                 <li data-id="202" id="admin" class="li_level_one">
+                               		<a><i class="fa fa-edit"></i>企业会员<span class="fa fa-chevron-down"></span></a>
                                 	<ul class="nav child_menu ul_level_one" style="display: none">
-                                        <li><a>全部会员</a></li>
-                                        <li><a>VIP会员</a></li>
-                                        <li><a>注册会员</a></li>
-                                        <li><a>认证会员</a></li>
-                                        <li><a>借款会员</a></li>
-                                        <li><a>投资会员</a></li>
-                                        <li><a>复合会员</a></li>
-                                        <li><a>会员黑名单</a></li>
-                                        <li><a>资料认证</a></li>
-                                        <li><a>会员分配理财顾问</a></li>
-                                        <li><a>理财顾问变更</a></li>
+                                        <li data-id="20201"><a href="web/member/companyMembers.jsp">全部会员</a></li>
+                                        <li data-id="20202"><a>VIP会员</a></li>
+                                        <li data-id="20203"><a>注册会员</a></li>
+                                        <li data-id="20204"><a>认证会员</a></li>
+                                        <li data-id="20205"><a>借款会员</a></li>
+                                        <li data-id="20206"><a>投资会员</a></li>
+                                        <li data-id="20207"><a>复合会员</a></li>
+                                        <li data-id="20208"><a>会员黑名单</a></li>
+                                        <li data-id="20209"><a>资料认证</a></li>
+                                        <li data-id="20210"><a>会员分配理财顾问</a></li>
+                                        <li data-id="20211"><a>理财顾问变更</a></li>
                                     </ul>
                                  </li>
                                 <li id="admin" class="li_level_one">

@@ -16,8 +16,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
 	<link rel="stylesheet" href="css/recommend/asset-management.css"/>
+	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
+	<link rel="stylesheet" href="css/upload.css" />
 </head>
 
 <body class="nav-md">
@@ -25,11 +26,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="9" name="top_menu_index"/>
+				<jsp:param value="9" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-recommend.jsp"></jsp:include>
+			<jsp:include page="../common/cm-recommend.jsp">
+				<jsp:param value="902" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -50,32 +54,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item col-md-3 col-sm-4 col-xs-6">
-										<span>编号</span><input type="text" class="" placeholder="" />
-									</span>
-									<span class="con-item col-md-3 col-sm-4 col-xs-6">
-										<span>资产管理方名称</span><input type="text" class="" placeholder="" />
-									</span>
-									<span class="con-item col-md-3 col-sm-4 col-xs-6">
-										<span>营业执照号</span><input type="text" class="" placeholder="" />
-									</span>
-									<span class="con-item col-md-3 col-sm-4 col-xs-6">
-										<span>联系人姓名</span><input type="text" class="" placeholder="" />
-									</span>
-									<span class="con-item col-md-3 col-sm-4 col-xs-6">
-										<span>联系人手机号</span><input type="text" class="" placeholder="" />
-									</span>
-									<span class="con-item col-md-3 col-sm-4 col-xs-6">
-										<span>状态</span>
-										<select>
-											<option>请选择</option>
-											<option>有效</option>
-											<option>无效 </option>
-										</select>
-									</span>
-									<span class="col-md-6 col-sm-12 col-xs-12">
-										<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-									</span>
+									<div>
+										<span class="con-item  textRight2">
+											<span>编号</span><input type="text" class="notspecial" placeholder="" />
+										</span>
+										<span class="con-item textRight2">
+											<span>资产管理方名称</span><input type="text" class="notspecial" placeholder="" />
+										</span>
+										<span class="con-item textRight2">
+											<span>营业执照号</span><input type="text" class="notspecial" placeholder="" />
+										</span>
+									</div>
+									<div>
+										<span class="con-item textRight2">
+											<span>联系人姓名</span><input type="text" class="notspecial" placeholder="" />
+										</span>
+										<span class="con-item textRight2">
+											<span>联系人手机号</span><input type="text" class="notspecial" placeholder="" />
+										</span>
+										<span class="con-item textRight4">
+											<span>状态</span>
+											<select class="stateSelect">
+												<option>请选择</option>
+												<option>有效</option>
+												<option>无效 </option>
+											</select>
+										</span>
+										<span class="stateassetbtn">
+											<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+										</span>
+									</div>
 								</form>
 							</div>
 						</div>
@@ -123,7 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<td>营业执照号</td>
 											<td>组织机构代码</td>
 											<td>税务登记号</td>
-											<td>注册资本</td>
+											<td><span  class="moneyFormat">1000</span>元</td>
 											<td>注册地址</td>
 											<td>法人姓名</td>
 											<td>法人身份证号</td>
@@ -144,212 +152,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							
 						</div>
 					</div>
-					<!-- 添加资产管理方信息部分开始 -->
-					<div class="w-content" id="assetadd">
-						<form action="" id="assetAdd">
-							<table>
-								<tr>
-									<td><label>资产管理方名称</label></td>
-									<td><input type="text" class="" placeholder="" datatype="entername"/></td>
-									<td><label>营业执照号码</label></td>
-									<td><input type="text" class="" placeholder="" datatype="businessNum"/></td>
-								</tr>
-								<tr>
-									<td><label>组织机构代码</label></td>
-									<td><input type="text" class="" placeholder="" datatype="orgcodefmt"/></td>
-									<td><label>税务登记号</label></td>
-									<td><input type="text" class="" placeholder="" /></td>
-								</tr>
-								<tr>
-									<td><label>经营场所</label></td>
-									<td><input type="text" class="" placeholder="" datatype="z2_20"/></td>
-									<td><label>注册资金</label></td>
-									<td><input type="text" class="" placeholder="" datatype="amcountM"/></td>
-								</tr>
-								<tr>
-									<td><label>法人姓名</label></td>
-									<td><input type="text" class="" placeholder="" datatype="enterperson"/></td>
-									<td><label>法人手机号</label></td>
-									<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
-								</tr>
-								<tr>
-									<td><label>法人身份证号</label></td>
-									<td><input type="text" class="" placeholder="" datatype="idcard"/></td>
-									<td><label>注册地址</label></td>
-									<td><input type="text" class="" placeholder="" datatype="enterAddress"/></td>
-								</tr>
-								<tr>
-									<td><label>注册资本来源</label></td>
-									<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
-									<td><label>经营范围</label></td>
-									<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
-								</tr>
-								<tr>
-									<td><label>公司简介</label></td>
-									<td><input type="text" class="" placeholder="" datatype="rolemark"/></td>
-									<td><label>联系人姓名</label></td>
-									<td><input type="text" class="" placeholder="" datatype="z2_12"/></td>
-								</tr>
-								<tr>
-									<td><label>联系人手机号</label></td>
-									<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
-									<td><label>联系人邮箱</label></td>
-									<td><input type="text" class="" placeholder="" datatype="email"/></td>
-								</tr>
-								<tr>
-									<td><label>绑定后台管理员</label></td>
-									<td><input type="text" class="" placeholder="" /></td>
-									<td><label>资产管理方证件类型</label></td>
-									<td>
-										<select class="assettype">
-											<option>请选择</option>
-											<option>营业执照</option>
-											<option>资质认证</option>
-											<option>税务登记证</option>
-											<option>组织机构代码证</option>
-											<option>其它</option>
-										</select>
-									</td>
-								</tr>
-							</table>
-						</form>
-					</div>
-					<!-- 添加资产管理方信息部分部分结束 -->
-					<!-- 修改资产管理方信息部分开始 -->
-					<div class="w-content" id="assetmod">
-						<form action="" id="assetMod">
-							<table>
-								<tr>
-									<td><label>资产管理方名称</label></td>
-									<td><input type="text" class="" placeholder="" datatype="entername"/></td>
-									<td><label>营业执照号码</label></td>
-									<td><input type="text" class="" placeholder="" datatype="businessNum"/></td>
-								</tr>
-								<tr>
-									<td><label>组织机构代码</label></td>
-									<td><input type="text" class="" placeholder="" datatype="orgcodefmt"/></td>
-									<td><label>税务登记号</label></td>
-									<td><input type="text" class="" placeholder="" /></td>
-								</tr>
-								<tr>
-									<td><label>经营场所</label></td>
-									<td><input type="text" class="" placeholder="" datatype="z2_20"/></td>
-									<td><label>注册资金</label></td>
-									<td><input type="text" class="" placeholder="" datatype="amcountM"/></td>
-								</tr>
-								<tr>
-									<td><label>法人姓名</label></td>
-									<td><input type="text" class="" placeholder="" datatype="enterperson"/></td>
-									<td><label>法人手机号</label></td>
-									<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
-								</tr>
-								<tr>
-									<td><label>法人身份证号</label></td>
-									<td><input type="text" class="" placeholder="" datatype="idcard"/></td>
-									<td><label>注册地址</label></td>
-									<td><input type="text" class="" placeholder="" datatype="enterAddress"/></td>
-								</tr>
-								<tr>
-									<td><label>注册资本来源</label></td>
-									<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
-									<td><label>经营范围</label></td>
-									<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
-								</tr>
-								<tr>
-									<td><label>公司简介</label></td>
-									<td><input type="text" class="" placeholder="" datatype="rolemark"/></td>
-									<td><label>联系人姓名</label></td>
-									<td><input type="text" class="" placeholder="" datatype="z2_12"/></td>
-								</tr>
-								<tr>
-									<td><label>联系人手机号</label></td>
-									<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
-									<td><label>联系人邮箱</label></td>
-									<td><input type="text" class="" placeholder="" datatype="email"/></td>
-								</tr>
-								<tr>
-									<td><label>绑定后台管理员</label></td>
-									<td><input type="text" class="" placeholder="" /></td>
-									<td><label>资产管理方证件类型</label></td>
-									<td>
-										<select class="assettype">
-											<option>请选择</option>
-											<option>营业执照</option>
-											<option>资质认证</option>
-											<option>税务登记证</option>
-											<option>组织机构代码证</option>
-											<option>其它</option>
-										</select>
-									</td>
-								</tr>
-							</table>
-						</form>
-					</div>
-					<!-- 修改资产管理方信息部分部分结束 -->
-					<!-- 查看资产管理方信息详情部分开始 -->
-					<div class="w-content" id="assetmod">
-						<form action="" id="assetDetail">
-							<table>
-								<tr>
-									<td><label>资产管理方名称</label></td>
-									<td><input type="text" class="" placeholder="" datatype="entername"/></td>
-									<td><label>营业执照号码</label></td>
-									<td><input type="text" class="" placeholder="" datatype="businessNum"/></td>
-								</tr>
-								<tr>
-									<td><label>组织机构代码</label></td>
-									<td><input type="text" class="" placeholder="" datatype="orgcodefmt"/></td>
-									<td><label>税务登记号</label></td>
-									<td><input type="text" class="" placeholder="" /></td>
-								</tr>
-								<tr>
-									<td><label>经营场所</label></td>
-									<td><input type="text" class="" placeholder="" datatype="z2_20"/></td>
-									<td><label>注册资金</label></td>
-									<td><input type="text" class="" placeholder="" datatype="amcountM"/></td>
-								</tr>
-								<tr>
-									<td><label>法人姓名</label></td>
-									<td><input type="text" class="" placeholder="" datatype="enterperson"/></td>
-									<td><label>法人手机号</label></td>
-									<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
-								</tr>
-								<tr>
-									<td><label>法人身份证号</label></td>
-									<td><input type="text" class="" placeholder="" datatype="idcard"/></td>
-									<td><label>注册地址</label></td>
-									<td><input type="text" class="" placeholder="" datatype="enterAddress"/></td>
-								</tr>
-								<tr>
-									<td><label>注册资本来源</label></td>
-									<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
-									<td><label>经营范围</label></td>
-									<td><input type="text" class="" placeholder="" datatype="reMarks"/></td>
-								</tr>
-								<tr>
-									<td><label>公司简介</label></td>
-									<td><input type="text" class="" placeholder="" datatype="rolemark"/></td>
-									<td><label>联系人姓名</label></td>
-									<td><input type="text" class="" placeholder="" datatype="z2_12"/></td>
-								</tr>
-								<tr>
-									<td><label>联系人手机号</label></td>
-									<td><input type="text" class="" placeholder="" datatype="zPhone"/></td>
-									<td><label>联系人邮箱</label></td>
-									<td><input type="text" class="" placeholder="" datatype="email"/></td>
-								</tr>
-								<tr>
-									<td><label>绑定后台管理员</label></td>
-									<td><input type="text" class="" placeholder="" /></td>
-									<td><label>上传的资产管理方证件</label></td>
-									<td>
-										<input type="text" class="" placeholder="" />
-									</td>
-								</tr>
-							</table>
-						</form>
-					</div>
-					<!-- 查看资产管理方信息详情部分部分结束 -->
 				</div>
 				
 			</div>
@@ -362,12 +164,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/recommend/asset-management.js"></script>
 	<script type="text/javascript">
-	$(function(){
-			validform5("layui-layer-btn0","assetAdd",false,"3");
-			validform5("layui-layer-btn0","assetMod",false,"3");
-			validform5("layui-layer-btn0","assetDetail",false,"3");
-		});
 		$('#assettable').DataTable({
+			//"scrollY":400,
+			"scrollX":true,
 			"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
 			"aoColumnDefs" : [
 			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示

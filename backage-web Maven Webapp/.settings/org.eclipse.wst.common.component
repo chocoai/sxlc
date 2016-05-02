@@ -16,6 +16,18 @@
         <dependent-module archiveName="aboutus-mng-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/aboutus-mng/aboutus-mng">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="system-set-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/system-set/system-set">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="membermng-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/membermng/membermng">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="projectmng-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/projectmng/projectmng">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="guarantorsmng-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/guarantorsmng/guarantorsmng">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="backage-web"/>
         <property name="java-output-path" value="/backage-web Maven Webapp/target/classes"/>
     </wb-module>

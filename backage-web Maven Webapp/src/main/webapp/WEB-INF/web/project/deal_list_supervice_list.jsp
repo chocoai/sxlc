@@ -40,8 +40,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>添加时间范围</span><input type="date" class="" value="" />-&nbsp;&nbsp;<input type="date" class="" value="" /></span>
-									<span class="con-item"><span>产生时间范围</span><input type="date" class="" value="" />-&nbsp;&nbsp;<input type="date" class="" value="" /></span>
+									<span class="con-item"><span>添加时间范围</span><input type="text" id="startDate" class="notspecial Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item"><span>产生时间范围</span><input type="text" id="startDate1" class="notspecial Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate1" class="notspecial Wdate" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })"/></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -107,7 +107,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<tr>
 									<td class="tt"><label>产生时间：</label></td>
 									<td class="con">
-										<input type="date" name="" value="" placeholder="产生时间"/>
+										<input type="text" class="notspecial Wdate" onFocus="WdatePicker()" name="" value="" />
 									</td>
 								</tr>
 								<tr>

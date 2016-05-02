@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="css/project/myLayer.css" />
+	<link rel="stylesheet" href="css/project/credit_assignment_exam.css" />
 </head>
 <!-- 债权转让延期 -->
 <body class="nav-md">
@@ -24,11 +24,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="3" name="top_menu_index"/>
+				<jsp:param value="3" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-project.jsp"></jsp:include>
+			<jsp:include page="../common/cm-project.jsp">
+				<jsp:param value="308" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -46,10 +49,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>债权转让申请编号</span><input type="text" class="" value="债权转让申请编号" /></span>
-									<span class="con-item"><span>债权转让项目编号</span><input type="text" class="" value="债权转让项目编号" /></span>
-									<span class="con-item"><span>转让会员</span><input type="text" class="" value="转让会员" /></span>
-									<span class="con-item"><span>转让金额</span><input type="text" class="" value="转让金额" /></span>
+									<span class="con-item"><span>债权转让申请编号</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>债权转让项目编号</span><input type="text" class="notspecial"  /></span>
+									<span class="con-item"><span>转让会员</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>转让金额</span><input type="text" class="notspecial" /></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 							</div>
@@ -110,11 +113,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<!-- 债权转让时间延长 -->
 				<div class="w-content assignment_late">
-					<table>
+					<table style="">
 						<tr>
 							<td class="tt"><label class="ineed">债权转让时间延长：</label></td>
 							<td class="con">
-								<input type="date" class="" value="" />
+								<input type="text" class="Wdate" value=""  onFocus="WdatePicker()"/>
 							</td>
 						</tr>
 					</table>

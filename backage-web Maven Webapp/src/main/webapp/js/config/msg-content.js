@@ -3,12 +3,6 @@ var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
 
 $(function(){
-//			validform5("layui-layer-btn0","addpassword",false,"3");
-//			validform5("layui-layer-btn0","modpassword",false,"3");
-//			validform5("layui-layer-btn0","server",false,"3");
-//			validform5("layui-layer-btn0","port",false,"3");
-//			validform5("layui-layer-btn0","emailinterface",false,"3");
-//			validform5("layui-layer-btn0","emailpassword",false,"3");
 			//表格初始化
 			$('#table_id').DataTable(
 					{	
@@ -20,6 +14,12 @@ $(function(){
 							}  
 						},
 						columns: [  
+						          {title:'',sWidth:"5%", 
+				                	  "mRender": function (data, type, full) {
+				                		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+				                		  return sReturn;
+				                	  }
+				                  },
 						          { title:"消息类型id","data": "typeID"},  
 						          { title:"短信类型","data": "typeName"},  
 						          { title:"短信内容","data": "msgDetail"},  
@@ -43,10 +43,10 @@ $(function(){
 						          }
 						          ],
 			          aoColumnDefs : [
-			                          {"bVisible": false, "aTargets": [0]}, //控制列的隐藏显示
+			                          {"bVisible": false, "aTargets": [1]}, //控制列的隐藏显示
 			                          {
 			                        	  "orderable" : false,
-			                        	  "aTargets" : [1,2,3,4]
+			                        	  "aTargets" : [1,2,3,4,5]
 			                          } // 制定列不参与排序
 			                          ],
 			          pagingType: "simple_numbers",//设置分页控件的模式  
@@ -58,17 +58,21 @@ $(function(){
 			 
 			});//表格初始化完毕
 			 
-			//表格单选效果
+			//表格单选效果(有复选框)
 			 $('#table_id tbody').on( 'click', 'tr', function () {
 				    var $this = $(this);
+				    var $checkBox = $this.find("input:checkbox");
 			        if ( $this.hasClass('selected') ) {
+			        	 $checkBox.prop("checked",false);
 			        	$this.removeClass('selected');
-			        }
-			        else {
+			        } else {
+			        	$(".tr-checkbox").prop("checked",false);
+			        	$checkBox.prop("checked",true);
 			        	$('#table_id tr.selected').removeClass('selected');
 			        	$this.addClass('selected');
 			        }
 			  });
+			 
 			
 });
 
@@ -115,13 +119,13 @@ function addOrUpdate(type){
 				NetUtil.ajax(
 					appPath+"/config/addOrUpdateMsgContent",
 					data,
-					function(data) { 
-						if(data > 0){
+					function(result) { 
+						if(result > 0){
 							layer.alert("操作成功",{icon:1});
 							$(".layui-layer-btn1").click();
 							 var table = $('#table_id').DataTable();
 							 table.ajax.reload();
-						}else if(data==0){
+						}else if(result==0){
 							layer.alert("操作失败",{icon:2});  
 						}
 					} 
@@ -150,20 +154,29 @@ function enableOrDisable(type,id){
 	layer.confirm(title, {
 		btn: ['确定', '取消']
 	}, function(index, layero){
-		NetUtil.ajax(
-				  appPath+"/front/addOrUpdateMsgInterface.do",
-				  {"statu":encrypt.encrypt(""+type),"typeID":encrypt.encrypt(id)},
-				  function(data) { 
-						if(data==1){
-							layer.alert("操作成功",{icon:1});
-							layer.close(index);
-							var table = $('#table_id').DataTable();
-							table.ajax.reload();
-						}else if(data==0){
-							layer.alert("操作失败",{icon:2});  
-						}
-					}
-		 );
+		$.ajax( {  
+			url:appPath+"/config/enableMsgContent.do",
+			data:{"statu":encrypt.encrypt(""+type),"typeID":encrypt.encrypt(id)},
+			type:'post',  
+			cache:false,  
+			dataType:'json',  
+			success:function(data) { 
+				if(data==1){
+					layer.alert("操作成功",{icon:1});
+					layer.close(index);
+					var table = $('#table_id').DataTable();
+					table.ajax.reload();
+				}else if(data==0){
+					layer.alert("操作失败",{icon:2});  
+				}else if(data==-2){
+					layer.alert("操作失败，请登录后再尝试！",{icon:2});  
+				}
+			},  
+			error : function() {  
+				layer.alert("服务器异常",{icon:2});  
+			}  
+		});
+		
 	}, function(index){
 		//取消回调
 	}); 

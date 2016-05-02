@@ -40,9 +40,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>投资完成时间</span><input type="date" class="" value="投资完成时间" /></span>
-									<span class="con-item"><span>会员用户名</span><input type="text" class="" value="会员用户名" /></span>
-									<span class="con-item"><span>会员姓名</span><input type="text" class="" value="会员姓名" /></span>
+									<span class="con-item"><span>投资完成时间</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+									<span class="con-item"><span>会员用户名</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>会员姓名</span><input type="text" class="notspecial"/></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>

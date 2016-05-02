@@ -11,13 +11,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<!-- 地址导航 -->
 		<jsp:include page="../../common/cm-addr.jsp"></jsp:include>
 		<div class="data_display">
-			<div class="panel panel-success">
-				<div class="panel-heading">
-					<div class="action_item">
-						<button class="obtn glyphicon" onclick="acc-withdraw()">提现</button>
-					</div>
-				</div>
-			</div>
 			<div class="withdraw col-lg-12">
 				<form id="" class="accwithdrawform" action="">
    					<div class="cashContent">
@@ -41,9 +34,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</label>
 									</li>
 								<%} %>
-									<li class="addBank cashBankLiSolid">
-										<span>添加银行卡</span>
-									</li>
 								</ul>
 							</div>
 							<div class="cashDivDistance cashClear">
@@ -69,10 +59,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<label class="cashLabel">备注：</label>
 								<input class="cashInput" type="text" placeholder="请输入备注内容" maxlength="25">
 							</div>
-	  						<div class="btn cashBtn" onselectstart="return false">
-	  							<span class="con-item">
-									<button class="obtn obtn-query glyphicon rechargebtn">提现</button>
-								</span>
+	  						<div class="cmbtncontainer assetcontainer">
+								<a class="commonbtn0">提现</a>
+								<a href="web/recommend/account-center.jsp">取消</a>
 							</div>
 	  					</div>
    					</div>

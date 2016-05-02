@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
-import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.dictionaries.model.EducationInfoEntity;
 import cn.dictionaries.model.NationInfoEntity;
+import cn.springmvc.Util.HttpSessionUtil;
+import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.dao.impl.DictionariesCore;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.PersonalBaseInfo;
@@ -30,8 +30,6 @@ import cn.springmvc.model.StaffInfo;
 import cn.springmvc.service.IPostInfoServer;
 import cn.springmvc.service.IStaffInfoService;
 import cn.springmvc.service.SystemSetService;
-import cn.springmvc.util.HttpSessionUtil;
-import cn.springmvc.util.LoadUrlUtil;
 
 /** 
 * @author 唐国峰
@@ -69,13 +67,8 @@ public class StaffController  {
 	public String toRoleEmpList(HttpServletRequest req){
 		List<EducationInfoEntity> eduList = dictionariesCore.GetEducationList();
 		List<NationInfoEntity> nationsList = dictionariesCore.GetNationInfoList();
-		PageEntity entity = new PageEntity();
-//		List<DeptInfo> depts = iDeptInfoServer.findall();
-//		List<PostInfo> posts = iPostInfoServer.getListByParam(entity);
 		req.setAttribute("educations", eduList);
 		req.setAttribute("nations", nationsList);
-//		req.setAttribute("depts", depts);
-//		req.setAttribute("posts", posts);
 		return "role/role-emp";
 	}
 	

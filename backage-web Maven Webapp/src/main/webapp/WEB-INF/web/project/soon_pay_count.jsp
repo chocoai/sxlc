@@ -17,17 +17,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 </head>
-<!-- 贷后管理----------即将还款统计 -->
+<!-- 贷后管理--即将还款统计 -->
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="3" name="top_menu_index"/>
+				<jsp:param value="3" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-project.jsp"></jsp:include>
+			<jsp:include page="../common/cm-project.jsp">
+				<jsp:param value="306" name="_index_m2"/>
+				<jsp:param value="30602" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -46,11 +49,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>项目编号</span><input type="text" class="" value="项目编号" /></span>
-									<span class="con-item"><span>项目名称</span><input type="text" class="" value="项目名称" /></span>
-									<span class="con-item"><span>借款人用户名</span><input type="text" class="" value="借款人用户名" /></span>
-									<span class="con-item"><span>借款人姓名</span><input type="text" class="" value="借款人姓名" /></span>
-									<span class="con-item"><span>前距离还款日天数</span><input type="date" class="" value="3天" /></span>
+									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>项目名称</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>借款人姓名</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>前距离还款日天数</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>

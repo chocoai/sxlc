@@ -9,6 +9,7 @@ import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
 import cn.springmvc.model.GuaranteeCertificateEntity;
+import cn.springmvc.model.GuaranteeInfoDetailsEntity;
 import cn.springmvc.model.GuaranteeInfoEntity;
 import cn.springmvc.model.GuaranteePeriodEntity;
 import cn.springmvc.model.GuaranteeRelationalEntity;
@@ -38,7 +39,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:11:54
 	* @throws 
 	*/
-	public GuaranteeInfoEntity selectGuaranteeInfoById(Map<String, Object> map);
+	public GuaranteeInfoDetailsEntity selectGuaranteeInfoById(Map<String, Object> map);
 	
 	
 	/** 

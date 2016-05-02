@@ -2,7 +2,7 @@
 /*** select固定高度 ***/
 select{
 	height:29px;
-	width:186px;
+	
 	border-color:#ccc;
 }
 /* 理财顾问分配弹出层 */
@@ -42,6 +42,12 @@ fieldset{
 	max-width: 1040px;
 	font-size:15px;
 }
+fieldset select{
+	width:186px;
+}
+fieldset td{
+	padding:5px 8px !important;
+}
 legend{
 	width:auto;
 	padding:0 10px;
@@ -52,8 +58,13 @@ legend{
 	font-weight:700;
 	text-align:center;
 }
-
-.modInfo .tt,.nextField .tt{
+.infoDisplay .tt{
+	min-width:92px !important;
+}
+.modInfo .tt{
+	width:140px;
+}
+.nextField .tt{
 	width:145px;
 	text-align:left !important;
 }
@@ -73,7 +84,7 @@ legend{
 	width:13% !important;
 }
 .redPack{
-	width:50px
+	width:70px
 }
 .autoBid{
 	width:50px;
@@ -88,14 +99,15 @@ legend{
 	font-size:13px;
 }
 .addRed{
-	font-size:20px;
+	vertical-align:middle;
+	font-size:26px;
 	font-weight:bold;
 	margin-left:5px;
 	color:#ccc;
 	cursor:pointer;
 }
 .reduceRed{
-	font-size:20px;
+	font-size:16px;
 	font-weight:bold;
 	margin-left:5px;
 	color:#ccc;
@@ -105,6 +117,9 @@ ul,li{
 	padding:0;
 	margin:0;
 	list-style:none;
+}
+.red_list{
+	float:left;
 }
 .red_add{
 	margin:5px 0;	
@@ -118,6 +133,7 @@ ul,li{
 	padding:20px;
 }
 .add_mechanism{
+	width:111px;
 	background-color:#3bb4f2;
 	border:none;
 	color:#fff;
@@ -137,4 +153,7 @@ ul,li{
     cursor: pointer;
     height:27px;
     padding:4px 10px;
+}
+.unit_select{
+	width:70px;
 }

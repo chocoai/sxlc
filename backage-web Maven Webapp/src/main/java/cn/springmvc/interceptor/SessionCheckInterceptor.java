@@ -18,8 +18,8 @@ import product_p2p.kit.StringUtil.StringUtils;
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.optrecord.InsertMemberLogEntity;
 import product_p2p.kit.spring.SpringUtil;
-import cn.membermng.model.MemberInfo;
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
+import cn.springmvc.model.Admin;
 
 public class SessionCheckInterceptor implements HandlerInterceptor{
 	
@@ -51,7 +51,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 		optRecordWriteDaoImpl = (OptRecordWriteDaoImpl) SpringUtil.getBean(OptRecordWriteDaoImpl.class);
 		
 		//判断用户登录过没有
-		MemberInfo memberInfo = (MemberInfo) session.getAttribute(Constant.LOGINUSER);
+		Admin memberInfo = (Admin) session.getAttribute(Constant.LOGINUSER);
 		
 		InsertMemberLogEntity entity = new InsertMemberLogEntity();
 		String[] sIpinfo = new String[6];

@@ -16,7 +16,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="css/recommend/guarantee_manage.css"></link>
 </head>
 
 <body class="nav-md">
@@ -44,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						
 						<div class="panel-body">
-							<table id="table_id" class="display i-b2">
+							<table id="table_id" class="display">
 								<thead>
 									<tr>
 										<th class="table-checkbox"></th>
@@ -87,7 +86,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td>联系人手机号</td>
 										<td>第三方支付账号</td>
 										<td>有效</td>
-										<td><a class="obtn" href="javascript:;" onclick="enable()">停用/启用</a></td>
+										<td>
+											<a href="javascript:;" class="btn-enable">启用</a>
+											<a href="javascript:;" class="btn-disable">停用</a>
+										</td>
 									</tr>
 									<%
 										}
@@ -107,10 +109,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/recommend/guarantee-manage.js"></script>
+	<script type="text/javascript" src="js/recommend/compensatory.js"></script>
 	<script type="text/javascript">
 		$('#table_id').DataTable({
-			autoWidth : false,
+			//"autoWidth" : false,
+			//"scrollY":400,
+			"scrollX":true,
 			"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
 			"aoColumnDefs" : [
 			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示

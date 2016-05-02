@@ -24,11 +24,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="3" name="top_menu_index"/>
+				<jsp:param value="3" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-project.jsp"></jsp:include>
+			<jsp:include page="../common/cm-project.jsp">
+				<jsp:param value="304" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col i-b2" role="main">
 				<!-- 地址导航 -->
@@ -50,15 +53,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>项目名称</span><input type="text" class="" value="项目名称" /></span>
-									<span class="con-item"><span>项目审批通过时间范围</span><input type="date" class="" value="项目审批通过时间范围" /></span>
-									<span class="con-item"><span>项目申请编号</span><input type="text" class="" value="项目申请编号" /></span>
-									<span class="con-item"><span>项目编号</span><input type="text" class="" value="项目编号" /></span>
-									<span class="con-item"><span>借款人用户名</span><input type="text" class="" value="借款人用户名" /></span>
-									<span class="con-item"><span>借款人编号</span><input type="text" class="" value="借款人编号" /></span>
-									<span class="con-item"><span>借款人名称</span><input type="text" class="" value="借款人名称" /></span>
-									<span class="con-item"><span>状态</span><input type="text" class="" value="状态" /></span>
-									<span class="con-item"><span>项目发布时间范围</span><input type="date" class="" value="项目发布时间范围" /></span>
+									<span class="con-item"><span>项目名称</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>项目审批通过时间范围</span><input type="text"  class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+									<span class="con-item"><span>项目申请编号</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>借款人编号</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>借款人名称</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>状态</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>项目发布时间范围</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 									<!-- <form class="form-inline" name="search">

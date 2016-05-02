@@ -91,7 +91,7 @@ $(function() {
  * @returns
  */
 var ue = UE.getEditor('editor');
-var num=0;
+var num=0;//用于判断是否是第一次进入editor插件
 function addOrUpdate(type){
 	//初始化
 	//清空数据
@@ -131,7 +131,7 @@ function addOrUpdate(type){
 		}else{
 			ue.setContent(data[0].content);
 		}
-		$("#showImg").attr("src",$("#hostPath").val()+data[0].logo);
+		$("#fileList").html('<img height="100" width="100" src="'+$("#hostPath").val()+data[0].logo+'">');
 			
 	}
 	layer.open({
@@ -230,7 +230,7 @@ function reportDet(btn){
 	
 	layer.open({
 	    type: 1,
-	    area: ['800px', '600px'], //高宽
+	    area: ['500px', '300px'], //高宽
 	    title: "查看详情",
 	    maxmin: true,
 	    content: $(".report-det"),//DOM或内容
@@ -257,7 +257,7 @@ function viewPic(btn){
     }
 	layer.open({
 	    type: 1,
-	    area: ['500px', '400px'], //高宽
+	    area: ['300px', '300px'], //高宽
 	    title: "查看图标",
 //	    maxmin: true,
 	    content: $(".pic-view"),//DOM或内容

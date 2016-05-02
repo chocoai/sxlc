@@ -35,10 +35,11 @@ table{
 }
 .line{
 	display:inline-block;
-	width:20px;
+	width:10px;
 	height:1px;
 	vertical-align:middle;
 	border-top:1px solid #ccc;
+	margin-left:-5px;
 }
 .dateInput{
 	width:95px;
@@ -50,7 +51,7 @@ table{
 	margin-right:20px;
 }
 .message{
-	padding:20px 50px; 
+	padding:20px 20px; 
 	font-size:15px;
 }
 .linkMan{
@@ -70,16 +71,12 @@ table{
 }
 textarea{
 	display:inline-block;
-	width:60%;
+	width:80%;
 	min-width:100px;
 	vertical-align:top;
 }
-textarea.cancelCause{
-	min-height:80px;
-	margin-left:20px;
-}
 textarea.sentContent{
-	min-height:300px;
+	min-height:150px;
 }
 .buttonSet button,
 .buttonSet2 button{
@@ -107,12 +104,6 @@ textarea.sentContent{
 }
 .textRight{
 	display:inline-block;
-	min-width:330px;
-	text-align:right;
-}
-.textRight2{
-	display:inline-block;
-	min-width:360px;
 	text-align:right;
 }
 .inquiryBtn{
@@ -210,4 +201,59 @@ samp{
 }
 img{
 	margin-right:20px;
+}
+.inquiryCon{
+	margin:10px 0 0 20px;
+	padding-bottom:20px;
+}
+.buttonCombination{
+	margin-top:20px;
+}
+.projectStatus,
+.phoneNum,
+.approval,
+.registerTime{
+	display:inline-block;
+}
+.projectStatus{
+	min-width:78px;
+}
+.approval{
+	min-width:104px;
+}
+.phoneNum{
+	min-width:65px;
+}
+.registerTime{
+	min-width:91px;
+}
+.transaction{
+	min-width:150px;
+}
+.selectMember span{
+	display:inline-block;
+	margin:10px 20px 10px 10px;
+}
+
+
+/*  资料认证    */
+.filterTable{
+	margin:8px;
+	border-bottom:1px solid #ccc;
+	
+}
+.contentTable{
+	border:1px solid #ccc;
+	background:#f8f8f8;
+}
+.filterTable td{
+	padding:10px 10px;
+	background:#f8f8f8;
+	border:1px solid #ccc;
+	border-radius:2px;
+	cursor:pointer;
+}
+.filterTd_click{
+	background:#fff !important;
+	border-bottom:none !important;
 }

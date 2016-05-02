@@ -134,7 +134,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/recommend/guarantee-record-query.js"></script>
 	<script type="text/javascript">
 		$('#table_id').DataTable({
-			autoWidth : false,
+			//"autoWidth" : false,
+			//"scrollY":400,
+			"scrollX":true,
 			"aaSorting" : [ [ 4,5,8, "desc" ] ],//默认第几个排序
 			"aoColumnDefs" : [
 			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示

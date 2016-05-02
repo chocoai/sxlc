@@ -11,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- <div class="partneraddtitle">
 				<span>添加合作伙伴</span>
 			</div> -->
-			<table class="partneraddtable">
+			<table class="partneraddtable" id="partneraddtable"">
 				<tr>
 					<td class="tt"><label>上传合作伙伴图片：</label></td>
 					<td class="con">
@@ -58,12 +58,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/upload.js"></script>
 	
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/valid.js"></script>
 	<script type="text/javascript">
 		$(function(){
-			validform5("layui-layer-btn0","partneraddname",false,"3");
+			validform5(".layui-layer-btn0","partneraddtable",false,"3");
 		});
-		$(function(){
-			validform5("layui-layer-btn0","partneraddlink",false,"3");
-		});
+		/* $(function(){
+			validform5(".layui-layer-btn0","partneraddlink",false,"3");
+		}); */
 		var ag = UE.getEditor('partnerintro');
 	</script>

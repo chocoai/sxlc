@@ -24,12 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-config.jsp">
-				<jsp:param value="config-0" name="config-index" />
+				<jsp:param value="601" name="_index_m2" />
+				<jsp:param value="60101" name="_index_m3" />
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -37,14 +38,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				
 			 	<!-- 提现手续费设置 -->
-			 	<div class="config">
-			 		<fieldset>
+			 	<div class="config" id="config">
+			 		<fieldset class="configfd">
 			 			<legend>会员</legend>
 			 			<form class="form-horizontal config-form" role="form" name="" action="javascript:mwithdralsfee()" id="member">
 			 				<div class="form-group">
 			 					<label for="firstname" class="i-fl control-label col3">提现手续费费率：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="mFee" datatype="" placeholder="提现手续费费率">
+			 					<div class="i-fl" id="withdrawalfee">
+			 						<input type="text" class="form-control" id="mFee" placeholder="" datatype="hundredNum">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i></i></span>
@@ -55,8 +56,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">平台代付比例：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="mpFee" datatype="*" placeholder="平台代付比例">
+			 					<div class="i-fl" id="platformpayment">
+			 						<input type="text" class="form-control" id="mpFee" placeholder="" datatype="hundredNum">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i></i></span>
@@ -65,20 +66,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 						<span></span>
 			 					</div>
 			 				</div>
-			 				<div class="form-group">
-			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
-			 					</div>
-			 				</div>
+			 				<div class="cmbtncontainer autobidbtn">
+								<a class="commonbtn0 cfmemberbtn">保存</a>
+							</div>
 			 			</form>		
 			 		</fieldset>
-			 		<fieldset>
+			 		<fieldset class="configfd">
 			 			<legend>第三方合作机构</legend>
 			 			<form class="form-horizontal" role="form" name="" action="javascript:owithdralsfee()" id="orgnization">
 			 				<div class="form-group">
 			 					<label for="firstname" class="i-fl control-label col3">提现手续费费率：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="ofee" placeholder="提现手续费费率">
+			 					<div class="i-fl" id="partnerwithdraw">
+			 						<input type="text" class="form-control" id="ofee" placeholder="" datatype="hundredNum">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i></i></span>
@@ -89,8 +88,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">平台代付比例：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="opfee" placeholder="平台代付比例">
+			 					<div class="i-fl" id="partnerpayment">
+			 						<input type="text" class="form-control" id="opfee" placeholder="" datatype="hundredNum">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i></i></span>
@@ -99,20 +98,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 						<span></span>
 			 					</div>
 			 				</div>
-			 				<div class="form-group">
-			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
-			 					</div>
-			 				</div>
+			 				<div class="cmbtncontainer autobidbtn">
+								<a class="commonbtn0 cforgnizationbtn">保存</a>
+							</div>
 			 			</form>		
 			 		</fieldset>
-			 		<fieldset>
+			 		<fieldset class="configfd">
 			 			<legend>平台</legend>
 			 			<form class="form-horizontal" role="form" name="" action="javascript:pwithdralsfee()" id="station">
 			 				<div class="form-group">
 			 					<label for="firstname" class="i-fl control-label col3">提现手续费费率：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="pfee" placeholder="提现手续费费率">
+			 					<div class="i-fl" id="platformwithdraw">
+			 						<input type="text" class="form-control" id="pfee" placeholder="" datatype="hundredNum">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i></i></span>
@@ -123,8 +120,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">平台代付比例：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="ppfee" datatype="" placeholder="平台代付比例">
+			 					<div class="i-fl" id="platformpayment">
+			 						<input type="text" class="form-control" id="ppfee" datatype="hundredNum" placeholder="">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i></i></span>
@@ -133,11 +130,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 						<span></span>
 			 					</div>
 			 				</div>
-			 				<div class="form-group">
-			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
-			 					</div>
-			 				</div>
+			 				<div class="cmbtncontainer autobidbtn">
+								<a class="commonbtn0 fcstationbtn">保存</a>
+							</div>
 			 			</form>		
 			 		</fieldset>
 			 	</div>	
@@ -155,6 +150,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script>
 		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+		$(function(){
+			validform5(".cfmemberbtn","member",false,"3");
+			validform5(".cforgnizationbtn","orgnization",false,"3");
+			validform5(".fcstationbtn","station",false,"3");
+		});
 	</script>
 </body>
 

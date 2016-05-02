@@ -13,20 +13,21 @@
         <result property = "availableaAmount"   column = "availableaAmount" /> 
         <result property = "picIcon"            column = "Pic_Icon" /> 
         <result property = "investTotal"        column = "InvestTotal" /> 
-      <association property="projectBaseInfoentity">  
+        <result property = "startDate"          column = "Start_Date" /> 
+		<result property = "endDate"            column = "End_Date" /> 
+        <association property="projectBaseInfoentity" 	resultMap="resultBaseInfoentity"/> 
+    </resultMap> 
+    <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity"> 
 			<result property = "projectTitle"    column = "Project_Title" />  
 			<result property = "amount" 		 column = "Amount" /> 
 			<result property = "deadline" 		 column = "Deadline" />
 			<result property = "deadlineType"    column = "Deadline_Type" /> 
-			<result property = "yearRate"        column = "Year_Rate" /> 
-			<result property = "startDate"       column = "Start_Date" /> 
-			<result property = "endDate"         column = "End_Date" /> 
+			<result property = "yearRate"        column = "Year_Rate" />  
 			<result property = "replayWays" 	 column = "name1" />  
-	 </association>
-    </resultMap> 
+     </resultMap>
     <!-- 分页查询投资项目列表 -->  
 	<select id = "selectInvestListfront" parameterType = "product_p2p.kit.pageselect.PageEntity"  resultMap = "resultListProjectAppRecord">
-	   select pty.Pic_Icon,pbi.Project_Title,par.Project_No,replayway.name1,pbi.Year_Rate,
+       select pty.Pic_Icon,pbi.Project_Title,par.Project_No,replayway.name1,pbi.Year_Rate,
 	   pbi.Amount,pbi.Deadline,pbi.Deadline_Type,pap.Start_Date,pap.End_Date,
 	   par.Apply_Id, par.Invest_Statu,pim.Image_Url,par.Reward_Rate,par.Rate_Add_Rate,
        (pbi.Amount-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{map.sKey})) as signed)),0)  
@@ -38,67 +39,67 @@
 	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID  
 	   left join Project_Image pim on pim.Apply_Id =  par.Apply_Id
            <where>  
+                par.Invest_Statu >=0  and par.Check_Statu = 1 and par.Publish_Statu = 2 
                  <!-- 项目编号或名称--> 
 	            <if test = "map.projectinfo != null and map.projectinfo != ''">  
-	             ( pbi.Project_Title   like '%${map.projectinfo}%' or par.Project_No  like '%${map.projectinfo}%' ) 
+	              and ( pbi.Project_Title   like '%${map.projectinfo}%' or par.Project_No  like '%${map.projectinfo}%' ) 
 	            </if> 
                 <!-- 项目状态 -->
-	            <if test = "map.investStatu !=  -1">  
+	            <if test = "map.investStatu !=null and map.investStatu !=  -1">  
 	                and  par.Invest_Statu = #{map.investStatu} 
 	            </if> 
 	            <!-- 还款方式-->  
-	            <if test = "map.repayWay !=  -1">  
+	            <if test = "map.repayWay != null and map.repayWay !=  -1">  
 	                and pbi.Repay_Way = #{map.repayWay}
 	            </if>
                  <!-- 加息标 -->
-	            <if test = "map.reward !=  -1 and map.reward = 1">  
+	            <if test = "map.reward != null and map.reward !=  -1 and map.reward == 1">  
 	                and par.Rate_Add_Rate = #{map.rateAddRate}
 	            </if>
 	             <!-- 返现 -->
-	            <if test = "map.reward !=  -1 and map.reward = 2">  
+	            <if test = "map.reward != null and map.reward !=  -1 and map.reward == 2">  
 	                and par.Reward_Icon = #{map.rewardIcon}
 	            </if> 
 	              <!-- 无奖励 -->
-	             <if test = "map.reward !=  -1 and map.reward = 3">  
+	             <if test = "map.reward != null and map.reward !=  -1 and map.reward == 3">  
 	                and par.Reward_Icon =0 and  par.Rate_Add_Rate=0
 	            </if>  
 	             <!-- 借款类型-->  
-	            <if test = "map.projectType !=  -1">  
+	            <if test = "map.projectType != null and map.projectType !=  -1">  
 	                and par.Project_Base_ID = #{map.projectType}
 	            </if> 
 	            <!-- 年化利率-->  
-	            <if test = "map.yearratemin !=  -1">  
+	            <if test = "map.yearratemin != null and map.yearratemin !=  -1">  
 	                and pbi.Year_Rate > #{map.yearratemin}
 	            </if> 
 	            <!-- 年化利率-->  
-	            <if test = "map.yearratemax !=  -1">  
+	            <if test = "map.yearratemax != null and map.yearratemax !=  -1">  
 	                and #{map.yearratemax} > pbi.Year_Rate  
 	            </if>     
 	            <!-- 借款期限  天标-->  
-	            <if test = "map.deadlineType  = 0  and map.deadlinemin != 0">  
+	            <if test = "map.deadlineType  == 0  and map.deadlinemin != 0">  
 	                and pbi.Deadline > #{map.deadlinemin}  and pbi.Deadline_Type=0
 	            </if>
 	            <!-- 借款期限  天标-->  
-	            <if test = "map.deadlineType  = 0  and map.deadlinemax != 0">  
+	            <if test = "map.deadlineType  == 0  and map.deadlinemax != 0">  
 	                and #{map.deadlinemin}>pbi.Deadline     and pbi.Deadline_Type=0
 	            </if> 
 	             <!-- 借款期限  月标-->  
-	            <if test = "map.deadlineType  = 1 and map.deadlinemin != 0">  
+	            <if test = "map.deadlineType  == 1 and map.deadlinemin != 0">  
 	                and pbi.Deadline > #{map.deadlinemin}  and pbi.Deadline_Type=1
 	            </if> 
 	              <!-- 借款期限  月标-->  
-	            <if test = "map.deadlineType  = 1  and map.deadlinemax != 0">  
+	            <if test = "map.deadlineType  == 1  and map.deadlinemax != 0">  
 	                and #{map.deadlinemin}>pbi.Deadline     and pbi.Deadline_Type=1
 	            </if> 
 	             <!-- 借款期限  年标-->  
-	            <if test = "map.deadlineType  = 2 and map.deadlinemin != 0">  
+	            <if test = "map.deadlineType  == 2 and map.deadlinemin != 0">  
 	                and pbi.Deadline >= #{map.deadlinemin}  and pbi.Deadline_Type=2
 	            </if> 
 	              <!-- 借款期限  年标-->  
-	            <if test = "map.deadlineType  = 2  and map.deadlinemax != 0">  
+	            <if test = "map.deadlineType  == 2  and map.deadlinemax != 0">  
 	                and #{map.deadlinemax}>=pbi.Deadline     and pbi.Deadline_Type=2
-	            </if> 
-	                and  par.Invest_Statu >=0 
+	            </if>  
 	          </where>
     </select>  
 </mapper>   

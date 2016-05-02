@@ -39,7 +39,7 @@ function login() {
 							},
 							success : function(data) {
 								if (data == 0) {
-									window.location.href = "web/index/index.jsp"; // web/common/homPage.jsp
+									window.location.href = "toIndex.do"; // web/common/homPage.jsp
 								} else if (data == 1) {
 									openwindow("登录失败！");
 									refreshImg('vCodeImg');//刷新验证码

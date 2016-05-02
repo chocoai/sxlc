@@ -36,8 +36,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				
 				<div class="container copyright">
-					<div id="copyrightinfo"><label>版权信息</label><input type="text" value="" datatype="notSpecial" placeholder="© 2015 XXX All rights reserved |XXX公司|粤ICP备XXXXX 号| 技术支持 成都四象联创科技有限公司"/></div>
-					<div><button class="obtn obtn-query glyphicon">保存</button></div>
+					<div id="copyrightinfo"><label>版权信息</label><input id="copyright" type="text" value="" datatype="notSpecial" placeholder="© 2015 XXX All rights reserved |XXX公司|粤ICP备XXXXX 号| 技术支持 成都四象联创科技有限公司"/></div>
+					<div><button id="save" class="obtn obtn-query glyphicon">保存</button></div>
 				</div>
 			</div>
 		</div>
@@ -46,12 +46,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/frontconfig/fc-copyright.js"></script>
 	<script type="text/javascript">
 		 $(function(){
 			validform5("layui-layer-btn0","copyrightinfo",false,"3");
 		});
 	</script>
-	
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </body>
 
 </html>

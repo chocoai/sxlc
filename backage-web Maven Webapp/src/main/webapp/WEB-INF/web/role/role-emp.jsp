@@ -21,9 +21,6 @@
 <!-- 私用css -->
 <link rel="stylesheet" href="css/role.css" />
 <script type="text/javascript" src="<%=basePath%>/plugs/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript">
-	var publicKey_common = '<%=session.getAttribute("publicKey") %>';
-</script>
 </head>
 
 <body class="nav-md">
@@ -60,7 +57,7 @@
 								<span class="con-item"><span>身份证号</span><input type="text" class="" id="personalIDCardQuery" placeholder="身份证号" /></span>
 								<span class="con-item"><span>职务</span>
 <!-- 									<input type="text" class="" id="postId" placeholder="职务" /> -->
-									<input type="text" disabled="disabled" style="width:130px" name="" id="postIdQuery" class="" />
+									<input type="text" disabled="disabled" style="width:130px" name="" id="postIdQuery" class="postId" />
 									<button class="btn btn-primary btn-xs deptSelect" type="button">选择</button>
 								</span>
 								&nbsp;&nbsp;&nbsp;
@@ -168,22 +165,10 @@
 									<tr>
 										<td class="tt"><label class="">职务：</label></td>
 										<td class="con">
-											<input type="text" disabled="disabled" style="width:130px" name="" id="postName" class="" />
+											<input type="text" disabled="disabled" style="width:130px" name="" id="postName" class="postId" />
 											<button class="btn btn-primary btn-xs deptSelect" type="button">选择</button>
-											<%-- <select name="" class="" id="nationId">
-												<c:forEach var="dept" items="${depts}">
-													<option value="${dept.id}">${dept.deptName}</option>
-												</c:forEach>
-							                  </select>
-											<select name="" class="" id="nationId">
-												<c:forEach var="dept" items="${depts}">
-													<option value="${dept.id}">${dept.deptName}</option>
-												</c:forEach>
-							                  </select> --%>
 							                  <input type="hidden" name="id" id="staffId"/>
 							                  <input type="hidden" name="baseInfo.id" id="personalId"/>
-							                  <input type="hidden" name="postId" id="postId" value="1"/>
-							                  <input type="hidden" name="deptId" id="postId" value="1"/>
 										</td>
 									</tr>
 									

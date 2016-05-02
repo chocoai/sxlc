@@ -1,8 +1,15 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@page import="cn.springmvc.model.Operation"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	/* 登录人操作权限 */
+	List<Operation> operations = null;
+	if(session.getAttribute("operationList") != null){
+		operations = (List<Operation>)session.getAttribute("operationList");
+
+	}
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -17,6 +24,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
+	<script type="text/javascript">
+		var on_off =false; //停用启用权限标记
+		<%
+			if(operations.size()>0){
+				for(int j=0;j<operations.size();j++){
+					if(operations.get(j).getOptID()==50803){
+		%>
+			   		on_off =true;
+		<%
+					}
+				}
+			}
+		%>
+	</script>
 </head>
 
 <body class="nav-md">
@@ -36,9 +57,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 				<div class="data_display">
 					<div class="panel panel-success">
-					
+						
+						
+						<div class="w-content report-det">
+							详情
+						</div>
 						<div class="w-content  pic-add">
-						<form action="javascript:addMngTeam()" id="dataForm" method="post">
+						<form  id="dataForm" method="post">
 								<table>
 									<tr>
 										<td class="tt">招聘职位</td>
@@ -61,44 +86,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</table>
 								</form>
 							</div>
-					
-						<div class="w-content  pic-mod">
-						<form action="javascript:updateRecruitments()" id="dataFor" method="post">
-							<table>
-								<tr>
-									<td class="tt">招聘职位</td>
-									<td class="con"><input type="text" class=""  id="nam"  datatype="z2_8" /></td>
-								</tr>
-								<tr>
-									<td class="tt">工作地区</td>
-										<td class="con"><input type="text" class=""  id="are"  datatype="z2_8"/></td>
-								</tr>
-								<tr>
-									<td class="tt">岗位职责</td>
-									<td class="con" colspan="3">
-											<script id="dutys" type="text/plain" style="height:300px;width:98%;"></script>
-										</td>
-								</tr>
-								<tr>
-									<td class="tt">任职要求</td>
-								<td class="con" colspan="3">
-											<script id="demands" type="text/plain" style="height:300px;width:98%;"></script>
-										</td>
-								</tr>
-							</table>
-							</form>
-						</div>
-					
-					
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-invite-add" onclick="inviteAdd()">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-invite-mod" onclick="inviteMod()">修改</button>
+					<%
+						if(operations.size()>0){
+							for(int i = 0;i < operations.size(); i++){
+								if(operations.get(i).getOptID() == 50801){
+					%>				
+								<button class="obtn glyphicon glyphicon-plus obtn-invite-add" onclick="addOrModify(0)">添加</button>
+					<%      
+				      			}
+				      			if(operations.get(i).getOptID() == 50802){
+					%>				
+								<button class="obtn glyphicon glyphicon-pencil obtn-invite-mod" onclick="addOrModify(1)">修改</button>
+					<%      
+				      			}
+					  		 }
+						 }
+				     %>	
 							</div>
 						</div>
 						
 						<div class="panel-body">
 							<table id="teamTb" class="display">
+								<thead></thead>
+								<tbody></tbody>
 							</table>
 						</div>
 						
@@ -118,11 +130,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/frontconfig/fc-invite.js"></script>
-	<script type="text/javascript" src="js/frontconfig/invite.js"></script>
+	
 	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript" src="js/frontconfig/invite.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
 		$(function(){
@@ -130,13 +142,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			var ue1 = UE.getEditor('duty');
 			var ue2 = UE.getEditor('demand');
 		});
-	</script>
-		 <script type="text/javascript">
-		$(function(){
-			//编辑器实例化
-			var ue4 = UE.getEditor('dutys');
-			var ue5 = UE.getEditor('demands');
-		}); 
 	</script>
 </body>
 

@@ -110,8 +110,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript">
 		$('#table_id').DataTable({
-			scrollX:true,
-			autoWidth : false,
+			//"scrollY":400,
+			"scrollX":true,
+			//"autoWidth" : false,
 			"aaSorting" : [ [ 6,7, "desc" ] ],//默认第几个排序
 			"aoColumnDefs" : [
 			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示

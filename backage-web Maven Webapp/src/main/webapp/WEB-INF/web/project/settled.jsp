@@ -23,11 +23,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="3" name="top_menu_index"/>
+				<jsp:param value="3" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-project.jsp"></jsp:include>
+			<jsp:include page="../common/cm-project.jsp">
+				<jsp:param value="305" name="_index_m2"/>
+				<jsp:param value="30508" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -46,12 +49,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>项目编号</span><input type="text" class="" value="项目编号" /></span>
-									<span class="con-item"><span>借款人用户名</span><input type="text" class="" value="借款人用户名" /></span>
-									<span class="con-item"><span>借款人姓名</span><input type="text" class="" value="借款人姓名" /></span>
-									<span class="con-item"><span>项目发布日期</span><input type="date" class="" value="项目发布日期" /></span>
-									<span class="con-item"><span>借款期限</span><input type="date" class="" value="借款期限(天、月)" /></span>
-									<span class="con-item"><span>借款金额</span><input type="text" class="" value="借款金额" /></span>
+									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>借款人姓名</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>项目发布日期</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+									<span class="con-item"><span>借款期限</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+									<span class="con-item"><span>借款金额</span><input type="text" class="notspecial" /></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>

@@ -6,7 +6,10 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+			<script type="text/javascript">
+				_index.m2 = '<%=request.getParameter("_index_m2")%>';
+				_index.m3 = '<%=request.getParameter("_index_m3")%>';
+			</script>
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                 	<div class="navbar nav_title">

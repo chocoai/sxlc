@@ -1,0 +1,53 @@
+/* 项目管理-直接意向借款-添加意向借款 */
+/* 李丽梅 */
+
+
+.allocation{
+	width:300px;
+	margin-left:20px;
+}
+.con .con-trim{
+	height:35px !important;
+	width:55px;
+	border:1px solid #ccc;
+	
+}
+.con .con-repayment{
+	height:30px;
+	width:218px;
+	border:1px solid #ccc;
+	height:35px;
+	margin:4px 6px;
+}
+.allocation select{
+	height:50px;
+}
+.tt{
+	width:110px;
+	text-align:right;
+}
+.con span{
+	margin:0 5px;
+}
+.con textarea{
+	width:220px !important;
+	height:100px;
+	border:1px solid #ccc;
+	overflow:hidden;
+	margin:4px 6px;
+}
+
+table{
+	margin-top:50px;
+	margin-left:auto;
+	margin-right:auto;
+	width:80%;
+}
+.inputWidtn{
+	width:220px;
+	margin:4px 6px;
+	height:35px;
+}
+.borrowingCull{
+	display:none;
+}

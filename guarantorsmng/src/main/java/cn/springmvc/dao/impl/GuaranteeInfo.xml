@@ -25,13 +25,15 @@
     <result column="Delete_Flag" property="deleteFlag"/>
     <result column="Personal_Name" property="personalName"/>
     <result column="Personal_IDCard" property="personalIDCard"/>
+    <result column="Personal_Phone" property="personalPhone"/>
   </resultMap>
   <sql id="GuaranteeInfo_Column_List" >
-    	Guarantee_ID,Personal_Id,Guarantee_NO,Guarantee_Name,
+    	Guarantee_ID,pbi.Personal_Id,Guarantee_NO,Guarantee_Name,
     	Companye_BLN,Company_OC,Tax_RegNo,Establishments,
     	Company_Capital,Company_Address,Company_Source,
     	Company_Business,Company_Profile,Contact_Name,
-    	Contact_Phone,Contact_Email,Add_Time,Record_Status,Delete_Flag    	
+    	Contact_Phone,Contact_Email,Add_Time,Record_Status,Delete_Flag,
+    	pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone
   </sql>
   <!-- 根据担保机构id 查询担保机构信息 -->
   <select id="selectGuaranteeInfoById" resultMap="GuaranteeInfo" parameterType="Map" >
@@ -40,25 +42,24 @@
     	Company_Capital,Company_Address,Company_Source,
     	Company_Business,Company_Profile,Contact_Name,
     	Contact_Phone,Contact_Email,Add_Time,Record_Status,Delete_Flag
-    	,pbi.Personal_Name,pbi.Personal_IDCard
+    	,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone
     from Guarantee_Info gi left join personal_base_info pbi on gi.Personal_Id=pbi.Personal_Id where Guarantee_ID=#{guaranteeID};
   </select>
   
   <!-- 分页查询所有担保机构信息 -->
   <select id="selectAllGuaranteeInfo" resultMap="GuaranteeInfo" parameterType="product_p2p.kit.pageselect.PageEntity">
   	select <include refid="GuaranteeInfo_Column_List"></include> 
-  	from Guarantee_Info 
+  	from Guarantee_Info gi left join personal_base_info pbi on gi.Personal_Id=pbi.Personal_Id
   	<where>
   		<!-- 编号、担保机构名称、营业执照号、联系人姓名、联系人手机号、状态 -->
-  		Delete_Flag=1
-  		<if test="map.guaranteeNo!=null">and Guarantee_NO like '%{map.guaranteeNo}%'</if>
-  		<if test="map.guaranteeName != null">and Guarantee_Name like '%{map.guaranteeName}%'</if>
-  		<if test="map.companyeBLN != null">and Companye_BLN like '%{map.companyeBLN}%'</if>
-  		<if test="map.contactName != null ">and Contact_Name like '%{map.contactName}%'</if>
-  		<if test="map.contactPhone !=null">and Contact_Phone like '%{map.contactPhone}%'</if>
-  		<if test="map.recordStatus != -1">and Record_Status=#{map.recordStatus}</if>
+  		<!-- <if test="map.guaranteeNo!=null">and gi.Guarantee_NO like '%{map.guaranteeNo}%'</if>
+  		<if test="map.guaranteeName != null">and gi.Guarantee_Name like '%{map.guaranteeName}%'</if>
+  		<if test="map.companyeBLN != null">and gi.Companye_BLN like '%{map.companyeBLN}%'</if>
+  		<if test="map.contactName != null">and gi.Contact_Name like '%{map.contactName}%'</if>
+  		<if test="map.contactPhone !=null">and gi.Contact_Phone like '%{map.contactPhone}%'</if>
+  		<if test="map.recordStatus != -1">and gi.Record_Status=#{map.recordStatus}</if> -->
   	</where>
-  	 order by Add_Time #{orderKey}
+  	 order by gi.Add_Time desc
   </select>
   
   <!-- 添加或修改担保机构信息 -->
@@ -84,7 +85,7 @@
 				#{personalIDCard,	 mode=IN,	jdbcType=VARCHAR},
 				#{personalId,	 mode=IN,	jdbcType=INTEGER},
 				#{types,	 mode=IN,	jdbcType=INTEGER},
-				#{result,	 mode=OUT,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
   </select>
@@ -316,7 +317,7 @@
   	select Guarantee_ID,Min_Deadline,Max_Deadline,Deadline_Type
   	 from Guarantee_Period 
   	<where>
-  		Guarantee_ID = #{guaranteeID} and Deadline_Type=#{deadlineType}
+  		Guarantee_ID = #{guaranteeID}
   	</where>
   </select>
    <!-- 添加担保机构期限范围 -->
@@ -365,8 +366,8 @@
   </delete>
   <!-- 根据担保机构id查询管理员信息 -->
   <select id="findGuaranteeAdmin" resultType="cn.springmvc.model.GuaranteeAdminEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
-  		SELECT a.Admin_ID adminID,a.adminName adminName,gmi.Add_Time addTime,gim.Status status FROM Guarantee_Manage_Info gmi LEFT JOIN Admin a ON gmi.Admin_ID=a.Admin_ID
-	WHERE gim.Guarantee_ID=#{map.guaranteeID}
+  		SELECT a.Admin_ID adminID,a.adminName adminName,gmi.Add_Time addTime,gmi.Status status FROM Guarantee_Manage_Info gmi LEFT JOIN Admin a ON gmi.Admin_ID=a.Admin_ID
+	WHERE gmi.Guarantee_ID=#{map.guaranteeID}
   </select>
   <!-- 启用 停用 担保机构管理员 -->
   <update id="updateGuaranteeAdmin"  parameterType="Map">
@@ -442,6 +443,30 @@
 <!-- 	 left join Bank_Card_Info bci on mbc.Bank_Card_Id= mbc.Bank_Card_Id -->
 <!--   </select> -->
 	
-
-  
+	<resultMap id="CompensationStatisticsEntity" type="cn.springmvc.model.CompensationStatisticsEntity" >
+  	 <result column="dcje" property="totalCompensationAmount"/>
+  	 <result column="dchkje" property="allCompensatoryPayment"/>
+  	 <result column="cgdbbs" property="numberOfSuccessful"/>
+  	 <result column="dcbs" property="successfulCompensation"/>
+  	 <result column="dchkbs" property="compensatoryPaymentNumber"/>
+  </resultMap>
+	
+	
+	<!-- 查询担保机构代偿统计信息 -->
+  	<select id="CompensationStatistics" parameterType="Map" resultMap="CompensationStatisticsEntity">
+  		select (select 
+  		SUM(
+  		CAST(((AES_DECRYPT(UNHEX(Corpus_Enc),#{skey}))) as signed)+
+  		CAST(((AES_DECRYPT(UNHEX(Interest_Enc),#{skey}))) as signed)+
+  		CAST(((AES_DECRYPT(UNHEX(Overdue_Interest_Enc),#{skey}))) as signed)+
+  		CAST(((AES_DECRYPT(UNHEX(Overdue_Fee_Enc),#{skey}))) as signed)
+  		) 
+  		from Instead_RePay_Record where Repay_Type= 0 and Guarantee_ID = #{GuaranteeID}) dcje,
+  		(select SUM(
+  		CAST(((AES_DECRYPT(UNHEX(Amount),#{skey}))) as signed)
+  		)  from Member_Trading_Records where Member_Type=1 and Member_ID = #{GuaranteeID} and Trade_Type_Id=408) dchkje,
+  		(select count(*) from Project_App_Record where Guarantee_ID = #{GuaranteeID} and Invest_Statu=4) cgdbbs,
+  		(select count(*) from Instead_RePay_Record where Repay_Type= 0 and Guarantee_ID = #{GuaranteeID}) dcbs,
+  		(select count(*) from Member_Trading_Records where Member_Type=1 and Member_ID = #{GuaranteeID} and Trade_Type_Id=408) dchkbs
+  	</select>
 </mapper>

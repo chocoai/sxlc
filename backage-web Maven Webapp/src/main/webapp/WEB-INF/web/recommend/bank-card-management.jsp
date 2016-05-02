@@ -39,8 +39,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="data_display">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button id class="obtn glyphicon glyphicon-plus obtn-dept-add">添加</button>
-								<button id class="obtn glyphicon glyphicon-pencil obtn-dept-mod">修改</button>
+								<button id class="obtn glyphicon glyphicon-plus obtn-dept-add" onclick="bankManagementAdd('添加银行卡','web/recommend/re-add/bank-card-management-add.jsp','1')">添加</button>
+								<button id class="obtn glyphicon glyphicon-pencil obtn-dept-mod" onclick="bankManagementMod('修改银行卡','web/recommend/re-add/bank-card-management-add.jsp','1')">修改</button>
 								<button id class="obtn glyphicon glyphicon-trash obtn-dept-del">删除</button>
 							</div>
 						</div>
@@ -84,9 +84,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/recommend/bank-card-management.js"></script>
 	<script type="text/javascript">
 		$('#table_id').DataTable({
 			scrollX:true,
+			//scrollY:400,
 			autoWidth : false,
 			"aaSorting" : [  ],//默认第几个排序
 			"aoColumnDefs" : [

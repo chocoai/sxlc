@@ -24,12 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-config.jsp">
-				<jsp:param value="config-0" name="config-index" />
+				<jsp:param value="601" name="_index_m2" />
+				<jsp:param value="60109" name="_index_m3" />
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -39,22 +40,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	
 			 	<!-- 自动投标奖励设置 -->
 			 	<div class="config">
-			 		<fieldset>
+			 		<fieldset class="autobidfd">
 			 			<legend>自动投标奖励设置</legend>
-			 			<form class="form-horizontal" role="form" name="" type="post" action="javascript:updateAuto()" id="auto">
-			 				<div class="form-group">
+			 			<form id="autobidtest" class="form-horizontal" role="form" name="" type="post" action="javascript:updateAuto()" id="auto">
+			 				<div class="form-group autobiddiv">
 			 					<label for="firstname" class="col3 i-fl control-label">自动投标奖励：</label>
 			 					<div class="i-fl">
-			 						<input type="text" name="autoBackRate" class="form-control" id="firstname" placeholder="自动投标奖励">
+			 						<input type="text" name="autoBackRate" class="form-control" id="firstname" placeholder="" datatype="hundrednum">
 				 				</div>
 				 				<div class="i-fl">
-				 					<span class="sign">*N%<i>*</i></span><!-- 放款时返还自动投资总金额的N% -->
+				 					<span class="sign">%<i>*</i></span><!-- 放款时返还自动投资总金额的N% -->
 				 				</div>
 				 			</div>
 				 			<div class="form-group">
-				 				<div class="offset-col3">
-				 					<button type="submit" class="btn btn-default">保存</button>
-				 				</div>
+				 				<div class="cmbtncontainer autobidbtn">
+									<a class="commonbtn0">保存</a>
+								</div>
 				 			</div>
 				 		</form>
 				 	</fieldset>
@@ -73,6 +74,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script>
 		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+		 $(function(){
+			validform5(".commonbtn0","autobidtest",false,"3");
+		});
 	</script>
 </body>
 

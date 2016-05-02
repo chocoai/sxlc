@@ -2,38 +2,8 @@
 var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
 
-function saveData(){
-	alert("1");
-}
-
-/**
- * 邮件接口地址配置保存
- */
-$("#submitBtn").on("click",function(){
-	$("#dataForm").submit();
-});
-
 $(function(){
-//			validform5("layui-layer-btn0","addpassword",false,"3");
-//			validform5("layui-layer-btn0","modpassword",false,"3");
-//			validform5("submitBtn","dataForm",false,"3");
-			//validform5("#submitBtn","dataForm",false,"3");
-//			validform5("#submitBtn","dataForm",false,"3");
-			
-			$("#dataForm").Validform({
-				btnSubmit:"#submitBtn",
-				tiptype:"3",
-				//ajaxPost:true,
-				datatype:{}
-			});
-			
-//			validform5("layui-layer-btn0","addpassword",false,"3");
-//			validform5("layui-layer-btn0","modpassword",false,"3");
-//			validform5("layui-layer-btn0","server",false,"3");
-//			validform5("layui-layer-btn0","port",false,"3");
-//			validform5("layui-layer-btn0","emailinterface",false,"3");
-//			validform5("layui-layer-btn0","emailpassword",false,"3");
-			
+		validform5(".btn-default","dataForm",false,"3");
 		//表格初始化
 		$('#table_id').DataTable(
 				{	
@@ -200,36 +170,38 @@ function enableOrDisable(type,id){
 	layer.confirm(title, {
 		btn: ['确定', '取消']
 	}, function(index, layero){
-		NetUtil.ajax(
-				  appPath+"/front/addOrUpdateMsgContent.do",
-				  {"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id)},
-				  function(data) { 
-						if(data==1){
-							layer.alert("操作成功",{icon:1});
-							layer.close(index);
-							var table = $('#table_id').DataTable();
-							table.ajax.reload();
-						}else if(data==0){
-							layer.alert("操作失败",{icon:2});  
-						}
-					}
-		 );
+		$.ajax({  
+			url:appPath+"/config/addOrUpdateMsgInterface.do",
+			data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id),"type":encrypt.encrypt("3")},
+			type:'post',  
+			cache:false,  
+			dataType:'json', 
+			success:function(data) { 
+				if(data==1){
+					layer.alert("操作成功",{icon:1});
+					layer.close(index);
+					var table = $('#table_id').DataTable();
+					table.ajax.reload();
+				}else if(data==0){
+					layer.alert("操作失败",{icon:2});  
+				}
+			},  
+			error : function() {  
+				layer.alert("服务器异常",{icon:2});  
+			}  
+		});
 	}, function(index){
 		//取消回调
 	}); 
 }
 
 
-
-
-
-
-	/* 下拉框内字体颜色 */
-	$(".msginterfaceselect").css("color","#aaa");
-	$(".msginterfaceselect").change(function(){
-		if($(this).val()!="请选择"){
-			$(this).css("color","#000");
-		}else{
-			$(this).css("color","#aaa");
-		}
-	});
+/* 下拉框内字体颜色 */
+$(".msginterfaceselect").css("color","#aaa");
+$(".msginterfaceselect").change(function(){
+	if($(this).val()!="请选择"){
+		$(this).css("color","#000");
+	}else{
+		$(this).css("color","#aaa");
+	}
+});

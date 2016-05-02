@@ -37,30 +37,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 					<div class="panel-body">
 						<form id="" class="" action="">
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>项目编号</span><input type="text" class="" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>项目名称</span><input type="text" class="departmentname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>借款人用户名</span><input type="text" class="contactname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>借款人姓名</span><input type="text" class="contactname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>回款时间</span><input type="text" class="contactname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>担保机构名称</span><input type="text" class="contactname" placeholder="" />
-							</span>
-							<span class="col-md-6 col-sm-12 col-xs-12">
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-							</span>
+							<div>
+								<span class="con-item textRight2">
+									<span>项目编号</span><input type="text" class="" placeholder="" />
+								</span>
+								<span class="con-item textRight2">
+									<span>项目名称</span><input type="text" class="departmentname" placeholder="" />
+								</span>
+								<span class="con-item textRight2">
+									<span>借款人用户名</span><input type="text" class="contactname" placeholder="" />
+								</span>
+							</div>
+							<div>
+								<span class="con-item textRight2">
+									<span>借款人姓名</span><input type="text" class="contactname" placeholder="" />
+								</span>
+								<span class="con-item textRight2">
+									<span>担保机构名称</span><input type="text" class="contactname" placeholder="" />
+								</span>
+								<span class="con-item textRight2">
+									<span>回款时间</span><input type="text" id="startDate2" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate2\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate2" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate2\')}' ,maxDate:'2020-10-01' })" >
+								</span>
+							</div>
+							<div class="checkstatebtn">
+								<span class="">
+									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+								</span>
+							</div>
 						</form>
 					</div>
 				</div>
+			</div>
+			<div class="panel-body">
 				<table id="checkpaymenttable" class="display">
 					<thead>
 						<tr>
@@ -101,8 +109,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="../js/recommend/guarantee-manage.js"></script>
+	<script type="text/javascript" src="plugs/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript">
 		$('#checkpaymenttable').DataTable({
+			//"scrollY":400,
+			"scrollX":true,
 			"aaSorting" : [ [ 6,7, "desc" ] ],//默认第几个排序
 			"aoColumnDefs" : [
 			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示

@@ -34,9 +34,9 @@
 							<td class="tt"><label>产品名称</label></td>
 							<td class="con" id="productName"><input type="text" datatype="notSpecial"/></td>
 						</tr>
+						<tr>
 							<td class="tt">借款金额范围</td>
 							<td class="con" id="loanScope"><input type="text" datatype="amcountM"/><span class="line"></span><input type="text" datatype="amcountM"/></td>
-						<tr>
 						</tr>
 						<tr>
 							<td class="tt"><label>年化利率范围</label></td>

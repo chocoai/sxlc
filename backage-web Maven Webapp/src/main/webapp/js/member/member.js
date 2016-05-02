@@ -1,49 +1,117 @@
 /* 查看详情页面加载    */
 
 function detailView(){
-	$(".right_col").load("web/member/allMembers/memberDetail.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content=rowdata[0].memberId;
+	$(".right_col").load("web/member/allMembers/memberDetail.jsp?content="+content);
 }
 /*  借款查询      */
 function loanView(){
-	$(".right_col").load("web/member/allMembers/loanView.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content=rowdata[0].memberId;
+	$(".right_col").load("web/member/allMembers/loanView.jsp?content="+content);
 }
 /*   投资查询       */
 function investView(){
-	$(".right_col").load("web/member/allMembers/investView.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content=rowdata[0].memberId;
+	$(".right_col").load("web/member/allMembers/investView.jsp?content="+content);
 } 
 /*   交易记录       */
 function transactionRecord(){
-	$(".right_col").load("web/member/allMembers/transactionRecord.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content=rowdata[0].memberId;
+	$(".right_col").load("web/member/allMembers/transactionRecord.jsp?content="+content);
 }
 /*   查看邀请会员列表          */
 function inviteView(){
-	$(".right_col").load("web/member/allMembers/inviteView.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content = rowdata[0].memberId;
+	$(".right_col").load("web/member/allMembers/inviteView.jsp?content="+content);
 }
 /*   银行卡查询          */
 function cardView(){
-	$(".right_col").load("web/member/allMembers/cardView.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content = rowdata[0].memberId;
+	$(".right_col").load("web/member/allMembers/cardView.jsp?content="+content);
 }
 /*   重置密码          */
 function resetPWDRecord(){
-	$(".right_col").load("web/member/allMembers/resetPWD.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content = rowdata[0].memberId;
+	$(".right_col").load("web/member/allMembers/resetPWD.jsp?content="+content);
 }
 /*   修改邀请会员          */
 function inviteVip(){
-	$(".right_col").load("web/member/allMembers/inviteVIP-change.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content = rowdata[0].memberId;
+	$(".right_col").load("web/member/allMembers/inviteVIP-change.jsp?content="+content);
 }
+
 /*   修改邀请会员          */
 function messageSendPer(){
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var memberId = rowdata[0].memberId;
 	$(".right_col").load("web/member/allMembers/per-messageSend.jsp");
 }
+
 /*   提现记录查询          */
 function recordQuery(){
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var memberId = rowdata[0].memberId;
 	$(".right_col").load("web/member/allMembers/member-recordQuery.jsp");
 }
 /*   充值记录查询          */
 function rechargeRecord(){
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var memberId = rowdata[0].memberId;
 	$(".right_col").load("web/member/allMembers/member-rechargeRecord.jsp");
 }
-/*   充值记录查询          */
+/*   黑名单查询          */
 function memeberBlackRecord(){
 	$(".right_col").load("web/member/allMembers/memberBlackRecord.jsp");
 }
@@ -68,19 +136,52 @@ function inquiryFinancialAdvisor(){
 	$(".right_col").load("web/member/allMembers/per-inquiryFinancialAdvisor.jsp");
 }
 
-
 /**
  * 拉黑会员
  */
 $(function () {
 	var appPath = getRootPath();//项目根路径
-	//删除部门
+	
+	//拉黑
 	$(".defriend").on("click touchstart",function(){
 		//获得选取的对象
-		
+		var rowdata = $('#table_id').DataTable().rows('.selected').data();
+		if(rowdata.length<1){
+			layer.alert("请选择要处理的事务！",{icon:0});
+			return;
+		}
+		var memberId=rowdata[0].memberId;
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publicKey_common);
+		//result 为加密后参数
+		memberId = encrypt.encrypt(memberId+"");
 		layer.confirm('确定拉黑该会员？', {
-		  btn: ['确定', '取消']
-		});
+			btn:['确定', '取消']
+		  ,yes: function(index, layero){ //或者使用btn1
+		    //确定的回调
+		  	//判断执行不同方法
+			  $.ajax({
+				  	type : 'post',
+				  	url : appPath + "/member/pullBlackMember.do",
+				  	data : {
+				  		memberId : memberId
+					},
+					dataType:"text",
+				  	success : function (data) {
+				  		if(data ==0 ){
+				  			layer.alert("操作成功!",{icon:1});
+				  			layer.close(index);  
+				  			setTimeout('location.reload()',500);
+				  		}
+				  	},
+				  	error : function() {  
+				          layer.alert("操作失败!",{icon:2});  
+				    }
+				  });
+		  },cancel: function(index){//或者使用btn2（concel）
+		  	//取消的回调
+		  }
+	});
 	});
 });
 
@@ -88,6 +189,7 @@ $(function () {
 
 /* 取消拉黑会员*/
 function cancelBlackList(){
+	
 	layer.open({
 		type: 1,
 		area: ['400px', '200px'], //高宽
@@ -105,6 +207,35 @@ function cancelBlackList(){
 	});
 }
 
+
+/*  发送信息弹出框            */
+/**
+ * 发送信息弹出框
+ */
+function messageSendPer(title,page,type){
+	//参数判断，自己写全
+	//console.log(title+","+page+","+type);
+	
+	if(title == "" || page == "" || type == "" ){
+		console.log("参数异常,请检查参数");
+		return;
+	}
+	layer.open({
+	    type: 2,
+	    area: ['600px', '400px'], //高宽
+	    title: title,
+	    maxmin: true,
+	    content: page,//DOM或内容
+	    btn:  ['发送','取消']
+			,yes: function(index, layero){ //或者使用btn1
+				//确定的回调
+				//判断执行不同方法
+				
+			},cancel: function(index){//或者使用btn2（concel）
+				//取消的回调
+			}
+	});
+};
 
 
 /* 取消拉黑会员*/

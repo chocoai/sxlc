@@ -78,7 +78,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="action_item">
 								<button class="obtn glyphicon glyphicon-plus obtn-hotNews-add" onclick="addOrUpdate(1)" type="button">添加</button>
 								<button class="obtn glyphicon glyphicon-pencil obtn-hotNews-mod" onclick="addOrUpdate(2)" type="button">修改</button>
-								<input type="hidden" id="hostPath" value="${hostPath}"/>
 							</div>
 						</div>
 						
@@ -107,14 +106,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td class="con">
 								<!--dom结构部分-->
 								<div id="uploader">
-								    <!--用来存放item-->
-								    <div class="" id="fileList"></div>
 								    <div id="filePicker">选择图片</div>
 								    <span class="rec-dimensions">建议尺寸：100*100</span>
-								    <img id="showImg" src="">
 								    <input type="hidden" name="logo" id="pictureUrl" />
 								    <input type="hidden" name="reportId" id="reportId" />
 								</div>
+							</td>
+						</tr>
+						<tr>
+							<input type="hidden" id="hostPath" value="${hostPath}"/>
+							<td class="tt" valign="top">图标预览：</td>
+							<td class="con" id="fileList"">
 							</td>
 						</tr>
 						<tr>

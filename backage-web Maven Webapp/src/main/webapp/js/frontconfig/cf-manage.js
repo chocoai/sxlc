@@ -123,8 +123,8 @@ function addOrUpdate(type){
 		$("#nameOld").val(data[0].mngName);	//修改之前的name
 		$("#mngName").val(data[0].mngName);	
 		$("#mngPost").val(data[0].mngPost);	
-		$("#profile").val(data[0].profile);	
-		$("#portrait").attr("src",$("#hostPath").val()+data[0].portraitUrl);
+		$("#profile").val(data[0].profile);
+		$("#fileList").html('<img height="100" width="100" src="'+$("#hostPath").val()+data[0].portraitUrl+'">');
 			
 	}
 	

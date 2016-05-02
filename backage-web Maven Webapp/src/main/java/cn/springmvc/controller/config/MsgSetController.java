@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.springmvc.Util.HttpSessionUtil;
+import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.MailSettingsEntity;
 import cn.springmvc.model.MessageTypeEntity;
 import cn.springmvc.model.SmsSettingsEntity;
 import cn.springmvc.service.ChannelSetService;
-import cn.springmvc.util.HttpSessionUtil;
-import cn.springmvc.util.LoadUrlUtil;
 
 /** 
 * @author 唐国峰
@@ -77,7 +77,7 @@ public class MsgSetController {
 	
 	/** 
 	 * @author 唐国峰 
-	 * @Description: 新增/修改/启用/停用
+	 * @Description: 新增/修改
 	 * @param req
 	 * @return int  
 	 * @date 2016-4-27 上午10:21:03
@@ -89,6 +89,9 @@ public class MsgSetController {
 		//操作日志参数
 		HttpSession session = HttpSessionUtil.getSession(req);
 		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		if(admin==null){
+			return -2;//用户未登录
+		}
 		//moduleID=60301(消息内容配置)
 		//optID= 6030101(修改）
 		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
@@ -113,6 +116,45 @@ public class MsgSetController {
 		}
 		int result=0;
 		result = channelSetService.updateMessage(map, logEntity, sIpInfo);
+		return result;
+	}
+	
+	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 启用/停用
+	 * @param req
+	 * @return int  
+	 * @date 2016-4-27 上午10:21:03
+	 * @throws 
+	 */
+	@RequestMapping("/enableMsgContent")
+	@ResponseBody
+	public int enableMsgContent(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = HttpSessionUtil.getSession(req);
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		if(admin==null){
+			return -2;//用户未登录
+		}
+		//moduleID=60301(消息内容配置)
+		//optID= 6030101(修改）
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(60301);
+		logEntity.setlOptId(6030101);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		
+		Map<String, Object> map =new HashMap<String,Object>();
+		String typeID = req.getParameter("typeID");
+		map.put("typeID",typeID);
+		String statu = req.getParameter("statu");
+		map.put("statu",statu);
+		int result=0;
+		result = channelSetService.SetEnableDisable(map, logEntity, sIpInfo);
 		return result;
 	}
 	
@@ -148,6 +190,9 @@ public class MsgSetController {
 		//操作日志参数
 		HttpSession session = HttpSessionUtil.getSession(req);
 		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		if(admin==null){
+			return -2;//用户未登录
+		}
 		//moduleID=60304(消息接口配置)
 		//optID=6030402（邮件接口设置）
 		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
@@ -212,6 +257,9 @@ public class MsgSetController {
 		//操作日志参数
 		HttpSession session = HttpSessionUtil.getSession(req);
 		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		if(admin==null){
+			return -2;//用户未登录
+		}
 		//moduleID=60304(消息接口配置)
 		//optID=6030401（短信接口设置）
 		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
@@ -245,8 +293,9 @@ public class MsgSetController {
 			Map<String,Object> param=new HashMap<String,Object>();
 			Long id = Long.parseLong(req.getParameter("id"));
 			String statu = req.getParameter("statu");
-			param.put("id", id);
+			param.put("ID", id);
 			param.put("statu", statu);
+			param.put("optId", admin.getId());
 			result = channelSetService.updteSmsSettingsStatu(param, logEntity, sIpInfo);
 		}
 		return result;
@@ -282,6 +331,9 @@ public class MsgSetController {
 		//操作日志参数
 		HttpSession session = HttpSessionUtil.getSession(req);
 		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		if(admin==null){
+			return -2;//用户未登录
+		}
 		//moduleID=60302(消息提醒设置)
 		//optID=6030201（修改）
 		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();

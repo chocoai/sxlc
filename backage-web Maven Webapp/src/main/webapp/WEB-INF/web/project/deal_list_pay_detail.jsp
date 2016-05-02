@@ -51,6 +51,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 							</thead>
 							<tbody>
+							<%
+								for(int i = 0 ; i <10 ; i++){
+							 %>
 								<tr>
 									<td>01-22</td>
 									<td>jiuyang</td>
@@ -66,51 +69,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td>方式</td>
 									<td>12万</td>
 								</tr>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>12万</td>
-									<td>已还</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>12万</td>
-								</tr>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>12万</td>
-									<td>已还</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>12万</td>
-								</tr>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>12万</td>
-									<td>已还</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>12万</td>
-								</tr>
+							<%
+								}
+							 %>
 							</tbody>
 						</table>
 					</div>

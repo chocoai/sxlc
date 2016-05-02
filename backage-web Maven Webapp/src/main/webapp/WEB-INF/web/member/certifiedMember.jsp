@@ -64,7 +64,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<div class="panel-body">
 							<form class="" action="">
-								<span class="con-item"><span>用户名</span><input type="text" class="" placeholder="用户名" /></span>
+								<span class="con-item"><span>用户名</span><input type="text" class="notspecial" /></span>
 								<span class="con-item"><span>姓名</span><input type="text" class="" placeholder="姓名" /></span>
 								<span class="con-item"><span>手机号</span><input type="text" class="" placeholder="手机号" /></span>
 								<span class="con-item"><span>身份证号</span><input type="text" class="" placeholder="身份证号" /></span>

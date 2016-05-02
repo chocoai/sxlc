@@ -19,7 +19,7 @@ function addguarant() {
 	var contactName = encrypt.encrypt($("#contactName").val());
 	var contactPhone = encrypt.encrypt($("#contactPhone").val() + "");
 	var contactEmail = encrypt.encrypt($("#email").val());
-	var types = encrypt.encrypt($("#types").val() + "");
+	var types = encrypt.encrypt(0 + "");
 	var content = encrypt.encrypt($("#pictureUrl").val());
 	
 	$.ajax({

@@ -39,10 +39,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="panel-body">
-								<form id="" class="" action="">
-									<span class="con-item"><span>投资完成时间</span><input type="date" class="" value="投资完成时间" /></span>
-									<span class="con-item"><span>会员用户名</span><input type="text" class="" value="会员用户名" /></span>
-									<span class="con-item"><span>会员姓名</span><input type="text" class="" value="会员姓名" /></span>
+								<form id="" class="" actio n="">
+									<span class="con-item"><span>投资完成时间</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+									<span class="con-item"><span>会员用户名</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>会员姓名</span><input type="text" class="notspecial" /></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -66,6 +66,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 							</thead>
 							<tbody>
+							<%
+								for(int i = 0; i < 10 ; i++){
+							 %>
 								<tr>
 									<td>01-22</td>
 									<td>jiuyang</td>
@@ -75,33 +78,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td>12-01</td>
 									<td>方式</td>
 								</tr>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-								</tr>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-								</tr>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-								</tr>
+							<%
+								}
+							 %>
 							</tbody>
 						</table>
 					</div>

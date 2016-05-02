@@ -84,7 +84,7 @@
 	   <groupId>javax.servlet</groupId> 
 	   <artifactId>servlet-api</artifactId> 
 	   <version>2.5</version> 
-<!-- 	   <scope>provided</scope>  -->
+	   <scope>provided</scope> 
 	</dependency>
   
 	<!-- mybatis核心包 -->
@@ -193,6 +193,12 @@
     <dependency> 
 	     <groupId>product_p2p</groupId>
 	     <artifactId>projectmng</artifactId>
+	     <version>0.0.1-SNAPSHOT</version> 
+    </dependency> 
+    <!--担保  -->
+    <dependency> 
+	     <groupId>product_p2p</groupId>
+	     <artifactId>guarantorsmng</artifactId>
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency> 
 	

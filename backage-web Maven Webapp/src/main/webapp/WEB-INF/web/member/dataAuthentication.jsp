@@ -66,8 +66,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<div class="panel-body">
 							<form class="" action="">
-								<span class="con-item"><span>用户名</span><input type="text" class="" placeholder="用户名" /></span>
-								<span class="con-item"><span>姓名</span><input type="text" class="" placeholder="姓名" /></span>
+								<span class="con-item notspecial"><span>用户名</span><input type="text" class="" placeholder="用户名" /></span>
+								<span class="con-item notspecial"><span>姓名</span><input type="text" class="" placeholder="姓名" /></span>
 								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 							</form>
 					  	</div>

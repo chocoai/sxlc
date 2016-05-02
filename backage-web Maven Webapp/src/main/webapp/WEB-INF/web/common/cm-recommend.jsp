@@ -20,37 +20,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <ul class="nav side-menu">
-                                <li id="admin" class="li_level_one active">
+                                <li id="admin" class="li_level_one active" data-id="901">
                                 	<a href="web/recommend/guarantee-manage.jsp"><i class="fa fa-edit"></i>担保机构管理</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="902">
                                 	<a href="web/recommend/asset-management.jsp"><i class="fa fa-edit"></i>资产管理方管理</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="903">
                                 	<a href="web/recommend/account-center.jsp"><i class="fa fa-edit"></i>账户中心</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="9011">
                                 	<a href="web/recommend/guarantee-record-query.jsp"><i class="fa fa-edit"></i>担保记录查询</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="904">
                                 	<a href="web/recommend/compensatory.jsp"><i class="fa fa-edit"></i>代偿</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="905">
                                 	<a href="web/recommend/historical-compensation-records.jsp"><i class="fa fa-edit"></i>历史代偿记录</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="906">
                                 	<a href="web/recommend/compensatory-payment-records.jsp"><i class="fa fa-edit"></i>代偿回款记录</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="907">
                                 	<a href="web/recommend/bank-card-management.jsp"><i class="fa fa-edit"></i>银行卡管理</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="908">
                                 	<a href="web/recommend/recharge-record.jsp"><i class="fa fa-edit"></i>充值记录</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="909">
                                 	<a href="web/recommend/present-record.jsp"><i class="fa fa-edit"></i>提现记录</a>
                                  </li>
-                                <li id="admin" class="li_level_one">
+                                <li id="admin" class="li_level_one" data-id="9010">
                                 	<a href="web/recommend/transaction-record.jsp"><i class="fa fa-edit"></i>交易记录</a>
                                  </li>
                             </ul>

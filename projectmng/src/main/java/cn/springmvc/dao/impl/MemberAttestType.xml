@@ -93,13 +93,12 @@
 	   select mat.Attest_Type_ID,mat.Member_Type,mat.Attest_TypeName,mat.Attach_Type,mat.Picture_Url,mat.Need_Check,
 	   mat.Can_More,mat.Can_More,mat.Type_Cure,mat.Credit_Score,mat.Statu,mat.Opt_Date,mat.Admin_ID
 	   from  Member_Attest_Type mat 
-	    <where>  
-	            <if test="memberType != -1">  
-	                mat.Member_Type=#{memberType} 
+	   where 1=1
+	            <if test="memberType != -1 and memberType!='' ">  
+	              and  mat.Member_Type=#{memberType} 
 	            </if>   
-	            <if test="statu != -1">  
-	                mat.Statu=#{statu}
+	            <if test="statu != -1 and statu != '' ">  
+	              and  mat.Statu=#{statu}
 	            </if>   
-       </where>   
     </select>              
 </mapper>   

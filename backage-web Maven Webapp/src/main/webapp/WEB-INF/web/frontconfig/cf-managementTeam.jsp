@@ -1,8 +1,16 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@page import="cn.springmvc.model.Operation"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	/* 登录人操作权限 */
+	List<Operation> operations = null;
+	if(session.getAttribute("operationList") != null){
+		operations = (List<Operation>)session.getAttribute("operationList");
+
+	}
+
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -20,9 +28,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
 	<link rel="stylesheet" href="css/upload.css" />
 	<script type="text/javascript" src="<%=basePath%>/plugs/My97DatePicker/WdatePicker.js"></script>
-	<script type="text/javascript">
-		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
-	</script>
+	<script src="js/md5.js"></script>
+	<script src="js/net_util.js"></script>
 </head>
 
 <body class="nav-md">
@@ -85,13 +92,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<!--dom结构部分-->
 											<div id="uploader">
 											    <!--用来存放item-->
-											    <div class="" id="fileList"></div>
 											    <div id="filePicker">选择头像</div>
 											    <span class="rec-dimensions">建议尺寸：100*100</span>
-											     <img id="portrait" src="">
 											     <input type="hidden" name="portraitUrl" id="portraitUrl" />
 											     <input type="hidden" name="teamId" id="teamId" />
 											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="tt" valign="top">头像预览：</td>
+										<td class="con" id="fileList">
 										</td>
 									</tr>
 									<tr>
@@ -115,8 +125,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
+				<%
+					if(operations.size()>0){
+						for(int i = 0;i < operations.size(); i++){
+							
+			      			if(operations.get(i).getOptID() == 50401){
+				%>				
 								<button class="obtn glyphicon glyphicon-plus obtn-manage-add" onclick="addOrUpdate(1)" type="button">添加</button>
+				<%      
+			      			}
+			      				
+			      			if(operations.get(i).getOptID() == 50402){
+				%>				
 								<button class="obtn glyphicon glyphicon-pencil obtn-manage-mod" onclick="addOrUpdate(2)" type="button">修改</button>
+				<%     
+			      			}
+				  		 }
+					 }
+			     %>	
+							
 							</div>
 						</div>
 						

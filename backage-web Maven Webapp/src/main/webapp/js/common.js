@@ -307,3 +307,20 @@ $(".notspecial").bind('keypress', function (event) {
 	  return false;
 	 }
 });
+
+
+/* 控制输入为数字   */
+$(function(){
+	$(".numberReg").each(function(){
+		$(this).focus(function(){
+			$(this).keyup(function(){
+				if(this.value.length > 0){
+					this.value = this.value.replace(/[^0-9]/g,'');
+				}
+			});
+		});
+		$(this).change(function(){
+			this.value = this.value.replace(/[^0-9.]/g,'');
+		});
+	});
+});

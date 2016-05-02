@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link href="css/project/myLayer.css" rel="stylesheet" />
+	
 </head>
 <body>
 	<div class="container add_type_contianer">

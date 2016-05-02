@@ -23,13 +23,12 @@ import com.sun.corba.se.impl.util.Utility;
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
-
+import cn.springmvc.Util.HttpSessionUtil;
+import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.DeptInfo;
 import cn.springmvc.model.Trui;
 import cn.springmvc.service.IDeptInfoServer;
-import cn.springmvc.util.HttpSessionUtil;
-import cn.springmvc.util.LoadUrlUtil;
 
 /**
  * 

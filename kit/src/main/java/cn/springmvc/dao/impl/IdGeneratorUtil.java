@@ -49,8 +49,8 @@ public class IdGeneratorUtil {
 //	private List<IdEntity> idList = new ArrayList<IdEntity>();
 	private static IdGeneratorUtil idGeneratorUtil=null;
 	public IdGeneratorUtil(){
-//		String path = getClass().getClassLoader().getResource("/").getPath();
-		String path = "D:\\";
+		String path = getClass().getClassLoader().getResource("/").getPath();
+//		String path = "D:\\";
 	    path = path.replaceAll("%20", " ");
 	    
 	    String filePath = path+"IdGenerator.xml";
@@ -477,7 +477,7 @@ public class IdGeneratorUtil {
 			}
 			
 		}*/
-		idWriteDaoImpl.InsertIdInfo(lIdList);
+//		idWriteDaoImpl.InsertIdInfo(lIdList);
 	}
 	
 	/**

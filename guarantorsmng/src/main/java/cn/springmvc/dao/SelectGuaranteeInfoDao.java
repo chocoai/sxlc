@@ -6,6 +6,7 @@ import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
 
+import cn.springmvc.model.CompensationStatisticsEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
 import cn.springmvc.model.GuaranteeCertificateEntity;
@@ -189,5 +190,20 @@ public interface SelectGuaranteeInfoDao {
 	* @throws 
 	*/
 	public List<InstitutionsRecordsEntity> InstitutionsToRaiseCashRecords(PageEntity pageEntity);
+	
+	
+	/** 
+	* CompensationStatistics 查询担保机构代偿统计信息
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: CompensationStatistics 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return CompensationStatisticsEntity 返回类型 
+	* @date 2016-4-29 下午2:20:56
+	* @throws 
+	*/
+	public CompensationStatisticsEntity CompensationStatistics(Map<String, Object> map);
 }
 

@@ -69,16 +69,16 @@
 	<script type="text/javascript" src="js/upload.js"></script>
 	<script>
 		$(function(){
-			validform5("layui-layer-btn0","addauthentitle",false,"3");
+			validform5(".layui-layer-btn0","addauthentitle",false,"3");
 		});
 		$(function(){
-			validform5("layui-layer-btn0","addauthenlink",false,"3");
+			validform5(".layui-layer-btn0","addauthenlink",false,"3");
 		});
 		 $(function(){
-			validform5("layui-layer-btn0","modauthentitle",false,"3");
+			validform5(".layui-layer-btn0","modauthentitle",false,"3");
 		});
 		$(function(){
-			validform5("layui-layer-btn0","modauthenlink",false,"3");
+			validform5(".layui-layer-btn0","modauthenlink",false,"3");
 		});
 	</script>
 </body>

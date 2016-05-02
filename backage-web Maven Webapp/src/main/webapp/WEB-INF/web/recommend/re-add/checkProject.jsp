@@ -19,54 +19,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="css/recommend/guarantee_manage.css"></link>
 </head>
 <body class="nav-md">
-	<div class="container body">
-		<div class="main_container">
 			<!-- 担保项目查询部分开始 -->
 			<jsp:include page="../../common/cm-addr.jsp"></jsp:include>
 			<div id="checkProject" class="search">
 				<div class="panel panel-success">
 					<div class="panel-heading">
-								<div class="i-fl search_title">条件查询</div>
-								<div class="i-fr action_item">
-									<ul class="list_item list-inline">
-										<li><a class="state">展开&nbsp;<span
-												class="glyphicon glyphicon-chevron-down"></span> </a>
-										</li>
-									</ul>
-								</div>
-							</div>
+						<div class="i-fl search_title">条件查询</div>
+						<div class="i-fr action_item">
+							<ul class="list_item list-inline">
+								<li><a class="state">展开&nbsp;<span
+										class="glyphicon glyphicon-chevron-down"></span> </a>
+								</li>
+							</ul>
+						</div>
+					</div>
 					<div class="panel-body">
 						<form id="" class="" action="">
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>项目编号</span><input type="text" class="" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>项目名称</span><input type="text" class="departmentname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>担保机构名称</span><input type="text" class="licencenum" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>担保登记时间</span><input type="text" class="contactname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>最近代偿时间</span><input type="text" class="contactphone" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>是否代偿</span>
-								<select>
-									<option>请选择</option>
-									<option>是</option>
-									<option>否</option>
-								</select>
-							</span>
-							<span class="col-md-6 col-sm-12 col-xs-12">
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-							</span>
+							<div>
+								<span class="con-item textRight3"><span>项目编号</span><input type="text" class="notspecial" ></span>
+								<span class="con-item textRight3"><span>担保登记时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
+							</div>
+							<div>
+								<span class="con-item textRight3"><span>项目名称</span><input type="text" class="notspecial" ></span>
+								<span class="con-item textRight3"><span>最近代偿时间</span><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" ></span>
+							</div>
+							<div>
+								<span class="con-item textRight3"><span>担保机构名称</span><input type="text" class="notspecial" ></span>
+								<span class="con-item "><span>是否代偿</span>
+									<select class="stateSelect">
+										<option>请选择</option>
+										<option>是</option>
+										<option>否</option>
+									</select>
+								</span>
+								<span class="statebtn">
+									<button class="obtn obtn-query glyphicon glyphicon-search inquiryBtn">查询</button>
+								</span>
+							</div>
 						</form>
 					</div>
 				</div>
-				<table id="checkProjectTable" class="display">
+			</div>
+			<div class="panel-body">
+					<table id="checkProjectTable" class="display">
 						<thead>
 							<tr>
 								<th class="table-checkbox"></th>
@@ -100,16 +95,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</table>
 			</div>
 			<!-- 担保项目查询部分结束 -->
-		</div>
-	</div>
 </body>
 <!-- 公用js -->
 	<jsp:include page="../../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="../js/recommend/guarantee-manage.js"></script>
+	<script type="text/javascript" src="plugs/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript">
 		$('#checkProjectTable').DataTable({
+			//"scrollY":400,
+			"scrollX":true,
 			"aaSorting" : [ [ 3,5,8, "desc" ] ],//默认第几个排序
 			"aoColumnDefs" : [
 			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示

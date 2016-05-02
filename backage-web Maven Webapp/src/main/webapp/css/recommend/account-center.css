@@ -12,12 +12,23 @@
 	margin:10px;
 	text-align:center;
 	display:block;
-	width:310px;
+	width:450px;
+	float: left;
 }
 .recharge .con-item-word{
 	display:inline-block;
 	width:110px;
 	text-align:right;
+	float:left;
+}
+.con-item-word+input,
+.con-item-word+select,
+.con-item-word+textarea,
+.unit{
+	float:left;
+}
+.unit{
+	line-height:25px;
 }
 .rechargecost,.acturallymoney{
 	display:block;
@@ -31,10 +42,6 @@
 }
 .con-item .rechargebtn{
 	width:60px;
-}
-.unit{
-	position:absolute;
-	line-height:30px;
 }
 /* 充值界面部分结束 */
 /* 提现界面部分开始 */
@@ -163,6 +170,9 @@
 button.obtn.obtn-query{
 	font-size:13px;
 }
+.assetcontainer{
+	max-width:660px;
+}
 /* 提现界面部分结束 */
 .accountMain .active{
 	display:block;
@@ -211,6 +221,7 @@ button.obtn.obtn-query{
     font-weight: 400;
     display: inline-block;
     padding: 0;
+    font-size:13px;
 }
 .label1{
 	float:left;
@@ -243,3 +254,54 @@ button.obtn.obtn-query{
 .selectInput{
 	heihgt:37px;
 }
+.cmbtncontainer{
+	padding: 0 10px 12px;
+    pointer-events: auto;
+    margin-top: 30px;
+    margin-left: 20px;
+    text-align: center;
+}
+.cmbtncontainer a {
+    height: 28px;
+    line-height: 28px;
+    margin: 0 6px;
+    padding: 0 15px;
+    border: 1px solid #dedede;
+    background-color: #f1f1f1;
+    color: #333;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: top;
+}
+.cmbtncontainer a:hover {
+    opacity: .9;
+    text-decoration: none;
+}
+.cmbtncontainer .commonbtn0{
+	border-color: #4898d5;
+    background-color: #2e8ded;
+    color: #fff;
+}
+.accrechargecon{
+	margin-top:20px;
+	text-align:right;
+}
+.rechargeta{
+	width:180px;
+	vertical-align:middle;
+}
+/* 担保借款金额范围 */
+#loanamount{
+	margin:10px;
+}
+#loanamountform .form-group input{
+	margin:0 5px;
+}
+.loanamountcon{
+	text-align:right;
+	margin-top:35px;
+}
+/* 担保借款金额范围 */

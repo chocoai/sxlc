@@ -9,14 +9,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>复合会员</title>
+	<title>投资会员</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" type="text/css" href="css/membershipManagement.css">
+	<link rel="stylesheet" href="css/member/member.css" type="text/css"></link>
+	<link rel="stylesheet" href="css/member/memberDetail.css" type="text/css" >
 </head>
 
 <body class="nav-md">
@@ -24,473 +25,145 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="2" name="top_menu_index"/>
+				<jsp:param value="2" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-member.jsp"></jsp:include>
-		
+			<jsp:include page="../common/cm-member.jsp">
+				<jsp:param value="201" name="_index_m2"/>
+				<jsp:param value="20107" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-					<!-- <ul class="nav nav-tabs">
-						<li role="presentation" class=" allMembers"><a href="javascript:;">全部会员</a></li>
-						<li role="presentation" class="membersVipCu"><a href="javascript:;">VIP会员</a></li>
-						<li role="presentation" class="registeredMemberCu"><a href="javascript:;">注册会员</a></li>
-						<li role="presentation" class="authenticationInformation"><a href="javascript:;">认证会员</a></li>
-						<li role="presentation" class="loanMemberCu"><a href="javascript:;">借款会员</a></li>
-						<li role="presentation" class="investmentMemberCu"><a href="javascript:;">投资会员</a></li>
-						<li role="presentation" class="active"><a href="javascript:;">复合会员</a></li>
-						<li role="presentation" class="memberBlackListCu"><a href="javascript:;">会员黑名单</a></li>
-						<li role="presentation" class=""><a href="javascript:;">资料认证</a></li>
-						<li role="presentation" class=""><a href="javascript:;">会员分配理财顾问</a></li>
-						<li role="presentation" class=""><a href="javascript:;">理财顾问变更</a></li>
-					</ul> -->
-				<div class="search">
-					<div class="panel panel-success boxRadius">
-						<div class="panel-heading">
-							<div class="i-fl search_title">条件查询</div>
-							<div class="i-fr action_item">
-								<ul class="list_item list-inline">
-									<li>
-										<span class="glyphicon glyphicon-search"></span>
-										<span>查询</span>
-									</li>
-									<a class="state">
-										<span class="glyphicon glyphicon-chevron-down"></span>
-									</a>
-								</ul>
+				<div class="nav-tabs-con active">
+					<div class="search">
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<div class="i-fl search_title">条件查询</div>
+								<div class="i-fr action_item">
+									<ul class="list_item list-inline">
+										<li><a class="state">展开&nbsp;<span class="glyphicon glyphicon-chevron-down"></span> </a></li>
+									</ul>
+								</div>
 							</div>
+							<div class="panel-body">
+								<form id="" class="" action="">
+									<span class="con-item"><span>用户名</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>姓名</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>手机号</span><input type="text" class="notspecial" /></span>
+									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+								</form>
+						  	</div>
+						 </div>
+					</div> 
+					<div class="data_display">
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<div class="action_item">
+									<button class="obtn glyphicon examine" onclick="detailView();">查看会员详情</button>
+									<button class="obtn glyphicon" onclick="loanView();">借款项目查询</button>
+									<button class="obtn glyphicon" onclick="investView();">投资项目查询</button>
+									<button class="obtn glyphicon" onclick="transactionRecord();">交易记录</button>
+									<button class="obtn glyphicon" onclick="recordQuery();">提现记录查询</button>
+									<button class="obtn glyphicon" onclick="inviteView();">查看邀请会员列表</button>
+									<button class="obtn glyphicon" onclick="messageSendPer();">发送消息</button>
+								</div>
+							</div>
+							
+							<div class="panel-body">
+								<table id="table_id" class="display">
+									<thead>
+										<tr>
+											<th class="table-checkbox"></th>
+											<th>会员编号</th>
+											<th>姓名</th>
+											<th>用户名</th>
+											<th>所属地区</th>
+											<th>手机号码</th>
+											<th>第三方帐户</th>
+											<th>帐户余额(元)</th>
+											<th>冻结金额(元)</th>
+											<th>充值总额(元)</th>
+											<th>充值手续费合计(平台/元)</th>
+											<th>充值手续费合计(会员/元)</th>
+											<th>投资总额(元)</th>
+											<th>累计收益管理费(元)</th>
+											<th>提现总额(元)</th>
+											<th>提现手续费合计(平台/元)</th>
+											<th>提现手续费合计(会员/元)</th>
+											<th>借款总额(元)</th>
+											<th>累计借款管理费(元)</th>
+											<th>在借金额(元)</th>
+											<th>已结清金额(元)</th>
+											<th>累计逾期未还本金(元)</th>
+											<th>累计逾期未还利息(元)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%
+											for (int i = 0; i < 15; i++) {
+										%>
+										<tr>
+											<td><input type="checkbox" /></td>
+											<td>会员编号</td>
+											<td>姓名</td>
+											<td>用户名</td>
+											<td>所属地区</td>
+											<td>手机号码</td>
+											<td>第三方帐户</td>
+											<td class="moneyFormat">1200</td>
+											<td class="moneyFormat">1000</td>
+											<td class="moneyFormat">1500</td>
+											<td class="moneyFormat">100</td>
+											<td class="moneyFormat">100</td>
+											<td class="moneyFormat">15000</td>
+											<td class="moneyFormat">50</td>
+											<td class="moneyFormat">10</td>
+											<td class="moneyFormat">100</td>
+											<td class="moneyFormat">12250</td>
+											<td class="moneyFormat">1215</td>
+											<td class="moneyFormat">100</td>
+											<td class="moneyFormat">100</td>
+											<td class="moneyFormat">1000</td>
+											<td class="moneyFormat">100</td>
+											<td class="moneyFormat">1000</td>
+										</tr>
+										<%
+											}
+										%>
+									</tbody>
+								</table>
+							</div>
+							
 						</div>
-						<div class="panel-body">
-							<form class="" action="">
-								<span class="con-item"><span>用户名</span><input type="text" class="" placeholder="用户名" /></span>
-								<span class="con-item"><span>企业名称</span><input type="text" class="" placeholder="企业名称" /></span>
-								<span class="con-item"><span>联系人手机号</span><input type="text" class="" placeholder="联系人手机号" /></span>
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-							</form>
-					  	</div>
 					</div>
-				</div> 
-				<div class="data_display i-mt">
-					<div class="panel panel-success boxRadius">
-					  <div class="panel-heading">
-						  <div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil">修改</button>
-								<button class="obtn glyphicon glyphicon-trash">删除</button>
-								<button class="obtn glyphicon viewMembershipDetails">查看会员详情</button>
-								<button class="obtn glyphicon loanItemQueryCunt">借款项目查询</button>
-								<button class="obtn glyphicon nvestmentProjectInquiryCunt">投资项目查询</button>
-								<button class="obtn glyphicon transactionRecordCunt">交易详情</button>
-								<button class="obtn glyphicon queryRecordQueryCunt">提现记录查询</button>
-								<button class="obtn glyphicon inviteMembersCunt">查看邀请会员列表</button>
-								<button class="obtn glyphicon sendMessageCunt">发送消息</button>
-							</div>
+				
 				</div>
-					<div class=" panel-body tScroll">
-						<table id="memberSelect" class="display table-hover memberselect_b">
-						      		<thead>
-							<tr>
-								<th> </th>
-								<th rowspan="1" colspan="1">会员编码</th>
-								<th class="sorting_asc" aria-controls="gridImport">姓名</th>
-								<th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 133px;">用户名</th>
-								<th>所属地区</th>
-								<th>手机号码</th>
-								<th>第三方账户</th>
-								<th>账户余额</th>
-								<th>冻结金额</th>
-								<th>充值总额</th>
-								<th>充值手续费合计（平台）</th>
-								<th>充值手续费合计（会员）</th>
-								<th>投资总额</th>
-								<th>累计借款管理费</th>
-								<th>在借金额</th>
-								<th>已结清金额</th>
-								<th>累计逾期未还本金</th>
-								<th>累计逾期未还利息</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="table-checkbox sorting_disabled" rowspan="1" colspan="1">
-									<input class="group_checkable" type = "checkbox" onclick="selectAll(this)">
-								</td>
-								<td>1</td>
-								<td>张三</td>
-								<td>KFSDLY00000001</td>
-								<td>13000000000</td>
-								<td>四川省成都市郫县</td>
-								<td>123456789123456789</td>
-								<td>100.00</td>
-								<td>50.00</td>
-								<td>1000.00</td>
-								<td>200.00</td>
-								<td>100.00</td>
-								<td>1000.00</td>
-								<td>50.00</td>
-								<td>1000.00</td>
-								<td>200.00</td>
-								<td>100.00</td>
-								<td>1000.00</td>
-							</tr>
-							<tr>
-								<td class="table-checkbox sorting_disabled" rowspan="1" colspan="1">
-									<input class="group_checkable" type = "checkbox" onclick="selectAll(this)">
-								</td>
-								<td>1</td>
-								<td>张三</td>
-								<td>KFSDLY00000001</td>
-								<td>13000000000</td>
-								<td>四川省成都市郫县</td>
-								<td>123456789123456789</td>
-								<td>100.00</td>
-								<td>50.00</td>
-								<td>1000.00</td>
-								<td>200.00</td>
-								<td>100.00</td>
-								<td>1000.00</td>
-								<td>50.00</td>
-								<td>1000.00</td>
-								<td>200.00</td>
-								<td>100.00</td>
-								<td>1000.00</td>
-							</tr>
-						</tbody>
-	                    </table>
-					</div>
-					</div>
-				</div>
-			
 			</div>
-		
-			<!-- 尾部 -->
-			
-		</div>
-	</div>
-		<!-- 查看会员详情 -->
-	<div class="membershipDetails">
-		<fieldset>
-			<form>
-				<table class="viewMembershipDetailsTable">
-					<tr class="viewMembershipDetailsTr">
-						<th>会员编号：</th>
-						<td><input class="fieldsetInput" type="text" placeholder="会员编号"></td>
-						<th class="viewMembershipDetailsTh">会员用户名：</th>
-						<td><input class="fieldsetInput" type="text" placeholder="会员用户名"></td>
-					</tr>
-					<tr class="viewMembershipDetailsTr">
-						<th>真实姓名：</th>
-						<td><input class="fieldsetInput" type="text" placeholder="真实姓名"></td>
-						<th class="viewMembershipDetailsTh memberDistance_d">身份证号：</th>
-						<td><input class="fieldsetInput" type="text" placeholder="身份证号"></td>
-					</tr>
-					<tr class="viewMembershipDetailsTr">
-						<th class="memberDistance">籍贯：</th>
-						<td><input class="fieldsetInput" type="text" placeholder="籍贯"></td>
-						<th class="viewMembershipDetailsTh memberDistance">民族：</th>
-						<td><input class="fieldsetInput" type="text" placeholder="民族"></td>
-					</tr>
-					<tr class="viewMembershipDetailsTr">
-						<th>户籍地址：</th>
-						<td><input class="fieldsetInput" type="text" placeholder="户籍地址"></td>
-						<th class="viewMembershipDetailsTh memberDistance_d">居住地址：</th>
-						<td><input class="fieldsetInput" type="text" placeholder="居住地址"></td>
-					</tr>
-					<tr class="viewMembershipDetailsTr">
-						<th>手机号码：</th>
-						<td><input class="fieldsetInput" type="tel" placeholder="手机号码"></td>
-						<th class="viewMembershipDetailsTh memberDistance_d">电子邮箱：</th>
-						<td><input class="fieldsetInput" type="email" placeholder="电子邮箱"></td>
-					</tr>
-					<tr class="viewMembershipDetailsTr">
-						<th class="memberDistance_a">qq:</th>
-						<td><input class="fieldsetInput" type="tel" placeholder="qq"></td>
-						<th class="viewMembershipDetailsTh memberDistance_e viewMembershipDetailsPo">性别:</th>
-						<td class="viewMembershipDetailsTd">
-							<input class="fieldsetInput"  type="radio" value="0" name="sex" >
-							<label class="">男</label>
-							<input class="fieldsetInput"  type="radio" value="1" name="sex">
-							<label class="">女</label> 
-						</td>
-					</tr>
-					<tr class="viewMembershipDetailsTr">
-						<th>出生日期：</th>
-						<td><input class="fieldsetInput" placeholder="出生日期"></td>
-						<th class="viewMembershipDetailsTh memberDistance_c">年龄：</th>
-						<td><input class="fieldsetInput" placeholder="年龄"></td>
-					</tr>
-					<tr class="viewMembershipDetailsTr">
-						<th>最高学历：</th>
-						<td><input class="fieldsetInput" placeholder="最高学历"></td>
-						<th class="viewMembershipDetailsTh memberDistance_d">婚姻状况：</th>
-						<td><input class="fieldsetInput" placeholder="婚姻状况"></td>
-					</tr>
-					<tr class="viewMembershipDetailsTr">
-						<th>月均收入：</th>
-						<td><input class="fieldsetInput" placeholder="月均收入"></td>
-						<th class="viewMembershipDetailsTh memberDistance_c">地区：</th>
-						<td><input class="fieldsetInput" placeholder="地区"></td>
-					</tr>
-				</table>
-			</form>
-		</fieldset>
-	</div>
-	
-	<!-- 借款项目查询 -->
-	<div class="loanItemQuery">
-		<div class="panel-body">
-			<form class="" action="">
-				<span class="con-item"><span>借款编号</span><input type="text" class="" placeholder="借款编号" /></span>
-				<span class="con-item"><span>借款名称</span><input type="text" class="" placeholder="借款名称" /></span>
-				<span class="con-item"><span>提款借款意向时间</span><input type="text" class="" placeholder="提款借款意向时间" /></span>
-				<span class="con-item"><span>审批通过时间</span><input type="text" class="" placeholder="审批通过时间" /></span>
-				<span class="con-item"><span>担保机构名称</span><input type="text" class="" placeholder="担保机构名称" /></span>
-				<span class="con-item"><span>项目状态</span><input type="text" class="" placeholder="项目状态" /></span>
-				<span class="con-item"><span>放款时间</span><input type="text" class="" placeholder="放款时间" /></span>
-				<span class="con-item"><span>结清时间</span><input type="text" class="" placeholder="结清时间" /></span>
-				<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-			</form>
-		</div>
-		<table id="loanItemQuery" class="membershipDetails_a table table-hover " >
-			<thead>
-				<tr>
-					<th rowspan="1" colspan="1">项目编号</th>
-					<th>项目名称</th>
-					<th>提交借款意向时间</th>
-					<th>审批通过时间</th>
-					<th>借款金额</th>
-					<th>实际借款金额</th>
-					<th>担保机构名称</th>
-					<th>项目状态</th>
-					<th>放款时间</th>
-					<th>结清时间</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>HY00000001</td>
-					<td>项目名称</td>
-					<td>2016-01-01</td>
-					<td>2016-06-06</td>
-					<td>&yen;1000.00</td>
-					<td>50.00</td>
-					<td>担保机构名称</td>
-					<td>项目状态</td>
-					<td>放款时间</td>
-					<td>结清时间</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	
-	
-		<!-- 投资项目查询 -->
-	<div class="nvestmentProjectInquiry">
-		<div class="panel-body">
-			<form class="" action="">
-				<span class="con-item"><span>借款编号</span><input type="text" class="" placeholder="借款编号" /></span>
-				<span class="con-item"><span>借款名称</span><input type="text" class="" placeholder="借款名称" /></span>
-				<span class="con-item"><span>投资时间</span><input type="text" class="" placeholder="投资时间" /></span>
-				<span class="con-item"><span>放款时间</span><input type="text" class="" placeholder="放款时间" /></span>
-				<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-			</form>
-		</div>
-		<table id="nvestmentProjectInquiry" class="membershipDetails_a table table-hover " >
-			<thead>
-				<tr>
-					<th rowspan="1" colspan="1">项目编号</th>
-					<th>项目名称</th>
-					<th>投资时间</th>
-					<th>投资总金额</th>
-					<th>使用红包中金额</th>
-					<th>使用代金券总额</th>
-					<th>使用返现券总额</th>
-					<th>放款时间</th>
-					<th>投资总金额</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>HY00000002</td>
-					<td>项目名称</td>
-					<td>2016-01-01</td>
-					<td>2016-06-06</td>
-					<td>&yen;100.00</td>
-					<td>&yen;50.00</td>
-					<td>&yen;20.00</td>
-					<td>2016-01-01</td>
-					<td>&yen;10000.00</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	
-		<!-- 交易记录 -->
-	<div class="transactionRecord">
-		<div class="panel-body">
-			<form class="" action="">
-				<span class="con-item"><span>交易类型</span><input type="text" class="" placeholder="交易类型" /></span>
-				<span class="con-item"><span>交易时间范围</span><input type="text" class="" placeholder="交易时间范围" /></span>
-				<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-			</form>
-		</div>
-		<table id="transactionRecord" class="memberselect_b table table-hover " >
-			<thead>
-				<tr>
-					<th rowspan="1" colspan="1">序号ID</th>
-					<th>交易类型</th>
-					<th>交易金额</th>
-					<th>总金额</th>
-					<th>冻结金额</th>
-					<th>待收本金</th>
-					<th>待收利息</th>
-					<th>可用余额</th>
-					<th>待还本金</th>
-					<th>待还利息</th>
-					<th>待还逾期利息</th>
-					<th>待还逾期罚金</th>
-					<th>交易对方</th>
-					<th>交易时间</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>交易类型</td>
-					<td>&yen;100.00</td>
-					<td>&yen;100.00</td>
-					<td>&yen;100.00</td>
-					<td>&yen;50.00</td>
-					<td>&yen;20.00</td>
-					<td>&yen;20.00</td>
-					<td>&yen;10000.00</td>
-					<td>&yen;100.00</td>
-					<td>&yen;50.00</td>
-					<td>&yen;20.00</td>
-					<td>&yen;20.00</td>
-					<td>&yen;10000.00</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	
-	
-		<!-- 查看邀请会员列表 -->
-	<div class="inviteMembers">
-		<div class="panel-body">
-			<form class="" action="">
-				<span class="con-item"><span>借款编号</span><input type="text" class="" placeholder="借款编号" /></span>
-				<span class="con-item"><span>会员用户名</span><input type="text" class="" placeholder="会员用户名" /></span>
-				<span class="con-item"><span>会员名称</span><input type="text" class="" placeholder="会员名称" /></span>
-				<span class="con-item"><span>手机号</span><input type="text" class="" placeholder="手机号" /></span>
-				<span class="con-item"><span>注册时间</span><input type="text" class="" placeholder="注册时间" /></span>
-				<span class="con-item"><span>开通第三方时间</span><input type="text" class="" placeholder="开通第三方时间" /></span>
-				<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-			</form>
-		</div>
-		<table id="inviteMembers" class="membershipDetails_a table table-hover " >
-			<thead>
-				<tr>
-					<th rowspan="1" colspan="1">会员编号</th>
-					<th>会员用户名</th>
-					<th>会员名称</th>
-					<th>手机号</th>
-					<th>注册时间</th>
-					<th>开通第三方时间</th>
-					<th>邀请总投资金额</th>
-					<th>邀请总借款金额</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>HY000000025</td>
-					<td>张三</td>
-					<td>会员名称</td>
-					<td>12345678912</td>
-					<td>2015-01-01</td>
-					<td>2015-01-01</td>
-					<td>&yen;1000.00</td>
-					<td>&yen;1000.00</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	
-		<!-- 提现记录查询 -->
-	<div class="queryRecordQuery">
-		<div class="panel-body">
-			<form class="" action="">
-				<span class="con-item"><span>提现提交时间</span><input type="text" class="" placeholder="提现提交时间" /></span>
-				<span class="con-item"><span>到账时间</span><input type="text" class="" placeholder="到账时间" /></span>
-				<span class="con-item"><span>平台交易流水号</span><input type="text" class="" placeholder="平台交易流水号" /></span>
-				<span class="con-item"><span>第三方交易流水号</span><input type="text" class="" placeholder="第三方交易流水号" /></span>
-				<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-			</form>
-		</div>
-		<table id="queryRecordQueryTable" class="memberselect_b table table-hover " >
-			<thead>
-				<tr>
-					<th rowspan="1" colspan="1">提现提交时间</th>
-					<th>提现金额</th>
-					<th>提现银行卡</th>
-					<th>第三方手续费</th>
-					<th>实际到账金额</th>
-					<th>提现状态</th>
-					<th>到账时间</th>
-					<th>平台交易流水号</th>
-					<th>第三方交易流水号</th>
-					<th>备注</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>交易类型</td>
-					<td>&yen;100.00</td>
-					<td>&yen;100.00</td>
-					<td>&yen;100.00</td>
-					<td>&yen;50.00</td>
-					<td>&yen;20.00</td>
-					<td>&yen;20.00</td>
-					<td>&yen;10000.00</td>
-					<td>&yen;10000.00</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	
-
-	<!-- 发送消息-->
-	<div class="sendMessage">
-		<div id="sendMessage sendMessageDetailsCu">
-			<form class="form-inline" name="search">
-				<div class="sendMessage_Phone">
-					<label for="sendMessagePhone">手机号：</label>
-					<input type="text" placeholder="手机号" id="sendMessagePhone">
-				</div>
-				<div class="sendMessage_Email">
-					<label for="sendMessageEmail">邮箱：</label>
-					<input type="text" placeholder="邮箱" id="sendMessageEmail">
-				</div>
-				<div class="sendMessage_Letter">
-					<label for="sendMessageMail">站内信:</label>
-					<textarea placeholder="站内信" rows="10%" cols="40%" id="sendMessageMail"></textarea>
-				</div>
-				<div class="sendMessage_sendOut">
-					<div class="button ">发送</div>
-					<div class="button ">取消</div>
-				</div>
-			</form>
 		</div>
 	</div>
 	
-	<!-- 公用js -->
+		<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/membershipManagement.js"></script>
+	<script type="text/javascript" src="js/member/member.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#table_id').DataTable({
+				"scrollX":true,
+				//"scrollY":true,
+				"aaSorting" : [ [ 7,9,14,19,21,22, "desc" ] ],//默认第几个排序
+				"aoColumnDefs" : [
+				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
+				{
+					"orderable" : false,
+					"aTargets" : [0,1,2,3,4,5,6,8,10,11,12,13,15,16,17,18,20]
+				} // 制定列不参与排序
+				],
+			});
+		});
+	</script>
 </body>
-
-</html>

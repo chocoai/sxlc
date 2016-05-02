@@ -65,7 +65,7 @@ $(function(){
           layer.msg('拉黑原因：'+text);
         });	      
 	});
-	//查看借款项目详情
+/*	//查看借款项目详情
 	$('#loan_detail').on('click', function(){
 	    layer.open({
 	        type: 2,
@@ -75,11 +75,16 @@ $(function(){
 	        area : ['620px' , '500px'],
 	        content: 'web/project/pro-add/loan_pro_detail.jsp'
 	    });
-	});
+	});*/
 });
 /******补充资料*******/
 function addInfo(){
 	$(".right_col").load("web/project/pro-add/add_information.jsp");
 }
+/******查看借款项目详情*******/
+function view_detail(){
+	$(".right_col").load("web/project/pro-add/loan_pro_detail.jsp");
+}
+
 
 

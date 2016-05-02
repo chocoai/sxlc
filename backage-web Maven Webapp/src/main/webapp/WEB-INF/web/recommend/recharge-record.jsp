@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="9" name="top_menu_index"/>
+			<jsp:param value="9" name="top_menu_index"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
@@ -67,7 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="panel panel-success">
 					<div class="panel-heading">
 						<div class="action_item">
-							<button class="obtn glyphicon glyphicon-plus" onclick="window.location.href='web/recommend/account-center.jsp'">充值</button>
+							<button class="obtn glyphicon glyphicon-plus" onclick="picAdd('充值','web/recommend/re-add/recharge.jsp','1')">充值</button>
 							<!-- onclick="accRecharge() -->
 						</div>
 					</div>
@@ -87,7 +87,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<tbody>
 								<%for (int i = 0; i < 15; i++) {%>
 								<tr>
-									<td class="table-checkbox"></td>
+									<td class="table-checkbox"><input type="checkbox" /></td>
 									<td>交易时间</td>
 									<td>平台交易编号</td>
 									<td>第三方交易流水号</td>
@@ -108,6 +108,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/recommend/recharge-record.js"></script>	
 	<script type="text/javascript">
 		$('#table_id').DataTable({
 			scrollX:true,

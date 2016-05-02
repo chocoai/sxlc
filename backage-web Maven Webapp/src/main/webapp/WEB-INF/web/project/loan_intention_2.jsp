@@ -16,6 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/project/add_borrow.css" type="text/css">
 </head>
 <!-- 借款申请管理---------------直接意向借款 -->
 <body class="nav-md">
@@ -23,11 +24,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="3" name="top_menu_index"/>
+				<jsp:param value="3" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-project.jsp"></jsp:include>
+			<jsp:include page="../common/cm-project.jsp">
+				<jsp:param value="302" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -52,8 +56,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>会员编号</span><input type="text" class="" value="会员编号" /></span>
-									<span class="con-item"><span>会员用户名</span><input type="text" class="" value="会员用户名" /></span>
+									<span class="con-item"><span>会员编号</span><input type="text" class="notspecial"></span>
+									<span class="con-item"><span>会员用户名</span><input type="text" class="notspecial"></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -63,7 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 							  	<div class="action_item">
-						  			<button id="add_intention_loan" class="obtn glyphicon glyphicon-plus">添加意向借款</button>
+						  			<button id="add_intention_loan" class="obtn glyphicon glyphicon-plus" onclick="addBorrow()" >添加意向借款</button>
 								</div>
 							</div>
 						<div class="panel-body">
@@ -86,6 +90,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 							</thead>
 							<tbody>
+									<%
+										for (int i = 0; i < 15; i++) {
+									%>
 								<tr>
 									<td><input type="checkbox"></td>
 									<td>0000001</td>
@@ -101,231 +108,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td>类型</td>
 									<td>时间</td>
 								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
+								<%
+									}
+								%>
 							</tbody>
 						</table>
 					</div>
@@ -334,6 +119,75 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		
 			<!-- 尾部 -->
+			
+		<div class="borrowingCull" id="con-account">
+			<table >
+				<tr>
+					<td class="tt"><label>借款类型：</label></td>
+					<td class="con">
+						<select class="con-repayment">
+							<option>担保贷</option>
+							<option>信用贷</option>
+							<option>抵押贷</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="tt"><label>借款金额：</label></td>
+					<td class="con">
+						<input type="text" class=" inputWidtn" datatype="nNum" maxlength="8" >
+						<span>元</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="tt">项目期限：</td>
+					<td class="con">
+						<input type="text" class="inputWidtn" datatype="nNum" maxlength="4" >
+						<select class="con-trim">
+							<option>年</option>
+							<option>月</option>
+							<option selected = "selected">天</option>
+						</select>
+					</td>					
+				</tr>
+				<tr>
+					<td class="tt"><label>年化利率：</label></td>
+					<td class="con">
+						<input type="text" class="inputWidtn" datatype="hundredNum" maxlength="6">
+						<span>%</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="tt"><label>还款方式：</label></td>
+					<td class="con">
+						<select class="con-repayment">
+							<option>等额本金</option>
+							<option>等额本息</option>
+							<option>先息后本</option>
+							<option>到期还本息</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="tt"><label>借款用途：</label></td>
+					<td class="con">
+						<textarea datatype="rolemarkC"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="tt"><label>还款来源：</label></td>
+					<td class="con">
+						<textarea datatype="rolemarkC"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="tt"><label>借款描述：</label></td>
+					<td class="con" >
+						<textarea datatype="rolemarkC"></textarea>
+					</td>
+				</tr>
+			</table>
+		</div>
 			
 	</div>
 	<!-- 公用js -->
@@ -370,6 +224,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						"sScrollXInner" : "100%",
 						"bScrollCollapse" : true
 					});
+				});
+				$(function(){
+					validform5(".layui-layer-btn0","con-account",false,"3");
 				});
 			</script>
 		</div>

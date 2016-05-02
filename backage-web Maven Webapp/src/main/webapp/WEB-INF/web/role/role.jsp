@@ -52,7 +52,6 @@
 <jsp:include page="../common/cm-css.jsp"></jsp:include>
 <!-- 私用css -->
 <link rel="stylesheet" href="css/role.css" />
-<script type="text/javascript" src="<%=basePath%>/plugs/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	var on_off =false; //停用启用权限标记
 	<%
@@ -354,11 +353,7 @@
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script type="text/javascript" src="js/valid.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/rsa/RSA.js"></script> 
-	<script type="text/javascript" src="js/rsa/Barrett.js"></script>
-	<script type="text/javascript" src="js/rsa/BigInt.js"></script>
 	<script type="text/javascript" src="js/role/role_role-manage.js"></script>
 
 </body>

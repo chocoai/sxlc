@@ -18,7 +18,6 @@
 	<!-- 公用css -->
 	<jsp:include page="../../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	
 	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
 	<link rel="stylesheet" href="css/upload.css" />
 </head>
@@ -50,7 +49,7 @@
 					</tr>
 					<tr>
 						<td class="tt" valign="top">图片预览</td>
-						<td class="con i-b2" id="fileList">
+						<td class="con" id="fileList">
 							
 						</td>
 					</tr>
@@ -66,9 +65,6 @@
 	<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
 	<script type="text/javascript" src="js/upload.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-		
-	</script>
 </body>
 
 </html>

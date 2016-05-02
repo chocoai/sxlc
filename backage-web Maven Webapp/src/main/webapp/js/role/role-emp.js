@@ -14,7 +14,10 @@ $(function() {
 				var personalName = encrypt.encrypt($("#personalNameQuery").val());
 				var personalPhone = encrypt.encrypt($("#personalPhoneQuery").val());
 				var personalIDCard = encrypt.encrypt($("#personalIDCardQuery").val());
-				var postId = encrypt.encrypt($("#postIdQuery").prop("postId"));
+				var postId = $("#postIdQuery").prop("postId");
+				if(typeof(postId)!="undefined" && postId!=''){
+					 postId = encrypt.encrypt(postId+"");
+				}
 				d.personalName = personalName;
 				d.personalPhone = personalPhone;
 				d.personalIDCard = personalIDCard;
@@ -197,7 +200,8 @@ $(function() {
 		$(".emp-add #postName").val(data[0].postName);
 		$(".emp-add #staffId").val(data[0].id);
 		$(".emp-add #personalId").val(data[0].baseInfo.id);
-		
+		$("#postName").prop("deptId",data[0].deptId);
+		$("#postName").prop("postId",data[0].postId);
 		
 		//之后
 		layer.open({
@@ -307,6 +311,7 @@ $(function() {
 				return;
 			}
 			$this.parent().find(".postId").prop("postId",data[0].id);
+			$this.parent().find(".postId").prop("deptId",data[0].deptId);
 			$this.parent().find(".postId").val(data[0].postName);
 			layer.close(index);
 		},cancel: function(index){//或者使用btn2（concel）
@@ -458,9 +463,15 @@ function getEncryptData(type){
 	data.emerName=emerName;
 	var emerPhone = encrypt.encrypt($("#emerPhone").val());
 	data.emerPhone=emerPhone;
-	var postId = encrypt.encrypt($("#postId").val());
+	var postId = $("#postName").prop("postId");
+	if(typeof(postId)!="undefined" && postId!=''){
+		 postId = encrypt.encrypt(postId+"");
+	}
 	data.postId=postId;
-	var deptId = encrypt.encrypt($("#deptId").val());
+	var deptId = $("#postName").prop("deptId");
+	if(typeof(deptId)!="undefined" && deptId!=''){
+		deptId = encrypt.encrypt(deptId+"");
+	}
 	data.deptId=deptId;
 	data.type=encrypt.encrypt(""+type);
 	return data;

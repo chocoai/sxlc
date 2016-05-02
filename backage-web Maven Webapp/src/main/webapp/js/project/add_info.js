@@ -14,7 +14,8 @@ $(function(){
 var pi = UE.getEditor('payguide');
 /* 验证 */
 $(function(){
-	validform5(".layui-layer-btn0","loan-money",false,"3");
+	validform5(".nextBtn","modInfo",false,"3");
+	validform5(".btn-pre","next_field",false,"3");
 });
 $(function(){
 	/* 年化利率*/
@@ -34,6 +35,18 @@ $(function(){
 	$(".beforeBtn").click(function(){
 		$(".nextField").hide();
 		$(".modInfo").show();
+	});
+	$(".appendixUpload").click(function(){
+		$(".nextField").hide();
+		$(".appendix").show();
+	});
+	$(".preBack").click(function(){
+		$(".appendix").hide();
+		$(".nextField").show();
+	});
+	$(".cancel").click(function(){
+		$(".appendix").hide();
+		$(".nextField").show();
 	});
 });
 /* 添加红包惊喜标 */
@@ -58,7 +71,7 @@ $(function(){
 			  title:'选择担保机构',
 			  btn: ['确定','取消'],
 			  //skin: 'layui-layer-rim', //加上边框
-			  area: ['420px', '300px'], //宽高
+			  area: ['800px', '520px'], //宽高
 			  content: $(".select_mechanism"),
 			  btn1:function(){
 				  var val=$('input:radio[name="mechanism"]:checked').val();
@@ -86,4 +99,39 @@ $(function(){
 		});
 	});
 });
-
+/* 控制输入为数字   
+ * 伍成然
+ * 2016-04-29*/
+$(function(){
+	$(".numberReg").each(function(){
+		$(this).focus(function(){
+			$(this).keyup(function(){
+				if(this.value.length > 0){
+					this.value = this.value.replace(/[^0-9]/g,'');
+				}
+			});
+		});
+		$(this).change(function(){
+			this.value = this.value.replace(/[^0-9.]/g,'');
+		});
+	});
+});
+/* checkbox控制输入框不可输入
+ * 伍成然
+ * 2016-04-29 */
+$(function(){
+	$(".check_select").click(function(){
+		if($('.check_select').is(':checked')){
+			$(this).parent().siblings().find("input").attr("disabled",false);
+		}else{
+			$(this).parent().siblings().find("input").attr("disabled",true);
+		}
+	});
+	$(".check_select2").click(function(){
+		if($('.check_select2').is(':checked')){
+			$(this).parent().siblings().find("input").attr("disabled",false);
+		}else{
+			$(this).parent().siblings().find("input").attr("disabled",true);
+		}
+	});
+});

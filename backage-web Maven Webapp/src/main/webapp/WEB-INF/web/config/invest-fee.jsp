@@ -24,12 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-config.jsp">
-				<jsp:param value="config-0" name="config-index" />
+				<jsp:param value="601" name="_index_m2" />
+				<jsp:param value="60108" name="_index_m3" />
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -38,13 +39,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 			 	<!-- 提现手续费设置 -->
 			 	<div class="config">
-			 		<fieldset>
+			 		<fieldset class="investfd">
 			 			<legend>投资管理费</legend>
 			 			<form class="form-horizontal" role="form" name="" action="javascript:updateMange()" id="mange">
-			 				<div class="form-group">
+			 				<div class="form-group investfeediv">
 			 					<label for="lastname" class="i-fl control-label col3">投资管理费：</label>
-			 					<div class="i-fl">
-			 						<input type="text" class="form-control" name="priceDatum" id="lastname" placeholder="投资管理费">
+			 					<div class="i-fl" id="investfee">
+			 						<input type="text" class="form-control" name="priceDatum" id="lastname" placeholder="" datatype="hundrednum">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i></i></span>
@@ -53,11 +54,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 						<span></span>
 			 					</div>
 			 				</div>
-			 				<div class="form-group">
-			 					<div class="offset-col3">
-			 						<button type="submit" class="btn btn-default">保存</button>
-			 					</div>
-			 				</div>
+			 				<div class="cmbtncontainer autobidbtn">
+								<a class="commonbtn0 fcstationbtn">保存</a>
+							</div>
 			 			</form>		
 			 		</fieldset>
 			 	</div>	
@@ -75,6 +74,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script>
 		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+		 $(function(){
+			validform5(".commonbtn0","mange",false,"3");
+		});
 	</script>
 </body>
 

@@ -16,8 +16,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/config.css" type="text/css"></link>
 </head>
-<!-- 配置中心--------项目审批流程配置 -->
+<!-- 配置中心--------审批流程配置 -->
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
@@ -43,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 						  <div class="panel-heading">
 						  	<div class="action_item">
-					  			<button id="pro_allocation" class="obtn glyphicon glyphicon-plus obtn-proexam-process-add">添加</button>
+					  			<button id="pro_allocation" class="obtn glyphicon glyphicon-plus" onclick="proexamproceAdd('添加','web/config/config-add/proexam-process-add.jsp','2')">添加</button>
 							</div>
 						</div>
 						<div class="panel-body">
@@ -52,10 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<tr>
 										<th></th>
 										<th>活动点名称</th>
-										<th>关联操作权限名称</th>
-										<th>状态</th>
-										<th>担保机构审核</th>
-										<th>资产管理方审核</th>
+										<th>审批类型</th>
 										<th>操作</th>
 									</tr>
 								</thead>
@@ -65,15 +63,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									%>
 									<tr>
 										<td><input type="checkbox"></td>
-										<td>广场</td>
-										<td>王思文</td>
-										<td>已启用</td>
-										<td>是</td>
-										<td>否</td>
+										<td>活动点名称</td>
+										<td>平台审批</td>
 										<td>
 											<a href="javascript:;" class="btn-up">上移</a>
 											<a href="javascript:;" class="btn-down">下移</a>
-											<a href="javascript:;" class="btn-del">删除</a>
+											<a href="javascript:;" class="btn-del">移除</a>
 										</td>
 									</tr>
 									<%
@@ -83,6 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</table>
 						</div>
 					</div>
+					
 				</div>
 			</div>
 		
@@ -91,34 +87,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script src="js/config/proexam-process.js"></script>
+	<script type="text/javascript" src="js/config/proexam-process.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
-				//默认禁用搜索和排序
-				/* $.extend( $.fn.dataTable.defaults, {
-				    searching: true,
-				    ordering:  false
-				} ); */
-				$('#table_id').DataTable({
-					"autoWidth" : false,
-					//scrollY : 500,
-					//paging : false,//分页
-					//"searching" : false,
-					"info" : false,//左下角信息
-					//"ordering": false,//排序
-					"aaSorting" : [],//默认第几个排序
-					"aoColumnDefs" : [
-					//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-					{
-						"orderable" : false,
-						"aTargets" : [ 0, 1, 2, 3, 4, 5, 6 ]
-					} // 制定列不参与排序
-					],
-					colReorder : false,
-					"sScrollX" : "100%",
-					"sScrollXInner" : "100%",
-					"bScrollCollapse" : true
-				});
+		//默认禁用搜索和排序
+		/* $.extend( $.fn.dataTable.defaults, {
+		    searching: true,
+		    ordering:  false
+		} ); */
+		$('#table_id').DataTable({
+			"scrollX":true,
+			"autoWidth" : false,
+			//scrollY : 500,
+			//paging : false,//分页
+			//"searching" : false,
+			"info" : false,//左下角信息
+			//"ordering": false,//排序
+			"aaSorting" : [],//默认第几个排序
+			"aoColumnDefs" : [
+			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
+			{
+				"orderable" : false,
+				"aTargets" : [ 0, 1, 2, 3 ]
+			} // 制定列不参与排序
+			],
+			colReorder : false,
+			"sScrollX" : "100%",
+			"sScrollXInner" : "100%",
+			"bScrollCollapse" : true
+		});
 			</script>
 		</div>
 	</div>

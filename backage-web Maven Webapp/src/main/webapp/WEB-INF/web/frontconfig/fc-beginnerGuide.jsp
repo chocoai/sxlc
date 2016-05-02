@@ -42,7 +42,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</tr>																	
 				</table>
 				<div class="bgAdd">
-					<button type="submit" class="btn">提交</button>
+					<button id="save" type="button" class="btn">提交</button>
 				</div>				
 			</div>
 		</div>
@@ -55,9 +55,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>	
 	<script type="text/javascript" src="js/valid.js"></script>		
+	<script type="text/javascript" src="js/frontconfig/fc-newhand.js"></script>	
 	<!-- 私用js -->
 	<script type="text/javascript">
-		var ag = UE.getEditor('applyguide');
+	</script>
+	<script>
+		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </body>
 </html>

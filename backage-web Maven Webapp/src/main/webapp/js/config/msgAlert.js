@@ -3,6 +3,11 @@ var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
 
 $(function(){
+	//标签页切换
+	$(".changePg").on("click",function(){
+			var type = $(this).attr("changeType");
+			changePg(type);
+	});
 	
 	//页面初始化,默认为手机短信标签页
 	$(".optionDiv").each(function () {
@@ -13,7 +18,9 @@ $(function(){
 	
 });
 
-
+/**
+ * 标签页切换
+ */
 function changePg(type){
 	if(type==1){
 		$("#title").html("手机短信");
@@ -71,6 +78,8 @@ function saveData(){
 		cache:false,  
 		dataType:'json',  
 		success:function(data) { 
+			layer.alert("操作成功",{icon:1}); 
+			
 		},  
 		error : function() {  
 			layer.alert("服务器异常",{icon:2}); 

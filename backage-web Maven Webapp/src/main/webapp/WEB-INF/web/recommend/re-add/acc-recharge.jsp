@@ -66,7 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript">
 	$(function(){
-			validform5(".commonbtn0","rechargeform",false,"3");
+		validform5(".commonbtn0","rechargeform",false,"3");
 	});
 	$(".commonbtn1").click(function(){
 		var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

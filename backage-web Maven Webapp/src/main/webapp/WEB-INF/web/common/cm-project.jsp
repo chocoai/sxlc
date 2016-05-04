@@ -17,7 +17,7 @@
                         <div class="menu_section">
                             <ul class="nav side-menu">
                                 <li id="pro_type"><a href="project/toProTypePg"><i class="fa fa-home"></i>项目类型管理</a></li>
-                                <li data-id="302" id="loan_apply_manage"><a href="web/project/loan_intention_1.jsp"><i class="fa fa-edit"></i>借款申请管理</a></li>
+                                <li data-id="302" id="loan_apply_manage"><a href="project/toLoanApplyList"><i class="fa fa-edit"></i>借款申请管理</a></li>
                                 <li data-id="303" id="loan_exam"><a href="web/project/loan_exam.jsp"><i class="fa fa-edit"></i>借款审核</a></li>       
                                 <li data-id="304" id="pro_post"><a href="web/project/post_list.jsp"><i class="fa fa-edit"></i>项目发布</a> </li>
                                 <li data-id="305" id="loan_manage" class="li_level_one">

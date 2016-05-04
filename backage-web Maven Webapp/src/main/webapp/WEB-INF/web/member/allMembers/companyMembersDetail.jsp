@@ -55,32 +55,36 @@
 						<tr>
 							<td class="tt"><label>会员编号：</label><span>会员编号</span></td>
 							<td class="tt"><label>会员用户名：</label><span>会员用户名</span></td>
-							<td class="tt"><label>真实姓名：</label><span>真实姓名</span></td>
+							<td class="tt"><label>企业名称：</label><span>真实姓名</span></td>
 						</tr>
 						<tr>
-						<td class="tt"><label>身份证号：</label><span>20221552255412554411</span></td>
-							<td class="tt"><label>籍贯：</label><span>成都</span></td>
-							<td class="tt"><label>民族：</label><span>汉</span></td>
+						<td class="tt"><label>营业执照号：</label><span>20221552255412554411</span></td>
+							<td class="tt"><label>企业地址：</label><span>成都</span></td>
+							<td class="tt"><label>法人代表：</label><span>汉</span></td>
 						</tr>
 						<tr>
-							<td class="tt"><label>地区：</label><span>北京</span></td>
-							<td class="tt"><label>居住地址：</label><span>成都郫县</span></td>
-							<td class="tt"><label>手机号码：</label><span>18454845847</span></td>
+							<td class="tt"><label>法定代表人身份证号：</label><span>500221119525542125</span></td>
+							<td class="tt"><label>组织机构代码：</label><span>154154874851541</span></td>
+							<td class="tt"><label>税务登记号：</label><span>18454845847</span></td>
 						</tr>
 						<tr>
-							<td class="tt"><label>电子邮箱：</label><span>454878454@qq.com</span></td>
-							<td class="tt"><label>qq：</label><span>454878454</span></td>
-							<td class="tt"><label>性别：</label><span>男</span></td>
+							<td class="tt"><label>经营范围：</label><span>经营范围</span></td>
+							<td class="tt"><label>经营场所：</label><span>经营场所</span></td>
+							<td class="tt"><label>公司简介：</label><span>公司简介</span></td>
 						</tr>
 						<tr>
-							<td class="tt"><label>出生日期：</label><span>1985-02-1</span></td>
-							<td class="tt"><label>年龄：</label><span>31</span></td>
-							<td class="tt"><label>最高学历：</label><span>本科</span></td>
+							<td class="tt"><label>注册资本：</label><span class="moneyFormat">1000000<samp>元</samp></span></td>
+							<td class="tt"><label>注册资本来源：</label><span>注册资本来源</span></td>
+							<td class="tt"><label>联系人：</label><span>某某某</span></td>
 						</tr>
 						<tr>
-							<td class="tt"><label>婚姻状况：</label><span>已婚</span></td>
-							<td class="tt"><label>月均收入：</label><span>10000元</span></td>
-							<td class="tt"><label>户籍地址：</label><span>四川成都</span></td>
+							<td class="tt"><label>联系人邮箱：</label><span>1545154@163.com</span></td>
+							<td class="tt"><label>联系人手机号：</label><span>188834484584</span></td>
+							<td class="tt"><label>联系人qq：</label><span>1548524825</span></td>
+						</tr>
+						<tr>
+							<td class="tt"><label>地区：</label><span>成都郫县</span></td>
+							<td class="tt"><label>注册时间：</label><span>2016-04-28</span></td>
 						</tr>
 					</table>
 				</div>
@@ -94,8 +98,8 @@
 						<tr>
 							<td class="tt"><label>第三方数字帐户：</label><span>61648451154484511</span></td>
 							<td class="tt"><label>第三方标识：</label><span>a154421544</span></td>
-							<td class="tt"><label>帐户可用余额：</label><span>2000.00元</span></td>
-							<td class="tt"><label>帐户冻结金额：</label><span>1544.00元</span></td>
+							<td class="tt"><label>帐户可用余额：</label><span class="moneyFormat">2000<samp>元</samp></span></td>
+							<td class="tt"><label>帐户冻结金额：</label><span class="moneyFormat">1544<samp>元</samp></span></td>
 						</tr>
 					</table>
 				</div>
@@ -109,21 +113,24 @@
 				<div class="w-content ishow">
 					<table>
 						<tr>
-							<td class="tt"><a>实名认证</a></td>
-							<td class="tt"><a>手机认证</a></td>
-							<td class="tt"><a>征信认证</a></td>
-							<td class="tt"><a>住址认证</a></td>
-							<td class="tt"><a>婚姻认证</a></td>
-							<td class="tt"><a>工作认证</a></td>
-							<td class="tt"><a>学历认证</a></td>
-							<td class="tt"><a>股权认证</a></td>
+							<td class="tt"><a>营业执照认证</a></td>
+							<td class="tt"><a>工商执照认证</a></td>
+							<td class="tt"><a>组织机构代码认证</a></td>
+							<td class="tt"><a>开户许可证认证</a></td>
+							<td class="tt"><a>企业银行流水认证</a></td>
 						</tr>
 						<tr>
-							<td class="tt"><a>职称认证</a></td>
-							<td class="tt"><a>社保认证</a></td>
+							<td class="tt"><a>实地考察认证</a></td>
+							<td class="tt"><a>税务登记认证</a></td>
+							<td class="tt"><a>批文认证</a></td>
+							<td class="tt"><a>财务资料认证</a></td>
+							<td class="tt"><a>监管单位认证</a></td>
+						</tr>
+						<tr>
 							<td class="tt"><a>房产认证</a></td>
 							<td class="tt"><a>车产认证</a></td>
-							<td class="tt"><a>银行流水认证</a></td>
+							<td class="tt"><a>担保考察认证</a></td>
+							<td class="tt"><a>VIP认证</a></td>
 							<td class="tt"><a>其它</a></td>
 						</tr>
 					</table>
@@ -172,7 +179,7 @@
 	<jsp:include page="../../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
-	<!-- <script type="text/javascript" src="js/member/memberVipDetail.js"></script> -->
+	<script type="text/javascript" src="js/member/memberVipDetail.js"></script>
 	
 </div>
 

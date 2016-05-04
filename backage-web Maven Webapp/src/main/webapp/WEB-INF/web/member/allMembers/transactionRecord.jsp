@@ -32,7 +32,7 @@
 						</div>
 						<div class="panel-body">
 							<form id="" class="" action="">
-								<span class="con-item"><span>交易类型</span><select class="transaction"><option>提现</option><option>充值</option></select></span>
+								<span class="con-item"><span>交易类型</span><select class="transaction" id="transaction"></select></span>
 								<span class="con-item"><span>交易时间范围</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
 								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 							</form>

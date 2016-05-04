@@ -25,6 +25,10 @@
 						<span><samp>原理财顾问编号：</samp>188831</span>
 						<span><samp>原理财顾问手机号：</samp>18883181245</span>
 						<span><samp>状态：</samp>无效</span>
+						<div class="buttonSet2">
+							<button class="obtn obtn-query">变更</button>
+							<button class="obtn obtn-query">取消</button>
+						</div>
 					</div>
 					<div class="search">
 						<div class="panel panel-success">
@@ -80,10 +84,6 @@
 						
 			</div>
 		</div>
-				<div class="buttonSet2">
-					<button class="obtn obtn-query">变更</button>
-					<button class="obtn obtn-query">取消</button>
-				</div>
 			</div>
 		</div>
 

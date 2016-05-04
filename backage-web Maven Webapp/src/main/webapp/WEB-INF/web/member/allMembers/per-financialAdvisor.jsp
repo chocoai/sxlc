@@ -21,6 +21,10 @@
 					<div class="selectMember">
 						<span><samp>选择会员：</samp>某某某</span>
 						<span><samp>姓名：</samp>某某某</span>
+						<div class="buttonSet2">
+							<button class="obtn obtn-query">确定</button>
+							<button class="obtn obtn-query">取消</button>
+						</div>
 					</div>
 					<div class="search">
 						<div class="panel panel-success">
@@ -74,10 +78,6 @@
 					</div>
 						
 				</div>
-			</div>
-			<div class="buttonSet2">
-				<button class="obtn obtn-query">确定</button>
-				<button class="obtn obtn-query">取消</button>
 			</div>
 		</div>
 	</div>

@@ -170,9 +170,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<tr class="col-md-12">
 						<td class="tt">红包惊喜标：</td>
 						<td class="con">
-							<ul class="red_list">
-								<li class="red_add">投资达到<span>10000</span>元的前<span>10</span>个，平台代付<span>1000</span>元红包</li>
-							</ul>
+							投资达到<span>10000</span>元的前<span>10</span>个，平台代付<span>1000</span>元红包
 						</td>
 					</tr>	
 					<tr class="col-md-6">

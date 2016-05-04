@@ -69,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<button class="obtn glyphicon" onclick="transactionRecord();">交易详情</button>
 									<button class="obtn glyphicon" onclick="recordQuery()">提现记录查询</button>
 									<button class="obtn glyphicon" onclick="inviteView();">查看邀请会员列表</button>
-									<button class="obtn glyphicon" onclick="messageSendPer();">发送消息</button>
+									<button class="obtn glyphicon" onclick="messageSendPer('发送信息','web/member/allMembers/per-messageSend.jsp','2');">发送消息</button>
 								</div>
 							</div>
 							

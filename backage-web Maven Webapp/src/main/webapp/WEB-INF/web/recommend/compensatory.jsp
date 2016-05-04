@@ -9,13 +9,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>保荐机构管理-担保机构管理</title>
+	<title>保荐机构管理-代偿</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/recommend/compensatory.css" />
 </head>
 
 <body class="nav-md">
@@ -37,8 +38,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus" onclick="manageAdd()">代偿</button>
-								<button class="obtn glyphicon glyphicon-pencil" onclick="manageMod()">导出</button>
+								<button class="obtn glyphicon glyphicon-plus" onclick="compenFunction()">代偿</button>
+								<button class="obtn glyphicon glyphicon-pencil" onclick="compenExport()">导出</button>
 							</div>
 						</div>
 						
@@ -47,20 +48,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<thead>
 									<tr>
 										<th class="table-checkbox"></th>
-										<th>添加时间</th>
-										<th>编号</th>
+										<th>项目编号</th>
+										<th>产品类型</th>
+										<th>项目名称</th>
+										<th>期数</th>
+										<th>借款人姓名</th>
+										<th>借款人用户名</th>
+										<th>借款人手机号</th>
 										<th>担保机构名称</th>
-										<th>营业执照号</th>
-										<th>组织机构代码</th>
-										<th>税务登记号</th>
-										<th>注册资本</th>
-										<th>注册地址</th>
-										<th>法人姓名</th>
-										<th>法人身份证号</th>
-										<th>法人手机号</th>
-										<th>联系人姓名</th>
-										<th>联系人手机号</th>
-										<th>第三方支付账号</th>
+										<th>实际借款金额</th>
+										<th>当期合约还款时间</th>
+										<th>应代偿金额</th>
 										<th>状态</th>
 										<th>操作</th>
 									</tr>
@@ -71,25 +69,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									%>
 									<tr>
 										<td><input type="checkbox" /></td>
-										<td>添加时间</td>
-										<td>编号</td>
+										<td>项目编号</td>
+										<td>产品类型</td>
+										<td>项目名称</td>
+										<td>期数</td>
+										<td>借款人姓名</td>
+										<td>借款人用户名</td>
+										<td>借款人手机号</td>
 										<td>担保机构名称</td>
-										<td>营业执照号</td>
-										<td>组织机构代码</td>
-										<td>税务登记号</td>
-										<td>注册资本</td>
-										<td>注册地址</td>
-										<td>法人姓名</td>
-										<td>法人身份证号</td>
-										<td>法人手机号</td>
-										<td>联系人姓名</td>
-										<td>联系人手机号</td>
-										<td>第三方支付账号</td>
-										<td>有效</td>
-										<td>
-											<a href="javascript:;" class="btn-enable">启用</a>
-											<a href="javascript:;" class="btn-disable">停用</a>
-										</td>
+										<td>实际借款金额</td>
+										<td>当期合约还款时间</td>
+										<td>本金</td>
+										<td>已代偿</td>
+										<td>代偿</td>
 									</tr>
 									<%
 										}
@@ -100,9 +92,57 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 					</div>
 				</div>
+				<!-- 代偿部分开始 -->
+				<div class="w-content" id="compenfunction">
+					<form action="" class="form-inline" role="form">
+						<div class="form-group">
+							<span>项目编号：</span>
+							<span>项目编号</span>
+						</div>
+						<div class="form-group">
+							<span>项目名称：</span>
+							<span>项目名称</span>
+						</div>
+					</form>
+					<form action="" class="form-inline" role="form">
+						<div class="form-group">
+							<span>借款人姓名：</span>
+							<span>借款人姓名</span>
+						</div>
+						<div class="form-group">
+							<span>借款人用户名：</span>
+							<span>借款人用户名</span>
+						</div>
+					</form>
+					<form action="" class="form-inline" role="form">
+						<div class="form-group">
+							<span>期数：</span>
+							<span>期数</span>
+						</div>
+						<div class="form-group">
+							<span>本次代偿本金：</span>
+							<span><label class="moneyFormat">1000</label><samp>元</samp></span>
+						</div>
+					</form>
+					<form action="" class="form-inline" role="form">
+						<div class="form-group">
+							<span>本次代偿利息：</span>
+							<span><label class="moneyFormat">1000</label><samp>元</samp></span>
+						</div>
+						<div class="form-group">
+							<span>本次代偿逾期利息：</span>
+							<span><label class="moneyFormat">1000</label><samp>元</samp></span>
+						</div>
+					</form>
+					<form action="" class="form-inline" role="form">
+						<div class="form-group">
+							<span>本次代偿逾期罚金：</span>
+							<span><label class="moneyFormat">1000</label><samp>元</samp></span>
+						</div>
+					</form>
+				<!-- 代偿部分结束 -->   
 			</div>
 			<!-- 尾部 -->
-			
 		</div>
 	</div>
 	<!-- 公用js -->
@@ -115,12 +155,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			//"autoWidth" : false,
 			//"scrollY":400,
 			"scrollX":true,
-			"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
+			"aaSorting" : [ ],//默认第几个排序
 			"aoColumnDefs" : [
 			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 			{
 				"orderable" : false,
-				"aTargets" : [0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+				"aTargets" : [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
 			} // 制定列不参与排序
 			],
 		});

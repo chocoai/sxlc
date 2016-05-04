@@ -241,16 +241,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<tr class="col-md-12">
 						<td class="tt"><input type="checkbox" class="check_select">是否为奖励标：</td>
 						<td class="con con-width">
-							<span>返现：本金*</span>
+							<span>填写返现：</span>
 							<input type="text" class="select_able numberReg" disabled='disabled' datatype="hundredNum" maxlength="6">
-							<span>%</span>
+							<span>%*本金</span>
 						</td>
 					</tr>
 					<tr class="col-md-12 red_surprise">
 						<td class="tt red_packets"><input type="checkbox" class="check_select2">是否为红包惊喜标：</td>
 						<td class="con con-money">
-							<span class="addRed">+</span>
-							<span class="reduceRed">—</span>
+							<span class="addRed glyphicon glyphicon-plus"></span>
+							<span class="reduceRed glyphicon glyphicon-minus"></span>
 							<ul class="red_list">
 								<li class="red_add">
 									<span>投资达到</span>
@@ -268,9 +268,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<!-- 选择担保机构 -->
 						<td class="tt"><input type="checkbox" class="check_select">担保机构：</td>
 						<td class="con con-width">
-							<button class="add_mechanism">选择担保机构</button>
+							<button class="add_mechanism" onclick="select_mechanism()">选择担保机构</button>
 							<span class="mechanism"></span>
-							<input type="text" class="select_able numberReg" disabled='disabled' maxlength="8">
+							<input type="text" class="select_input2 select_able numberReg" disabled='disabled' maxlength="8">
 							<select class="unit_select">
 								<option>%</option>
 								<option>元</option>
@@ -280,9 +280,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<tr class="col-md-12">
 						<td class="tt"><input type="checkbox" class="check_select">资产管理方：</td>
 						<td class="con con-width">
-							<button class="add_assetManagement">选择资产管理方</button>
+							<button class="add_assetManagement" onclick="select_assetManagement()">选择资产管理方</button>
 							<span class="assetManagement"></span>
-							<input type="text" class="select_able numberReg" disabled='disabled' maxlength="8">
+							<input type="text" class="select_input2 select_able numberReg" disabled='disabled' maxlength="8">
 							<span>%</span>
 						</td>
 					</tr>	
@@ -320,6 +320,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</form>
 			</fieldset>
 			<fieldset class="appendix" style="display:none">
+			<!-- 附件信息展示 -->
+			<ul class="authen">
+				<li>
+					<div class="detailTitle">
+						<span>附件类型</span><span>标题</span><span>有效期：永久有效</span>
+						<button class="viewDetail">查看详情</button>
+					</div>
+					<div class="w-content detailAuthen">
+						<div><samp>附件：</samp><img src="resoures/img/accessory.jpg"><img src="resoures/img/accessory.jpg"></div>
+					</div>
+				</li>
+			</ul>
 			<!-- 附件信息修改 -->
 				<table>
 					<tr class="col-md-12">					
@@ -361,26 +373,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</fieldset>		
 		</div>
 	</div>
-</div>
-<!-- 担保机构选择弹出层伍成然 -->
-<div class="select_mechanism" style="display:none">
-	<input type="radio" name="mechanism" value="1">机构1
-	<input type="radio" name="mechanism" value="2">机构2
-	<input type="radio" name="mechanism" value="3">机构3
-	<input type="radio" name="mechanism" value="4">机构4
-	<input type="radio" name="mechanism" value="5">机构5
-	<input type="radio" name="mechanism" value="6">机构6
-	<input type="radio" name="mechanism" value="7">机构7
-</div>
-<!-- 资产管理方选择弹出层伍成然 -->
-<div class="select_assetManagement" style="display:none">
-	<input type="radio" name="assetManagement" value="1">资产管理方1
-	<input type="radio" name="assetManagement" value="2">资产管理方2
-	<input type="radio" name="assetManagement" value="3">资产管理方3
-	<input type="radio" name="assetManagement" value="4">资产管理方4
-	<input type="radio" name="assetManagement" value="5">资产管理方5
-	<input type="radio" name="assetManagement" value="6">资产管理方6
-	<input type="radio" name="assetManagement" value="7">资产管理方7
 </div>
 <!-- 公用js -->
 <script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>

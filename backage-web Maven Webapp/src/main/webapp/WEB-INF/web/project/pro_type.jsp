@@ -87,7 +87,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="w-content pic-view">
 					<input type="hidden" id="hostPath" value="${hostPath}"/>
-					<div class="w-content hideHtml">暂无头像</div>
 					<img id="picView" src="">
 		</div>
 		

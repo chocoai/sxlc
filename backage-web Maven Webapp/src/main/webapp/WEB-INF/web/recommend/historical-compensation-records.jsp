@@ -15,6 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/recommend/historical-compensation-records.css" />
 </head>
 <body class="nav-md">
 	<div class="container body">
@@ -37,43 +38,51 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="i-fr action_item">
 								<ul class="list_item list-inline">
 									<li>
-										<a class="state">展开&nbsp;<spanclass="glyphicon glyphicon-chevron-down"></span> </a>
+										<a class="state">展开&nbsp;<span class="glyphicon glyphicon-chevron-down"></span></a> 
 									</li>
 								</ul>
 							</div>
 						</div>
 					<div class="panel-body">
 						<form id="" class="" action="">
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>项目编号</span><input type="text" class="" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>项目名称</span><input type="text" class="departmentname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>借款人姓名</span><input type="text" class="licencenum" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>借款人用户名</span><input type="text" class="contactname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>借款人手机号</span><input type="text" class="contactphone" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>担保机构名称</span><input type="text" class="contactphone" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>当期合约还款时间</span><input type="text" class="contactphone" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>代偿时间</span><input type="text" class="contactphone" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>代偿总金额</span><input type="text" class="contactphone" placeholder="" />
-							</span>
-							<span class="col-md-6 col-sm-12 col-xs-12">
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-							</span>
+							<div>
+								<span class="con-item textRight2">
+									<span>项目编号</span><input type="text" class="notspecial" placeholder="" />
+								</span>
+								<span class="con-item textRight2">
+									<span>项目名称</span><input type="text" class="notspecial" placeholder="" />
+								</span>
+								<span class="con-item textRight2">
+									<span>借款人用户名</span><input type="text" class="notspecial" placeholder="" />
+								</span>
+							</div>
+							<div>
+								<span class="con-item textRight2">
+									<span>借款人姓名</span><input type="text" class="notspecial" placeholder="" />
+								</span>
+								<span class="con-item textRight2">
+									<span>担保机构名称</span><input type="text" class="notspecial" placeholder="" />
+								</span>
+								<span class="con-item textRight3">
+									<span>借款人手机号</span><input type="text" class="notspecial" placeholder="" />
+								</span>
+							</div>
+							<div>
+								<span class="con-item textRight3">
+									<span>代偿总金额</span><input type="text" class="notspecial" placeholder="" />
+								</span>
+								<span class="con-item textRight5">
+									<span>代偿时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
+								</span>
+							</div>
+							<div>
+								<span class="con-item textRight4">
+									<span>当期合约还款时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
+								</span>
+								<span class="">
+									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+								</span>
+							</div>
 						</form>
 					</div>
 				</div>	
@@ -121,14 +130,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td>借款人用户名</td>
 									<td>借款人手机号</td>
 									<td>担保机构名称</td>
-									<td>实际借款金额</td>
+									<td><span class="moneyFormat">1000</span>元</td>
 									<td>当期合约还款时间</td>
 									<td>代偿时间</td>
-									<td>代偿本金</td>
+									<td><span class="moneyFormat">1000</span>元</td>
 									<td>代偿利息</td>
 									<td>代偿逾期利息</td>
-									<td>代偿逾期罚金</td>
-									<td>代偿总金额</td>
+									<td><span class="moneyFormat">1000</span>元</td>
+									<td><span class="moneyFormat">1000</span>元</td>
 									<td>是</td>
 								</tr>
 								<%}%>

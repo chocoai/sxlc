@@ -69,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<div class="admPasword">
 							<i class="loginIcon pwd"></i>
-							<input type="text"  name="adminPwd" id="adminPwd" placeholder="密码" >
+							<input type="password"  name="adminPwd" id="adminPwd" placeholder="密码" >
 						</div>
 						<div class="admPhoneCode">
 							<i class="loginIcon phone"></i>

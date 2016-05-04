@@ -3,6 +3,7 @@
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String content = request.getParameter("content");
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -37,26 +38,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 					<div class="panel-body">
 						<form id="" class="" action="">
+						<input type="hidden" id="guId" value="<%=content %>" />
 							<div>
 								<span class="con-item textRight2">
-									<span>项目编号</span><input type="text" class="" placeholder="" />
+									<span>项目编号</span><input id="projectNo" type="text" class="" placeholder="" />
 								</span>
 								<span class="con-item textRight2">
-									<span>项目名称</span><input type="text" class="departmentname" placeholder="" />
+									<span>项目名称</span><input id="projectTitle" type="text" class="departmentname" placeholder="" />
 								</span>
 								<span class="con-item textRight2">
-									<span>借款人用户名</span><input type="text" class="contactname" placeholder="" />
+									<span>借款人用户名</span><input id="logname" type="text" class="contactname" placeholder="" />
 								</span>
 							</div>
 							<div>
 								<span class="con-item textRight2">
-									<span>借款人姓名</span><input type="text" class="contactname" placeholder="" />
+									<span>借款人姓名</span><input id="personalName" type="text" class="contactname" placeholder="" />
 								</span>
 								<span class="con-item textRight2">
-									<span>担保机构名称</span><input type="text" class="contactname" placeholder="" />
+									<span>担保机构名称</span><input id="guaranteeName" type="text" class="contactname" placeholder="" />
 								</span>
 								<span class="con-item textRight2">
-									<span>回款时间</span><input type="text" id="startDate2" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate2\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate2" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate2\')}' ,maxDate:'2020-10-01' })" >
+									<span>回款时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate2\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate2\')}' ,maxDate:'2020-10-01' })" >
 								</span>
 							</div>
 							<div class="checkstatebtn">
@@ -70,34 +72,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<div class="panel-body">
 				<table id="checkpaymenttable" class="display">
-					<thead>
-						<tr>
-							<th class="table-checkbox"></th>
-							<th>项目编号</th>
-							<th>项目名称</th>
-							<th>回款项目期数</th>
-							<th>借款人用户名</th>
-							<th>借款人姓名</th>
-							<th>担保机构名称</th>
-							<th>回款金额</th>
-							<th>回款时间</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%for(int m=0;m<5;m++){ %>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td>项目编号</td>
-							<td>项目名称</td>
-							<td>回款项目期数</td>
-							<td>借款人用户名</td>
-							<td>借款人姓名</td>
-							<td>担保机构名称</td>
-							<td>回款金额</td>
-							<td>回款时间</td>
-						</tr>
-						<%} %>
-					</tbody>
 				</table>
 			</div>
 			<!-- 代偿回款查询部分结束 -->
@@ -110,18 +84,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="../js/recommend/guarantee-manage.js"></script>
 	<script type="text/javascript" src="plugs/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="js/recommend/checkPayment.js"></script>
 	<script type="text/javascript">
-		$('#checkpaymenttable').DataTable({
-			//"scrollY":400,
-			"scrollX":true,
-			"aaSorting" : [ [ 6,7, "desc" ] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,4,5]
-			} // 制定列不参与排序
-			],
-		});
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </html>

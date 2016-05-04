@@ -29,7 +29,10 @@
 				//console.log("页面加载后执行");
 				mathHeight();
 			};
+			//加密设置
 			var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+			var encrypt = new JSEncrypt();
+			encrypt.setPublicKey(publicKey_common);
 		</script>
  		<script src="plugs/nicescroll/jquery.nicescroll.min.js"></script>
  		<script src="js/net_util.js"></script>

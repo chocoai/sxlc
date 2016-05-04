@@ -50,12 +50,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>用户名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>姓名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>手机号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>身份证号</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>会员姓名</span><input type="text" name="member_Name" id="member_Name" class="notspecial" /></span>
+									<span class="con-item"><span>用户名</span><input type="text" name="user_Name" id="user_Name" class="notspecial" /></span>
+									<span class="con-item"><span>手机号</span><input type="text" name="phone_Num" id="phone_Num" class="notspecial" /></span>
+									<span class="con-item"><span>身份证号</span><input type="text" class="notspecial" id="id_card" /></span>
 									<span class="con-item"><span>注册时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
-									<span class="con-item"><span>注册客户端</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>注册客户端</span><input type="text" class="notspecial"  id="regClient"/></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -66,7 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="panel-heading">
 								<div class="action_item">
 									<button class="obtn glyphicon examineRegister" onclick="detailView();">查看会员详情</button>
-									<button class="obtn glyphicon" onclick="messageSendPer();">发送消息</button>
+									<button class="obtn glyphicon" onclick="messageSendPer('发送信息','web/member/allMembers/per-messageSend.jsp','2');">发送消息</button>
 								</div>
 							</div>
 							

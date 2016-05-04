@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                  <li data-id="201" id="admin" class="li_level_one active">
                                 	<a><i class="fa fa-edit"></i>个人会员<span class="fa fa-chevron-down"></span></a>
                                 	<ul class="nav child_menu ul_level_one" style="display: none">
-                                        <li data-id="20101"><a href="web/member/member.jsp"></i>全部会员</a></li>
+                                        <li data-id="20101"><a href="web/member/member.jsp">全部会员</a></li>
                                         <li data-id="20102"><a href="web/member/membersVip.jsp">VIP会员</a></li>
                                         <li data-id="20103"><a href="web/member/registeredMember.jsp">注册会员</a></li>
                                         <li data-id="20104"><a href="web/member/verifiedMember.jsp">认证会员</a></li>
@@ -36,7 +36,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                         <li data-id="20106"><a href="web/member/investmentMember.jsp">投资会员</a></li>
                                         <li data-id="20107"><a href="web/member/compositeMember.jsp">复合会员</a></li>
                                         <li data-id="20108"><a href="web/member/memberBlackList.jsp">会员黑名单</a></li>
-                                        <li data-id="20109"><a href="web/member/realNameAuthen.jsp">资料认证</a></li>
+                                        <li data-id="20109"><a href="web/member/realNameAuthen.jsp?content=0">资料认证</a></li>
                                         <li data-id="20110"><a href="web/member/memberFinancialAdvisor.jsp">会员分配理财顾问</a></li>
                                         <li data-id="20111"><a href="web/member/changeOfFinancialAdvisor.jsp">理财顾问变更</a></li>
                                     </ul>
@@ -45,16 +45,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                		<a><i class="fa fa-edit"></i>企业会员<span class="fa fa-chevron-down"></span></a>
                                 	<ul class="nav child_menu ul_level_one" style="display: none">
                                         <li data-id="20201"><a href="web/member/companyMembers.jsp">全部会员</a></li>
-                                        <li data-id="20202"><a>VIP会员</a></li>
-                                        <li data-id="20203"><a>注册会员</a></li>
-                                        <li data-id="20204"><a>认证会员</a></li>
-                                        <li data-id="20205"><a>借款会员</a></li>
-                                        <li data-id="20206"><a>投资会员</a></li>
-                                        <li data-id="20207"><a>复合会员</a></li>
-                                        <li data-id="20208"><a>会员黑名单</a></li>
-                                        <li data-id="20209"><a>资料认证</a></li>
-                                        <li data-id="20210"><a>会员分配理财顾问</a></li>
-                                        <li data-id="20211"><a>理财顾问变更</a></li>
+                                        <li data-id="20202"><a href="web/member/companyMemberVip.jsp">VIP会员</a></li>
+                                        <li data-id="20203"><a href="web/member/comanyRegistedMember.jsp">注册会员</a></li>
+                                        <li data-id="20204"><a href="web/member/companyVerifiedMember.jsp">认证会员</a></li>
+                                        <li data-id="20205"><a href="web/member/companyLoanMember.jsp">借款会员</a></li>
+                                        <li data-id="20206"><a href="web/member/companyInvestMember.jsp">投资会员</a></li>
+                                        <li data-id="20207"><a href="web/member/companyCompositeMember.jsp">复合会员</a></li>
+                                        <li data-id="20208"><a href="web/member/companyMemberBlackList.jsp">会员黑名单</a></li>
+                                        <li data-id="20209"><a href="web/member/businessLicenseAuthen.jsp?content=1">资料认证</a></li>
+                                        <li data-id="20210"><a href="web/member/companyFinancialAdvisor.jsp">会员分配理财顾问</a></li>
+                                        <li data-id="20211"><a href="web/member/companyChangeFinAdvisor.jsp">理财顾问变更</a></li>
                                     </ul>
                                  </li>
                                 <li id="admin" class="li_level_one">

@@ -177,11 +177,11 @@
 						</div>
 						<div class="w-content dept-select">
 							<div class="panel-body">
-								部门名称：<input class="w4" />
+								部门名称：<input class="w4" id="deptName" />
 								&nbsp;
-								职务名称：<input class="w4" />
+								职务名称：<input class="w4" id="postNameQuery"/>
 								&nbsp;
-								<button class="obtn obtn-query" type="button">查询</button>
+								<button class="obtn obtn-query" id="postQuery" type="button">查询</button>
 								<br>
 							</div>
 							<div class="panel-body">

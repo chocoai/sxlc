@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="css/recommend/guarantee_manage.css"></link>
+	<link rel="stylesheet" href="css/recommend/guarantee-record-query.css"/>
 </head>
 
 <body class="nav-md">
@@ -48,24 +48,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<div class="panel-body">
 							<form id="" class="" action="">
-								<span class="con-item col-md-3 col-sm-6 col-xs-6">
-									<span>项目编号</span><input type="text" class="" placeholder="" />
-								</span>
-								<span class="con-item col-md-3 col-sm-6 col-xs-6">
-									<span>项目名称</span><input type="text" class="departmentname" placeholder="" />
-								</span>
-								<span class="con-item col-md-3 col-sm-6 col-xs-6">
-									<span>担保登记时间</span><input type="text" class="licencenum" placeholder="" />
-								</span>
-								<span class="con-item col-md-3 col-sm-6 col-xs-6">
-									<span>是否代偿</span><input type="text" class="contactname" placeholder="" />
-								</span>
-								<span class="con-item col-md-3 col-sm-6 col-xs-6">
-									<span>最近代偿时间</span><input type="text" class="contactphone" placeholder="" />
-								</span>
-								<span class="col-md-9 col-sm-12 col-xs-12">
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-								</span>
+								<div>
+									<span class="con-item textRight3">
+										<span>项目编号</span><input type="text" class="notspecial" placeholder="" />
+									</span>
+									<span class="con-item textRight3">
+										<span>担保登记时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
+									</span>
+								</div>
+								<div>
+									<span class="con-item textRight3">
+										<span>项目名称</span><input type="text" class="departmentname notspecial" placeholder="" />
+									</span>
+									<span class="con-item textRight3">
+										<span>最近代偿时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
+									</span>
+								</div>
+								<div>
+									<span class="con-item textRight3">
+										<span>是否代偿</span><input type="text" class="contactname notspecial" placeholder="" />
+									</span>
+									<span class="">
+										<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									</span>
+								</div>
 							</form>
 						</div>
 					</div>
@@ -75,11 +81,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus" onclick="checkaccountinfo()">导出</button>
-								<!-- <button class="obtn glyphicon glyphicon-pencil" onclick="grq-recharge()">充值</button>
-								<button class="obtn" onclick="grq-withdraw()">提现</button>
-								<button class="obtn" onclick="g-projectpsettings()">担保项目设置</button>
-								<button class="obtn" onclick="autocompensetting()">自动代偿设置</button> -->
+								<button class="obtn glyphicon glyphicon-plus" onclick="guarequExport()">导出</button>
 							</div>
 						</div>
 						
@@ -106,11 +108,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td><input type="checkbox" /></td>
 										<td>项目编号</td>
 										<td>项目名称</td>
-										<td>借款金额</td>
-										<td>项目保证金</td>
+										<td><span class="moneyFormat">1000</span>元</td>
+										<td><span class="moneyFormat">1000</span>元</td>
 										<td>担保登记时间</td>
 										<td>是</td>
-										<td>代偿金额</td>
+										<td><span class="moneyFormat">1000</span>元</td>
 										<td>最近代偿时间</td>
 									</tr>
 									<%

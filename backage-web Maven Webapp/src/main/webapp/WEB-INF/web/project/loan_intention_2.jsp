@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
@@ -18,7 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/project/add_borrow.css" type="text/css">
 </head>
-<!-- 借款申请管理---------------直接意向借款 -->
+<!-- 借款申请管理--直接意向借款 -->
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
@@ -37,9 +38,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				<ul class="nav nav-tabs">
-					<li role="presentation"><a href="web/project/loan_intention_1.jsp">借款意向列表查询</a>
+					<li role="presentation"><a href="project/toLoanApplyList">借款意向列表查询</a>
 					</li>
-					<li role="presentation" class="active"><a href="web/project/loan_intention_2.jsp">直接意向借款</a>
+					<li role="presentation" class="active"><a href="project/toLoanApplyPg">直接意向借款</a>
 					</li>
 				</ul>
 				<div class="nav-tabs-con active">
@@ -56,9 +57,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>会员编号</span><input type="text" class="notspecial"></span>
-									<span class="con-item"><span>会员用户名</span><input type="text" class="notspecial"></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>会员编号</span><input id="memberNo" type="text" class="notspecial"></span>
+									<span class="con-item"><span>会员用户名</span><input id="logname" type="text" class="notspecial"></span>
+									<button  type="button"  class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						</div>
@@ -71,47 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 						<div class="panel-body">
-						<table id="table_loan_intention_2" class="display">
-							<thead>
-								<tr>
-									<th></th>
-									<th>会员编号</th>
-									<th>会员用户名</th>
-									<th>会员名称</th>
-									<th>会员联系号码</th>
-									<th>借款金额</th>
-									<th>借款期限</th>
-									<th>还款方式</th>
-									<th>借款用途</th>
-									<th>还款来源</th>
-									<th>借款描述</th>
-									<th>期限类型</th>
-									<th>添加意向借款申请时间</th>
-								</tr>
-							</thead>
-							<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td>类型</td>
-									<td>时间</td>
-								</tr>
-								<%
-									}
-								%>
-							</tbody>
+						<table id="table_id" class="display">
 						</table>
 					</div>
 				</div>
@@ -121,72 +82,74 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 尾部 -->
 			
 		<div class="borrowingCull" id="con-account">
+		  <form action="javascript:addData();" id="dataForm" method="post">
 			<table >
 				<tr>
 					<td class="tt"><label>借款类型：</label></td>
 					<td class="con">
-						<select class="con-repayment">
-							<option>担保贷</option>
-							<option>信用贷</option>
-							<option>抵押贷</option>
+						<select id="projectID" class="con-repayment">
+							<c:forEach var="item" items="${proTypes}">
+								<option value="${item.id}">${item.projectName}</option>
+							</c:forEach>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<td class="tt"><label>借款金额：</label></td>
 					<td class="con">
-						<input type="text" class=" inputWidtn" datatype="nNum" maxlength="8" >
+						<input type="text" id="amount" class=" inputWidtn" datatype="nNum" maxlength="8" >
 						<span>元</span>
 					</td>
 				</tr>
 				<tr>
 					<td class="tt">项目期限：</td>
 					<td class="con">
-						<input type="text" class="inputWidtn" datatype="nNum" maxlength="4" >
-						<select class="con-trim">
-							<option>年</option>
-							<option>月</option>
-							<option selected = "selected">天</option>
+						<input id="deadline" type="text" class="inputWidtn" datatype="nNum" maxlength="4" >
+						<select id="deadlineType" class="con-trim">
+							<option value="2">年</option>
+							<option value="1">月</option>
+							<option value="0" selected = "selected">天</option>
 						</select>
 					</td>					
 				</tr>
 				<tr>
 					<td class="tt"><label>年化利率：</label></td>
 					<td class="con">
-						<input type="text" class="inputWidtn" datatype="hundredNum" maxlength="6">
+						<input id="yearRate" type="text" class="inputWidtn" datatype="hundredNum" maxlength="6">
 						<span>%</span>
 					</td>
 				</tr>
 				<tr>
 					<td class="tt"><label>还款方式：</label></td>
 					<td class="con">
-						<select class="con-repayment">
-							<option>等额本金</option>
-							<option>等额本息</option>
-							<option>先息后本</option>
-							<option>到期还本息</option>
+						<select id="repayWay" class="con-repayment">
+							<option value="3">等额本金</option>
+							<option value="0">等额本息</option>
+							<option value="1">先息后本</option>
+							<option value="2">到期还本息</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<td class="tt"><label>借款用途：</label></td>
 					<td class="con">
-						<textarea datatype="rolemarkC"></textarea>
+						<textarea id="uses" datatype="rolemarkC"></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td class="tt"><label>还款来源：</label></td>
 					<td class="con">
-						<textarea datatype="rolemarkC"></textarea>
+						<textarea id="repaySource" datatype="rolemarkC"></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td class="tt"><label>借款描述：</label></td>
 					<td class="con" >
-						<textarea datatype="rolemarkC"></textarea>
+						<textarea id="projectDescript" datatype="rolemarkC"></textarea>
 					</td>
 				</tr>
 			</table>
+			</form>
 		</div>
 			
 	</div>
@@ -194,41 +157,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script src="js/project/loan_intention_2.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-				//默认禁用搜索和排序
-				/* $.extend( $.fn.dataTable.defaults, {
-				    searching: true,
-				    ordering:  false
-				} ); */
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#table_loan_intention_2').DataTable({
-						"autoWidth" : true,
-						"scrollY": 500,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-				$(function(){
-					validform5(".layui-layer-btn0","con-account",false,"3");
-				});
-			</script>
 		</div>
 	</div>
 </body>

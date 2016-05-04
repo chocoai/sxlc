@@ -39,6 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<li role="presentation" class="active"><a href="javascript:;">一审</a></li>
 					<li role="presentation"><a href="javascript:;">二审</a></li>
 					<li role="presentation"><a href="javascript:;">三审</a></li>
+					<li role="presentation"><a href="web/project/post_list.jsp">项目发布</a></li>
 				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">
@@ -53,14 +54,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>类型名称</span><input type="text" class=""></span>
+									<span class="con-item col-md-2"><span>类型名称</span><input type="text" class=""></span>
 									<span class="con-item"><span>借款人申请时间</span><input type="text" class=""></span>
 									<span class="con-item"><span>借款人用户名</span><input type="text" class=""></span>
 									<span class="con-item"><span>借款人姓名</span><input type="text" class=""></span>
 									<span class="con-item"><span>项目状态</span><input type="text" class=""></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
-									
 						  	</div>
 						</div>
 					</div> 
@@ -69,8 +69,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="panel-heading">
 								<div class="action_item">
 					  				<button id="loan_pro_exam" class="obtn glyphicon glyphicon-plus" onclick="proAudit()">项目审核</button>
-									<button id="loan_pro_detail" class="obtn glyphicon glyphicon-pencil">项目详情</button>
-									<button id="history_exam_record" class="obtn glyphicon glyphicon-ok-circle" onclick="proHistory()">历史审批记录</button>
+									<button id="loan_pro_detail" class="obtn glyphicon glyphicon-pencil" onclick="view_detail()">项目详情</button>
+									<button id="history_exam_record" class="obtn glyphicon glyphicon-ok-circle">历史审批记录</button>
 								</div> 					  	
 							</div>
 							<div class="panel-body">
@@ -113,10 +113,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 						</div>
 					</div>
-				</div>
-		
-			<!-- 尾部 -->
-			
+				</div>	
+			<!-- 尾部 -->	
 			</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>

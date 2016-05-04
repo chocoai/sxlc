@@ -3,11 +3,13 @@
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String content = request.getParameter("content");
 %>
 
 			<jsp:include page="../../common/cm-addr.jsp"></jsp:include>
 			<!-- 管理员管理部分开始 -->
 			<div id="manageAdmain">
+				<input id="guId" type="hidden" value="<%=content %>" />
 				<div class="data_display">
 					<div class="panel panel-success">
 						<div class="panel-heading">
@@ -20,26 +22,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="panel-body">
 					<table id="admaintable" class="display">
-						<thead>
-							<tr>
-								<th class="table-checkbox"></th>
-								<th>管理员名称</th>
-								<th>添加时间</th>
-								<th>状态</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<%for(int j=0;j<5;j++){ %>
-							<tr>
-								<td><input type="checkbox" /></td>
-								<td>管理员名称</td>
-								<td>管理员名称</td>
-								<td>已启用</td>
-								<td><a class="obtn" href="javascript:;" onclick="enable()">停用/启用</a></td>
-							</tr>
-							<%} %>
-						</tbody>
 					</table>
 				</div>
 			</div>
@@ -66,6 +48,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<span class="remark">备注：</span>
 					<textarea rows="" cols="" class="ta-noresize"></textarea>
 				</div>
+				<div class="cmbtncontainer guaranbtndiv">
+					<a class="commonbtn0">添加</a>
+					<a class="commonbtn1">取消</a>
+				</div>
 			</div>
 			<!-- 管理员管理-添加管理员部分结束 -->
 			<!-- 管理员管理-修改管理员部分开始 -->
@@ -90,27 +76,69 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<span class="remark">备注：</span>
 					<textarea rows="" cols="" class="ta-noresize"></textarea>
 				</div>
+				<div class="cmbtncontainer guaranbtndiv">
+					<a class="commonbtn0">修改</a>
+					<a class="commonbtn1">取消</a>
+				</div>
 			</div>
 			<!-- 管理员管理-修改管理员部分结束 -->		
 	
 	<!-- 私用js -->
 	<!-- <script type="text/javascript" src="../js/recommend/guarantee-manage.js"></script> -->
+	<script type="text/javascript" src="js/recommend/guaranteeAdmainManage.js"></script>
 	<script type="text/javascript">
-		$(function(){
-			validform5("layui-layer-btn0","manageAdmainAdd",false,"3");
-			validform5("layui-layer-btn0","manageAdmainMod",false,"3");
+		$(".commonbtn1").click(function(){
+			layer.closeAll(); //再执行关闭  
 		});
-		$('#admaintable').DataTable({
-			//"scrollY":400,
-			"scrollX":true,
-			"aaSorting" : [  ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3]
-			} // 制定列不参与排序
-			],
+		$(function(){
+			
+			$("#manageAdmainAdd").Validform({
+				btnSubmit:".commonbtn0",
+				ajaxPost:true,
+				tiptype:"3",
+				beforesubmit:function(){
+					//ajax
+					/* $.ajax({
+						type : 'post',
+						url : appPath + "/guarant/saveAdmin.do",
+						data : {},
+						success : function (msg) {
+							alert(msg);
+						}
+					}); */
+					
+					return false;
+				}
+			});
+		
+			$("#manageAdmainMod").Validform({
+				btnSubmit:".commonbtn0",
+				ajaxPost:true,
+				tiptype:"3",
+				beforesubmit:function(){
+					//ajax
+					/* $.ajax({
+						type : 'post',
+						url : appPath + "/guarant/saveAdmin.do",
+						data : {},
+						success : function (msg) {
+							alert(msg);
+						}
+					}); */
+					
+					return false;
+				}
+			}); 
+			//validform5(".layui-layer-btn0","manageAdmainMod",false,"3");
+		});
+	</script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+		
+		$(function () {
+			/* $(".commonbtn0").bind('click', function () {
+				alert(111);
+			}); */
 		});
 	</script>
 			

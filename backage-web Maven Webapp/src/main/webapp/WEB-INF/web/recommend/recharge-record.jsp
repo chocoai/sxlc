@@ -15,6 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/recommend/recharge-record.css" type="text/css"></link>
 </head>
 <body class="nav-md">
 	<div class="container body">
@@ -37,28 +38,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="i-fr action_item">
 								<ul class="list_item list-inline">
 									<li>
-										<a class="state">展开&nbsp;<spanclass="glyphicon glyphicon-chevron-down"></span> </a>
+										<a class="state">展开&nbsp;<span class="glyphicon glyphicon-chevron-down"></span> </a>
 									</li>
 								</ul>
 							</div>
 						</div>
 					<div class="panel-body">
 						<form id="" class="" action="">
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>交易时间</span><input type="text" class="" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>平台交易编号</span><input type="text" class="departmentname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>第三方交易流水号</span><input type="text" class="licencenum" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>状态</span><input type="text" class="contactname" placeholder="" />
-							</span>
-							<span class="col-md-6 col-sm-12 col-xs-12">
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-							</span>
+							<div>
+								<span class="con-item textRight3">
+									<span>平台交易编号</span><input id="orderNumber" type="text" class="departmentname notspecial" placeholder="" />
+								</span>
+								<span class="con-item textRight3">
+									<span>第三方交易流水号</span><input id="batch" type="text" class="licencenum notspecial" placeholder="" />
+								</span>
+							</div>
+							<div>
+								<span class="con-item textRight2">
+									<span>状态</span>
+									<select id="statu" class="rechargeoption">
+										<option value="1">请选择</option>
+										<option value="1">成功</option>
+										<option value="0">失败</option>
+									</select>
+								</span>
+								<span class="con-item textRight4">
+									<span>交易时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
+								</span>
+								<span class="">
+									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+								</span>
+							</div>
 						</form>
 					</div>
 				</div>	
@@ -67,36 +77,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="panel panel-success">
 					<div class="panel-heading">
 						<div class="action_item">
-							<button class="obtn glyphicon glyphicon-plus" onclick="picAdd('充值','web/recommend/re-add/recharge.jsp','1')">充值</button>
+							<button class="obtn glyphicon glyphicon-plus" onclick="picAdd('充值','web/recommend/re-add/acc-recharge.jsp','1')">充值</button>
 							<!-- onclick="accRecharge() -->
 						</div>
 					</div>
 					<div class="panel-body">
 						<table id="table_id" class="display">
-							<thead>
-								<tr>
-									<th class="table-checkbox"></th>
-									<th>交易时间</th>
-									<th>平台交易编号</th>
-									<th>第三方交易流水号</th>
-									<th>交易金额</th>
-									<th>支付手续费</th>
-									<th>状态</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%for (int i = 0; i < 15; i++) {%>
-								<tr>
-									<td class="table-checkbox"><input type="checkbox" /></td>
-									<td>交易时间</td>
-									<td>平台交易编号</td>
-									<td>第三方交易流水号</td>
-									<td>交易金额</td>
-									<td>支付手续费</td>
-									<td>成功</td>
-								</tr>
-								<%}%>
-							</tbody>
 						</table>
 					</div>
 				</div>
@@ -108,20 +94,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/recommend/recharge-record.js"></script>	
+	<script type="text/javascript" src="js/recommend/recharge-record.js"></script>
+	<script type="text/javascript" src="js/recommend/record.js"></script>
 	<script type="text/javascript">
-		$('#table_id').DataTable({
-			scrollX:true,
-			autoWidth : false,
-			"aaSorting" : [ [ 4,5] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,6]
-			} // 制定列不参与排序
-			],
-		});
-	</script>		
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>	
 </body>
 </html>

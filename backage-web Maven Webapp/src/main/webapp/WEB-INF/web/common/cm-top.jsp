@@ -13,7 +13,6 @@
 		_index.m1 = '<%=request.getParameter("_index_m1")%>';
 		//console.log(_index.m1);
 	});
-	var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 </script>
 <!-- 顶部一级菜单 -->
 <div class="top_navigation">
@@ -43,7 +42,7 @@
 				</a>
 			</li>
 			<li data-m1="3" class="f-tab">
-				<a href="project/toProTypePg">
+				<a href="web/project/pro_type.jsp">
 					<p><i class="fa fa-file-archive-o"></i></p>
 					<p>项目管理</p>
 				</a>

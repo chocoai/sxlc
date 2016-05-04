@@ -40,7 +40,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel-heading">
 							<div class="action_item">
 								<button id class="obtn glyphicon glyphicon-plus obtn-dept-add" onclick="bankManagementAdd('添加银行卡','web/recommend/re-add/bank-card-management-add.jsp','1')">添加</button>
-								<button id class="obtn glyphicon glyphicon-pencil obtn-dept-mod" onclick="bankManagementMod('修改银行卡','web/recommend/re-add/bank-card-management-add.jsp','1')">修改</button>
+								<button id class="obtn glyphicon glyphicon-pencil obtn-dept-mod" onclick="bankManagementMod('修改银行卡','web/recommend/re-add/bank-card-management-mod.jsp','1')">修改</button>
 								<button id class="obtn glyphicon glyphicon-trash obtn-dept-del">删除</button>
 							</div>
 						</div>

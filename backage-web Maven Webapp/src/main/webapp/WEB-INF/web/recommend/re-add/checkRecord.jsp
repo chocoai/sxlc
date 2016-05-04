@@ -3,6 +3,7 @@
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String content = request.getParameter("content");
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -38,41 +39,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 					<div class="panel-body">
 						<form id="" class="" action="">
+						<input id="guId" type="hidden" value="<%=content %>" />
 							<div>
 								<span class="con-item textRight2">
-									<span>项目编号</span><input type="text" class="notspecial" placeholder=""/>
+									<span>项目编号</span><input id="projectNo" type="text" class="notspecial" placeholder=""/>
 								</span>
 								<span class="con-item textRight2">
-									<span>项目名称</span><input type="text" class="departmentname notspecial" placeholder=""/>
+									<span>项目名称</span><input id="projectTitle" type="text" class="departmentname notspecial" placeholder=""/>
 								</span>
 								<span class="con-item textRight2">
-									<span>借款人姓名</span><input type="text" class="licencenum notspecial" placeholder="" />
+									<span>借款人姓名</span><input id="personalName" type="text" class="licencenum notspecial" placeholder="" />
 								</span>
 							</div>
 							<div>
 								<span class="con-item textRight2">
-									<span>借款人用户名</span><input type="text" class="contactname notspecial" placeholder=""/>
+									<span>借款人用户名</span><input id="logname" type="text" class="contactname notspecial" placeholder=""/>
 								</span>
 								<span class="con-item textRight2">
-									<span>借款人手机号</span><input type="text" class="contactname notspecial" placeholder="" />
+									<span>借款人手机号</span><input id="personalPhone" type="text" class="contactname notspecial" placeholder="" />
 								</span>
 								<span class="con-item textRight2">
-									<span>担保机构名称</span><input type="text" class="contactname notspecial" placeholder="" />
+									<span>担保机构名称</span><input id="guaranteeName" type="text" class="contactname notspecial" placeholder="" />
 								</span>
 							</div>
 							<div>
 								<span class="con-item textRight3">
-									<span>代偿时间</span><input type="text" id="startDate2" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate2\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate2" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate2\')}' ,maxDate:'2020-10-01' })" >
+									<span>代偿时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate2\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate2\')}' ,maxDate:'2020-10-01' })" >
 								</span>
 								<span class="con-item">
 									<span>当期合约还款时间</span><input type="text" id="startDate2" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate2\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate2" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate2\')}' ,maxDate:'2020-10-01' })" >
 								</span>
 								<span class="con-item selectpayment">
 									<span>是否回款</span>
-									<select class="stateSelect">
-										<option>请选择</option>
-										<option>是</option>
-										<option>否</option>
+									<select id="status" class="stateSelect">
+										<option value="0">请选择</option>
+										<option value="1">是</option>
+										<option value="0">否</option>
 									</select>
 								</span>
 							</div>
@@ -87,50 +89,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<div class="panel-body">
 				<table id="checkrecordtable" class="display">
-					<thead>
-						<tr>
-							<th>项目编号</th>
-							<th>产品类型</th>
-							<th>项目名称</th>
-							<th>代偿期数</th>
-							<th>借款人姓名</th>
-							<th>借款人用户名</th>
-							<th>借款人手机号</th>
-							<th>担保机构名称</th>
-							<th>实际借款金额</th>
-							<th>当期合约还款时间</th>
-							<th>代偿时间</th>
-							<th>代偿本金</th>
-							<th>代偿利息</th>
-							<th>代偿逾期利息</th>
-							<th>代偿逾期罚金</th>
-							<th>代偿总金额</th>
-							<th>是否回款</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%for(int i=0;i<7;i++){ %>
-						<tr>
-							<td>项目编号</td>
-							<td>产品类型</td>
-							<td>项目名称</td>
-							<td>代偿期数</td>
-							<td>借款人姓名</td>
-							<td>借款人用户名</td>
-							<td>借款人手机号</td>
-							<td>担保机构名称</td>
-							<td>实际借款金额</td>
-							<td>当期合约还款时间</td>
-							<td>代偿时间</td>
-							<td>代偿本金</td>
-							<td>代偿利息</td>
-							<td>代偿逾期利息</td>
-							<td>代偿逾期罚金</td>
-							<td>代偿总金额</td>
-							<td>是</td>
-						</tr>
-						<%} %>
-					</tbody>
 				</table>
 			</div>
 			<!-- 代偿记录查询部分结束 -->
@@ -143,18 +101,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="../js/recommend/guarantee-manage.js"></script>
 	<script type="text/javascript" src="plugs/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="js/recommend/checkRecord.js"></script>
 	<script type="text/javascript">
-		$('#checkrecordtable').DataTable({
-			//"scrollY":400,
-			"scrollX":true,
-			"aaSorting" : [ [ 8,9,10,11,12,13,14,15, "desc" ] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,4,5,6,7,16]
-			} // 制定列不参与排序
-			],
-		});
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </html>

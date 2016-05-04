@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="con-item"><span>手机号</span><input type="text" name="phone_Num" id="phone_Num" class="notspecial" /></span>
 									<span class="con-item"><span>开启自动投标</span><select name="auto_tou" id="auto_tou"><option value="1">是</option><option value="0">否</option></select></span>
 									<span class="con-item"><span>开启自动还款</span><select name="auto_return" id="auto_return"><option value="1">是</option><option value="0">否</option></select></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<button class="obtn obtn-query glyphicon glyphicon-search" type="button">查询</button>
 								</form>
 						  	</div>
 						 </div>

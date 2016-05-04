@@ -17,6 +17,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/recommend/account-center.css" type="text/css"></link>
+	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
+	<link rel="stylesheet" href="css/upload.css" />
 </head>
 
 <body class="nav-md">
@@ -53,41 +55,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 					<div class="content2">
 		   				<div class="info clearfix">
-			   				<div>
-				   				<div class="item">
-				   					<div class="label">第三方账户号：</div>
-				   					<div class="con">第三方账户号</div>
+			   				<fieldset class="accountfd">
+			   					<legend>账户中心</legend>
+			   					<div>
+					   				<div class="item">
+					   					<div class="label">第三方账户号：</div>
+					   					<div class="con">第三方账户号</div>
+					   				</div>
+					   				<div class="item">
+					   					<div class="label">当前余额：</div>
+					   					<div class="con"><label class="moneyFormat">1000</label>元</div>
+					   				</div>
+					   				<div class="item">
+					   					<div class="label">代偿总金额：</div>			   				
+								   		<div class="con"><label class="moneyFormat">1000</label>元</div>
+										
+					   				</div>
+					   				<div class="item">
+					   					<div class="label">代偿回款总金额：</div>
+					   					<div class="con"><label class="moneyFormat">1000</label>元</div>
+					   				</div>
+					   				<div class="item">
+					   					<div class="label">代偿未回款总金额：</div>
+					   					<div class="con"><label class="moneyFormat">1000</label>元</div>
+					   				</div>
+					   				<div class="item">
+					   					<div class="label">担保费收取总金额：</div>
+					   					<div class="con"><label class="moneyFormat">1000</label>元</div>
+					   				</div>
 				   				</div>
-				   				<div class="item">
-				   					<div class="label">当前余额：</div>
-				   					<div class="con"><label class="moneyFormat">1000</label>元</div>
-				   				</div>
-				   				<div class="item">
-				   					<div class="label">代偿总金额：</div>			   				
-							   		<div class="con"><label class="moneyFormat">1000</label>元</div>
-									
-				   				</div>
-				   				<div class="item">
-				   					<div class="label">代偿回款总金额：</div>
-				   					<div class="con"><label class="moneyFormat">1000</label>元</div>
-				   				</div>
-				   				<div class="item">
-				   					<div class="label">代偿未回款总金额：</div>
-				   					<div class="con"><label class="moneyFormat">1000</label>元</div>
-				   				</div>
-				   				<div class="item">
-				   					<div class="label">担保费收取总金额：</div>
-				   					<div class="con"><label class="moneyFormat">1000</label>元</div>
-				   				</div>
-				   				<!-- <div class="item">
-				   					<div class="label">自动代偿是否开启：</div>
-				   					<div class="con">是</div>
-				   				</div>
-				   				<div class="item">
-				   					<div class="label">担保配置：</div>
-				   					<div class="con">担保配置</div>
-				   				</div> -->
-			   				</div>
+			   				</fieldset>
 			   			</div>
 		   			</div>
 				</div>
@@ -95,10 +92,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="w-content" id="loanamount">
 					<form role="form" class="" id="loanamountform">
 						<div class="form-group"> 
-							<label>最大借款金额</label><input type="text" value="" datatype="amcountM"/><samp>元</samp>
+							<label>最大借款金额：</label><input type="text" value="" datatype="amcountM"/><samp>元</samp>
 						</div>
 						<div class="form-group"> 
-							<label>最小借款金额</label><input type="text" value="" datatype="amcountM"/><samp>元</samp>
+							<label>最小借款金额：</label><input type="text" value="" datatype="amcountM"/><samp>元</samp>
 						</div>
 						<div class="cmbtncontainer loanamountcon">
 							<a class="commonbtn0">添加</a>
@@ -109,9 +106,48 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 担保借款金额范围部分结束 -->
 				<!-- 担保产品类型部分开始 -->
 				<div class="w-content" id="producttype">
-					
+					<form>
+						<table>
+							<tr>
+								<td>担保产品类型</td>
+								<td>
+									<span class="producttypechk">
+										<input type="checkbox" name="optionsRadios" id="" value=""> 
+						 				<label class="checkbox-inline">信用贷</label>
+									</span>
+									<span class="producttypechk">
+										<input type="checkbox" name="optionsRadios" id="" value=""> 
+						 				<label class="checkbox-inline">担保贷</label>
+									</span>
+									<span class="producttypechk">
+										<input type="checkbox" name="optionsRadios" id="" value=""> 
+						 				<label class="checkbox-inline">抵押贷</label>
+									</span>
+								</td>
+							</tr>
+						</table>
+					</form>
 				</div>
 				<!-- 担保产品类型部分结束 -->
+				<!-- 允许担保借款期限起止范围部分开始 -->
+				<div class="w-content" id="termrange">
+					<form role="form" class="" id="termRangeform">
+						<div class="form-group"> 
+							<label>天标：</label><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" >
+						</div>
+						<div class="form-group"> 
+							<label>月标：</label><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" >
+						</div>
+						<div class="form-group"> 
+							<label>年标：</label><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" >
+						</div>
+						<div class="cmbtncontainer loanamountcon">
+							<a class="commonbtn0">添加</a>
+							<a class="commonbtn1">取消</a>
+						</div>
+					</form>
+				</div>
+				<!-- 允许担保借款期限起止范围部分结束 -->
 			</div>
 		</div>
 			<!-- 尾部 -->

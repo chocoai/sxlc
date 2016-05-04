@@ -27,9 +27,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 <li id="admin" class="li_level_one">
                                 <a><i class="fa fa-edit"></i>平台自有账户管理<span class="fa fa-chevron-down"></span></a>
                                 	<ul class="nav child_menu ul_level_one" style="display: none">
-                                        <li><a>账户充值</a></li>
-                                        <li><a>账户体现</a></li>
-                                        <li><a>平台账户交易记录</a></li>
+                                        <li><a href="web/finance/fn-recharge.jsp">账户充值</a></li>
+                                        <li><a href="web/finance/fn-withdraw.jsp">账户提现</a></li>
+                                        <li><a href="web/finance/fn-transaction-record.jsp">平台账户交易记录</a></li>
                                     </ul>
                                  </li>
                                 <li id="admin" class="li_level_one">

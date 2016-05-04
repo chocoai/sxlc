@@ -64,7 +64,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 								<div class="action_item">
-									<button class="obtn glyphicon examine" onclick="detailView();">查看会员详情</button>
+									<button class="obtn glyphicon examine" onclick="companyDetailView();">查看会员详情</button>
 									<button class="obtn glyphicon" onclick="loanView();">借款项目查询</button>
 									<button class="obtn glyphicon" onclick="investView();">投资项目查询</button>
 									<button class="obtn glyphicon" onclick="transactionRecord();">交易记录</button>
@@ -74,7 +74,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<button class="obtn glyphicon" onclick="resetPWDRecord();">会员密码重置记录</button>
 									<button class="obtn glyphicon" onclick="resetPWD('重置密码','web/member/allMembers/resetPWDC.jsp','2')">会员密码重置</button>
 									<button class="obtn glyphicon" onclick="inviteVip();">修改邀请会员</button>
-									<button class="obtn glyphicon" onclick="messageSendPer();">发送消息</button>
+									<button class="obtn glyphicon" onclick="messageSendPer('发送信息','web/member/allMembers/per-messageSend.jsp','2');">发送消息</button>
 								</div>
 							</div>
 							
@@ -157,6 +157,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/member/companyMembers.js"></script>
+	<script type="text/javascript" src="js/member/member.js"></script>
+	<script type="text/javascript" src="js/member/memberPwd.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$('#table_id').DataTable({

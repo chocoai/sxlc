@@ -17,9 +17,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link href="css/config.css" rel="stylesheet" />
-	<script type="text/javascript">
-		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
-	</script>
 </head>
 <!-- 配置中心-------------------财务设置   债权转让手续费设置-->
 <body class="nav-md">

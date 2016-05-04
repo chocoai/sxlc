@@ -50,31 +50,27 @@ String content = request.getParameter("content");
 	 			<form class="form-inline config-form guacheckform" role="form" name="" action="javascript:mwithdralsfee()" id="member">
 	 				<div class="form-group">
 	 					<span>担保借款金额范围：</span>
-						<label class="moneyFormat">1000</label>元-<label class="moneyFormat">100000</label>元
+						<label class="moneyFormat" id="moneyMin">1000</label>元-<label class="moneyFormat" id="moneyMax">100000</label>元
 	 				</div>
 	 				<div class="form-group">
 		 				<div class="producttype clearfix">
 		 					<span class="configinfospan">担保产品类型：</span>
-							<label>信用贷</label>
-							<label>担保贷</label>
-							<label>抵押贷</label>
+							<label id="jtype">信用贷</label>
 						</div>
 		 			</div>
 	 			</form>
 	 			<form class="form-inline config-form guacheckform" role="form" name="" action="javascript:mwithdralsfee()" id="member">		
 		 			<div class="form-group">
 	 					<span class="configinfospan">允许担保借款期限起止范围：</span>
- 						<label>天标：</label><label>1天</label>-<label>20天</label>
- 						<label>月标：</label><label>1月</label>-<label>20月</label>
- 						<label>年标：</label><label>1年</label>-<label>2年</label>
+ 						<label id="btype">天标</label>：<label id="min">1</label>天-<label id="max">20</label>天
 		 			</div>
 	 			</form>
 	 			<form class="form-inline config-form guacheckform" role="form" name="" action="javascript:mwithdralsfee()" id="member">		
 		 			<div class="form-group">
 	 					<span class="configinfospan">担保代偿统计：</span>
- 						<label>成功担保笔数：</label><label>680</label><samp>笔</samp>
- 						<label>成功代偿笔数：</label><label>680</label><samp>笔</samp>
- 						<label>代偿回款笔数：</label><label>680</label><samp>笔</samp>
+ 						<label id="sgnum">成功担保笔数：</label><label id="sgn">680</label><samp>笔</samp>
+ 						<label id="sjnu">成功代偿笔数：</label><label  id="sjn">680</label><samp>笔</samp>
+ 						<label id="sbnum">代偿回款笔数：</label><label id="sbn">680</label><samp>笔</samp>
 		 			</div>
 	 			</form>	
 	 			<form class="form-inline config-form guacheckform" role="form" name="" action="javascript:mwithdralsfee()" id="member">		
@@ -98,14 +94,14 @@ String content = request.getParameter("content");
 	 			<div class="">
 		   			<table class="checkdetailtable">
 						<tr>
-							<td class="tt"><label>第三方账户号：</label><span>第三方账户号</span></td>
-							<td class="tt"><label>当前余额：</label><span class="moneyFormat">30000</span>元</td>
-							<td class="tt"><label>代偿总金额：</label><span class="moneyFormat">30000</span>元</td>
+							<td class="tt"><label>第三方账户号：</label><span id="tirdnum">第三方账户号</span></td>
+							<td class="tt"><label>当前余额：</label><span id="currentMoney" class="moneyFormat">30000</span>元</td>
+							<td class="tt"><label>代偿总金额：</label><span id="sumMoney" class="moneyFormat">30000</span>元</td>
 						</tr>
 						<tr>
-						<td class="tt"><label>代偿回款总金额：</label><span class="moneyFormat">30000</span>元</td>
-							<td class="tt"><label>代偿未回款总金额：</label><span class="moneyFormat">30000</span>元</td>
-							<td class="tt"><label>自动代偿是否开启：</label><span>是</span></td>
+						<td class="tt"><label>代偿回款总金额：</label><span id="backMoney" class="moneyFormat">30000</span>元</td>
+							<td class="tt"><label>代偿未回款总金额：</label><span id="nobackMoney" class="moneyFormat">30000</span>元</td>
+							<td class="tt"><label>自动代偿是否开启：</label><span id="isOrno">是</span></td>
 						</tr>
 					</table>
 					<div class="layui-layer-btn addproprocessbtn">

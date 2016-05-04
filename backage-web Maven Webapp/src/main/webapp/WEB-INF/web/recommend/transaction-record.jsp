@@ -15,6 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/recommend/transaction-record.css"/>
 </head>
 <body class="nav-md">
 	<div class="container body">
@@ -37,23 +38,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="i-fr action_item">
 								<ul class="list_item list-inline">
 									<li>
-										<a class="state">展开&nbsp;<spanclass="glyphicon glyphicon-chevron-down"></span> </a>
+										<a class="state">展开&nbsp;<span class="glyphicon glyphicon-chevron-down"></span> </a>
 									</li>
 								</ul>
 							</div>
 						</div>
 					<div class="panel-body">
 						<form id="" class="" action="">
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>交易时间段</span><input type="text" class="" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>账户类型</span><input type="text" class="departmentname" placeholder="" />
-							</span>
-							<span class="con-item col-md-3 col-sm-4 col-xs-6">
-								<span>交易类型</span><input type="text" class="licencenum" placeholder="" />
-							</span>						
-							<span class="col-md-6 col-sm-12 col-xs-12">
+							<span class="con-item textRight">
+								<span>交易类型</span><input id="typeName" type="text" class="licencenum notspecial" placeholder="" />
+							</span>	
+							<span class="con-item textRight2">
+								<span>交易时间段</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
+							</span>					
+							<span class="">
 								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 							</span>
 						</form>
@@ -70,28 +68,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 					<div class="panel-body">
 						<table id="table_id" class="display">
-							<thead>
-								<tr>
-									<th class="table-checkbox"></th>
-									<th>交易时间</th>
-									<th>交易金额</th>
-									<th>交易类型</th>
-									<th>账户类型</th>
-									<th>摘要</th>									
-								</tr>
-							</thead>
-							<tbody>
-								<%for (int i = 0; i < 15; i++) {%>
-								<tr>
-									<td class="table-checkbox"><input type="checkbox" /></td>
-									<td>交易时间</td>
-									<td>交易金额</td>
-									<td>交易类型</td>
-									<td>账户类型</td>
-									<td>摘要</td>										
-								</tr>
-								<%}%>
-							</tbody>
 						</table>
 					</div>
 				</div>
@@ -103,20 +79,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/recommend/recharge-record.js"></script>	
+	<script type="text/javascript" src="js/recommend/recharge-record.js"></script>
+	<script type="text/javascript" src="js/recommend/transaction-record.js"></script>
 	<script type="text/javascript">
-		$('#table_id').DataTable({
-			scrollX:true,
-			autoWidth : false,
-			"aaSorting" : [ [1,2] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,3,4,5]
-			} // 制定列不参与排序
-			],
-		});
+	</script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>		
 </body>
 </html>

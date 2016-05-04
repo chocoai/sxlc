@@ -17,6 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/recommend/guarantee_manage.css"></link>
+	<link rel="stylesheet" href="css/recommend/compensatory-payment-records.css"/></link>
 </head>
 
 <body class="nav-md">
@@ -42,18 +43,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="i-fl search_title">条件查询</div>
 								<div class="i-fr action_item">
 									<ul class="list_item list-inline">
-										<li><a class="state">展开&nbsp;<spanclass="glyphicon glyphicon-chevron-down"></span> </a></li>
+										<li><a class="state">展开&nbsp;<span class="glyphicon glyphicon-chevron-down"></span></a></li>
 									</ul>
 								</div>
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>项目编号</span><input type="text" class="" /></span>
-									<span class="con-item"><span>项目名称</span><input type="text" class="" /></span>
-									<span class="con-item"><span>借款人用户名</span><input type="text" class="" /></span>
-									<span class="con-item"><span>借款人姓名</span><input type="text" class="" /></span>
-									<span class="con-item"><span>回款时间</span><input type="text" class="" /></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<div>
+										<span class="con-item textRight2">
+											<span>项目编号</span><input type="text" class="notspecial" />
+										</span>
+										<span class="con-item textRight2">
+											<span>项目名称</span><input type="text" class="notspecial" />
+										</span>
+										<span class="con-item textRight2">
+											<span>借款人用户名</span><input type="text" class="notspecial" />
+										</span>
+									</div>
+									<div>
+										<span class="con-item textRight2">
+											<span>借款人姓名</span><input type="text" class="notspecial" />
+										</span>
+										<span class="con-item textRight4">
+											<span>回款时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
+										</span>
+										<button class="obtn obtn-query glyphicon glyphicon-search compayrecbtn">查询</button>
+									</div>
 								</form>
 						  	</div>
 						 </div>
@@ -89,7 +104,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td>回款项目期数</td>
 										<td>借款人用户名</td>
 										<td>借款人姓名</td>
-										<td>回款金额</td>
+										<td><span class="moneyFormat">1000</span>元</td>
 										<td>回款时间</td>
 									</tr>
 									<%
@@ -104,6 +119,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 尾部 -->
 			<div class="all"></div>
 		</div>
+	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	

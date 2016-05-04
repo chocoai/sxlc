@@ -52,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 			<legend>账单即将到期天数配置</legend>
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">即将到期天数：</label>
-			 					<div class="i-fl" id="expiringdays">
+			 					<div class="i-fl">
 			 						<input type="text" name="overdue_day" id="overdue_day" class="form-control" id="firstname" placeholder="" datatype="days">
 				 				</div>
 				 				<!-- <div class="offset-col3">

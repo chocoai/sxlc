@@ -21,6 +21,10 @@
 					<span><samp>原始推荐人：</samp>某某某</span>
 					<span><samp>编号：</samp>15451154</span>
 					<span><samp>手机号：</samp>18883185547</span>
+					<div class="buttonSet2">
+						<button class="obtn obtn-query">确定</button>
+						<button class="obtn obtn-query">取消</button>
+					</div>
 				</div>
 				<div class="search">
 					<div class="panel panel-success">
@@ -74,10 +78,6 @@
 					</div>
 				</div>
 			
-			</div>
-			<div class="buttonSet2">
-				<button class="obtn obtn-query">确定</button>
-				<button class="obtn obtn-query">取消</button>
 			</div>
 		</div>
 	

@@ -78,7 +78,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<c:if test="${project.isMortgage == 0}">
 								<option value="1" >是</option>
 								<option value="0" selected="selected">否</option>
-							</c:if>		
+							</c:if>	
+							<c:if test="${project.isMortgage == null}">
+								<option value="1" >是</option>
+								<option value="0" >否</option>
+							</c:if>	
+							
+								
 						</select>
 					</td>
 				</tr>
@@ -127,7 +133,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</td>
 				</tr>
 				<tr>
-					<input type="hidden" id="picUrl" value="${item.picUrl}" />
+					<input type="hidden" id="picUrl" value="${project.picUrl}" />
 					<td class="tt" valign="top">图片预览：</td>
 					<td class="con">
 						<div class="filelist" id="fileList"></div>
@@ -144,7 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</td>
 				</tr>
 				<tr>
-					<input type="hidden" id="picIcon" value="${item.picIcon}" />
+					<input type="hidden" id="picIcon" value="${project.picIcon}" />
 					<input type="hidden" id="hostPath" value="${hostPath}"/>
 					<td class="tt" valign="top">图片预览：</td>
 					<td class="con">
@@ -159,13 +165,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<tr>
 					<td class="tt">申请指南：</td>
 					<td class="con">
-						<script id="applyguide" type="text/plain" style="width:98%" contentG="${project.contentG}"></script>
+						<div style="display: none" id="applyguideValue">
+							${project.contentG}
+						</div>
+						<script id="applyguide" type="text/plain" style="width:98%"></script>
 					</td>
 				</tr>
 				<tr>
 					<td class="tt">还款指南：</td>
 					<td class="con">
-						<script id="payguide" type="text/plain" style="width:98%" contentR="${project.contentR}"></script>
+						<div style="display: none" id="payguideValue">
+							${project.contentR}
+						</div>
+						<script id="payguide" type="text/plain" style="width:98%"></script>
 					</td>
 				</tr>
 				<tr>

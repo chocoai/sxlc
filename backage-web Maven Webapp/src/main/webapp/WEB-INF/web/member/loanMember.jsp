@@ -50,10 +50,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>用户名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>姓名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>手机号</span><input type="text" class="notspecial" /></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>会员姓名</span><input type="text" name="member_Name" id="member_Name" class="notspecial" /></span>
+									<span class="con-item"><span>用户名</span><input type="text" name="user_Name" id="user_Name" class="notspecial" /></span>
+									<span class="con-item"><span>手机号</span><input type="text" name="phone_Num" id="phone_Num" class="notspecial" /></span>
+									<button class="obtn obtn-query glyphicon glyphicon-search" type="button">查询</button>
 								</form>
 						  	</div>
 						 </div>
@@ -68,36 +68,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<button class="obtn glyphicon" onclick="rechargeRecord();">充值记录</button>
 									<button class="obtn glyphicon" onclick="recordQuery()">提现记录查询</button>
 									<button class="obtn glyphicon" onclick="inviteView();">查看邀请会员列表</button>
-									<button class="obtn glyphicon" onclick="messageSendPer();">发送消息</button>
+									<button class="obtn glyphicon" onclick="messageSendPer('发送信息','web/member/allMembers/per-messageSend.jsp','2');">发送消息</button>
 								</div>
 							</div>
 							
 							<div class="panel-body">
 								<table id="table_id" class="display">
 									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>会员编号</th>
-											<th>姓名</th>
-											<th>用户名</th>
-											<th>手机号码</th>
-											<th>所属地区</th>
-											<th>第三方帐户</th>
-											<th>帐户余额(元)</th>
-											<th>冻结金额(元)</th>
-											<th>在借金额(元)</th>
-											<th>已结清金额(元)</th>
-											<th>累计逾期期数</th>
-											<th>充值总额(元)</th>
-											<th>充值手续费合计(平台/元)</th>
-											<th>充值手续费合计(会员/元)</th>
-											<th>借款总额(元)</th>
-											<th>累计借款管理费(元)</th>
-											<th>提现总额(元)</th>
-											<th>提现手续费合计(平台/元)</th>
-											<th>提现手续费合计(会员/元)</th>
-											<th>邀请码</th>
-										</tr>
 									</thead>
 									<tbody>
 									</tbody>
@@ -117,5 +94,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/member/member.js"></script>
+	<script type="text/javascript" src="js/member/loanmember.js"></script>
 	
 </body>

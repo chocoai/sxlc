@@ -1,15 +1,20 @@
 package cn.springmvc.service; 
 
 import java.util.List;
+import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
+import cn.membermng.model.AdvanceEntity;
 import cn.membermng.model.Cleared;
+import cn.membermng.model.ConfirmationLoan;
 import cn.membermng.model.Financing;
 import cn.membermng.model.FlowLabel;
 import cn.membermng.model.InvestmentRecord;
 import cn.membermng.model.LoanApplyRecord;
 import cn.membermng.model.LoanRepay;
 import cn.membermng.model.RepaymentIn;
+import cn.membermng.model.RepaymentOfBorrowings;
+import cn.membermng.model.RepaymentOfBorrowingsRM;
 import cn.membermng.model.StayStillPlan;
 
 
@@ -156,9 +161,66 @@ public interface IMyLoanService {
 	public List<StayStillPlan> stayStillPlans(PageEntity entity);
 
 
-
+	
+	/***
+	* 查询待确认的借款
+	* 
+	* @author 李杰
+	* @param entity
+	* memberId					会员编号
+	* memberType				会员类型
+	* @return
+	* @date 2016-4-29 下午8:36:44
+	 */
+	public List<ConfirmationLoan> confirmationLoans(PageEntity entity);
 	
 	
 	
+	
+	/***
+	* 还款管理+还款中的借款
+	* 
+	* @author 李杰
+	* @param entity
+	* @return
+	* @date 2016-5-2 下午3:27:50
+	 */
+	public List<RepaymentOfBorrowings> RepaymentOfBorrowings(PageEntity entity);
+	
+	
+	
+	/**
+	* 还款管理+还款中的借款+还款计划
+	* 
+	* @author 李杰
+	* @param entity
+	* @return
+	* @date 2016-5-2 下午3:29:18
+	 */
+	public List<RepaymentOfBorrowingsRM> LoanRements(PageEntity entity);
+	
+	
+	/**
+	 *  提前还款数据显示
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return List<AdvanceEntity> 返回类型 
+	 * @date 2016-5-3 下午1:05:03
+	 */
+	public AdvanceEntity getAdvanceReplay(long applyId);
+	
+	/**
+	 * 查看还款详情
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param replyaID
+	 * @param @return 设定文件 
+	 * @return LoanRepay 返回类型 
+	 * @date 2016-5-3 下午2:39:09
+	 */
+	public LoanRepay selectReplayDetail(long replyaID);
+ 	
 }
 

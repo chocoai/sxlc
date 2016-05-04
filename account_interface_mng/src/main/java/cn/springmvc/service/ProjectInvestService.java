@@ -33,7 +33,7 @@ public interface ProjectInvestService {
 	
 	
 	/**
-	 * 会员项目投资，投资前信息处理   同时添加临时投资记录
+	 * 会员项目投资，投资前信息处理 
 	* MemberInvestCheck 会员项目投资，投资前信息处理
 	* TODO				会员项目投资，投资前信息处理
 	* @author 张友  
@@ -77,7 +77,7 @@ public interface ProjectInvestService {
 	* @throws null
 	 */
 	TransferSubmitEntity GetInvestInfo(short sIsAuto, long lMemberId, long lProjectId,
-            long lAmount, long lRedpackets, long lVouchers, short sClient,String sKey);
+            long lAmount, long lRedpackets, long lVouchers, short sClient,String sKey,String sRedpackets);
 	
 	/**
 	 * 项目投资返回
@@ -112,5 +112,19 @@ public interface ProjectInvestService {
 	 */
 	long CheckInvestRedPackage(short sStatu, short sType,
 			String sOrderNo, short sClient, String sKey);
+	
+	/**
+     * 获取项目投资红包使用上限
+    * GetRedpacketsInvestRate 获取项目投资红包使用上限
+    * TODO 获取项目投资红包使用上限
+    * @author 张友  
+    * * @Title: GetRedpacketsInvestRate 
+    * @Description: TODO 
+    * @param @return 设定文件 
+    * @return int 返回类型 
+    * @date 2016-4-29 下午5:26:18
+    * @throws
+     */
+    int GetRedpacketsInvestRate();
 }
 

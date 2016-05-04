@@ -39,6 +39,9 @@ import cn.sxlc.account.manager.model.AuthorizeInterfaceEntity;
 import cn.sxlc.account.manager.model.AuthorizeInterfaceReturnEntity;
 import cn.sxlc.account.manager.model.AwardEntity;
 import cn.sxlc.account.manager.model.InvestRecordEntity;
+import cn.sxlc.account.manager.model.LoanInfoBean;
+import cn.sxlc.account.manager.model.LoanInfoBeanSubmit;
+import cn.sxlc.account.manager.model.LoanInfoSecondaryBean;
 import cn.sxlc.account.manager.model.LoanRepayEntity;
 import cn.sxlc.account.manager.model.LoanReturnInfoBean;
 import cn.sxlc.account.manager.model.LoanTransactionEntity;
@@ -50,12 +53,14 @@ import cn.sxlc.account.manager.model.RepalyUtitls;
 import cn.sxlc.account.manager.model.RepayDetailEntity;
 import cn.sxlc.account.manager.model.RepayInterfaceEntity;
 import cn.sxlc.account.manager.model.SurpriseRedEntity;
+import cn.sxlc.account.manager.model.TransferSubmitEntity;
 import cn.sxlc.account.manager.model.WithdrawalsFeeEntity;
 import cn.sxlc.account.manager.model.WithdrawsEntity;
 import cn.sxlc.account.manager.model.WithdrawsInterdaceEntity;
 import cn.sxlc.account.manager.model.WithdrawsInterdaceReturnEntity;
 import cn.springmvc.model.InvestIncomeEntity;
 import cn.springmvc.service.ManagedInterfaceServerTestI;
+import cn.springmvc.service.ProjectInvestService;
 import cn.sxlc.account.manager.model.Common;
 import cn.sxlc.account.manager.model.HTTPClientUtilsbak;
 import cn.sxlc.account.manager.model.RsaHelper;
@@ -78,6 +83,8 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	private  InvestIncomeDao  investIncomeDao;
 	@Resource(name="investIncomeListDaoImpl")
 	private  InvestIncomeListDao  investIncomeListDao;
+	@Resource(name="projectInvestServiceImpl")
+	private ProjectInvestServiceImpl projectInvestService;
 	/* *  *  * @param memberEntity
 	 * 双乾开户接口信息处理
 	 */
@@ -89,17 +96,21 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("accountTypeID", 1);//平台账号类型
 		pmark=selectThreePartyDaoImpl.findThirdPartyMark(map);
-		memberEntity.setPlatformMoneymoremore(pmark);
+		long memberid=memberEntity.getId();
 		//根据会员id获取会员基本信息数据
 		if (memberEntity.getMemberType()==0) {//个人
-			map.put("memberId", memberEntity.getId());
+			map.put("memberId", memberid);
 			memberEntity=selectThreePartyDaoImpl.selectpAccountById(map);
 			memberEntity.setAccountType("");
 		}else if (memberEntity.getMemberType()==1) {//企业
-			map.put("memberId", memberEntity.getId());
+			map.put("memberId", memberid);
+			map.put("skey", DbKeyUtil.GetDbCodeKey());
 			memberEntity=selectThreePartyDaoImpl.selectcAccountById(map);
 			memberEntity.setAccountType("1");
 		}
+		memberEntity.setId(memberid);
+		pmark="p141";
+		memberEntity.setPlatformMoneymoremore(pmark);
 		int type=0;//0：会员 1：担保机构 2：平台
 		if(memberEntity.getMemberType()==2){
 			type=1;
@@ -108,17 +119,20 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 			type=2;
 		}
 		//开户 界面返回通知地址
-		memberEntity.setReturnURL("http://182.150.179.116:14000/");
+		memberEntity.setReturnURL("http://110.185.5.33:14000/foreground-web/personalCenter/openThirdAccountCallbackPage.html");
 		//开户 服务器返回通知地址
-		memberEntity.setNotifyURL("http://182.150.179.116:14000/");
+		memberEntity.setNotifyURL("http://110.185.5.33:14000/foreground-web/personalCenter/openThirdAccountCallback.html");
 		//开户信息提交三方地址
-		memberEntity.setSubmitURL("http://218.4.234.150:88/main/SubmitURLPrefixByRegister");
+		memberEntity.setSubmitURL("http://218.4.234.150:88/main/loan/toloanregisterbind.action");
 		//查询此次操作订单号
 		String ordernumber =handleThreePartyDaoImpl.generateorderNo("KH");
 		//相关字段拼接
 		memberEntity.setRemark1(memberEntity.getId()+"");
 		memberEntity.setRemark2(ordernumber+"n"+type+"n"+memberEntity.getIsApp());
-		
+//		memberEntity.setIdcard("51302219941226155X");
+//		memberEntity.setPhone("18328593409");
+//		memberEntity.setEmail("1277809056@qq.com");
+//		memberEntity.setName("李杰");
 		String dataStr = memberEntity.getRegisterType() + memberEntity.getAccountType()
 		+ memberEntity.getPhone() + memberEntity.getEmail() + memberEntity.getName()
 		+ memberEntity.getIdcard() +  memberEntity.getLogName()
@@ -131,7 +145,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		String SignInfo = rsa.signData(dataStr, privatekey);
 		memberEntity.setSignInfo(SignInfo);
 		//添加开户第三方交互记录
-		long iId=generatorUtil.GetId();
+		long iId=generatorUtil.GetId()*10;
 		Map<String, Object> maps = new HashMap<String, Object>();
 		maps.put("id", iId);//第三方交互记录id
 		maps.put("merbillNo", ordernumber);//当前操作订单号
@@ -155,18 +169,53 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	 *  * @return SUCCESS 开户成功； FAIL 开户失败
 	 *   * @see cn.springmvc.service.ManagedInterfaceServerTestI#testLoanRegisterBindReturn() */
 	@Override
-	public String testLoanRegisterBindReturn() {
+	public String testLoanRegisterBindReturn(HttpServletRequest request,HttpServletResponse response) {
 		AccountInterfaceReturnEntity 
 			accountInterfaceReturnEntity2=new AccountInterfaceReturnEntity();
 		String retur="SUCCESS";
 		try {
 			//获取第三方返回开户信息
-			accountInterfaceReturnEntity2=accountInterfaceReturnEntity2.getAllAccount();
+//			ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+//			HttpServletRequest request = attributes.getRequest();
+			request.setCharacterEncoding("UTF-8");
+			AccountInterfaceReturnEntity accountInterfaceReturnEntity=new AccountInterfaceReturnEntity();
+			accountInterfaceReturnEntity.setResultCode(request.getParameter("ResultCode"));
+			accountInterfaceReturnEntity.setMessage(request.getParameter("Message"));//开户状态信息
+			String ReturnTimes = request.getParameter("ReturnTimes");//返回次数
+			//开户成功
+			if(request.getParameter("ResultCode")!=null 
+					&& request.getParameter("ResultCode").equals("88")){
+				accountInterfaceReturnEntity.setStatu(1);
+				accountInterfaceReturnEntity.setLoanPlatformAccount(request.getParameter("LoanPlatformAccount"));
+				
+				accountInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
+				accountInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
+				accountInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
+				String accountType = request.getParameter("AccountType");// 开户类型
+				if (accountType.equals("")) {
+					accountInterfaceReturnEntity.setAccountType("1");// 个人
+				} else if (accountType.equals("1")) {
+					accountInterfaceReturnEntity.setAccountType("0");// 企业
+				}
+				accountInterfaceReturnEntity
+					.setAccountNumber(request.getParameter("AccountNumber"));//乾多多数字账号
+				accountInterfaceReturnEntity
+					.setMoneymoremoreId(request.getParameter("MoneymoremoreId"));//用户的乾多多标识
+				accountInterfaceReturnEntity
+					.setAuthFee(request.getParameter("AuthFee"));//姓名匹配手续费
+				accountInterfaceReturnEntity
+					.setAuthState(request.getParameter("AuthState"));//实名认证状态1.未实名认证2.快捷支付认证3.其他认证
+				accountInterfaceReturnEntity.setSignInfo(request.getParameter("SignInfo"));//签名信息
+			}else {//开户失败
+				accountInterfaceReturnEntity.setStatu(2);
+			}
+			
 			if(accountInterfaceReturnEntity2.getStatu()==1){//开户成功
 				
 			}else{//开户失败
 				retur="FAIL";
 			}
+			request.setAttribute("accountInterfaceReturnEntity", accountInterfaceReturnEntity);
 		} catch (UnsupportedEncodingException e) {
 			
 			// TODO Auto-generated catch block e.printStackTrace();
@@ -183,12 +232,45 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	 *  双乾开户接口服务器返回
 	 * *  * @param accountInterfaceEntity * @see cn.springmvc.service.ManagedInterfaceServerTestI#testLoanRegisterBindNotify(cn.sxlc.account.manager.model.AccountInterfaceReturnEntity) */
 	@Override
-	public void testLoanRegisterBindNotify() {
+	public void testLoanRegisterBindNotify(HttpServletRequest request,HttpServletResponse response) {
 		AccountInterfaceReturnEntity 
 		accountInterfaceReturnEntity2=new AccountInterfaceReturnEntity();
 	try {
 		//获取第三方返回开户信息
-		accountInterfaceReturnEntity2=accountInterfaceReturnEntity2.getAllAccount();
+		request.setCharacterEncoding("UTF-8");
+		AccountInterfaceReturnEntity accountInterfaceReturnEntity=new AccountInterfaceReturnEntity();
+		accountInterfaceReturnEntity.setResultCode(request.getParameter("ResultCode"));
+		accountInterfaceReturnEntity.setMessage(request.getParameter("Message"));//开户状态信息
+		String ReturnTimes = request.getParameter("ReturnTimes");//返回次数
+		//开户成功
+		if(request.getParameter("ResultCode")!=null 
+				&& request.getParameter("ResultCode").equals("88") || request.getParameter("ResultCode").equals("16")){
+			accountInterfaceReturnEntity.setStatu(1);
+			accountInterfaceReturnEntity.setLoanPlatformAccount(request.getParameter("LoanPlatformAccount"));
+			
+			accountInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
+			accountInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
+			accountInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
+			String accountType = request.getParameter("AccountType");// 开户类型
+			if (accountType.equals("")) {
+				accountInterfaceReturnEntity.setAccountType("1");// 个人
+			} else if (accountType.equals("1")) {
+				accountInterfaceReturnEntity.setAccountType("0");// 企业
+			}
+			accountInterfaceReturnEntity
+				.setAccountNumber(request.getParameter("AccountNumber"));//乾多多数字账号
+			accountInterfaceReturnEntity
+				.setMoneymoremoreId(request.getParameter("MoneymoremoreId"));//用户的乾多多标识
+			accountInterfaceReturnEntity
+				.setAuthFee(request.getParameter("AuthFee"));//姓名匹配手续费
+			accountInterfaceReturnEntity
+				.setAuthState(request.getParameter("AuthState"));//实名认证状态1.未实名认证2.快捷支付认证3.其他认证
+			accountInterfaceReturnEntity.setSignInfo(request.getParameter("SignInfo"));//签名信息
+		
+		}else {//开户失败
+			accountInterfaceReturnEntity.setStatu(2);
+		}
+		accountInterfaceReturnEntity2 = accountInterfaceReturnEntity;
 		//将获取的第三方返回的开户信息进行业务逻辑处理
 		if(accountInterfaceReturnEntity2.getStatu()==1){//开户成功
 			String remark=accountInterfaceReturnEntity2.getRemark1();//得到拼接的会员id
@@ -214,9 +296,9 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 			generatorUtil.SetIdUsed(iId);
 		}
 		//接收第三方返回信息处理完成，通知第三方已成功接收处理
-		HttpServletResponse response 
-			= ((ServletWebRequest)RequestContextHolder
-					.getRequestAttributes()).getResponse();
+//		HttpServletResponse response 
+//			= ((ServletWebRequest)RequestContextHolder
+//					.getRequestAttributes()).getResponse();
 		response.setContentType("text/plain;charset=utf-8");
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().write("SUCCESS");
@@ -263,8 +345,9 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 			
 		}
 		recharge.setSubmitURL("http://218.4.234.150:88/main/loan/toloanrecharge.action");
-		recharge.setReturnURL("http://182.150.179.116:14000/loanrechargereturn.html");
-		recharge.setNotifyURL("http://182.150.179.116:14000/testLoanRechargeNotify.action");
+		//TODO 页面返回地址
+		recharge.setReturnURL("http://182.150.179.116:14000/loanRecharge/loanRechargeReturn.html");
+		recharge.setNotifyURL("http://182.150.179.116:14000/loanRecharge/loanRechargeNotify.html");
 		//成功所需数据拼接
 		recharge.setRemark1(recharge.getMemberId()+"A"+type);
 		recharge.setRemark2(recharge.getIsApp()+"");//充值端
@@ -301,14 +384,16 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		recharge.setSignInfo(SignInfo);
 		//添加开户第三方交互记录
 		Map<String, Object> maps = new HashMap<String, Object>();
-		maps.put("id", generatorUtil.GetId());//第三方交互记录id
+		long id = generatorUtil.GetId();
+		maps.put("id", id);//第三方交互记录id
 		maps.put("merbillNo", recharge.getOrderNo());//当前操作订单号
 		maps.put("type", "01");//操作类型
 		maps.put("interfaceType", 1);//第三方接口提供商
 		maps.put("detail", dataStr);//加密前数据
 		maps.put("detailEncrypt", SignInfo);//加密后数据
 		maps.put("remark", "");//备注
-		handleThreePartyDaoImpl.insertThirdInterfaceRecord(maps);		
+		handleThreePartyDaoImpl.insertThirdInterfaceRecord(maps);
+		generatorUtil.SetIdUsed(id);
 		// TODO Auto-generated method stub return null;
 		return recharge;
 	}
@@ -324,7 +409,44 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		String retur="SUCCESS";
 		try {
 			//获取充值第三方返回信息
-			recharge=recharge.rechargeReturnData();
+			//获取充值第三方返回信息
+			ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+			HttpServletRequest request = attributes.getRequest();
+			request.setCharacterEncoding("UTF-8");
+			RechargeReturnEntity rechargeReturnEntity=new RechargeReturnEntity();
+			rechargeReturnEntity.setResultCode(request.getParameter("ResultCode"));
+			rechargeReturnEntity.setMessage(request.getParameter("Message"));//充值返回信息
+			String ResultCode=request.getParameter("ResultCode");
+			if(ResultCode!=null ){
+				if(ResultCode.equals("88") || ResultCode.equals("90")){
+					if(ResultCode.equals("88") && request.getParameter("RechargeType").equals(3)){//汇款充值信息提交成功等待处理
+						rechargeReturnEntity.setStatu(2);
+					}else{
+						rechargeReturnEntity.setStatu(0);
+					}
+					rechargeReturnEntity.setAmount(request.getParameter("Amount"));
+					rechargeReturnEntity.setCardNoList(request.getParameter("CardNoList"));
+					rechargeReturnEntity.setFee(request.getParameter("Fee"));
+					rechargeReturnEntity.setFeeType(request.getParameter("FeeType"));
+					rechargeReturnEntity.setFeePlatform(request.getParameter("FeePlatform"));
+					rechargeReturnEntity.setLoanNo(request.getParameter("LoanNo"));
+					rechargeReturnEntity.setNotifyURL(request.getParameter("NotifyURL"));
+					rechargeReturnEntity.setOrderNo(request.getParameter("OrderNo"));
+					rechargeReturnEntity.setPlatformMoneymoremore(request.getParameter("PlatformMoneymoremore"));
+					rechargeReturnEntity.setRechargeMoneymoremore(request.getParameter("RechargeMoneymoremore"));
+					rechargeReturnEntity.setRechargeType(request.getParameter("RechargeType"));
+					rechargeReturnEntity.setRemark1(request.getParameter("Remark1"));
+					rechargeReturnEntity.setRemark2(request.getParameter("Remark2"));
+					rechargeReturnEntity.setRemark3(request.getParameter("Remark3"));
+					rechargeReturnEntity.setSignInfo(request.getParameter("SignInfo"));
+					rechargeReturnEntity.setReturnURL(request.getParameter("ReturnURL"));
+				}else{
+					rechargeReturnEntity.setStatu(1);
+				}
+			}else{
+				rechargeReturnEntity.setStatu(1);
+			}
+			recharge=rechargeReturnEntity;
 			if(recharge.getStatu()==0){//充值成功
 				retur="SUCCESS";
 			}else if (recharge.getStatu()==1) {//充值失败
@@ -402,7 +524,8 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("merbillno", recharge.getOrderNo());//平台交易订单号
 				//充值记录id
-				map.put("rechargeID", 1);
+				long reid = generatorUtil.GetId();
+				map.put("rechargeID", reid);
 				//会员类型
 				map.put("memberType", memberType);
 				//会员id
@@ -435,7 +558,21 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				map.put("memberRPID", rid);
 				//数据加密字符串
 				map.put("skey", DbKeyUtil.GetDbCodeKey());
-				handleThreePartyDaoImpl.rechargeBack(map);
+				map=handleThreePartyDaoImpl.rechargeBack(map);
+				int res=IntegerAndString.StringToInt(map.get("result").toString(), -1);
+				if (res==1) {
+					generatorUtil.SetIdUsed(reid);
+					generatorUtil.SetIdUsed(did);
+					generatorUtil.SetIdUsed(tid);
+					generatorUtil.SetIdUsed(iid);
+					generatorUtil.SetIdUsed(rid);
+				}else {
+					generatorUtil.SetIdUsedFail(reid);
+					generatorUtil.SetIdUsedFail(did);
+					generatorUtil.SetIdUsedFail(tid);
+					generatorUtil.SetIdUsedFail(iid);
+					generatorUtil.SetIdUsedFail(rid);
+				}
 			}else if (recharge.getStatu()==1) {//充值失败
 				//充值失败处理平台数据
 				
@@ -697,7 +834,8 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		
 		//添加开户第三方交互记录
 		Map<String, Object> maps = new HashMap<String, Object>();
-		maps.put("id", generatorUtil.GetId());//第三方交互记录id
+		long id = generatorUtil.GetId();
+		maps.put("id", id);//第三方交互记录id
 		maps.put("merbillNo", OrderNo);//当前操作订单号
 		maps.put("type", "04");//操作类型
 		maps.put("interfaceType", 1);//第三方接口提供商
@@ -705,7 +843,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		maps.put("detailEncrypt", SignInfo);//加密后数据
 		maps.put("remark", "");//备注
 		handleThreePartyDaoImpl.insertThirdInterfaceRecord(maps);	
-		
+		generatorUtil.SetIdUsed(id);
 		// TODO Auto-generated method stub return null;
 		return authorizeInterfaceEntity;
 	}
@@ -715,22 +853,43 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	 * 双乾授权接口 服务器返回处理
 	 * *  *  * @see cn.springmvc.service.ManagedInterfaceServerTestI#testLoanAuthorizeNotify() */
 	@Override
-	public void testLoanAuthorizeNotify() {
+	public void testLoanAuthorizeNotify(HttpServletRequest request,HttpServletResponse response) {
 		try {
 			AuthorizeInterfaceReturnEntity 
 				authorizeInterfaceReturnEntity=new AuthorizeInterfaceReturnEntity();
-			authorizeInterfaceReturnEntity = authorizeInterfaceReturnEntity.authorizationInformation();
+			request.setCharacterEncoding("UTF-8");
+			authorizeInterfaceReturnEntity.
+				setResultCode(request.getParameter("ResultCode"));
+			authorizeInterfaceReturnEntity
+				.setMessage(request.getParameter("Message"));//返回状态信息
+			if(authorizeInterfaceReturnEntity.getResultCode()!=null){
+				if(authorizeInterfaceReturnEntity.getResultCode().equals("88")){
+					if(!request.getParameter("AuthorizeTypeOpen").equals("")){
+						authorizeInterfaceReturnEntity.setAuthorizeStatu(1);//开启
+					}else {
+						authorizeInterfaceReturnEntity.setAuthorizeStatu(2);//关闭
+					}
+					authorizeInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
+					authorizeInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
+					authorizeInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
+					authorizeInterfaceReturnEntity
+						.setAuthorizeType(request.getParameter("AuthorizeType"));//当前操作的授权类型
+					authorizeInterfaceReturnEntity.setStatu(0);
+				}else{
+					authorizeInterfaceReturnEntity.setStatu(1);
+				}
+			}
 			if(authorizeInterfaceReturnEntity.getStatu()==0){//授权操作成功
 				//关闭还是开启 1：开启  2：关闭
 				int statu=authorizeInterfaceReturnEntity.getAuthorizeStatu();
 				//授权种类
 				int handleStatu=0;
-				handleStatu=Integer.parseInt(authorizeInterfaceReturnEntity.getAuthorizeType());
+				handleStatu=IntegerAndString.StringToInt(authorizeInterfaceReturnEntity.getAuthorizeType(),0);
 				//处理备注拼接内容
 				//得到会员类型
 				String smenberType= authorizeInterfaceReturnEntity.getRemark1();
 				int menberType=0;//会员类型
-				menberType=Integer.parseInt(smenberType);
+				menberType=IntegerAndString.StringToInt(smenberType,0);
 				//得到会员id
 				String smenberId=authorizeInterfaceReturnEntity.getRemark2();
 				long memberId=0;//会员id
@@ -745,14 +904,11 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				map.put("statu", statu);//
 				map.put("handleStatu", handleStatu);//
 				map.put("backDetailEncrypt", authorizeInterfaceReturnEntity.getSignInfo());//
-				map.put("backDetail", "");//
+				map.put("backDetail", authorizeInterfaceReturnEntity.toString());//
 				handleThreePartyDaoImpl.authorizeBack(map);
 				
 			}else{//授权操作失败
 			}
-			HttpServletResponse response 
-			= ((ServletWebRequest)RequestContextHolder
-					.getRequestAttributes()).getResponse();
 			response.setContentType("text/plain;charset=utf-8");
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().write("SUCCESS");
@@ -770,12 +926,33 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	 * 双乾 授权接口页面返回处理
 	 * *  * @return * @see cn.springmvc.service.ManagedInterfaceServerTestI#testLoanAuthorizeReturn() */
 	@Override
-	public String testLoanAuthorizeReturn() {
+	public String testLoanAuthorizeReturn(HttpServletRequest request,HttpServletResponse response) {
 		String retur="SUCCESS";
 		try {
 			AuthorizeInterfaceReturnEntity 
 				authorizeInterfaceReturnEntity=new AuthorizeInterfaceReturnEntity();
-			authorizeInterfaceReturnEntity = authorizeInterfaceReturnEntity.authorizationInformation();
+			request.setCharacterEncoding("UTF-8");
+			authorizeInterfaceReturnEntity.
+				setResultCode(request.getParameter("ResultCode"));
+			authorizeInterfaceReturnEntity
+				.setMessage(request.getParameter("Message"));//返回状态信息
+			if(authorizeInterfaceReturnEntity.getResultCode()!=null){
+				if(authorizeInterfaceReturnEntity.getResultCode().equals("88")){
+					if(!request.getParameter("AuthorizeTypeOpen").equals("")){
+						authorizeInterfaceReturnEntity.setAuthorizeStatu(1);//开启
+					}else {
+						authorizeInterfaceReturnEntity.setAuthorizeStatu(2);//关闭
+					}
+					authorizeInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
+					authorizeInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
+					authorizeInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
+					authorizeInterfaceReturnEntity
+						.setAuthorizeType(request.getParameter("AuthorizeType"));//当前操作的授权类型
+					authorizeInterfaceReturnEntity.setStatu(0);
+				}else{
+					authorizeInterfaceReturnEntity.setStatu(1);
+				}
+			}
 			if(authorizeInterfaceReturnEntity.getStatu()==0){//授权操作成功
 				//关闭还是开启
 				//授权
@@ -1309,13 +1486,37 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 			}else {
 				loanTransferReturnEntity.setStatu(1);
 			}
+			short sStatu = 0;
 			if(loanTransferReturnEntity.getStatu()==0){//投资成功
 				
 			}else {//投资失败
 				loanTransferReturnEntity.getMessage();//失败原因
+				sStatu = 1;
 				retur="FAIL";
 			}
-			
+			if(loanTransferReturnEntity.getLoaninfolist().size()>0){//判断是否存在转账列表
+				//获取会员投资列表信息
+				LoanReturnInfoBean lrib = new LoanReturnInfoBean();
+				String[] remarkString= new String[2];
+				String sType="";
+				String sKey = DbKeyUtil.GetDbCodeKey();
+				short stype=0;
+				short sClient=Short.parseShort(loanTransferReturnEntity.getRemark1().split("A")[6].toString());
+				for (int i = 0; i < loanTransferReturnEntity.getLoaninfolist().size(); i++) {
+					lrib= (LoanReturnInfoBean) loanTransferReturnEntity.getLoaninfolist()
+							.get(i);
+					remarkString=lrib.getRemark().split("CTCT");
+					sType=remarkString[0];
+					if (sType.equals("A")) {//红包返回
+						stype = 1;
+					}else {//个人投资返回
+						stype = 0;
+					}
+					
+					projectInvestService.CheckInvestRedPackage(sStatu, stype, lrib.getOrderNo(), sClient, sKey);
+				}
+				
+			}
 		} catch (Exception e) {
 			retur="ERRO";
 			// TODO Auto-generated catch block e.printStackTrace();
@@ -1365,15 +1566,31 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				loanTransferReturnEntity.setStatu(1);
 			}
 			if(loanTransferReturnEntity.getStatu()==0){//投资成功
+				List<LoanReturnInfoBean> loaninfolist =new ArrayList<>();
 				if(loanTransferReturnEntity.getLoaninfolist().size()>0){//判断是否存在转账列表
 					//判断是否使用红包  提交投资信息到第三方时 Remark 字段内拼接获取（ 是否使用红包+红包id+使用金额）
 					
 					//判断是否使用代金券  提交投资信息到第三方时 Remark 字段内拼接获取（是否使用代金券+代金券id+使用金额）
-					
+					List<LoanInfoSecondaryBean> listsBeans = new ArrayList<>();
 					//获取会员投资列表信息
-					LoanReturnInfoBean lrib = (LoanReturnInfoBean) loanTransferReturnEntity.getLoaninfolist()
-							.get(0);
+					LoanReturnInfoBean lrib = new LoanReturnInfoBean();
+					LoanInfoSecondaryBean lInfoSecondaryBean = new LoanInfoSecondaryBean();
+					for (int i = 0; i < loanTransferReturnEntity.getLoaninfolist().size(); i++) {
+						lrib= (LoanReturnInfoBean) loanTransferReturnEntity.getLoaninfolist()
+								.get(i);
+						;
+						loaninfolist.add(lrib);
+//						List<Object> LoanInfoSecondarylist = Common.JSONDecodeList(lrib.getSecondaryJsonList(),
+//								LoanInfoSecondaryBean.class);
+//						for (int j = 0; j < LoanInfoSecondarylist.size(); j++) {
+//							lInfoSecondaryBean = (LoanInfoSecondaryBean)LoanInfoSecondarylist.get(j);
+//							listsBeans.add(lInfoSecondaryBean);
+//						}
+					}
+					loanTransferReturnEntity.setLoaninfolist(loaninfolist);
 					//处理获取的数据
+//					int rul=
+							projectInvestService.ProjectInvestBackDeal(loanTransferReturnEntity);
 					
 				}
 				
@@ -3764,6 +3981,219 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		return retur;
 		
 		
+	}
+	
+	
+	/* * 投资转账列表信息提交 *  * @param tra
+	/* *  *  * @return * @see cn.springmvc.service.ManagedInterfaceServerTestI#PreInvestmentTreatment(cn.sxlc.account.manager.model.TransferSubmitEntity) */
+	@Override
+	public LoanTransferEntity PreInvestmentTreatment(long lProjectId, long lMemberId, short sIsAuto,long lAmount, String sRedpacketsInfo,
+            long lVouchers, String sDirectPwd ,short sClient) {
+		String sKey = DbKeyUtil.GetDbCodeKey();
+		LoanTransferEntity loanTransferEntity = new LoanTransferEntity();
+//		//项目的当前最大可投金额
+		long caumll=projectInvestService.GetMaxInvestAmount(lProjectId, lMemberId, sKey, sIsAuto);
+		if (caumll<lAmount) {
+			loanTransferEntity.setStatu(-2);//投资金额大于当前会员最大可投金额
+			loanTransferEntity.setMassage("投资金额大于当前会员最大可投金额");
+			return loanTransferEntity;
+		}
+		long[] lRedpackets = new long[2];//使用红包金额
+		String ru=projectInvestService.MemberInvestCheck(lMemberId, lProjectId, sIsAuto, lAmount, sRedpacketsInfo, lVouchers, sKey, lRedpackets, sDirectPwd);
+		if (!ru.equals("success")) {
+			loanTransferEntity.setStatu(-3);//验证失败
+			loanTransferEntity.setMassage(ru);
+			return loanTransferEntity;
+		}
+		long lRedpacketss = lRedpackets[0];
+		TransferSubmitEntity tra = new TransferSubmitEntity();
+		tra = projectInvestService.GetInvestInfo(sIsAuto, lMemberId, lProjectId, lAmount, lRedpacketss, lVouchers, sClient, sKey, sRedpacketsInfo);
+		List<LoanInfoBeanSubmit> lInfoBeanSubmits = tra.getLoanInfoBeanSubmits();
+		LoanInfoBeanSubmit loanInfoBeanSubmit = new LoanInfoBeanSubmit();
+		//转账提交列表
+		List<LoanInfoBean> loanReturnInfoBeans=new ArrayList<LoanInfoBean>();
+		LoanInfoBean loanInfoBean = new LoanInfoBean();
+		String ordernumber = "";
+		if(lInfoBeanSubmits.size()>0){
+			for (int i = 0; i < lInfoBeanSubmits.size(); i++) {
+				loanInfoBeanSubmit=lInfoBeanSubmits.get(i);
+				loanInfoBean.setAdvanceBatchNo("");
+				loanInfoBean.setAmount(loanInfoBeanSubmit.getAmount());
+				loanInfoBean.setBatchNo(loanInfoBeanSubmit.getBatchNo());
+				loanInfoBean.setExchangeBatchNo("");
+				loanInfoBean.setFullAmount(loanInfoBeanSubmit.getFullAmount());
+				loanInfoBean.setLoanInMoneymoremore(loanInfoBeanSubmit.getLoanInMoneymoremore());
+				loanInfoBean.setLoanOutMoneymoremore(loanInfoBeanSubmit.getLoanOutMoneymoremore());
+				loanInfoBean.setOrderNo(loanInfoBeanSubmit.getOrderNo());
+				ordernumber= loanInfoBean.getOrderNo();
+				loanInfoBean.setRemark(loanInfoBeanSubmit.getRemark());
+				String SLoanInMoneymoremore1 = Common
+						.JSONEncode(loanInfoBeanSubmit.getLoanInfoSecondaryBeanList());
+				loanInfoBean.setSecondaryJsonList(SLoanInMoneymoremore1);
+				loanInfoBean.setTransferName(loanInfoBeanSubmit.getTransferName());
+				loanReturnInfoBeans.add(loanInfoBean);
+			}
+		}
+		loanTransferEntity.setLoanJsonList(Common.JSONEncode(loanReturnInfoBeans));
+		loanTransferEntity.setPlatformMoneymoremore(tra.getPlatformMoneyMoreMore());
+		loanTransferEntity.setTransferAction(tra.getTransferAction()) ;
+		loanTransferEntity.setAction(tra.getAction());
+		loanTransferEntity.setTransferType("1") ;
+		loanTransferEntity.setNeedAudit("");
+		loanTransferEntity.setRandomTimeStamp("");
+		loanTransferEntity.setRemark1(tra.getRemark1());
+		loanTransferEntity.setRemark2(tra.getRemark2()) ;
+		loanTransferEntity.setRemark3(tra.getRemark3());
+		loanTransferEntity.setSubmitURL(tra.getSubmitURL());
+		loanTransferEntity.setReturnURL(tra.getReturnURL()) ;
+		loanTransferEntity.setNotifyURL(tra.getNotifyURL());
+		// TODO Auto-generated method stub return null;
+		String privatekey = Common.privateKeyPKCS8;
+		String dataStr = loanTransferEntity.getLoanJsonList()
+				+ loanTransferEntity.getPlatformMoneymoremore()
+				+ loanTransferEntity.getTransferAction() + loanTransferEntity.getAction()
+				+ loanTransferEntity.getTransferType() + loanTransferEntity.getNeedAudit()
+				+ loanTransferEntity.getRandomTimeStamp() + loanTransferEntity.getRemark1()
+				+ loanTransferEntity.getRemark2() + loanTransferEntity.getRemark3()
+				+ loanTransferEntity.getReturnURL() + loanTransferEntity.getNotifyURL();
+		// 签名
+		RsaHelper rsa = RsaHelper.getInstance();
+		String SignInfo = rsa.signData(dataStr, privatekey);
+		loanTransferEntity.setSignInfo(SignInfo);
+//		//添加开户第三方交互记录
+//		long iId=generatorUtil.GetId();
+//		Map<String, Object> maps = new HashMap<String, Object>();
+//		maps.put("id", iId);//第三方交互记录id
+//		maps.put("merbillNo", ordernumber);//当前操作订单号
+//		maps.put("type", 1);//操作类型
+//		maps.put("interfaceType", 1);//第三方接口提供商
+//		maps.put("detail", dataStr);//加密前数据
+//		maps.put("detailEncrypt", SignInfo);//加密后数据
+//		maps.put("remark", "");//备注
+//		handleThreePartyDaoImpl.insertThirdInterfaceRecord(maps);
+//		generatorUtil.SetIdUsed(iId);
+		
+		String LoanJsonList = Common.UrlEncoder(loanTransferEntity.getLoanJsonList(),
+				"utf-8");
+		loanTransferEntity.setLoanJsonList(LoanJsonList);
+		
+		if(loanTransferEntity.getAction().equals("2")){//自动投标转账
+			HTTPClientUtilsbak httpClientUtilsbak = new HTTPClientUtilsbak();
+			List<NameValuePair> nvps = new ArrayList<NameValuePair>(1);
+			nvps.add(new BasicNameValuePair("LoanJsonList", loanTransferEntity.getLoanJsonList()));
+			nvps.add(new BasicNameValuePair("PlatformMoneymoremore",
+					loanTransferEntity.getPlatformMoneymoremore()));
+			nvps.add(new BasicNameValuePair("TransferAction", loanTransferEntity
+					.getTransferAction()));
+			nvps.add(new BasicNameValuePair("Action", loanTransferEntity.getAction()));
+			nvps.add(new BasicNameValuePair("TransferType", loanTransferEntity
+					.getTransferType()));
+			nvps.add(new BasicNameValuePair("NeedAudit", loanTransferEntity
+					.getNeedAudit()));
+			nvps.add(new BasicNameValuePair("RandomTimeStamp", loanTransferEntity
+					.getRandomTimeStamp()));
+			nvps.add(new BasicNameValuePair("Remark1", loanTransferEntity.getRemark1()));
+			nvps.add(new BasicNameValuePair("Remark2", loanTransferEntity.getRemark2()));
+			nvps.add(new BasicNameValuePair("Remark3", loanTransferEntity.getRemark3()));
+			nvps.add(new BasicNameValuePair("ReturnURL", loanTransferEntity
+					.getReturnURL()));
+			nvps.add(new BasicNameValuePair("NotifyURL", loanTransferEntity
+					.getNotifyURL()));
+			nvps.add(new BasicNameValuePair("SignInfo", SignInfo));
+			try {
+				String ruelt = httpClientUtilsbak.httpPost(nvps,
+						loanTransferEntity.getSubmitURL());
+				loanTransferEntity.setStatu(0);//提交信息处理成功
+			} catch (Exception e) {
+				loanTransferEntity.setStatu(1);//提交信息处理失败
+				loanTransferEntity.setMassage("提交信息处理失败");
+				// TODO Auto-generated catch block e.printStackTrace();
+			}
+		}else{
+			loanTransferEntity.setStatu(0);//提交信息处理成功
+		}
+		// TODO Auto-generated method stub return null;
+		return loanTransferEntity;
+	}
+	@Override
+	public LoanTransferEntity earlyRepaymentSubm(
+			RepayInterfaceEntity repayInterfaceEntity) {
+		LoanTransferEntity loanTransferEntity = new LoanTransferEntity();
+		//获得平台乾多多标识
+		String pmark="";
+		Map<String, Object> maps = new HashMap<String, Object>();
+		maps.put("accountTypeID", 1);//平台账号类型
+		pmark=selectThreePartyDaoImpl.findThirdPartyMark(maps);
+		//转账提交列表
+		List<LoanInfoBean> loanReturnInfoBeans=new ArrayList<LoanInfoBean>();
+		LoanInfoBean loanInfoBean = new LoanInfoBean();
+		String ordernumber = "";
+		RepayDetailEntity repayDetailEntity = new RepayDetailEntity();
+		if(repayInterfaceEntity.getDetailList().size()>0){
+			for (int i = 0; i < repayInterfaceEntity.getDetailList().size(); i++) {
+				repayDetailEntity=repayInterfaceEntity.getDetailList().get(i);
+				loanInfoBean.setAdvanceBatchNo("");
+				if (repayDetailEntity.getlAmount()>0) {
+					loanInfoBean.setAmount(repayDetailEntity.getsAmount());
+					
+				}
+				loanInfoBean.setBatchNo(repayInterfaceEntity.getsOrderNo());
+				loanInfoBean.setExchangeBatchNo("");
+				loanInfoBean.setFullAmount("");
+				loanInfoBean.setLoanInMoneymoremore(repayDetailEntity.getsMark());
+				loanInfoBean.setLoanOutMoneymoremore(repayInterfaceEntity.getsMark());
+				loanInfoBean.setOrderNo(repayDetailEntity.getsOrderNo());
+				ordernumber= loanInfoBean.getOrderNo();
+				loanInfoBean.setRemark(repayDetailEntity.getsDetail());
+				//管理费
+				List<LoanInfoSecondaryBean> loanInfoSecondaryBean = new ArrayList<LoanInfoSecondaryBean>();
+				LoanInfoSecondaryBean secondary = new LoanInfoSecondaryBean();
+				if (repayDetailEntity.getlMngFee()>0) {
+					secondary.setAmount(repayDetailEntity.getsMngFee());
+					secondary
+							.setLoanInMoneymoremore(pmark);
+					secondary.setRemark(repayDetailEntity.getsMngFee());
+					secondary.setTransferName("收取投资管理费");
+				}
+				String SLoanInMoneymoremore1 = Common
+						.JSONEncode(loanInfoSecondaryBean);
+				loanInfoBean.setSecondaryJsonList(SLoanInMoneymoremore1);
+				loanInfoBean.setTransferName("还款");
+				loanReturnInfoBeans.add(loanInfoBean);
+			}
+		}
+		loanTransferEntity.setLoanJsonList(Common.JSONEncode(loanReturnInfoBeans));
+		loanTransferEntity.setPlatformMoneymoremore(pmark);
+		loanTransferEntity.setTransferAction("2") ;
+		loanTransferEntity.setAction("1");
+		loanTransferEntity.setTransferType("2") ;
+		loanTransferEntity.setNeedAudit("1");
+		loanTransferEntity.setRandomTimeStamp("");
+		loanTransferEntity.setRemark1("");
+		loanTransferEntity.setRemark2("") ;
+		loanTransferEntity.setRemark3("");
+		loanTransferEntity.setSubmitURL("");
+		loanTransferEntity.setReturnURL("") ;
+		loanTransferEntity.setNotifyURL("");
+
+		String privatekey = Common.privateKeyPKCS8;
+		String dataStr = loanTransferEntity.getLoanJsonList()
+				+ loanTransferEntity.getPlatformMoneymoremore()
+				+ loanTransferEntity.getTransferAction() + loanTransferEntity.getAction()
+				+ loanTransferEntity.getTransferType() + loanTransferEntity.getNeedAudit()
+				+ loanTransferEntity.getRandomTimeStamp() + loanTransferEntity.getRemark1()
+				+ loanTransferEntity.getRemark2() + loanTransferEntity.getRemark3()
+				+ loanTransferEntity.getReturnURL() + loanTransferEntity.getNotifyURL();
+		// 签名
+		RsaHelper rsa = RsaHelper.getInstance();
+		String SignInfo = rsa.signData(dataStr, privatekey);
+		loanTransferEntity.setSignInfo(SignInfo);
+		String LoanJsonList = Common.UrlEncoder(loanTransferEntity.getLoanJsonList(),
+				"utf-8");
+		loanTransferEntity.setLoanJsonList(LoanJsonList);
+		loanTransferEntity.setStatu(0);//提交信息处理成功
+		// TODO Auto-generated method stub return null;
+		return loanTransferEntity;
 	}
 }
 

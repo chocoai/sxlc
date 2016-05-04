@@ -37,8 +37,6 @@ public interface IMemberService {
 	 */
 	public int individualMember(MemberInfo member,PersonalBaseInfo baseInfo);
 	
-	
-	
 	/***
 	 * 企业会员注册
 	 * @param member
@@ -65,7 +63,6 @@ public interface IMemberService {
 	 * @return	0登录成功  -1登录失败
 	 */
 	public int login(String userName, String password, int userType,String ip,String[] ipInfo,String sourceUrl,String sSessionId);
-
 	
 	/***
 	 * 检查电话号码是否存在
@@ -73,7 +70,6 @@ public interface IMemberService {
 	 * @return
 	 */
 	public int chechPhone(String phone);
-	
 	
 	/***
 	 * 检查用户名的个数
@@ -89,7 +85,6 @@ public interface IMemberService {
 	 * @return
 	 */
 	public int countInvitateCode(String invitateCode);
-	
 
 	/***
 	* 根据会员编号获取会员信息
@@ -137,7 +132,6 @@ public interface IMemberService {
 	 */
 	public MemberInfo memberComplanyInfo(long memberId);
 	
-	
 	/***
 	* 修改企业会员
 	*  
@@ -157,7 +151,6 @@ public interface IMemberService {
 	* @date 2016-3-29 下午7:42:10
 	 */
 	public int editMemberComplanyInfo(long memberId,int provinceId,int cityId,int countyId,String contactsName,String contactsPhone,String contactQQ,String contactEmail,String companyProfile);
-	
 	
 	/***
 	* 获取好友邀请列表
@@ -184,7 +177,6 @@ public interface IMemberService {
 	 */
 	public Map<String,Object> points(long memberId,int memberType);
 	
-	
 	/***
 	* 获取积分记录
 	* 
@@ -197,7 +189,6 @@ public interface IMemberService {
 	* @date 2016-3-30 上午10:43:04
 	 */
 	public List<IntegralRecords> addPoints(PageEntity entity);
-	
 	
 	/***
 	* 获取会员的红包信息
@@ -226,7 +217,6 @@ public interface IMemberService {
 	* @date 2016-3-30 下午2:05:05
 	 */
 	public List<RadPackage> redPackages(PageEntity entity);
-
 	
 	/***
 	* 我的代金券
@@ -241,7 +231,6 @@ public interface IMemberService {
 	 */
 	public MemberVouchers myVouchers(long memberId, int memberType);
 
-
 	/***
 	* 我的代金券列表
 	* vouchers(这里用一句话描述这个方法的作用)
@@ -254,6 +243,7 @@ public interface IMemberService {
 	* @date 2016-3-30 下午5:40:18
 	 */
 	public List<MemberVouchers> vouchers(PageEntity entity);
+	
 	
 	/***
 	* 获取省份列表
@@ -275,7 +265,6 @@ public interface IMemberService {
 	* @date 2016-4-25 下午5:44:34
 	 */
 	public List<CityInfoEntity> getCityList(int pId);
-	
 	
 	/***
 	* 获取区县列表
@@ -303,15 +292,12 @@ public interface IMemberService {
 	 */
 	public MemberInfo findMemberInfoByParam(String logname, String memberPwd,int memberType);
 
-
 	/**
 	* 获取民族列表
 	* @author 李杰
 	* @date 2016-4-26 下午3:33:38
 	 */
 	public List<NationInfoEntity> GetNationList();
-
-
 
 	/***
 	* 获取认证信息

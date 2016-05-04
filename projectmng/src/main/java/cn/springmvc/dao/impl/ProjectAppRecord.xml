@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="ProjectAppRecordXML"> 
+	<!-- 借款意向信息 -->  
+   <resultMap type="cn.springmvc.model.ProjectPurposeEntity" id="ProjectPurpose">
+   		 <id column="ID" property="id" />
+		<result column="Member_ID" property="memberID" />
+		<result column="Uses" property="uses" />
+		<result column="Repay_Source" property="repaySource" />
+		<result column="Amount" property="amount" />
+		<result column="Project_Descript" property="projectDescript" />
+		<result column="Deadline" property="deadline" />
+		<result column="Deadline_Type" property="deadlineType" />
+		<result column="Repay_Way" property="repayWay" />
+		<result column="Year_Rate" property="yearRate" />
+		<result column="Record_Date" property="recordDate" />
+		<result column="Admin_Id" property="adminId" /> 
+		<result column="Deal_Statu" property="dealStatu" />
+		<result column="Deal_Date" property="dealDate" />
+		<result column="Logname" property="Logname" />
+		<result column="Member_No" property="MemberNo" />
+		<result column="Personal_Name" property="PersonalName" />
+		<result column="Personal_Phone" property="PersonalPhone" />
+		<result column="Financial" property="financial" />
+		<result column="sendrecordDate" property="sendrecordDate" />
+   </resultMap>
+   <!-- 借款意向分页条件查询 -->
+   <select id="selectAllProjectPurpose" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="ProjectPurpose">
+   		select pp.*,mi.Member_No,mi.Logname,
+   		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) Personal_Name,
+   		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) Personal_Phone, 
+   		(select count(*) from Member_Financial_Advisor where Member_ID = pp.Member_ID and (Remove_Date>now() or Remove_Date is null) ) Financial,
+   		(select Record_Date from Project_App_Record ppr left join Project_App_Process pas on pas.Apply_Id=ppr.Apply_Id  where pp.Purpose_ID = ppr.Purpose_ID limit 1) sendrecordDate
+   		
+   		from Project_Purpose pp 
+   		left join Member_Info mi on pp.Member_ID = mi.Member_ID 
+   		left join Personal_Base_Info pbi on pbi.ID = mi.Personal_ID
+   		<where>
+   			<if test="map.repayWay!=-1">pp.Repay_Way = #{map.repayWay}</if>
+   			<if test="map.memberNo!=null">mi.Member_No like '%${map.memberNo}%'</if>
+   			<if test="map.logname!=null">mi.Logname like '%${map.logname}%'</if>
+   			<if test="map.personalPhone!=null">pbi.Personal_Phone like '%${map.personalPhone}%'</if>
+   			<!-- 只允许绑定了该理财顾问的管理员查看 -->
+   			<if test="map.adminid!=-1">pp.Admin_Id = #{map.adminid}</if>
+   		</where>
+   		order by 
+   		<if test="map.amount==1">Amount </if>
+   		<if test="map.recordDate==1">Record_Date</if>
+   		<if test="orderKey==1">desc</if>
+   		<if test="orderKey==2">asc</if>
+   </select>
+   <!-- 根据借款意向id查询借款信息 -->
+   <select id="selectProjectPurposeById" resultMap="ProjectPurpose" parameterType="Map">
+   		select pp.*,mi.Member_No,mi.Logname,
+   		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) Personal_Name,
+   		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) Personal_Phone,
+   		(select count(*) from Member_Financial_Advisor where Member_ID = pp.Member_ID and (Remove_Date>now() or Remove_Date is null) ) Financial
+   		,
+   		(select Record_Date from Project_App_Record ppr left join Project_App_Process pas on pas.Apply_Id=ppr.Apply_Id  where pp.Purpose_ID = ppr.Purpose_ID limit 1) sendrecordDate
+   		
+   		 from Project_Purpose pp 
+   		left join Member_Info mi on pp.Member_ID = mi.Member_ID 
+   		left join Personal_Base_Info pbi on pbi.ID = mi.Personal_ID where Purpose_ID = #{id}
+   </select>
+   <!-- 借款意向打回 -->
+   <update id="updateProjectPurposeById" parameterType="Map">
+   		update Project_Purpose
+   		<set>
+   			Deal_Statu = #{dealStatu}
+   		</set>
+   		<where>
+   			Purpose_ID = #{id}
+   		</where>
+   </update>
+   <!-- 分配理财顾问 -->
+   <update id="distributionOfFC" parameterType="Map">
+   		insert into Member_Financial_Advisor(Member_ID,Advisor_Id)
+   		values(#{memberID},#{advisorId})
+   </update>
+   
+   <!-- 提交意向为申请或保存草稿 -->
+   <select id="handleProjectAppRecord" resultType="Map" statementType="CALLABLE">
+    <!-- cStatu:1:提交申请，2：保存草稿 -->
+ 		<![CDATA[{call handleProjectAppRecord(
+				#{projectTitle,	 mode=IN,	jdbcType=VARCHAR},
+				#{ppid,	 mode=IN,	jdbcType=INTEGER},
+				#{pbiid,	 mode=IN,	jdbcType=INTEGER},
+				#{uses,	 mode=IN,	jdbcType=VARCHAR},
+				#{repaySource,	 mode=IN,	jdbcType=VARCHAR},
+				#{amount,	 mode=IN,	jdbcType=INTEGER},
+				#{projectDescript,	 mode=IN,	jdbcType=VARCHAR},
+				#{deadline,	 mode=IN,	jdbcType=INTEGER},
+				#{deadlineType,	 mode=IN,	jdbcType=INTEGER},
+				#{repayWay,	 mode=IN,	jdbcType=INTEGER},
+				#{yearRate,	 mode=IN,	jdbcType=INTEGER},
+				#{parId,	 mode=IN,	jdbcType=INTEGER},
+				#{memberID,	 mode=IN,	jdbcType=INTEGER},
+				#{projectType,	 mode=IN,	jdbcType=INTEGER},
+				#{repayGuarantee,	 mode=IN,	jdbcType=VARCHAR},
+				#{guarantyDescribe,	 mode=IN,	jdbcType=VARCHAR},
+				#{minStart,	 mode=IN,	jdbcType=INTEGER},
+				#{increaseRange,	 mode=IN,	jdbcType=INTEGER},
+				#{investMax,	 mode=IN,	jdbcType=INTEGER},
+				#{checkStatu,	 mode=IN,	jdbcType=INTEGER},
+				#{publishStatu,	 mode=IN,	jdbcType=INTEGER},
+				#{investStatu,	 mode=IN,	jdbcType=INTEGER},
+				#{isDirect,	 mode=IN,	jdbcType=INTEGER},
+				#{directPwd,	 mode=IN,	jdbcType=VARCHAR},
+				#{assetManagerID,	 mode=IN,	jdbcType=INTEGER},
+				#{guaranteeID,	 mode=IN,	jdbcType=INTEGER},
+				#{rateAddRate,	 mode=IN,	jdbcType=INTEGER},
+				#{rewardRate,	 mode=IN,	jdbcType=INTEGER},
+				#{rewardIcon,	 mode=IN,	jdbcType=VARCHAR},
+				#{investCountMax,	 mode=IN,	jdbcType=INTEGER},
+				#{merBillNo,	 mode=IN,	jdbcType=VARCHAR},
+				#{guaranteeRate,	 mode=IN,	jdbcType=INTEGER},
+				#{guaranteeType,	 mode=IN,	jdbcType=INTEGER},
+				#{guaranteeFee,	 mode=IN,	jdbcType=INTEGER},
+				#{riskMarginRate,	 mode=IN,	jdbcType=INTEGER},
+				#{mngFeeRate,	 mode=IN,	jdbcType=INTEGER},
+				#{riskMarginRate,	 mode=IN,	jdbcType=INTEGER},
+				#{mngFeeRateIncreace,	 mode=IN,	jdbcType=INTEGER},
+				#{mngFeeAmount,	 mode=IN,	jdbcType=INTEGER},
+				#{autoStart,	 mode=IN,	jdbcType=INTEGER},
+				#{auotInvestMax,	 mode=IN,	jdbcType=INTEGER},
+				#{cStatu,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  <!-- 项目申请信息 -->
+  <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "ProjectAppRecord">
+        <id property = "ID"						column = "Apply_Id" />
+        <result property = "purposeID"       	column = "Purpose_ID" />
+		<result property = "memberID"       	column = "Member_ID" />
+		<result property = "projectType"    	column = "Project_Type" />
+		<result property = "projectBaseID"  	column = "Project_Base_ID" />
+		<result property = "repayGuarantee" 	column = "Repay_Guarantee" />
+		<result property = "guarantyDescribe"   column = "Guaranty_Describe" />
+		<result property = "minStart" 			column = "MinStart" />
+		<result property = "increaseRange" 		column = "Increase_Range" />
+		<result property = "investMax" 			column = "Invest_Max" />
+		<result property = "checkStatu" 		column = "Check_Statu" />
+		<result property = "publishStatu" 		column = "Publish_Statu" />  
+		<result property = "investStatu" 		column = "Invest_Statu" />
+		<result property = "isDirect" 			column = "Is_Direct" />
+		<result property = "directPwd"		    column = "Direct_Pwd" />  
+        <result property = "assetManagerID" 	column = "Asset_Manager_ID" />
+		<result property = "guaranteeID" 		column = "Guarantee_ID" />
+		<result property = "rateAddRate" 		column = "Rate_Add_Rate" /> 
+		<result property = "rewardRate" 		column = "Reward_Rate" />
+		<result property = "rewardIcon" 		column = "Reward_Icon" /> 
+		<result property = "investCountMax" 	column = "Invest_Count_Max" />
+		<result property = "projectNo" 			column = "Project_No" /> 
+      	<result property = "merBillNo" 			column = "Mer_BillNo" /> 
+        <result property = "investRate" 		column = "Invest_Rate" /> 
+    </resultMap> 
+  
+  	<!-- 根据意向记录id查询项目申请信息 -->
+   <select id="selectProjectAppRecordById" resultMap="ProjectAppRecord" parameterType="Map">
+   		select * from Project_App_Record
+   		<where>
+   			Purpose_ID = #{purposeID}
+   		</where>
+   </select>
+   
+   <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="sProjectBaseInformation">
+            <id property = "ID" 				 column = "id" />
+			<result property = "projectTitle"    column = "Project_Title" /> 
+			<result property = "uses"            column = "Uses" />
+			<result property = "repaySource"     column = "Repay_Source" />
+			<result property = "amount" 		 column = "Amount" />
+			<result property = "projectDescript" column = "Project_Descript" />
+			<result property = "deadline" 		 column = "Deadline" />
+			<result property = "deadlineType"    column = "Deadline_Type" />
+			<result property = "repayWay"        column = "Repay_Way" />
+			<result property = "yearRate"        column = "Year_Rate" /> 
+     </resultMap>
+   <!-- 根据项目基本信息ID查询项目基本信息 -->
+   <select id="selectProjectBaseInfoById" resultMap="sProjectBaseInformation" parameterType="Map">
+   		select * from Project_Base_Info 
+   		<where>
+   			ID = #{projectBaseID}
+   		</where>
+   </select>
+   
+   
+   <!-- 项目费用设置信息 -->
+   <resultMap type="cn.springmvc.model.ProjectAppMngFeeEntity" id="sProjectAppMngFee">
+   		<result property = "projectID" column = "Project_ID" />
+   		<result property = "guaranteeRate" column = "Guarantee_Rate" />
+   		<result property = "guaranteeType" column = "Guarantee_Type" />
+   		<result property = "guaranteeFee" column = "Guarantee_Fee" />
+   		<result property = "riskMarginRate" column = "RiskMargin_Rate" />
+   		<result property = "riskMarginType" column = "RiskMargin_Type" />
+   		<result property = "riskMarginFee" column = "RiskMargin_Fee" />
+   		<result property = "mngFeeRate" column = "MngFee_Rate" />
+   		<result property = "mngFeeRateIncreace" column = "MngFee_Rate_Increace" />
+   		<result property = "mngFeeAmount" column = "MngFee_Amount" />
+   </resultMap>
+   <!-- 根据项目申请id 查询项目费用设置 -->
+   <select id="selectProjectAppMngFeeById" resultMap="sProjectAppMngFee" parameterType="Map">
+   		select * from Project_App_MngFee <where>Project_ID=#{projectId}</where> 
+   </select>
+   
+   <!-- 项目自动投标设置 -->
+    <resultMap type="cn.springmvc.model.ProjectAppAutoSetEntity" id="sProjectAppAutoSet">
+   		<result property = "projectID" column = "Project_ID" />
+   		<result property = "autoStart" column = "Auto_Start" />
+   		<result property = "autoInvestMax" column = "Auto_Invest_Max" />
+   </resultMap>
+   <!-- 根据项目申请id 查询自动投标设置 -->
+   <select id="selectProjectAppAutoSetById" resultMap="sProjectAppAutoSet" parameterType="Map">
+   		select * from Project_App_Auto_Set <where>Project_ID = #{projectID}</where>
+   </select>
+   
+   <!-- 项目惊喜红包配置 -->
+   <resultMap type="cn.springmvc.model.ProjectInvestRedPackageEntity" id="sProjectInvestRedPackage">
+   		<result property = "applyId" column = "Apply_Id" />
+   		<result property = "investRedPackageMin" column = "Invest_RedPackage_Min" />
+   		<result property = "investNum" column = "Invest_Num" />
+   		<result property = "redPackage" column = "RedPackage" />
+   </resultMap>
+   <!-- 根据项目申请id 查询项目惊喜红包配置 -->
+   <select id="selectProjectInvestRedPackageById" resultMap="sProjectInvestRedPackage" parameterType="Map">
+   		select * from Project_Invest_RedPackage <where>Apply_Id = #{applyId}</where>
+   </select>
+	<!-- 添加项目惊喜红包配置 -->
+	<insert id="insertProjectInvestRedPackage" parameterType="java.util.List">
+		insert into Project_Invest_RedPackage(Apply_Id,Invest_RedPackage_Min,Invest_Num,RedPackage)
+		values <foreach collection="list" item="item" index="index"
+	  separator=",">
+	  ( #{item.applyId}, #{item.investRedPackageMin}, #{item.investNum},
+	  #{item.redPackage})
+	  </foreach>
+	</insert>   
+	<!-- 根据项目申请id 删除项目惊喜红包配置 -->
+	<delete id="deleteProjectInvestRedPackageById" parameterType="Map">
+		delete from Project_Invest_RedPackage <where>Apply_Id = #{applyId}</where>
+	</delete>
+	
+	<!-- 项目申请附件资料 -->
+   <resultMap type="cn.springmvc.model.ProjectAppAttachmentEntity" id="sProjectAppAttachment">
+   		<result property = "applyId" column = "Apply_Id" />
+   		<result property = "attachInfoType" column = "Attach_Info_Type" />
+   		<result property = "attachTitle" column = "Attach_Title" />
+   		<result property = "attachUrl" column = "Attach_Url" />
+   </resultMap> 
+   <!-- 根据项目申请id 查询项目申请附件资料 -->
+   <select id="selectProjectAppAttachmentById" resultMap="sProjectAppAttachment" parameterType="Map">
+   		select * from Project_App_Attachment 
+   		<where>Apply_Id = #{applyId}</where>
+   </select>
+   <!-- 添加项目目申请附件资料 -->
+   <insert id="insertProjectAppAttachment" parameterType="java.util.List">
+   		insert into Project_App_Attachment(Apply_Id,Attach_Info_Type,Attach_Title,Attach_Url)
+   		values
+   		<foreach collection="list" item="item" index="index"
+	  separator=",">
+	  ( #{item.applyId}, #{item.attachInfoType}, #{item.attachTitle},#{item.attachUrl})
+	  </foreach>
+   </insert>
+   <!-- 根据项目申请id 删除所有项目申请附件资料 -->
+   <delete id="deleteProjectAppAttachment" parameterType="Map">
+   		delete from Project_App_Attachment where Apply_Id = #{applyId}
+   </delete>
+</mapper>   

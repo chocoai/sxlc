@@ -42,59 +42,59 @@ public class RechargeReturnEntity {
 	
 	
 	/** 
-	* rechargeReturnData 充值第三方返回信息整合 
-	* TODO(这里描述这个方法适用条件 – 可选) 
-	* TODO(这里描述这个方法的执行流程 – 可选) 
-	* TODO(这里描述这个方法的使用方法 – 可选) 
-	* TODO(这里描述这个方法的注意事项 – 可选) 
-	* * @Title: rechargeReturnData 
-	* @Description: TODO 
-	* @param @return
-	* @param @throws UnsupportedEncodingException 设定文件 
-	* @return RechargeReturnEntity 返回类型 
-	* @throws 
-	*/
-	public RechargeReturnEntity rechargeReturnData() throws UnsupportedEncodingException{
-		ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = attributes.getRequest();
-		request.setCharacterEncoding("UTF-8");
-		RechargeReturnEntity rechargeReturnEntity=new RechargeReturnEntity();
-		rechargeReturnEntity.setResultCode(request.getParameter("ResultCode"));
-		rechargeReturnEntity.setMessage(request.getParameter("Message"));//充值返回信息
-		String ResultCode=request.getParameter("ResultCode");
-		if(ResultCode!=null ){
-			if(ResultCode.equals("88") || ResultCode.equals("90")){
-				if(ResultCode.equals("88") && request.getParameter("RechargeType").equals(3)){//汇款充值信息提交成功等待处理
-					rechargeReturnEntity.setStatu(2);
-				}else{
-					rechargeReturnEntity.setStatu(0);
-				}
-				rechargeReturnEntity.setAmount(request.getParameter("Amount"));
-				rechargeReturnEntity.setCardNoList(request.getParameter("CardNoList"));
-				rechargeReturnEntity.setFee(request.getParameter("Fee"));
-				rechargeReturnEntity.setFeeType(request.getParameter("FeeType"));
-				rechargeReturnEntity.setFeePlatform(request.getParameter("FeePlatform"));
-				rechargeReturnEntity.setLoanNo(request.getParameter("LoanNo"));
-				rechargeReturnEntity.setNotifyURL(request.getParameter("NotifyURL"));
-				rechargeReturnEntity.setOrderNo(request.getParameter("OrderNo"));
-				rechargeReturnEntity.setPlatformMoneymoremore(request.getParameter("PlatformMoneymoremore"));
-				rechargeReturnEntity.setRechargeMoneymoremore(request.getParameter("RechargeMoneymoremore"));
-				rechargeReturnEntity.setRechargeType(request.getParameter("RechargeType"));
-				rechargeReturnEntity.setRemark1(request.getParameter("Remark1"));
-				rechargeReturnEntity.setRemark2(request.getParameter("Remark2"));
-				rechargeReturnEntity.setRemark3(request.getParameter("Remark3"));
-				rechargeReturnEntity.setSignInfo(request.getParameter("SignInfo"));
-				rechargeReturnEntity.setReturnURL(request.getParameter("ReturnURL"));
-			}else{
-				rechargeReturnEntity.setStatu(1);
-			}
-		}else{
-			rechargeReturnEntity.setStatu(1);
-		}
-		
-		return rechargeReturnEntity;
-	}
-	
+//	* rechargeReturnData 充值第三方返回信息整合 
+//	* TODO(这里描述这个方法适用条件 – 可选) 
+//	* TODO(这里描述这个方法的执行流程 – 可选) 
+//	* TODO(这里描述这个方法的使用方法 – 可选) 
+//	* TODO(这里描述这个方法的注意事项 – 可选) 
+//	* * @Title: rechargeReturnData 
+//	* @Description: TODO 
+//	* @param @return
+//	* @param @throws UnsupportedEncodingException 设定文件 
+//	* @return RechargeReturnEntity 返回类型 
+//	* @throws 
+//	*/
+//	public RechargeReturnEntity rechargeReturnData() throws UnsupportedEncodingException{
+//		ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+//		HttpServletRequest request = attributes.getRequest();
+//		request.setCharacterEncoding("UTF-8");
+//		RechargeReturnEntity rechargeReturnEntity=new RechargeReturnEntity();
+//		rechargeReturnEntity.setResultCode(request.getParameter("ResultCode"));
+//		rechargeReturnEntity.setMessage(request.getParameter("Message"));//充值返回信息
+//		String ResultCode=request.getParameter("ResultCode");
+//		if(ResultCode!=null ){
+//			if(ResultCode.equals("88") || ResultCode.equals("90")){
+//				if(ResultCode.equals("88") && request.getParameter("RechargeType").equals(3)){//汇款充值信息提交成功等待处理
+//					rechargeReturnEntity.setStatu(2);
+//				}else{
+//					rechargeReturnEntity.setStatu(0);
+//				}
+//				rechargeReturnEntity.setAmount(request.getParameter("Amount"));
+//				rechargeReturnEntity.setCardNoList(request.getParameter("CardNoList"));
+//				rechargeReturnEntity.setFee(request.getParameter("Fee"));
+//				rechargeReturnEntity.setFeeType(request.getParameter("FeeType"));
+//				rechargeReturnEntity.setFeePlatform(request.getParameter("FeePlatform"));
+//				rechargeReturnEntity.setLoanNo(request.getParameter("LoanNo"));
+//				rechargeReturnEntity.setNotifyURL(request.getParameter("NotifyURL"));
+//				rechargeReturnEntity.setOrderNo(request.getParameter("OrderNo"));
+//				rechargeReturnEntity.setPlatformMoneymoremore(request.getParameter("PlatformMoneymoremore"));
+//				rechargeReturnEntity.setRechargeMoneymoremore(request.getParameter("RechargeMoneymoremore"));
+//				rechargeReturnEntity.setRechargeType(request.getParameter("RechargeType"));
+//				rechargeReturnEntity.setRemark1(request.getParameter("Remark1"));
+//				rechargeReturnEntity.setRemark2(request.getParameter("Remark2"));
+//				rechargeReturnEntity.setRemark3(request.getParameter("Remark3"));
+//				rechargeReturnEntity.setSignInfo(request.getParameter("SignInfo"));
+//				rechargeReturnEntity.setReturnURL(request.getParameter("ReturnURL"));
+//			}else{
+//				rechargeReturnEntity.setStatu(1);
+//			}
+//		}else{
+//			rechargeReturnEntity.setStatu(1);
+//		}
+//		
+//		return rechargeReturnEntity;
+//	}
+//	
 	
 	
 	public String getRechargeMoneymoremore() {

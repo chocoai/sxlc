@@ -26,6 +26,12 @@ public class PageUtil{
 		Page page=(Page)pageEntity.getResults();
 		pageEntity.setRecordsTotal(page.getTotal());
 		pageEntity.setRecordsFiltered(page.getTotal());
+		long pageSize = pageEntity.getPageSize();
+		long totalPage =page.getTotal()/pageSize;
+		if(page.getTotal()%pageSize!=0){
+			totalPage+=1;
+		}
+		pageEntity.setTotalPage(totalPage);
 	}
 	/**
 	 * 

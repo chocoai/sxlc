@@ -38,9 +38,9 @@ public class ProjectInvestWriteDaoImpl extends SqlSessionDaoSupport implements P
             return iResult;
         }
 
-        String[] sR = sRemark.split(",");
-        String[] sR1 = sRemark1.split(",");
-        String[] sR2 = sRemark2.split(",");
+        String[] sR = sRemark.split("CTCT");
+        String[] sR1 = sRemark1.split("A");
+        String[] sR2 = sRemark2.split("A");
 
         if (sR == null || sR.length < 2) {
             return iResult;
@@ -86,7 +86,7 @@ public class ProjectInvestWriteDaoImpl extends SqlSessionDaoSupport implements P
     }
 
     @Override
-    public int InsertProjectInvestTmp(long lId, long lProjectId,
+    public int InsertProjectInvestTmp(long lId,short sInvestType, long lProjectId,
                                       long lMemberId, String sOrderNo, String sSubOrderNo,long lAmountTotal,
                                       long lRedpackets, String sRedpacketsInfo, long lVouchers,
                                       short isAuto, String sKey) {
@@ -94,6 +94,7 @@ public class ProjectInvestWriteDaoImpl extends SqlSessionDaoSupport implements P
 
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("lId", lId);
+        param.put("iInvestType", sInvestType);
         param.put("lProjectId", lProjectId);
         param.put("lMemberId", lMemberId);
         param.put("sOrderNo", sOrderNo);

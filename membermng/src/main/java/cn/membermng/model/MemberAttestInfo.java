@@ -18,6 +18,7 @@ public class MemberAttestInfo {
 	private Long				adminId;					//管理员编号
 	private Integer				memberType;					//会员类型
 	private Integer				attestType;					//认证类型
+	private String              attestName;					//认证类型
 	private	Integer				status;						//认证状态
 	private Date				recordDate;					//申请时间
 	private Date 				checkDate;					//认证申请时间
@@ -49,6 +50,14 @@ public class MemberAttestInfo {
 		this.deleteFlag = deleteFlag;
 	}
 
+
+	public String getAttestName() {
+		return attestName;
+	}
+
+	public void setAttestName(String attestName) {
+		this.attestName = attestName;
+	}
 
 	public Long getCertificationId() {
 		return certificationId;

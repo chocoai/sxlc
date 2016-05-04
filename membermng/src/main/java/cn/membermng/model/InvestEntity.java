@@ -12,7 +12,10 @@
  
 package cn.membermng.model; 
 
+import java.util.Date;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 /** 
  * @author 刘利 
@@ -74,15 +77,20 @@ public class InvestEntity {
 	/**
 	 * 投资时间
 	 */
-	private String investDate;	 
+	private String sInvestDate;
+	
+	private Date investDate;
 	/**
 	 * 放款时间
 	 */
-	private String holdDate;
+	private String sHoldDate;
+	
+	private Date  holdDate ;
 	/**
 	 * 结清时间	
 	 */
-	private String endDate	; 
+	private String sEndDate	; 
+	private Date endDate;
 	/**
 	 * 有效投资金额 = 投资总金额-转让总金额
 	 */
@@ -204,24 +212,35 @@ public class InvestEntity {
 	public void setRedPackageAmounts(String redPackageAmounts) {
 		this.redPackageAmounts = redPackageAmounts;
 	}
-	public String getInvestDate() {
+	public String getsInvestDate() {
+		return sInvestDate;
+	}
+	public Date getInvestDate() {
 		return investDate;
 	}
-	public void setInvestDate(String investDate) {
+	public void setInvestDate(Date investDate) {
 		this.investDate = investDate;
+		this.sInvestDate = TimestampAndString.DateToString2(investDate);
 	}
-	 
-	public String getHoldDate() {
+	public String getsHoldDate() {
+		return sHoldDate;
+	}
+	public Date getHoldDate() {
 		return holdDate;
 	}
-	public void setHoldDate(String holdDate) {
+	public void setHoldDate(Date holdDate) {
 		this.holdDate = holdDate;
+		this.sHoldDate = TimestampAndString.DateToString2(holdDate);
 	}
-	public String getEndDate() {
+	public String getsEndDate() {
+		return sEndDate;
+	}
+	public Date getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+		this.sEndDate = TimestampAndString.DateToString2(endDate);
 	}
 	public int getInvestAmountValid() {
 		return investAmountValid;

@@ -13,7 +13,8 @@ import cn.sxlc.account.manager.model.UnUsedRedpacketsEntity;
 
 @Service
 public class AccountSupportServiceImpl implements AccountSupportService{
-	@Resource(name="accountDaoSupport")
+	
+	@Resource
 	private AccountDaoSupport accountDaoSupport;  
 	
 	@Override

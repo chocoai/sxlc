@@ -10,6 +10,10 @@
 <head>
 	<base href="<%=basePath%>">
     <title>企业会员基本信息</title>
+    <script type="text/javascript">
+    	var publicKey = '<%=session.getAttribute("publicKey")%>';
+    	var memberType = 1;
+    </script>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/baseInformation.css">
@@ -86,19 +90,19 @@
 			   				</div>
 			   				<div class="item">
 			   					<div class="label1">联系人手机号：</div>
-			   					<div class="con">${userInfo.baseInfo.personalPhone } ***</div>
+			   					<div class="con">${userInfo.baseInfo.personalPhone }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label1">联系人QQ：</div>
-			   					<div class="con">${userInfo.baseInfo.qq } ***</div>
+			   					<div class="con">${userInfo.baseInfo.qq }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label1">联系人邮箱：</div>
-			   					<div class="con">${userInfo.baseInfo.personalEmail } ***</div>
+			   					<div class="con">${userInfo.baseInfo.personalEmail }</div>
 			   				</div>
 			   				<div class="item2">
 			   					<div class="label1">公司简介：</div>
-			   					<div class="con">${userInfo.companyInfo.companyProfile } ***</div>
+			   					<div class="con">${userInfo.companyInfo.companyProfile }</div>
 			   				</div>
 		   				</div><!--info结束  -->
 		   				<div class="deal">
@@ -157,7 +161,7 @@
 				   					<div class="selectArea">
 				   						<input class="selectValue" value="0" >
 	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
-	    								<ul class="select" onselectstart="return false">
+	    								<ul class="select province" onselectstart="return false">
 	        								<li class="selectOption" value="1">北京<li>
 	        								<li class="selectOption" value="2">上海<li>
 	       									<li class="selectOption" value="3">江西<li>
@@ -167,7 +171,7 @@
 									<div class="selectArea">
 										<input class="selectValue" value="0" >
 	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
-	    								<ul class="select" onselectstart="return false">
+	    								<ul class="select city" onselectstart="return false">
 	        								<li class="selectOption" value="1">北京<li>
 	        								<li class="selectOption" value="2">上海<li>
 	       									<li class="selectOption" value="3">江西<li>
@@ -177,7 +181,7 @@
 									<div class="selectArea">
 										<input class="selectValue" value="0" >
 	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
-	    								<ul class="select" onselectstart="return false">
+	    								<ul class="select county" onselectstart="return false">
 	        								<li class="selectOption" value="1">北京<li>
 	        								<li class="selectOption" value="2">上海<li>
 	       									<li class="selectOption" value="3">江西<li>
@@ -188,25 +192,25 @@
 				   				<div class="item">
 				   					<div class="label1">联系人：</div>
 				   					<div class="con">
-										<input type="text" lang="请输入联系人" class="input-contacts" maxlength="18">
+										<input type="text" lang="请输入联系人" name="contactName" class="input-contacts" maxlength="18">
 									</div>
 				   				</div>
 				   				<div class="item">
 				   					<div class="label1">联系人手机号：</div>
 				   					<div class="con">
-				   						<input type="text" lang="请输入联系人手机号" datatype="zPhone" class="input-tel-num phoneBind numberReg" maxlength="11">
+				   						<input type="text" lang="请输入联系人手机号" datatype="zPhone" name="contactPhone" class="input-tel-num phoneBind numberReg" maxlength="11">
 				   					</div>
 				   				</div>
 				   				<div class="item">
 				   					<div class="label1">联系人QQ：</div>
 				   					<div class="con">
-										<input type="text" lang="请输入联系人QQ" datatype="qq" class="input-QQ" maxlength="12">
+										<input type="text" lang="请输入联系人QQ" datatype="qq" name="contactQq" class="input-QQ" maxlength="12">
 									</div>
 				   				</div>
 				   				<div class="item">
 				   					<div class="label1">联系人邮箱：</div>
 				   					<div class="con">
-				   						<input type="text" lang="请输入邮箱号" datatype="email" class="input-email">
+				   						<input type="text" lang="请输入邮箱号" datatype="email" name="contactEmail" class="input-email">
 				   					</div>
 				   				</div>
 				   				<div class="item2">

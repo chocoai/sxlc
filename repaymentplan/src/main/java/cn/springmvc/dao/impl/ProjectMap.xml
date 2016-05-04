@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="replayProjectDetail"> 
- <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetail">
+ <resultMap type = "cn.springmvc.model.ProjectDetailEntity" id = "resultProjectDetail">
         <id property = "applyId"						column = "Apply_Id" />
 		<result property = "memberID"       	column = "Member_ID" />
 		<result property = "projectType"    	column = "Project_Type" />
@@ -29,7 +29,7 @@
        <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	   </association>
     </resultMap> 
-     <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
+     <resultMap type = "cn.springmvc.model.ProjectBaseInfoEntity" id ="resultBaseInfoentity">
             <id property = "Project_Base_ID" 				 column = "id" />
 			<result property = "projectTitle"    column = "Project_Title" /> 
 			<result property = "uses"            column = "Uses" />

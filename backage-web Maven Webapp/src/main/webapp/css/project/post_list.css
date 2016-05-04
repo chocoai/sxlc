@@ -1,0 +1,16 @@
+/* 项目发布-项目结束日期延长 */
+
+.formGroup{
+	margin:30px 0px;
+}
+.form-horizontal .formGroup{
+	margin-left:0px !important;
+	margin-right:0px !important;
+}
+.formControl{
+	width:80% !important;
+}
+.formGroup-sub{
+	text-align:right;
+	padding:0 75px;
+}

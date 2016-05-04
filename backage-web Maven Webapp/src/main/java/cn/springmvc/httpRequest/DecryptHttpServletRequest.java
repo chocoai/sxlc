@@ -37,7 +37,13 @@ public class DecryptHttpServletRequest extends HttpServletRequestWrapper{
 		if("draw".equals(name)){//datatable 视图 可不传
 			return ciphertext;
 		}
-		if("auth".equals(name)){//角色权限
+		if("_index_m1".equals(name)){//视图 可不传
+			return ciphertext;
+		}
+		if("_index_m2".equals(name)){// 视图 可不传
+			return ciphertext;
+		}
+		if("_index_m3".equals(name)){// 视图 可不传
 			return ciphertext;
 		}
 		if("auth".equals(name)){//角色权限

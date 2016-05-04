@@ -20,7 +20,6 @@ import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
-import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.DeptInfo;
@@ -29,6 +28,7 @@ import cn.springmvc.model.RoleInfo;
 import cn.springmvc.model.Trui;
 import cn.springmvc.service.IDeptInfoServer;
 import cn.springmvc.service.IPostInfoServer;
+import cn.springmvc.util.LoadUrlUtil;
 
 
 /**

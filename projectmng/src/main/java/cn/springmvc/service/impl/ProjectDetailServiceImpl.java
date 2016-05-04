@@ -24,6 +24,7 @@ import product_p2p.kit.dbkey.DbKeyUtil;
   
 import cn.springmvc.dao.ProjectDetailListDao; 
 import cn.springmvc.model.InvestEntity;
+import cn.springmvc.model.LoanMemberInfoEntity;
 import cn.springmvc.model.LoanRealRepayEntity;
 import cn.springmvc.model.LoanRepayEntity;
 import cn.springmvc.model.MemberAttestTypeEntity;
@@ -58,11 +59,11 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 	 
 	
 	@Override
-	public MemberInfoEntity selectMemberInfo(long projectID) {
+	public LoanMemberInfoEntity selectMemberInfo(long projectID) {
 		Map<String,Object> map =new HashMap<String,Object>();
 		map.put("keys", DbKeyUtil.GetDbCodeKey());
 		map.put("projectID", projectID);
-		MemberInfoEntity memberInfoEntity = null;
+		LoanMemberInfoEntity memberInfoEntity = null;
 		memberInfoEntity = projectDetailListDaoImpl.selectMemberInfo(map); 
 		return memberInfoEntity;
 	}

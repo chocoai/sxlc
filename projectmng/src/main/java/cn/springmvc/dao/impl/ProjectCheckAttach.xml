@@ -24,7 +24,7 @@
 	   where  ap.Process_ID in (select Process_ID from  Process_Project pp where Indexs =(select Indexs from Process_Project order by Indexs desc limit 1) )
 	   and pca.Display_Statu = 1  and  pcr.Apply_Id = #{projectID} and pca.Type_Statu=1
     </select>
-      <!-- 根据项目申请ID查询附件审核记录 -->  
+    <!-- 根据项目申请ID查询附件审核记录 -->  
 	<select id="selectCheckAttachDeal"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectCheckAttach" >
 	      SELECT PCA.App_Check_Id,pcr.Check_Date,apadd.AP_Name as addapName,ad.adminName,PCA.Attach_Title
 		  from  Project_Check_Attach PCA
@@ -78,7 +78,7 @@
     </select> 
     <!-- 附件最大序号 -->  
 	<select id="selectAttachindex"  resultType="int" >
-	   select ifnull(attachIndex,0) from  Project_Check_Attach  order by attachIndex desc limit 1
+	   select ifnull(Attach_Index,0) from  Project_Check_Attach  order by attachIndex desc limit 1
     </select> 
     <!-- 插入审核附件操作表   -->
     <insert id="insertCheckAttachone" parameterType="cn.springmvc.model.ProjectCheckAttachDealEntity" >

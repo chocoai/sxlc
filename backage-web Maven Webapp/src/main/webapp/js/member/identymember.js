@@ -1,6 +1,6 @@
 /**
  * 会员管理
- * 注册会员
+ * 认证会员
  * pr
  */
 $(function(){
@@ -20,13 +20,19 @@ $(function(){
 			}
 		
 	} );
-	showMemberRegList();
+	showMemberIdentyList();
+	/**
+	 * 查询按钮
+	 */
+	$(".glyphicon-search").on("click",function(){
+		$('#table_id').DataTable().ajax.reload();
+	});
 });
 
 /**
- * 显示所有注册会员
+ * 显示所有认证会员
  */
-function showMemberRegList(){
+function showMemberIdentyList(){
 	$('#table_id').DataTable(
 			{	autoWidth : false,
 				scrollY : 500,
@@ -48,7 +54,7 @@ function showMemberRegList(){
 				processing: true, //打开数据加载时的等待效果  
 		        serverSide: true,//打开后台分页  
 		        ajax: {  
-		            "url": appPath+"/member/getAllMembers.do",   
+		            "url": appPath+"/member/getIdentyMembers.do",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {
 		            	var member_Name = $("#member_Name").val();//会员姓名
@@ -82,32 +88,14 @@ function showMemberRegList(){
 		                		  return sReturn;
 		                	  }
 		                  },
-		                  
-		                 /* <th>会员编号</th>
-							<th>姓名</th>
-							<th>用户名</th>
-							<th>注册时间</th>
-							<th>手机号码</th>
-							<th>身份证号</th>
-							<th>电子邮箱</th>
-							<th>邀请码</th>
-							<th>注册市区</th>
-							<th>所属地区</th>
-							<th>注册客户端</th>*/
 		                  { title:"会员编码","data": "memberNo"},   
 		                  { title:"姓名","data": "personalName" },  
 		                  { title:"用户名","data": "memberName" },
 		                  { title:"注册时间","data": "sRegDate" },
 		                  { title:"手机号码","data": "personalPhone"},   
-		                  { title:"身份证号","data": "personalPhone"},   
-		                   
-		                  { title:"账户余额","data": "sUserBalance" },
-		                  { title:"冻结金额","data": "sFrozen" },
-		                  { title:"充值总额","data": "sRecharge"},   
-		                  { title:"投资总额","data": "sInvestment" }, 
-		                  { title:"借款总额","data": "sLoan" },
-		                  { title:"提现总额","data": "sWithdrawals"},   
-		                  { title:"收益总额","data": "sProfit" },  
+		                  { title:"身份证号","data": "personalIdCard"},   
+		                  { title:"电子邮箱","data": "personalEmail"}, 
+		                  { title:"邀请码","data": "invitateCode" },
 		                  { title:"所属地区","mRender": function(data, type, full){
 		                  		var str="";
 		                  		 if(full.provinceName!=null &&full.provinceName!=""){
@@ -125,6 +113,7 @@ function showMemberRegList(){
 		                  		return str;
 		                     }
 		                  },
+		                  { title:"注册客户端","data": "regClient" },
 		        ],
 		        aoColumnDefs : [
 		        				// {"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示

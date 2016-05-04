@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 import cn.membermng.model.MemberAttestByTypeEntity;
 import cn.membermng.model.MemberAttestTypeEntity;
 import cn.membermng.model.PersonalAttestAttachEntity;
+import cn.membermng.model.VIPPurchaseRecordsEntity;
 import cn.springmvc.dao.impl.HandleCertificationAuditDaoImpl;
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectCertificationAuditDaoImpl;
@@ -28,16 +30,17 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 	@Override
 	public List<MemberAttestTypeEntity> selectAllMemberAttestType(PageEntity page) {
 		
-		// TODO Auto-generated method stub return null;
-		return selectCertificationAuditDaoImpl.selectAllMemberAttestType(page);
+		List<MemberAttestTypeEntity> list =  selectCertificationAuditDaoImpl.selectAllMemberAttestType(page);
+		PageUtil.ObjectToPage(page, list);
+		return list;
 	}
 
 	@Override
 	public List<MemberAttestByTypeEntity> selectMemberAttestByType(
 			PageEntity page) {
-		
-		// TODO Auto-generated method stub return null;
-		return selectCertificationAuditDaoImpl.selectMemberAttestByType(page);
+		List<MemberAttestByTypeEntity> list =  selectCertificationAuditDaoImpl.selectMemberAttestByType(page);
+		PageUtil.ObjectToPage(page, list);
+		return list;
 	}
 
 	@Override
@@ -103,5 +106,48 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 		// TODO Auto-generated method stub return null;
 		return handleCertificationAuditDaoImpl.handleAddress(map);
 	}
-	
+	@Override
+	public List<VIPPurchaseRecordsEntity> VipPurchaseRecords(PageEntity page,
+			Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectCertificationAuditDaoImpl.VipPurchaseRecords(page, map);
+	}
+	@Override
+	public List<MemberAttestByTypeEntity> realNameAuthentication(PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectCertificationAuditDaoImpl.realNameAuthentication(page);
+	}
+	@Override
+	public List<MemberAttestByTypeEntity> AddressAuthentication(PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectCertificationAuditDaoImpl.AddressAuthentication(page);
+	}
+	@Override
+	public List<MemberAttestByTypeEntity> marriageCertification(PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectCertificationAuditDaoImpl.marriageCertification(page);
+	}
+	@Override
+	public List<MemberAttestByTypeEntity> EducationCertification(PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectCertificationAuditDaoImpl.EducationCertification(page);
+	}
+	@Override
+	public List<MemberAttestByTypeEntity> EnterpriseOrganizationCode(
+			PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectCertificationAuditDaoImpl.EnterpriseOrganizationCode(page);
+	}
+	@Override
+	public List<MemberAttestByTypeEntity> accountLicenseCode(PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectCertificationAuditDaoImpl.accountLicenseCode(page);
+	}
 }

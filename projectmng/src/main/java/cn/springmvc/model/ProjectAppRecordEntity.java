@@ -249,6 +249,7 @@ public class ProjectAppRecordEntity {
 	private String principalAmounts;//未还本金
 	private String interestAmounts;//未还利息
 	private String repayMaxTime;//合同约定下一个还款日 
+	private String getDate;//服务器时间
 	public long getPrincipalAmount() {
 		return principalAmount;
 	}
@@ -720,6 +721,12 @@ public class ProjectAppRecordEntity {
 	}
 	public void setRepayMaxTime(String repayMaxTime) {
 		this.repayMaxTime = repayMaxTime;
+	}
+	public String getGetDate() {
+		return getDate;
+	}
+	public void setGetDate(String getDate) {
+		this.getDate = getDate;
 	}
 	
 }

@@ -56,35 +56,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<table>
 						<tr>
 							<td class="tt"><label class="ineed">等级名称</label></td>
-							<td class="con" id="addlevelname"><input type="text" class="gradeName" placeholder="" datatype="rolename"></td>
+							<td class="con"><input type="text" class="gradeName" placeholder="" datatype="rolename"></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">等级投资总金额</label></td>
-							<td class="con" id="addinvsttotal"><input type="text" class="totalInvest" placeholder="" datatype="amcountM"></td>
+							<td class="con" ><input type="text" class="totalInvest" placeholder="" datatype="amcountM"></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">等级描述</label></td>
-							<td class="con" id="addlevelintroduce"><textarea datatype="rolemark" class="recaltextarea"></textarea></td>
+							<td class="con" ><textarea datatype="rolemark" class="recaltextarea"></textarea></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">推荐VIP提奖金额</label></td>
-							<td class="con" id="addrecvip"><input type="text" class="vIPReward" placeholder="" datatype="amcountM"></td>
+							<td class="con" ><input type="text" class="vIPReward" placeholder="" datatype="amcountM"></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">推荐借款提奖百分比</label></td>
-							<td class="con" id="addrecloanpercent"><input type="text" class="borrowReward" placeholder="" datatype="hundredNum"></td>
+							<td class="con" ><input type="text" class="borrowReward" placeholder="" datatype="hundredNum"></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">推荐借款还本提奖百分比：</label></td>
-							<td class="con" id="addrecprincipal"><input type="text" class="repayReward" placeholder="" datatype="hundredNum"></td>
+							<td class="con"><input type="text" class="repayReward" placeholder="" datatype="hundredNum"></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">推荐投资收益提奖百分比：</label></td>
-							<td class="con" id="addrecinvestprofit"><input type="text" class="investReward" placeholder="" datatype="hundredNum"></td>
+							<td class="con"><input type="text" class="investReward" placeholder="" datatype="hundredNum"></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">推荐投资提奖百分比：</label></td>
-							<td class="con" id="addinvestaward"><input type="text" class="" placeholder="" datatype="hundredNum"></td>
+							<td class="con"><input type="text" class="" placeholder="" datatype="hundredNum"></td>
 						</tr>
 					</table>
 					</form>

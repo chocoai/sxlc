@@ -82,7 +82,7 @@ public interface MamberBankCardService {
 	 * @return BankCardInfoEntity 返回类型 
 	 * @date 2016-3-28 下午3:36:48
 	 */
-	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId);
+	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId,long memberID);
 	/**
 	 * 修改银行卡信息 
 	 * @author 刘利   

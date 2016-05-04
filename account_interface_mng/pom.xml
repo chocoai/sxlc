@@ -5,6 +5,11 @@
   <groupId>product_p2p</groupId>
   <artifactId>cn.sxlc.account.manager</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>cn.sxlc.account.manager</name>
+  <url>http://maven.apache.org</url>
+  
   <build>
   <resources>
 			<resource>
@@ -26,10 +31,7 @@
       </plugin>
     </plugins>
   </build>
-  <packaging>jar</packaging>
-
-  <name>account_interface_mng</name>
-  <url>http://maven.apache.org</url>
+  
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -124,5 +126,4 @@
       <version>3.3.2</version>
     </dependency>
   </dependencies>
-
 </project>

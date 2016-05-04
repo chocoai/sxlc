@@ -261,5 +261,34 @@ public interface HandleGuaranteeInfoDao {
 	* @throws 
 	*/
 	public int insertGuaranteeAdmin(Map<String, Object> map);
+	
+	
+	/** 
+	* updateManagementAdmin 启用 停用 资产管理方管理员
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: updateManagementAdmin 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-4 下午5:32:58
+	* @throws 
+	*/
+	public int updateManagementAdmin(Map<String, Object> map);
+	
+	/** 
+	* insertManagementAdmin  添加资产管理方管理员 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: insertManagementAdmin 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-4 下午5:33:27
+	* @throws 
+	*/
+	public int insertManagementAdmin(Map<String, Object> map);
 }
 

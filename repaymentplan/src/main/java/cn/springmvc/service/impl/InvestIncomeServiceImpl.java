@@ -29,9 +29,9 @@ import cn.springmvc.dao.InvestIncomeListDao;
 import cn.springmvc.dao.ReplayProjectDetailListDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.model.InvestIncomeEntity;
-import cn.springmvc.model.InvestRecordEntity;
+import cn.springmvc.model.InvestRecordInfoEntity;
 import cn.springmvc.model.LoanRepayEntity;
-import cn.springmvc.model.ProjectAppRecordEntity;
+import cn.springmvc.model.ProjectDetailEntity;
 import cn.springmvc.service.InvestIncomeService;
 import cn.springmvc.utitls.RepalyUtitls;
 
@@ -54,11 +54,11 @@ public class InvestIncomeServiceImpl implements InvestIncomeService {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("projectID",             applyID);
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
-		List<InvestRecordEntity> investRecordList = investIncomeListDao.selectInvestListByProjectID(map);
+		List<InvestRecordInfoEntity> investRecordList = investIncomeListDao.selectInvestListByProjectID(map);
 		if(investRecordList == null){
 			return -1;
 		}
-		ProjectAppRecordEntity projectAppRecordEntity = null;
+		ProjectDetailEntity projectAppRecordEntity = null;
 		projectAppRecordEntity = replayProjectDetailListDao.selectProjectDetailByID(applyID);
 		if(projectAppRecordEntity == null ){
 			return -1;
@@ -78,7 +78,7 @@ public class InvestIncomeServiceImpl implements InvestIncomeService {
 		SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
 		String presentDate3 = sdf3.format(new Date());//获取当前系统时间
 		for(int i = 0;i < investRecordList.size();i++ ) {
-			 InvestRecordEntity investRecordEntity = new InvestRecordEntity();
+			 InvestRecordInfoEntity investRecordEntity = new InvestRecordInfoEntity();
 			 investRecordEntity = investRecordList.get(i);
 			 List<LoanRepayEntity> planList = RepalyUtitls.getIncomePlan2(deadLineType,investRecordEntity
 					 .getInvestAmountValids(),yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
@@ -119,7 +119,7 @@ public class InvestIncomeServiceImpl implements InvestIncomeService {
 		int result = -1;
 		String[] sRows = planStr.split(";");
 		String[] sCols = null;
-		InvestRecordEntity investRecordEntity= investIncomeListDao.
+		InvestRecordInfoEntity investRecordEntity= investIncomeListDao.
 				selectInvestInfoByInvestID(investID);
 		
 		applyID = investRecordEntity.getProjectId();

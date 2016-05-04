@@ -18,7 +18,7 @@
 	<slf4j.version>1.7.5</slf4j.version>
 	<log4j.version>1.2.17</log4j.version>
 	<cxf.version>2.7.18</cxf.version>
-    <!-- <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
   <dependencies>
@@ -185,13 +185,18 @@
  		 <artifactId>projectmng</artifactId>
  		 <version>0.0.1-SNAPSHOT</version>
     </dependency>
-
-	<dependency>
-		<groupId>product_p2p</groupId>
-		<artifactId>cn.sxlc.account.manager</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-
+    
+   <dependency>
+	     <groupId>product_p2p</groupId>
+	     <artifactId>cn.sxlc.account.manager</artifactId> 
+	     <version>0.0.1-SNAPSHOT</version> 
+    </dependency>
+    
+     <dependency>
+	     <groupId>product_p2p</groupId>
+	     <artifactId>system-set</artifactId> 
+	     <version>0.0.1-SNAPSHOT</version> 
+    </dependency>
 	
   </dependencies>
   <build>

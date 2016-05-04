@@ -24,7 +24,9 @@ import cn.springmvc.model.ProjectAppRecordEntity;
  * @date 2016-3-21 下午1:04:38  */
 
 public interface InvestListService {
+	
 	/**
+	 * 投资列表
 	 * 
 	 * selectInvestList(这里用一句话描述这个方法的作用) 
 	 * TODO(描述)

@@ -56,9 +56,10 @@
     </select>   
       <!-- 根据贷后监管信息ID查询其对应的附件信息-->  
 	<select id="selectProjectAfterLoanAttach"  parameterType="long"  resultMap="resultProjectAfterLoanAttach" >
-	   select Attach_Title,Attach_Url
-	   from  Project_After_Loan_Attachment    
-	   where   Info_Id = #{infoId}
+	   select pala.Attach_Title,pala.Attach_Url,pali.Abstract,pali.Record_Date,pali.Detail
+	   from  Project_After_Loan_Attachment   pala
+	   join  Project_After_Loan_Info pali on pala.Info_Id = pali.Info_Id
+	   where   pala.Info_Id = #{infoId}
     </select>
     <!-- 根据贷后监管信息ID查询贷后监管详情-->  
 	<select id="selectProjectAfterLoandetail"  parameterType="long"  resultMap="resultProjectAfterLoanInfo" >

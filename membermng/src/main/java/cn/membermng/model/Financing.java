@@ -1,6 +1,9 @@
 package cn.membermng.model; 
 
+import java.sql.Timestamp;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 /***
 * 融资中
@@ -127,6 +130,7 @@ public class Financing {
 
 	public void setAmount(long amount) {
 		this.amount = amount;
+		this.sAmount = IntegerAndString.LongToString(amount);
 	}
 
 	public String getsAmount() {
@@ -143,6 +147,7 @@ public class Financing {
 
 	public void setYearRate(int yearRate) {
 		this.yearRate = yearRate;
+		this.sYearRate = IntegerAndString.IntToString(yearRate);
 	}
 
 	public String getsYearRate() {
@@ -158,7 +163,7 @@ public class Financing {
 	}
 
 	public void setReleaseTime(String releaseTime) {
-		this.releaseTime = releaseTime;
+		this.releaseTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(releaseTime));
 	}
 
 	public String getStartTime() {
@@ -166,7 +171,7 @@ public class Financing {
 	}
 
 	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+		this.startTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(startTime));
 	}
 
 	public String getEndTime() {
@@ -174,7 +179,7 @@ public class Financing {
 	}
 
 	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+		this.endTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(endTime));
 	}
 
 	public String getRealEndDate() {
@@ -182,7 +187,7 @@ public class Financing {
 	}
 
 	public void setRealEndDate(String realEndDate) {
-		this.realEndDate = realEndDate;
+		this.realEndDate = TimestampAndString.TimestampToString2(Timestamp.valueOf(realEndDate));
 	}
 
 	public long getInvestRate() {
@@ -191,7 +196,15 @@ public class Financing {
 
 	public void setInvestRate(int investRate) {
 		this.investRate = investRate;
-		this.sInvestRate = IntegerAndString.IntToString(investRate);
+		this.setsInvestRate(IntegerAndString.IntToString(investRate));
+	}
+
+	public String getsInvestRate() {
+		return sInvestRate;
+	}
+
+	public void setsInvestRate(String sInvestRate) {
+		this.sInvestRate = sInvestRate;
 	}
 	
 	

@@ -15,14 +15,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.Upload.FtpClientUtil;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
-import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.MemberAttestTypeEntity;
 import cn.springmvc.model.ProjectBaseInfoEntity;
 import cn.springmvc.service.MemberAttestTypeService;
 import cn.springmvc.service.ProjectBaseInfoService;
+import cn.springmvc.util.LoadUrlUtil;
 
 /** 
 * @author 唐国峰
@@ -96,6 +97,22 @@ public class ProjectTypeController {
 	}
 	
 	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 修改项目类型信息时获取该类型所需的认证项目
+	 * @return List<MemberAttestTypeEntity>  
+	 * @date 2016-5-3 上午10:16:48
+	 * @throws 
+	 */
+	@RequestMapping("/getAuthentication")
+	@ResponseBody
+	public List<MemberAttestTypeEntity> getAuthentication(HttpServletRequest req){
+		Long id = Long.parseLong(req.getParameter("id"));//项目类型id
+		List<MemberAttestTypeEntity> authentication = projectBaseInfoService.selectMemberAttestByprojectType(id);
+		return authentication;
+	}
+	
+	
 	
 	/** 
 	 * @author 唐国峰 
@@ -138,13 +155,13 @@ public class ProjectTypeController {
 		//操作日志参数
 		HttpSession session = req.getSession();
 		Admin admin = (Admin)session.getAttribute("LoginPerson");
-		//moduleID=504(管理团队管理)
-		//optID=50403(停用/启用）
+		//moduleID=301(项目类型管理)
+		//optID=30103(停用/启用）
 		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
 		String [] sIpInfo = new String[8];
 		logEntity.setiAdminId(admin.getId());
-		logEntity.setlModuleId(504);
-		logEntity.setlOptId(50403);
+		logEntity.setlModuleId(301);
+		logEntity.setlOptId(30103);
 		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
 		logEntity.setsMac(null);
 		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
@@ -156,6 +173,89 @@ public class ProjectTypeController {
 		entity.setId(id);
 		int result=0;
 		result = projectBaseInfoService.updateProjectBaseInfoStatuByID(entity,logEntity,sIpInfo);
+		return result;
+	}
+	
+	
+	
+	/** 
+	 * @author 唐国峰 
+	 * @Description:新增或修改项目类型 
+	 * @param req
+	 * @return int  
+	 * @date 2016-5-3 下午2:03:18
+	 * @throws 
+	 */
+	@RequestMapping("/addOrUpdateProType")
+	@ResponseBody
+	public int addOrUpdateProType(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = req.getSession();
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=301(项目类型管理)
+		//optID=30101(添加） 30102(修改）
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(60106);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		//获取解密参数
+		Map<String,Object> param=new HashMap<String,Object>();
+		String projectName = req.getParameter("projectName");
+		param.put("projectName",projectName);
+		String minAmount = req.getParameter("minAmount");
+		param.put("minAmount",minAmount);
+		String maxAmount = req.getParameter("maxAmount");
+		param.put("maxAmount",maxAmount);
+		String minRate = req.getParameter("minRate");
+		param.put("minRate",IntegerAndString.StringToInt(minRate));
+		String maxRate = req.getParameter("maxRate");
+		param.put("maxRate",IntegerAndString.StringToInt(maxRate));
+		Integer minDaytimeY = Integer.parseInt(req.getParameter("minDaytimeY"));
+		param.put("minDaytimeY",minDaytimeY);
+		Integer maxDaytimeY = Integer.parseInt(req.getParameter("maxDaytimeY"));
+		param.put("maxDaytimeY",maxDaytimeY);
+		param.put("unitY", 0);
+		Integer minDaytimeM = Integer.parseInt(req.getParameter("minDaytimeM"));
+		param.put("minDaytimeM",minDaytimeM );
+		Integer maxDaytimeM = Integer.parseInt(req.getParameter("maxDaytimeM"));
+		param.put("maxDaytimeM",maxDaytimeM);
+		param.put("unitM", 1);
+		Integer minDaytimeD = Integer.parseInt(req.getParameter("minDaytimeD"));
+		param.put("minDaytimeD",minDaytimeD);
+		Integer maxDaytimeD = Integer.parseInt(req.getParameter("maxDaytimeD"));
+		param.put("maxDaytimeD",maxDaytimeD);
+		param.put("unitD", 2);
+		String isMortgage = req.getParameter("isMortgage");
+		param.put("isMortgage",isMortgage);
+		String applyMember = req.getParameter("applyMember");
+		param.put("applyMember",applyMember);
+		String Datum = req.getParameter("Datum");
+		param.put("Datum",Datum);
+		String picIcon = req.getParameter("picIcon");
+		param.put("picIcon",picIcon);
+		String picUrl = req.getParameter("picUrl");
+		param.put("picUrl",picUrl);
+		String briefIntroduction = req.getParameter("briefIntroduction");
+		param.put("briefIntroduction",briefIntroduction);
+		String contentg = req.getParameter("contentg");
+		param.put("contentg",contentg);
+		String contentr = req.getParameter("contentr");
+		param.put("contentr",contentr);
+		
+		int result=0;
+		String type = req.getParameter("type");//操作类型
+		if(type.equals("1")){//增加操作
+			logEntity.setlOptId(30101);
+			result = projectBaseInfoService.addProjectBaseType(param,logEntity,sIpInfo);
+		}else if(type.equals("2")){//修改操作
+			logEntity.setlOptId(30102);
+			String lId = req.getParameter("lId");
+			param.put("lId", lId);
+			result = projectBaseInfoService.updateProjectBaseType(param,logEntity,sIpInfo);
+		}
 		return result;
 	}
 	

@@ -75,15 +75,30 @@ public class MemberInfoEntity {
 	/**
 	 * 所属省份	
 	 */
-	private int provinceId; 
+	private int provinceId;
+	
+	/***
+	 * 省名称
+	 */
+	private String	provinceName;
 	/**
 	 * 所属地市
 	 */
 	private int cityId; 
+	
+	/***
+	 * 市名称
+	 */
+	private String cityName;
 	/**
 	 * 所属县区
 	 */
 	private int countyId;
+	
+	/***
+	 * 区县名称
+	 */
+	private String countyName;
 	/**
 	 * 所属乡镇
 	 */
@@ -215,7 +230,25 @@ public class MemberInfoEntity {
 	}
 	public void setCompanyInfoEntity(CompanyInfoEntity companyInfoEntity) {
 		this.companyInfoEntity = companyInfoEntity;
+	}
+	public String getCityName() {
+		return cityName;
+	}
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+	public String getProvinceName() {
+		return provinceName;
+	}
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+	public String getCountyName() {
+		return countyName;
+	}
+	public void setCountyName(String countyName) {
+		this.countyName = countyName;
 	}		
-
+	
 }
 

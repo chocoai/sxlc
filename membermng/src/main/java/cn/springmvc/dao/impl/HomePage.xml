@@ -1,18 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>    
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 
-<mapper namespace="HomePageList">     
-	
-	<!-- 查询结果封装 --> 
+<mapper namespace="HomePageList"> 
+    <!-- 查询结果封装 --> 
     <resultMap type="cn.membermng.model.IncomeReplayPlanEntity" id="resultIncomeReplayPlan">
-        <id column="Member_ID"           property="memberID" />
-		<result column="Month"           property="month" />
-		<result column="SDRecv_Amount"   property="sdRecvAmount" /> 
-		<result column="Day"             property="day" />
+        <id column="Member_ID"            property="memberID" />
+		<result column="Month"            property="month" />
+		<result column="SDRecv_Amount"    property="sdRecvAmount" /> 
+		<result column="Day"              property="day" />
 		<result column="SDRecv_Principal" property="sdRecvPrincipal" />
-		<result column="SDRecv_Interest" property="sdRecvInterest" /> 
-		<result column="Record_Date"     property="sdRepayAmount" />
-		<result column="Abstract"        property="sdRepayPrincipal" /> 
+		<result column="SDRecv_Interest"  property="sdRecvInterest" /> 
+		<result column="Record_Date"      property="sdRepayAmount" />
+		<result column="Abstract"         property="sdRepayPrincipal" /> 
     </resultMap>   
 	<!-- 查询回款计划信息
 		Member_ID,会员ID
@@ -107,11 +106,13 @@
 		Record_Date,记录时间
 		Abstract,描述
 	--> 
-	<!--传入参数整理
-		#{Member_ID}
+
+	
+	<!-- 传入参数整理
+		 #{Member_ID}
 	-->
 	<select id="getDynamic_Funds" parameterType="Map" resultMap="resultIncomeReplayPlan">
-		SELECT
+		  SELECT
 		  mtr.Member_ID,
 		  mtr.Record_Date,
 		  mtr.Abstract

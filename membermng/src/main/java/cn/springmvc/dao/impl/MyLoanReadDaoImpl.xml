@@ -3,7 +3,7 @@
 <mapper namespace="myLoanReadDaoImpl">  
    
    <!-- 融资中 -->
-   <select id="financings" 		parameterType="Map" resultType="cn.membermng.model.Financing">
+   <select id="financings" 		parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.Financing">
    	select 
    	
    	par.Apply_Id as loanId, par.Project_No as projectNo,pbi.Project_Title as projectName,
@@ -15,11 +15,11 @@
 	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
 	left join ProjectBaseInfo prbi on par.Project_ID = prbi.Project_ID
 	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
-	where par.Member_ID = #{memberId} and par.Check_Statu = 1 and par.Publish_Statu = 2 and par.Invest_Statu = 0
+	where par.Member_ID = #{map.memberId} and par.Check_Statu = 1 and par.Publish_Statu = 2 and par.Invest_Statu = 0
    </select>
    
    <!-- 融资结束 -->
-   <select id="endOfFinancing" 	parameterType="Map" resultType="cn.membermng.model.Financing">
+   <select id="endOfFinancing" 	parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.Financing">
    	select 
    	
    	par.Apply_Id as loanId, par.Project_No as projectNo,pbi.Project_Title as projectName,
@@ -32,11 +32,11 @@
 	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
 	left join ProjectBaseInfo prbi on par.Project_ID = prbi.Project_ID
 	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
-	where par.Member_ID = #{memberId}  and par.Invest_Statu = 2
+	where par.Member_ID = #{map.memberId}  and par.Invest_Statu = 2
    </select>
    
    <!-- 还款中的借款 -->
-   <select id="repaymentIns" 	parameterType="Map" resultType="cn.membermng.model.RepaymentIn">
+   <select id="repaymentIns" 	parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.RepaymentIn">
    	select par.Project_No as projectNo,pbi.Project_Title as projectName,pbi.Amount,
 	(select sum(Invest_Amount) from Invest_Record where Apply_Id = par.Apply_Id and IsValid = 0) as sjAmount,
 	pbi.Year_Rate as yearRate, pap.End_Date as endTime, pap.Hold_Date as startTime,
@@ -48,31 +48,31 @@
 	from Project_App_Record par
 	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
 	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
-	where par.Member_ID = #{memberId}  and par.Invest_Statu = 3
+	where par.Member_ID = #{map.memberId}  and par.Invest_Statu = 3
    </select>
    
    <!-- 投资记录 -->
-   <select id="investRecord"	parameterType="Map" resultType="cn.membermng.model.InvestmentRecord">
+   <select id="investRecord"	parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.InvestmentRecord">
    	select ir.Invest_Date as investDate,mi.logname as memberName ,pbi.personal_name as userName,ir.Invest_Amount as investmentAmount
 	from Invest_Record ir
 	left join member_info mi on mi.member_id = ir.Member_ID
 	left join personal_base_info pbi on pbi.personal_id = mi.personal_id
-	where Apply_Id = #{applyId} and IsValid = 0
+	where Apply_Id = #{map.applyId} and IsValid = 0
    </select>
    
    <!-- 还款计划查询 -->
-   <select id="loanRepay"		parameterType="Map" resultType="cn.membermng.model.LoanRepay">
+   <select id="loanRepay"		parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.LoanRepay">
 	select lr.Repay_ID as lid,lr.indexs,lr.SDRepay_Principal as loanAmount,lr.SDRepay_Interest as loanInterest,lr.Repay_MaxTime as loanTime,
 	lr.Statu as statu,lr.IsCompensatory as isCompensatory,
 	(select sum(Repay_Principal) from Loan_Real_Repay lrr where lrr.Loa_Repay_ID =lr.Repay_ID) as paidAmount,
 	(select sum(Repay_Interest) from Loan_Real_Repay lrr where lrr.Loa_Repay_ID =lr.Repay_ID) as paidInterest,
 	(select sum(Repay_Overdue_Interest) from Loan_Real_Repay lrr where lrr.Loa_Repay_ID =lr.Repay_ID) as paidOverdueInterest,
 	(select sum(Repay_Overdue) from Loan_Real_Repay lrr where lrr.Loa_Repay_ID =lr.Repay_ID) as paidOberdueFine 
-	from Loan_Repay lr where Apply_Id = #{applyId} and IsValid = 0
+	from Loan_Repay lr where Apply_Id = #{map.applyId} and IsValid = 0
    </select>
    
    <!-- 已流标 -->
-   <select id="flowLabelS" 		parameterType="Map" resultType="cn.membermng.model.FlowLabel">
+   <select id="flowLabelS" 		parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.FlowLabel">
    	select 
 	par.Apply_Id as loanId, 
 	par.Project_No as projectNo, 
@@ -92,34 +92,34 @@
 	left join ProjectBaseInfo prbi on prbi.Project_ID = par.Project_ID
 	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
 	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
-	where par.Invest_Statu = 1 and par.Member_ID = #{memberId} order by pap.Record_Date desc
+	where par.Invest_Statu = 1 and par.Member_ID = #{map.memberId} order by pap.Record_Date desc
    </select>
    
    <!-- 已结清 -->
-   <select id="cleared" 		parameterType="Map" resultType="cn.membermng.model.Cleared">
+   <select id="cleared" 		parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.Cleared">
    	select
 	par.Apply_Id as loanId,
 	par.Project_No as projectNo,
 	pbi.Project_Title as projectName,
 	pbi.Amount as amount,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Invest_Amount),#{skey}) as signed)) from Invest_Record ir where ir.Apply_Id = par.Apply_Id and ir.IsValid = 0) as sjAmount,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Invest_Amount),#{map.skey}) as signed)) from Invest_Record ir where ir.Apply_Id = par.Apply_Id and ir.IsValid = 0) as sjAmount,
 	pbi.Year_Rate as yearRate,
 	pap.Hold_Date as holdDate,
 	pap.Settle_Date as settleDate,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Principal),#{skey}) as signed)) 
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Principal),#{map.skey}) as signed)) 
 	from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayPrincipal,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Interest),#{skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayInterest,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue_Interest),#{skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayOverdueInterest,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue),#{skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayOverdue,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Penalty),#{skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayPenalty
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Interest),#{map.skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayInterest,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue_Interest),#{map.skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayOverdueInterest,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue),#{map.skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayOverdue,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Penalty),#{map.skey}) as signed)) from Loan_Real_Repay lrp where Apply_Id = par.Apply_Id) as repayPenalty
 	from Project_App_Record par
 	left join Project_Base_Info pbi on par.Project_Base_ID = pbi.Project_Base_ID
 	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
-	where par.Invest_Statu = 4 and par.Member_ID = #{memberId} order by pap.Record_Date desc
+	where par.Invest_Statu = 4 and par.Member_ID = #{map.memberId} order by pap.Record_Date desc
    </select>
    
    <!-- 借款申请记录 -->
-   <select id="loanApplyRecord" parameterType="Map"	resultType="cn.membermng.model.LoanApplyRecord">
+   <select id="loanApplyRecord" parameterType="product_p2p.kit.pageselect.PageEntity"	resultType="cn.membermng.model.LoanApplyRecord">
    	select par.Project_No as projectNo,
    	pbi.Project_Title as projectName,
    	par.Project_ID as projectType, 
@@ -137,11 +137,11 @@
 	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
 	left join DICT d on d.code1 = par.Check_Statu and d.tcode = 'DICT_SQZT'
 	
-	where par.Member_ID = #{memberId} order by pap.Record_Date desc
+	where par.Member_ID = #{map.memberId} order by pap.Record_Date desc
    </select>
    
    <!-- 待还计划 -->
-   <select id="stayStillPlans"	parameterType="Map"	resultType="cn.membermng.model.StayStillPlan">
+   <select id="stayStillPlans"	parameterType="product_p2p.kit.pageselect.PageEntity"	resultType="cn.membermng.model.StayStillPlan">
    	select 
 	lr.indexs as 'index',lr.Repay_ID as lrId,
 	lr.SDRepay_Principal as sdRepayPrincipal,
@@ -150,16 +150,154 @@
 	lr.Statu as statu,
 	d.name1 as statuName,
 	lr.IsCompensatory as isCompensatory,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Principal)			,#{skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as repayPrincipal,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Interest)			,#{skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as repayInterest,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue_Interest)	,#{skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as yiHuanYuQiLiXi,
-	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue)			,#{skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as yiHuanYuQiFaJin,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Principal)			,#{map.skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as repayPrincipal,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Interest)			,#{map.skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as repayInterest,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue_Interest)	,#{map.skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as yiHuanYuQiLiXi,
+	(select sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue)			,#{map.skey}) as signed)) 		from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID) as yiHuanYuQiFaJin,
 	(select pbi.Project_Title from Project_App_Record par left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID) as projectName
 	from Loan_Repay lr 
 	left join Project_App_Record par on par.Apply_Id = lr.Apply_Id
 	left join DICT d on d.code1 = lr.statu and d.tcode = 'DICT_HKJD'
-	where lr.IsValid = 0 and par.member_id = #{memberId} and lr.Statu != 2
+	where lr.IsValid = 0 and par.member_id = #{map.memberId} and lr.Statu != 2
    </select>
    
+   <!-- 待确认的借款申请 -->
+   <select id="confirmationLoans" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.ConfirmationLoan">
+    select 
+	par.Apply_Id 			as projectId,
+	pbi.Project_Title		as projectName,
+	prbi.Project_Name 		as projectTypeName,
+	pbi.Deadline			as termOfLoan,
+	pbi.Deadline_Type 		as termOfLoanType,
+	pbi.Amount 				as loanAount,
+	prbi.Min_Amount 		as minLoanAount,
+	pbi.Year_Rate 			as interestRates,
+	par.Publish_Statu 		as status,
+	di.name1 				as statusName
+	from Project_App_Record par 
+	left join project_base_info 	pbi 	on pbi.Project_Base_ID 	= par.Project_Base_ID
+	left join projectbaseinfo 		prbi 	on prbi.Project_ID 		= par.Project_ID
+	left join dict 					di 		on di.tcode 			= 'DICT_XMFBZT' 		and di.code1 = par.Publish_Statu
+	where par.Member_ID = ${memberId} 
+   </select>
    
+   <!-- 还款管理+还款中的借款 -->
+   <select id="repaymentOfBorrowings" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.RepaymentOfBorrowings"> 
+	select 
+	par.Apply_Id 							as projectId,
+	par.Project_No 							as projectNo,
+	pbi.Project_Title 						as projectName,
+	pap.Hold_Date 							as lendingTime,
+	pbi.Amount								as principal,
+	pbi.Year_Rate 							as interestRates, 
+	pbi.Deadline							as termOfLoan,
+	pbi.Deadline_Type						as termOfLoanType,
+	pbi.Repay_Way							as repaymentType,
+	(select name1 from dict where tcode='DICT_HKFS' and code1 = pbi.Repay_Way) as repaymentTypeName,
+	(select 
+		sum(CAST(AES_DECRYPT(UNHEX(Repay_Principal),#{map.skey}) as signed))
+		+
+		sum(CAST(AES_DECRYPT(UNHEX(Repay_Interest),#{map.skey}) as signed)) 
+		from Loan_Real_Repay lrr where lrr.Apply_Id = par.Apply_Id
+	) as alsoHasInterest,
+	(select 
+		sum(CAST(AES_DECRYPT(UNHEX(SDRepay_Principal),#{map.skey}) as signed))
+		+
+		sum(CAST(AES_DECRYPT(UNHEX(SDRepay_Interest),#{map.skey}) as signed)) 
+		from Loan_Repay lr where lr.Apply_Id = par.Apply_Id
+	) as noHasInterest,
+	(select Repay_MaxTime from Loan_Repay where Apply_Id = par.Apply_Id and Statu in (0,1) order by Repay_MaxTime asc limit 0,1) as nextRepaymentTime,
+	(select (
+				CAST(AES_DECRYPT(UNHEX(SDRepay_Principal),#{map.skey}) as signed)
+				+
+				CAST(AES_DECRYPT(UNHEX(SDRepay_Interest),#{map.skey}) as signed)
+			 ) from Loan_Repay lr where lr.Apply_Id = par.Apply_Id and Statu in (0,1) order by Repay_MaxTime asc limit 0,1
+	) as repaymentAount 
+	from Project_App_Record par
+	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+	where par.Member_ID = #{map.memberId}  and par.Invest_Statu = 3   	
+   </select>
+   
+   <!-- 还款管理+还款中的借款+还款计划 -->
+   <select id="LoanRements" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.RepaymentOfBorrowingsRM">
+   	select 
+		Repay_ID																as lid,
+		Indexs																	as indexs,
+		CAST(AES_DECRYPT(UNHEX(SDRepay_Principal),#{map.skey}) as signed)		as loanAmount,
+		CAST(AES_DECRYPT(UNHEX(SDRepay_Interest),#{map.skey}) as signed)		as loanInterest,
+		Repay_MaxTime															as loanTime,
+		Statu																	as statu,
+		(select name1  from dict where tcode = 'DICT_HKJD' and code1 = statu)   as statuName,
+		IsCompensatory															as isDaiChang,
+		(case when statu != 2 and Repay_MaxTime > now() then 0 else 1 end)   as isYuQi,
+		(select 
+			sum(CAST(AES_DECRYPT(UNHEX(Repay_Principal),#{map.skey}) as signed))
+			+
+			sum(CAST(AES_DECRYPT(UNHEX(Repay_Interest),#{map.skey}) as signed))
+			+
+			sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue_Interest),#{map.skey}) as signed))
+			+
+			sum(CAST(AES_DECRYPT(UNHEX(Repay_Overdue),#{map.skey}) as signed))
+			+
+			sum(CAST(AES_DECRYPT(UNHEX(Repay_Penalty),#{map.skey}) as signed))
+			from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID
+		) as shiJiHuankuan,
+		(select 
+			Repay_Time 
+			from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID order by Repay_Time desc limit 0,1
+		) as shiJiHuanKuanRi
+	from Loan_Repay lr 
+	left join Project_App_Record par on par.Apply_Id = lr.Apply_Id
+	where lr.Apply_Id = #{map.applyId} and par.Member_ID = #{map.memberId}
+   </select>
+   
+   <!-- 计算出逾期费-->
+   <select id="GetLoanRepayOverdueInfo" resultType="Map" statementType="CALLABLE">
+   	<!-- lId 还款计划id -->
+   	<![CDATA[
+   		{call GetLoanRepayOverdueInfo(
+   			#{lId ,	              mode=IN,	    jdbcType=BIGINT},
+			#{sKey ,	          mode=IN,	    jdbcType=VARCHAR},
+			#{lOverdueInterest ,  mode=OUT,	    jdbcType=BIGINT},
+			#{lOverdue ,	      mode=OUT,	    jdbcType=BIGINT}
+	 	)}
+	 ]]>
+	</select>   
+   
+   <!--         提前还款信息查询 -->
+   <select id="getAdvanceReplay" resultType="cn.membermng.model.AdvanceEntity" parameterType="Map">
+       select 
+       (
+       select SUM(CAST(((AES_DECRYPT(UNHEX(SDRepay_Principal),#{skey}))) as signed)) 
+       from Loan_Repay 
+       where Apply_Id=#{applyId} and IsValid=0 and IsCompensatory=0 and Statu=0
+       ) as repayPrincipal,
+       
+       (select CAST(((AES_DECRYPT(UNHEX(SDRepay_Interest),#{skey}))) as signed)  
+       from Loan_Repay 
+       where Apply_Id=#{applyId} and IsValid=0 and IsCompensatory=0 and Statu=0
+       order by Repay_MaxTime desc limit 1) as repayInterest,
+       
+       (select Penalty_Invest_Rate   from System_Set limit 1) as penaltyInvestRate,
+       
+       (select  Penalty_PingTai_Rate from System_Set limit 1) as penaltyPingTaiRate
+ 
+   </select> 
+   
+   <!--        还款详情 -->
+   <select id="selectReplayDetail" resultType="cn.membermng.model.LoanRepay" parameterType="Map">
+       select ( ifnull(CAST(((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey}))) as signed),0)
+       -  (select ifnull(sum(CAST(((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{skey}))) as signed)),0) 
+       from Loan_Real_Repay lrr where lrr.Repay_Id = lr.Repay_Id ) )
+       as loanAmount, 
+       
+       (ifnull(CAST(((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey}))) as signed),0)
+       -  (select ifnull(sum(CAST(((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{skey}))) as signed)),0) 
+       from Loan_Real_Repay lrr where lrr.Repay_Id = lr.Repay_Id ) )
+       as loanInterest,
+       DATEDIFF(now(),lr.Repay_MaxTime) as overDay
+       from Loan_Repay lr
+       where lr.Repay_Id = #{lId}
+   </select>
 </mapper>

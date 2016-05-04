@@ -28,6 +28,7 @@ public interface ProjectInvestWriteDao {
 	* @Title: InsertProjectInvestTmp 
 	* @Description: TODO 
 	* @param  lId					记录ID
+	* @param  sInvestType			投资类型 	0：项目投资 1：债权投资
 	* @param  lProjectId			项目ID
 	* @param  lMemberId			会员ID
 	* @param  sOrderNo			投资订单号
@@ -42,7 +43,7 @@ public interface ProjectInvestWriteDao {
 	* @date 2016-4-1 下午3:27:01
 	* @throws null
 	 */
-	int InsertProjectInvestTmp(long lId,long lProjectId,long lMemberId, String sOrderNo, String sSubOrderNo,long lAmountTotal,
+	int InsertProjectInvestTmp(long lId,short sInvestType,long lProjectId,long lMemberId, String sOrderNo, String sSubOrderNo,long lAmountTotal,
 			long lRedpackets,String sRedpacketsInfo,long lVouchers,short isAuto,String sKey);
 
 	/**

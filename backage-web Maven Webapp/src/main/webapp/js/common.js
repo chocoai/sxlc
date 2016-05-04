@@ -151,11 +151,11 @@ function getRootPath(){
         var pos=curWwwPath.indexOf(pathName);
         var localhostPath=curWwwPath.substring(0,pos);
         var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
-		if(/127.0.0.1|localhost/.test(localhostPath)){
+//		if(/127.0.0.1|localhost/.test(localhostPath)){
 			return(localhostPath+projectName);
-		}else{
-			return(localhostPath);
-		}
+//		}else{
+//			return(localhostPath);
+//		}
 }
 
 //菜单（状态）切换
@@ -271,7 +271,9 @@ function getRootPath(){
 $(function(){
 	//面包屑导航
 	var guide = $(document).bread();//实例一个对象，后面点击会用
-	guide.getMenu();//
+	if("undefined" != typeof(_index) && _index != null){
+		guide.getMenu();//
+	}
 });
 
 /*

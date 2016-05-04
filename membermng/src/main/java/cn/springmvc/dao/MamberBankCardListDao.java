@@ -81,7 +81,7 @@ public interface MamberBankCardListDao {
 	 * @return BankCardInfoEntity 返回类型 
 	 * @date 2016-3-28 下午3:36:48
 	 */
-	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId);
+	public BankCardInfoEntity selectMemberBankCardByID(Map<String,Object> map);
 	/**
 	 * 查询该会员银行卡数量
 	 * @author 刘利   

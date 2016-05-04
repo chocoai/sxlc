@@ -1,5 +1,5 @@
 
-package cn.springmvc.Util; 
+package cn.springmvc.util; 
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

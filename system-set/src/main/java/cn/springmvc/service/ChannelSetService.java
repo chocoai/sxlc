@@ -313,5 +313,19 @@ public interface ChannelSetService {
 	* @throws 
 	*/
 	public List<SendHistoryEntity> SendHistory(PageEntity pageEntity);
+	
+	/** 
+	* SetEnableDisable 设置启用停用消息类型
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: SetEnableDisable 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-4-29 上午10:36:45
+	* @throws 
+	*/
+	public int SetEnableDisable(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 

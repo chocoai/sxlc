@@ -5,24 +5,24 @@
 	<select id="checkEmail" parameterType="Map"  resultType="int">
 	   select count(pbi.Personal_Email)
 	   from  Personal_Base_Info  pbi  
-	   where   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{keys})) using utf8)=#{personalEmail}
+	   where   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{sKey})) using utf8)=#{personalEmail}
 	   and  Personal_ID=#{personalID}
     </select>  
     <!-- 查询邮箱是否已存在 -->  
 	<select id="selectEmailIsExist" parameterType="Map"  resultType="int">
 	   select count(pbi.Personal_Email)
 	   from  Personal_Base_Info  pbi  
-	   where   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{keys})) using utf8)=#{personalEmail}
+	   where   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{sKey})) using utf8)=#{personalEmail}
 	   and Personal_ID !=#{personalID}
     </select> 
     <!-- 修改个人会员邮箱-->  
 	<update id="updatepersonEmail" parameterType="Map" >
-         UPDATE Personal_Base_Info set  Personal_Email =HEX(AES_ENCRYPT(#{personalEmail},#{keys})) 
+         UPDATE Personal_Base_Info set  Personal_Email =HEX(AES_ENCRYPT(#{personalEmail},#{sKey})) 
          where Personal_ID=#{personalID}
     </update>      
       <!-- 查询原绑定的邮箱-->  
 	<select id="selectOldEmail" parameterType="Map"  resultType="String">
-	   select  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{keys})) using utf8) as Personal_Email  
+	   select  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{sKey})) using utf8) as Personal_Email  
 		from Member_Info mi
 		left join Personal_Base_Info pbi on mi.Personal_ID = pbi.Personal_Id 
 		where mi.member_id = #{memberId}  

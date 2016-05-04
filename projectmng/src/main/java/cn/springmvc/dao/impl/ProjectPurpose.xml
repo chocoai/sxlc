@@ -38,10 +38,10 @@
 	<insert id="insertProjectPurpose"  parameterType="cn.springmvc.model.ProjectPurposeEntity">    
 		insert into Project_Purpose
 		(Purpose_ID,  Member_ID, Uses,  Repay_Source,  Amount,  Project_Descript,  Deadline,  Deadline_Type, Repay_Way,
-		Year_Rate,Admin_Id) 
+		Year_Rate,Admin_Id,Project_ID) 
 		values     
-		( #{id,              jdbcType=INTEGER},
-		  #{memberID,        jdbcType=INTEGER},
+		( #{id,              jdbcType=BIGINT},
+		  #{memberID,        jdbcType=BIGINT},
 		  #{uses,            jdbcType=VARCHAR},
 		  #{repaySource,     jdbcType=VARCHAR},
 		  #{amount,          jdbcType=INTEGER},
@@ -49,6 +49,8 @@
 		  #{deadline,        jdbcType=INTEGER},
 		  #{deadlineType,    jdbcType=INTEGER},
 		  #{repayWay,        jdbcType=INTEGER},
-		  #{yearRate,        jdbcType=INTEGER}) 
+		  #{yearRate,        jdbcType=INTEGER},
+		  #{adminId,         jdbcType=BIGINT},
+		  #{projectID,       jdbcType=BIGINT}) 
 	</insert>  
 </mapper>   

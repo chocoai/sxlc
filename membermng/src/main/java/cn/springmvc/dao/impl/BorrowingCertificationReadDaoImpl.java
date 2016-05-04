@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
 import cn.membermng.model.BorrowingType;
+import cn.membermng.model.BorrowingTypeInfo;
+import cn.membermng.model.CurrencyAuth;
 import cn.membermng.model.RealNameAuth;
 import cn.springmvc.dao.IBorrowingCertificationReadDao;
 
@@ -36,7 +38,7 @@ public class BorrowingCertificationReadDaoImpl extends SqlSessionDaoSupport impl
 	
 	
 	@Override
-	public Map<String, Object> showCurrencyAuth(Map<String,Object> param) {
+	public CurrencyAuth showCurrencyAuth(Map<String,Object> param) {
 		
 		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showCurrencyAuth",param);
 	}
@@ -126,7 +128,11 @@ public class BorrowingCertificationReadDaoImpl extends SqlSessionDaoSupport impl
 	
 	
 	
-	
+	@Override
+	public List<BorrowingTypeInfo> getAllByMemberAndLoanType(Map<String, Object> param) {
+		
+		return getSqlSession().selectList("borrowingCertificationDaoImpl.getAllByMemberAndLoanType",param);
+	}
 	
 	
 	

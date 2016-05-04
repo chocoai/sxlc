@@ -15,6 +15,7 @@
         <result property = "investTotal"        column = "InvestTotal" /> 
         <result property = "startDate"          column = "Start_Date" /> 
 		<result property = "endDate"            column = "End_Date" /> 
+		<result property = "getDate"            column = "getDate" /> 
         <association property="projectBaseInfoentity" 	resultMap="resultBaseInfoentity"/> 
     </resultMap> 
     <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity"> 
@@ -31,7 +32,8 @@
 	   pbi.Amount,pbi.Deadline,pbi.Deadline_Type,pap.Start_Date,pap.End_Date,
 	   par.Apply_Id, par.Invest_Statu,pim.Image_Url,par.Reward_Rate,par.Rate_Add_Rate,
        (pbi.Amount-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{map.sKey})) as signed)),0)  
-       from Invest_Record  where Apply_Id=par.Apply_Id and IsValid=0)) availableaAmount 
+       from Invest_Record  where Apply_Id=par.Apply_Id and IsValid=0)) availableaAmount,
+       now() as getDate 
 	   from Project_App_Record par 
 	   left join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
@@ -44,9 +46,27 @@
 	            <if test = "map.projectinfo != null and map.projectinfo != ''">  
 	              and ( pbi.Project_Title   like '%${map.projectinfo}%' or par.Project_No  like '%${map.projectinfo}%' ) 
 	            </if> 
-                <!-- 项目状态 -->
-	            <if test = "map.investStatu !=null and map.investStatu !=  -1">  
+                <!-- 项目状态 还款中 已结清 -->
+	            <if test = "map.investStatu ==  3 or map.investStatu ==  4">  
 	                and  par.Invest_Statu = #{map.investStatu} 
+	            </if> 
+	            <!-- 项目状态 预热中 -->
+	            <if test = "map.investStatu ==  3 or map.investStatu ==  5">  
+	                and   pap.Start_Date &lt; now()  and par.Invest_Statu = 0
+	            </if> 
+	            <!-- 项目状态 投标中 -->
+	            <if test = "map.investStatu ==  0">  
+	                and pap.End_Date &lt; now() and par.Invest_Rate&lt;1000000  and par.Invest_Statu = 0 
+	                and pap.Start_Date > now()
+	            </if> 
+	             <!-- 项目状态 投标完成 -->
+	            <if test = "map.investStatu ==  2">  
+	                and par.Invest_Statu = 2 or (par.Invest_Statu = 0 and par.Invest_Rate>=1000000) or 
+	                (par.Invest_Statu = 0 and pap.End_Date&lt;=now())
+	            </if> 
+	             <!-- 项目状态 流标-->
+	            <if test = "map.investStatu ==  1">  
+	                and (par.Invest_Statu=1 or par.Invest_Statu = -3) 
 	            </if> 
 	            <!-- 还款方式-->  
 	            <if test = "map.repayWay != null and map.repayWay !=  -1">  

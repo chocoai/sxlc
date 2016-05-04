@@ -12,24 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.datatrans.IntegerAndString;
-
-import com.alibaba.fastjson.JSONObject;
-
-
-
 import cn.membermng.model.BankCardInfoEntity;
 import cn.membermng.model.BankCodeEntity;
 import cn.membermng.model.CityDictionaryEntity;
 import cn.membermng.model.MemberBankCardEntity;
 import cn.membermng.model.ProvinceDictionaryEntity;
-
 import cn.springmvc.service.MamberBankCardService;
-
 import cn.springmvc.util.MemberSessionMng;
+
+import com.alibaba.fastjson.JSONObject;
 
 
 @Controller
@@ -117,7 +112,7 @@ public class BankCardMngController {
 	 */
 	@RequestMapping(value="/insertMemberBackCard",produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public String insertMemberBackCard(HttpServletRequest request){
+	public String  insertMemberBackCard(HttpServletRequest request){
 		
 		Map<String,Object> message = new HashMap<String, Object>();
 		BankCardInfoEntity bankCardInfoEntity = new BankCardInfoEntity();//bankId,,cardProvince,,cardCity,,branch,,branchAddress,,bankPhone,,bankNo
@@ -136,7 +131,7 @@ public class BankCardMngController {
 			if(bankNo==null || bankId==0 || cardProvince ==0 || cardCity==0 || branch==null || branchAddress==null||bankPhone==null){
 				//参数错误
 				message.put("code", 404);
-				message.put("message", "参数错误");
+				message.put("message", "参数错误1");
 				return JSONObject.toJSONString(message);
 			}
 			
@@ -150,7 +145,7 @@ public class BankCardMngController {
 		} catch (NullPointerException e) {
 			//参数错误
 			message.put("code", 404);
-			message.put("message", "参数错误");
+			message.put("message", "参数错误2");
 			return JSONObject.toJSONString(message);
 		}
 		
@@ -159,7 +154,6 @@ public class BankCardMngController {
 		long[] lMemberInfo = new long[2] ;		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		memberBankCardEntity.setMemberID(lMemberInfo[0]);
-		memberBankCardEntity.setMemberID(1L);
 		memberBankCardEntity.setMemberType((int)lMemberInfo[1]);
 		int result = bankCardService.insertMemberBackCard(bankCardInfoEntity, memberBankCardEntity);
 		message.put("code", 200);
@@ -185,7 +179,6 @@ public class BankCardMngController {
 		Map<String,Object> map = new HashMap<String, Object>();
 		long[] lMemberInfo = new long[2] ;		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
-		 lMemberInfo[0]=1L;
 		map.put("memberID", lMemberInfo[0]);
 		map.put("memberType",lMemberInfo[1] );
 		List<MemberBankCardEntity> list= bankCardService.selectMemberBankCardList(map);
@@ -197,6 +190,31 @@ public class BankCardMngController {
 		return JSONObject.toJSONString(message);
 	}
 	
+	/**
+	 * 根据银行卡ID查询银行卡信息 
+	* selectMemberBankCardByID
+	* @author 邱陈东  
+	* * @Title: selectMemberBankCardByID 
+	* @param  设定文件 
+	* @return void 返回类型 
+	* @date 2016-5-4 上午9:26:53
+	* @throws
+	 */
+	@RequestMapping(value="/selectMemberBankCardByID",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public String selectMemberBankCardByID(HttpServletRequest request){
+		Long bankCardId = Long.parseLong(request.getParameter("bankCardId"));
+		
+		long[] lMemberInfo = new long[1] ;		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		BankCardInfoEntity data = bankCardService.selectMemberBankCardByID(bankCardId,lMemberInfo[0]);
+		
+		Map<String,Object> message = new HashMap<String, Object>();
+		message.put("code", 200);
+		message.put("message", "查询成功");
+		message.put("data", data);
+		return JSONObject.toJSONString(message);
+	}
 	/**
 	 * 修改银行卡信息
 	* updateBankCardInfo
@@ -261,7 +279,6 @@ public class BankCardMngController {
 		
 		long[] lMemberInfo = new long[2] ;		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
-		lMemberInfo[0]=1;
 		int result = bankCardService.updateBankCardInfo(bankCardInfoEntity, map,lMemberInfo[0]);
 		if(result==1){
 			message.put("code", 200);
@@ -299,12 +316,11 @@ public class BankCardMngController {
 		
 		long[] lMemberInfo = new long[2] ;		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
-		lMemberInfo[0]=1;
 		
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("receiveCard", receiveCard);
 		map.put("memberID", lMemberInfo[0]);
-		
+		System.out.println(receiveCard+"===");
 		Map<String,Object> message = new HashMap<String, Object>();
 		if(receiveCard!=null && !receiveCard.equals("")){
 			int result  = bankCardService.deleteMemberBankCard(map);

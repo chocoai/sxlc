@@ -78,5 +78,19 @@ public interface ProjectInvestReadDao {
      */
     public TransferSubmitEntity GetInvestInfo(short sIsAuto, long lMemberId, long lProjectId, long lAmount,
                                               long lRedpackets, long lVouchers, short sClient);
+    
+    /**
+     * 获取项目投资红包使用上限
+    * GetRedpacketsInvestRate 获取项目投资红包使用上限
+    * TODO 获取项目投资红包使用上限
+    * @author 张友  
+    * * @Title: GetRedpacketsInvestRate 
+    * @Description: TODO 
+    * @param @return 设定文件 
+    * @return int 返回类型 
+    * @date 2016-4-29 下午5:26:18
+    * @throws
+     */
+    int GetRedpacketsInvestRate();
 }
 

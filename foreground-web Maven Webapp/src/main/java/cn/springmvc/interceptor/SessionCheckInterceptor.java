@@ -110,7 +110,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 	public boolean checkParam(HttpServletRequest request){
 		//获取请求中的参数
 		Map<String,String[]> map = request.getParameterMap();
-		Map<String, String> newMap = new HashMap<>();
+		Map<String, String> newMap = new HashMap<String,String>();
 		for (String str : map.keySet()) {
 			newMap.put(str, map.get(str)[0]);
 		}

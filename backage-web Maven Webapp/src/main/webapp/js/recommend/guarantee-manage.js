@@ -2,43 +2,11 @@
 //加密操作
 var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
-/*function manageAdmainAdd(){
-	layer.open({
-		type: 1,
-		area: ['550px', '430px'], //高宽
-		title: "添加管理员",
-		maxmin: true,
-		content: $("#manageAdmainAdd"),//DOM或内容
-		btn:['确定', '取消']
-	,yes: function(index, layero){ //或者使用btn1
-		//确定的回调
-		//判断执行不同方法
-		
-	},cancel: function(index){//或者使用btn2（concel）
-		//取消的回调
-	}
-	});
-}
+/*
  添加担保机构管理员管理部分结束 
 
  修改担保机构管理员管理部分开始 
-function manageAdmainMod(){
-	layer.open({
-		type: 1,
-		area: ['550px', '430px'], //高宽
-		title: "修改管理员",
-		maxmin: true,
-		content: $("#manageAdmainMod"),//DOM或内容
-		btn:['确定', '取消']
-	,yes: function(index, layero){ //或者使用btn1
-		//确定的回调
-		//判断执行不同方法
-		
-	},cancel: function(index){//或者使用btn2（concel）
-		//取消的回调
-	}
-	});
-}
+
  修改担保机构管理员管理部分结束 
 
 *//**
@@ -92,7 +60,8 @@ function checkDetail(){
 /* 查看担保机构信息部分结束*/
 /* 代偿记录查询部分开始 */
 function checkRecord(){
-	$(".right_col").load("web/recommend/re-add/checkRecord.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	$(".right_col").load("web/recommend/re-add/checkRecord.jsp?content=" + rowdata[0].guaranteeID);
 }
 /* 代偿记录查询部分结束 */
 
@@ -105,13 +74,15 @@ function manageAdmain(){
 
 /* 担保项目查询部分开始  */
 function checkProject(){
-	$(".right_col").load("web/recommend/re-add/checkProject.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	$(".right_col").load("web/recommend/re-add/checkProject.jsp?content=" + rowdata[0].guaranteeID);
 }
 /* 担保项目查询部分结束  */
 
 /* 代偿回款记录查询部分开始 */
 function checkPayment(){
-	$(".right_col").load("web/recommend/re-add/checkPayment.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	$(".right_col").load("web/recommend/re-add/checkPayment.jsp?content=" + rowdata[0].guaranteeID);
 }
 /* 代偿回款记录查询部分结束 */
 

@@ -21,6 +21,7 @@ public class PageEntity {
 	private int draw;				//datatable传参所需
 	private long recordsFiltered ;	//过滤总数据
 	private long recordsTotal; 		//对应datatable返回参数总数据
+	private long totalPage;			//总页数
 	
 	/**
 	 * 当前页行数
@@ -124,6 +125,13 @@ public class PageEntity {
 	}
 	public void setRecordsTotal(long recordsTotal) {
 		this.recordsTotal = recordsTotal;
+	}
+	
+	public long getTotalPage() {
+		return totalPage;
+	}
+	public void setTotalPage(long totalPage) {
+		this.totalPage = totalPage;
 	}
 	//	@Override
 	public String toString() {

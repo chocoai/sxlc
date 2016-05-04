@@ -15,7 +15,6 @@
 		<result column="Staff_Statu"		property="staffStatu"/>
 		<result column="Post_Id"		property="postId"/>
 		<result column="Post_Name"		property="postName"/>
-		<result column="Dept_Id"		property="deptId"/>
 		<association property="baseInfo" 	resultMap="personalBaseInfo"/>
 	</resultMap>
 	
@@ -55,7 +54,7 @@
 		select si.Staff_Id,CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey})) using utf8) as Personal_Name,
 		pbi.SexID,pbi.Personal_Id pid,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.sKey})) using utf8) as Personal_IDCard,
-		pbi.Nation_Id,pi.Post_Id,pi.Post_Name,pi.Dept_Id,
+		pbi.Nation_Id,pi.Post_Id,pi.Post_Name,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.sKey})) using utf8) as Personal_Phone,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.qq),#{map.sKey})) using utf8) as qq,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{map.sKey})) using utf8) as Personal_Email,

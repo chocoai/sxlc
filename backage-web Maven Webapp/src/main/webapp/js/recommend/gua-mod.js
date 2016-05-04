@@ -11,22 +11,22 @@ $(function () {
 		url : appPath + "/guarant/query4select.do",
 		data : {guaranteeId : result},
 		success : function (msg) {
-			$("#guaranteeName").val(msg.guaranteeName);
-			$("#companyeBLN").val(msg.companyeBLN);
-			$("#companyOC").val(msg.companyOC);
-			$("#taxRegNo").val(msg.taxRegNo);
-			$("#establishments").val(msg.establishments);
-			$("#companyCapital").val(msg.companyCapital);
-			$("#personalName").val(msg.personalName);
-			$("#personalPhone").val(msg.personalPhone);
-			$("#personalIDCard").val(msg.personalIDCard);
-			$("#companyAddress").val(msg.companyAddress);
-			$("#companySource").val(msg.companySource);
-			$("#companyBusiness").val(msg.companyBusiness);
-			$("#companyProfile").val(msg.companyProfile);
-			$("#contactName").val(msg.contactName);
-			$("#contactPhone").val(msg.contactPhone);
-			$("#contactEmail").val(msg.contactEmail);
+			$("#guaranteeName").val(msg.guaranteeInfoEntity.guaranteeName);
+			$("#companyeBLN").val(msg.guaranteeInfoEntity.companyeBLN);
+			$("#companyOC").val(msg.guaranteeInfoEntity.companyOC);
+			$("#taxRegNo").val(msg.guaranteeInfoEntity.taxRegNo);
+			$("#establishments").val(msg.guaranteeInfoEntity.establishments);
+			$("#companyCapital").val(msg.guaranteeInfoEntity.companyCapital);
+			$("#personalName").val(msg.guaranteeInfoEntity.personalName);
+			$("#personalPhone").val(msg.guaranteeInfoEntity.personalPhone);
+			$("#personalIDCard").val(msg.guaranteeInfoEntity.personalIDCard);
+			$("#companyAddress").val(msg.guaranteeInfoEntity.companyAddress);
+			$("#companySource").val(msg.guaranteeInfoEntity.companySource);
+			$("#companyBusiness").val(msg.guaranteeInfoEntity.companyBusiness);
+			$("#companyProfile").val(msg.guaranteeInfoEntity.companyProfile);
+			$("#contactName").val(msg.guaranteeInfoEntity.contactName);
+			$("#contactPhone").val(msg.guaranteeInfoEntity.contactPhone);
+			$("#contactEmail").val(msg.guaranteeInfoEntity.contactEmail);
 			
 		}
 	});

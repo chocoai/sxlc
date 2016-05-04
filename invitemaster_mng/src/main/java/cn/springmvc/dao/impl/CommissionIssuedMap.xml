@@ -51,8 +51,7 @@
 		<result property = "personalPhone"    	        column = "Personal_Phone" />
 		<result property = "personalIDCard"  	        column = "Personal_IDCard" />
 		<result property = "startDate" 	            	column = "Start_Date" />  
-		<result property = "endDate"             		column = "End_Date" /> 
-		
+		<result property = "endDate"             		column = "End_Date" />  
 		<result property = "borrowAward"			    column = "Borrow_Award" />
 		<result property = "investAward"           		column = "Invest_Award" />
 		<result property = "vipAward"    	    		column = "Vip_Award" />
@@ -60,5 +59,20 @@
 		<result property = "awardAmount" 	            column = "Award_Amount" />  
 		<result property = "realAmount"             	column = "Real_Amount" /> 
 		<result property = "payDate"             		column = "Pay_Date" /> 
+    </resultMap>  
+  
+   <!-- 推荐还本明细 -->
+     <resultMap type = "cn.invitemastermng.model.InvestRepaymentEntity" id = "InvestRepayment">
+        <result property = "applyId"			     column = "Apply_Id" />
+		<result property = "projectTitle"            column = "Project_Title" />
+		<result property = "amount"    	             column = "Amount" />
+		<result property = "logname"  	             column = "Logname" />
+		<result property = "personalName" 	         column = "Personal_Name" />  
+		<result property = "repayPrincipal"          column = "Repay_Principal" /> 
+		
+		<result property = "repayInterest"    	     column = "Repay_Interest" />
+		<result property = "repayTime"  	         column = "Repay_Time" />
+		<result property = "repayMaxTime" 	         column = "Repay_MaxTime" />  
+		<result property = "isoverque"               column = "is_overque" /> 
     </resultMap>  
 </mapper>

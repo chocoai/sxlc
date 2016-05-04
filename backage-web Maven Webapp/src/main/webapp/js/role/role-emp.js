@@ -99,7 +99,6 @@ $(function() {
 		                          ],
 		                          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 		                          }
-	 
 	});//表格初始化完毕
 
 	 //表格多选效果
@@ -169,13 +168,13 @@ $(function() {
 	});
 	
 	/**
-	 * 修改按钮
+	 * 修改按钮 
 	 */
 	$(".obtn-emp-mod").on("click touchstart",function(){
 		//获得选取的对象
 		document.getElementById("dataForm").reset();
 		validform5(".layui-layer-btn0","dataForm",true,3);
-		var data = $('#staffListTb').DataTable().rows('.selected').data(); 
+		var data = $('#staffListTb').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的员工信息！",{icon:0});
 			return;
@@ -245,7 +244,7 @@ $(function() {
 	 */
 	$(".obtn-emp-del").on("click touchstart",function(){
 		document.getElementById("dataForm").reset();
-		var data = $('#staffListTb').DataTable().rows('.selected').data(); 
+		var data = $('#staffListTb').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要删除的员工！",{icon:0});
 			return;
@@ -316,9 +315,18 @@ $(function() {
 			layer.close(index);
 		},cancel: function(index){//或者使用btn2（concel）
 			//取消的回调
+			$this.parent().find(".postId").prop("postId","");
+			$this.parent().find(".postId").prop("deptId","");
+			$this.parent().find(".postId").val("");
 		}
 		});
 	});
+	
+	  //职务查询按钮
+	 $("#postQuery").on("click",function(){
+		$('#deptTbList').DataTable().ajax.reload();
+		
+	 });
 	
 	
 	//职务列表初始化
@@ -329,7 +337,10 @@ $(function() {
 					"dataSrc": "results",   
 					"type": "POST",
 		            "data": function ( d ) {  
-		            	
+		            	var deptName = encrypt.encrypt($("#deptName").val());
+						var postName = encrypt.encrypt($("#postNameQuery").val());
+		            	d.deptName=deptName;
+		            	d.postName=postName;
 		            }  
 		        },
 		        columns: [  

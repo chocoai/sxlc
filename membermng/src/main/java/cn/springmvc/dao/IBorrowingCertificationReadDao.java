@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.membermng.model.BorrowingType;
+import cn.membermng.model.BorrowingTypeInfo;
+import cn.membermng.model.CurrencyAuth;
 import cn.membermng.model.RealNameAuth;
 
 
@@ -78,7 +80,7 @@ public interface IBorrowingCertificationReadDao {
 	* status					认证状态
 	* @date 2016-3-24 下午4:33:00
 	*/
-	public Map<String, Object> showCurrencyAuth(Map<String,Object> param);
+	public CurrencyAuth showCurrencyAuth(Map<String,Object> param);
 
 	
 
@@ -321,6 +323,21 @@ public interface IBorrowingCertificationReadDao {
 	* @date 2016-4-26 下午1:55:13
 	 */
 	public List<BorrowingType> getAllByMember(Map<String, Object> param);
+
+
+
+
+
+
+	/***
+	* 根据条件查询会员的借款项的认证信息
+	* 
+	* @author 李杰
+	* @param param
+	* @return
+	* @date 2016-5-3 上午11:04:46
+	 */
+	public List<BorrowingTypeInfo> getAllByMemberAndLoanType(Map<String, Object> param);
 	
 	
 

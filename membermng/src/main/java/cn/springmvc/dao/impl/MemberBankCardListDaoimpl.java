@@ -75,9 +75,9 @@ public class MemberBankCardListDaoimpl extends SqlSessionDaoSupport implements M
 	}
 
 	@Override
-	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId) {
+	public BankCardInfoEntity selectMemberBankCardByID(Map<String,Object> map) {
 		
-		return getSqlSession().selectOne("bankInfo.selectMemberBankCardByID",bankCardId);
+		return getSqlSession().selectOne("bankInfo.selectMemberBankCardByID",map);
 		
 	}
 

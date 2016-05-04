@@ -8,9 +8,11 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.StringUtil.StringUtils;
 import product_p2p.kit.constant.Constant;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.redisPlug.Core;
 import cn.dictionaries.model.NationInfoEntity;
 import cn.membermng.model.BorrowingType;
+import cn.membermng.model.CurrencyAuth;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.RealNameAuth;
 import cn.membermng.model.SecurityInfo;
@@ -29,8 +33,13 @@ import cn.springmvc.dao.impl.sms.SendSmsUtil;
 import cn.springmvc.service.EmailBindingService;
 import cn.springmvc.service.IBorrowingCertificationServer;
 import cn.springmvc.service.IMemberService;
+import cn.springmvc.service.ManagedInterfaceServerTestI;
+import cn.springmvc.service.UpdatePasswordService;
 //import cn.springmvc.service.ManagedInterfaceServerTestI;
 import cn.springmvc.service.MobilePhoneBindingService;
+import cn.springmvc.util.MemberSessionMng;
+import cn.sxlc.account.manager.model.AccountInterfaceEntity;
+import cn.sxlc.account.manager.model.AuthorizeInterfaceEntity;
 //import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 
 import com.alibaba.fastjson.JSONObject;
@@ -45,7 +54,7 @@ import com.alibaba.fastjson.JSONObject;
  */
 @Controller
 @RequestMapping("personalCenter")
-public class personalCenterController {
+public class PersonalCenterController {
 
 	private Logger logger = Logger.getLogger(LoginRegisterController.class);
 
@@ -64,9 +73,11 @@ public class personalCenterController {
 	@Resource
 	private SendSmsUtil sendSmsUtil;
 
-	// @Autowired
-	// private ManagedInterfaceServerTestI interfaceServerTestI;
+	@Autowired
+	private ManagedInterfaceServerTestI interfaceServerTestI;
 
+	@Autowired
+	private UpdatePasswordService passwordService;
 	/****
 	 * 会员基本信息
 	 * 
@@ -77,79 +88,37 @@ public class personalCenterController {
 	 */
 	@RequestMapping(value = "/baseInformationForPerson")
 	public String baseInformationForPerson(HttpServletRequest request) {
-		MemberInfo loginMember = (MemberInfo) request.getSession()
-				.getAttribute("loginUser");
+		MemberInfo loginMember = (MemberInfo) request.getSession().getAttribute("loginUser");
 		MemberInfo memberInfo = null;
 
 		if (loginMember.getMemberType().intValue() == 1) {
-			memberInfo = this.memberService.memberComplanyInfo(loginMember
-					.getId().longValue());
-			if (memberInfo.getBaseInfo().getPersonalPhone() != null
-					&& memberInfo.getBaseInfo().getPersonalPhone().length() == 11) {
-				memberInfo.getBaseInfo().setPersonalPhone(
-						memberInfo.getBaseInfo().getPersonalPhone()
-								.substring(0, 3)
-								+ "****"
-								+ memberInfo
-										.getBaseInfo()
-										.getPersonalPhone()
-										.substring(
-												memberInfo.getBaseInfo()
-														.getPersonalPhone()
-														.length() - 3,
-												memberInfo.getBaseInfo()
-														.getPersonalPhone()
-														.length()));
+			memberInfo = this.memberService.memberComplanyInfo(loginMember.getId().longValue());
+			if (memberInfo.getBaseInfo().getPersonalPhone() != null && memberInfo.getBaseInfo().getPersonalPhone().length() == 11) {
+				memberInfo.getBaseInfo().setPersonalPhone(memberInfo.getBaseInfo().getPersonalPhone().substring(0, 3)+ "****"+ memberInfo.getBaseInfo().getPersonalPhone().substring(memberInfo.getBaseInfo().getPersonalPhone().length() - 3,memberInfo.getBaseInfo().getPersonalPhone().length()));
 			}
 			if (memberInfo.getBaseInfo().getQq() != null
 					&& memberInfo.getBaseInfo().getQq().length() >= 5) {
-				memberInfo.getBaseInfo().setQq(
-						memberInfo.getBaseInfo().getQq().substring(0, 2)
-								+ "***"
-								+ memberInfo
-										.getBaseInfo()
-										.getQq()
-										.substring(
-												memberInfo.getBaseInfo()
-														.getQq().length() - 2,
-												memberInfo.getBaseInfo()
-														.getQq().length()));
+				memberInfo.getBaseInfo().setQq(memberInfo.getBaseInfo().getQq().substring(0, 2)+ "***"+ memberInfo.getBaseInfo().getQq().substring(memberInfo.getBaseInfo().getQq().length() - 2,memberInfo.getBaseInfo().getQq().length()));
 			}
 			request.setAttribute("userInfo", memberInfo);
 			return "account/personalCenter/baseInformationForEnterprise";
 		}
 		memberInfo = this.memberService.memberPersonalInfo(loginMember.getId()
 				.longValue());
-		if (memberInfo.getBaseInfo().getPersonalPhone() != null
-				&& memberInfo.getBaseInfo().getPersonalPhone().length() == 11) {
-			memberInfo.getBaseInfo().setPersonalPhone(
-					memberInfo.getBaseInfo().getPersonalPhone().substring(0, 3)
-							+ "****"
-							+ memberInfo
-									.getBaseInfo()
-									.getPersonalPhone()
-									.substring(
-											memberInfo.getBaseInfo()
-													.getPersonalPhone()
-													.length() - 3,
-											memberInfo.getBaseInfo()
-													.getPersonalPhone()
-													.length()));
+		if (memberInfo.getBaseInfo().getPersonalPhone() != null && memberInfo.getBaseInfo().getPersonalPhone().length() == 11) {
+			memberInfo.getBaseInfo().setPersonalPhone(memberInfo.getBaseInfo().getPersonalPhone().substring(0, 3)+ "****"+ memberInfo.getBaseInfo().getPersonalPhone().substring(memberInfo.getBaseInfo().getPersonalPhone().length() - 3,memberInfo.getBaseInfo().getPersonalPhone().length()));
 		}
-		if (memberInfo.getBaseInfo().getQq() != null
-				&& memberInfo.getBaseInfo().getQq().length() >= 5) {
-			memberInfo.getBaseInfo().setQq(
-					memberInfo.getBaseInfo().getQq().substring(0, 2)
-							+ "***"
-							+ memberInfo
-									.getBaseInfo()
-									.getQq()
-									.substring(
-											memberInfo.getBaseInfo().getQq()
-													.length() - 2,
-											memberInfo.getBaseInfo().getQq()
-													.length()));
+		if (memberInfo.getBaseInfo().getQq() != null && memberInfo.getBaseInfo().getQq().length() >= 5) {
+			memberInfo.getBaseInfo().setQq(memberInfo.getBaseInfo().getQq().substring(0, 2)+ "****"+ memberInfo.getBaseInfo().getQq().substring(memberInfo.getBaseInfo().getQq().length() - 2,memberInfo.getBaseInfo().getQq().length()));
 		}
+		if(memberInfo.getBaseInfo().getPersonalEmail() != null){
+			if(memberInfo.getBaseInfo().getPersonalEmail().indexOf("@") >= 3){
+				memberInfo.getBaseInfo().setPersonalEmail(memberInfo.getBaseInfo().getPersonalEmail().substring(0,3)+"****"+memberInfo.getBaseInfo().getPersonalEmail().substring(memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"), memberInfo.getBaseInfo().getPersonalEmail().length()));
+			}else{
+				memberInfo.getBaseInfo().setPersonalEmail(memberInfo.getBaseInfo().getPersonalEmail().substring(0,memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"))+"****"+memberInfo.getBaseInfo().getPersonalEmail().substring(memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"), memberInfo.getBaseInfo().getPersonalEmail().length()));
+			}
+		}
+		
 		request.setAttribute("userInfo", memberInfo);
 		return "account/personalCenter/baseInformationForPerson";
 	}
@@ -393,10 +362,21 @@ public class personalCenterController {
 			securityInfo.setRealName(realNameInfo.getRealName() + realNameInfo.getPersonalIDCard());
 			securityInfo.setRealNameStatus(realNameInfo.getStatus());
 		}
+		if(securityInfo.getPersonalPhone() != null && securityInfo.getPersonalPhone().length() >= 11){
+			securityInfo.setPersonalPhone(securityInfo.getPersonalPhone().substring(0, 3)+"****"+securityInfo.getPersonalPhone().substring(securityInfo.getPersonalPhone().length()-4, securityInfo.getPersonalPhone().length()));
+		}
+		if(securityInfo.getPersonalEmail() != null){
+			if(securityInfo.getPersonalEmail().indexOf("@") >= 3){
+				securityInfo.setPersonalEmail(securityInfo.getPersonalEmail().substring(0,3)+"****"+securityInfo.getPersonalEmail().substring(securityInfo.getPersonalEmail().indexOf("@"), securityInfo.getPersonalEmail().length()));
+			}else{
+				securityInfo.setPersonalEmail(securityInfo.getPersonalEmail().substring(0,securityInfo.getPersonalEmail().indexOf("@"))+"****"+securityInfo.getPersonalEmail().substring(securityInfo.getPersonalEmail().indexOf("@"), securityInfo.getPersonalEmail().length()));
+			}
+		}
 		request.setAttribute("securityInfo", securityInfo);
 		return "account/personalCenter/securityCenter";
 	}
 
+	
 	@RequestMapping({ "/SC_realNameAuthentication" })
 	public String SC_realNameAuthentication() {
 		return "account/personalCenter/SC_realNameAuthentication";
@@ -497,7 +477,7 @@ public class personalCenterController {
 	}
 
 	/***
-	 * 个人会员实名认证
+	 * 个人会员实名认证/修改
 	 * 
 	 * @author 李杰
 	 * @param request
@@ -507,12 +487,15 @@ public class personalCenterController {
 	@RequestMapping(value="personalRealName",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String personalRealName(HttpServletRequest request) {
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
 		String userName = request.getParameter("userName");
 		int nationId = Integer.parseInt(request.getParameter("nationId"));
 		String idCard = request.getParameter("idCard");
 		String homeTown = request.getParameter("homeTown");
 		String endTime = request.getParameter("endTime");
-		String annex = request.getParameter("annex");
+		String annex = request.getParameter("annex"); 
+		Integer sex =IntegerAndString.StringToInt(request.getParameter("sex")	, 0) ;
 
 		Map<String, Object> message = new HashMap<String, Object>();
 		if ((userName == null) || (!StringUtils.checkUserName(userName))) {
@@ -536,7 +519,7 @@ public class personalCenterController {
 			}
 		}
 		String[] annexArray = annex.split(",");
-		if (annexArray.length < 2) {
+		if (annexArray.length != 2) {
 			message.put("annex", "请上传身份证照片");
 		}
 
@@ -544,13 +527,1043 @@ public class personalCenterController {
 			message.put("status", "-2");
 			return JSONObject.toJSONString(message);
 		}
-
-		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(
-				"loginUser");
-
-		return null;
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.authRealName(memberInfo.getId(), userName, sex, nationId, idCard, homeTown, annexArray[0], annexArray[1],endTime);
+		}else{
+			result = borrowingCertificationServer.editAuthRealName(lMemberInfo[0], userName, sex, nationId, idCard, homeTown, annexArray[0], annexArray[1]);
+		}
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在申请记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "提交申请成功");
+		}
+		return JSONObject.toJSONString(message);
 	}
+	
+	
+	/**
+	 * 根据type和人的ID获取通用的通用认证信息
+	* loadCurrencyAuth
+	* @author 邱陈东  
+	* * @Title: loadCurrencyAuth 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:09:49
+	* @throws
+	 */
+	@RequestMapping(value="/loadCurrencyAuth",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadCurrencyAuth(HttpServletRequest request){
+		int type = IntegerAndString.StringToInt(request.getParameter("type"), -1);
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		if(type==-1){
+			message.put("message", "请选择认证类型");
+			message.put("status", -1);
+			return JSONObject.toJSONString(message);
+		}
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		CurrencyAuth data = borrowingCertificationServer.showCurrencyAuth(lMemberInfo[0], (int)lMemberInfo[1], type);
 
+		if(data!=null){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 现场认证/征信认证/职称认证/社保认证/其他(通用认证类型，只有附件和有效期)新增
+	* commonAuth
+	* @author 邱陈东  
+	* * @Title: commonAuth 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 上午10:57:58
+	* @throws
+	 */
+	@RequestMapping(value="/currencyAuth",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String currencyAuth(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		int type = IntegerAndString.StringToInt(request.getParameter("type"), -1);
+		String endTime = request.getParameter("endTime");
+		String annex = request.getParameter("annex"); 
+
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		if(type==-1){
+			message.put("message", "请选择认证类型");
+			return JSONObject.toJSONString(message);
+		}
+		if (endTime == null) {
+			message.put("message", "请选择有效期");
+			return JSONObject.toJSONString(message);
+		} else {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				Date date = sdf.parse(endTime);
+				endTime = sdf.format(date);
+			} catch (Exception e) {
+				message.put("message", "请选择有效期");
+				return JSONObject.toJSONString(message);
+			}
+		}
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+
+		if (message.keySet().size() > 0) {
+			message.put("status", "-2");
+			return JSONObject.toJSONString(message);
+		}
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		//根据type的值，分发任务
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.currencyAuth(lMemberInfo[0], (int)lMemberInfo[1], annex, endTime, type);
+		}else{
+			result = borrowingCertificationServer.editCurrencyAuth(lMemberInfo[0], (int)lMemberInfo[1], annex, endTime, type);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在申请记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "提交申请成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	
+	/**
+	 * 读取个人现居住地址认证信息
+	* loadAuthAddress
+	* @author 邱陈东  
+	* * @Title: loadAuthAddress 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:11:29
+	* @throws
+	 */
+	@RequestMapping(value="/loadAuthAddress",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadAuthAddress(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String, Object> data = borrowingCertificationServer.showAuthAddress(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 * 新增（修改）现居住地址认证
+	* authAddress
+	* @author 邱陈东  
+	* * @Title: authAddress 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午1:51:07
+	* @throws
+	 */
+	@RequestMapping(value="/authAddress",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String authAddress(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String address = request.getParameter("address");
+		String endTime = request.getParameter("endTime");
+		String annex = request.getParameter("annex"); 
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		if (endTime == null) {
+			message.put("message", "请选择有效期");
+			return JSONObject.toJSONString(message);
+		} else {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				Date date = sdf.parse(endTime);
+				endTime = sdf.format(date);
+			} catch (Exception e) {
+				message.put("message", "请选择有效期");
+				return JSONObject.toJSONString(message);
+			}
+		}
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.authAddress(lMemberInfo[0], address, endTime, annex);
+		}else{
+			result = borrowingCertificationServer.editAuthAddress(lMemberInfo[0], address, endTime, annex);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 
+	* loadAuthHousing
+	* 获取个人房产认证信息
+	* @author 邱陈东  
+	* * @Title: loadAuthHousing 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:14:26
+	* @throws
+	 */
+	@RequestMapping(value="/loadAuthHousing",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadAuthHousing(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		List<Map<String, Object>> data = borrowingCertificationServer.showAuthHousing(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 
+	* authHousing
+	* 新增/修改房产认证
+	* @author 邱陈东  
+	* * @Title: authHousing 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:20:19
+	* @throws
+	 */
+	@RequestMapping(value="/authHousing",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String authHousing(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String address = request.getParameter("address");//房产地址
+		String endTime = request.getParameter("endTime");//有效期
+		String annex = request.getParameter("annex"); //附件
+		String area = request.getParameter("area");//面积
+		String value = request.getParameter("value");//价值
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		if (endTime == null) {
+			message.put("message", "请选择有效期");
+			return JSONObject.toJSONString(message);
+		} else {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				Date date = sdf.parse(endTime);
+				endTime = sdf.format(date);
+			} catch (Exception e) {
+				message.put("message", "请选择有效期");
+				return JSONObject.toJSONString(message);
+			}
+		}
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.authHousing(lMemberInfo[0], address, area, value, endTime, annex);
+		}else{
+			result = borrowingCertificationServer.editAuthHousing(lMemberInfo[0],cid, address, area, value, endTime, annex);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 *
+	* loadAuthProduction
+	* 读取车产认证
+	* @author 邱陈东  
+	* * @Title: loadAuthProduction 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:21:30
+	* @throws
+	 */
+	@RequestMapping(value="/loadAuthProduction",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadAuthProduction(HttpServletRequest request){
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		List<Map<String, Object>> data = borrowingCertificationServer.showAuthProduction(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 * 
+	* authProduction
+	* 新增/修改车产认证
+	* @author 邱陈东  
+	* * @Title: authProduction 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:22:58
+	* @throws
+	 */
+	@RequestMapping(value="/authProduction",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String authProduction(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String endTime = request.getParameter("endTime");//首次登记日期
+		String annex = request.getParameter("annex"); //附件
+		String brand = request.getParameter("brand");//车辆品牌
+		String model = request.getParameter("model");//车辆型号
+		String licensePlate = request.getParameter("licensePlate");//车牌号
+		String value = request.getParameter("value");//价值
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		if (endTime == null) {
+			message.put("endTime", "请选择有效期");
+		} else {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				Date date = sdf.parse(endTime);
+				endTime = sdf.format(date);
+			} catch (Exception e) {
+				message.put("endTime", "请选择有效期");
+			}
+		}
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.authProduction(lMemberInfo[0], brand, model, licensePlate, value, endTime, annex);
+		}else{
+			result = borrowingCertificationServer.editAuthProduction(lMemberInfo[0], cid, brand, model, licensePlate, value, endTime, annex);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 
+	* loadAuthEducation
+	* 读取个人学历认证
+	* @author 邱陈东  
+	* * @Title: loadAuthEducation 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:27:54
+	* @throws
+	 */
+	@RequestMapping(value="/loadAuthEducation",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadAuthEducation(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String, Object> data = borrowingCertificationServer.showAuthEducation(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 
+	* authEducation
+	* 新增/修改学籍认证
+	* @author 邱陈东  
+	* * @Title: authEducation 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:31:05
+	* @throws
+	 */
+	@RequestMapping(value="/authEducation",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String authEducation(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String annex = request.getParameter("annex"); //附件
+		int education =IntegerAndString.StringToInt(request.getParameter("education"), 0) ;// 学历序号 外键id
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.authEducation(lMemberInfo[0], education, annex);
+		}else{
+			result = borrowingCertificationServer.editAuthEducation(lMemberInfo[0], education, annex);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 * 
+	* loadAuthMarriage
+	* 查询个人婚姻认证信息
+	* @author 邱陈东  
+	* * @Title: loadAuthMarriage 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:52:06
+	* @throws
+	 */
+	@RequestMapping(value="/loadAuthMarriage",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadAuthMarriage(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String, Object> data = borrowingCertificationServer.showAuthMarriage(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 * 
+	* authMarriage
+	* 新增/修改个人婚姻认证信息
+	* @author 邱陈东  
+	* * @Title: authMarriage 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:52:41
+	* @throws
+	 */
+	@RequestMapping(value="/authMarriage",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String authMarriage(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		Integer marriageType = IntegerAndString.StringToInt(request.getParameter("marriageType"), 0);//婚宴状态
+		String endTime=request.getParameter("endTime");//登记日期
+		String annex = request.getParameter("annex"); //附件
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.authMarriage(lMemberInfo[0], marriageType, endTime, annex);
+		}else{
+			result = borrowingCertificationServer.editAuthMarriage(lMemberInfo[0], marriageType, endTime,annex);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+ //=================================================================================================================
+//企业认证
+//=================================================================================================================
+	//工商执照认证
+	/**
+	 * 查询企业工商执照认证
+	* loadCommercialLicense
+	* @author 邱陈东  
+	* * @Title: loadCommercialLicense 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-4 上午11:36:18
+	* @throws
+	 */
+	@RequestMapping(value="/loadCommercialLicense",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadCommercialLicense(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String, Object> data = borrowingCertificationServer.showCommercialLicense(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 新增/修改企业工商执照认证
+	* commercialLicense
+	* @author 邱陈东  
+	* * @Title: commercialLicense 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-4 下午4:05:31
+	* @throws
+	 */
+	@RequestMapping(value="/commercialLicense",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String commercialLicense(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String address = request.getParameter("address");//地址
+		String regPserson = request.getParameter("regPserson");//注册法人
+		String regCapital = request.getParameter("regCapital");//注册资金
+		String companyType = request.getParameter("companyType");//公司类型
+		String paidCapital = request.getParameter("paidCapital");//实收资金
+		String businessScope = request.getParameter("businessScope");//经营范围
+		String regDate = request.getParameter("regDate");//注册时间
+		
+		String endTime=request.getParameter("endTime");//登记日期
+		String annex = request.getParameter("annex"); //附件
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("status", "-1");
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.commercialLicense(lMemberInfo[0], address, regPserson, regCapital, companyType, paidCapital, businessScope, regDate, endTime, annex);
+		}else{
+			result = borrowingCertificationServer.editCommercialLicense(lMemberInfo[0], address, regPserson, regCapital, companyType, paidCapital, businessScope, regDate, endTime, annex);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 
+	* loadAuthApproval
+	* 读取批文认证（行业许可证）
+	* @author 邱陈东  
+	* * @Title: loadAuthApproval 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:25:55
+	* @throws
+	 */
+	@RequestMapping(value="/loadAuthApproval",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadAuthApproval(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String, Object> data = borrowingCertificationServer.showAuthApproval(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 
+	* authApproval
+	* 新增/修改  批文认证（行业许可证）
+	* @author 邱陈东  
+	* * @Title: authApproval 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-3 下午2:24:56
+	* @throws
+	 */
+	@RequestMapping(value="/authApproval",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String authApproval(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String fileSummary = request.getParameter("fileSummary");//文件概要
+		String issueOrgan = request.getParameter("issueOrgan");//颁发机构
+		String issueDate = request.getParameter("issueDate");//发布时间
+		String endTime=request.getParameter("endTime");//登记日期
+		String annex = request.getParameter("annex"); //附件
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("status", "-1");
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.authApproval(lMemberInfo[0], fileSummary, issueOrgan, issueDate, annex, endTime);
+		}else{
+			result = borrowingCertificationServer.editAuthApproval(lMemberInfo[0], fileSummary, issueOrgan, issueDate, annex, endTime);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 * 查询企业会员的组织机构代码认证
+	* loadOrganizational
+	* @author 邱陈东  
+	* * @Title: loadOrganizational 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-4 下午2:08:14
+	* @throws
+	 */
+	@RequestMapping(value="/loadOrganizational",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadOrganizational(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String, Object> data = borrowingCertificationServer.showOrganizational(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 新增/修改组织机构代码认证
+	* organizational
+	* @author 邱陈东  
+	* * @Title: organizational 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-4 下午2:14:33
+	* @throws
+	 */
+	@RequestMapping(value="/organizational",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String organizational(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String organizationalCode = request.getParameter("organizationalCode");//组织机构代码
+		String startTime = request.getParameter("startTime");//有效期开始时间
+		String endTime=request.getParameter("endTime");//有效期结束时间
+		String annex = request.getParameter("annex"); //附件
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("status", "-1");
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.organizational(lMemberInfo[0], organizationalCode, startTime, endTime, annex);
+		}else{
+			result = borrowingCertificationServer.editOrganizational(lMemberInfo[0], organizationalCode, startTime, endTime, annex);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 * 查看企业用户的开户许可证认证资料
+	* loadAccountOpening
+	* @author 邱陈东  
+	* * @Title: loadAccountOpening 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-4 下午2:23:53
+	* @throws
+	 */
+	@RequestMapping(value="/loadAccountOpening",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadAccountOpening(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String, Object> data = borrowingCertificationServer.showAccountOpening(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 新增/修改开户许可证认证资料
+	* accountOpening
+	* @author 邱陈东  
+	* * @Title: accountOpening 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-4 下午2:27:14
+	* @throws
+	 */
+	@RequestMapping(value="/accountOpening",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String accountOpening(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String accountOpeningCode = request.getParameter("accountOpeningCode");//开户银行许可证编号
+		String opBank = request.getParameter("opBank");//开户银行
+		String bankAccount = request.getParameter("bankAccount");//银行账户
+		String endTime=request.getParameter("endTime");//登记日期
+		String annex = request.getParameter("annex"); //附件
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("status", "-1");
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.accountOpening(lMemberInfo[0], accountOpeningCode, opBank, bankAccount, annex, endTime);
+		}else{
+			result = borrowingCertificationServer.accountOpening(lMemberInfo[0], accountOpeningCode, opBank, bankAccount, annex, endTime);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 * 查询企业用户税务登记认证的资料
+	* loadTaxRegistration
+	* @author 邱陈东  
+	* * @Title: loadTaxRegistration 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-4 下午2:40:42
+	* @throws
+	 */
+	@RequestMapping(value="/loadTaxRegistration",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadTaxRegistration(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String, Object> data = borrowingCertificationServer.showTaxRegistration(lMemberInfo[0]);
+		
+		if(data.size()>0){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 新增/修改企业用户的税务登记认证
+	* taxRegistration
+	* @author 邱陈东  
+	* * @Title: taxRegistration 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-4 下午2:41:43
+	* @throws
+	 */
+	@RequestMapping(value="/taxRegistration",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String taxRegistration(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String credentialsNO = request.getParameter("credentialsNO");//证件编号
+		String issueOrgan = request.getParameter("issueOrgan");//证件颁发机构
+		String endTime=request.getParameter("endTime");//登记日期
+		String annex = request.getParameter("annex"); //附件
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("status", "-1");
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.taxRegistration(lMemberInfo[0], credentialsNO, issueOrgan, annex, endTime);
+		}else{
+			result = borrowingCertificationServer.taxRegistration(lMemberInfo[0], credentialsNO, issueOrgan, annex, endTime);
+		}
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+//=================================================================================================================
+// 
+//  上面是借款 认证
+//
+//================================================================================================================
+	
+	
 	/***
 	 * 设置会员登录验证方式
 	 * 
@@ -804,6 +1817,7 @@ public class personalCenterController {
 	 * @date 2016-4-27 上午11:05:07
 	 */
 	@RequestMapping(value = "editBindEmail", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
 	public String editBindEmail(HttpServletRequest request) {
 		String oldEmail = request.getParameter("oldEmail");
 		String newEmail = request.getParameter("newEmail");
@@ -826,8 +1840,7 @@ public class personalCenterController {
 		}
 		if (checkCode == null || checkCode.trim().length() <= 0) {
 			message.put("checkCode", "请输入图形验证码");
-		} else if (!checkCode.equals(request.getSession()
-				.getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())) {
+		} else if (!checkCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())) {
 			message.put("checkCode", "图形验证码错误");
 		}
 		if (emailCode == null || emailCode.trim().length() <= 0) {
@@ -841,10 +1854,8 @@ public class personalCenterController {
 			return JSONObject.toJSONString(message);
 		}
 
-		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(
-				Constant.LOGINUSER);
-		String saveOldEmail = emailBindingService.selectOldEmail(memberInfo
-				.getId());
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		String saveOldEmail = emailBindingService.selectOldEmail(memberInfo.getId());
 		if (saveOldEmail == null) {
 			message.put("status", "-1");
 			message.put("message", "原邮箱错误");
@@ -880,21 +1891,176 @@ public class personalCenterController {
 	 * @return
 	 * @date 2016-4-27 下午7:59:07
 	 */
-	@RequestMapping(value = "openAccount", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@RequestMapping(value = "openAccount", produces = "text/html;charset=UTF-8")
 	public String openThirdAccount(HttpServletRequest request) {
-		// AccountInterfaceEntity accountInterfaceEntity = new
-		// AccountInterfaceEntity();
-		// MemberInfo memberInfo = (MemberInfo)
-		// request.getSession().getAttribute(Constant.LOGINUSER);
-		// accountInterfaceEntity.setMemberType(memberInfo.getMemberType());
-		// accountInterfaceEntity.setId(memberInfo.getId());
-		// accountInterfaceEntity =
-		// interfaceServerTestI.testAccountInterfaceQDD(accountInterfaceEntity);
-		// request.setAttribute("accountInterfaceEntity",
-		// accountInterfaceEntity);
+		 AccountInterfaceEntity accountInterfaceEntity = new
+		 AccountInterfaceEntity();
+		 MemberInfo memberInfo = (MemberInfo)request.getSession().getAttribute(Constant.LOGINUSER);
+		 accountInterfaceEntity.setMemberType(memberInfo.getMemberType());
+		 accountInterfaceEntity.setId(memberInfo.getId());
+		 accountInterfaceEntity = interfaceServerTestI.testAccountInterfaceQDD(accountInterfaceEntity);
+		 request.setAttribute("accountInterfaceEntity", accountInterfaceEntity);
 		return "dryLot/loanregisterbindtest";
 	}
-
+	
+	/***
+	* 开户返回页面
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-4-28 下午7:46:50
+	 */
+	@RequestMapping(value="openThirdAccountCallbackPage")
+	public String openThirdAccountCallback(HttpServletRequest request,HttpServletResponse response){
+		String result = interfaceServerTestI.testLoanRegisterBindReturn(request, response);
+		if(result == "SUCCESS"){
+		}else{
+		}
+		return result;
+	}
+	
+	
+	/***
+	* 开户返回 回调
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-4-28 下午7:47:16
+	 */
+	@RequestMapping(value="openThirdAccountCallback",produces = "text/html;charset=UTF-8")
+	public void openThirdAccountCallback1(HttpServletRequest request,HttpServletResponse response){
+		interfaceServerTestI.testLoanRegisterBindNotify(request, response);
+	}
+	
+	
+	
+	/***
+	* 重置用户密码
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-4-28 下午9:36:27
+	 */
+	@RequestMapping(value="resetPassword",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String resetPassword(HttpServletRequest request){
+		String oldPassword = request.getParameter("oldPassword");
+		String newPassword = request.getParameter("newPassword");
+		String confirmPwd  = request.getParameter("confirmPwd");
+		String imgCheckCode= request.getParameter("imgCheckCode");
+		
+		Map<String,Object> message = new HashMap<String,Object>();
+		if(oldPassword == null || oldPassword.trim().length() <= 0){
+			message.put("oldPassword", "请输入用户原密码");
+		}
+		if(newPassword == null || newPassword.trim().length() <= 0){
+			message.put("newPassword", "请输入新密码");
+		}
+		if(confirmPwd == null || confirmPwd.trim().length() <= 0){
+			message.put("confirmPwd", "请输入确认密码");
+		}
+		if(newPassword != null && confirmPwd != null){
+			if(!newPassword.equals(confirmPwd)){
+				message.put("oldPassword", "两次输入密码不一致");
+			}
+		}
+		if(imgCheckCode == null || imgCheckCode.trim().length() <= 0){
+			message.put("imgCheckCode", "请输入图形验证码");
+		}else if(!imgCheckCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
+			message.put("imgCheckCode", "图形验证码输入错误");
+		}
+		
+		if(message.keySet().size() > 0){
+			message.put("status", "-2");
+			return JSONObject.toJSONString(message);
+		}
+		
+		MemberInfo memberinfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("memberPwd", oldPassword);
+		param.put("memberID", memberinfo.getId());
+		int isEntity = passwordService.checkPassword(param);
+		if(isEntity == 1){
+			param.put("memberPwd", newPassword);
+			int result = passwordService.updatepersonPassword(param);
+			if(result == 1){
+				message.put("status", "1");
+				message.put("message", "密码修改该成功");
+			}else{
+				message.put("status", "-1");
+				message.put("message", "修改失败");
+			}
+		}else{
+			message.put("status", "-1");
+			message.put("message", "原密码输入错误");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	
+	
+	/***
+	* 二次分配授权
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-4-29 上午9:41:22
+	 */
+	@RequestMapping(value="authorized")
+	public String authorized(HttpServletRequest request){
+		AuthorizeInterfaceEntity entity = new AuthorizeInterfaceEntity();
+		MemberInfo memberInfo = (MemberInfo)request.getSession().getAttribute(Constant.LOGINUSER);
+		entity.setMemberId(memberInfo.getId());
+		entity.setMemberType(memberInfo.getMemberType());
+		entity.setAuthorizeTypeOpen("3");
+		interfaceServerTestI.testLoanAuthorize(entity);
+		request.setAttribute("accountInterfaceEntity", entity);
+		return "dryLot/loanauthorizetest";
+	}
+	
+	
+	/***
+	* 二次分配授权回调
+	* @author 李杰
+	* @Title: authorizedCallBackPage
+	* @return
+	* @date 2016-4-29 上午11:32:17
+	 */
+	@RequestMapping(value="authorizedCallBackPage")
+	public String authorizedCallBackPage(HttpServletRequest request,HttpServletResponse response){
+		String result = interfaceServerTestI.testLoanAuthorizeReturn(request, response);
+		if(result.equals("SUCCESS")){
+		
+		}else if(result.equals("FAIL")){
+			 
+		}else{
+			
+		}
+		return "result";
+	}
+	
+	
+	/***
+	* 二次分配授权回调
+	* 
+	* @author 李杰
+	* @Title: authorizedCallBack
+	* @param request
+	* @param response
+	* @date 2016-4-29 下午12:46:19
+	 */
+	public void authorizedCallBack(HttpServletRequest request,HttpServletResponse response){
+		interfaceServerTestI.testLoanAuthorizeNotify(request,response);
+	}
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping({ "/LC_personal_scene" })
 	public String LC_personal_scene() {
 		return "account/personalCenter/LC_personal_scene";

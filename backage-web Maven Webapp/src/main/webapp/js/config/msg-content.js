@@ -122,7 +122,7 @@ function addOrUpdate(type){
 					function(result) { 
 						if(result > 0){
 							layer.alert("操作成功",{icon:1});
-							$(".layui-layer-btn1").click();
+							layer.close(index);
 							 var table = $('#table_id').DataTable();
 							 table.ajax.reload();
 						}else if(result==0){

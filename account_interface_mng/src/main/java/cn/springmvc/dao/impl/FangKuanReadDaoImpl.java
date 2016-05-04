@@ -26,7 +26,7 @@ public class FangKuanReadDaoImpl extends SqlSessionDaoSupport implements FangKua
 			int iCount = 0;
 			for(int i=0;i<iSize;i++){
 				entity = list.get(i);
-				if(entity.getBillNo()==null || entity.getBillNo().equals("")){
+				if(entity.getBillNo() ==null || entity.getBillNo().equals("")){
 					if(!sResult.equals("")){
 						sResult = sResult + ",";
 					}

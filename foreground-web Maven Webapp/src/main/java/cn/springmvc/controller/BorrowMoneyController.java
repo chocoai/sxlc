@@ -34,7 +34,7 @@ import cn.springmvc.util.MemberSessionMng;
 
 @Controller
 @RequestMapping(value="/borrow")
-public class borrowMoneyController {
+public class BorrowMoneyController {
 	private Logger logger = Logger.getLogger(LoginRegisterController.class);
 	
 	@Resource(name="projectBaseInfoServiceImpl")
@@ -107,6 +107,8 @@ public class borrowMoneyController {
 	* @param @param deadlineType 期限类型  0：天标 1：月标 2：年标
 	* @param @param repayWay 还款方式  0：等额本息，1：每月还息，到期还本 2：到期还息本 3:等额本金
 	* @param @param yearRate  预计年化收益率(万分之)
+	* @param @param projectID 借款类型ID
+	* 
 	* @return String 返回类型 
 	* @date 2016-4-27 下午4:04:39
 	* @throws
@@ -120,9 +122,9 @@ public class borrowMoneyController {
 		Integer deadline =  IntegerAndString.StringToInt(request.getParameter("deadline"),1);
 		Integer deadlineType = IntegerAndString.StringToInt(request.getParameter("deadlineType"),1);
 		Integer repayWay = IntegerAndString.StringToInt(request.getParameter("repayWay"),1);
-		
+		Long projectID = Long.parseLong(request.getParameter("projectID"));
 		Long amount = IntegerAndString.StringToLong(request.getParameter("amount"));
-		Integer yearRate = IntegerAndString.StringToInt(request.getParameter("yearRate"));
+		Integer yearRate = IntegerAndString.StringToInt(request.getParameter("yearRate"))/100;
 		
 		//获取登录人（申请人）ID
 		long[] lMemberInfo = new long[2] ;
@@ -130,8 +132,7 @@ public class borrowMoneyController {
 		
 		ProjectPurposeEntity entity = new ProjectPurposeEntity();
 		entity.setMemberID(lMemberInfo[0]);
-		//TODO 测试用
-		entity.setMemberID(1L);
+		entity.setProjectID(projectID);
 		entity.setUses(uses);
 		entity.setRepaySource(repaySource);
 		entity.setAmount(amount);

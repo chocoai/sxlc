@@ -1,0 +1,323 @@
+.line{
+	display:inline-block;
+	width:20px;
+	height:1px;
+	vertical-align:middle;
+	border-top:1px solid #ccc;
+}
+.dateInput{
+	width:120px;
+}
+.textRight{
+	display:inline-block;
+	min-width:232px;
+	text-align:right;
+}
+.textRight2{
+	display:inline-block;
+	min-width:350px;
+	text-align:right;
+}
+.textRight3{
+	display:inline-block;
+	min-width:360px;
+	text-align:right;
+	margin-right:40px;
+}
+.textRight4{
+	display:inline-block;
+	min-width:461px;
+	text-align:right;
+	margin-right:40px;
+}
+.textRight5{
+	display:inline-block;
+	min-width:421px;
+	text-align:right;
+	margin-right:40px;
+}
+.compayrecbtn{
+	margin-left:36px;
+}
+.rechargeoption{
+	width:174px;
+}
+/* 提现界面部分开始 */
+.accountfd legend{
+	text-align:center;
+}
+.accountfd>div{
+	margin-left:auto;
+	margin-right:auto;
+	display:block;
+}
+.cashContent{
+	font-size: 13px;
+    font-weight: 400;
+	width:100%;
+}
+.cashInput{
+	width:174px;
+	padding:2px 10px;
+}
+.cashDistance{
+	margin-left:5px;
+}
+.cashDivDistance{
+	padding-bottom:5px;
+	padding-left:23px;
+	margin: 5px 0;
+}
+.cashLabel{
+	text-align:right;
+	width:100px;
+	display:inline-block;
+	margin-right:0px;
+}
+.cashPhone{
+	padding:17px 0;
+	vertical-align:middle;
+	padding-left:23px;
+}
+.cashClear{
+	clear:both;
+}
+.cashPhone input{
+	width:125px;
+	margin-left:5px;
+}
+.cashPhone span.codeGet {
+	width:102px;
+	height:41px;
+	background:#ff9c00;
+	font-size:14px;
+	color:#fff;
+	display:inline-block;
+	line-height:41px;
+	vertical-align:middle;
+	text-align:center;
+	border-radius:2px;
+	cursor:pointer;
+}
+.cashBank {
+	line-height:33px;
+	padding-left:23px;
+}
+.cashBank ul{
+	width: 672px;
+	float: left;
+	margin-left: 5px;
+}
+.cashBank ul li{
+	float:left;
+	width:130px;
+	height:35px;
+	line-height:35px;
+	list-style:none;
+	margin:5px 5px 5px 0;
+}
+.cashBankLiSolid{
+	border:1px solid #d7d7d7;
+	cursor:pointer;
+}
+.cashBankLiOne{
+	display:inline-block;
+	border:1px solid #bfbfbf;
+	width:130px;
+	height:35px;
+	line-height:35px;
+	cursor: pointer;
+    -moz-user-select: none;
+}
+.cashBankLiOne>span,.cashBankLiSolid>span{
+	margin-left:20px;
+}
+.cashBankLiSolid>span{
+	width:130px;
+	height:35px;
+	line-height:35px;
+	cursor: pointer;
+    -moz-user-select: none;
+}
+.cashInputRadio{display:none; }
+.cashInputRadio:checked + label{
+	border:1px solid #72c0f3;
+	background:url('../../resources/img/zjgl_8.png') no-repeat right bottom;
+	display:inline-block;
+}
+.cashImgSign{
+	margin:0 8px;
+	width:27px;
+	height:25px;
+	vertical-align:-4px;
+}
+.cashContentCunt{
+	padding-top:30px;
+	width:868px;
+	position:relative;
+}
+.btn:hover{
+	cursor:pointer;
+}
+.cashBtn{
+	width:232px;
+	height:44px;
+	text-align:right;
+	line-height:40px;
+	border-radius:2px;
+}
+.amount{
+	display:inline-block;
+	height:25px;
+}
+.cashPhoneCodeGet{
+	display:inline-block;
+}
+button.obtn.obtn-query{
+	font-size:13px;
+}
+.assetcontainer{
+	max-width:660px;
+}
+.accwithdrawta{
+	width:300px;
+	vertical-align:middle;
+}
+.withdrawfd,.accountfd{
+	max-width:960px;
+	margin-left:auto;
+	margin-right:auto;
+	border:1px solid #D4D4D4;
+	margin-top:30px;
+}
+.withdrawfd legend{
+	font-size:13px;
+	font-weight:600;
+	border-bottom:0;
+	width:50px;
+	text-align:center;
+}
+.accwidthdeawcon{
+	margin-bottom:20px;
+}
+/* 提现界面部分结束 */
+.accountMain .active{
+	display:block;
+}
+.info{
+	padding:30px;
+	font-size:13px;
+}
+.info>div{
+	display: table;
+	margin:0 auto;
+	max-width:960px;
+}
+.item {
+    width: 45%;
+    height: 30px;
+    line-height: 30px;
+    float: left;
+    margin: 5px 20px;
+    text-align: center;
+}
+.item1{
+	width:80%;
+	height:50px;
+	line-height:50px;
+	float:left;
+}
+.item1>div,.address>div{
+	display:inline-block;
+}
+.item2{
+	width:80%;
+	height:90px;
+	line-height:50px;
+	float:left;
+}
+.item2 textarea{
+	border:1px solid #d2d2d2;
+	width:350px;
+	height:90px;
+	line-height:20px;
+	padding:10px;
+	
+}
+.label {
+    color: #575757;
+    font-weight: 400;
+    display: inline-block;
+    padding: 0;
+    font-size:13px;
+}
+.label1{
+	float:left;
+	width:120px;
+	color:#575757;
+}
+.con{
+	display: inline-block;
+}
+.con input,.item1 select,.selectArea select{
+	width: 185px;
+    height: 30px;
+    padding: 4px 8px;
+}
+.deal{
+	width:100%;
+	height:144px;
+	padding:40px 300px;
+}
+.preserve{
+	float:left;
+}
+.cancel{
+	width:100px;
+	margin:15px 20px;
+	float:left;
+	text-decoration:underline;
+	cursor:pointer;
+}
+.selectInput{
+	heihgt:37px;
+}
+.cmbtncontainer{
+	padding: 0 10px 12px;
+    pointer-events: auto;
+    margin-top: 30px;
+    margin-left: 20px;
+    text-align: center;
+}
+.cmbtncontainer a {
+    height: 28px;
+    line-height: 28px;
+    margin: 0 6px;
+    padding: 0 15px;
+    border: 1px solid #dedede;
+    background-color: #f1f1f1;
+    color: #333;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: top;
+}
+.cmbtncontainer a:hover {
+    opacity: .9;
+    text-decoration: none;
+}
+.cmbtncontainer .commonbtn0{
+	border-color: #4898d5;
+    background-color: #2e8ded;
+    color: #fff;
+}
+.accrechargecon{
+	margin-top:20px;
+	text-align:right;
+}
+.rechargeta{
+	width:180px;
+	vertical-align:middle;
+}

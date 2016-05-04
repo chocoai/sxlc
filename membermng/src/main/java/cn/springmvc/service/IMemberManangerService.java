@@ -12,6 +12,8 @@ import cn.membermng.model.MemberDetaileInfo;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberInvestmentInfo;
 import cn.membermng.model.MemberThirdInfo;
+import cn.membermng.model.MemberTradingRecordsEntity;
+import cn.membermng.model.TradingTypeEntity;
 import cn.membermng.model.VIPMemberInfos;
 
 
@@ -82,7 +84,7 @@ public interface IMemberManangerService {
 	* @return List<MemberInfo> 返回类型 
 	* @date 2016-3-21 下午5:17:03
 	 */
-	public List<VIPMemberInfos> getVIPMemberByParam(String userName,String memberName, String phone);
+	public List<VIPMemberInfos> getVIPMemberByParam(PageEntity pageEntity);
 
 
 
@@ -103,7 +105,7 @@ public interface IMemberManangerService {
 	* @return 会员集合
 	* @date   2016-3-22 上午11:10:47
 	*/
-	public List<MemberInfo> registers(String memberName, String userName,String phone, String idCard, String regDate, Integer regType);
+	public List<MemberInfo> registers(PageEntity entity);
 
 
 
@@ -122,7 +124,7 @@ public interface IMemberManangerService {
 	* @Description: TODO
 	* @date 2016-3-22 下午1:49:49
 	*/
-	public List<MemberInfo> authenticationMember(String memberName,String userName, String phone, String idCard, String regDate,String endDate);
+	public List<MemberInfo> authenticationMember(PageEntity pageEntity);
 
 
 
@@ -139,7 +141,7 @@ public interface IMemberManangerService {
 	* @Description: TODO
 	* @date 2016-3-22 下午2:44:47
 	 */
-	public List<MemberInfo> loanMember(String memberName, String userName,String phone);
+	public List<MemberInfo> loanMember(PageEntity pageEntity);
 
 
 	
@@ -154,9 +156,18 @@ public interface IMemberManangerService {
 	* @return
 	* @date 2016-3-22 下午4:24:19
 	*/
-	public List<MemberInfo> investmentMember(String memberName,String userName, String phone, String escrowAccount);
+	public List<MemberInfo> investmentMember(PageEntity pageEntity);
 
-
+	/**
+	 * 复合会员列表
+	 * TODO
+	 * 创建日期：2016-4-29下午7:07:37
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<MemberInfo>
+	 */
+	public List<MemberInfo> componentMembers(PageEntity pageEntity);
 
 	
 	/***
@@ -173,7 +184,7 @@ public interface IMemberManangerService {
 	* @Description: TODO
 	* @date 2016-3-22 下午5:43:58
 	*/
-	public List<MemberInfo> blackList(String userName, String memberName,String phone, String startTime, String endTime);
+	public List<MemberInfo> blackList(PageEntity pageEntity);
 
 
 
@@ -261,9 +272,6 @@ public interface IMemberManangerService {
 
 
 	/***
-	* 
-	* 
-	* 
 	* @author 李杰
 	* @Title: borrowers
 	* @param memberId					会员编号
@@ -276,11 +284,27 @@ public interface IMemberManangerService {
 	
 	
 	
+	/**
+	 * 会员交易类型
+	 * TODO
+	 * 创建日期：2016-5-2下午2:15:26
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<TradingTypeEntity>
+	 */
+	public List<TradingTypeEntity> memberTradingTypes() ;
 	
-	
-	
-	
-	
+	/**
+	 * 会员交易列表
+	 * TODO
+	 * 创建日期：2016-5-2下午2:16:01
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<MemberTradingRecordsEntity>
+	 */
+	public List<MemberTradingRecordsEntity> memberTradingList(PageEntity entity);
 	
 	
 	

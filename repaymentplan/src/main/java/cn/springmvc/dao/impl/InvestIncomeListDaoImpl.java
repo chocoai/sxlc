@@ -12,7 +12,6 @@
  
 package cn.springmvc.dao.impl; 
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -22,11 +21,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
-import product_p2p.kit.datatrans.IntegerAndString;
-
 import cn.springmvc.dao.InvestIncomeListDao;
 import cn.springmvc.model.InvestIncomeEntity;
-import cn.springmvc.model.InvestRecordEntity;
+import cn.springmvc.model.InvestRecordInfoEntity;
 import cn.springmvc.model.LoanRepayEntity;
 
 /** 
@@ -42,14 +39,14 @@ public class InvestIncomeListDaoImpl extends SqlSessionDaoSupport implements
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
 	@Override
-	public List<InvestRecordEntity> selectInvestListByProjectID(
+	public List<InvestRecordInfoEntity> selectInvestListByProjectID(
 			Map<String, Object> map) {
 
 		return getSqlSession().selectList("investincome.selectInvestListByProjectID",map);
 
 	}
 	@Override
-	public InvestRecordEntity selectInvestInfoByInvestID(long investID) {
+	public InvestRecordInfoEntity selectInvestInfoByInvestID(long investID) {
 		
 		return getSqlSession().selectOne("investincome.selectInvestInfoByInvestID",investID);
 		

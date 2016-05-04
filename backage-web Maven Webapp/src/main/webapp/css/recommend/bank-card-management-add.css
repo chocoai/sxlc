@@ -1,0 +1,56 @@
+.accountbankse{
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+    width:186px;
+    height:29px;
+}
+.cityoption{
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+    width:100px;
+    height:29px;
+}
+.line{
+	display:inline-block;
+	width:10px;
+	height:1px;
+	vertical-align:middle;
+	border-top:1px solid #ccc;
+}
+/* 公共按钮 */
+.cmbtncontainer{
+	padding: 0 10px 12px;
+    pointer-events: auto;
+    margin-top: 30px;
+    margin-left: 20px;
+    text-align: center;
+}
+.cmbtncontainer a {
+    height: 28px;
+    line-height: 28px;
+    margin: 0 6px;
+    padding: 0 15px;
+    border: 1px solid #dedede;
+    background-color: #f1f1f1;
+    color: #333;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: top;
+}
+.cmbtncontainer a:hover {
+    opacity: .9;
+    text-decoration: none;
+}
+.cmbtncontainer .commonbtn0{
+	border-color: #4898d5;
+    background-color: #2e8ded;
+    color: #fff;
+}
+/* 公共按钮 */

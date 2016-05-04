@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
-import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.SystemInfoSetEntity;
 import cn.springmvc.service.SystemSetService;
+import cn.springmvc.util.LoadUrlUtil;
 
 
 /**

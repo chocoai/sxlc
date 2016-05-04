@@ -1,0 +1,280 @@
+td.tt{
+	text-align:left !important;
+	padding:5px 20px;
+	font-size:15px;
+}
+fieldset{
+	max-width:960px;
+	margin:40px auto;
+	border:1px solid #ccc;
+}
+legend{
+	width:auto;
+	padding:0 10px;
+	margin-left:30px;
+	border:none;
+	font-size:16px;
+	font-weight:700;
+	margin-bottom:0;
+}
+table{
+	margin-bottom:30px;
+}
+.notOpen{
+	font-size:15px;
+	text-align:center;
+	margin-bottom:30px;
+}
+.tt a{
+	display:block;
+	text-align:center;
+	cursor:pointer;
+}
+.tt samp{
+	margin:0 5px;
+	font-size:18px;
+}
+.line{
+	display:inline-block;
+	width:10px;
+	height:1px;
+	vertical-align:middle;
+	border-top:1px solid #ccc;
+	margin-left:-5px;
+}
+.dateInput{
+	width:95px;
+}
+.recommenber{
+	padding:15px 10px;
+}
+.recommenber span{
+	margin-right:20px;
+}
+.message{
+	padding:20px 20px; 
+	font-size:15px;
+}
+.linkMan{
+	display:inline-block;
+	margin-right:50px;
+	margin-bottom:20px;
+}
+.mode{
+	margin-bottom:20px;
+}
+.mode label{
+	margin-right:15px;
+	cursor:pointer;
+}
+.mode input{
+	margin-right:5px;
+}
+textarea{
+	display:inline-block;
+	width:70%;
+	min-width:100px;
+	vertical-align:top;
+	margin-left:15px;
+}
+textarea.sentContent{
+	width:80%;
+	min-height:150px;
+}
+.buttonSet button,
+.buttonSet2 button{
+	min-width:75px;
+	border-radius:4px;
+	margin-left:10px;
+}
+.buttonSet2 button{
+	padding:2px 5px !important;
+	min-width:50px !important;
+}
+.buttonSet button:nth-of-type(2),
+.buttonSet2 button:nth-of-type(2){
+	background:#bbb;
+}
+.buttonSet{
+	width:65%;
+	min-width:100px;
+	vertical-align:top;
+	text-align:right;
+	margin-bottom:20px;
+}
+.buttonSet2{
+	display:inline-block;
+	float:right;
+	min-width:100px;
+	text-align:center;
+	margin-bottom:20px;
+	padding-right:20px;
+}
+.textRight{
+	display:inline-block;
+	text-align:right;
+}
+.inquiryBtn{
+	margin-top:10px;
+	margin-right:10px;
+}
+.stateSelect{
+	width:174px;
+	margin-right:10px;
+}
+/*   拉黑会员权限限制     */
+#prohibitedItem{
+	margin-left:15px;
+}
+#prohibitedItem span{
+	display:inline-block;
+	width:30%;
+	margin-top:10px;
+}
+#prohibitedItem label{
+	margin-top:0;
+	margin-left:5px;
+	vertical-align:text-bottom;
+}
+
+
+/*   vip会员历史记录显示         */
+.vipHistory{
+	width:100%;
+	text-align:center;
+	margin-top:20px;
+	font-size:15px;
+}
+.vipHistory th{
+	text-align:center;
+	border-bottom:1px solid #000;
+}
+.vipHistory td{
+	border-bottom:1px dashed #ccc;
+}
+.vipDetail{
+	font-size:15px;
+	margin-right:20px;
+}
+
+
+/*  显示与隐藏的控制    */
+.hide{
+	display:none;
+}
+
+
+
+/* 查看提交认证信息样式   */
+.authen{
+	width:80%;
+	padding:0 20px;
+	font-size:14px;
+	margin:0 auto;
+}
+.authen span,
+.authen button{
+	margin-left:15px;
+}
+.detailTitle{
+	padding:8px 10px;
+	background:#f8f8f8;
+	margin:20px 0;
+}
+.authen button{
+	background:none;
+	padding:5px 10px;
+	border:0;
+	border-radius:3px;
+	outline:none;
+}
+.authen button:hover{
+	color:#724bfe;
+	text-decoration:underline;
+}
+.detailAuthen div{
+	margin:5px 15px;
+}
+.introduce{
+	display:inline-block;
+	width:30%;
+	vertical-align:top;
+}
+.introduce span{
+	display:block;
+	margin-top:10px;
+	margin-left:0;
+}
+samp{
+	display:inline-block;
+	font-weight:700;
+}
+samp.appendix{
+	vertical-align:top;
+}
+img{
+	margin-right:20px;
+}
+.inquiryCon{
+	margin:10px 0 0 20px;
+	padding-bottom:20px;
+}
+.buttonCombination{
+	margin-top:20px;
+}
+.buttonCombination button,
+.submitAuthen,
+.backAuthen{
+	padding:3px 15px;
+	margin-left:10px;
+	background:#5191d4;
+	border:none;
+	color:#fff;
+	margin-bottom:10px;
+}
+.submitAuthen,
+.backAuthen{
+	margin:10px 90px;
+}
+.verifySelect{
+	width:150px;
+}
+.projectStatus,
+.phoneNum,
+.approval,
+.registerTime{
+	display:inline-block;
+}
+.projectStatus{
+	min-width:78px;
+}
+.approval{
+	min-width:104px;
+}
+.phoneNum{
+	min-width:65px;
+}
+.registerTime{
+	min-width:91px;
+}
+.transaction{
+	min-width:150px;
+}
+.selectMember span{
+	display:inline-block;
+}
+.selectMember{
+	padding:15px 10px;
+}
+.resgisterTime,
+.resgisterTimeC
+{
+	display:inline-block;
+	text-align:right;
+}
+.resgisterTime{
+	width:78px;
+}
+.resgisterTimeC{
+	width:65px;
+}

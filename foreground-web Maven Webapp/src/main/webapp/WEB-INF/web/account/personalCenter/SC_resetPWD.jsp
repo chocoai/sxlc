@@ -11,6 +11,9 @@
 	<base href="<%=basePath%>">
     <title>登录密码重置</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/securityCenter.css">
 </head>
@@ -28,7 +31,7 @@
 	   					<span>重置密码</span>
 	   					<a class="back" href="javascript:history.back();">返回</a>
 	   				</div>
-	   				<form id="securityCheck">
+	   				<form id="securityCheck1">
 		   				<ul class="contentArea">
 		   					<li class="contetnList">
 		   						<label>原密码：</label>
@@ -55,7 +58,7 @@
 		   						<label>验证码：</label>
 		   						<div class="phoneCode">
 		   							<input class="code imgCode" type="text" lang="请输入验证码" datatype="imgcode" maxlength="6">
-		   							<img class="codeImg" src="resource/img/account/personalCenter/grzx_47.png">
+		   							<img class="codeImg" src="authImage.html?gk=<%=System.currentTimeMillis()%>">
 		   						</div>
 		   					</li>
 		   					<li class="contetnList">
@@ -70,30 +73,6 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/securityCenter.js"></script>
-	<script type="text/javascript">
-		/* 验证     */
-			$(function(){
-				$("#securityCheck").Validform({
-					tiptype:3,//提示信息类型
-					btnSubmit:".phoneSubmit", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
-					//btnReset:"#btnreset1",
-					datatype:extdatatype,//扩展验证类型
-					//showAllError:true,//提交前验证显示所有错误
-					ajaxPost:{//使用ajax提交时
-						url:"http://182.150.178.88:8031/GEB_P2P_Foreqround/selectmemberProvince.action",
-						datatype:"jsonp",
-						success:function(data,obj){
-				            //data是返回的json数据;
-				            //obj是当前表单的jquery对象;
-				        },
-				        error:function(data,obj){
-				            //data是{ status:**, statusText:**, readyState:**, responseText:** };
-				            //obj是当前表单的jquery对象;
-				            console.log(data.status);
-				        }
-					}
-				});
-			});
-	</script>
+	<script type="text/javascript" src="js/account/personalCenter/SC_resetPWD.js"></script>
 </body>
 </html>

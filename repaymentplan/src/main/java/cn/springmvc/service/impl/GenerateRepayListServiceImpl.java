@@ -20,15 +20,17 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.hamcrest.core.Is;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.datatrans.IntegerAndString;
-import product_p2p.kit.dbkey.DbKeyUtil; 
-import cn.springmvc.dao.GenerateRepayListDao; 
+import product_p2p.kit.dbkey.DbKeyUtil;
+import cn.springmvc.dao.GenerateRepayListDao;
 import cn.springmvc.dao.ReplayProjectDetailListDao;
-import cn.springmvc.dao.impl.IdGeneratorUtil; 
-import cn.springmvc.model.LoanRepayEntity; 
-import cn.springmvc.model.ProjectAppRecordEntity;
+import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.model.LoanRepayEntity;
+import cn.springmvc.model.ProjectBaseInfoEntity;
+import cn.springmvc.model.ProjectDetailEntity;
 import cn.springmvc.service.GenerateRepayListService;
 import cn.springmvc.utitls.RepalyUtitls;
 
@@ -46,7 +48,7 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 	@Override
 	public int GenerateRepayList(int applyID) {
 		
-		ProjectAppRecordEntity projectAppRecordEntity = null;
+		ProjectDetailEntity projectAppRecordEntity = null;
 		projectAppRecordEntity = replayProjectDetailListDao.selectProjectDetailByID(applyID);
 		if(projectAppRecordEntity == null ){
 			return -1;
@@ -99,6 +101,38 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 			}
 		 }
 		 return iResult; 
+	}
+	
+	@Override
+	public long GetForecastIncome(long lProId, long lInvestAmount) {
+		long lResult = 0;
+		ProjectBaseInfoEntity entity = replayProjectDetailListDao.selectProjectBaseInfoById(lProId);
+		//3:年、2:月、1:日	 0：天标 1：月标 2：年标
+		int deadLineType = entity.getDeadlineType() + 1;	 
+		//借款金额
+		String amounts = IntegerAndString.LongToString2(lInvestAmount); //entity.getAmounts();
+		//年化利率
+		String yearrates = entity.getYearRates();
+		//借款期限
+		int  deadline = entity.getDeadline();
+		//还款方式
+		int replayway = entity.getRepayWay();
+		SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+		String presentDate3 = sdf3.format(new Date());//获取当前系统时间
+		List<LoanRepayEntity> planList = RepalyUtitls.getIncomePlan2(deadLineType,amounts,yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
+		
+		int iSize = 0;
+		LoanRepayEntity repayEntity = null;
+		if(planList!=null){
+			iSize = planList.size();
+		}
+		for(int i=0;i<iSize;i++){
+			repayEntity = planList.get(i);
+			lResult = lResult + repayEntity.getsDRepayInterest();
+		}
+		
+		return lResult;
+		
 	}
 
 }

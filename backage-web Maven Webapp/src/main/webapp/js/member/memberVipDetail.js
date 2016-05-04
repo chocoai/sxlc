@@ -25,6 +25,30 @@ $(function(){
 		case '20108':
 			$(".vipRange").addClass("hide");
 			break;
+		case '20201':
+			$(".vipRange").addClass("hide");
+			break;
+		case '20202':
+			$(".thirdInformation,.cerfiedRange,.creditRange,.investRange").addClass("hide");
+			break;
+		case '20203':
+			$(".vipRange,.thirdInformation,.cerfiedRange,.creditRange,.investRange").addClass("hide");
+			break;
+		case '20204':
+			$(".vipRange,.creditRange,.investRange").addClass("hide");
+			break;
+		case '20205':
+			$(".vipRange,.investRange").addClass("hide");
+			break;
+		case '20206':
+			$(".vipRange,.cerfiedRange,.creditRange").addClass("hide");
+			break;
+		case '20207':
+			$(".vipRange").addClass("hide");
+			break;
+		case '20208':
+			$(".vipRange").addClass("hide");
+			break;
 	}
 	
 });

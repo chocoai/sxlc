@@ -11,9 +11,9 @@
 		<result column="Sms_Password" property="sPwd"/>
 	</resultMap>	
 	
-	<!-- 获取短信设置信息 -->
+	<!-- 获取短信设置信息	发送短信 -->
 	<select id="getSmsSetInfo" parameterType="Map" resultMap="sendSmsUtil">
-		select Sms_Interface,Sms_SerialNumber,Sms_Password from Sms_Settings where Statu = 1 order by Opt_Date desc limit 0,1
+		select Sms_Interface,Sms_SerialNumber,Sms_Password from Sms_Settings where Statu = 1 and Sms_Interface_Type=0 order by Opt_Date desc limit 0,1
 	</select>
 	
 	<!-- 添加短信发送日志	-->

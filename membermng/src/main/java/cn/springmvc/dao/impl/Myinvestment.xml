@@ -6,35 +6,35 @@
 		select pbi.Project_Title,par.Project_No,ir.Invest_Id ,
 		case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.sKey})) using utf8)  
 		when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.sKey})) using utf8) end 
-		as membername,
+		as membername,pbi.Deadline,pbi.Deadline_Type,
 
 		CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.sKey})) as signed) Invest_Amount, 
 		 
 		(select count(iic.Income_Id)  from  invest_income iic where iic.Statu !=2 and iic.IsValid = 0 and ir.Invest_Id = iic.Invest_Id ) as remianindex,
 		
-		(select((select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iic.SDRecv_Principal),#{map.sKey})) as signed)),0) from  invest_income iic where   ir.Invest_Id = iic.Invest_Id) -
+		(select((select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iic.SDRecv_Principal),#{map.sKey})) as signed)),0) from  invest_income iic where   ir.Invest_Id = iic.Invest_Id and iic.IsValid = 0) -
 		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iric.Recv_Principal),#{map.sKey}))  as signed)) ,0)  from  invest_real_income iric 
 		left join invest_income ii on iric.Income_Id=ii.Income_Id
 		where   ir.Invest_Id = ii.Invest_Id)  ) )as remaimPrincipal,
 		
-		(select((select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iid.SDRecv_Interest),#{map.sKey})) as signed)),0) from invest_income iid where ir.Invest_Id = iid.Invest_Id) -
+		(select((select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iid.SDRecv_Interest),#{map.sKey})) as signed)),0) from invest_income iid where ir.Invest_Id = iid.Invest_Id and iid.IsValid =0) -
 		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iric.Recv_Interest),#{map.sKey}))as signed)),0)  from  invest_real_income iric 
 		left join invest_income ii on iric.Income_Id=ii.Income_Id
 		where   ir.Invest_Id = ii.Invest_Id)  ) )as remaimInterest,
 		
 		(select iic.SDRecv_MaxTime  from  invest_income iic
-		 where   ir.Invest_Id = iic.Invest_Id  and iic.SDRecv_MaxTime>=now() and iic.Statu =0 order by iic.SDRecv_MaxTime asc limit 1) as nextReplayDay,
+		 where   ir.Invest_Id = iic.Invest_Id  and iic.SDRecv_MaxTime>=now() and iic.Statu =0 and iic.IsValid = 0 order by iic.SDRecv_MaxTime asc limit 1) as nextReplayDay,
 		
 		(select CAST((AES_DECRYPT(UNHEX(iic.SDRecv_Principal),#{map.sKey})) as signed)   from  invest_income iic
-		 where   ir.Invest_Id = iic.Invest_Id  and iic.SDRecv_MaxTime>=now() and iic.Statu =0 order by iic.SDRecv_MaxTime asc limit 1) as nextPrincipal,
+		 where   ir.Invest_Id = iic.Invest_Id  and iic.SDRecv_MaxTime>=now() and iic.Statu =0 and iic.IsValid = 0 order by iic.SDRecv_MaxTime asc limit 1) as nextPrincipal,
 		
 		(select CAST((AES_DECRYPT(UNHEX(iic.SDRecv_Interest),#{map.sKey})) as signed)    from  invest_income iic
-		 where   ir.Invest_Id = iic.Invest_Id  and iic.SDRecv_MaxTime>=now() and iic.Statu =0 order by iic.SDRecv_MaxTime asc limit 1) as nextInterest
+		 where   ir.Invest_Id = iic.Invest_Id  and iic.SDRecv_MaxTime>=now() and iic.Statu =0 and iic.IsValid = 0 order by iic.SDRecv_MaxTime asc limit 1) as nextInterest
 		
 		from invest_record ir  
-		left join Project_App_Record par on par.Apply_Id= ir.Apply_Id
-		left join project_base_info pbi on pbi.Project_Base_ID = par.Project_Base_ID
-		left join member_info mi on par.Member_ID =mi.Member_ID 
+		join Project_App_Record par on par.Apply_Id= ir.Apply_Id
+		join project_base_info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+		join member_info mi on par.Member_ID =mi.Member_ID 
 		left join personal_base_info pbiper on mi.Personal_ID =  pbiper.Personal_Id and mi.Member_Type=0
 		left join  company_info ci on mi.Company_ID =ci.Company_ID and mi.Member_Type=1
 	    <where>  
@@ -62,7 +62,7 @@
 		select pbi.Project_Title,par.Project_No,ir.Invest_Id,pbi.Year_Rate, pap.Hold_Date,pap.Settle_Date,
 		case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.sKey})) using utf8)  
 		when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.sKey})) using utf8) end 
-		as membername,
+		as membername,pbi.Deadline,pbi.Deadline_Type,
 		
 		CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.sKey})) as signed) Invest_Amount,  
 		 
@@ -143,14 +143,15 @@
 	       <if test = "map.statu ==  0">  
 	         ir.IsValid =0 and par.Invest_Statu=0 and ir.Member_ID = #{map.memberID}
 		     and now() > pap.End_Date and pap.Start_Date > now()
+		     and  par.Invest_Rate&lt;1000000   
 	       </if>
             <!-- 	       已流标 -->
 	       <if test = "map.statu ==  1">  
-	         and par.Invest_Statu=1 and ir.Member_ID = #{map.memberID} 
+	         and (par.Invest_Statu=1 or par.Invest_Statu = -3)  and ir.Member_ID = #{map.memberID} 
 	       </if>
            <!-- 	                     投标完成 -->
 	       <if test = "map.statu ==  2">  
-	         and ir.Member_ID = #{map.memberID} and ( par.Invest_Statu=2 or (pap.End_Date>now() and  par.Invest_Statu=0))
+	         and ir.Member_ID = #{map.memberID} and ( par.Invest_Statu=2 or (pap.End_Date &lt;now() and  par.Invest_Statu=0)or (par.Invest_Statu = 0 and par.Invest_Rate>=1000000))
 	       </if> 
 	     </where> 
 	      <!-- 		       根据投资金额升序 -->
@@ -212,7 +213,7 @@
 		(select iri.Recv_Time from invest_real_income iri order by iri.Recv_Time desc limit 1) Recv_Time
 		from invest_income ii
 		left join  loan_repay lr on lr.Repay_ID = ii.Repay_ID 
-		where ii.Invest_Id = #{map.investID} and ii.Statu = 2
+		where ii.Invest_Id = #{map.investID} and ii.Statu = 2 and ii.IsValid = 0
     </select>  
      <!-- 查询回收中的收益记录-->  
 	<select id="selectInvestIncome" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="MyInvestMap.resultMyInome">
@@ -230,6 +231,6 @@
 		from invest_income ii
 		left join  loan_repay lr on lr.Repay_ID = ii.Repay_ID 
 		left join DICT replaystatu on   replaystatu.code1= ii.Statu  and replaystatu.tcode = 'DICT_HKJD'
-		where ii.Invest_Id = #{map.investID} and ii.Statu != 2
+		where ii.Invest_Id = #{map.investID} and ii.Statu != 2 and ii.IsValid = 0
     </select>  
 </mapper>   

@@ -1,15 +1,20 @@
 
 package cn.springmvc.service.impl; 
 
+
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import cn.springmvc.dao.impl.AccountDaoSupport;
+import cn.springmvc.dao.impl.HandleThreePartyDaoImpl;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.dao.impl.ProjectInvestReadDaoImpl;
 import cn.springmvc.dao.impl.ProjectInvestWriteDaoImpl;
 import cn.springmvc.service.ProjectInvestService;
+import cn.sxlc.account.manager.model.LoanInfoBeanSubmit;
 import cn.sxlc.account.manager.model.LoanTransferReturnEntity;
 import cn.sxlc.account.manager.model.TransferSubmitEntity;
 
@@ -25,10 +30,10 @@ public class ProjectInvestServiceImpl implements ProjectInvestService{
 	
 	@Resource(name="projectInvestWriteDaoImpl")
 	private ProjectInvestWriteDaoImpl projectInvestWriteDaoImpl;  
-	
 	@Resource(name="projectInvestReadDaoImpl")
 	private ProjectInvestReadDaoImpl projectInvestReadDaoImpl; 
-	
+	@Resource(name="handleThreePartyDaoImpl")
+	private HandleThreePartyDaoImpl  handleThreePartyDaoImpl;
 	@Override
 	public long GetMaxInvestAmount(long lProjectId, long lMemberId,
 			String sKey, short sIsAuto) {
@@ -49,11 +54,29 @@ public class ProjectInvestServiceImpl implements ProjectInvestService{
 	@Override
 	public TransferSubmitEntity GetInvestInfo(short sIsAuto, long lMemberId,
 			long lProjectId, long lAmount, long lRedpackets, long lVouchers,
-			short sClient,String sKey) {
-		
-//		long lId = IdGeneratorUtil.GetIdGeneratorInstance().GetId();
+			short sClient,String sKey,String sRedpackets) {
+		long lId = IdGeneratorUtil.GetIdGeneratorInstance().GetId();
+		String sOrderNo = null;
+		String sSubOrderNo = null;
 		TransferSubmitEntity entity = projectInvestReadDaoImpl.GetInvestInfo(sIsAuto, lMemberId, lProjectId, lAmount, lRedpackets, lVouchers, sClient);
-//		projectInvestWriteDaoImpl.InsertProjectInvestTmp(lId, lProjectId, lMemberId, entity.get, lAmountTotal, lRedpackets, sRedpacketsInfo, lVouchers, isAuto, sKey)
+		List<LoanInfoBeanSubmit> list = entity.getLoanInfoBeanSubmits();
+		LoanInfoBeanSubmit submitEntity = null;
+		int iSize = 0;
+		if(list!= null){
+			iSize = list.size();
+		}
+		
+		for(int i=0;i<iSize;i++){
+			submitEntity = list.get(i);
+			if(i == 0){
+				sOrderNo = handleThreePartyDaoImpl.generateorderNo("PI");
+				submitEntity.setOrderNo(sOrderNo);
+			}else{
+				sSubOrderNo = handleThreePartyDaoImpl.generateorderNo("PI");
+				submitEntity.setOrderNo(sOrderNo);
+			}
+		}
+		projectInvestWriteDaoImpl.InsertProjectInvestTmp(lId,(short)0, lProjectId, lMemberId, sOrderNo,sSubOrderNo, lAmount, lRedpackets, sRedpackets, lVouchers, sIsAuto, sKey);
 		return entity;
 		
 	}
@@ -70,6 +93,13 @@ public class ProjectInvestServiceImpl implements ProjectInvestService{
 			String sOrderNo, short sClient, String sKey) {
 		
 		return projectInvestWriteDaoImpl.CheckInvestRedPackage(sStatu, sType, sOrderNo, sClient, sKey);
+		
+	}
+
+	@Override
+	public int GetRedpacketsInvestRate() {
+		
+		return projectInvestReadDaoImpl.GetRedpacketsInvestRate();
 		
 	}
 

@@ -18,7 +18,7 @@ $(function(){
 					}  
 				},
 				columns: [  
-				          {title:'',sWidth:"10%", 
+				          {title:'',sWidth:"3%", 
 				        	  "mRender": function (data, type, full) {
 				        		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
 				        		  return sReturn;
@@ -28,13 +28,13 @@ $(function(){
 				          { title:"类型名称","data": "projectName"},  
 				          { title:"项目借款额度范围（万元）","data": "singleMin", 
 				        	  "mRender": function (data, type, full) {
-				        		  return full.minAmount+"~"+full.maxAmount;
+				        		  return full.minAmounts+"~"+full.maxAmounts;
 				        	  }
 				          },  
 				          { title:"最小投资金额（万元）","data": "singleMin"},  
 				          { title:"年化利率范围（%）","data": "singleMin", 
 				        	  "mRender": function (data, type, full) {
-				        		  return full.minRate+"~"+full.maxRate;
+				        		  return full.minRates+"~"+full.maxRates;
 				        	  }
 				          },  
 				          { title:"项目期限范围（天）","data": "singleMin"},  
@@ -51,20 +51,21 @@ $(function(){
 				          },  
 				          { title:"项目类型简介","data": "briefIntroduction", 
 				        	  "mRender": function (data, type, full) {
-				        		  	var text = "简介：";
-				        		  	if(data == null || data ==""){
-				        	    		return "";
-				        	    	}else if(data.length>3){//当内容长度大于8时隐藏详细信息
-				        	    		text += data.substring(0,7);
-				        	    		return ' <a href="javascript:;" onclick="showText(this)" title="项目详情">'+text+'...</a>';
-				        	    	}else if(data.length < 9){
+				        		  	if(data.length>8){//当内容长度大于8时隐藏详细信息
+				        	    		return ' <a href="javascript:;" onclick="showText(this)" title="项目详情">'+data.substring(0,7)+'...</a>';
+				        	    	}else {
 				        	    		return data;
 				        	    	} 
 				        	  }
 				          },  
+				          { title:"展示图片","data": "picUrl", 
+				        	  "mRender": function (data, type, full) {
+				        		  return '<a href="javascript:void(0);" class="btn-det" onclick="viewPic(this,1)">查看</a>';
+				        	  }
+				          },  
 				          { title:"产品展示小图标","data": "picIcon", 
 				        	  "mRender": function (data, type, full) {
-				        		  return '<a href="javascript:void(0);" class="btn-det" onclick="viewPic(this)">查看图标</a>';
+				        		  return '<a href="javascript:void(0);" class="btn-det" onclick="viewPic(this,2)">查看</a>';
 				        	  }
 				          },  
 				          { title:"操作","data": "statu", 
@@ -186,19 +187,20 @@ function showText(btn){
  * 查看图片
  * @returns
  */
-function viewPic(btn){
+function viewPic(btn,type){
     var data = $('#table_id').DataTable().row($(btn).parents('tr')).data();
-    if(data.picIcon !=""){
-    	$("#picView").attr("src",$("#hostPath").val()+data.logo);
-    	$(".hideHtml").hide();
-    }else{
-    	$(".hideHtml").show();
-    	$("#picView").attr("src","");
+    var title = "";
+    if(type==1){//展示图片
+        	$("#picView").attr("src",$("#hostPath").val()+data.picUrl);
+        	title="展示图片";
+    }else if(type==2){//展示小图标
+        	$("#picView").attr("src",$("#hostPath").val()+data.picIcon);
+        	title="产品展示小图标";
     }
 	layer.open({
 	    type: 1,
 	    area: ['400px', '300px'], //高宽
-	    title: "查看图标",
+	    title: title,
 //	    maxmin: true,
 	    content: $(".pic-view"),//DOM或内容
 	    btn:['关闭']

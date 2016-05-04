@@ -77,7 +77,7 @@ function addLink(){
 			var url = encrypt.encrypt($("#surl").val());
 			$.ajax({
 				type : 'post',
-				url :　appPath +　"/link/save.do",
+				url : appPath + "/link/save.do",
 				data : {
 					name : name,
 					url : url
@@ -156,7 +156,7 @@ function delLink(){
 			  var friendLinkId = encrypt.encrypt(rowdata[0].id + "");
 			  $.ajax({
 					type : 'post',
-					url :　appPath +　"/link/delete.do",
+					url : appPath + "/link/delete.do",
 					data : {
 						friendLinkId : friendLinkId
 					},

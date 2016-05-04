@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
+
 
 
 
@@ -18,6 +21,7 @@ public class MemberInfo {
 	
 	
 	private Long 		id;						//序号
+	private Long        memberId;	  			
 	private Integer		memberType;				//会员类型
 	private String		memberNo;				//会员编号
 	@NotNull(message="用户名必须填写")
@@ -31,9 +35,66 @@ public class MemberInfo {
 	private Long		companyId;				//企业信息编号
 	private CompanyInfo	companyInfo;
 	private Long		personalId;				//个人信息编号
+	
+	private String      personalName;			//会员姓名+
+	private String		personalIdCard;			//会员身份证  +
+	private String 		personalPhone;			//注册会员电话+
+	private String      personalEmail;			//注册会员邮箱+
+	
+	private String      regClient;		  	  //注册客户端+
+	
+	
+	
+	private String		thirdPartyAccount;		//用户第三方账户
+	private long        userBalance	;   		//第三方账户金额
+	private String		sUserBalance;			//第三方账户金额
+	private long        frozen;					//第三方账户冻结金额
+	private String		sFrozen;				//第三方账户冻结金额
+	
+	
+	/************************借款会员**********************************/
+	private   long   	borrow;			//在借金额
+	private   String    sBorrow;		//在借金额
+	private   long  	settled;		//已结清金额
+	private   String    sSettled;		//已结清金额
+	private   long   	overdue;		//逾期次数
+	private   long   	recharge;		//充值
+	private   String    sRecharge;		//充值
+	private   long      withdrawals;	//提现
+	private   String    sWithdrawals;	//提现
+	private  long       cjplatform;		//充值手续费平台
+	private String		sCjplatform;	//充值手续费平台
+	private long        cjmember ;		//充值手续费会员
+	private String		sCjmember;		//充值手续费会员
+	private long		loanManager;	//借款管理费
+	private String		sLoanManager;	//借款管理费
+	private long		txplatform;		//提现手续费平台
+	private String      sTxplatform;	//提现手续费平台	
+	private long 		txmember;		//提现手续费会员号
+	private String      sTxmember; 		//提现手续费会员号
+	private long        loan;          //借款总额
+	private String      sLoan;			//借款总额
+	/************************投资会员**********************************/
+	private long        investment;				//投资总额
+	private String      sInvestment;			//投资总额
+	private long        managerFee;				//收益管理费
+	private String 		sManagerFee;			//收益管理费
+	/**********************************************************/
+	
+	/************************复合会员**********************************/
+	private long        noRrturn;				//累计逾期未还本金
+	private String      sNoReturn;			  //累计逾期未还本金
+	private long        noIntrest;				//累计逾期未还利息
+	private String 		sNoInterest;			//累计逾期未还利息
+	/**********************************************************/
+	
+	//会员黑名单······································································
+	private Integer		count;					//拉黑次数	
+	private Date        lastBlack;				//最后一次拉黑时间
+	private String      sLastBlack;				//最后一次拉黑时间
+	//---
 	private PersonalBaseInfo baseInfo;
 	private String		path;					//头像路径
-	private Date		regDate;				//注册时间
 	private String		invitateCode;			//邀请码
 	private String		beinvitateCode;			//被邀请码
 	private Integer		provinceId;				//所属省份
@@ -48,40 +109,12 @@ public class MemberInfo {
 	private Integer		creditIntegral;			//当前信用积分
 	
 	
-	
-	private String		recordDate;				//第三方开通时间
-	
+	private Date		regDate;				//注册时间
+	private String      sRegDate;				//注册时间
+	private Date		recordDate;				//第三方开通时间
+	private String 	    sRcordDate;				//第三方开通时间
 	
 	public MemberInfo() {}
-
-
-	public MemberInfo(Long id, Integer memberType, String memberNo,
-			String logname, String memberPwd, String safePwd, Long companyId,
-			Long personalId, String path, Date regDate, String invitateCode,
-			String beinvitateCode, Integer provinceId, Integer cityId,
-			Integer countyId, Integer townId, Integer integral,
-			Integer creditIntegral) {
-		super();
-		this.id = id;
-		this.memberType = memberType;
-		this.memberNo = memberNo;
-		this.logname = logname;
-		this.memberPwd = memberPwd;
-		this.safePwd = safePwd;
-		this.companyId = companyId;
-		this.personalId = personalId;
-		this.path = path;
-		this.regDate = regDate;
-		this.invitateCode = invitateCode;
-		this.beinvitateCode = beinvitateCode;
-		this.provinceId = provinceId;
-		this.cityId = cityId;
-		this.countyId = countyId;
-		this.townId = townId;
-		this.integral = integral;
-		this.creditIntegral = creditIntegral;
-	}
-
 
 	public Long getId() {
 		return id;
@@ -90,8 +123,13 @@ public class MemberInfo {
 
 	public void setId(Long id) {
 		this.id = id;
+		this.memberId = id;
 	}
 
+
+	public Long getMemberId() {
+		return memberId;
+	}
 
 	public Integer getMemberType() {
 		return memberType;
@@ -171,17 +209,6 @@ public class MemberInfo {
 	public void setPath(String path) {
 		this.path = path;
 	}
-
-
-	public Date getRegDate() {
-		return regDate;
-	}
-
-
-	public void setRegDate(Date regDate) {
-		this.regDate = regDate;
-	}
-
 
 	public String getInvitateCode() {
 		return invitateCode;
@@ -292,17 +319,6 @@ public class MemberInfo {
 		this.companyInfo = companyInfo;
 	}
 
-
-	public String getRecordDate() {
-		return recordDate;
-	}
-
-
-	public void setRecordDate(String recordDate) {
-		this.recordDate = recordDate;
-	}
-
-
 	public String getProvinceName() {
 		return provinceName;
 	}
@@ -341,6 +357,321 @@ public class MemberInfo {
 	public void setTownName(String townName) {
 		this.townName = townName;
 	}
+
+	public Date getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(Date regDate) {
+		this.regDate = regDate;
+		this.sRegDate = TimestampAndString.DateToString(regDate);
+	}
+
+	public String getsRegDate() {
+		return sRegDate;
+	}
+
+	public Date getRecordDate() {
+		return recordDate;
+	}
+
+	public void setRecordDate(Date recordDate) {
+		this.recordDate = recordDate;
+		this.sRcordDate = TimestampAndString.DateToString(recordDate);
+	}
+
+	public String getsRcordDate() {
+		return sRcordDate;
+	}
+
+	public String getPersonalIdCard() {
+		return personalIdCard;
+	}
+
+	public void setPersonalIdCard(String personalIdCard) {
+		this.personalIdCard = personalIdCard;
+	}
+
+	public String getPersonalPhone() {
+		return personalPhone;
+	}
+
+	public void setPersonalPhone(String personalPhone) {
+		this.personalPhone = personalPhone;
+	}
+
+	public String getPersonalEmail() {
+		return personalEmail;
+	}
+
+	public void setPersonalEmail(String personalEmail) {
+		this.personalEmail = personalEmail;
+	}
+
+	public String getRegClient() {
+		return regClient;
+	}
+
+	public void setRegClient(String regClient) {
+		this.regClient = regClient;
+	}
+
+	public String getPersonalName() {
+		return personalName;
+	}
+
+	public void setPersonalName(String personalName) {
+		this.personalName = personalName;
+	}
+
+	public long getBorrow() {
+		return borrow;
+	}
+
+	public void setBorrow(long borrow) {
+		this.borrow = borrow;
+		this.sBorrow =  IntegerAndString.LongToString(borrow);
+	}
+
+	public String getsBorrow() {
+		return sBorrow;
+	}
+
+	public long getSettled() {
+		return settled;
+	}
+
+	public void setSettled(long settled) {
+		this.settled = settled;
+		this.sSettled = IntegerAndString.LongToString(settled);
+	}
+
+	public String getsSettled() {
+		return sSettled;
+	}
+
+
+	public long getOverdue() {
+		return overdue;
+	}
+
+	public long getRecharge() {
+		return recharge;
+	}
+
+	public void setRecharge(long recharge) {
+		this.recharge = recharge;
+		this.sRecharge =IntegerAndString.LongToString(recharge);
+	}
+
+	public String getsRecharge() {
+		return sRecharge;
+	}
+
+	public long getCjplatform() {
+		return cjplatform;
+	}
+
+	public void setCjplatform(long cjplatform) {
+		this.cjplatform = cjplatform;
+		this.sCjplatform = IntegerAndString.LongToString(cjplatform);
+	}
+
+	public String getsCjplatform() {
+		return sCjplatform;
+	}
+
+	public void setsCjplatform(String sCjplatform) {
+		this.sCjplatform = sCjplatform;
+	}
+
+	public long getCjmember() {
+		return cjmember;
+	}
+
+	public void setCjmember(long cjmember) {
+		this.cjmember = cjmember;
+		this.sCjmember = IntegerAndString.LongToString(cjmember);
+	}
+
+	public String getsCjmember() {
+		return sCjmember;
+	}
+
+
+	public long getLoanManager() {
+		return loanManager;
+	}
+
+	public void setLoanManager(long loanManager) {
+		this.loanManager = loanManager;
+		this.sLoanManager = IntegerAndString.LongToString(loanManager);
+	}
+
+	public String getsLoanManager() {
+		return sLoanManager;
+	}
+
+	public long getTxplatform() {
+		return txplatform;
+	}
+
+	public void setTxplatform(long txplatform) {
+		this.txplatform  = txplatform;
+		this.sTxplatform = IntegerAndString.LongToString(txplatform);
+	}
+
+	public String getsTxplatform() {
+		return sTxplatform;
+	}
+
+	public long getTxmember() {
+		return txmember;
+	}
+
+	public void setTxmember(long txmember) {
+		this.txmember = txmember;
+		this.sTxmember = IntegerAndString.LongToString(txmember);
+	}
+
+	public String getsTxmember() {
+		return sTxmember;
+	}
+
+	public long getWithdrawals() {
+		return withdrawals;
+	}
+
+	public void setWithdrawals(long withdrawals) {
+		this.withdrawals = withdrawals;
+		this.sWithdrawals = IntegerAndString.LongToString(withdrawals);
+	}
+
+	public String getsWithdrawals() {
+		return sWithdrawals;
+	}
+
+	public long getLoan() {
+		return loan;
+	}
+
+	public void setLoan(long loan) {
+		this.loan = loan;
+		this.sLoan =  IntegerAndString.LongToString(loan);
+	}
+
+	public String getsLoan() {
+		return sLoan;
+	}
+
 	
 	
+	public String getThirdPartyAccount() {
+		return thirdPartyAccount;
+	}
+
+	public void setThirdPartyAccount(String thirdPartyAccount) {
+		this.thirdPartyAccount = thirdPartyAccount;
+	}
+
+	public long getUserBalance() {
+		return userBalance;
+	}
+
+	public void setUserBalance(long userBalance) {
+		this.userBalance = userBalance;
+		this.sUserBalance =  IntegerAndString.LongToString(userBalance);
+	}
+
+	public String getsUserBalance() {
+		return sUserBalance;
+	}
+
+	public long getFrozen() {
+		return frozen;
+	}
+
+	public void setFrozen(long frozen) {
+		this.frozen = frozen;
+		this.sFrozen =  IntegerAndString.LongToString(frozen);
+	}
+
+	public String getsFrozen() {
+		return sFrozen;
+	}
+
+	public long getManagerFee() {
+		return managerFee;
+	}
+
+	public void setManagerFee(long managerFee) {
+		this.managerFee = managerFee;
+		this.sManagerFee = IntegerAndString.LongToString(managerFee);
+	}
+
+	public String getsManagerFee() {
+		return sManagerFee;
+	}
+
+	public long getInvestment() {
+		return investment;
+	}
+
+	public void setInvestment(long investment) {
+		this.investment = investment;
+		this.sInvestment =  IntegerAndString.LongToString(investment);
+	}
+
+	public String getsInvestment() {
+		return sInvestment;
+	}
+
+	public long getNoRrturn() {
+		return noRrturn;
+	}
+
+	public void setNoRrturn(long noRrturn) {
+		this.noRrturn = noRrturn;
+		this.sNoReturn = IntegerAndString.LongToString(noRrturn);
+	}
+
+	public String getsNoReturn() {
+		return sNoReturn;
+	}
+
+
+	public long getNoIntrest() {
+		return noIntrest;
+	}
+
+	public void setNoIntrest(long noIntrest) {
+		this.noIntrest = noIntrest;
+		this.sNoInterest =IntegerAndString.LongToString(noIntrest);
+	}
+
+	public String getsNoInterest() {
+		return sNoInterest;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public Date getLastBlack() {
+		return lastBlack;
+	}
+
+	public void setLastBlack(Date lastBlack) {
+		this.lastBlack = lastBlack;
+		this.sLastBlack = TimestampAndString.DateToString(lastBlack);
+	}
+
+	public String getsLastBlack() {
+		return sLastBlack;
+	}
+
 }

@@ -256,7 +256,7 @@ public class AuthCodeController {
 		//前端页面中的输入的验证码
 		String authCode = req.getParameter("pAuthCode");
 		//session中的系统验证码
-        int sysAuth = (int)req.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION");
+        int sysAuth = Integer.parseInt((String) req.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION"));
         String sysAuthCode =String.valueOf(sysAuth);
         PrintWriter out = null;     
 		try {

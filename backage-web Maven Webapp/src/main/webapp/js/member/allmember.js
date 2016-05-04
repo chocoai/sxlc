@@ -20,8 +20,13 @@ $(function(){
 		
 	} );
 	showMemberList();
+	/**
+	 * 查询按钮
+	 */
+	$(".glyphicon-search").on("click",function(){
+		$('#table_id').DataTable().ajax.reload();
+	});
 });
-
 /**
  * 显示所有会员
  */
@@ -64,8 +69,8 @@ function showMemberList(){
 		            	phone_Num = encrypt.encrypt(phone_Num);
 		            	auto_tou = encrypt.encrypt(auto_tou+"");
 		            	auto_return = encrypt.encrypt(auto_return+"");
-		            	d.memberName=member_Name;
-		            	d.personalName=user_Name;
+		            	d.memberName=user_Name;
+		            	d.personalName=member_Name;
 		            	d.personalPhone=phone_Num;
 		            	d.automaticBidding=auto_tou;
 		            	d.automaticRepayment=auto_return;

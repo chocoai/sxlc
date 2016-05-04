@@ -19,6 +19,11 @@ legend{
 	font-weight:700;
 	text-align:center;
 }
-table{
-	margin:0 auto;
+
+/* 表格样式调整待改 */
+/* .display{
+	width:100% !important;
 }
+.dataTables_scrollHeadInner{
+	width:100% !important;
+} */

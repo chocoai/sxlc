@@ -27,7 +27,7 @@ import product_p2p.kit.datatrans.IntegerAndString;
 import cn.springmvc.dao.InvestIncomeDao;
 import cn.springmvc.dao.InvestIncomeListDao;
 import cn.springmvc.model.InvestIncomeEntity;
-import cn.springmvc.model.InvestRecordEntity;
+import cn.springmvc.model.InvestRecordInfoEntity;
 
 /** 
  * @author 刘利 

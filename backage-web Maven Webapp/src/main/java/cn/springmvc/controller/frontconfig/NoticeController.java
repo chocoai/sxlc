@@ -14,11 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.springmvc.Util.HttpSessionUtil;
-import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.PlatformAnnouncementEntity;
 import cn.springmvc.service.PlatformAnnouncementService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 
 import product_p2p.kit.HttpIp.AddressUtils;

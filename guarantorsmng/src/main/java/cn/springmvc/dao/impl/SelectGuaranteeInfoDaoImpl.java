@@ -24,6 +24,7 @@ import cn.springmvc.model.GuaranteeRelationalEntity;
 import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
+import cn.springmvc.model.MemberThirdAuthInfoEntity;
 
 
 
@@ -143,7 +144,7 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 			PageEntity pageEntity) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectList("GuaranteeInfoXML.selectAllGuaranteeInfo", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		return getSqlSession().selectList("GuaranteeInfoXML.InstitutionsToRaiseCashRecords", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 	}
 	@Override
 	public CompensationStatisticsEntity CompensationStatistics(
@@ -151,6 +152,19 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectOne("GuaranteeInfoXML.CompensationStatistics",map);
+	}
+	@Override
+	public MemberThirdAuthInfoEntity selectMemberThirdAuthInfoone(
+			Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectOne("GuaranteeInfoXML.selectMemberTradeInfoone",map);
+	}
+	@Override
+	public List<GuaranteeAdminEntity> findManagementAdmin(PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("GuaranteeInfoXML.findManagementAdmin", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 	}
 }
 

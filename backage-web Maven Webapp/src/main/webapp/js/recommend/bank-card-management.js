@@ -11,7 +11,7 @@ function bankManagementAdd(title,page,type){
 	}
 	layer.open({
 	    type: 2,
-	    area: ['450px', '300px'], //高宽
+	    area: ['500px', '380px'], //高宽
 	    title: title,
 	    maxmin: true,
 	    content: page,//DOM或内容
@@ -38,7 +38,7 @@ function bankManagementMod(title,page,type,id){
 	}
 	layer.open({
 	    type: 2,
-	    area: ['450px', '300px'], //高宽
+	    area: ['500px', '380px'], //高宽
 	    title: title,
 	    maxmin: true,
 	    content: page,//DOM或内容
@@ -79,9 +79,5 @@ $(function(){
 		"border":"1px solid #ccc",
 		"cursor":"pointer"
 	});
-	validform5("layui-layer-btn0","cardType",false,"3");
-	validform5("layui-layer-btn0","depositBank",false,"3");
-	validform5("layui-layer-btn0","depositCity",false,"3");
-	validform5("layui-layer-btn0","subbranch",false,"3");
-	validform5("layui-layer-btn0","bankNum",false,"3");
+	validform5(".commonbtn0","card_id",false,"3");
 });

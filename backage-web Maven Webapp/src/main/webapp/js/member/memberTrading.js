@@ -3,6 +3,7 @@
  * 会员交易记录
  */
 $(function(){
+	TradeType();//交易类型
 	//单选
 	$('#table_id tbody').on( 'click', 'tr', function () {
 		var $this = $(this);
@@ -21,6 +22,31 @@ $(function(){
 	} );
 });
 
+/**
+ * 查看交易类型
+ */
+function TradeType(){
+	$.ajax({  
+		url:appPath+"/member/getMemTradeType.do",
+		data:{
+		},
+		type:'post',  
+		cache:false,  
+		dataType:'json',  
+		success:function(data) { 
+			var html = "";
+			if(data!=null && data.length>0){
+				$.each(data,function(index,obj){
+					html+="<option value="+obj.id+">"+obj.tradeType+"</opiton>";
+				});
+				$("#transaction").append(html);
+			}
+		},  
+		error : function() {  
+			layer.alert("操作失败!",{icon:0});  
+		}  
+	});
+}
 /**
  * 显示会员交易记录
  */
@@ -46,7 +72,7 @@ function showMemberTradingList(memberId){
 				processing: true, //打开数据加载时的等待效果  
 		        serverSide: true,//打开后台分页  
 		        ajax: {  
-		            "url": appPath+"/member/getTradingList.do",   
+		            "url": appPath+"/member/getMemTradeList.do",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {
 		            	//result 为加密后参数

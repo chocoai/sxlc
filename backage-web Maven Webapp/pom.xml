@@ -18,7 +18,7 @@
 	<slf4j.version>1.7.5</slf4j.version>
 	<log4j.version>1.2.17</log4j.version>
 	<cxf.version>2.7.18</cxf.version>
-    <!-- <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
   
@@ -184,37 +184,35 @@
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency> 
     <!--会员管理  -->
+     <dependency>  
+	     <groupId>product_p2p</groupId> 
+ 	     <artifactId>membermng</artifactId> 
+ 	     <version>0.0.1-SNAPSHOT</version>  
+     </dependency>  
+    <!--担保机构  -->
     <dependency> 
 	     <groupId>product_p2p</groupId>
-	     <artifactId>membermng</artifactId>
+	     <artifactId>guarantorsmng</artifactId>
 	     <version>0.0.1-SNAPSHOT</version> 
-    </dependency> 
+    </dependency>
     <!--项目管理  -->
     <dependency> 
 	     <groupId>product_p2p</groupId>
 	     <artifactId>projectmng</artifactId>
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency> 
-    <!--担保  -->
-    <dependency> 
-	     <groupId>product_p2p</groupId>
-	     <artifactId>guarantorsmng</artifactId>
-	     <version>0.0.1-SNAPSHOT</version> 
-    </dependency> 
-	
     
   </dependencies>
   <build>
     <finalName>backage-web</finalName>
-     <plugins>  
-    <plugin>  
-        <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-compiler-plugin</artifactId>  
-        <configuration>  
-            <source>1.7</source>  
-            <target>1.7</target>  
-        </configuration>  
-    </plugin>  
-</plugins> 
+    <plugins>
+    	<plugin>
+    		<artifactId>maven-compiler-plugin</artifactId>
+    		<configuration>
+    			<target>1.7</target>
+    			<source>1.7</source>
+    		</configuration>
+    	</plugin>
+    </plugins>
   </build>
 </project>

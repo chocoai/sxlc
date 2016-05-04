@@ -208,7 +208,7 @@ function inputText(str){
 	$(str+" :text").each(function(){
 		$(this).val($(this).attr("lang"));
 		$(this).css('color','#999');
-		$(this).focus(function(){
+		$(this).on("focus",function(){
 			if($(this).hasClass("selectInput")){
 				
 			}else{
@@ -217,7 +217,8 @@ function inputText(str){
 					$(this).val('');
 				}
 			}
-		}).blur(function(){
+		});
+		$(this).on("blur",function(){
 			if($(this).hasClass("selectInput")){
 				
 			}else if($(this).val() == ''){
@@ -234,7 +235,7 @@ function inputSelect(){
 		if(cc != 0){
 			$(this).css("color","#000");
 		}
-		$(this).click(function(){
+		$(this).on("click",function(){
 			if($(this).next(".select").is(":hidden")){
 				$(this).next(".select").slideDown(200);
 			}else{
@@ -245,14 +246,14 @@ function inputSelect(){
 			if($(this).attr("value") == cc){
 				$(this).parent().parent().find(".selectInput").val($(this).html());
 			}
-			$(this).click(function(){
+			$(this).on("click",function(){
 				$(this).parent().parent().find(".selectInput").val($(this).html());
 				$(this).parent().parent().find(".selectValue").attr("value",$(this).attr("value"));
 				$(this).parent().slideUp(200);
 				$(this).parent().parent().find(".selectInput").css('color','#2f2f2f');
 			});
 		});
-		$(this).blur(function(){
+		$(this).on("blur",function(){
 			var ob = $(this);
 			setTimeout(function () {
 				ob.next().slideUp(200);

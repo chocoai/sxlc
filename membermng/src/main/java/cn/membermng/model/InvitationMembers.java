@@ -3,6 +3,7 @@ package cn.membermng.model;
 import java.util.Date;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 
 /***
@@ -20,6 +21,7 @@ public class InvitationMembers {
 	private String				userName			;//会员真实名称
 	private String				memberPhone			;//会员电话
 	private Date				regDate				;//注册时间
+	private String              sRregDate			;//注册时间
 	private long				investmentSum		;//投资总额
 	private String				sInvestmentSum		;//
 	private long				loanSum				;//借款金额
@@ -93,6 +95,7 @@ public class InvitationMembers {
 
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
+		this.sRregDate = TimestampAndString.DateToString(regDate);
 	}
 
 
@@ -136,19 +139,11 @@ public class InvitationMembers {
 	public void setsLoanSum(String sLoanSum) {
 		this.sLoanSum = sLoanSum;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+	public String getsRregDate() {
+		return sRregDate;
+	}
 
 }
 

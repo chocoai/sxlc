@@ -14,6 +14,8 @@ import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberInfoEntity;
 import cn.membermng.model.MemberInvestmentInfo;
 import cn.membermng.model.MemberThirdInfo;
+import cn.membermng.model.MemberTradingRecordsEntity;
+import cn.membermng.model.TradingTypeEntity;
 import cn.membermng.model.VIPMemberInfos;
 
 
@@ -79,16 +81,28 @@ public interface IMemberManagerReadDao {
 	public MemberInvestmentInfo investment(Map<String,Object> param);
 	
 	
-	/***
-	* 查看会员的交易记录 
-	* @author 李杰 
-	* @Title: blotter 
-	* @Description:管理员查看会员信息的时候查看会员的交易记录
-	* @return List<T> 返回类型 
-	* @date 2016-3-18 下午7:08:46
-	* @throws
+	/**
+	 *  查看会员的交易类型
+	 * TODO
+	 * 创建日期：2016-5-2下午2:08:56
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<T>
 	 */
-	//public List<T> blotter(Map<String,Object> param);
+	public List<TradingTypeEntity> memberTradingTypes();
+
+	
+	/**
+	 *  查看会员的交易记录 
+	 * TODO
+	 * 创建日期：2016-5-2下午2:08:56
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<T>
+	 */
+	public List<MemberTradingRecordsEntity> memberTradingList(PageEntity pageEntity);
 	
 	
 	
@@ -151,7 +165,7 @@ public interface IMemberManagerReadDao {
 	* @return List<VIPMemberInfos> 返回类型 
 	* @date 2016-3-21 下午5:28:09
 	*/
-	public List<VIPMemberInfos> vipMembersByParam(Map<String, Object> param);
+	public List<VIPMemberInfos> vipMembersByParam(PageEntity entity);
 
 
 
@@ -162,7 +176,7 @@ public interface IMemberManagerReadDao {
 	* @return
 	* @date 2016-3-22 上午11:22:11
 	 */
-	public List<MemberInfo> registers(Map<String, Object> param);
+	public List<MemberInfo> registers(PageEntity entity);
 
 
 
@@ -177,7 +191,7 @@ public interface IMemberManagerReadDao {
 	* @Description: TODO
 	* @date 2016-3-22 下午2:09:52
 	 */
-	public List<MemberInfo> authenticationMember(Map<String, Object> param);
+	public List<MemberInfo> authenticationMember(PageEntity entity);
 
 
 
@@ -190,7 +204,7 @@ public interface IMemberManagerReadDao {
 	* @return
 	* @date 2016-3-22 下午2:52:53
 	 */
-	public List<MemberInfo> loanMember(Map<String, Object> param);
+	public List<MemberInfo> loanMember(PageEntity entity);
 
 
 
@@ -203,9 +217,21 @@ public interface IMemberManagerReadDao {
 	* @return
 	* @date 2016-3-22 下午4:30:02
 	*/
-	public List<MemberInfo> investmentMember(Map<String, Object> param);
+	public List<MemberInfo> investmentMember(PageEntity entity);
+	
+	
+	/**
+	 * 查询至少投过一次资且借过一次款的会员
+	 * TODO
+	 * 创建日期：2016-5-2上午11:53:06
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<MemberInfo>
+	 */
+	public List<MemberInfo> componentMembers(PageEntity entity);
 
-
+	
 
 	
 	/***
@@ -217,6 +243,6 @@ public interface IMemberManagerReadDao {
 	* @return
 	* @date 2016-3-22 下午5:49:18
 	*/
-	public List<MemberInfo> blackList(Map<String, Object> param);
+	public List<MemberInfo> blackList(PageEntity entity);
 	
 }

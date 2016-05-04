@@ -438,7 +438,7 @@
 		 <if test="orderDsec==0">DESC</if>	  	
 	</select>
 	
-			<!-- 查询推荐达人推荐投资明细
+	<!-- 查询推荐达人推荐投资明细
 		Project_Title,借款名称
 		Invest_Amount_Valid,投资金额
 		Logname,用户名
@@ -689,7 +689,128 @@
 				WHEN 'REPAY_AWARD' THEN fap.Repay_Award
 				ELSE fap.Pay_Date
 			END)
-	<if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
-    <if test="orderDsec==0">DESC</if>	
+	  <if test="orderDsec ==1">ASC</if>	<!--此处写法待测试-->
+      <if test="orderDsec==0">DESC</if>	
+	</select>
+	<!-- 查询理财顾问推荐还本明细
+		Apply_Id,项目申请记录ID
+		Project_Title,借款名称
+		Amount,借款金额
+		Logname,借款人用户名
+		Personal_Name,会员名称
+		Repay_Principal,本次还款本金
+		Repay_Interest,本次还款利息
+		Repay_Time,还款时间
+		Repay_MaxTime,预期还款时间
+		is_overque,是否逾期1是0否
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_Title}#{Logname}#{Personal_Name}#{Repay_Time_Min}#{Repay_Time_Max}#{overque}#{Service_No}#{ordercolumn}
+	-->
+	<select id="getRepayment_Advisor" parameterType="Map" resultMap="CommissionIssuedMap.InvestRepayment">
+		SELECT
+		  pa.Apply_Id,
+		  prbi.Project_Title,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{skey})) AS SIGNED) Repay_Principal,
+		  CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{skey})) AS SIGNED) Repay_Interest,
+		  lrr.Repay_Time,
+		  lr.Repay_MaxTime,
+		  (CASE when lr.Repay_MaxTime >= lrr.Repay_Time then 0 
+				else 1
+			end) is_overque
+		FROM Loan_Real_Repay lrr
+		 JOIN FinancialAdvisor_Award_Record  far  
+		    ON lrr.Real_Repay_ID = far.Project_Id
+		  JOIN Loan_Repay lr
+            ON lrr.Repay_ID = lr.Repay_ID
+          JOIN project_app_record pa
+		    ON lr.Apply_Id = pa.Apply_Id
+		  JOIN project_base_info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		  JOIN member_info mi
+			ON pa.Member_ID = mi.Member_ID
+		  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci
+			ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+			  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Repay_Time_Min} IS NULL OR #{Repay_Time_Min} = '', 1=1, lrr.Repay_Time>=#{Repay_Time_Min})
+			  AND IF(#{Repay_Time_Max} IS NULL OR #{Repay_Time_Max} = '', 1=1, lrr.Repay_Time&lt;=#{Repay_Time_Max})
+			  AND IF(#{overque} IS NULL OR #{overque} = '', 1=1,IF(#{overque} = 1, lrr.Repay_Time > lr.Repay_MaxTime, lr.Repay_MaxTime >= lrr.Repay_Time ) )
+			  AND IF(#{Service_No} IS NULL OR #{Service_No} = '', 1=1, far.FA_ID=(SELECT fa.FA_ID FROM Financial_Advisor fa where fa.Service_No = #{Service_No}))
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'REPAY_TIME' THEN lrr.Repay_Time
+				ELSE lrr.Repay_Time
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
+	</select>
+	
+		<!-- 查询推荐达人推荐还本明细
+		Apply_Id,项目申请记录ID
+		Project_Title,借款名称
+		Amount,借款金额
+		Logname,借款人用户名
+		Personal_Name,会员名称
+		Repay_Principal,本次还款本金
+		Repay_Interest,本次还款利息
+		Repay_Time,还款时间
+		Repay_MaxTime,预期还款时间
+		is_overque,是否逾期1是0否
+	--> 
+	<!--传入参数整理
+		#{skey}#{Project_Title}#{Logname}#{Personal_Name}#{Repay_Time_Min}#{Repay_Time_Max}#{overque}#{Service_No}#{ordercolumn}
+	-->
+	<select id="getRepayment_Invite" parameterType="Map" resultMap="CommissionIssuedMap.InvestRepayment">
+		SELECT
+		  pa.Apply_Id,
+		  prbi.Project_Title,
+		  mi.Logname,
+		  CASE
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		  END Personal_Name,	
+		  CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{skey})) AS SIGNED) Repay_Principal,
+		  CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{skey})) AS SIGNED) Repay_Interest,
+		  lrr.Repay_Time,
+		  lr.Repay_MaxTime,
+		  (CASE when lr.Repay_MaxTime >= lrr.Repay_Time then 0 
+				else 1
+			end) is_overque
+		FROM Loan_Real_Repay lrr 
+		  JOIN InviteMaster_Award_Record  far  
+		    ON lrr.Real_Repay_ID = far.Project_Id
+		  JOIN Loan_Repay lr
+            ON lrr.Repay_ID = lr.Repay_ID
+          JOIN project_app_record pa
+		    ON lr.Apply_Id = pa.Apply_Id
+		  JOIN project_base_info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		  JOIN member_info mi
+			ON pa.Member_ID = mi.Member_ID
+		  LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
+			ON mi.Personal_Id = pbi.Personal_Id
+		  LEFT JOIN Company_Info ci
+			ON mi.Personal_Id = ci.Company_ID
+		WHERE IF(#{Project_Title} IS NULL, 1=1, LOCATE(#{Project_Title},prbi.Project_Title)>0)
+			  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
+			  AND IF(#{Repay_Time_Min} IS NULL OR #{Repay_Time_Min} = '', 1=1, lrr.Repay_Time>=#{Repay_Time_Min})
+			  AND IF(#{Repay_Time_Max} IS NULL OR #{Repay_Time_Max} = '', 1=1, lrr.Repay_Time&lt;=#{Repay_Time_Max})
+			  AND IF(#{overque} IS NULL OR #{overque} = '', 1=1,IF(#{overque} = 1, lrr.Repay_Time > lr.Repay_MaxTime, lr.Repay_MaxTime >= lrr.Repay_Time ) )
+			  AND IF(#{Service_No} IS NULL OR #{Service_No} = '', 1=1, far.IM_ID=(SELECT fa.IM_ID FROM Invite_Master fa where fa.Im_No = #{Service_No}))
+		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
+				WHEN 'REPAY_TIME' THEN lrr.Repay_Time
+				ELSE lrr.Repay_Time
+			END)
+		<if test="orderDsec==1">ASC</if>
+		<if test="orderDsec==0">DESC</if>
 	</select>
 </mapper>

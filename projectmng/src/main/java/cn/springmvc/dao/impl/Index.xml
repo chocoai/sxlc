@@ -79,7 +79,7 @@
 	   order by  par.Invest_Statu asc ,pap.Start_Date desc limit 3
     </select>  
      <!-- 首页查询债权转让项目列表 -->  
-	<select id = "selectCreditorTransferListIndex"   resultMap = "resultCreditorTransfer">
+	<select id = "selectCreditorTransferListIndex"  parameterType="map" resultMap = "resultCreditorTransfer">
 	    select pbi.Project_Title,par.Project_No,cta.Surplus_Time,
 	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{sKey})) as signed) Trans_Principal,
 	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{sKey})) as signed) Trans_Discount,

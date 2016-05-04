@@ -129,6 +129,7 @@ public interface PostLoanManageService {
 	 * @return List<ProjectAfterLoanInfoEntity> 返回类型 
 	 * @date 2016-4-21 下午3:16:00
 	 */
+
 	public List<ProjectAfterLoanInfoEntity> selectProjectAfterLoanFront(long applyId);
 	/**
 	 * 根据贷后监管信息ID查询其对应的附件信息
@@ -169,7 +170,7 @@ public interface PostLoanManageService {
 	 * @param @param pageEntity
 	 * #{skey}                #{Project_No}        #{Project_Title}
 	 * #{Personal_Name}       #{Repay_MaxTime_Min} #{Expiration_ReminderSet}
-	 * #{Repay_MaxTime_Max}  #{Admin_ID}          #{ordercolumn}
+	 * #{Repay_MaxTime_Max}  #{AdminID}          #{ordercolumn}
 	 * #{orderDsec(1升序，0降序)}
 	 * @param @return 设定文件 
 	 * @return void 返回类型 
@@ -191,7 +192,7 @@ public interface PostLoanManageService {
 	 */
 	public void getLatePayments(PageEntity pageEntity);
 	/**
-	 * 催款已还账单查询 
+	 * 催款已还账单查询 --不用了
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param  pageEntity
@@ -203,7 +204,7 @@ public interface PostLoanManageService {
 	 */
 	public void getLoanRepay(PageEntity pageEntity);
 	/**
-	 * 催收已还 查看账单详情
+	 * 催收已还 查看账单详情 -- 不用了
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param  pageEntity
@@ -219,13 +220,26 @@ public interface PostLoanManageService {
 	 * @Description: TODO 
 	 * @param pageEntity
 	 * 	#{skey}				#{Project_No}		 #{Project_Title}
-	 *  #{Personal_Name}	#{Repay_MaxTime_Min} #{Expiration_ReminderSet}
-	 *	#{Repay_MaxTime_Max}#{Admin_ID}          #{ordercolumn}
+	 *  #{Personal_Name}	#{Repay_MaxTime_Min} 
+	 *	#{Repay_MaxTime_Max}#{AdminID}          #{ordercolumn}
 	 *  #{orderDsec(1升序，0降序)}                  #{staffType 必填0(会员)2(超级管理员)3(理财顾问)}
 	 * @param @return 设定文件 
 	 * @return void 返回类型 
 	 * @date 2016-4-21 下午9:18:39
 	 */
 	public void getMaturingBill(PageEntity pageEntity);
+	/**
+	 * 查询催收已还
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param pageEntity
+	 *  #{skey}				#{Project_No}		 #{Project_Title}
+	 *  #{Personal_Name}    #{AdminID}          #{Merbill_No}
+	 *  #{orderDsec(1升序，0降序)}      #{ordercolumn}
+	 * @param @return 设定文件 
+	 * @return List<ProjectCollectionEntity> 返回类型 
+	 * @date 2016-4-15 下午5:53:40
+	 */
+	public void getRepaySettled(PageEntity pageEntity);
 }
 

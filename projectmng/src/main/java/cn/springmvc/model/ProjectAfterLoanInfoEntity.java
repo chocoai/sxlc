@@ -31,15 +31,33 @@ public class ProjectAfterLoanInfoEntity {
 	/**
 	 * 回复时间
 	 */
-	private long  recordDate; 
+	private String  recordDate; 
 	/**
 	 * 摘要	
 	 */
-	private long  abstracts;
+	private String  abstracts;
 	/**
 	 * 详情描述
 	 */
-	private long  detail;
+	private String  detail;
+	public String getRecordDate() {
+		return recordDate;
+	}
+	public void setRecordDate(String recordDate) {
+		this.recordDate = recordDate;
+	}
+	public String getAbstracts() {
+		return abstracts;
+	}
+	public void setAbstracts(String abstracts) {
+		this.abstracts = abstracts;
+	}
+	public String getDetail() {
+		return detail;
+	}
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
 	public long getApplyId() {
 		return applyId;
 	}
@@ -52,24 +70,7 @@ public class ProjectAfterLoanInfoEntity {
 	public void setAdminID(long adminID) {
 		this.adminID = adminID;
 	}
-	public long getRecordDate() {
-		return recordDate;
-	}
-	public void setRecordDate(long recordDate) {
-		this.recordDate = recordDate;
-	}
-	public long getAbstracts() {
-		return abstracts;
-	}
-	public void setAbstracts(long abstracts) {
-		this.abstracts = abstracts;
-	}
-	public long getDetail() {
-		return detail;
-	}
-	public void setDetail(long detail) {
-		this.detail = detail;
-	}
+	 
 	public long getId() {
 		return id;
 	}

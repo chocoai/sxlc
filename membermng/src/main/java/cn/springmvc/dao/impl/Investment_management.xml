@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="Investment_management">     
+	
+	<!-- 查询结果封装 --> 
+   <resultMap type = "cn.membermng.model.CreditorTransEntity" id = "CreditorTransfer">
+        <id property = "ctaId"						column = "CTA_Id" />
+		<result property = "projectTitle"       	column = "Project_Title" />
+		<result property = "transPrincipal"    	    column = "Trans_Principal" />
+		<result property = "transDiscount"  	    column = "Trans_Discount" />
+		<result property = "transAmount"  	        column = "Trans_Amount" />
+		<result property = "transMaxTime" 	        column = "Trans_MaxTime" />
+		<result property = "ctaInvestRate"          column = "Cta_Invest_Rate" /> 
+    </resultMap>  
+	 
+	<!-- 转让中的债权
+		CTA_Id,债券转让申请ID
+		Project_Title,项目名称
+		Trans_Principal,转让金额
+		Trans_Discount,转让系数
+		Trans_Amount,转让价格
+		Trans_MaxTime,最晚转让时间
+		Cta_Invest_Rate,投资进度
+	--> 
+	<!--传入参数整理
+		#{skey}#{Member_ID}
+	-->
+	<select id="getCreditorTransfer" parameterType="Map" resultMap="CreditorTransfer">
+		SELECT
+		  cta.CTA_Id,
+		  prbi.Project_Title,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED) Trans_Principal,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount),#{skey})) AS SIGNED) Trans_Discount,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED)*CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount),#{skey})) AS SIGNED) Trans_Amount,
+		  cta.Trans_MaxTime,
+		  cta.Cta_Invest_Rate
+		FROM Creditor_Trans_App cta
+		  JOIN Invest_Record ir
+			ON cta.Invest_Id = ir.Invest_Id
+		  JOIN Project_App_Record pa
+			ON ir.Apply_Id = pa.Apply_Id
+		  JOIN Project_Base_Info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		WHERE cta.Statu in ('0','2')
+		  AND ir.Member_ID = #{Member_ID}
+		ORDER BY cta.Cta_Invest_Rate DESC 
+	</select>	
+	<!-- 查询结果封装 --> 
+   <resultMap type = "cn.membermng.model.CreditorTransEntity" id = "CreditorOut">
+        <id property = "ctaId"						column = "CTA_Id" />
+		<result property = "projectTitle"       	column = "Project_Title" />
+		<result property = "yearRate"       	    column = "Year_Rate" />
+		<result property = "transPrincipal"    	    column = "Trans_Principal" />
+		<result property = "transDiscount"  	    column = "Trans_Discount" />
+		<result property = "transAmount"  	        column = "Trans_Amount" />
+		<result property = "dealDate" 	            column = "Deal_Date" />
+		<result property = "holdDate"               column = "Hold_Date" /> 
+		<result property = "interestAmount"          column = "Interest_Amount" />
+    </resultMap>  
+		<!--已转出的债权
+		CTA_Id,债券转让申请ID
+		Project_Title,项目名称
+		Year_Rate,年化利率
+		Trans_Principal,转让金额
+		Trans_Discount,转让系数
+		Trans_Amount,交易金额
+		Deal_Date,转让成交时间
+		Hold_Date,投资成交时间
+		Interest_Amount,转让金额投资收益
+	--> 
+	<!--传入参数整理
+		#{skey}#{Member_ID}
+	-->
+	<select id="getCreditorOut" parameterType="Map" resultMap="CreditorOut">
+			SELECT
+		  cta.CTA_Id,
+		  prbi.Project_Title,
+		  prbi.Year_Rate,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED) Trans_Principal,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount),#{skey})) AS SIGNED) Trans_Discount,
+		  (SELECT SUM(IFNULL(ct.Trans_Amount,0)) FROM Creditor_Trans ct
+		    WHERE ct.CTA_Id = cta.CTA_Id) Trans_Amount,
+		  cta.Deal_Date,
+		  ir.Hold_Date,
+		  (SELECT  <!--查询转让金额投资收益-->
+					SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Repay_Penalty),#{skey})) AS SIGNED),0)-IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Invest_MngFee),#{skey})) AS SIGNED),0))
+				FROM Invest_Real_Income iri 
+				WHERE iri.Income_Id = (SELECT ii.Income_Id FROM Invest_Income ii 
+									WHERE  ii.Invest_Id = ir.Invest_Id 
+										   AND ii.IsValid = 0))*(IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED),0)/IFNULL(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount),#{skey})) AS SIGNED),1))-(IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED),0)-(SELECT SUM(IFNULL(ct.Trans_Amount,0)) FROM Creditor_Trans ct WHERE ct.CTA_Id = cta.CTA_Id))-IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Mng_Fee),#{skey})) AS SIGNED),0) Interest_Amount
+		FROM Creditor_Trans_App cta
+		  JOIN Invest_Record ir
+			ON cta.Invest_Id = ir.Invest_Id
+		  JOIN Project_App_Record pa
+			ON ir.Apply_Id = pa.Apply_Id
+		  JOIN Project_Base_Info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		WHERE cta.Statu between 3 and 4
+		  AND ir.Member_ID = #{Member_ID}
+		ORDER BY cta.Deal_Date DESC
+	</select>	
+		<!-- 查询结果封装 --> 
+   <resultMap type = "cn.membermng.model.CreditorTransEntity" id = "CreditorIn">
+        <id property = "tansID"						column = "Trans_ID" />
+        <result property = "investId"       	    column = "Invest_Id" />
+		<result property = "projectTitle"       	column = "Project_Title" />
+		<result property = "yearRate"       	    column = "Year_Rate" />
+		<result property = "transPrincipal"    	    column = "Trans_Principal" />
+		<result property = "transDiscount"  	    column = "Trans_Discount" />
+		<result property = "transAmount"  	        column = "Trans_Amount" />
+		<result property = "transTime" 	            column = "Trans_Time" /> 
+    </resultMap>  
+		<!-- 已转入的债权
+		Trans_ID,债券转让购买ID
+		Invest_Id,投资记录ID
+		Project_Title,项目名称
+		Year_Rate,年化利率
+		Trans_Principal,转让金额
+		Trans_Discount,转让系数
+		Trans_Amount,交易金额
+		Trans_Time,转入时间
+	--> 
+	<!--传入参数整理
+		#{skey}#{Member_ID}
+	-->
+	<select id="getCreditorIn" parameterType="Map" resultMap="CreditorIn">
+		SELECT
+		  ct.Trans_ID,
+		  ir.Invest_Id,
+		  prbi.Project_Title,
+		  prbi.Year_Rate,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED) Trans_Principal,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount),#{skey})) AS SIGNED) Trans_Discount,
+		  CAST((AES_DECRYPT(UNHEX(ct.Trans_Amount),#{skey})) AS SIGNED) Trans_Amount,
+		  ct.Trans_Time
+		FROM Creditor_Trans ct
+		  JOIN Creditor_Trans_App cta
+		    ON ct.CTA_Id = cta.CTA_Id
+		  JOIN Invest_Record ir
+			ON ct.Invest_Id = ir.Invest_Id
+		  JOIN Project_App_Record pa
+			ON ir.Apply_Id = pa.Apply_Id
+		  JOIN Project_Base_Info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		WHERE ct.Statu between 3 and 4
+		  AND ir.Member_ID = #{Member_ID}
+		ORDER BY cta.Trans_Time DESC
+
+	</select>	
+	  <!--     收益 -->
+      <resultMap type="cn.membermng.model.InvestIncomeEntity" id="resultMyInome"> 
+        <id column = "Invest_Id"				     property = "investId" />
+		<result column="Indexs" 			         property="indexs" />
+		<result column="SDRecv_MaxTime" 		     property="sdRecvMaxTime" /> 
+		<result column="SDRecv_Principal" 		     property="sdRecvPrincipal" /> 
+		<result column="SDRecv_Interest" 			 property="sdRecvInterest" />  
+		<result column="Recv_Time" 		             property="recvTime" />  
+		<result column="Statu" 		                 property="statu" />
+		<result column="Recv_Amount" 		         property="recvAmount" />  
+		<result column="Overdue_Amount" 		     property="overdueAmount" />  
+     </resultMap>   
+	<!-- 查看收益列表
+		Invest_Id,投资记录ID
+		Indexs,期数
+		SDRecv_Principal,应收本金
+		SDRecv_Interest,应收利息
+		SDRecv_MaxTime,预定回款日
+		Recv_Time,实际回款日
+		Statu,是否回款（未还、已还、部分还款）
+		Recv_Amount,已收本息
+		Overdue_Amount,逾期应收收益
+	--> 
+	<!--传入参数整理
+		#{skey}#{Member_ID}
+	-->
+	<select id="getInvest" parameterType="Map" resultMap="resultMyInome">
+		SELECT
+		  ii.Invest_Id,
+		  lr.Indexs,
+		  CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{skey})) AS SIGNED) SDRecv_Principal,
+		  CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{skey})) AS SIGNED) SDRecv_Interest,
+		  ii.SDRecv_MaxTime,
+		  iri.Recv_Time,
+		  ii.Statu,
+		  CAST((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{skey})) AS SIGNED) Recv_Amount,
+		  CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{skey})) AS SIGNED) Overdue_Amount
+		FROM Invest_Income ii
+		  JOIN Loan_Repay lr
+			ON ii.Repay_ID = lr.Repay_ID
+		  LEFT JOIN Invest_Real_Income iri
+		    ON ii.Income_Id = iri.Income_Id
+		WHERE ii.IsValid = 0
+		  AND ii.Invest_Id = #{Invest_Id}
+		ORDER BY lr.Indexs DESC
+
+	</select>	
+	<!-- 查询结果封装 --> 
+   <resultMap type = "cn.membermng.model.CreditorTransEntity" id = "CreditorOff">
+        <id property = "ctaId"						column = "CTA_Id" />
+		<result property = "projectTitle"       	column = "Project_Title" />
+		<result property = "yearRate"       	    column = "Year_Rate" />
+		<result property = "transPrincipal"    	    column = "Trans_Principal" />
+		<result property = "transDiscount"  	    column = "Trans_Discount" />
+		<result property = "transAmount"  	        column = "Trans_Amount" />
+		<result property = "dealDate" 	            column = "Deal_Date" />
+		<result property = "applyTime"              column = "Apply_Time" /> 
+		<result property = "interestAmount"          column = "Interest_Amount" />
+    </resultMap>  
+	<!--已结清的债权
+		CTA_Id,债券转让申请ID
+		Project_Title,项目名称
+		Year_Rate,年化利率
+		Trans_Principal,转让金额
+		Trans_Discount,转让系数
+		Trans_Amount,交易金额
+		Apply_Time,转让时间
+		Deal_Date,结清时间
+		Interest_Amount,获取收益
+	--> 
+	<!--传入参数整理
+		#{skey}#{Member_ID}
+	-->
+	<select id="getCreditorOff" parameterType="Map" resultMap="CreditorOff">
+		SELECT
+		  cta.CTA_Id,
+		  prbi.Project_Title,
+		  prbi.Year_Rate,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED) Trans_Principal,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount),#{skey})) AS SIGNED) Trans_Discount,
+		  (SELECT SUM(IFNULL(ct.Trans_Amount,0)) FROM Creditor_Trans ct
+		    WHERE ct.CTA_Id = cta.CTA_Id) Trans_Amount,
+		  cta.Apply_Time,
+		  cta.Deal_Date,
+		  (SELECT  <!--查询转让金额投资收益-->
+					SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Repay_Penalty),#{skey})) AS SIGNED),0)-IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Invest_MngFee),#{skey})) AS SIGNED),0))
+				FROM Invest_Real_Income iri 
+				WHERE iri.Income_Id = (SELECT ii.Income_Id FROM Invest_Income ii 
+									WHERE  ii.Invest_Id = ir.Invest_Id 
+										   AND ii.IsValid = 0))*(IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED),0)/IFNULL(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount),#{skey})) AS SIGNED),1)-(IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED),0)-(SELECT SUM(IFNULL(ct.Trans_Amount,0)) FROM Creditor_Trans ct WHERE ct.CTA_Id = cta.CTA_Id))-IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Mng_Fee),#{skey})) AS SIGNED),0)) Interest_Amount
+		FROM Creditor_Trans_App cta
+		  JOIN Invest_Record ir
+			ON cta.Invest_Id = ir.Invest_Id
+		  JOIN Project_App_Record pa
+			ON ir.Apply_Id = pa.Apply_Id
+		  JOIN Project_Base_Info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		WHERE cta.Statu = 4
+		  AND ir.Member_ID = #{Member_ID}
+		ORDER BY cta.Deal_Date DESC
+	</select>			
+	
+</mapper>

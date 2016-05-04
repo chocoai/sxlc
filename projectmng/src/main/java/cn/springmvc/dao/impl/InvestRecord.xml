@@ -9,10 +9,11 @@
 		<result property = "investType"         column = "Invest_Type" />
 		<result property = "memberNo" 		    column = "Member_No" />
 		<result property = "investTypes" 		column = "investTypes" /> 
+		<result property = "logname"       	    column = "Logname" />
     </resultMap>  
     <!-- 查询项目直投投资记录-->  
 	<select id="selectInvestRecordByProjectID" parameterType="map"  resultMap="resultListInvestRecord">
-	    select  
+	    select mi.Logname, 
 	    case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{sKey})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{sKey})) using utf8) end 
             as membername, 

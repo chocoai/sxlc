@@ -10,6 +10,10 @@
 <head>
 	<base href="<%=basePath%>">
     <title>个人会员基本信息</title>
+    <script type="text/javascript">
+    	var publicKey = '<%=session.getAttribute("publicKey")%>';
+    	var memberType = 0;
+    </script>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/baseInformation.css">
@@ -74,15 +78,15 @@
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">手机号码：</div>
-			   					<div class="con">${userInfo.baseInfo.personalPhone } ***</div>
+			   					<div class="con">${userInfo.baseInfo.personalPhone }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">QQ：</div>
-			   					<div class="con">${userInfo.baseInfo.qq } ***</div>
+			   					<div class="con">${userInfo.baseInfo.qq }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">电子邮箱：</div>
-			   					<div class="con">${userInfo.baseInfo.personalEmail } ***</div>
+			   					<div class="con">${userInfo.baseInfo.personalEmail }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">户籍地址：</div>
@@ -161,7 +165,7 @@
 				   				<div class="item">
 				   					<div class="label">户籍地址：</div>
 				   					<div class="con">
-				   						<input type="text" lang="请输入户籍地址" datatype="qq" value="${userInfo.baseInfo.qq }" class="input-QQ numberReg" maxlength= "12">
+				   						<input type="text" lang="请输入户籍地址" datatype="qq" value="${userInfo.baseInfo.qq }" class="input-homeTown numberReg" maxlength= "12">
 				   					</div>
 				   				</div>
 				   				<div class="item">
@@ -175,7 +179,17 @@
 				   					<div class="selectArea">
 				   						<input class="selectValue" value="0" >
 	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
-	    								<ul class="select" onselectstart="return false">
+	    								<ul class="select province" onselectstart="return false">
+	        								<li class="selectOption" value="1">北京</li>
+	        								<li class="selectOption" value="2">上海</li>
+	       									<li class="selectOption" value="3">江西</li>
+	        								<li class="selectOption" value="4">云南</li>
+	    								</ul>
+									</div>
+									<div class="selectArea">
+										<input class="selectValue" value="0" >
+	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
+	    								<ul class="select city" onselectstart="return false">
 	        								<li class="selectOption" value="1">北京<li>
 	        								<li class="selectOption" value="2">上海<li>
 	       									<li class="selectOption" value="3">江西<li>
@@ -185,17 +199,7 @@
 									<div class="selectArea">
 										<input class="selectValue" value="0" >
 	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
-	    								<ul class="select" onselectstart="return false">
-	        								<li class="selectOption" value="1">北京<li>
-	        								<li class="selectOption" value="2">上海<li>
-	       									<li class="selectOption" value="3">江西<li>
-	        								<li class="selectOption" value="4">云南<li>
-	    								</ul>
-									</div>
-									<div class="selectArea">
-										<input class="selectValue" value="0" >
-	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
-	    								<ul class="select" onselectstart="return false">
+	    								<ul class="select county" onselectstart="return false">
 	        								<li class="selectOption" value="1">北京<li>
 	        								<li class="selectOption" value="2">上海<li>
 	       									<li class="selectOption" value="3">江西<li>

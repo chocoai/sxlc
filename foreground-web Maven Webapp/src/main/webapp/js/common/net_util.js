@@ -71,9 +71,10 @@ var NetUtil = {
         return sign;
     },
     ajax: function (url,data,fnOnSuccess,fnBefore, fnComplete,type) {
-//        var sign = NetUtil.signData(data);//复杂算法
+//      var sign = NetUtil.signData(data);//复杂算法
         var sign = NetUtil.createSign(data);//简单算法
-        if(type == "undefined" || type == ""){
+
+        if(type == "undefined" || type == "" || type== undefined){
 	        NetUtil.postRequest(url,data,sign, fnOnSuccess,fnBefore, fnComplete);
         }else{
 	        NetUtil.getRequest(url,data,sign, fnOnSuccess,fnBefore, fnComplete);

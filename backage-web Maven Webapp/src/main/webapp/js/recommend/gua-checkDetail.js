@@ -11,29 +11,46 @@ $(function () {
 		url : appPath + "/guarant/query4select.do",
 		data : {guaranteeId : result},
 		success : function (msg) {
-			$("#guaranteeName").text(msg.guaranteeName);
-			$("#companyeBLN").text(msg.companyeBLN);
-			$("#companyOC").text(msg.companyOC);
-			$("#taxRegNo").text(msg.taxRegNo);
-			$("#establishments").text(msg.establishments);
-			$("#companyCapital").text(msg.companyCapital);
-			$("#personalName").text(msg.personalName);
-			$("#personalPhone").text(msg.personalPhone);
-			$("#personalIDCard").text(msg.personalIDCard);
-			$("#companyAddress").text(msg.companyAddress);
-			$("#companySource").text(msg.companySource);
-			$("#companyBusiness").text(msg.companyBusiness);
-			$("#companyProfile").text(msg.companyProfile);
-			$("#contactName").text(msg.contactName);
-			$("#contactPhone").text(msg.contactPhone);
-			$("#contactEmail").text(msg.contactEmail);
+			$("#guaranteeName").text(msg.guaranteeInfoEntity.guaranteeName);
+			$("#companyeBLN").text(msg.guaranteeInfoEntity.companyeBLN);
+			$("#companyOC").text(msg.guaranteeInfoEntity.companyOC);
+			$("#taxRegNo").text(msg.guaranteeInfoEntity.taxRegNo);
+			$("#establishments").text(msg.guaranteeInfoEntity.establishments);
+			$("#companyCapital").text(msg.guaranteeInfoEntity.companyCapital);
+			$("#personalName").text(msg.guaranteeInfoEntity.personalName);
+			$("#personalPhone").text(msg.guaranteeInfoEntity.personalPhone);
+			$("#personalIDCard").text(msg.guaranteeInfoEntity.personalIDCard);
+			$("#companyAddress").text(msg.guaranteeInfoEntity.companyAddress);
+			$("#companySource").text(msg.guaranteeInfoEntity.companySource);
+			$("#companyBusiness").text(msg.guaranteeInfoEntity.companyBusiness);
+			$("#companyProfile").text(msg.guaranteeInfoEntity.companyProfile);
+			$("#contactName").text(msg.guaranteeInfoEntity.contactName);
+			$("#contactPhone").text(msg.guaranteeInfoEntity.contactPhone);
+			$("#contactEmail").text(msg.guaranteeInfoEntity.contactEmail);
+			if (msg.lBorrowingEntities.length >0) {
+				$("#moneyMin").text(msg.lBorrowingEntities[0].minAmount);
+				$("#moneyMax").text(msg.lBorrowingEntities[0].maxAmount);
+			};
+			if (msg.lGuaranteeRelationalEntities.length > 0) {
+				$("#jtype").text(msg.lGuaranteeRelationalEntities[0].projectName);
+			}
+			if (msg.lGuaranteePeriodEntities.length > 0) {
+				$("#min").text(msg.lGuaranteePeriodEntities[0].minDeadline);
+				$("#max").text(msg.lGuaranteePeriodEntities[0].maxDeadline);
+				$("#btype").text(msg.lGuaranteePeriodEntities[0].deadlineType);
+			}
+			if (msg.compensationStatisticsEntity != null) {
+				$("#sgn").text(msg.compensationStatisticsEntity.numberOfSuccessful);
+				$("#sjn").text(msg.compensationStatisticsEntity.successfulCompensation);
+				$("#sbn").text(msg.compensationStatisticsEntity.compensatoryPaymentNumber);
+			}
+			if (msg.lCertificateEntities.length > 0) {
+				$.each(msg.lCertificateEntities, function (i, item) {
+					$("#fileList").html("<img src=\""+item.guaranteeURL+"\" />");
+				});
+				
+			}
 			
 		}
 	});
-});
-
-//证件信息加载赋值
-$(function () {
-	var guId = $("#guId").val();
-	var result = encrypt.encrypt(guId + "");
 });

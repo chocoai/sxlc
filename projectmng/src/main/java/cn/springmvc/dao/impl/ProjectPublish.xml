@@ -167,7 +167,7 @@
     <select id="publish"  statementType="CALLABLE" parameterType="Map"> 
 	     {call projectPublish(
 				#{ApplyId ,	     mode=IN,	jdbcType=BIGINT},
-				#{Indexs ,	     mode=IN,	jdbcType=INTEGER},
+				#{Indexsnow ,	     mode=IN,	jdbcType=INTEGER},
 				#{checkStatu,	 mode=IN,	jdbcType=INTEGER},
 				#{CheckRemark,	 mode=IN,	jdbcType=VARCHAR},
 				#{adminID,	     mode=IN,	jdbcType=INTEGER},
@@ -176,6 +176,8 @@
 				#{endDate,	     mode=IN,	jdbcType=VARCHAR},
 				#{ProcessID,	 mode=IN,	jdbcType=INTEGER},
 				#{sIndexs ,	     mode=IN,	jdbcType=INTEGER},
+				#{affix,	     mode=IN,	jdbcType=VARCHAR},
+				#{ImageUrl,	     mode=IN,	jdbcType=VARCHAR},
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)} 
 	</select>

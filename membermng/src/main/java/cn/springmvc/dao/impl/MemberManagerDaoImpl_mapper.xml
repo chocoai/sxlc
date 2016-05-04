@@ -24,6 +24,7 @@
 		<result		column="Admin_ID"				property="adminId"/>
 		<result		column="Member_Type"			property="memberType"/>
 		<result		column="Attest_Type"			property="attestType"/>
+		<result		column="Attest_TypeName"		property="attestName"/>
 		<result		column="Status"					property="status"/>
 		<result		column="Record_Date"			property="recordDate"/>
 		<result		column="End_Date"				property="endDate"/>
@@ -66,7 +67,7 @@
 			where ir.Member_ID = mi.member_id and par.Invest_Statu in (3,4)
 		) as investment,
 		(select count(Amount) from Project_App_Record par left join Project_Base_Info prbi on prbi.Project_Base_ID = par.Project_Base_ID 
-			where par.Invest_Statu in (3,4)
+			where par.Member_ID = mi.member_id AND par.Invest_Statu in (3,4)
 		) as loan,
 		(select count(Withdrawal_Money) from Member_Withdrawal_Recharge mwr 
 			where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1
@@ -90,24 +91,23 @@
 		left join Member_Third_Info 	mti on mti.Member_ID = mi.Member_id and mti.Member_Type = mi.Member_Type
 		left join Member_Third_Auth_Info mtai on mti.Account_Id = mtai.Account_Id
 		<where>
-			<if test="map.memberName != null">
-				mi.logname = #{map.memberName}
+			<if test="map!=null and map.memberName != null and map.memberName !='' ">
+				mi.logname LIKE '%${map.memberName}%'
 			</if>
-			<if test="map.personalName != null">
-				pbi.Personal_Name = HEX(AES_ENCRYPT(#{map.personalName},#{map.skey}))
+			<if test="map!=null and map.personalName != null and map.personalName !=''">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
 			</if>
-			<if test="map.personalPhone != null">
-				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{map.personalPhone},#{map.skey}))
+			<if test="map!=null and  map.personalPhone != null and  map.personalPhone !='' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
 			</if>
-			<if test="map.automaticBidding != null">
-				mtai.Is_Auto_Invest = #{map.automaticBidding}
+			<!-- <if test="map!=null and  map.automaticBidding>-1">
+				mtai.Is_Auto_Invest = 0
 			</if>
-			<if test="map.automaticRepayment != null">
-				mtai.Open_Auto_Pay = #{map.automaticRepayment}
-			</if>
+			<if test="map!=null and map.automaticRepayment> -1">
+				mtai.Open_Auto_Pay = 0
+			</if> -->
 		</where>
 	</select>
-	
 	
 	
 	<!-- 获取某个会员信息 -->
@@ -140,22 +140,58 @@
 		left join County_Dictionary 	cod on cod.County_Id = mi.County_Id
 		left join Town_Dictionary 		td 	on td.Town_id = mi.Town_id
 		left join Member_Third_Info 	mti on mti.Member_ID = mi.Member_id and mti.Member_Type = mi.Member_Type
-		where member_id = #{memberId}
+		where mi.member_id = #{memberId}
 	</select>
 	
 	<!-- 获取会员的第三方开通状态 -->
 	<select id="memberThirdInfo" parameterType="Map" resultMap="memberThirdInfo">
-		select * from Member_Third_Info where member_Type = #{memberType} and member_id = #{memberId}
+		select * from Member_Third_Info where member_id = #{memberId}
 	</select>
 	
 	
 	<!-- 会员认证资料信息 -->
 	<select id="memberConfInfo" parameterType="Map" resultMap="memberAttestInfo">
-		select * from Member_Attest_info mai 
-		left join Personal_Attest_Attach paa on mai.Certification_ID = paa.Attest_ID
-		where mai.member_Id = #{memberId} and mai.member_Id = #{memberType}
+		SELECT mai.member_Id,mai.Attest_Type_ID, mat.Attest_TypeName FROM Member_Attest_info mai  LEFT JOIN   Member_Attest_Type mat ON mai.Attest_Type_ID=mat.Attest_Type_ID
+		where mai.member_Id = #{memberId}
 	</select>
 	
+	<!-- 会员认证资料信息 -->
+	<select id="memberConfInfoBytwo" parameterType="Map" resultMap="memberAttestInfo">
+		SELECT mai.member_IdFROM Member_Attest_info mai  LEFT JOIN   Member_Attest_Type mat ON mai.Attest_Type_ID=Attest_Type_ID
+		LEFT JOIN Personal_Attest_Attach paa ON mai.Certification_ID = paa.Attest_ID
+		where mai.member_Id = #{memberId} and  mai.Attest_Type_ID =#{attestType}
+	</select>
+	
+	<!--  pengr加 =============================================-->
+		<!-- 会员交易类型   -->
+	<select id="memberTradingType" parameterType="Map" resultType="cn.membermng.model.TradingTypeEntity">
+		SELECT TTS.Trade_Type_Id AS id,TTS.Pre_ID AS fid,TTS.Type_Name AS tradeType,TTS.Type_No AS tradeNo,TTS.Type_Statu AS statu,TTF.Type_Name AS fTypeName 
+		FROM Trade_Type_Second TTS LEFT JOIN 
+		Trade_Type_First TTF ON TTS.Pre_ID =TTF.Pre_ID WHERE
+		TTS.Pre_ID&lt; 8
+		ORDER BY  TTS.Trade_Type_Id ASC 
+	</select>
+	
+		<!-- 会员交易记录 -->
+	<select id="memberTradingList" parameterType="Map" resultType="cn.membermng.model.MemberTradingRecordsEntity">
+		SELECT Trade_ID  tradeID,Member_Type memberType,Member_ID memberID,Member_Trading_Records.Trade_Type_Id tradeTypeId,Project_ID projectID,Abstract abstracts,Get_Pay,
+		CONVERT(AES_DECRYPT(UNHEX(Amount),#{map.skey}) using utf8) as amount,
+		CONVERT(AES_DECRYPT(UNHEX(Mng_Fee),#{map.skey}) using utf8) as mngFee,
+		CONVERT(AES_DECRYPT(UNHEX(Third_Mng_Fee),#{map.skey}) using utf8) as thirdMngFee,
+		CONVERT(AES_DECRYPT(UNHEX(Gift_Amount),#{map.skey}) using utf8) as giftAmount,
+		CONVERT(AES_DECRYPT(UNHEX(Redpackets_Amount),#{map.skey}) using utf8) as redpacketsAmount,
+		Record_Date,Record_No,Mer_BillNo,
+		CONVERT(AES_DECRYPT(UNHEX(Statistics_Amount),#{map.skey}) using utf8) as giftAmount,
+		CONVERT(AES_DECRYPT(UNHEX(Statistics_Frozen_Amount),#{map.skey}) using utf8) as mngFee,
+		CONVERT(AES_DECRYPT(UNHEX(Statistics_Gift_Amount),#{map.skey}) using utf8) as thirdMngFee,
+		CONVERT(AES_DECRYPT(UNHEX(Statistics_GiftFrozen_Amount),#{map.skey}) using utf8) as redpacketsAmount,
+		Deal_Statu,Deal_Date,
+		Account_Deal_Statu,Trade_Object_Type,Trade_Object_Id,Statu,TTS.Type_Name AS tradeType FROM Member_Trading_Records 
+		LEFT JOIN Trade_Type_Second TTS ON  Member_Trading_Records.Trade_Type_Id=TTS.Pre_ID  WHERE Member_ID = #{memberId} 
+	</select>
+	
+	
+	<!--   =============================================-->
 	
 	<!-- 会员借款统计 -->
 	<select id="borrowers" parameterType="Map" resultType="cn.membermng.model.BorrowingStatistics">
@@ -253,7 +289,7 @@
 		left join Bank_Code bc on bc.Bank_ID = bci.Bank_Id
 		left join Bank_Info bi on bi.Bank_ID = bc.Bank_ID
 		left join City_Dictionary cd on cd.City_Id = bci.Card_City
-		where mbc.member_type = #{map.memberType} and mbc.member_id = #{map.memberId} and Remove_Date = null	
+		where mbc.member_id = #{map.memberId} and Remove_Date = null	
 	</select>
 	
 	<!-- 查看会员邀请列表 -->
@@ -273,11 +309,13 @@
 				mi.member_no = #{map.memberNo}
 			</if>
 			<if test="map.personalName != null">
-				pbi.Personal_Name = HEX(AES_ENCRYPT(#{map.personalName},#{map.skey}))
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
 			</if>
+			
 			<if test="map.personalPhone != null">
-				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{map.personalPhone},#{map.skey}))
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
 			</if>
+			
 			<if test="map.startTime != null">
 				mi.Reg_Date between #{map.startTime} and #{map.endTime}				
 			</if>
@@ -331,15 +369,15 @@
 		left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_ID 
 		left join Member_Third_Info  mti on mti.Member_ID = mi.Member_ID and mti.Member_Type = mi.Member_Type
 		<where>
-				(select count(1) from Member_VIP_App_Record mvar where Certify_EDate > now() and Member_ID = mi.Member_ID) >= 1	
-			<if test="userName != null">
-				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+		    (select count(1) from Member_VIP_App_Record mvar where Certify_EDate > now() and Member_ID = mi.Member_ID) >= 1	
+			<if test="memberName != null and memberName != '' ">
+				mi.logname like '%${memberName}%'
 			</if>
-			<if test="memberName != null">
-				mi.logname = #{memberName}
+			<if test="userName != null and userName != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
 			</if>
-			<if test="phone != null">
-				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			<if test="phone != null and phone != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
 		</where>
 	</select>
@@ -382,19 +420,19 @@
 		left join Town_Dictionary td on td.Town_id = mi.Town_id
 		<where>
 			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 0) = 0
-			<if test="memberName != null">
-				mi.logname = #{memberName}
+			<if test="memberName != null and memberName!=''">
+				mi.logname like '%${memberName}%'
 			</if>
-			<if test="userName != null">
-				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+			<if test="userName != null and userName !='' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
 			</if>
-			<if test="phone != null">
-				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			<if test="phone != null and phone != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
-			<if test="idCard != null">
-				pbi.Personal_IDCard = HEX(AES_ENCRYPT(#{idCard},#{skey}))
+			<if test="idCard != null and idcard != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${idCard}%'
 			</if>
-			<if test="regDate != null">
+			<if test="regDate != null and regDate != '' and endDate !='' ">
 				mi.Reg_Date betten #{regDate} and #{endDate} 
 			</if>
 		</where>
@@ -442,19 +480,19 @@
 			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 0) > 0 and 
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id) = 0 and 
 			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id ) = 0
-			<if test="memberName != null">
-				mi.logname = #{memberName}
+			<if test="memberName != null and memberName!=''">
+				mi.logname like '%${memberName}%'
 			</if>
-			<if test="userName != null">
-				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+			<if test="userName != null and userName !='' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
 			</if>
-			<if test="phone != null">
-				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			<if test="phone != null and phone != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
-			<if test="idCard != null">
-				pbi.Personal_IDCard = HEX(AES_ENCRYPT(#{idCard},#{skey}))
+			<if test="idCard != null and idcard != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${idCard}%'
 			</if>
-			<if test="regDate != null">
+			<if test="regDate != null and regDate != '' and endDate !='' ">
 				mi.Reg_Date betten #{regDate} and #{endDate} 
 			</if>
 		</where>
@@ -519,15 +557,15 @@
 		left join Town_Dictionary 		td 	on td.Town_id = mi.Town_id
 		left join Member_Third_Info 	mti on mti.Member_ID = mi.Member_id and mti.Member_Type = mi.Member_Type
 		<where>
-				(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id) > 0
-			<if test="memberName != null">
-				mi.logname = #{memberName}
+			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND  par.Invest_Statu>=3) > 0  
+			<if test="memberName != null and memberName!=''">
+				mi.logname like '%${memberName}%'
 			</if>
-			<if test="userName != null">
-				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+			<if test="userName != null and userName !='' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
 			</if>
-			<if test="phone != null">
-				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			<if test="phone != null and phone != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
 		</where>
 	</select>
@@ -588,18 +626,69 @@
 		left join Town_Dictionary 		td 		on td.Town_id 		= mi.Town_id
 		<where>
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
-			<if test="memberName != null">
-				mi.logname = #{memberName}
+			<if test="memberName != null and memberName!=''">
+				mi.logname like '%${memberName}%'
 			</if>
-			<if test="userName != null">
-				pbi.Personal_Name = HEX(AES_ENCRYPT(#{userName},#{skey}))
+			<if test="userName != null and userName !='' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
 			</if>
-			<if test="phone != null">
-				pbi.Personal_Phone = HEX(AES_ENCRYPT(#{phone},#{skey}))
+			<if test="phone != null and phone != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
 		</where>
 	</select>
 	
+	
+	<!--  pengr加 =============================================-->
+	<!-- 复合会员 -->
+	<select id="componentMember" parameterType="Map" resultType="cn.membermng.model.MemberInfo">
+		select mi.member_id,
+		mi.member_no,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_name),#{skey}) using utf8) as personal_name,
+		mi.logname,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{skey}) using utf8) as personal_phone,
+		mti.ThirdParty_Account,
+		mi.InvitateCode,
+		mti.User_Balance,
+		mti.Frozen,
+		pd.Province_Name,
+		cd.City_Name,
+		cod.County_Name,
+		td.Town_Name,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as recharge,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay   ),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeept,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr	where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeehy,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount	),	#{skey})) as signed)) from Invest_Record 			ir 	where ir.Member_ID 	= mi.Member_Id and IsValid = 0) as investments,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_MngFee	),	#{skey})) as signed)) from Invest_Real_Income 			iri left  join Invest_Income ii on ii.Income_Id = iri.Income_Id where ii.Member_ID = mi.member_id) as managerFee,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawals,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay	),	#{skey})) as signed)) from Member_Withdrawal_Recharge	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalspt,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalshy,
+		(select count(Amount) from Project_App_Record par left join Project_Base_Info prbi on prbi.Project_Base_ID = par.Project_Base_ID where par.Invest_Statu in (3,4)) as loan,
+		(select sum(CAST((AES_DECRYPT(UNHEX(MngFee_Amount),#{skey})) as signed)) from Project_App_MngFee pam left join Project_App_Record par on par.Apply_Id = pam.Apply_Id where par.member_id = mi.member_id) as loanManager,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txplatform,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txmember
+		from member_info mi 
+		left join personal_base_info 	pbi 	on pbi.Personal_Id 	= mi.Member_ID
+		left join Member_Third_Info 	mti 	on mti.member_type 	= mi.member_type and mti.member_id = mi.member_id
+		left join Province_Dictionary 	pd 		on mi.Province_Id 	= pd.province_Id
+		left join City_Dictionary 		cd 		on cd.City_id 		= mi.City_id
+		left join County_Dictionary 	cod 	on cod.County_Id 	= mi.County_Id
+		left join Town_Dictionary 		td 		on td.Town_id 		= mi.Town_id
+		<where>
+			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
+			AND  (select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND par.Invest_Statu>=3) > 0  
+			<if test="memberName != null and memberName!=''">
+				mi.logname like '%${memberName}%'
+			</if>
+			<if test="userName != null and userName !='' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
+			</if>
+			<if test="phone != null and phone != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
+			</if>
+		</where>
+	</select>	
+	<!--   =============================================-->
 	
 	<resultMap type="cn.membermng.model.MemberInfo" id="blackMembers">
 		<id 		column="member_id"				property="id"	/>
@@ -607,18 +696,37 @@
 		<result		column="Personal_Name"			property="personalName"/>
 		<result		column="logname"				property="logname"/>
 		<result		column="Reg_Date"				property="regDate"/>
+		<result		column="lastBlack"				property="lastBlack"/>
 		<result		column="personal_phone"			property="personalPhone"/>
 		<result		column="Personal_IDCard"		property="personalIdCard"/>
 		<result		column="count"					property="count"/>
+		
 		<result		column="Personal_Email"			property="personalEmail"/>
 	</resultMap>
 	
 	<!-- 会员黑名单 -->
 	<select id="blackList" parameterType="Map" resultMap="blackMembers">
-		select mi.member_id,mi.member_no,pbi.Personal_Name,mi.logname,mi.Reg_Date,pbi.Personal_phone,pbi.Personal_IDCard,(select Record_Date from Member_BlackList where Member_ID = mi.member_id order by Record_Date desc limit 0,1) as latelyTime,(select count(1) from Member_BlackList where Member_ID = mi.member_id ) as count,pbi.Personal_Email
+		select mi.member_id,mi.member_no,pbi.Personal_Name,mi.logname,mi.Reg_Date,pbi.Personal_phone,pbi.Personal_IDCard,(select Record_Date from Member_BlackList where Member_ID = mi.member_id order by Record_Date desc limit 0,1) as latelyTime,(select count(1) from Member_BlackList where Member_ID = mi.member_id ) as count,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{map.skey})) using utf8) as Personal_Email,
+		(SELECT Record_Date FROM Member_BlackList WHERE member_id =1 ORDER BY Record_Date DESC LIMIT 0,1) as lastBlack
 		from member_info mi
 		left join personal_base_info pbi on pbi.personal_id = mi.Member_ID
-		where (select count(1) from Member_BlackList mb where mb.member_id = mi.member_id and Remove_Date is null) > 0
+		 	<where>
+			 (select count(1) from Member_BlackList mb where mb.member_id = mi.member_id and Remove_Date is null) > 0
+			<if test="memberName != null and memberName!=''">
+				mi.logname like '%${memberName}%'
+			</if>
+			<if test="userName != null and userName !='' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
+			</if>
+			<if test="phone != null and phone != '' ">
+				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
+			</if>
+			<if test="startTime != '' and endTime != '' ">
+				 (SELECT count(1) FROM Member_BlackList WHERE member_id =mi.Member_ID and Record_Date BETWEEN #{startTime} and #{endTime} ) >0
+			</if>
+					
+		</where>
  	</select>
 	
 </mapper>

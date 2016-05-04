@@ -142,6 +142,22 @@ public class PostLoanManageListDaoImpl extends SqlSessionDaoSupport implements
 		
 		return PostProjectList;
 	}
+	@Override
+	public List<PostProjectEntity> getRepaySettled(PageEntity pageEntity) {
+		
+		return getSqlSession().selectList("Post_Loan_Manage.getRepaySettled",pageEntity.getMap(),
+				new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		
+	}
+	@Override
+	public Integer getExpirationReminderSet() {
+		
+		Integer result = getSqlSession().selectOne("getExpirationReminderSet");
+		if(result == null ) {
+			result = 0;
+		}
+		return result;
+	}
 
 }
 

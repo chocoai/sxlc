@@ -21,6 +21,8 @@ import cn.membermng.model.MemberDetaileInfo;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberInvestmentInfo;
 import cn.membermng.model.MemberThirdInfo;
+import cn.membermng.model.MemberTradingRecordsEntity;
+import cn.membermng.model.TradingTypeEntity;
 import cn.membermng.model.VIPMemberInfos;
 import cn.springmvc.dao.IMemberManagerReadDao;
 import cn.springmvc.dao.IMemberManagerWriteDao;
@@ -40,7 +42,6 @@ public class MemberManagerServiceImpl implements IMemberManangerService{
 
 	@Override
 	public List<MemberAll> getMembersByParam(PageEntity pageEntity) {
-		pageEntity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
 		List<MemberAll> list = memberManagerDao.getMembersByParam(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list);
 		return list; 
@@ -78,73 +79,54 @@ public class MemberManagerServiceImpl implements IMemberManangerService{
 	}
 
 	@Override
-	public List<VIPMemberInfos> getVIPMemberByParam(String userName,String memberName, String phone) {
-		Map<String,Object> param = new HashMap<String,Object>();
-		param.put("userName",userName);
-		param.put("memberName", memberName);
-		param.put("phone", phone);
-		param.put("skey", DbKeyUtil.GetDbCodeKey());
-		return memberManagerDao.vipMembersByParam(param);
+	public List<VIPMemberInfos> getVIPMemberByParam(PageEntity pageEntity) {
+		List<VIPMemberInfos> list=  memberManagerDao.vipMembersByParam(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 	
 	@Override
-	public List<MemberInfo> registers(String memberName, String userName,String phone, String idCard, String regDate, Integer regType) {
-		Map<String,Object> param = new HashMap<String,Object>();
-		param.put("memberName", memberName);
-		param.put("userName", userName);
-		param.put("phone", phone);
-		param.put("idCard", idCard);
-		param.put("regDate", regDate);
-		param.put("regType", regType);
-		param.put("skey", DbKeyUtil.GetDbCodeKey());
-		return memberManagerDao.registers(param);
+	public List<MemberInfo> registers(PageEntity pageEntity) {
+		List<MemberInfo> list =memberManagerDao.registers(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 	
 	@Override
-	public List<MemberInfo> authenticationMember(String memberName,String userName, String phone, String idCard, String regDate,String endDate) {
-		Map<String,Object> param = new HashMap<String,Object>();
-		param.put("memberName", memberName);
-		param.put("userName", userName);
-		param.put("phone", phone);
-		param.put("idCard", idCard);
-		param.put("regDate", regDate);
-		if(endDate == null || endDate.trim().length() == 0){
-			endDate = StringUtils.fromString();
-		}
-		param.put("endDate", endDate);
-		param.put("skey", DbKeyUtil.GetDbCodeKey());
-		return memberManagerDao.authenticationMember(param);
+	public List<MemberInfo> authenticationMember(PageEntity entity) {
+		List<MemberInfo> list=  memberManagerDao.authenticationMember(entity);
+		PageUtil.ObjectToPage(entity, list);
+		return list;
 	}
 	
 	@Override
-	public List<MemberInfo> loanMember(String memberName, String userName,String phone) {
-		Map<String,Object> param = new HashMap<String,Object>();
-		param.put("memberName", memberName);
-		param.put("userName", userName);
-		param.put("phone", phone);
-		param.put("skey", DbKeyUtil.GetDbCodeKey());
+	public List<MemberInfo> loanMember(PageEntity pageEntity) {
 		
-		return memberManagerDao.loanMember(param);
+		List<MemberInfo> list=  memberManagerDao.loanMember(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 	
 	@Override
-	public List<MemberInfo> investmentMember(String memberName,String userName, String phone, String escrowAccount) {
-		Map<String,Object> param = new HashMap<String,Object>();
-		param.put("memberName", memberName);
-		param.put("userName", userName);
-		param.put("phone", phone);
-		param.put("skey", DbKeyUtil.GetDbCodeKey());
-		return memberManagerDao.investmentMember(param);
+	public List<MemberInfo> investmentMember(PageEntity pageEntity) {
+		List<MemberInfo>  list = memberManagerDao.investmentMember(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
+	}
+	
+
+	@Override
+	public List<MemberInfo> componentMembers(PageEntity pageEntity) {
+		List<MemberInfo>  list = memberManagerDao.componentMembers(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 	
 	@Override
-	public List<MemberInfo> blackList(String userName, String memberName,String phone, String startTime, String endTime) {
-		Map<String,Object> param = new HashMap<String,Object>();
-		param.put("userName", userName);
-		param.put("memberName", memberName);
-		param.put("phone", phone);
-		param.put("skey", DbKeyUtil.GetDbCodeKey());
-		return memberManagerDao.blackList(param);
+	public List<MemberInfo> blackList(PageEntity pageEntity) {
+		List<MemberInfo> list =  memberManagerDao.blackList(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	@Override
@@ -189,4 +171,16 @@ public class MemberManagerServiceImpl implements IMemberManangerService{
 		param.put("memberType", memberType);
 		return memberManagerDao.borrowers(param);
 	}
+
+	@Override
+	public List<TradingTypeEntity> memberTradingTypes() {
+		return memberManagerDao.memberTradingTypes();
+	}
+
+
+	@Override
+	public List<MemberTradingRecordsEntity> memberTradingList(PageEntity entity) {
+		return memberManagerDao.memberTradingList(entity);
+	}
+
 }

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Repository;
 import cn.springmvc.dao.ProjectDetailListDao;
 import cn.springmvc.model.CompanyInfoEntity;
 import cn.springmvc.model.InvestEntity;
+import cn.springmvc.model.LoanMemberInfoEntity;
 import cn.springmvc.model.LoanRealRepayEntity;
 import cn.springmvc.model.LoanRepayEntity;
 import cn.springmvc.model.MemberAttestTypeEntity;
@@ -63,10 +64,9 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
  
 	
 	@Override
-	public MemberInfoEntity selectMemberInfo(Map<String,Object> map) {
+	public LoanMemberInfoEntity selectMemberInfo(Map<String,Object> map) {
 		
-		MemberInfoEntity memberInfoEntity = getSqlSession().selectOne("memberInfoProject.selectMemberInfoByProjectID",map);
-		return memberInfoEntity;
+		return getSqlSession().selectOne("memberInfoProject.selectMemberInfoByProjectID",map); 
 	}
  
 	

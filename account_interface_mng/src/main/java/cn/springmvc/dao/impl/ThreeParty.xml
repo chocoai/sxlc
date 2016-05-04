@@ -21,7 +21,9 @@
   </select>
   <!-- 查询企业会员开户所需基本信息 -->
   <select id="selectcAccountById" resultMap="sAccountInterface" parameterType="Map" >
-   	select mi.Logname,pbi.Personal_Phone AS pphone,pbi.Personal_Email AS pemail,
+   	select mi.Logname,
+   	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) AS pphone,
+   	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) AS pemail,
    	ci.Compang_Name AS pname,ci.Companye_BLN AS pidcard
    	 from Member_Info mi 
    	 left join Company_Info ci on ci.Company_ID=mi.Company_ID
@@ -157,7 +159,7 @@
     <result column="Card_Province" property="iProvince" />
   </resultMap>
   <!-- 根据银行卡id查询银行信息 -->
-  <select id="finBankCode" resultMap="sWithdraws" parameterMap="Map">
+  <select id="finBankCode" resultMap="sWithdraws" parameterType="Map">
   	SELECT Bank_No,Branch_Address,BankCode,Card_Province,Card_City FROM
  		Bank_Card_Info bci LEFT JOIN Bank_Code bc ON bci.Bank_Id=bc.Bank_ID 
  		WHERE bci.Bank_Card_Id=#{bankCardId}
@@ -305,7 +307,7 @@
   	and IsValid=0 and Repay_ID=#{repayId} order by SDRecv_MaxTime desc limit 1
   </select>
   
-   <!-- 计算出逾期费-->
+  <!-- 计算出逾期费-->
   <select id="GetLoanRepayOverdueInfo" resultType="Map" statementType="CALLABLE">
   		<!-- lId 还款计划id -->
   		<![CDATA[{call GetLoanRepayOverdueInfo(

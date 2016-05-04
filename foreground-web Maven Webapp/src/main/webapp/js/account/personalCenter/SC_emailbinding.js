@@ -9,19 +9,17 @@ $(function(){
 			entryEmail = encrypt.encrypt(entryEmail+"");
 			var str_Url = "personalCenter/sendBindEmailCheckCode.html";
 			var json_Data = {email:entryEmail};
-			NetUtil.postRequest(
+			NetUtil.ajax(
 				str_Url, 
 				json_Data, 
-				null, 
 				function(r){
 					console.log(r);
 					var json = JSON.parse(r);
-					if(json.statu == 1){
-						$(".codeBtn").html("已发送");
-						//差一个禁用标签
+					if(json.status == 1){
+						$(".codeBtn").html("已发送").addClass("disabled");
 						setTimeout(function(){
-							$(".codeBtn").html("重新发送");
-						},3000);
+							$(".codeBtn").html("重新发送").removeClass("disabled");
+						},30000);
 						
 					}else{
 						$(".codeBtn").html("发送失败");
@@ -56,11 +54,12 @@ $(function(){
 			var dynamicCode = $(".dynamicCode").val();
 			dynamicCode = encrypt.encrypt(dynamicCode+"");
 			
+			console.log(entryEmail);
+			console.log(e_imgCode)
 			var str_Url = "personalCenter/bindEmail.html";
-			NetUtil.postRequest(
+			NetUtil.ajax(
 				str_Url,
 				{email:entryEmail,checkCode:e_imgCode,emailCheckCode:dynamicCode},
-				null,
 				function(r){
 					console.log(r)
 					var r = JSON.parse(r);

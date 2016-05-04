@@ -1,90 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="memberInfoProject"> 
-    <resultMap type="cn.springmvc.model.MemberInfoEntity" id="resultListMemberInfo">
-        <id column="Member_ID" 				property="id" />
-		<result column="Member_Type" 		property="memberType" />
-		<result column="Member_No" 			property="memberNo" />
+    <resultMap type="cn.springmvc.model.LoanMemberInfoEntity" id="resultListMemberInfo">
+        <id column="Member_ID" 				property="memberID" />
+		<result column="Member_Type" 		property="memberType" /> 
 		<result column="Logname" 			property="logname" />
 		<result column="Company_ID" 		property="companyID" />
-		<result column="Personal_ID" 		property="personalID" />
-		<result column="Path" 				property="path" />
-		<result column="Reg_Date" 			property="regDate" />
-		<result column="InvitateCode" 		property="invitateCode" />
-		<result column="BeinvitateCode" 	property="beinvitateCode" /> 
-		<result column="Province_Id" 		property="provinceId" /> 
-		<result column="City_Id" 			property="cityId" />
-		<result column="County_Id" 			property="countyId" />
-		<result column="Town_Id" 			property="townId" />
-		<result column="Integral" 			property="integral" /> 
-		<result column="Credit_Integral" 	property="creditIntegral" /> 
+		<result column="Personal_ID" 		property="personalID" /> 
+		<result column="Reg_Date" 			property="regDate" /> 
 		<result column="City_Name"          property="cityName" />  
-		<result column="Province_Name"      property="provinceName" /> 
- 		<association property="companyInfoEntity"      resultMap="companyInfoEntity"></association> 
-        <association property="personalBaseInfoEntity"  resultMap="personalBaseInfo"></association>
-     </resultMap> 
-    <resultMap type="cn.springmvc.model.PersonalBaseInfoEntity" id="personalBaseInfo">
-		<id 	column="Personal_ID" 				property="id"/>
-		<result column="Personal_Name" 		property="personalName"/>
-		<result column="Personal_IDCard" 	property="personalIDCard"/>
-		<result column="SexID" 				property="sexID"/>
-		<result column="Marital_Status" 	property="maritalStatus"/>
-		<result column="Education" 			property="education"/>
-		<result column="Graduated_School" 	property="graduatedSchool"/>
-		<result column="Graduated_Professionals" property="graduatedProfessionals"/>
-		<result column="Graduated_DATE" 	property="graduatedDATE"/>
-		<result column="Nation_Id" 			property="nationId"/>
-		<result column="Home_Town" 			property="homeTown"/>
-		<result column="Census" 			property="census"/>
-		<result column="Monthly_Income" 	property="monthlyIncome"/>
-		<result column="Legal_IdCard_Url1" 	property="legalIdCardUrl1"/>
-		<result column="Legal_IdCard_Url2" 	property="legalIdCardUrl2"/>
-		<result column="Blood_Type" 		property="bloodType"/>
-		<result column="Height" 			property="height"/>
-		<result column="Weight" 			property="weight"/>
-		<result column="Religion_Id" 		property="religionId"/>
-		<result column="House_Address" 		property="houseAddress"/>
-		<result column="Mailing_Address" 	property="mailingAddress"/>
-		<result column="Zip_Code" 			property="zipCode"/>
-		<result column="Home_Address" 		property="homeAddress"/>
-		<result column="Personal_Phone" 	property="personalPhone"/>
-		<result column="Personal_FixPhone" 	property="personalFixPhone"/>
-		<result column="Personal_Emai" 		property="personalEmai"/>
-		<result column="QQ" 				property="qq"/>
-		<result column="pbiCompany_Industry" 	property="companyIndustry"/>
-		<result column="pbiCompany_Size" 		property="companySize"/> 
+		<result column="Province_Name"      property="provinceName" />  
+		<result column="Personal_Name" 		property="personalName"/> 
+		<result column="SexID" 				property="sexID"/> 
+		<result column="EducationName" 			property="educationName"/> 
+		<result column="Monthly_Income" 	property="monthlyIncome"/> 
+		<result column="House_Address" 		property="houseAddress"/>  
+		<result column="Personal_Phone" 	property="personalPhone"/> 
+		<result column="pbiCompany_Industry" 	property="pbiCompanyIndustry"/>
+		<result column="pbiCompany_Size" 		property="pbiCompanySize"/> 
 		<result column="Position" 		    property="position"/>  
 		<result column="workYear" 		    property="workYear"/>  
-		<result column="EducationName" 		property="educationName"/>  
-		<association property="maritalInfoEntity" 	resultMap="maritalInfo"/>
-	</resultMap>
-	<resultMap type="cn.springmvc.model.MaritalInfoEntity" id="maritalInfo">
-		<id 	column="ID" 				property="id"/>
-		<result column="MaritalName" 		property="maritalName"/> 
-		<result column="Type_Statu" 		property="typeStatu"/> 
-	</resultMap>
-	<resultMap type="cn.springmvc.model.PersonalJobInfoEntity" id="personalJobInfo">
-		<id 	column="Personal_ID" 		property="personalID"/>
-		<result column="Monthly_Income" 	property="monthlyIncome"/> 
-		<result column="Company_Industry" 	property="companyIndustry"/>
-		<result column="Company_Size" 		property="companySize"/> 
-		<result column="Position" 		    property="position"/>  
-		<result column="Start_Date" 		property="sStartDate"/>   
-	</resultMap> 
-	<resultMap type="cn.springmvc.model.CompanyInfoEntity" id="companyInfoEntity">
-		<id 	column="Company_ID" 		property="id"/>
-		<result column="Compang_Name" 		property="compangName"/> 
-		<result column="Companye_BLN" 		property="companyeBLN"/>
-		<result column="Company_OC" 		property="companyOC"/> 
-		<result column="Tax_RegNo" 		    property="taxRegNo"/>  
-		<result column="Company_Business" 	property="companyBusiness"/>
-		
+		<result column="EducationName" 		property="educationName"/>   
+		<result column="MaritalName" 		property="maritalName"/>    
+		<result column="Start_Date" 		property="startDate"/>    
 		<result column="Establishments" 	property="establishments"/> 
-		<result column="Company_Address" 	property="companyAddress"/>
-		<result column="Company_Profile" 	property="companyProfile"/> 
-		<result column="Legal_ID" 		    property="legalID"/>  
-		<result column="Company_Capital" 	property="companyCapital"/>
-		<result column="Company_Source" 	property="companySource"/> 
+		<result column="Company_Address" 	property="companyAddress"/> 
+		<result column="Company_Capital" 	property="companyCapital"/> 
 		<result column="Company_Industry" 	property="companyIndustry"/>
 		<result column="Company_Size" 		property="companySize"/>  
 		<result column="Company_Life" 		property="companyLife"/>   
@@ -95,20 +36,21 @@
 	   pd.Province_Name,cd.City_Name ,pbi.SexID,ei.EducationName, 
 	   pji.Company_Industry as pbiCompany_Industry,pji.Company_Size as pbiCompany_Size,
 	   pji.Position,pji.Start_Date,mif.MaritalName,pbi.House_Address, 
-	   ci.Company_Industry,ci.Company_Size,ci.Company_Life,
-	   ci.Company_Capital,
+	   ci.Company_Industry,ci.Company_Size,ci.Company_Life,ci.Establishments,ci.Company_Address,
+	   ci.Company_Capital,pji.Monthly_Income,
 	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end 
             as Personal_Name,
        case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(pbicom.Personal_Phone),#{keys})) using utf8) end 
-            as Personal_Phone
+            as Personal_Phone,
+       PERIOD_DIFF( date_format( now( ),'%Y' ) , date_format( pji.Start_Date, '%Y' ) ) as workYear 
 	   from Project_App_Record par  
 	   left join Member_Info mi  on  par.Member_ID=mi.Member_ID
 	   left join Personal_Base_Info  pbi  on pbi.Personal_ID = mi.Personal_ID and mi.Member_Type =0
-	   join Personal_Job_Info  pji  on pji.Personal_ID=pbi.Personal_Id
-	   left join Marital_Info mif on pbi.Marital_Status=mif.Marital_ID 
-	   left join Education_Info ei on pbi.Education = ei.Education_ID
+	   left join Personal_Job_Info  pji  on pji.Personal_ID=pbi.Personal_Id
+	   left join Marital_Info mif on pbi.Marital_Status=mif.Marital_ID and  mif.Type_Statu =1
+	   left join Education_Info ei on pbi.Education = ei.Education_ID and ei.Type_Statu = 1
 	   left join Province_Dictionary pd on pd.Province_Id =   mi.Province_Id
        left join City_Dictionary cd on cd.City_Id =   mi.City_Id
        left join Company_Info  ci  on ci.Company_ID = mi.Company_ID and mi.Member_Type =1
@@ -116,7 +58,7 @@
 	   where  par.Apply_Id=#{projectID}
     </select>   
     <!-- 查询个人会员基本信息 -->  
-	<select id="selectMemberInfoPersonByID" parameterType="long"  resultMap="personalBaseInfo">
+	<select id="selectMemberInfoPersonByID" parameterType="long"  resultMap="resultListMemberInfo">
 	   select pbi.Personal_Name,pbi.SexID,pbi.Personal_Phone,pbi.Education,
 	   pji.Company_Industry as pbiCompany_Industry,pji.Company_Size as pbiCompany_Size,pji.Position,pji.Start_Date,mif.MaritalName,pbi.House_Address
 	   from Personal_Job_Info pji 
@@ -125,7 +67,7 @@
 	   where  pbi.Personal_Id=#{personalID}
     </select> 
     <!-- 查询企业会员基本信息 -->  
-	<select id="selectMemberInfoCompanByID" parameterType="long"  resultMap="companyInfoEntity">
+	<select id="selectMemberInfoCompanByID" parameterType="long"  resultMap="resultListMemberInfo">
 	   select ci.Compang_Name, ci.Company_Industry,ci.Company_Size,ci.Company_Life
 	   ci.Company_Capital,ci.Establishments,pbi.Personal_Name,pbi.Personal_Phone
 	   from  Company_Info  ci 

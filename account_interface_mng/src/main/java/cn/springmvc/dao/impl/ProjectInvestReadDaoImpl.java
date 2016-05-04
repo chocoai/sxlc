@@ -264,7 +264,7 @@ public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements Proje
             beanEntity.setAmount(IntegerAndString.LongToString2(l));
             beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
             beanEntity.setTransferName("平台支付给借款人");
-            beanEntity.setRemark("A,平台支付给借款人，金额:" + IntegerAndString.LongToString2(l));
+            beanEntity.setRemark("ACTCT平台支付给借款人，金额:" + IntegerAndString.LongToString2(l));
             secondList = new ArrayList<LoanInfoSecondaryBean>();
 
             // 平台支付给风险保证金：红包R(风险保证金) + 代金券R(风险保证金)
@@ -310,7 +310,7 @@ public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements Proje
             beanEntity.setAmount(IntegerAndString.LongToString2(l));
             beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
             beanEntity.setTransferName("投资人支付给借款人");
-            beanEntity.setRemark("B,投资人支付给借款人，金额:" + IntegerAndString.LongToString2(l));
+            beanEntity.setRemark("BCTCT投资人支付给借款人，金额:" + IntegerAndString.LongToString2(l));
 
             secondList = new ArrayList<LoanInfoSecondaryBean>();
 
@@ -350,15 +350,26 @@ public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements Proje
 
         //使用红包，使用代金券
         //String.format("%s,%s,%s,%s,%s,%s",);
-        String sRemark = lProjectId + "," + lMemberId + "," + lRealAmount + "," + lRedpackets + "," + lVouchers
-                + "," + sIsAuto + "," + sClient + "," + lRewardRate + "," + lBackAmount + "";
+        String sRemark = lProjectId + "A" + lMemberId + "A" + lRealAmount + "A" + lRedpackets + "A" + lVouchers
+                + "A" + sIsAuto + "A" + sClient + "A" + lRewardRate + "A" + lBackAmount + "";
         entity.setRemark1(sRemark);
         //支付管理费，支付担保费，支付风险保证金
-        sRemark = lMngFee + "," + lGuaranteeFee + "," + lRiskMarginFee + "";
+        sRemark = lMngFee + "A" + lGuaranteeFee + "A" + lRiskMarginFee + "";
         entity.setRemark2(sRemark);
 
         // 平台给平台：红包M(管理费) + 代金券M(管理费)
         return entity;
     }
+    
+    @Override
+    public int GetRedpacketsInvestRate(){
+    	int iResult = 0;
+    	
+    	String sInfo = getSqlSession().selectOne("ProjectInvestDao.GetRedpacketsInvestRate");
+    	IntegerAndString.StringToInt(sInfo, 0);
+    	
+    	return iResult;
+    }
+    
 }
 

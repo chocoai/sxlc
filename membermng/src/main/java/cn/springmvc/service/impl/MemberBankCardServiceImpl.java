@@ -127,9 +127,11 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 		
 	}
 	@Override
-	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId) {
-		
-		return memberBankCardListDaoimpl.selectMemberBankCardByID(bankCardId);
+	public BankCardInfoEntity selectMemberBankCardByID(long bankCardId,long memberID) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("bankCardId", bankCardId);
+		map.put("memberID",     memberID);
+		return memberBankCardListDaoimpl.selectMemberBankCardByID(map);
 		
 	}
 	@Override
@@ -157,6 +159,7 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 	    result = memberBankCardDaoImpl.updateBankCardInfo(bankCardInfoEntity);
 	    return result;
 	}
+	
 	@Override
 	public int deleteMemberBankCard(Map<String,Object> map) {
 		

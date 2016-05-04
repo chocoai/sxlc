@@ -554,3 +554,8 @@ input[type="text"]:focus{
 	color:#72c0f3;
 	margin:0 5px;
 }
+/*½ûÓÃ°´Å¥Àà*/
+.disabled{
+	pointer-events: none;
+	opacity: 0.5;
+}

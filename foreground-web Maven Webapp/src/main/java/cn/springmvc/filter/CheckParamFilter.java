@@ -1,5 +1,7 @@
 package cn.springmvc.filter;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -23,9 +25,15 @@ import cn.springmvc.httpRequest.DecryptHttpServletRequest;
 public class CheckParamFilter implements Filter{
 	private Logger logger = Logger.getLogger(CheckParamFilter.class);
 
+	Set<String> exitRout = new HashSet<String>();
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		logger.info("ChechkParam_init");
+		exitRout.add("login");										//登录不拦截
+		exitRout.add("openThirdAccountCallbackPage");				//开户回调1
+		exitRout.add("openThirdAccountCallback");					//开户回调2
+		exitRout.add("fundList");									//我要投资-获取投资列表
 	}
 
 	@Override
@@ -33,8 +41,9 @@ public class CheckParamFilter implements Filter{
 		logger.info("ChechkParam_doFilter");
 		response.setCharacterEncoding("utf-8");
 		HttpServletRequest 	servletRequest 		= (HttpServletRequest) request;
-		String 				requestPath	 		= servletRequest.getRequestURI().replace("/backage-web/", "");
-		if (requestPath.equals("applyRequest") || requestPath.equals("login")) {		//过滤不拦截的请求
+		String requestUrl = servletRequest.getRequestURI();
+		String requestPath= requestUrl.substring(requestUrl.lastIndexOf("/")+1, requestUrl.lastIndexOf("."));
+		if(exitRout.contains(requestPath)){
 			chain.doFilter(request, response);
 		}else{
 			request = new DecryptHttpServletRequest(servletRequest);

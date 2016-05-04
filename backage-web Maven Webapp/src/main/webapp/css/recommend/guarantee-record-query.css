@@ -1,0 +1,26 @@
+.line{
+	display:inline-block;
+	width:20px;
+	height:1px;
+	vertical-align:middle;
+	border-top:1px solid #ccc;
+}
+.dateInput{
+	width:120px;
+}
+.textRight{
+	display:inline-block;
+	min-width:239px;
+	text-align:right;
+}
+.textRight2{
+	display:inline-block;
+	min-width:360px;
+	text-align:right;
+}
+.textRight3{
+	display:inline-block;
+	min-width:360px;
+	text-align:right;
+	margin-right:40px;
+}

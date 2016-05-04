@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.springmvc.model.InvestIncomeEntity;
-import cn.springmvc.model.InvestRecordEntity;
+import cn.springmvc.model.InvestRecordInfoEntity;
 import cn.springmvc.model.LoanRepayEntity;
 
 /** 
@@ -36,7 +36,7 @@ public interface InvestIncomeListDao {
 	 * @return List<InvestRecordEntity> 返回类型 
 	 * @date 2016-4-12 下午2:16:44
 	 */
-	public List<InvestRecordEntity>  selectInvestListByProjectID(Map<String,Object> map);
+	public List<InvestRecordInfoEntity>  selectInvestListByProjectID(Map<String,Object> map);
 	/**
 	 * 根据投资ID查询投资信息 
 	 * @author 刘利   
@@ -46,7 +46,7 @@ public interface InvestIncomeListDao {
 	 * @return InvestRecordEntity 返回类型 
 	 * @date 2016-4-12 下午2:56:27
 	 */
-	public InvestRecordEntity selectInvestInfoByInvestID(long investID);
+	public InvestRecordInfoEntity selectInvestInfoByInvestID(long investID);
 	/**
 	 * 根据项目申请ID查询该项目的还款计划
 	 * @author 刘利   

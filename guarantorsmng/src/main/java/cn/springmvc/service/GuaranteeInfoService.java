@@ -16,6 +16,7 @@ import cn.springmvc.model.GuaranteeRelationalEntity;
 import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
+import cn.springmvc.model.MemberThirdAuthInfoEntity;
 
 
 
@@ -201,7 +202,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:39:17
 	* @throws 
 	*/
-	public Map<String, Object> handleManagementInfo(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	public int handleManagementInfo(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -419,7 +420,57 @@ public interface GuaranteeInfoService {
 	* @throws 
 	*/
 	public List<InstitutionsRecordsEntity> InstitutionsToRaiseCashRecords(PageEntity pageEntity);
-
+	
+	/**
+     * 根据会员id,与会员type查询会员第三方账户信息
+     * @author    
+     * @Description: TODO 
+     * @param map查询参数
+     * @return MemberThirdAuthInfoEntity 会员第三方授权实体
+     * @date 2016-3-25 上午11:59:16
+     */
+    public MemberThirdAuthInfoEntity selectMemberThirdAuthInfoone(Map<String,Object> map);
+    /** 
+	* findManagementAdmin  根据资产管理方id查询管理员信息
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findManagementAdmin 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<GuaranteeAdminEntity> 返回类型 
+	* @date 2016-5-4 下午5:27:39
+	* @throws 
+	*/
+	public List<GuaranteeAdminEntity> findManagementAdmin(PageEntity pageEntity);
+	
+	/** 
+	* updateManagementAdmin 启用 停用 资产管理方管理员
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: updateManagementAdmin 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-4 下午5:32:58
+	* @throws 
+	*/
+	public int updateManagementAdmin(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	
+	/** 
+	* insertManagementAdmin  添加资产管理方管理员 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: insertManagementAdmin 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-4 下午5:33:27
+	* @throws 
+	*/
+	public int insertManagementAdmin(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 
 

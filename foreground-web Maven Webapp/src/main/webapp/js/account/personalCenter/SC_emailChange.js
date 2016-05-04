@@ -1,31 +1,27 @@
 $(function(){
 	//发送邮箱验证码
 	$(".codeBtn").on("click",function(){
-		var emailNew = $(".emailNew").val();
-		if(emailNew!="undefined"){
-			//加密
+		var entryEmail = $(".emailNew").val();
+		if(entryEmail!="undefined"){
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
-			
-			emailNew = encrypt.encrypt(emailNew+"");
-			var str_Url = "xxxxxxxxxxxxxx.html";
-			var json_Data = {Email:emailNew};
-			NetUtil.postRequest(
+			entryEmail = encrypt.encrypt(entryEmail+"");
+			var str_Url = "personalCenter/sendBindEmailCheckCode.html";
+			var json_Data = {email:entryEmail};
+			NetUtil.ajax(
 				str_Url, 
 				json_Data, 
-				null, 
 				function(r){
 					console.log(r);
 					var json = JSON.parse(r);
 					if(json.status == 1){
-						$(".codeBtn").html("已发送");
-						//差一个禁用标签
+						$(".codeBtn").html("已发送").addClass("disabled");
 						setTimeout(function(){
-							$(".codeBtn").html("重新发送");
-						},3000);
+							$(".codeBtn").html("重新发送").removeClass("disabled");
+						},30000);
 						
 					}else{
-						$(".codeBtn").html("发送失败")
+						$(".codeBtn").html("发送失败");
 					}
 				}
 			)
@@ -61,12 +57,10 @@ $(function(){
 			dynamicCode = encrypt.encrypt(dynamicCode+"");
 			
 			var str_Url = "personalCenter/editBindEmail.html";
-			NetUtil.postRequest(
+			NetUtil.ajax(
 				str_Url,
 				{oldEmail:emailOriginal,newEmail:emailNew,checkCode:e_imgCode,emailCode:dynamicCode},
-				null,
 				function(r){
-					console.log(1)
 					var r = JSON.parse(r);
 					if (r.status == "1"){
 						layer.alert("修改成功",function(){
@@ -77,7 +71,6 @@ $(function(){
 					}
 				}
 			)
-			
 			return false;
 		}
 	});

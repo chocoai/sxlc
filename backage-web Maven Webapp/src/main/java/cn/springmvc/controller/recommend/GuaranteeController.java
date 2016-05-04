@@ -1,25 +1,25 @@
 
 package cn.springmvc.controller.recommend; 
 
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.springmvc.Util.HttpSessionUtil;
-import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.model.Admin;
-import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoDetailsEntity;
-import cn.springmvc.model.GuaranteeInfoEntity;
 import cn.springmvc.service.GuaranteeAgenciesService;
 import cn.springmvc.service.GuaranteeInfoService;
+import cn.springmvc.service.IAdminService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
+
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
@@ -41,6 +41,9 @@ public class GuaranteeController {
 	
 	@Resource(name="guaranteeAgenciesServiceImpl")
 	private GuaranteeAgenciesService guaranteeAgenciesService;
+	
+	@Autowired
+	private IAdminService adminService;
 	
 	/**
 	 * 
@@ -192,15 +195,160 @@ public class GuaranteeController {
 		return entity;
 	}
 	
-	
+	/**
+	 * 
+	* projectList查询担保项目 
+	* TODO查询担保项目
+	* @author 杨翰林  
+	* * @Title: projectList 
+	* @Description: 查询担保项目 
+	* @param @param req
+	* @param @param request
+	* @param @return 设定文件 
+	* @return PageEntity 返回类型 
+	* @date 2016-5-3 上午11:13:05
+	* @throws
+	 */
 	@RequestMapping("/projectList")
 	@ResponseBody
 	public PageEntity projectList(Map<String, Object> req, HttpServletRequest request) {
 		
 		PageEntity pager = new PageEntity();
 		
+		String guaranteeID = request.getParameter("guaranteeID");
+		String projectNo = request.getParameter("projectNo");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String startDate1 = request.getParameter("startDate1");
+		String endDate1 = request.getParameter("endDate1");
+		String guaranteeName = request.getParameter("guaranteeName");
+		String isCompensatory = request.getParameter("isCompensatory");
+		String length = request.getParameter("length");
+		String start = request.getParameter("start");
+		
+		req.put("guaranteeID", guaranteeID);
+		req.put("projectNo", projectNo);
+		req.put("Record_Date_Min", startDate);
+		req.put("Record_Date_Max", endDate);
+		req.put("Compensatory_Time_Min", startDate1);
+		req.put("Compensatory_Time_Max", endDate1);
+		req.put("Guarantee_Name", guaranteeName);
+		req.put("IsCompensatory", isCompensatory);
+		
+		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
+		pager.setPageSize(Integer.valueOf(length));
+		pager.setMap(req);
+		
 		guaranteeAgenciesService.getGuaranteeproject(pager);
-		return null;
+		
+		return pager;
+	}
+	
+	/**
+	 * 
+	* compensatoryrecord查询代偿记录 
+	* TODO查询代偿记录
+	* @author 杨翰林  
+	* * @Title: compensatoryrecord 
+	* @Description: 查询代偿记录 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return PageEntity 返回类型 
+	* @date 2016-5-3 下午2:01:38
+	* @throws
+	 */
+	@RequestMapping("/compensatoryrecord")
+	@ResponseBody
+	public PageEntity compensatoryrecord (HttpServletRequest request, Map<String, Object> req) {
+		
+		PageEntity pager = new PageEntity();
+		
+		String guaranteeID = request.getParameter("guaranteeID");
+		String projectNo = request.getParameter("projectNo");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String startDate2 = request.getParameter("startDate2");
+		String endDate2 = request.getParameter("endDate2");
+		String guaranteeName = request.getParameter("guaranteeName");
+		String projectTitle = request.getParameter("projectTitle");
+		String personalName = request.getParameter("personalName");
+		String logname = request.getParameter("logname");
+		String personalPhone = request.getParameter("personalPhone");
+		String status = request.getParameter("status");
+		String length = request.getParameter("length");
+		String start = request.getParameter("start");
+		
+		req.put("guaranteeID", guaranteeID);
+		req.put("projectNo", projectNo);
+		req.put("Repay_MaxTime_Min", startDate);
+		req.put("Repay_MaxTime_Max", endDate);
+		req.put("Compensatory_Time_Min", startDate2);
+		req.put("Compensatory_Time_Max", endDate2);
+		req.put("Guarantee_Name", guaranteeName);
+		req.put("status", status);
+		req.put("personalPhone", personalPhone);
+		req.put("projectTitle", projectTitle);
+		req.put("personalName", personalName);
+		req.put("logname", logname);
+		
+		
+		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
+		pager.setPageSize(Integer.valueOf(length));
+		pager.setMap(req);
+		
+		guaranteeAgenciesService.getCompensatoryrecord(pager);
+		
+		return pager;
+	}
+	
+	/**
+	 * 
+	* receivablerecords查询代偿回款记录
+	* TODO查询代偿回款记录
+	* @author 杨翰林  
+	* * @Title: receivablerecords 
+	* @Description: 查询代偿回款记录 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return PageEntity 返回类型 
+	* @date 2016-5-3 下午2:03:19
+	* @throws
+	 */
+	@RequestMapping("/receivablerecords")
+	@ResponseBody
+	public PageEntity receivablerecords (HttpServletRequest request, Map<String, Object> req) {
+		
+		PageEntity pager = new PageEntity();
+		
+		String guaranteeID = request.getParameter("guaranteeID");
+		String projectNo = request.getParameter("projectNo");
+		String projectTitle = request.getParameter("projectTitle");
+		String personalName = request.getParameter("personalName");
+		String logname = request.getParameter("logname");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String guaranteeName = request.getParameter("guaranteeName");
+		String length = request.getParameter("length");
+		String start = request.getParameter("start");
+		
+		req.put("guaranteeID", guaranteeID);
+		req.put("projectNo", projectNo);
+		req.put("Record_Date_Min", startDate);
+		req.put("Record_Date_Max", endDate);
+		req.put("guaranteeName", guaranteeName);
+		req.put("projectTitle", projectTitle);
+		req.put("personalName", personalName);
+		req.put("logname", logname);
+		
+		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
+		pager.setPageSize(Integer.valueOf(length));
+		pager.setMap(req);
+		
+		guaranteeAgenciesService.getReceivablerecords(pager);
+		
+		return pager;
 	}
 	
 	/**
@@ -249,33 +397,154 @@ public class GuaranteeController {
 		
 	}
 	
+	
 	/**
 	 * 
-	* queryCertificate查询证件信息 
-	* TODO查询证件信息
+	* adminlist查询管理员列表 
+	* TODO查询管理员列表
 	* @author 杨翰林  
-	* * @Title: queryCertificate 
-	* @Description: 查询证件信息 
+	* * @Title: adminlist 
+	* @Description: 查询管理员列表 
 	* @param @param request
 	* @param @param req
 	* @param @return 设定文件 
-	* @return List<GuaranteeCertificateEntity> 返回类型 
-	* @date 2016-4-29 上午11:45:11
+	* @return PageEntity 返回类型 
+	* @date 2016-4-29 下午2:33:15
 	* @throws
 	 */
-	@RequestMapping("/queryCertificate")
+	@RequestMapping("/adminlist")
 	@ResponseBody
-	public List<GuaranteeCertificateEntity> queryCertificate(HttpServletRequest request, Map<String, Object> req) {
+	public PageEntity adminlist(HttpServletRequest request, Map<String, Object> req) {
 		
-		String guaranteeId = request.getParameter("guaranteeId");
+		PageEntity pager = new PageEntity();
 		
-		if (!"".equals(guaranteeId)){
-			req.put("guaranteeID", guaranteeId);
-		}
-		List<GuaranteeCertificateEntity> list = guaranteeInfoService.selectGuaranteeCertificate(req);
+		String length = request.getParameter("length");
+		String start = request.getParameter("start");
+		String guaranteeID = request.getParameter("guaranteeID");
 		
-		return list;
+		req.put("guaranteeID", guaranteeID);
+		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
+		pager.setPageSize(Integer.valueOf(length));
+		pager.setMap(req);
+		guaranteeInfoService.findGuaranteeAdmin(pager);
+		return pager;
 	}
+	/**
+	 * 
+	* ofOrOpenAdmin启用停用管理员 
+	* TODO启用停用管理员
+	* @author 杨翰林  
+	* * @Title: ofOrOpenAdmin 
+	* @Description: 启用停用管理员 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-4-29 下午2:45:29
+	* @throws
+	 */
+	@RequestMapping("/ofOrOpenAdmin")
+	@ResponseBody
+	public int ofOrOpenAdmin(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String adminID = request.getParameter("adminID");
+		String status = request.getParameter("status");
+		if (!"".equals(adminID)) {
+			req.put("adminID", adminID);
+		}
+		if (!"".equals(status)) {
+			req.put("status", status);
+		}
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(90105);
+		entity.setlModuleId(901);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = guaranteeInfoService.updateGuaranteeAdmin(req, entity, sIpInfo);
+		return num;
+	}
+	
+	/**
+	 * 
+	* addAdmin添加管理员 
+	* TODO添加管理员
+	* @author 杨翰林  
+	* * @Title: addAdmin 
+	* @Description: 添加管理员 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-4-29 下午4:44:07
+	* @throws
+	 */
+	@RequestMapping("/saveAdmin")
+	@ResponseBody
+	public int addAdmin(HttpServletRequest request, Map<String,Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		Admin admin = new Admin();
+		
+		String adminName = request.getParameter("adminName");
+		String adminPwd = request.getParameter("adminPwd");
+		String adminRemark = request.getParameter("adminRemark");
+		
+		if (!"".equals(adminRemark)) {
+			admin.setAdminRemark(adminRemark);
+		}
+			admin.setAdminName(adminName);
+			admin.setAdminPwd(adminPwd);
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(90105);
+		entity.setlModuleId(901);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = adminService.saveAdmin(admin, 0, entity, sIpInfo);
+		return num;
+	}
+	
+	/**
+	 * 
+	* queryAdmin查询管理员信息 
+	* TODO查询管理员信息
+	* @author 杨翰林  
+	* * @Title: queryAdmin 
+	* @Description: 查询管理员信息 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return Admin 返回类型 
+	* @date 2016-4-29 下午4:47:29
+	* @throws
+	 */
+	@RequestMapping("/queryAdmin")
+	@ResponseBody
+	public Admin queryAdmin (HttpServletRequest request) {
+		
+		String adminId = request.getParameter("adminId");
+		Admin admin = adminService.findAdminById(Long.valueOf(adminId));
+		
+		return admin;
+	}
+	
+	
 	
 }
 

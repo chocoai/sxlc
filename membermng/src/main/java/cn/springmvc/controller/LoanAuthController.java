@@ -77,10 +77,10 @@ public class LoanAuthController {
 			message.put("reverse", "请选择身份证反面");
 		}
 		
-		int result = borrowingCertificationServer.authRealName(0L,realName,sex,national,idCard,birthplace,positive,reverse);
-		if(result == 0){
-			
-		}
+//		int result = borrowingCertificationServer.authRealName(0L,realName,sex,national,idCard,birthplace,positive,reverse);
+//		if(result == 0){
+//			
+//		}
 		
 		return null;
 		

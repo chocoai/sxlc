@@ -18,6 +18,36 @@ public class BorrowingStatistics {
 	private int					investmentCount;			//成功投资
 	private int					overdueRepaymentCount;		//逾期还款
 	private int					yZOverdueRepaymentCount;	//严重逾期
+	public int getLoanCount() {
+		return loanCount;
+	}
+	public void setLoanCount(int loanCount) {
+		this.loanCount = loanCount;
+	}
+	public int getRepaymentCount() {
+		return repaymentCount;
+	}
+	public void setRepaymentCount(int repaymentCount) {
+		this.repaymentCount = repaymentCount;
+	}
+	public int getInvestmentCount() {
+		return investmentCount;
+	}
+	public void setInvestmentCount(int investmentCount) {
+		this.investmentCount = investmentCount;
+	}
+	public int getOverdueRepaymentCount() {
+		return overdueRepaymentCount;
+	}
+	public void setOverdueRepaymentCount(int overdueRepaymentCount) {
+		this.overdueRepaymentCount = overdueRepaymentCount;
+	}
+	public int getyZOverdueRepaymentCount() {
+		return yZOverdueRepaymentCount;
+	}
+	public void setyZOverdueRepaymentCount(int yZOverdueRepaymentCount) {
+		this.yZOverdueRepaymentCount = yZOverdueRepaymentCount;
+	}
 	
 	
 	

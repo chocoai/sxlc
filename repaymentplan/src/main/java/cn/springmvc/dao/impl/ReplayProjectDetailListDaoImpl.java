@@ -12,6 +12,7 @@
  
 package cn.springmvc.dao.impl; 
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;  
@@ -21,7 +22,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
  
 import cn.springmvc.dao.ReplayProjectDetailListDao; 
-import cn.springmvc.model.ProjectAppRecordEntity;
+import cn.springmvc.model.ProjectBaseInfoEntity;
+import cn.springmvc.model.ProjectDetailEntity;
 
 /** 
  * @author 刘利 
@@ -36,12 +38,22 @@ public class ReplayProjectDetailListDaoImpl extends SqlSessionDaoSupport impleme
 	}
 	 
 	@Override
-	public ProjectAppRecordEntity selectProjectDetailByID(int id) {
+	public ProjectDetailEntity selectProjectDetailByID(long id) {
 
-		ProjectAppRecordEntity projectAppRecordEntity = null;
+		ProjectDetailEntity projectAppRecordEntity = null;
 		projectAppRecordEntity = getSqlSession().selectOne("GenerateRepay.selectProjectdetail",id);
 		return  projectAppRecordEntity;
 
+	}
+
+	@Override
+	public ProjectBaseInfoEntity selectProjectBaseInfoById(long lId) {
+		ProjectBaseInfoEntity entity = null;
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("id", lId);
+		entity = getSqlSession().selectOne("GenerateRepay.selectProjectBaseInfo", param);
+		return entity;
 	}
 }
 

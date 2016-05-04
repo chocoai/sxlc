@@ -30,6 +30,7 @@ import cn.springmvc.model.GuaranteeRelationalEntity;
 import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
+import cn.springmvc.model.MemberThirdAuthInfoEntity;
 import cn.springmvc.service.GuaranteeInfoService;
 
 /**
@@ -76,6 +77,7 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 			co.setNoCompensatoryPayment(co.getAllCompensatoryPayment()-co.getTotalCompensationAmount());
 		}
 		guaranteeInfoDetailsEntity.setCompensationStatisticsEntity(co);
+		guaranteeInfoDetailsEntity.setMemberThirdAuthInfoEntity(selectGuaranteeInfoDaoImpl.selectMemberThirdAuthInfoone(map));
 		// TODO Auto-generated method stub return null;
 		return guaranteeInfoDetailsEntity;
 	}
@@ -110,7 +112,9 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 			PageEntity pageEntity) {
 
 		// TODO Auto-generated method stub return null;
-		return selectGuaranteeInfoDaoImpl.selectAllManagementInfo(pageEntity);
+		List<ManagementInfoEntity> list = selectGuaranteeInfoDaoImpl.selectAllManagementInfo(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	@Override
@@ -190,12 +194,32 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 	}
 
 	@Override
-	public Map<String, Object> handleManagementInfo(Map<String, Object> map,
+	public int handleManagementInfo(Map<String, Object> map,
 			InsertAdminLogEntity entity, String[] sIpInfo) {
-		entity.setsDetail("添加或修改资产管理方信息 :" + map.toString());
+		int type = IntegerAndString
+				.StringToInt(map.get("types").toString(), -1);
+		long guaranteeID = generatorUtil.GetId();
+		long personalId = generatorUtil.GetId();
+		map.put("managementID", guaranteeID);
+		map.put("personalId", personalId);
+		if (type == 0) {
+			entity.setsDetail("添加资产管理方信息  :" + map.toString());
+		} else {
+			entity.setsDetail("修改资产管理方信息  :" + map.toString());
+		}
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
-		return handleGuaranteeInfoDaoImpl.handleManagementInfo(map);
+		
+		handleGuaranteeInfoDaoImpl.handleManagementInfo(map);
+		int num = IntegerAndString.StringToInt(map.get("result").toString(), -1);
+		if (num == 0 && type == 0) {
+			generatorUtil.SetIdUsed(guaranteeID);
+			generatorUtil.SetIdUsed(personalId);
+		} else {
+			generatorUtil.SetIdUsedFail(guaranteeID);
+			generatorUtil.SetIdUsedFail(personalId);
+		}
+		return num;
 	}
 
 	@Override
@@ -299,7 +323,9 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 	public List<GuaranteeAdminEntity> findGuaranteeAdmin(PageEntity pageEntity) {
 
 		// TODO Auto-generated method stub return null;
-		return selectGuaranteeInfoDaoImpl.findGuaranteeAdmin(pageEntity);
+		List<GuaranteeAdminEntity> list = selectGuaranteeInfoDaoImpl.findGuaranteeAdmin(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	@Override
@@ -329,7 +355,44 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 			PageEntity pageEntity) {
 		// pageEntity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
+		List<InstitutionsRecordsEntity> list = selectGuaranteeInfoDaoImpl
+		.InstitutionsToRaiseCashRecords(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
+	}
+	@Override
+	public MemberThirdAuthInfoEntity selectMemberThirdAuthInfoone(
+			Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return null;
 		return selectGuaranteeInfoDaoImpl
-				.InstitutionsToRaiseCashRecords(pageEntity);
+				.selectMemberThirdAuthInfoone(map);
+	}
+	@Override
+	public List<GuaranteeAdminEntity> findManagementAdmin(PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectGuaranteeInfoDaoImpl
+				.findManagementAdmin(pageEntity);
+	}
+	@Override
+	public int insertManagementAdmin(Map<String, Object> map,
+			InsertAdminLogEntity entity, String[] sIpInfo) {
+		
+		// TODO Auto-generated method stub return 0;
+		entity.setsDetail("添加资产管理方管理员:" + map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		// TODO Auto-generated method stub return 0;
+		return handleGuaranteeInfoDaoImpl.insertManagementAdmin(map);
+	}
+	@Override
+	public int updateManagementAdmin(Map<String, Object> map,
+			InsertAdminLogEntity entity, String[] sIpInfo) {
+		
+		// TODO Auto-generated method stub return 0;
+		entity.setsDetail("启用禁用资产管理方管理员:" + map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		// TODO Auto-generated method stub return 0;
+		return handleGuaranteeInfoDaoImpl.updateManagementAdmin(map);
 	}
 }

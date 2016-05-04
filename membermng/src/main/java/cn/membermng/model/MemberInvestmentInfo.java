@@ -1,5 +1,7 @@
 package cn.membermng.model; 
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /***
 * 
 * 会员投资信息
@@ -65,6 +67,7 @@ public class MemberInvestmentInfo {
 
 	public void setInvestmentSum(long investmentSum) {
 		this.investmentSum = investmentSum;
+		this.sInvestmentSum = IntegerAndString.LongToString(investmentSum);
 	}
 
 
@@ -72,10 +75,6 @@ public class MemberInvestmentInfo {
 		return sInvestmentSum;
 	}
 
-
-	public void setsInvestmentSum(String sInvestmentSum) {
-		this.sInvestmentSum = sInvestmentSum;
-	}
 
 
 	public long getRecvPrincipal() {
@@ -85,16 +84,12 @@ public class MemberInvestmentInfo {
 
 	public void setRecvPrincipal(long recvPrincipal) {
 		this.recvPrincipal = recvPrincipal;
+		this.sRecvPrincipal = IntegerAndString.LongToString(recvPrincipal);
 	}
 
 
 	public String getsRecvPrincipal() {
 		return sRecvPrincipal;
-	}
-
-
-	public void setsRecvPrincipal(String sRecvPrincipal) {
-		this.sRecvPrincipal = sRecvPrincipal;
 	}
 
 
@@ -105,6 +100,7 @@ public class MemberInvestmentInfo {
 
 	public void setRecvInterest(long recvInterest) {
 		this.recvInterest = recvInterest;
+		this.sRecvInterest = IntegerAndString.LongToString(recvInterest);
 	}
 
 
@@ -112,10 +108,6 @@ public class MemberInvestmentInfo {
 		return sRecvInterest;
 	}
 
-
-	public void setsRecvInterest(String sRecvInterest) {
-		this.sRecvInterest = sRecvInterest;
-	}
 
 
 	public long getExpectRecvPrincipal() {
@@ -125,6 +117,7 @@ public class MemberInvestmentInfo {
 
 	public void setExpectRecvPrincipal(long expectRecvPrincipal) {
 		this.expectRecvPrincipal = expectRecvPrincipal;
+		this.sExpectRecvPrincipal = IntegerAndString.LongToString(expectRecvPrincipal);
 	}
 
 
@@ -133,9 +126,6 @@ public class MemberInvestmentInfo {
 	}
 
 
-	public void setsExpectRecvPrincipal(String sExpectRecvPrincipal) {
-		this.sExpectRecvPrincipal = sExpectRecvPrincipal;
-	}
 
 
 	public long getIncomeReceived() {
@@ -145,24 +135,13 @@ public class MemberInvestmentInfo {
 
 	public void setIncomeReceived(long incomeReceived) {
 		this.incomeReceived = incomeReceived;
+		this.sIncomeReceived = IntegerAndString.LongToString(incomeReceived);
 	}
-
 
 	public String getsIncomeReceived() {
 		return sIncomeReceived;
 	}
 
-
-	public void setsIncomeReceived(String sIncomeReceived) {
-		this.sIncomeReceived = sIncomeReceived;
-	}
-	
-	
-	
-	
-	
-	
-	
 
 }
 

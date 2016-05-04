@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="investincome">
-   <resultMap type = "cn.springmvc.model.InvestRecordEntity" id = "resultInvestRecord"> 
+   <resultMap type = "cn.springmvc.model.InvestRecordInfoEntity" id = "resultInvestRecord"> 
         <id property = "investID"			    column = "Invest_ID" />
 		<result property = "investAmount"    	column = "Invest_Amount" />
 		<result property = "investDate"         column = "Invest_Date" />  

@@ -17,15 +17,6 @@ $(function(){
 	validform5(".nextBtn","modInfo",false,"3");
 	validform5(".btn-pre","next_field",false,"3");
 });
-$(function(){
-	/* 年化利率*/
-	$(".startTY").blur(function(){
-		var ty = $(".startTY").val();
-		if(ty > 0 && ty < 0.24){
-			alert(1111);
-		}
-	});
-});
 /* 下一步跳转 */
 $(function(){
 	$(".nextBtn").click(function(){
@@ -59,44 +50,6 @@ $(function(){
 		if($(".red_list li").length>1){
 			$(".red_add:last-child").remove();
 		}
-	});
-});
-/*担保机构弹出层及回调
-伍成然
-2016-04-28*/
-$(function(){
-	$(".add_mechanism").click(function(){
-		layer.open({
-			  type: 1,
-			  title:'选择担保机构',
-			  btn: ['确定','取消'],
-			  //skin: 'layui-layer-rim', //加上边框
-			  area: ['800px', '520px'], //宽高
-			  content: $(".select_mechanism"),
-			  btn1:function(){
-				  var val=$('input:radio[name="mechanism"]:checked').val();
-				  $(".mechanism").html("机构"+val);
-			  },
-		});
-	});
-});
-/*资产管理方弹出层及回调
-伍成然
-2016-04-28*/
-$(function(){
-	$(".add_assetManagement").click(function(){
-		layer.open({
-			  type: 1,
-			  title:'选择资产管理方',
-			  btn: ['确定','取消'],
-			  //skin: 'layui-layer-rim', //加上边框
-			  area: ['420px', '300px'], //宽高
-			  content: $(".select_assetManagement"),
-			  btn1:function(){
-				  var val=$('input:radio[name="assetManagement"]:checked').val();
-				  $(".assetManagement").html("资产管理方"+val);
-			  },
-		});
 	});
 });
 /* 控制输入为数字   
@@ -133,5 +86,22 @@ $(function(){
 		}else{
 			$(this).parent().siblings().find("input").attr("disabled",true);
 		}
+	});
+});
+/********选择担保机构********/
+function select_mechanism(){
+	$(".right_col").load("web/project/pro-add/select_mechanism.jsp");
+}
+/*********选择资产管理方********/
+function select_assetManagement(){
+	$(".right_col").load("web/project/pro-add/select_assetManagement.jsp");
+}
+/*   查看提交认证信息模块             */
+$(function(){
+	$(".viewDetail").each(function(){
+		$(this).click(function(){
+			$(this).parent().next("div").slideToggle();
+			$(this).parent().parent().siblings().find(".detailAuthen").hide();
+		});
 	});
 });

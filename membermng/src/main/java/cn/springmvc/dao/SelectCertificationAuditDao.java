@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.membermng.model.MemberAttestByTypeEntity;
 import cn.membermng.model.MemberAttestTypeEntity;
 import cn.membermng.model.PersonalAttestAttachEntity;
+import cn.membermng.model.VIPPurchaseRecordsEntity;
 
 import product_p2p.kit.pageselect.PageEntity;
 
@@ -66,5 +67,130 @@ public interface SelectCertificationAuditDao {
 	* @throws 
 	*/
 	public List<PersonalAttestAttachEntity> selectAttestAttachList(Map<String, Object> map);
+	
+	
+	/** 
+	* selectMemberAttestByType 根据会员id 查询会员vip购买记录
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: selectMemberAttestByType 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<VIPPurchaseRecordsEntity> 返回类型 
+	* @date 2016-5-2 下午2:32:10
+	* @throws 
+	*/
+	public List<VIPPurchaseRecordsEntity> VipPurchaseRecords(PageEntity page,Map<String, Object> map);
+	
+	/** 
+	* realNameAuthentication  会员实名认证列表信息展示 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: realNameAuthentication 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<MemberAttestByTypeEntity> 返回类型 
+	* @date 2016-5-3 上午11:54:14
+	* @throws 
+	*/
+	public List<MemberAttestByTypeEntity> realNameAuthentication(
+			PageEntity page);
+	
+	
+	/** 
+	* AddressAuthentication 根据认证类型id,会员类型分页查询住址认证信息
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: AddressAuthentication 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<MemberAttestByTypeEntity> 返回类型 
+	* @date 2016-5-3 下午2:29:05
+	* @throws 
+	*/
+	public List<MemberAttestByTypeEntity> AddressAuthentication(
+			PageEntity page);
+	
+	
+	/** 
+	* marriageCertification 根据认证类型id,会员类型分页查询婚姻认证信息 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: marriageCertification 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<MemberAttestByTypeEntity> 返回类型 
+	* @date 2016-5-3 下午2:45:06
+	* @throws 
+	*/
+	public List<MemberAttestByTypeEntity> marriageCertification(
+			PageEntity page);
+	
+	/** 
+	* EducationCertification 根据认证类型id,会员类型分页查询学历认证信息  
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: EducationCertification 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<MemberAttestByTypeEntity> 返回类型 
+	* @date 2016-5-3 下午3:33:08
+	* @throws 
+	*/
+	public List<MemberAttestByTypeEntity> EducationCertification(
+			PageEntity page);
+	
+	
+	/** 
+	* EnterpriseOrganizationCode 分页查询企业组织机构认证信息 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: EnterpriseOrganizationCode 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<MemberAttestByTypeEntity> 返回类型 
+	* @date 2016-5-3 下午8:00:30
+	* @throws 
+	*/
+	public List<MemberAttestByTypeEntity> EnterpriseOrganizationCode(
+			PageEntity page);
+	
+	
+	/** 
+	* EnterprisebusinessLC 企业工商执照认证列表查询 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: EnterprisebusinessLC 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<MemberAttestByTypeEntity> 返回类型 
+	* @date 2016-5-3 下午8:04:05
+	* @throws 
+	*/
+	public List<MemberAttestByTypeEntity> EnterprisebusinessLC(
+			PageEntity page);
+	
+	
+	/** 
+	* accountLicenseCode 企业开户许可证认证
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: accountLicenseCode 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<MemberAttestByTypeEntity> 返回类型 
+	* @date 2016-5-3 下午8:14:48
+	* @throws 
+	*/
+	public List<MemberAttestByTypeEntity> accountLicenseCode(
+			PageEntity page);
 }
 

@@ -151,46 +151,62 @@ public class AccountInterfaceReturnEntity {
 		this.statu = statu;
 	}
 	private int statu;//处理返回状态；1：开户成功；2：开户失败
-	public AccountInterfaceReturnEntity getAllAccount() throws UnsupportedEncodingException{
-		ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = attributes.getRequest();
-		request.setCharacterEncoding("UTF-8");
-		AccountInterfaceReturnEntity accountInterfaceReturnEntity=new AccountInterfaceReturnEntity();
-		accountInterfaceReturnEntity.setResultCode(request.getParameter("ResultCode"));
-		accountInterfaceReturnEntity.setMessage(request.getParameter("Message"));//开户状态信息
-		String ReturnTimes = request.getParameter("ReturnTimes");//返回次数
-		//开户成功
-		if(request.getParameter("ResultCode")!=null 
-				&& request.getParameter("ResultCode").equals("88")){
-			accountInterfaceReturnEntity.setStatu(1);
-			accountInterfaceReturnEntity.setLoanPlatformAccount(request.getParameter("LoanPlatformAccount"));
-			
-			accountInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
-			accountInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
-			accountInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
-			String accountType = request.getParameter("AccountType");// 开户类型
-			if (accountType.equals("")) {
-				accountInterfaceReturnEntity.setAccountType("1");// 个人
-			} else if (accountType.equals("1")) {
-				accountInterfaceReturnEntity.setAccountType("0");// 企业
-			}
-			accountInterfaceReturnEntity
-				.setAccountNumber(request.getParameter("AccountNumber"));//乾多多数字账号
-			accountInterfaceReturnEntity
-				.setMoneymoremoreId(request.getParameter("MoneymoremoreId"));//用户的乾多多标识
-			accountInterfaceReturnEntity
-				.setAuthFee(request.getParameter("AuthFee"));//姓名匹配手续费
-			accountInterfaceReturnEntity
-				.setAuthState(request.getParameter("AuthState"));//实名认证状态1.未实名认证2.快捷支付认证3.其他认证
-			accountInterfaceReturnEntity.setSignInfo(request.getParameter("SignInfo"));//签名信息
-		
-		}else {//开户失败
-			accountInterfaceReturnEntity.setStatu(2);
-		}
-		
-		
-		return null;
+//	public AccountInterfaceReturnEntity getAllAccount() throws UnsupportedEncodingException{
+//		ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+//		HttpServletRequest request = attributes.getRequest();
+//		request.setCharacterEncoding("UTF-8");
+//		AccountInterfaceReturnEntity accountInterfaceReturnEntity=new AccountInterfaceReturnEntity();
+//		accountInterfaceReturnEntity.setResultCode(request.getParameter("ResultCode"));
+//		accountInterfaceReturnEntity.setMessage(request.getParameter("Message"));//开户状态信息
+//		String ReturnTimes = request.getParameter("ReturnTimes");//返回次数
+//		//开户成功
+//		if(request.getParameter("ResultCode")!=null 
+//				&& request.getParameter("ResultCode").equals("88")){
+//			accountInterfaceReturnEntity.setStatu(1);
+//			accountInterfaceReturnEntity.setLoanPlatformAccount(request.getParameter("LoanPlatformAccount"));
+//			
+//			accountInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
+//			accountInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
+//			accountInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
+//			String accountType = request.getParameter("AccountType");// 开户类型
+//			if (accountType.equals("")) {
+//				accountInterfaceReturnEntity.setAccountType("1");// 个人
+//			} else if (accountType.equals("1")) {
+//				accountInterfaceReturnEntity.setAccountType("0");// 企业
+//			}
+//			accountInterfaceReturnEntity
+//				.setAccountNumber(request.getParameter("AccountNumber"));//乾多多数字账号
+//			accountInterfaceReturnEntity
+//				.setMoneymoremoreId(request.getParameter("MoneymoremoreId"));//用户的乾多多标识
+//			accountInterfaceReturnEntity
+//				.setAuthFee(request.getParameter("AuthFee"));//姓名匹配手续费
+//			accountInterfaceReturnEntity
+//				.setAuthState(request.getParameter("AuthState"));//实名认证状态1.未实名认证2.快捷支付认证3.其他认证
+//			accountInterfaceReturnEntity.setSignInfo(request.getParameter("SignInfo"));//签名信息
+//		
+//		}else {//开户失败
+//			accountInterfaceReturnEntity.setStatu(2);
+//		}
+//		
+//		
+//		return null;
+//	}
+	@Override
+	public String toString() {
+		return "AccountInterfaceReturnEntity [accountType=" + accountType
+				+ ", accountNumber=" + accountNumber + ", mobile=" + mobile
+				+ ", email=" + email + ", realName=" + realName
+				+ ", identificationNo=" + identificationNo
+				+ ", loanPlatformAccount=" + loanPlatformAccount
+				+ ", moneymoremoreId=" + moneymoremoreId
+				+ ", platformMoneymoremore=" + platformMoneymoremore
+				+ ", authFee=" + authFee + ", authState=" + authState
+				+ ", randomTimeStamp=" + randomTimeStamp + ", remark1="
+				+ remark1 + ", remark2=" + remark2 + ", remark3=" + remark3
+				+ ", resultCode=" + resultCode + ", message=" + message
+				+ ", signInfo=" + signInfo + ", statu=" + statu + "]";
 	}
+	
 	
 }
 

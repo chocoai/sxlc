@@ -6,7 +6,6 @@
 	<!-- 获取当前最大投资金额 -->
 	<select id="CreditorMaxInvestAmount"  statementType="CALLABLE" resultType="Map">
 		<![CDATA[{call getCreditorMaxInvestAmount(
-				#{lProjectId,			mode=IN,	jdbcType=BIGINT},
 				#{lMemberId,			mode=IN,	jdbcType=BIGINT},
 				#{lCreditorTransAppId,	mode=IN,	jdbcType=BIGINT},
 				#{sKey,					mode=IN,	jdbcType=VARCHAR},
@@ -19,7 +18,6 @@
 	<select id="checkCreditorRecordByMember"  statementType="CALLABLE" resultType="Map">
 		<![CDATA[{call checkCreditorRecordByMember(
 				#{lMemberId,			mode=IN,	jdbcType=BIGINT},
-				#{lProjectId,			mode=IN,	jdbcType=BIGINT},
 				#{lCreditorTransAppId,	mode=IN,	jdbcType=BIGINT},
 				#{sIsAuto,				mode=IN,	jdbcType=TINYINT},
 				#{lTotalAmount,			mode=IN,	jdbcType=BIGINT},
@@ -27,7 +25,8 @@
 				#{lVouchers,			mode=IN,	jdbcType=BIGINT},
 				#{sKey,					mode=IN,	jdbcType=VARCHAR},
 				#{lRedpackets,			mode=OUT,	jdbcType=BIGINT},
-				#{result,				mode=OUT,	jdbcType=BIGINT},
+				#{vResult,				mode=OUT,	jdbcType=VARCHAR},
+				#{result,				mode=OUT,	jdbcType=BIGINT}
     		)}
     	]]>
 	</select>
@@ -40,7 +39,6 @@
 				#{orderNo,			    mode=IN,	jdbcType=VARCHAR},
 				#{vBillNo,			    mode=IN,	jdbcType=VARCHAR},
 				#{iInvestId,		    mode=IN,	jdbcType=BIGINT},
-				#{lProjectId,		    mode=IN,	jdbcType=BIGINT},
 				#{lMemberId,		    mode=IN,	jdbcType=BIGINT},
 				#{lCreditorTransAppId,	mode=IN,	jdbcType=BIGINT},
 				#{iMoney,			    mode=IN,	jdbcType=BIGINT},
@@ -54,4 +52,25 @@
     		)}
     	]]>
 	</select>
+	
+	<!-- 投资账户资金信息 结果封装 -->
+	<resultMap type="cn.sxlc.account.manager.model.InvestAccountFeeEntity" id="CreditorTransAccount">
+		<result column="ThirdParty_Mark" property="sMemberMark"/>
+		<result column="Trans_Principal" property="lAmountTotal"/>
+		<result column="Bill_No" property="sProjectNo"/>
+	</resultMap>
+	
+	<!-- 获取债权转让人账户信息 -->
+	<select id="GetCreditorTransAccount" parameterType="Map" resultMap ="CreditorTransAccount">
+		select mti.ThirdParty_Mark,cta.Bill_No,CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal), #{sKey})) AS SIGNED) as Trans_Principal  from Creditor_Trans_App cta 
+			left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id
+			left join Member_Third_Info mti on mti.Member_ID = ir.Member_ID and mti.Member_Type = 0
+			where cta.CTA_Id = #{transId} 
+	</select>
+	
+	<!-- 获取债权转让管理费比例 -->
+	<select id="GetTransMngFeeRate" parameterType="Map" resultType ="long">
+		select Mng_Fee from Trans_Setting order by Mng_Fee desc limit 0,1
+	</select>
+	
 </mapper>

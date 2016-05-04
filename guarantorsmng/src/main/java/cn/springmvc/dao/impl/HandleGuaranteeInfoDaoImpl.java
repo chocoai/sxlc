@@ -151,5 +151,17 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 		// TODO Auto-generated method stub return 0;
 		return getSqlSession().update("GuaranteeInfoXML.updateGuaranteeAdmin",map);
 	}
+	@Override
+	public int insertManagementAdmin(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return 0;
+		return getSqlSession().insert("GuaranteeInfoXML.insertManagementAdmin", map);
+	}
+	@Override
+	public int updateManagementAdmin(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return 0;
+		return getSqlSession().update("GuaranteeInfoXML.updateManagementAdmin",map);
+	}
 }
 

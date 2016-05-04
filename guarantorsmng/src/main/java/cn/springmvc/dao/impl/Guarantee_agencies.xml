@@ -326,6 +326,7 @@
 		<result property = "userBalance"  	        column = "User_Balance" />
 		<result property = "guaranteeName" 	        column = "Guarantee_Name" />
 		<result property = "recordDate"             column = "Record_Date" />   
+		<result property = "abstracts"              column = "Abstract" />  
 	</resultMap>
 		<!-- 查询交易记录信息
 		Trade_ID,交易记录ID
@@ -336,6 +337,7 @@
 		User_Balance,可用余额
 		Guarantee_Name,交易对方
 		Record_Date,交易时间
+		Abstract,描述
 	--> 
 	<!--传入参数整理
 		#{skey}#{Type_Name}#{Record_Date_Min}#{Record_Date_Max}#{ordercolumn}
@@ -363,7 +365,8 @@
 						   WHERE mi.Member_ID = mtr.Trade_Object_Id)
 			  WHEN 2 THEN (SELECT CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey})) using utf8) FROM Guarantee_Info gi where gi.Guarantee_ID = mtr.Trade_Object_Id)
 		  END Personal_Name,
-		  mtr.Record_Date
+		  mtr.Record_Date,
+		  mtr.Abstract
 		FROM Member_Trading_Records mtr
 		  JOIN Member_Trading_Records_Balance mtrb
 			ON mtr.Trade_ID = mtrb.Trade_ID

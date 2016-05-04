@@ -12,7 +12,10 @@
  
 package cn.membermng.model; 
 
+import java.util.Date;
+
 import product_p2p.kit.datatrans.IntegerAndString; 
+import product_p2p.kit.datatrans.TimestampAndString;
 
 /** 
  * @author 刘利 
@@ -89,13 +92,18 @@ public class ProjectAppRecordEntity {
 	 */
 	private String endDate;   
 	private String projectName;//借款类型名称
-	private String recordDate;//提交申请时间 
-	private String releaseDate;//项目发布时间
-	private String realEndDate;//实际投标结束日期
-	private String holdDate;//放款时间
+	private Date recordDate;//提交申请时间 
+	private String sRecordDate;//提交申请时间 
+	private Date releaseDate;//项目发布时间 
+	private String sReleaseDate;//项目发布时间
+	private Date realEndDate;//实际投标结束日期
+	private String sRealEndDate;//项目发布时间
+	private Date holdDate;//放款时间
+	private String sHoldDate;////放款时间
 	private long   endamount;//实际借款金额
 	private String endamounts;//实际借款金额 
-	private String settleDate;//结清时间 
+	private Date settleDate;//结清时间 
+	private String sSettleDate;////结清时间 
 	private int    statu;//项目状态
 	private String guaranteeName;//担保机构   
 	public int getStatu() {
@@ -220,30 +228,47 @@ public class ProjectAppRecordEntity {
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-	public String getRecordDate() {
+	
+	public Date getRecordDate() {
 		return recordDate;
 	}
-	public void setRecordDate(String recordDate) {
+	public void setRecordDate(Date recordDate) {
 		this.recordDate = recordDate;
+		this.sRecordDate = TimestampAndString.DateToString2(recordDate);
 	}
- 
-	public String getReleaseDate() {
+	public String getsRecordDate() {
+		return sRecordDate;
+	}
+	
+	public Date getReleaseDate() {
 		return releaseDate;
 	}
-	public void setReleaseDate(String releaseDate) {
+	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
+		this.sReleaseDate = TimestampAndString.DateToString2(releaseDate);
 	}
-	public String getRealEndDate() {
+	public String getsReleaseDate() {
+		return sReleaseDate;
+	}
+	public Date getRealEndDate() {
 		return realEndDate;
 	}
-	public void setRealEndDate(String realEndDate) {
+	public void setRealEndDate(Date realEndDate) {
 		this.realEndDate = realEndDate;
+		this.sRealEndDate = TimestampAndString.DateToString2(realEndDate);
 	}
-	public String getHoldDate() {
+	public String getsRealEndDate() {
+		return sRealEndDate;
+	}
+	public Date getHoldDate() {
 		return holdDate;
 	}
-	public void setHoldDate(String holdDate) {
+	public void setHoldDate(Date holdDate) {
 		this.holdDate = holdDate;
+		this.sHoldDate =  TimestampAndString.DateToString2(holdDate);
+	}
+	public String getsHoldDate() {
+		return sHoldDate;
 	}
 	public long getEndamount() {
 		return endamount;
@@ -259,11 +284,16 @@ public class ProjectAppRecordEntity {
 		this.endamounts = endamounts;
 	}
 	 
-	public String getSettleDate() {
+	public Date getSettleDate() {
 		return settleDate;
 	}
-	public void setSettleDate(String settleDate) {
+	public void setSettleDate(Date settleDate) {
 		this.settleDate = settleDate;
-	} 
+		this.sSettleDate =  TimestampAndString.DateToString2(settleDate);
+	}
+	public String getsSettleDate() {
+		return sSettleDate;
+	}
+	
 }
 

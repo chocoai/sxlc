@@ -10,6 +10,7 @@
      <result property = "realEndDate"       column = "Real_End_Date" />
      <result property = "holdDate"       	column = "Hold_Date" />
      <result property = "proEndDate"       	column = "ProEnd_Date" />
+      <result property = "settleDate"       column = "Settle_Date" />
      <association property="projectAppRecordEntity" 	resultMap="resultProjectDetail"/>
  </resultMap>
  <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetail">
@@ -108,7 +109,8 @@
 	   select pap.Start_Date,pap.End_Date,pap.Record_Date,pap.Real_End_Date,
 	   pap.Hold_Date,pap.ProEnd_Date,pap.Settle_Date
 	   from  Project_App_Process pap  
-	   where  pap.Apply_Id=#{ID} and pap.Hold_Date is not null 
+	   where  pap.Apply_Id=#{ID} 
+	   and pap.Hold_Date is not null 
     </select> 
      <!--  根据项目申请ID查询借款描述-->  
 	<select id="selectProjectDescript"  parameterType="long" resultType="String" >

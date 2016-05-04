@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="InterestMngFeeXML" >
+	<!-- 邀请注册积分规则 -->
+	 <resultMap id="InterestMngFee" type="cn.springmvc.model.InterestMngFeeEntity" >
+	    <result column="Price_Datum" property="priceDatum"/>
+	    <result column="Project_Type" property="projectType"/>
+	    <result column="Statu" property="statu"/>
+	 </resultMap>
+	 <sql id="InterestMngFee_Column_List" >
+	    Price_Datum,Project_Type,Statu	
+	 </sql>
+	<select id="selectAllInterestMngFee" resultMap="InterestMngFee" parameterType="cn.springmvc.model.InterestMngFeeEntity">
+		select <include refid="InterestMngFee_Column_List"></include> from Interest_Mng_Fee
+	</select>
+	
+	<update id="updateInterestMngFee" parameterType="cn.springmvc.model.InterestMngFeeEntity">
+		update Interest_Mng_Fee
+		<set>
+			<if test="priceDatum!=null">Price_Datum=#{priceDatum},</if>
+			Project_Type=#{projectType},
+			<if test="statu!=null">Statu=#{statu},</if>
+		</set>
+	</update>
+	<insert id="insertInterestMngFee" parameterType="cn.springmvc.model.InterestMngFeeEntity">
+		insert into Interest_Mng_Fee(Price_Datum,Project_Type) values(#{priceDatum},#{projectType})
+	</insert>
+</mapper>

@@ -281,12 +281,13 @@ body .main{
 .inv-head-right{
 	margin-top:7px;
 	margin-right:14px;
-	width:200px;
+	/* width:200px; */
+	padding-left:20px;
 	float:right;
 	text-align:right;
 	background-image:url("../../resource/img/invest/wytz_money.jpg");
 	background-repeat: no-repeat;
-	background-position:45px 2px;
+	background-position:4px 2px;
 }
 /*info部分  */
 .inv-info{
@@ -371,6 +372,28 @@ body .main{
 	background-repeat: no-repeat;
 	background-position: 0 4px;
 }
+/* 已完成 */
+.pro-all{
+	width:145px;
+	height:145px;
+	position:absolute;
+	top:-50px;
+	right:113px;
+	background-image: url("../../resource/img/invest/yiwancheng1.png");
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+}
+/* 已流标 */
+.pro-fault{
+	width:145px;
+	height:145px;
+	position:absolute;
+	top:-50px;
+	right:113px;
+	background-image: url("../../resource/img/invest/yiliubiao.png");
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+}
 /* 已结清已还款印章结束 */
 /* 倒计时 */
 .investOpenT{
@@ -386,8 +409,9 @@ body .main{
 	border:1px solid #72c0f3;
 	background-image:url("../../resource/img/invest/wytz_t_03.png");
 	background-repeat: no-repeat;
-	background-position:25px 5px;
+	background-position:0 5px;
 	cursor:pointer;
+	padding-left:25px;
 }
 .investOpenT:hover{
 	color:#fff;

@@ -61,6 +61,15 @@ public class ProjectPurposeEntity {
 	 * 意向处理状态 0：未处理 1：提交申请 -1：打回	
 	 */
 	private Integer dealStatu;
+	
+	private String MemberNo;
+	private String Logname;
+	private String PersonalName;
+	private String PersonalPhone;
+	private int financial;//有无分配理财顾问 大于0则为有
+	private String sendrecordDate;//提交申请时间
+	private  Long projectID;//借款类型ID
+	
 	/**
 	 * 积分处理时间
 	 */
@@ -155,6 +164,48 @@ public class ProjectPurposeEntity {
 	}
 	public void setDealDate(String dealDate) {
 		this.dealDate = dealDate;
+	}
+	public String getMemberNo() {
+		return MemberNo;
+	}
+	public void setMemberNo(String memberNo) {
+		MemberNo = memberNo;
+	}
+	public String getLogname() {
+		return Logname;
+	}
+	public void setLogname(String logname) {
+		Logname = logname;
+	}
+	public String getPersonalName() {
+		return PersonalName;
+	}
+	public void setPersonalName(String personalName) {
+		PersonalName = personalName;
+	}
+	public String getPersonalPhone() {
+		return PersonalPhone;
+	}
+	public void setPersonalPhone(String personalPhone) {
+		PersonalPhone = personalPhone;
+	}
+	public int getFinancial() {
+		return financial;
+	}
+	public void setFinancial(int financial) {
+		this.financial = financial;
+	}
+	public String getSendrecordDate() {
+		return sendrecordDate;
+	}
+	public void setSendrecordDate(String sendrecordDate) {
+		this.sendrecordDate = sendrecordDate;
+	}
+	public Long getProjectID() {
+		return projectID;
+	}
+	public void setProjectID(Long projectID) {
+		this.projectID = projectID;
 	} 
 	
 	

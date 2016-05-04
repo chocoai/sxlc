@@ -18,6 +18,10 @@
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
    	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
+   	<script type="text/javascript" src="js/common/template.js"></script>
+   	<script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
    	<div class="main">
    		<div class="clearfix">
 		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
@@ -35,24 +39,24 @@
    						<div class="bidEnd">投标结束</div>
    					</div>
    					<div class="myInvestmentM">
-   						<ul class="recycleUl">
+   						<ul class="recycleUl" id="recycleUl">
    							<li>
    								<div class="myInvestmentMTitle">
 					   				<div class="productNum">项目编号</div>
 					   				<div class="productName">项目名称</div>
 					   				<div class="lender">借款人</div>
 					   				<div class="investNum">投资金额</div>
-					   				<div class="remainingNum">剩余期数<em class="iconDown"></em></div>
+					   				<div class="remainingNum" id="remainingNum">剩余期数<em class="iconDown"></em></div>
 					   				<div class="remainingMoney">剩余本金</div>
 					   				<div class="remainingInterest">剩余利息</div>
-					   				<div class="nextPaymentT">下期回款时间<em class="iconDown"></em></div>
+					   				<div class="nextPaymentT" id="nextPaymentT">下期回款时间<em class="iconDown"></em></div>
 					   				<div class="nextPaymentM">下期回款本金</div>
 					   				<div class="nextPaymentI">下期回款利息</div>
 					   				<div class="opreations">操作</div>
 		   						</div>
    							</li>
-   							<%for(int i=0;i<5;i++){%>
-   							<li>
+   							
+   							<!-- <li>
    								<div class="productNum divOutside">
 		   							<div class="divIntside">
 		   								<div> XMBH-<br>00000001</div>
@@ -111,93 +115,169 @@
 		   								<div class="supervise"><span></span><a href="#">贷后监管</a></div>
 		   							</div>
 		   						</div>
-   							</li>
-   							<%}%>
-   							<li class="page"><div id="pager"></div></li>
+   							</li> -->
+   							
    						</ul>
-   						<ul class="settledUl">
-   							<li>
-   								<div class="myInvestmentMTitle">
-					   				<div class="productNum">项目编号</div>
-					   				<div class="productName">项目名称</div>
-					   				<div class="lender">借款人</div>
-					   				<div class="investNum">投资金额<em class="iconDown"></em></div>
-					   				<div class="annualInterestRate">年利率化</div>
-					   				<div class="totalRevenue">收益总额<em class="iconDown"></em></div>
-					   				<div class="lendingTime">放款时间<em class="iconDown"></em></div>
-					   				<div class="closingTime">结清时间<em class="iconDown"></em></div>
-					   				<div class="opreations">操作</div>
-		   						</div>
-   							</li>
-   							<%for(int i=0;i<5;i++){%>
-   							<li>
+   						<!-- 回收中模版 -->
+   						<script id="recy_list" type="text/html">
+						{{each infos as infos index}}
+							<li>
    								<div class="productNum divOutside">
 		   							<div class="divIntside">
-		   								<div> XMBH-<br>00000001</div>
+		   								<div>{{infos.projectNo}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div>借款信用贷</div>
-		   								<div>买房急需钱</div>
+		   								<div>{{infos.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="lender divOutside">
 		   							<div class="divIntside">
-		   								<div>刘***5</div>
+		   								<div>{{infos.membername}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="investNum divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">2200</div>
+		   								<div class="moneyFormat">{{$toFixed infos.investAmounts}}</div>
 		   							</div>
 		   						</div>
-		   						<div class="annualInterestRate divOutside">
+		   						<div class="remainingNum divOutside">
 		   							<div class="divIntside">
-		   								<div>8.00%</div>
+										{{if infos.deadlineType=="0"}}
+		   									<div>{{infos.remianindex}}天</div>
+										{{/if}}
+										{{if infos.deadlineType=="1"}}
+		   									<div>{{infos.remianindex}}个月</div>
+										{{/if}}
+										{{if infos.deadlineType=="2"}}
+		   									<div>{{infos.remianindex}}年</div>
+										{{/if}}
 		   							</div>
 		   						</div>
-		   						<div class="totalRevenue divOutside">
+		   						<div class="remainingMoney divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">2200</div>
+		   								<div class="moneyFormat">{{$toFixed infos.remaimPrincipals}}</div>
 		   							</div>
 		   						</div>
-		   						<div class="lendingTime divOutside">
+		   						<div class="remainingInterest divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div class="moneyFormat">{{$toFixed infos.remaimInterests}}</div>
 		   							</div>
 		   						</div>
-		   						<div class="closingTime divOutside">
+		   						<div class="nextPaymentT divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div>{{$toDelete infos.nextReplayDay}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="nextPaymentM divOutside">
+		   							<div class="divIntside">
+		   								<div class="moneyFormat">{{$toFixed infos.nextPrincipals}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="nextPaymentI divOutside">
+		   							<div class="divIntside">
+		   								<div class="moneyFormat">{{$toFixed infos.nextInterests}}</div>
 		   							</div>
 		   						</div>
    								<div class="opreations divOutside">
 		   							<div class="divIntside">
-		   								<div class="profitPlan"><a href="investmentManagement/revenueRecord.html">收益计划</a></div>
+		   								<div class="profitPlan"><a href="investmentManagement/revenuePlan/{{infos.investId}}.html">收益计划</a></div>
 		   								<div class="agreement"><a href="#">协议</a></div>
+		   								<div class="supervise"><span></span><a href="#">贷后监管</a></div>
 		   							</div>
 		   						</div>
-   							</li>
-   							<%}%>
-   							<li class="page"><div id="pager1"></div></li>
-   						</ul>
-   						<ul class="bidingUl">
+							</li>
+						{{/each}}
+						<li class="page"><div id="pager"></div></li>
+   						</script>
+   						<ul class="settledUl" id="settledUl">
    							<li>
    								<div class="myInvestmentMTitle">
 					   				<div class="productNum">项目编号</div>
 					   				<div class="productName">项目名称</div>
 					   				<div class="lender">借款人</div>
-					   				<div class="investNum">投资金额<em class="iconDown"></em></div>
-					   				<div class="annualInterestRate">年化利率</div>
-					   				<div class="investmentProgress">投资进度<em class="iconDown"></em></div>
-					   				<div class="bidTerm">期限</div>
-					   				<div class="repaymentMethod">还款方式<em class="iconDown"></em></div>
-					   				<div class="biddingTime">投标时间</div>
+					   				<div class="investNum" id="settled_investNum">投资金额<em class="iconDown"></em></div>
+					   				<div class="annualInterestRate">年利率化</div>
+					   				<div class="totalRevenue" id="settled_totalRevenue">收益总额<em class="iconDown"></em></div>
+					   				<div class="lendingTime" id="settled_lendingTime">放款时间<em class="iconDown"></em></div>
+					   				<div class="closingTime" id="settled_closingTime">结清时间<em class="iconDown"></em></div>
+					   				<div class="opreations">操作</div>
 		   						</div>
    							</li>
-   							<%for(int i=0;i<5;i++){%>
+
+
+   						</ul>
+   						<!--已结清 模版  -->
+   						<script id="settled_list" type="text/html">
+						{{each infos as infos index}}
+							 <li>
+   								<div class="productNum divOutside">
+		   							<div class="divIntside">
+		   								<div> infos.projectNo</div>
+		   							</div>
+		   						</div>
+		   						<div class="productName divOutside">
+		   							<div class="divIntside">
+		   								<div>infos.projectTitle</div>
+		   							</div>
+		   						</div>
+		   						<div class="lender divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.membername}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="investNum divOutside">
+		   							<div class="divIntside">
+		   								<div class="moneyFormat">{{$toFixed infos.investAmounts}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="annualInterestRate divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.yearRate}}%</div>
+		   							</div>
+		   						</div>
+		   						<div class="totalRevenue divOutside">
+		   							<div class="divIntside">
+		   								<div class="moneyFormat">{{$toFixed infos.totalincomes}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="lendingTime divOutside">
+		   							<div class="divIntside">
+		   								<div>{{$toDelete infos.holdDate}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="closingTime divOutside">
+		   							<div class="divIntside">
+		   								<div>{{$toDelete settleDate}}</div>
+		   							</div>
+		   						</div>
+   								<div class="opreations divOutside">
+		   							<div class="divIntside">
+		   								<div class="profitPlan"><a href="investmentManagement/revenuePlan/{{infos.investId}}.html">收益计划</a></div>
+		   								<div class="agreement"><a href="#">协议</a></div>
+		   							</div>
+		   						</div>
+   							</li>
+							{{/each}}
+   							<li class="page"><div id="pager1"></div></li>
+   						</script>
+   						<ul class="bidingUl" id="bidingUl">
    							<li>
+   								<div class="myInvestmentMTitle">
+					   				<div class="productNum">项目编号</div>
+					   				<div class="productName">项目名称</div>
+					   				<div class="lender">借款人</div>
+					   				<div class="investNum" id="biding_investNum">投资金额<em class="iconDown"></em></div>
+					   				<div class="annualInterestRate">年化利率</div>
+					   				<div class="investmentProgress" id="biding_investmentProgress">投资进度<em class="iconDown"></em></div>
+					   				<div class="bidTerm">期限</div>
+					   				<div class="repaymentMethod">还款方式</div>
+					   				<div class="biddingTime" id="biding_biddingTime">投标时间<em class="iconDown"></em></div>
+		   						</div>
+   							</li>
+   							
+   							<!-- <li>
    								<div class="productNum divOutside">
 		   							<div class="divIntside">
 		   								<div> XMBH-<br>00000001</div>
@@ -245,24 +325,85 @@
 		   							</div>
 		   						</div>
    							</li>
-   							<%}%>
-   							<li class="page"><div id="pager2"></div></li>
+   							
+   							<li class="page"><div id="pager2"></div></li> -->
    						</ul>
-   						<ul class="bidMissedUl">
+   						<!-- 投标中 模版 -->
+   						<script id="biding_list" type="text/html">
+							{{each infos as infos index}}
+   								<li>
+   								<div class="productNum divOutside">
+		   							<div class="divIntside">
+		   								<div> infos.projectNo</div>
+		   							</div>
+		   						</div>
+		   						<div class="productName divOutside">
+		   							<div class="divIntside">
+		   								<div>infos.projectTitle</div>
+		   							</div>
+		   						</div>
+		   						<div class="lender divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.membername}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="investNum divOutside">
+		   							<div class="divIntside">
+		   								<div class="moneyFormat">{{$toFixed infos.investAmounts}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="annualInterestRate divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.yearRate}}%</div>
+		   							</div>
+		   						</div>
+		   						<div class="investmentProgress divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.investRates}}%</div>
+		   							</div>
+		   						</div>
+		   						<div class="bidTerm divOutside">
+		   							<div class="divIntside">
+										{{if infos.deadlineType=="0"}}
+		   									<div>{{infos.deadline}}天</div>
+										{{/if}}
+										{{if infos.deadlineType=="1"}}
+		   									<div>{{infos.deadline}}个月</div>
+										{{/if}}
+										{{if infos.deadlineType=="2"}}
+		   									<div>{{infos.deadline}}年</div>
+										{{/if}}
+		   							</div>
+		   						</div>
+		   						<div class="repaymentMethod divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.replayways}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="biddingTime divOutside">
+		   							<div class="divIntside">
+		   								<div>{{$toDelete infos.startDate}}</div>
+		   							</div>
+		   						</div>
+   							</li>
+   							{{/each}}
+   							<li class="page"><div id="pager2"></div></li>
+   						</script>
+   						<ul class="bidMissedUl" id="bidMissedUl">
    							<li>
    								<div class="myInvestmentMTitle">
 					   				<div class="productNum">项目编号</div>
 					   				<div class="productName">项目名称</div>
 					   				<div class="lender">借款人</div>
-					   				<div class="investNum">投资金额<em class="iconDown"></em></div>
+					   				<div class="investNum" id="bidMissed_investNum">投资金额<em class="iconDown"></em></div>
 					   				<div class="annualInterestRate">年利率化</div>
 					   				<div class="bidTerm">期限</div>
-					   				<div class="biddingTime">投标时间<em class="iconDown"></em></div>
-					   				<div class="bidMissedTime">流标时间<em class="iconDown"></em></div>
+					   				<div class="biddingTime" id="bidMissed_biddingTime">投标时间<em class="iconDown"></em></div>
+					   				<div class="bidMissedTime" id="bidMissed_bidMissedTime">流标时间<em class="iconDown"></em></div>
 		   						</div>
    							</li>
-   							<%for(int i=0;i<5;i++){%>
-   							<li>
+   							
+   							<!-- <li>
    								<div class="productNum divOutside">
 		   							<div class="divIntside">
 		   								<div> XMBH-<br>00000001</div>
@@ -305,25 +446,81 @@
 		   							</div>
 		   						</div>
    							</li>
-   							<%}%>
-   							<li class="page"><div id="pager3"></div></li>
+   							
+   							<li class="page"><div id="pager3"></div></li> -->
    						</ul>
-   						<ul class="bidEndUl">
+   						<!-- 已流标 模版 -->
+   						<script id="bidMissed_list" type="text/html">
+						{{each infos as infos index}}
+   							 <li>
+   								<div class="productNum divOutside">
+		   							<div class="divIntside">
+		   								<div> infos.projectNo</div>
+		   							</div>
+		   						</div>
+		   						<div class="productName divOutside">
+		   							<div class="divIntside">
+		   								<div>infos.projectTitle</div>
+		   							</div>
+		   						</div>
+		   						<div class="lender divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.membername}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="investNum divOutside">
+		   							<div class="divIntside">
+		   								<div class="moneyFormat">{{$toFixed infos.investAmounts}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="annualInterestRate divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.yearRate}}%</div>
+		   							</div>
+		   						</div>
+		   						<div class="bidTerm divOutside">
+		   							<div class="divIntside">
+		   								{{if infos.deadlineType=="0"}}
+		   									<div>{{infos.deadline}}天</div>
+										{{/if}}
+										{{if infos.deadlineType=="1"}}
+		   									<div>{{infos.deadline}}个月</div>
+										{{/if}}
+										{{if infos.deadlineType=="2"}}
+		   									<div>{{infos.deadline}}年</div>
+										{{/if}}
+		   							</div>
+		   						</div>
+		   						<div class="biddingTime divOutside">
+		   							<div class="divIntside">
+		   								<div>{{$toDelete infos.startDate}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="bidMissedTime divOutside">
+		   							<div class="divIntside">
+		   								<div>{{$toDelete infos.holdDate}}</div>
+		   							</div>
+		   						</div>
+   							</li>
+   						{{/each}}
+   							<li class="page"><div id="pager3"></div></li>
+   						</script>
+   						<ul class="bidEndUl" id="bidEndUl">
    							<li>
    								<div class="myInvestmentMTitle">
 					   				<div class="productNum">项目编号</div>
 					   				<div class="productName">项目名称</div>
 					   				<div class="lender">借款人</div>
-					   				<div class="investNum">投资金额<em class="iconDown"></em></div>
+					   				<div class="investNum" id="bidEnd_investNum">投资金额<em class="iconDown"></em></div>
 					   				<div class="annualInterestRate">年利率化</div>
 					   				<div class="bidTerm">期限</div>
 					   				<div class="repaymentMethod">还款方式</div>
-					   				<div class="biddingTime">投标时间<em class="iconDown"></em></div>
-					   				<div class="biddingEndTime">投标结束时间<em class="iconDown"></em></div>
+					   				<div class="biddingTime" id="bidEnd_biddingTime">投标时间<em class="iconDown"></em></div>
+					   				<div class="biddingEndTime" id="bidEnd_biddingEndTime">投标结束时间<em class="iconDown"></em></div>
 		   						</div>
    							</li>
-   							<%for(int i=0;i<5;i++){%>
-   							<li>
+   							
+   							<!-- <li>
    								<div class="productNum divOutside">
 		   							<div class="divIntside">
 		   								<div> XMBH-<br>00000001</div>
@@ -371,11 +568,72 @@
 		   							</div>
 		   						</div>
    							</li>
-   							<%}%>
-   							<li class="page"><div id="pager4"></div></li>
+   							
+   							<li class="page"><div id="pager4"></div></li> -->
    						</ul>
+   						
    					</div>
-   					<div id="pager"></div>
+   					<!-- 投标结束 模版 -->
+   					<script id="bidEnd_list" type="text/html">
+						{{each infos as value index}}
+							<li>
+   								<div class="productNum divOutside">
+		   							<div class="divIntside">
+		   								<div> infos.projectNo</div>
+		   							</div>
+		   						</div>
+		   						<div class="productName divOutside">
+		   							<div class="divIntside">
+		   								<div>infos.projectTitle</div>
+		   							</div>
+		   						</div>
+		   						<div class="lender divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.membername}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="investNum divOutside">
+		   							<div class="divIntside">
+		   								<div class="moneyFormat">{{$toFixed infos.investAmounts}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="annualInterestRate divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.yearRate}}%</div>
+		   							</div>
+		   						</div>
+		   						<div class="bidTerm divOutside">
+		   							<div class="divIntside">
+		   								{{if infos.deadlineType=="0"}}
+		   									<div>{{infos.deadline}}天</div>
+										{{/if}}
+										{{if infos.deadlineType=="1"}}
+		   									<div>{{infos.deadline}}个月</div>
+										{{/if}}
+										{{if infos.deadlineType=="2"}}
+		   									<div>{{infos.deadline}}年</div>
+										{{/if}}
+		   							</div>
+		   						</div>
+		   						<div class="repaymentMethod divOutside">
+		   							<div class="divIntside">
+		   								<div>{{infos.replayways}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="biddingTime divOutside">
+		   							<div class="divIntside">
+		   								<div>{{$toDelete infos.startDate}}</div>
+		   							</div>
+		   						</div>
+		   						<div class="biddingEndTime divOutside">
+		   							<div class="divIntside">
+		   								<div>{{$toDelete infos.endDate}}</div>
+		   							</div>
+		   						</div>
+   							</li>
+   							{{/each}}
+   							<li class="page"><div id="pager4"></div></li>
+					</script>
    				</div>
    				<!-- 主体部分结束 王延君 2016-04-01 -->
    				</div>

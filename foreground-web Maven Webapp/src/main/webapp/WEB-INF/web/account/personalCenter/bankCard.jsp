@@ -11,12 +11,18 @@
 	<base href="<%=basePath%>">
     <title>银行卡</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/bankCard.css">
+	
 </head>
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
    	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
+   	
+   	<script type="text/javascript" src="js/common/template.js"></script>
    	<div class="main">
    		<div class="clearfix">
 		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
@@ -33,9 +39,9 @@
 	   						<span>+</span>添加银行卡<!--添加背景图  -->
 	   					</div>		
 	   				</div>
-	   				<ul class="card-list">
-	   					<li>
-	   						<div class="bank-name BOC"><!--中国银行BOC 邮政储蓄银行POSB  -->
+	   				<ul class="card-list" id="bankListSelect">
+<!-- 	   					<li>
+	   						<div class="bank-name BOC">中国银行BOC 邮政储蓄银行POSB 
 	   							<img src="resource/img/account/personalCenter/zjgl_9.png">
 	   							中国银行
 	   						</div>
@@ -48,30 +54,32 @@
 	   								修改
 	   							</div>
 	   							<div class="delete">
-	   								删除<!--添加背景图  -->
+	   								删除添加背景图 
 	   							</div>
 	   						</div>
-	   					</li>
-	   					<% for(int j = 0; j<3;j++){ %>
+	   					</li> -->
+				<script id="bankList" type="text/html">
+					{{each data as value index}}
 	   					<li>
-	   						<div class="bank-name POSB"><!--中国银行BOC 邮政储蓄银行POSB  -->
+	   						<div class="bank-name BOC"><!--中国银行BOC 邮政储蓄银行POSB  -->
 	   							<img src="resource/img/account/personalCenter/zjgl_9.png">
-	   							邮政储蓄银行
+	   							{{value.bankName}}
 	   						</div>
 	   						<div class="bank-card-num">
-	   							6214************123
+	   							{{value.bankCardInfoEntity.bankNo.substring(0,4)+"****"+value.bankCardInfoEntity.bankNo.substring(value.bankCardInfoEntity.bankNo.length-4,value.bankCardInfoEntity.bankNo.length)}}
 	   							<span>借记卡</span>
 	   						</div>
 	   						<div class="deal">
-	   							<div class="change">
+	   							<div class="change"  >
 	   								修改
 	   							</div>
-	   							<div class="delete">
-	   								删除<!--添加背景图  -->
+	   							<div class="delete" id="{{value.receiveCard}}" >
+	   								删除
 	   							</div>
 	   						</div>
 	   					</li>
-	   					<% } %>
+					{{/each}}
+   				</script>	   					
 	   				</ul>
 	   				<div class="remind">
 	   					<h2>&nbsp;&nbsp;&nbsp;&nbsp;温馨提示</h2><!--添加背景图  -->
@@ -88,7 +96,7 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<!--弹出层  -->
    	<div class="addBankCard">
-   			<form id="bankId">
+   		<form id="bankId">
    		<div class="BCremind">亲爱的用户，为了您的财产安全，请认真仔细填写您的银行卡信息</div>
    		<div class="bankcard-top">
    			<div class="input-group">
@@ -102,56 +110,55 @@
    			<div class="input-group">
    				<div class="left-title">开户银行:</div>
    				<div class="selectArea selectArea1">
-   					<input class="selectValue" value="0" >
+   					<input class="selectValue addCard_bankValue" id="addCard_bankValue" value="0" >
 					<input class="selectInput select1" type="text" lang="请选择开户行" readOnly="true"/>
-				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">成都<li>
-				        <li class="selectOption" value="2">广元<li>
-				        <li class="selectOption" value="3">北京<li>
-				        <li class="selectOption" value="4">上海<li>
+				    <ul class="select" id="addCard_selectBank" onselectstart="return false">
+				   
 				    </ul>
 				</div> 
    			</div>
+   			<!-- 这里是查询银行名字的模版 -->
+   			<script id="bankName" type="text/html">
+				{{each data as value index}}
+					<li class="selectOption" value={{value.bankID}}>{{value.bankName}}</li>
+				{{/each}}
+   			</script>
    			<div class="input-group">
    				<div class="left-title">开户行城市:</div>
    				<div class="selectArea">
-   					<input class="selectValue" value="0" >
+   					<input class="selectValue provinceId" value="0" >
 					<input class="selectInput" type="text" lang="请选择省" readOnly="true"/>
-				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">北京<li>
-				        <li class="selectOption" value="2">北京<li>
-				        <li class="selectOption" value="3">北京<li>
-				        <li class="selectOption" value="5">北京<li>
+				    <ul class="select" id="provinceSelect" onselectstart="return false">
+				        
 				    </ul>
 				</div> 
+				<!-- 这里是查询省份名字的模板 -->
+				<script id="provinceName" type="text/html">
+					{{each data as value index}}
+						<li class="selectOption" value={{value.provinceId}}>{{value.provinceName}}</li>
+					{{/each}}
+   				</script>
 				<div class="selectArea">
-					<input class="selectValue" value="0" >
+					<input class="selectValue cityId" value="0" >
 					<input class="selectInput" type="text" lang="请选择市" readOnly="true"/>
-				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">北京<li>
-				        <li class="selectOption" value="2">北京<li>
-				        <li class="selectOption" value="3">北京<li>
-				        <li class="selectOption" value="4">北京<li>
+				    <ul class="select" id="citySelect" onselectstart="return false">
+				        
 				    </ul>
 				</div> 
-				<div class="selectArea">
-					<input class="selectValue" value="0" >
-					<input class="selectInput" type="text" lang="请选择区" readOnly="true"/>
-				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">北京<li>
-				        <li class="selectOption" value="2">北京<li>
-				        <li class="selectOption" value="3">北京<li>
-				        <li class="selectOption" value="5">北京<li>
-				    </ul>
-				</div> 
+				<!-- 这里是查询出城市的模板 -->
+				<script id="cityName" type="text/html">
+					{{each data as value index}}
+						<li class="selectOption" value={{value.cityId}}>{{value.cityName}}<li>
+					{{/each}}
+				</script>
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户行支行:</div>
-   				<input type="text" datatype="zbank" class="select1" lang="请输入开户行支行" maxlength="25">
+   				<input type="text" datatype="zbank" class="select1" id="zbank" lang="请输入开户行支行" maxlength="25">
    			</div>
    			<div class="input-group">
    				<div class="left-title">银行卡号:</div>
-   				<input type="text" datatype="zbankNum" name="passID_card" class="select1 numberReg cardId1" lang="请输入银行卡号" maxlength="19">
+   				<input type="text" datatype="zbankNum" name="passID_card" id="passID_card" class="select1 numberReg cardId1" lang="请输入银行卡号" maxlength="19">
    			</div>
    			<div class="input-group">
    				<div class="left-title">确认银行卡号:</div>
@@ -160,14 +167,15 @@
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户手机号:</div>
-   				<input type="text" datatype="zPhone" class="select1 numberReg phoneBind" lang="请输入开户手机号" maxlength="11">
+   				<input type="text" datatype="zPhone" id="zPhone" class="select1 numberReg phoneBind" lang="请输入开户手机号" maxlength="11">
    			</div>
    		</div>
    		<div class="bankcard-bottom">
-   			<input type="button" value="立即添加" class="btn" onclick="layer.closeAll()">
+   			<input type="submit" value="立即添加"  class="btn">
    		</div>
    		</form>
    	</div>
+   	
    	<div class="changeBankCard">
    		<form id="xiuGai_Kard">
    		<div class="BCremind">亲爱的用户，为了您的财产安全，请认真仔细填写您的银行卡信息</div>
@@ -244,7 +252,8 @@
    		</div>
    		</form>
    	</div>
+   	<script type="text/javascript" src="js/account/personalCenter/bankCard.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" src="js/account/personalCenter/bankCard.js"></script>
+	
 </body>
 </html>

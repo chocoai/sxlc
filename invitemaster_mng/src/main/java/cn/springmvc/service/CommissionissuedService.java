@@ -20,6 +20,7 @@ import cn.invitemastermng.model.AwardRecordEntity;
 import cn.invitemastermng.model.BayVIPEntity;
 import cn.invitemastermng.model.BorrowingDetailedEntity;
 import cn.invitemastermng.model.InvestDetailedEntity;
+import cn.invitemastermng.model.InvestRepaymentEntity;
 
 /**
  * 
@@ -130,5 +131,27 @@ public interface CommissionissuedService {
 	 * @date 2016-4-5 下午3:21:22
 	 */
 	public List<AwardPaymentRecordEntity> getAwardRecordsInvite(PageEntity page);
+	
+	/**
+	 * 理财顾问还本明细
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param page
+	 * @param @return 设定文件 
+	 * @return List<InvestRepaymentEntity> 返回类型 
+	 * @date 2016-4-28 下午7:59:09
+	 */
+	public List<InvestRepaymentEntity> getRepaymentAdvisor(PageEntity page);
+	
+	/**
+	 * 推荐达人还本明细
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param page
+	 * @param @return 设定文件 
+	 * @return List<InvestRepaymentEntity> 返回类型 
+	 * @date 2016-4-28 下午8:00:06
+	 */
+	public List<InvestRepaymentEntity> getRepaymentInvite(PageEntity page);
 }
 

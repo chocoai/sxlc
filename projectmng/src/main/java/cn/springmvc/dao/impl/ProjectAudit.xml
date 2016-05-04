@@ -156,7 +156,7 @@
     <select id="projectAudit"  statementType="CALLABLE" parameterType="Map"> 
 	     {call projectAudit(
 				#{ApplyId ,	     mode=IN,	jdbcType=BIGINT},
-				#{Indexs ,	     mode=IN,	jdbcType=INTEGER},
+				#{Indexsnow,	     mode=IN,	jdbcType=INTEGER},
 				#{projectTitle,	 mode=IN,	jdbcType=VARCHAR},
 				#{uses,	         mode=IN,	jdbcType=VARCHAR},
 				#{repaySource,	 mode=IN,	jdbcType=VARCHAR},
@@ -176,6 +176,7 @@
 				#{checkid,	     mode=IN,	jdbcType=INTEGER},
 				#{ProcessID,	 mode=IN,	jdbcType=INTEGER},
 				#{sIndexs,	     mode=IN,	jdbcType=INTEGER},
+				#{affix,	     mode=IN,	jdbcType=VARCHAR},
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)}
 	</select>

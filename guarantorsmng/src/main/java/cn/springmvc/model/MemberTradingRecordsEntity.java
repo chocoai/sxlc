@@ -30,6 +30,7 @@ public class MemberTradingRecordsEntity {
 	private String  userBalances;//可用余额
 	private String  guaranteeName;//交易对方
 	private String  recordDate;//交易时间
+	private String  abstracts;//描述
 	public long getTradeID() {
 		return tradeID;
 	}
@@ -95,6 +96,12 @@ public class MemberTradingRecordsEntity {
 	}
 	public void setRecordDate(String recordDate) {
 		this.recordDate = recordDate;
+	}
+	public String getAbstracts() {
+		return abstracts;
+	}
+	public void setAbstracts(String abstracts) {
+		this.abstracts = abstracts;
 	}
 }
 

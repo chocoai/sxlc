@@ -21,7 +21,7 @@ import java.util.Map;
 @Repository("creditorTransReadDaoImpl")
 public class CreditorTransReadDaoImpl extends AccountDaoSupport implements CreditorTransReadDao {
 
-    public static final String REMARK_FORMAT = "%d,%d,%d,%d,%d,%d,%d,%d,%d";
+    public static final String REMARK_FORMAT = "%d,%d,%d,%d,%d,%d,%d,%d";
     public static final String FORMAT = "%d,%d,%d";
     public static final String REMARK2_FORMAT = FORMAT;
 
@@ -38,7 +38,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
      */
     public long getCreditorMaxInvestAmount(long lProjectId, long lMemberId, long lCreditorTransAppId, String sKey) {
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put(DaoConstant.PARAM_PROJECT_ID, lProjectId);
+//        param.put(DaoConstant.PARAM_PROJECT_ID, lProjectId);
         param.put(DaoConstant.PARAM_MEMBER_ID, lMemberId);
         param.put(DaoConstant.PARAM_CREDITOR_TRANS_APPLY_ID, lCreditorTransAppId);
         param.put(DaoConstant.PARAM_ENCRYPT_KEY, sKey);
@@ -80,11 +80,10 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
      * @throws null TODO(描述)
      */
     @Override
-    public long checkCreditorRecordByMember(long lProjectId, long lMemberId, long lCreditorTransAppId, short sIsAuto,
+    public String checkCreditorRecordByMember(long lProjectId, long lMemberId, long lCreditorTransAppId, short sIsAuto,
                                             long lAmount, String sRedPacketsInfo, long lVouchers, String sKey, long[] lRedPackets) {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put(DaoConstant.PARAM_MEMBER_ID, lMemberId);
-        param.put(DaoConstant.PARAM_PROJECT_ID, lProjectId);
         param.put(DaoConstant.PARAM_CREDITOR_TRANS_APPLY_ID, lCreditorTransAppId);
         param.put(DaoConstant.PARAM_AUTO_TENDER, sIsAuto);
         param.put(DaoConstant.PARAM_TOTAL_AMOUNT, lAmount);
@@ -92,11 +91,16 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
         param.put(DaoConstant.PARAM_VOUCHERS, lVouchers);
         param.put(DaoConstant.PARAM_ENCRYPT_KEY, sKey);
         param.put(DaoConstant.PARAM_RED_PACKETS, 0);
+        param.put("vResult", "");
         param.put(DaoConstant.PARAM_RESULT, 0);
-
+        
         getSqlSession().selectOne(DaoConstant.CREDITOR_TRANS_DAO_CHECK_CREDITOR_RECORD_BY_MEMBER, param);
-
-        return IntegerAndString.StringToInt(param.get(DaoConstant.PARAM_RESULT).toString(), 0);
+        String sResult = "验证失败";
+        if(param.get("vResult")!=null){
+        	sResult =  param.get("vResult").toString();
+        }
+        return sResult;
+//        return IntegerAndString.StringToInt(param.get(DaoConstant.PARAM_RESULT).toString(), 0);
     }
 
     /**
@@ -115,7 +119,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
      * @throws null
      */
     @Override
-    public TransferSubmitEntity getCreditorTransInfo(short sIsAuto, long lMemberId, long lProjectId, long lCreditorTransAppId,
+    public TransferSubmitEntity getCreditorTransInfo(short sIsAuto, long lMemberId, long lCreditorTransAppId,
                                                      long lAmount, long lRedPackets, long lVouchers, short sClient) {
         TransferSubmitEntity entity = new TransferSubmitEntity();
         entity.setTransferAction(TransferSubmitEntity.TRANSFER_ACTION_TYPE_TENDER);
@@ -136,14 +140,18 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
         //配置转帐URL
         entity.setSubmitURL(interfaceUtil.GetInterfaceUrl(InterfaceConstant.IZHAIQUANTOUBIAO));
 
-        InvestAccountFeeEntity feeEntity = getGuaranteeInfo(lProjectId);
+//        InvestAccountFeeEntity feeEntity = getGuaranteeInfo(lProjectId);
+        //债权转让人第三方账户,转让总金额,债权转让编号
+        InvestAccountFeeEntity feeEntity = GetCreditorTransAccount(lCreditorTransAppId);
+        //债权转让管理费比例
+        long lMngFeeRate = GetTransMngFeeRate();
 
-        long lTotalManageFee = 0;
-        long lInvestManageFee = 0;
-        long lRedPacketsManageFee = 0;
-        long lVouchersManageFee = 0;
-        if (feeEntity.getlMngFee() > 0) {
-            lTotalManageFee = lAmount * feeEntity.getlMngFee() / feeEntity.getlAmountTotal();
+        long lTotalManageFee = 0;				// 管理费总额
+        long lInvestManageFee = 0;				// 自有金额管理费金额
+        long lRedPacketsManageFee = 0;			// 使用红包管理费金额
+        long lVouchersManageFee = 0;			// 使用代金券管理费金额
+        if (lMngFeeRate > 0) {
+            lTotalManageFee = lAmount * lMngFeeRate / feeEntity.getlAmountTotal();
             if (lRedPackets > 0) {
                 lRedPacketsManageFee = lRedPackets * lTotalManageFee / lAmount;
             }
@@ -162,25 +170,25 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
         long lRedPacketsAndVouchersCost = lRedPackets + lVouchers - lRedPacketsManageFee - lVouchersManageFee;
         if (lRedPacketsAndVouchersCost > 0) {
             beanEntity.setLoanOutMoneymoremore(platformMark);
-            beanEntity.setLoanInMoneymoremore(sInvestMark);
+            beanEntity.setLoanInMoneymoremore(feeEntity.getsMemberMark());
             beanEntity.setOrderNo(sOrderNo + orderNoIndex);
             orderNoIndex++;
             beanEntity.setBatchNo(feeEntity.getsProjectNo());
             beanEntity.setAmount(IntegerAndString.LongToString2(lRedPacketsAndVouchersCost));
             beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
-            beanEntity.setTransferName("平台支付给借款人");
+            beanEntity.setTransferName("平台支付给转让人");
             beanEntity.setRemark("A,平台支付给借款人，金额:" + IntegerAndString.LongToString2(lRedPacketsAndVouchersCost));
             List<LoanInfoSecondaryBean> secondList = new ArrayList<LoanInfoSecondaryBean>();
 
             //红包和代金卷所占管理费
-            long redPacketsAndVouchersManageFee = lRedPacketsManageFee + lVouchersManageFee;
+            /*long redPacketsAndVouchersManageFee = lRedPacketsManageFee + lVouchersManageFee;
             if (redPacketsAndVouchersManageFee > 0) {
                 LoanInfoSecondaryBean secondaryEntity = new LoanInfoSecondaryBean();
                 secondaryEntity.setAmount(IntegerAndString.LongToString2(redPacketsAndVouchersManageFee));
                 secondaryEntity.setLoanInMoneymoremore(platformMark);
                 secondaryEntity.setRemark("平台支付管理费");
                 secondList.add(secondaryEntity);
-            }
+            }*/
 
             beanEntity.setLoanInfoSecondaryBeanList(secondList);
             loanInfoBeanSubmits.add(beanEntity);
@@ -195,7 +203,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
             beanEntity.setBatchNo(feeEntity.getsProjectNo());
             beanEntity.setAmount(IntegerAndString.LongToString2(lRealAmount));
             beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
-            beanEntity.setTransferName("投资人支付给借款人");
+            beanEntity.setTransferName("投资人支付给转让人");
             beanEntity.setRemark("B,投资人支付给借款人，金额:" + IntegerAndString.LongToString2(lRealAmount));
 
             List<LoanInfoSecondaryBean> secondList = new ArrayList<LoanInfoSecondaryBean>();
@@ -216,7 +224,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
         entity.setLoanInfoBeanSubmits(loanInfoBeanSubmits);
 
         //使用红包，使用代金券
-        String remark = String.format(REMARK_FORMAT, lProjectId, lMemberId, lCreditorTransAppId,
+        String remark = String.format(REMARK_FORMAT, lMemberId, lCreditorTransAppId,
                 lRealAmount, lRedPackets, lVouchers, sIsAuto, sClient);
 
         entity.setRemark1(remark);
@@ -225,5 +233,53 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
         entity.setRemark2(remark);
 
         return entity;
+    }
+    
+    /**
+     * 获取债权转让人 第三方账户
+    * GetCreditorTransAccount 获取债权转让人 第三方账户
+    * TODO(描述)
+    * @author 张友  
+    * * @Title: GetCreditorTransAccount 
+    * @Description: TODO 
+    * @param  lTransId		债权转让申请id
+    * @param @return 设定文件 	债权转让人 第三方账户
+    * @return String 返回类型 
+    * @date 2016-5-2 下午3:14:32
+    * @throws null
+     */
+    private InvestAccountFeeEntity GetCreditorTransAccount(long lTransId){
+    	InvestAccountFeeEntity sResult = null;
+    	
+    	Map<String, Object> param = new HashMap<String, Object>();
+        param.put("transId", lTransId);
+        
+        sResult = getSqlSession().selectOne("CreditorTrans.GetCreditorTransAccount", param);
+    	param = null;
+        
+    	return sResult;
+    }
+    
+    /**
+     * 获取债权转让 管理费
+    * GetTransMngFeeRate 获取债权转让 管理费
+    * TODO(描述)
+    * @author 张友  
+    * * @Title: GetTransMngFeeRate 
+    * @Description: TODO 
+    * @param @return 设定文件 
+    * @return long 返回类型 
+    * @date 2016-5-2 下午3:18:37
+    * @throws null
+     */
+    private long GetTransMngFeeRate(){
+    	long lResult = 0;
+    	
+    	Map<String, Object> param = new HashMap<String, Object>();
+        
+        lResult = getSqlSession().selectOne("CreditorTrans.GetTransMngFeeRate", param);
+    	param = null;
+    	
+    	return lResult;
     }
 }

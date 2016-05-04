@@ -18,6 +18,28 @@
 	</select>
 	
 	
+	<!-- 根据 -->
+	<select id="getAllByMemberAndLoanType" parameterType="Map" resultType="cn.membermng.model.BorrowingTypeInfo">
+	 select 
+	 Attest_Id				as attestId,
+	 Attest_Type			as attestType,
+	 Attest_Status			as status,
+	 di.tname				as statusName,
+	 end_Date				as endDate,
+	 (
+	 	select 
+	 	Attest_TypeName 
+	 	from Member_Attest_Type mat 
+	 	left join Member_Attest_Info mai on mai.Attest_Type_ID = mat.Attest_Type_ID
+	 	where mai.Certification_ID = pai.Attest_Id
+	 )as attestTypeName
+	 from Project_Attest_info pai
+	 left join dict di on di.code1 = pai.Attest_Status
+	 where Attest_Id = #{projectId} and di.tcode='DICT_HYRZZT'
+	</select>
+	
+	
+	
 	<!-- 个人会员实名认证 -->
 	<select id="authRealName" statementType="CALLABLE" parameterType="Map">
 		call authRealName(
@@ -91,8 +113,12 @@
 	</select>
 	
 	<!-- 查看企业|个人通用认证 -->
-	<select id="showCurrencyAuth" parameterType="Map" resultType="Map">
-		select if(mai.End_Date is null,'',mai.End_Date) as endDate,group_concat(paa.Attach_Name) as attachName,paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath,status
+	<select id="showCurrencyAuth" parameterType="Map" resultType="cn.membermng.model.CurrencyAuth">
+		select 
+		if(mai.End_Date is null,'',mai.End_Date) as endDate,
+		group_concat(paa.Attach_Name) as attachName,
+		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath,
+		status
 		from Member_Attest_Info mai 
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
 		where mai.Member_ID = #{memberId} and mai.Member_Type = #{memberType} and Attest_Type_ID = #{typeId} 

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="RewarSetXML" >
+  <resultMap id="RewarSet" type="cn.springmvc.model.RewardSetEntity" >
+    <result column="Grade_ID" property="id"/>
+    <result column="Reward_ID" property="id"/>
+    <result column="Grade_Name" property="gradeName"/>
+    <result column="Total_Invest" property="totalInvest"/>
+    <result column="Grade_Remark" property="gradeRemark"/>
+    <result column="VIP_Reward" property="vIPReward"/>
+    <result column="Borrow_Reward" property="borrowReward"/>
+    <result column="Repay_Reward" property="repayReward"/>
+    <result column="Invest_Reward" property="investReward"/>
+    <result column="Statu" property="statu"/>
+  </resultMap>
+  <!--modified by TGF @2016-4-25修改id列名  -->
+  <sql id="RewarSet_Column_List" >
+   	<if test="map.type==0">Grade_ID,</if>
+  	<if test="map.type==1">Reward_ID,</if>
+   	 Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward,Statu	
+  </sql>
+  <select id="selectRewarSetByType" resultMap="RewarSet" parameterType="product_p2p.kit.pageselect.PageEntity">
+  	select <include refid="RewarSet_Column_List"></include> 
+  	from 
+  	<if test="map.type==0">InviteMaster_Reward_Set</if>
+  	<if test="map.type==1">FinancialAdvisor_Reward_Set</if>
+  	where Statu=1 order by Total_Invest asc
+  </select>
+  <!-- 查询当前最大金额等级值 -->
+  <select id="selectMaxTotalInvest" resultMap="RewarSet" parameterType="Map">
+  	select <include refid="RewarSet_Column_List"></include> 
+  	from 
+  	<if test="map.type==0">InviteMaster_Reward_Set</if>
+  	<if test="map.type==1">FinancialAdvisor_Reward_Set</if>
+  	where Statu=1 order by Total_Invest desc limit 1
+  </select>
+  <!-- 添加 -->
+  <insert id="insertRewarSet" parameterType="cn.springmvc.model.RewardSetEntity">
+  	insert into 
+  	<if test="type==0">
+  		InviteMaster_Reward_Set(Grade_ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward)
+  	</if>
+  	<if test="type==1">
+  		FinancialAdvisor_Reward_Set(Reward_ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward)
+  	</if>
+  	values(#{id},#{gradeName},#{totalInvest},#{gradeRemark},#{vIPReward},#{borrowReward},#{repayReward},#{investReward});
+  </insert>
+  <!-- 根据id修改提奖设置 -->
+  <update id="updateRewarSet" parameterType="cn.springmvc.model.RewardSetEntity">
+  	update  <if test="type==0">
+  				InviteMaster_Reward_Set
+		  	</if>
+		  	<if test="type==1">
+		  		FinancialAdvisor_Reward_Set
+		  	</if>
+	<set>
+		<if test="gradeName != null">
+  				Grade_Name=#{gradeName},
+		  </if>
+		<if test="totalInvest != null">
+  				Total_Invest=#{totalInvest},
+		  </if>
+		<if test="gradeRemark != null">
+  				Grade_Remark=#{gradeRemark},
+		  </if>
+		VIP_Reward=#{vIPReward},Borrow_Reward=#{borrowReward},Repay_Reward=#{repayReward},Invest_Reward=#{investReward}
+	</set>
+	 <if test="type==0">
+  				where Grade_ID=#{id}
+		  	</if>
+		  	<if test="type==1">
+		  		where Reward_ID=#{id}
+		  	</if>
+  </update>
+  <!-- 删除提奖设置 -->
+  <update id="deleteRewarSet" parameterType="cn.springmvc.model.RewardSetEntity">
+  	update  <if test="type==0">
+  				InviteMaster_Reward_Set
+		  	</if>
+		  	<if test="type==1">
+		  		FinancialAdvisor_Reward_Set
+		  	</if>
+	<set>Statu=0</set>
+	where 
+	<if test="map.type==0">Grade_ID</if>
+  	<if test="map.type==1">Reward_ID</if>
+	=#{id}
+  </update>
+  
+</mapper>

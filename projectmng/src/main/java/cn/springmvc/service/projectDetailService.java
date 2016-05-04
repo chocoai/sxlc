@@ -15,10 +15,10 @@ package cn.springmvc.service;
 import java.util.List; 
   
 import cn.springmvc.model.InvestEntity;
+import cn.springmvc.model.LoanMemberInfoEntity;
 import cn.springmvc.model.LoanRealRepayEntity;
 import cn.springmvc.model.LoanRepayEntity;
-import cn.springmvc.model.MemberAttestTypeEntity;
-import cn.springmvc.model.MemberInfoEntity; 
+import cn.springmvc.model.MemberAttestTypeEntity; 
 import cn.springmvc.model.ProjectAppProcessEntity; 
 import cn.springmvc.model.ProjectAppRecordEntity; 
 import cn.springmvc.model.ProjectCheckAttachEntity;
@@ -30,6 +30,8 @@ import cn.springmvc.model.ProjectCheckAttachEntity;
  * @date 2016-3-21 下午2:10:02  */
 
 public interface projectDetailService {
+	
+	
 	/** 
 	 * 根据项目申请记录id查询项目详情  
 	 * @author 刘利   
@@ -39,6 +41,8 @@ public interface projectDetailService {
 	 * @date 2016-3-21 下午1:55:21 
 	 */
 	public  ProjectAppRecordEntity  selectProjectDetailByID(long projectID);
+	
+	
 	/** 
 	 * 根据借款项目id查询借款会员基本信息 
 	 * TODO(描述)
@@ -48,8 +52,9 @@ public interface projectDetailService {
 	 * @return MemberInfoEntity 会员信息实体 
 	 * @date 2016-3-21 下午3:26:08 
 	 */
-    public MemberInfoEntity selectMemberInfo(long projectID);
+    public LoanMemberInfoEntity selectMemberInfo(long projectID);
   
+    
     /** 
      * 根据项目申请记录id查询项目所需会员认证项 
 	 * @author 刘利   
@@ -59,6 +64,8 @@ public interface projectDetailService {
 	 * @date 2016-3-21 下午1:55:21 
 	 */
 	public  MemberAttestTypeEntity  selectMemberAttestByprojectType(long projectType);
+	
+	
 	/** 
 	 * 通过项目id查询还款计划 
 	 * @author 刘利   

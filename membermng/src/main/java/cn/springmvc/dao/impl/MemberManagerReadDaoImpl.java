@@ -17,9 +17,10 @@ import cn.membermng.model.MemberAttestInfo;
 import cn.membermng.model.MemberBankICardInfos;
 import cn.membermng.model.MemberDetaileInfo;
 import cn.membermng.model.MemberInfo;
-import cn.membermng.model.MemberInfoEntity;
 import cn.membermng.model.MemberInvestmentInfo;
 import cn.membermng.model.MemberThirdInfo;
+import cn.membermng.model.MemberTradingRecordsEntity;
+import cn.membermng.model.TradingTypeEntity;
 import cn.membermng.model.VIPMemberInfos;
 import cn.springmvc.dao.IMemberManagerReadDao;
 
@@ -35,6 +36,15 @@ import cn.springmvc.dao.IMemberManagerReadDao;
 public class MemberManagerReadDaoImpl extends SqlSessionDaoSupport implements IMemberManagerReadDao {
 	
 	
+
+
+	
+	@Autowired
+	@Override
+	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+		// TODO Auto-generated method stub
+		super.setSqlSessionFactory(sqlSessionFactory);
+	}
 	@Override
 	public List<MemberAll> getMembersByParam(PageEntity entity) {
 		return getSqlSession().selectList("memberManagerDao.members",entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
@@ -98,56 +108,63 @@ public class MemberManagerReadDaoImpl extends SqlSessionDaoSupport implements IM
 	
 	
 	@Override
-	public List<VIPMemberInfos> vipMembersByParam(Map<String, Object> param) {
+	public List<VIPMemberInfos> vipMembersByParam(PageEntity entity) {
 		
-		return getSqlSession().selectList("memberManagerDao.vipMembers",param);
+		return getSqlSession().selectList("memberManagerDao.vipMembers",entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
 	
 	
 	@Override
-	public List<MemberInfo> registers(Map<String, Object> param) {
+	public List<MemberInfo> registers(PageEntity entity) {
 		
-		return getSqlSession().selectList("memberManagerDao.registers", param);
+		return getSqlSession().selectList("memberManagerDao.registers", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
 	
 	
 	@Override
-	public List<MemberInfo> authenticationMember(Map<String, Object> param) {
+	public List<MemberInfo> authenticationMember(PageEntity entity) {
 		
-		return getSqlSession().selectList("memberManagerDao.authenticationMember", param);
+		return getSqlSession().selectList("memberManagerDao.authenticationMember", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
-	
 	
 	@Override
-	public List<MemberInfo> loanMember(Map<String, Object> param) {
+	public List<MemberInfo> loanMember(PageEntity entity) {
 		
-		return getSqlSession().selectList("memberManagerDao.loanMember",param);
+		return getSqlSession().selectList("memberManagerDao.loanMember", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
-	
 	
 	@Override
-	public List<MemberInfo> investmentMember(Map<String, Object> param) {
+	public List<MemberInfo> investmentMember(PageEntity entity) {
 		
-		return getSqlSession().selectList("memberManagerDao.investmentMember", param);
+		return getSqlSession().selectList("memberManagerDao.investmentMember",  entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
-	
-	
 	
 	@Override
-	public List<MemberInfo> blackList(Map<String, Object> param) {
-		
-		return getSqlSession().selectList("memberManagerDao.blackList", param);
+	public List<MemberInfo> componentMembers(PageEntity entity) {
+		return getSqlSession().selectList("memberManagerDao.componentMember",  entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
 	
-	
-	
-	
-	@Autowired
 	@Override
-	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-		// TODO Auto-generated method stub
-		super.setSqlSessionFactory(sqlSessionFactory);
+	public List<MemberInfo> blackList(PageEntity entity) {
+		
+		return getSqlSession().selectList("memberManagerDao.blackList", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
 	
+	/**
+	 * 交易类型
+	 */
+	@Override
+	public List<TradingTypeEntity> memberTradingTypes() {
+		return getSqlSession().selectList("memberManagerDao.memberTradingType");
+	}
+
+	/**
+	 * 会员交易记录 
+	 */
+	@Override
+	public List<MemberTradingRecordsEntity> memberTradingList(
+			PageEntity entity) {
+		return getSqlSession().selectList("memberManagerDao.memberTradingList", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+	}
 	
 }

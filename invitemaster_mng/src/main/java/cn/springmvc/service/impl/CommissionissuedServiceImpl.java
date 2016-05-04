@@ -24,6 +24,7 @@ import cn.invitemastermng.model.AwardRecordEntity;
 import cn.invitemastermng.model.BayVIPEntity;
 import cn.invitemastermng.model.BorrowingDetailedEntity;
 import cn.invitemastermng.model.InvestDetailedEntity;
+import cn.invitemastermng.model.InvestRepaymentEntity;
 import cn.springmvc.dao.CommissionissuedListDao; 
 import cn.springmvc.service.CommissionissuedService;
 
@@ -103,6 +104,20 @@ public class CommissionissuedServiceImpl implements CommissionissuedService{
 	public List<AwardPaymentRecordEntity> getAwardRecordsInvite(PageEntity page) {
 		
 		return commissionissuedListDao.getAwardRecordsInvite(page);
+		
+	}
+
+	@Override
+	public List<InvestRepaymentEntity> getRepaymentAdvisor(PageEntity page) {
+		
+		return commissionissuedListDao.getRepaymentAdvisor(page);
+		
+	}
+
+	@Override
+	public List<InvestRepaymentEntity> getRepaymentInvite(PageEntity page) {
+		
+		return commissionissuedListDao.getRepaymentInvite(page);
 		
 	}
 

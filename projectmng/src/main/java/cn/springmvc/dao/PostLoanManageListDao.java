@@ -135,7 +135,7 @@ public interface PostLoanManageListDao {
 	 */
 	public List<ReplayStatisticsEntity> getLatePayments(PageEntity pageEntity);
 	/**
-	 * 催款已还账单查询 
+	 * 催款已还账单查询  --不用了
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param @param pageEntity
@@ -145,7 +145,7 @@ public interface PostLoanManageListDao {
 	 */
 	public List<PostProjectEntity> getLoanRepay(PageEntity pageEntity);
 	/**
-	 * 催收已还 查看账单详情
+	 * 催收已还 查看账单详情 -- 不用了
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param @param pageEntity
@@ -164,5 +164,27 @@ public interface PostLoanManageListDao {
 	 * @date 2016-4-21 下午9:18:39
 	 */
 	public List<PostProjectEntity> getMaturingBill(PageEntity pageEntity);
+	/**
+	 * 查询催收已还
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param pageEntity
+	 *  #{skey}				#{Project_No}		 #{Project_Title}
+	 *  #{Personal_Name}    #{AdminID}          #{Merbill_No}
+	 *  #{orderDsec(1升序，0降序)}      #{ordercolumn}
+	 * @param @return 设定文件 
+	 * @return List<ProjectCollectionEntity> 返回类型 
+	 * @date 2016-4-15 下午5:53:40
+	 */
+	public List<PostProjectEntity> getRepaySettled(PageEntity pageEntity);
+	/**
+	 * 查询即将到期天数
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @return 设定文件 
+	 * @return Integer 返回类型 
+	 * @date 2016-5-1 下午6:13:18
+	 */
+	public Integer getExpirationReminderSet();
 }
 

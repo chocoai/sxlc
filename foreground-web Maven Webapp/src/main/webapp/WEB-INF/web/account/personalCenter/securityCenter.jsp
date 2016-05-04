@@ -52,8 +52,7 @@
    								<c:if test="${securityInfo.thirdStatus == 2 }">已开通</c:if>
    							</span>
    							<span class="tdContent">${securityInfo.thirdPartyAccount}</span>
-
-   							<span class="link linkUnauthen accountSpan"><a>开户</a></span>
+   							<span class="link linkUnauthen accountSpan"><a href="personalCenter/openAccount.html">开户</a></span>
    						</li>
    						<li class="tdSecurity">
    							<span class="tdFirst">手机绑定</span>
@@ -89,7 +88,7 @@
    							<span class="tdFirst">二次分配授权</span>
    							<span class="tdSpan">未绑定</span>
    							<span class="tdContent"></span>
-   							<span class="link linkUnset"><a href="#">设置</a></span>
+   							<span class="link linkUnset"><a href="personalCenter/authorized.html">设置</a></span>
    						</li>
    						<li class="tdSecurity">
    							<span class="tdFirst">登录验证方式</span>

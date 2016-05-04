@@ -9,7 +9,7 @@
     <!-- 查询市信息-->  
 	<select id="selectCityDictionary" parameterType="int"   resultMap="bankInfoMap.resultCityDictionary">
 	   select  Province_Id,City_Name,City_No,City_Code
-	   from  City_Dictionary  cd
+	   from   City_Dictionary  cd
 	   where  Province_Id =#{provinceId}
     </select>  
      <!-- 查询银行信息-->  
@@ -22,11 +22,13 @@
     <!-- 查询会员银行卡信息-->  
 	<select id="selectMemberBankCardList"  parameterType="Map"   resultMap="bankInfoMap.resultMemberBankCard">
 	 select mbc.Receive_Card,mbc.Bank_Card_Id, bci.Bank_No,bci.Bank_Phone,bci.Branch,bci.Branch_Address,
-	 bci.Bank_Id,bci.Card_Province,bci.Card_City,mbc.Bank_Card_Id
+	 bci.Bank_Id,bci.Card_Province,bci.Card_City,mbc.Bank_Card_Id,bi.BankName
 	 from Member_Bank_Card mbc
-	 left join Bank_Card_Info bci on mbc.Bank_Card_Id= bci.Bank_Card_Id
+	 join Bank_Card_Info bci on mbc.Bank_Card_Id= bci.Bank_Card_Id
+	 join Bank_Code bc on bc.Bank_Id = bci.Bank_Id
+	 join Bank_Info bi on bi.Bank_ID = bc.Bank_ID
 	 where mbc.Member_ID=#{memberID} and mbc.Member_Type=#{memberType}  
-	 and mbc.Statu=1
+	 and mbc.Statu=1 order by mbc.Record_Date desc
     </select>   
      <!-- 查询会员银行卡总数量-->  
 	<select id="selectMemberBankCardCount"  parameterType="Map"   resultType="int">
@@ -91,11 +93,12 @@
 	 where  mbc.Statu=1  and  bci.Bank_No = #{bankNo} and  mbc.Receive_Card !=#{receiveCard} 
     </select> 
     <!-- 根据银行卡ID查询会员银行卡信息 用于信息修改-->  
-	<select id="selectMemberBankCardByID"  parameterType="long"   resultMap="bankInfoMap.resultBankCardInfo">
+	<select id="selectMemberBankCardByID"  parameterType="map"   resultMap="bankInfoMap.resultBankCardInfo">
 	 select bci.Bank_No,bci.Bank_Phone,bci.Branch,bci.Branch_Address,
 	 bci.Bank_Id,bci.Card_Province,bci.Card_City
-	 from  Bank_Card_Info bci 
-	 where bci.Bank_Card_Id = #{bankCardId}
+	 from  Member_Bank_Card mbc
+	 join  Bank_Card_Info bci  on mbc.Bank_Card_Id= bci.Bank_Card_Id
+	 where bci.Bank_Card_Id = #{bankCardId}  and  mbc.Member_ID =#{memberID}
     </select>   
      <!-- 查询该银行卡是否是该会员的-->  
 	<select id="selectMemberBankCardisExist"  parameterType="Map"   resultType="int">

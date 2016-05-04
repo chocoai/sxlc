@@ -16,6 +16,7 @@
 		<result column="Record_Date"  property="recordDate" /> 
 		<result column="Remove_Date"  property="removeDate" />
 		<result column="Statu"        property="statu" />  
+		<result column="BankName"     property="bankName" />  
 		<association property="bankCardInfoEntity" resultMap="resultBankCardInfo"></association>
     </resultMap>   
      <!--     银行卡信息 -->

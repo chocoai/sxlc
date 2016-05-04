@@ -237,7 +237,7 @@ $(function(){
 				success:function(json){
 					isExit = false;
 					if(json.statu == 1){
-						window.location.href="personalCenter/baseInformationForPerson.html";
+						window.location.href="accountOverview/accountOverview.html";
 					}else if(json.statu == -3){
 						alert(json.message);
 						$(".codeDiv img").attr("src","authImage.html?parma="+Math.random() * 10);

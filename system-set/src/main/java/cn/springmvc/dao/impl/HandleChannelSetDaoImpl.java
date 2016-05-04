@@ -92,7 +92,12 @@ public class HandleChannelSetDaoImpl extends SqlSessionDaoSupport implements Han
 	}
 
 	
-	
+	@Override
+	public int SetEnableDisable(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return 0;
+		return getSqlSession().update("ChannelSetXML.SetEnableDisable",map);
+	}
 
 }
 

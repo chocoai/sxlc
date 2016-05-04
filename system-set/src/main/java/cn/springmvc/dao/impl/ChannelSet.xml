@@ -274,4 +274,11 @@ SELECT gi.Guarantee_Name logname,pbi.Personal_Name,Msg_Detail,Record_Type,Record
 			<if test="#{map.logname}!=null">logname like '%#{map.logname}%'</if>
 		</where>
   </select>
+  
+  <!-- 设置启用停用消息类型 -->
+  <update id="SetEnableDisable" parameterType="Map">
+  <!-- 状态 0：无效 1：有效 -->
+  	update Message_Format set Statu = #{statu} where Type_ID = #{typeID}
+  
+  </update>
 </mapper>

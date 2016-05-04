@@ -16,5 +16,28 @@
     <context:component-scan base-package="cn.springmvc.service"/>
     <!-- 扫描文件	-->
     <context:component-scan base-package="cn.springmvc.dao.impl"/>
- 
+ 	
+ 	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean" lazy-init="false">  
+        <property name="scheduledTimerTasks">  
+            <list>  
+                <ref local="scheduledIdTask"/>  
+            </list>  
+        </property>  
+    </bean>
+    
+    <bean id="scheduledIdTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">  
+        <property name="delay" value="10000" />  
+        <property name="period" value="600000" />  
+        <property name="timerTask">  
+            <ref bean="methodInvokingIdTask"/>  
+        </property>  
+    </bean>
+    
+    <bean id="methodInvokingIdTask" class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">  
+        <property name="targetObject" ref="idTask"/>  
+        <property name="targetMethod" value="run"/>  
+    </bean> 
+    
+    <bean id="idTask" class="cn.springmvc.timer.IdMngTimer"></bean>  
+ 	
 </beans>

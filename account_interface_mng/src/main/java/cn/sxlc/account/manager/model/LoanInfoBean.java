@@ -59,20 +59,20 @@ public class LoanInfoBean
 	private String Remark = "";
 	
 	//流水号
-	private String LoanNo;
+	//private String LoanNo;
 	
 	/*
 	 * 二次分配列表
 	 */
 	private String SecondaryJsonList = "";
 	
-	public String getLoanNo() {
-		return LoanNo;
-	}
-
-	public void setLoanNo(String loanNo) {
-		LoanNo = loanNo;
-	}
+//	public String getLoanNo() {
+//		return LoanNo;
+//	}
+//
+//	public void setLoanNo(String loanNo) {
+//		LoanNo = loanNo;
+//	}
 
 	public String getLoanOutMoneymoremore()
 	{

@@ -27,6 +27,14 @@ public class ProjectBaseInfoEntity {
 	 */
 	private long maxAmount; 
 	/**
+	 * 最低借款金额
+	 */
+	private String minAmounts; 
+	/**
+	 * 最高借款金额 0：表示无上限
+	 */
+	private String maxAmounts; 
+	/**
 	 * 最低年化利率(‰)
 	 */
 	private int minRate;
@@ -138,27 +146,31 @@ public class ProjectBaseInfoEntity {
 	}
 	public void setMinAmount(long minAmount) {
 		this.minAmount = minAmount;
+		this.minAmounts = IntegerAndString.LongToString(minAmount);
 	}
 	public long getMaxAmount() {
 		return maxAmount;
 	}
 	public void setMaxAmount(long maxAmount) {
 		this.maxAmount = maxAmount;
+		this.maxAmounts = IntegerAndString.LongToString(maxAmount);
 		
 	}
 	public int getMinRate() {
 		return minRate;
 	}
 	public void setMinRate(int minRate) {
-		this.minRate = minRate;
-		this.minRates = IntegerAndString.IntToString(minRate);
+		this.minRate = minRate; 
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.minRates = myformat.format(Double.valueOf(IntegerAndString.IntToString(minRate)));
 	}
 	public int getMaxRate() {
 		return maxRate;
 	}
 	public void setMaxRate(int maxRate) {
 		this.maxRate = maxRate;
-		this.maxRates = IntegerAndString.IntToString(maxRate);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.maxRates = myformat.format(Double.valueOf(IntegerAndString.IntToString(maxRate)));
 	}
 	public int getSingleMin() {
 		return singleMin;
@@ -272,6 +284,18 @@ public class ProjectBaseInfoEntity {
 				+ ", mmaxDaytime=" + mmaxDaytime + ", yminDaytime="
 				+ yminDaytime + ", ymaxDaytime=" + ymaxDaytime
 				+ ", typeString=" + typeString + "]";
+	}
+	public String getMaxAmounts() {
+		return maxAmounts;
+	}
+	public void setMaxAmounts(String maxAmounts) {
+		this.maxAmounts = maxAmounts;
+	}
+	public String getMinAmounts() {
+		return minAmounts;
+	}
+	public void setMinAmounts(String minAmounts) {
+		this.minAmounts = minAmounts;
 	}
 	
 	

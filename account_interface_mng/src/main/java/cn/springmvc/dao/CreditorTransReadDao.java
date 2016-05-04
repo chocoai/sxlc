@@ -49,7 +49,7 @@ public interface CreditorTransReadDao {
      * -17: 转让人不能投资此债权
      * @throws null TODO(描述)
      */
-    long checkCreditorRecordByMember(long lProjectId, long lMemberId, long lCreditorTransAppId, short sIsAuto,
+    String checkCreditorRecordByMember(long lProjectId, long lMemberId, long lCreditorTransAppId, short sIsAuto,
                                      long lAmount, String sRedPacketsInfo, long lVouchers, String sKey, long[] lRedPackets);
 
     /**
@@ -59,7 +59,6 @@ public interface CreditorTransReadDao {
      *
      * @param sIsAuto     自动投标	0：否 1：是
      * @param lMemberId   会员ID
-     * @param lProjectId  项目ID
      * @param lAmount     投资总金额
      * @param lRedPackets 使用红包金额
      * @param lVouchers   使用代金券
@@ -67,6 +66,6 @@ public interface CreditorTransReadDao {
      * @return TransferSubmitEntity 返回类型 	返回调用投资接口对象
      * @throws null
      */
-    TransferSubmitEntity getCreditorTransInfo(short sIsAuto, long lMemberId, long lProjectId, long lCreditorTransAppId,
+    TransferSubmitEntity getCreditorTransInfo(short sIsAuto, long lMemberId, long lCreditorTransAppId,
                                               long lAmount, long lRedPackets, long lVouchers, short sClient);
 }

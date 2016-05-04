@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.membermng.model.BorrowingType;
+import cn.membermng.model.BorrowingTypeInfo;
+import cn.membermng.model.CurrencyAuth;
 import cn.membermng.model.RealNameAuth;
 
 
@@ -31,9 +33,6 @@ public interface IBorrowingCertificationServer {
 	 */
 	public List<BorrowingType> getAllByMember(int memberType,long memberId);
 	
-	
-	
-	
 	/***
 	* 个人会员实名认证
 	* 
@@ -50,7 +49,7 @@ public interface IBorrowingCertificationServer {
 	* @return								-1 已存在认证记录、0提交认证申请成功
 	* @date 2016-3-23 上午11:25:59
 	 */
-	public int authRealName(Long mid,String realName, Integer sex, Integer national,String idCard, String birthplace, String positive, String reverse);
+	public int authRealName(Long mid,String realName, Integer sex, Integer national,String idCard, String birthplace, String positive, String reverse,String endTime);
 
 	/***
 	* 根据会员编号获取实名认证信息
@@ -109,7 +108,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 下午4:30:52
 	*/
-	public Map<String, Object> showCurrencyAuth(Long memberId,int memberType,int typeId);
+	public CurrencyAuth showCurrencyAuth(Long memberId,int memberType,int typeId);
 	
 	/***
 	* 修改企业|个人会员通用认证
@@ -692,6 +691,24 @@ public interface IBorrowingCertificationServer {
 	
 	
 	
+/***
+* =========================================================================================================================================
+* 
+* 额外方法，根据借款类型获取当前会员的认证信息
+* 
+* 
+* ========================================================================================================================================
+***/
+	
+	/***
+	* 根据会员和借款类型获取会员的认证列表
+	* 
+	* @author 李杰
+	* @param projectId				项目编号
+	* @return
+	* @date 2016-4-26 下午1:50:25
+	 */
+	public List<BorrowingTypeInfo> getAllByMemberAndLoanType(long projectId);
 	
 	
 	

@@ -62,7 +62,7 @@ public class LoanReturnInfoBean {
      * 二次分配列表
      */
     private String SecondaryJsonList = "";
-    private List<LoanInfoSecondaryBean> JsonList;
+    //private List<LoanInfoSecondaryBean> JsonList;
 
     public String getLoanOutMoneymoremore() {
         return LoanOutMoneymoremore;
@@ -152,13 +152,13 @@ public class LoanReturnInfoBean {
         AdvanceBatchNo = advanceBatchNo;
     }
 
-    public List<LoanInfoSecondaryBean> getJsonList() {
-        return JsonList;
-    }
-
-    public void setJsonList(List<LoanInfoSecondaryBean> jsonList) {
-        JsonList = jsonList;
-    }
+//    public List<LoanInfoSecondaryBean> getJsonList() {
+//        return JsonList;
+//    }
+//
+//    public void setJsonList(List<LoanInfoSecondaryBean> jsonList) {
+//        JsonList = jsonList;
+//    }
 
 	public String getFullAmount() {
 		return FullAmount;

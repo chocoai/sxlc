@@ -177,8 +177,16 @@ public class PostLoanManageServiceImpl implements PostLoanManageService {
 	}
 	@Override
 	public void getMaturingBill(PageEntity pageEntity) {
-		
+		Integer ExpirationReminderSet = postLoanManageListDao.getExpirationReminderSet(); 
+		pageEntity.getMap().put("Expiration_ReminderSet", ExpirationReminderSet); 
 		List<PostProjectEntity> list = postLoanManageListDao.getMaturingBill(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		
+	}
+	@Override
+	public void getRepaySettled(PageEntity pageEntity) {
+		
+		List<PostProjectEntity> list = postLoanManageListDao.getRepaySettled(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list);
 		
 	}

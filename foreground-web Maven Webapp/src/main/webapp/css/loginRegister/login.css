@@ -75,8 +75,8 @@ input{
 	line-height:40px;
 	margin:10px 0;
 }
-.codeDiv{
-	
+.codeDiv input{
+	float: left;
 }
 .login-btn{
 	width:100%;

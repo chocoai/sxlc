@@ -54,7 +54,7 @@ public class LoanInfoBeanSubmit {
      * 二次分配列表
      */
     private List<LoanInfoSecondaryBean> LoanInfoSecondaryBeanList;
-
+    
 
     public List<LoanInfoSecondaryBean> getLoanInfoSecondaryBeanList() {
         return LoanInfoSecondaryBeanList;

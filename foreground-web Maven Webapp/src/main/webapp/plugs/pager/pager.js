@@ -344,38 +344,38 @@ function getParameter(name) {
 
 //init初始化
 $(function() {
-	var totalPage = 160;//总页数
-	var totalRecords = 390;//总记录条数
-	var pageNo = getParameter('pno');//当前页
-	if (!pageNo) {
-		pageNo = 1;
-	}
-	//生成分页
-	//有些参数是可选的，比如lang，若不传有默认值
-	pager.generPageHtml({
-		pno : pageNo,
-		//总页码
-		total : totalPage,
-		//总数据条数
-		totalRecords : totalRecords,
-		//链接前部
-		hrefFormer : 'pager_test',
-		//链接尾部
-		hrefLatter : '.html',
-		getLink : function(n) {
-			return this.hrefFormer + this.hrefLatter + "?pno=" + n;//自定义格式
-		}
-		
-		//lang参数,选择设置，见js
-		
-		//click模式
-		,
-		mode : 'click',//默认值是link，可选link或者click
-		click : function(n) {
-			this.selectPage(n);
-			return false;
-		}
-	});
+//	var totalPage = 160;//总页数
+//	var totalRecords = 390;//总记录条数
+//	var pageNo = getParameter('pno');//当前页
+//	if (!pageNo) {
+//		pageNo = 1;
+//	}
+//	//生成分页
+//	//有些参数是可选的，比如lang，若不传有默认值
+//	pager.generPageHtml({
+//		pno : pageNo,
+//		//总页码
+//		total : totalPage,
+//		//总数据条数
+//		totalRecords : totalRecords,
+//		//链接前部
+//		hrefFormer : 'pager_test',
+//		//链接尾部
+//		hrefLatter : '.html',
+//		getLink : function(n) {
+//			return this.hrefFormer + this.hrefLatter + "?pno=" + n;//自定义格式
+//		}
+//		
+//		//lang参数,选择设置，见js
+//		
+//		//click模式
+//		,
+//		mode : 'click',//默认值是link，可选link或者click
+//		click : function(n) {
+//			this.selectPage(n);
+//			return false;
+//		}
+//	});
 });
 /*李丽梅 pager1部分开始*/
 /*2016-4-11*/
@@ -720,40 +720,40 @@ function getParameter(name) {
 }
 
 //init初始化
-$(function() {
-	var totalPage = 160;//总页数
-	var totalRecords = 390;//总记录条数
-	var pageNo = getParameter('pno');//当前页
-	if (!pageNo) {
-		pageNo = 1;
-	}
-	//生成分页
-	//有些参数是可选的，比如lang，若不传有默认值
-	pager1.generPageHtml({
-		pno : pageNo,
-		//总页码
-		total : totalPage,
-		//总数据条数
-		totalRecords : totalRecords,
-		//链接前部
-		hrefFormer : 'pager_test',
-		//链接尾部
-		hrefLatter : '.html',
-		getLink : function(n) {
-			return this.hrefFormer + this.hrefLatter + "?pno=" + n;//自定义格式
-		}
-		
-		//lang参数,选择设置，见js
-		
-		//click模式
-		,
-		mode : 'click',//默认值是link，可选link或者click
-		click : function(n) {
-			this.selectPage(n);
-			return false;
-		}
-	});
-});
+//$(function() {
+//	var totalPage = 160;//总页数
+//	var totalRecords = 390;//总记录条数
+//	var pageNo = getParameter('pno');//当前页
+//	if (!pageNo) {
+//		pageNo = 1;
+//	}
+//	//生成分页
+//	//有些参数是可选的，比如lang，若不传有默认值
+//	pager1.generPageHtml({
+//		pno : pageNo,
+//		//总页码
+//		total : totalPage,
+//		//总数据条数
+//		totalRecords : totalRecords,
+//		//链接前部
+//		hrefFormer : 'pager_test',
+//		//链接尾部
+//		hrefLatter : '.html',
+//		getLink : function(n) {
+//			return this.hrefFormer + this.hrefLatter + "?pno=" + n;//自定义格式
+//		}
+//		
+//		//lang参数,选择设置，见js
+//		
+//		//click模式
+//		,
+//		mode : 'click',//默认值是link，可选link或者click
+//		click : function(n) {
+//			this.selectPage(n);
+//			return false;
+//		}
+//	});
+//});
 /*李丽梅 pager1部分结束*/
 /*李丽梅 pager2部分开始*/
 /*2016-4-11*/
@@ -1098,7 +1098,7 @@ function getParameter(name) {
 }
 
 //init初始化
-$(function() {
+/*$(function() {
 	var totalPage = 160;//总页数
 	var totalRecords = 390;//总记录条数
 	var pageNo = getParameter('pno');//当前页
@@ -1131,7 +1131,7 @@ $(function() {
 			return false;
 		}
 	});
-});
+});*/
 /*李丽梅 pager2部分结束*/
 /*王延君 pager3部分开始*/
 /*2016-4-11*/
@@ -1476,7 +1476,7 @@ function getParameter(name) {
 }
 
 //init初始化
-$(function() {
+/*$(function() {
 	var totalPage = 160;//总页数
 	var totalRecords = 390;//总记录条数
 	var pageNo = getParameter('pno');//当前页
@@ -1509,7 +1509,7 @@ $(function() {
 			return false;
 		}
 	});
-});
+});*/
 /*王延君 pager3部分结束*/
 /*王延君 pager4部分开始*/
 /*2016-4-11*/
@@ -1854,7 +1854,7 @@ function getParameter(name) {
 }
 
 //init初始化
-$(function() {
+/*$(function() {
 	var totalPage = 160;//总页数
 	var totalRecords = 390;//总记录条数
 	var pageNo = getParameter('pno');//当前页
@@ -1887,7 +1887,7 @@ $(function() {
 			return false;
 		}
 	});
-});
+});*/
 /*王延君 pager4部分结束*/
 /*王延君 pager5部分开始*/
 /*2016-4-11*/
@@ -2232,40 +2232,40 @@ function getParameter(name) {
 }
 
 //init初始化
-$(function() {
-	var totalPage = 160;//总页数
-	var totalRecords = 390;//总记录条数
-	var pageNo = getParameter('pno');//当前页
-	if (!pageNo) {
-		pageNo = 1;
-	}
-	//生成分页
-	//有些参数是可选的，比如lang，若不传有默认值
-	pager5.generPageHtml({
-		pno : pageNo,
-		//总页码
-		total : totalPage,
-		//总数据条数
-		totalRecords : totalRecords,
-		//链接前部
-		hrefFormer : 'pager_test',
-		//链接尾部
-		hrefLatter : '.html',
-		getLink : function(n) {
-			return this.hrefFormer + this.hrefLatter + "?pno=" + n;//自定义格式
-		}
-		
-		//lang参数,选择设置，见js
-		
-		//click模式
-		,
-		mode : 'click',//默认值是link，可选link或者click
-		click : function(n) {
-			this.selectPage(n);
-			return false;
-		}
-	});
-});
+//$(function() {
+//	var totalPage = 160;//总页数
+//	var totalRecords = 390;//总记录条数
+//	var pageNo = getParameter('pno');//当前页
+//	if (!pageNo) {
+//		pageNo = 1;
+//	}
+//	//生成分页
+//	//有些参数是可选的，比如lang，若不传有默认值
+//	pager5.generPageHtml({
+//		pno : pageNo,
+//		//总页码
+//		total : totalPage,
+//		//总数据条数
+//		totalRecords : totalRecords,
+//		//链接前部
+//		hrefFormer : 'pager_test',
+//		//链接尾部
+//		hrefLatter : '.html',
+//		getLink : function(n) {
+//			return this.hrefFormer + this.hrefLatter + "?pno=" + n;//自定义格式
+//		}
+//		
+//		//lang参数,选择设置，见js
+//		
+//		//click模式
+//		,
+//		mode : 'click',//默认值是link，可选link或者click
+//		click : function(n) {
+//			this.selectPage(n);
+//			return false;
+//		}
+//	});
+//});
 /*王延君 pager5部分结束*/
 
 /*王延君 pager6部分开始*/
@@ -2611,38 +2611,38 @@ function getParameter(name) {
 }
 
 //init初始化
-$(function() {
-	var totalPage = 160;//总页数
-	var totalRecords = 390;//总记录条数
-	var pageNo = getParameter('pno');//当前页
-	if (!pageNo) {
-		pageNo = 1;
-	}
+//$(function() {
+//	var totalPage = 160;//总页数
+//	var totalRecords = 390;//总记录条数
+//	var pageNo = getParameter('pno');//当前页
+//	if (!pageNo) {
+//		pageNo = 1;
+//	}
 	//生成分页
 	//有些参数是可选的，比如lang，若不传有默认值
-	pager6.generPageHtml({
-		pno : pageNo,
-		//总页码
-		total : totalPage,
-		//总数据条数
-		totalRecords : totalRecords,
-		//链接前部
-		hrefFormer : 'pager_test',
-		//链接尾部
-		hrefLatter : '.html',
-		getLink : function(n) {
-			return this.hrefFormer + this.hrefLatter + "?pno=" + n;//自定义格式
-		}
-		
-		//lang参数,选择设置，见js
-		
-		//click模式
-		,
-		mode : 'click',//默认值是link，可选link或者click
-		click : function(n) {
-			this.selectPage(n);
-			return false;
-		}
-	});
-});
+//	pager6.generPageHtml({
+//		pno : pageNo,
+//		//总页码
+//		total : totalPage,
+//		//总数据条数
+//		totalRecords : totalRecords,
+//		//链接前部
+//		hrefFormer : 'pager_test',
+//		//链接尾部
+//		hrefLatter : '.html',
+//		getLink : function(n) {
+//			return this.hrefFormer + this.hrefLatter + "?pno=" + n;//自定义格式
+//		}
+//		
+//		//lang参数,选择设置，见js
+//		
+//		//click模式
+//		,
+//		mode : 'click',//默认值是link，可选link或者click
+//		click : function(n) {
+//			this.selectPage(n);
+//			return false;
+//		}
+//	});
+//});
 /*王延君 pager6部分结束*/

@@ -34,17 +34,44 @@ function loanAmount(){
 	});
 }
 /* 担保借款金额范围结束 */
+
 /* 担保产品类型开始 */
 function productType(){
 	layer.open({
 		type: 1,
-		area: ['455px', '230px'], //高宽
+		area: ['300px', '230px'], //高宽
 		title: "担保产品类型",
 		maxmin: true,
 		content: $("#producttype"),//DOM或内容
+		btn:['确定','返回'],
+		yes: function(index, layero){ //或者使用btn1
+		//确定的回调
+		//判断执行不同方法
+		
+	},cancel: function(index){//或者使用btn2（concel）
+		//取消的回调
+	}
 	});
 }
 /* 担保产品类型结束 */
+
+/* 担保证件管理部分开始 */
+function documentManagement(){
+	$(".right_col").load("web/recommend/re-add/acc-documentManagement.jsp");
+}
+/* 担保证件管理部分结束 */
+
+/* 允许担保借款期限起止范围开始 */
+function termRange(){
+	layer.open({
+		type: 1,
+		area: ['540px', '260px'], //高宽
+		title: "允许担保借款期限起止范围",
+		maxmin: true,
+		content: $("#termrange"),//DOM或内容
+	});
+}
+/* 允许担保借款期限起止范围*/
 /**
  * 开启/关闭自动代偿
  */

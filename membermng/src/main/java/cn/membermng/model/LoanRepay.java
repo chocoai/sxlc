@@ -37,10 +37,14 @@ public class LoanRepay {
 	private String			paidSOverdueInterest;	
 	private Long			paidOberdueFine;			//已还逾期罚金
 	private String			paidSOberdueFine;		
+	private Long            sdReplayTotal;               //应还总额
+	private String          sdReplayTotals;              //应还总额
+	private int             overDay ;                    //逾期天数
 	
-	
+
+
+
 	public LoanRepay() {
-		// TODO Auto-generated constructor stub
 
 	}
 
@@ -296,7 +300,39 @@ public class LoanRepay {
 	public void setPaidSOberdueFine(String paidSOberdueFine) {
 		this.paidSOberdueFine = paidSOberdueFine;
 	}
+
+
+
+	public Long getSdReplayTotal() {
+		return sdReplayTotal;
+	}
+
+
+
+	public void setSdReplayTotal(Long sdReplayTotal) {
+		this.sdReplayTotal = sdReplayTotal;
+		this.sdReplayTotals = IntegerAndString.LongToString(sdReplayTotal);
+	}
 	
+	public String getSdReplayTotals() {
+		return sdReplayTotals;
+	}
+ 
+	public void setSdReplayTotals(String sdReplayTotals) {
+		this.sdReplayTotals = sdReplayTotals;
+	}
+
+
+
+	public int getOverDay() {
+		return overDay;
+	}
+
+
+
+	public void setOverDay(int overDay) {
+		this.overDay = overDay;
+	}
 	
 }
 

@@ -36,6 +36,7 @@
 	<select id="InsertInvestTmp"  statementType="CALLABLE" resultType="Map">
 		<![CDATA[{call InsertInvestTmp(
 				#{lId,					mode=IN,	jdbcType=BIGINT},
+				#{iInvestType,			mode=IN,	jdbcType=TINYINT},
 				#{lProjectId,			mode=IN,	jdbcType=BIGINT},
 				#{lMemberId,			mode=IN,	jdbcType=BIGINT},
 				#{sOrderNo,				mode=IN,	jdbcType=VARCHAR},
@@ -90,4 +91,8 @@
     	]]>
 	</select>
 	
+	<!-- 获取红包使用比例 -->
+	<select id="GetRedpacketsInvestRate" parameterType="Map" resultType="string">
+		select Redpackets_RateMax from System_Set order by Redpackets_RateMax desc limit 0,1
+	</select>
 </mapper>

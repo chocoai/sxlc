@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="loanRepayUrgedSet">
+    <!-- 查询催收账单 -->  
+	<select id="selectLoanRepayUrgedSet"  parameterType="cn.springmvc.model.LoanRepayUrgedSetEntity" resultType="cn.springmvc.model.LoanRepayUrgedSetEntity" >
+	   select Bill_Content as billContent,Bill_Days AS billDays from  Loan_Repay_Urged_Set  
+    </select> 
+    <!-- 新增催收账单 -->  
+	<insert id="insertLoanRepayUrgedSet"  parameterType="cn.springmvc.model.LoanRepayUrgedSetEntity" >    
+		insert into Loan_Repay_Urged_Set (Bill_Content,Bill_Days) values (#{billContent},#{billDays})     
+	</insert> 
+	<!-- 查询催收账单是否存在 -->  
+	<select id="selectLoanRepayUrgedSetIsExist"  resultType="int" >
+	   select count(*) from  Loan_Repay_Urged_Set  
+    </select> 
+    <!-- 修改催收账单信息 -->  
+	<update id="updateLoanRepayUrgedSet"  parameterType="cn.springmvc.model.LoanRepayUrgedSetEntity">
+	   update  Loan_Repay_Urged_Set  
+	   <set>
+	       <if test="billContent != null" >
+	          Bill_Content=#{billContent},
+	       </if> 
+	       <if test="billDays != -1" >
+	          Bill_Days=#{billDays},
+	       </if>
+	    </set>  
+    </update>   
+    <!-- 删除催收账单 -->  
+	<delete id="deleteLoanRepayUrgedSet" >
+	   delete from  Loan_Repay_Urged_Set    
+    </delete>     
+</mapper>

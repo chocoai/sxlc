@@ -52,11 +52,11 @@
   	from Guarantee_Info gi left join personal_base_info pbi on gi.Personal_Id=pbi.Personal_Id
   	<where>
   		<!-- 编号、担保机构名称、营业执照号、联系人姓名、联系人手机号、状态 -->
-  		<!-- <if test="map.guaranteeNo!=null">and gi.Guarantee_NO like '%{map.guaranteeNo}%'</if>
-  		<if test="map.guaranteeName != null">and gi.Guarantee_Name like '%{map.guaranteeName}%'</if>
-  		<if test="map.companyeBLN != null">and gi.Companye_BLN like '%{map.companyeBLN}%'</if>
-  		<if test="map.contactName != null">and gi.Contact_Name like '%{map.contactName}%'</if>
-  		<if test="map.contactPhone !=null">and gi.Contact_Phone like '%{map.contactPhone}%'</if>
+  		 <!-- <if test="map.guaranteeNo!=null">and gi.Guarantee_NO like '%${map.guaranteeNo}%'</if>
+  		<if test="map.guaranteeName != null">and gi.Guarantee_Name like '%${map.guaranteeName}%'</if>
+  		<if test="map.companyeBLN != null">and gi.Companye_BLN like '%${map.companyeBLN}%'</if>
+  		<if test="map.contactName != null">and gi.Contact_Name like '%${map.contactName}%'</if>
+  		<if test="map.contactPhone !=null">and gi.Contact_Phone like '%${map.contactPhone}%'</if>
   		<if test="map.recordStatus != -1">and gi.Record_Status=#{map.recordStatus}</if> -->
   	</where>
   	 order by gi.Add_Time desc
@@ -159,32 +159,41 @@
     <result column="Contact_Name" property="contactName"/>
     <result column="Contact_Phone" property="contactPhone"/>
     <result column="Contact_Email" property="contactEmail"/>
-    <result column="Add_Time" property="cddTime"/>
+    <result column="Add_Time" property="addTime"/>
     <result column="Record_Status" property="recordStatus"/>
     <result column="Delete_Flag" property="deleteFlag"/>
+    <result column="Personal_Name" property="personalName"/>
+    <result column="Personal_IDCard" property="personalIDCard"/>
+    <result column="Personal_Phone" property="personalPhone"/>
+    <result column="ThirdParty_Account" property="thirdPartyAccount"/>
   </resultMap>
   
   
   <!-- 根据资产管理方id 查询资产管理方信息 -->
   <select id="selectManagementInfoById" resultMap="ManagementInfo" parameterType="Map" >
-   	select * from Management_Info where Management_ID=#{managementID};
+   	select mi.*,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone,mti.ThirdParty_Account from Management_Info mi
+   		left join personal_base_info pbi on mi.Personal_Id=pbi.Personal_Id
+   		left join Member_Third_Info mti on mti.Member_ID=mi.Management_ID and mti.Member_Type = 1
+   		where Management_ID=#{managementID};
   </select>
   
   <!-- 分页查询所有资产管理方信息 -->
   <select id="selectAllManagementInfo" resultMap="ManagementInfo" parameterType="product_p2p.kit.pageselect.PageEntity">
-  	select * 
-  	from Management_Info 
+  	select mi.*,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone,mti.ThirdParty_Account 
+  	from Management_Info mi
+  	left join personal_base_info pbi on mi.Personal_Id=pbi.Personal_Id
+  	left join Member_Third_Info mti on mti.Member_ID=mi.Management_ID and mti.Member_Type = 1
   	<where>
   		<!-- 编号、资产管理方名称、营业执照号、联系人姓名、联系人手机号、状态 -->
-  		Delete_Flag=1
-  		<if test="map.managementNo!=null">and Management_NO like '%{map.managementNo}%'</if>
-  		<if test="map.managementName != null">and Management_Name like '%{map.managementName}%'</if>
-  		<if test="map.companyeBLN != null">and Companye_BLN like '%{map.companyeBLN}%'</if>
-  		<if test="map.contactName != null ">and Contact_Name like '%{map.contactName}%'</if>
-  		<if test="map.contactPhone !=null">and Contact_Phone like '%{map.contactPhone}%'</if>
-  		<if test="map.recordStatus != -1">and Record_Status=#{map.recordStatus}</if>
+  		<!-- mi.Delete_Flag=1
+  		<if test="map.managementNo!=null">and mi.Management_NO like '%${map.managementNo}%'</if>
+  		<if test="map.managementName != null">and mi.Management_Name like '%${map.managementName}%'</if>
+  		<if test="map.companyeBLN != null">and mi.Companye_BLN like '%${map.companyeBLN}%'</if>
+  		<if test="map.contactName != null ">and mi.Contact_Name like '%${map.contactName}%'</if>
+  		<if test="map.contactPhone !=null">and mi.Contact_Phone like '%${map.contactPhone}%'</if>
+  		<if test="map.recordStatus != -1">and mi.Record_Status=#{map.recordStatus}</if> -->
   	</where>
-  	 order by Add_Time #{orderKey}
+  	 order by mi.Add_Time DESC
   </select>
   <!--根据资产管理方id 删除或启用停用资产管理方 -->
   <update id="deleteOrStopManagementInfo" parameterType="Map">
@@ -227,7 +236,7 @@
 				#{personalIDCard,	 mode=IN,	jdbcType=VARCHAR},
 				#{personalId,	 mode=IN,	jdbcType=INTEGER},
 				#{types,	 mode=IN,	jdbcType=INTEGER},
-				#{result,	 mode=OUT,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
   </select>
@@ -243,7 +252,7 @@
   	<result column="managementTypeName" property="managementTypeName"/>
   </resultMap>
   <!-- 根据资产管理方id查询证件信息 -->
-  <select id="selectManagementCertificate" parameterType="Map">
+  <select id="selectManagementCertificate" parameterType="Map" resultMap="ManagementCertificate">
   	select Management_ID,Management_Type,Management_Certificate_Name,Management_URL
   	 from Management_Certificate 
   	<where>
@@ -369,18 +378,38 @@
   		SELECT a.Admin_ID adminID,a.adminName adminName,gmi.Add_Time addTime,gmi.Status status FROM Guarantee_Manage_Info gmi LEFT JOIN Admin a ON gmi.Admin_ID=a.Admin_ID
 	WHERE gmi.Guarantee_ID=#{map.guaranteeID}
   </select>
+  <!-- 根据资产管理方id查询管理员信息 -->
+  <select id="findManagementAdmin" resultType="cn.springmvc.model.GuaranteeAdminEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+  		SELECT a.Admin_ID adminID,a.adminName adminName,gmi.Add_Time addTime,gmi.Status status FROM Management_Manage_Info gmi LEFT JOIN Admin a ON gmi.Admin_ID=a.Admin_ID
+	WHERE gmi.Management_ID=#{map.managementID}
+  </select>
+  
+  
   <!-- 启用 停用 担保机构管理员 -->
   <update id="updateGuaranteeAdmin"  parameterType="Map">
   		update Guarantee_Manage_Info set Status=#{statu} where Guarantee_ID=#{guaranteeID} and Admin_ID=#{adminId}
   </update>
+  <!-- 启用 停用 资产管理方管理员 -->
+  <update id="updateManagementAdmin"  parameterType="Map">
+  		update Management_Manage_Info set Status=#{statu} where Management_ID=#{managementID} and Admin_ID=#{adminId}
+  </update>
+  
+  
   <!-- 添加担保机构管理员 -->
   <insert id="insertGuaranteeAdmin" parameterType="Map">
   		insert into Guarantee_Manage_Info(Admin_ID,Guarantee_ID,Add_Time,Status)
   			values(#{adminId},#{guaranteeID},now(),1)
   </insert>
+  <!-- 添加资产管理方管理员 -->
+  <insert id="insertManagementAdmin" parameterType="Map">
+  		insert into Management_Manage_Info(Admin_ID,Management_ID,Add_Time,Status)
+  			values(#{adminId},#{managementID},now(),1)
+  </insert>
+  
+  
   <resultMap id="GuaranteeInfoToRaiseCashRecords" type="cn.springmvc.model.InstitutionsRecordsEntity" >
   	 <result column="RealMoney" property="realAmount"/>
-  	 <result column="WithdrawalMoney" property="WithdrawalMoney"/>
+  	 <result column="amount" property="WithdrawalMoney"/>
   	 <result column="feeAmount" property="feeAmount"/>
   	 <result column="Receive_Date" property="dealTime"/>
   	 <result column="Mer_Billno" property="orderNumber"/>
@@ -398,23 +427,23 @@
   	<where>
   		Member_Type = 1 and
   		Deal_Type = #{map.dealType}
-  		<if test="#{map.startdealTime}!=null">
-  			Receive_Date>=#{map.startdealTime}
+  		<if test="map.startdealTime!=null and map.startdealTime!=''">
+  			and Receive_Date>=#{map.startdealTime}
   		</if>
-  		<if test="#{map.enddealTime}!=null">
+  		<if test="map.enddealTime!=null and map.enddealTime!=''">
   			and #{map.enddealTime}>=Receive_Date
   		</if>
-  		<if test="#{map.merBillno}!=null">
+  		<if test="map.merBillno!=null and map.merBillno!=''">
   			and Mer_Billno like '%#{map.merBillno}%'
   		</if>
-  		<if test="#{map.thirdMerBillno}!=null">
+  		<if test="map.thirdMerBillno!=null and map.thirdMerBillno!=''">
   			and Third_Mer_Billno like '%#{map.thirdMerBillno}%'
   		</if>
-  		<if test="#{map.statu}!=-1">
+  		<if test="map.statu!=-1">
   			and Statu = #{map.statu}
   		</if>
   	</where>
-  	<if test="#{map.amountStatu}==1">
+  	<!-- <if test="#{map.amountStatu}==1">
   		order by amount desc
   	</if>
   	<if test="#{map.amountStatu}==2">
@@ -431,7 +460,7 @@
   	</if>
   	<if test="#{map.RealMoney}==2">
   		order by RealMoney asc
-  	</if>
+  	</if> -->
   </select>
   
   
@@ -469,4 +498,29 @@
   		(select count(*) from Instead_RePay_Record where Repay_Type= 0 and Guarantee_ID = #{GuaranteeID}) dcbs,
   		(select count(*) from Member_Trading_Records where Member_Type=1 and Member_ID = #{GuaranteeID} and Trade_Type_Id=408) dchkbs
   	</select>
+  	
+  	<resultMap type="cn.membermng.model.MemberThirdAuthInfoEntity" id="resultMemberThirdAuthInfoone">
+        <id column="Account_Id"             property="accountId" />
+		<result column="Open_Auto_Recharge" property="openAutoRecharge" />
+		<result column="Is_Auto_Recharge"   property="isAutoRecharge" />
+		<result column="Open_Auto_Pay"      property="openAutoPay" />
+		<result column="Is_Auto_Pay"        property="isAutoPay" />
+		<result column="Open_Auto_Invest"   property="openAutoInvest" />
+		<result column="Is_Auto_Invest"     property="isAutoInvest" />
+		<result column="Open_Second_Distribute" property="openSecondDistribute" /> 
+	   <association property="memberThirdInfoEntity"  	resultMap="resultMemberThirdInfo"/>
+    </resultMap>
+  	<!-- 查询会员第三方账户信息 -->  
+	<select id = "selectMemberTradeInfoone" parameterType = "Map"  resultMap = "resultMemberThirdAuthInfoone">
+	 select ThirdParty_Account,ThirdParty_Mark,
+     CAST((AES_DECRYPT(UNHEX(Frozen),#{skey})) as signed)  Frozen,
+	 CAST((AES_DECRYPT(UNHEX(Gift_Frozen),#{skey})) as signed)	 Gift_Frozen,
+	 CAST((AES_DECRYPT(UNHEX(User_Balance),#{skey})) as signed) as User_Balance,
+	 CAST((AES_DECRYPT(UNHEX(Gift_User_Balance),#{skey})) as signed) as Gift_User_Balance,
+	 Open_Auto_Recharge,Is_Auto_Recharge,
+	 Open_Auto_Pay,Is_Auto_Pay,Open_Auto_Invest,Is_Auto_Invest,Open_Second_Distribute
+	 from  Member_Third_Auth_Info mtai
+	 left join Member_Third_Info mti on mtai.Account_Id=mti.Account_Id
+	 where  Member_ID =#{GuaranteeID} and Member_Type =#{memberType}
+    </select>  
 </mapper>

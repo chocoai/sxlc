@@ -7,7 +7,7 @@
 	 * 初始化
 	 */
 	$(function(){
-		validform5("layui-layer-btn0","dataForm",false,"3");
+		validform5(".btn-default","dataForm",false,"3");
 		showBillCollectionConfig();
 		//保存
 	});

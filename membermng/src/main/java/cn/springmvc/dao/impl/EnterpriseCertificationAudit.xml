@@ -21,18 +21,129 @@
     	<result column="Status" property="status"/>
     	<result column="Attest_Type_ID" property="attestTypeID"/>
     	<result column="Attest_TypeName" property="attestTypeName"/>
-    	<result column="Statuname" property="statuname"/>
+    	<result column="realName" property="realName"/>
+    	<result column="End_Date" property="validTime"/>
+    	<result column="statuname" property="statuname"/>
     </resultMap>
     <!-- 根据认证类型id,会员类型分页查询当前认证所有会员信息 -->
     <select id="selectMemberAttestByType" resultMap="MemberAttestByType" parameterType="product_p2p.kit.pageselect.PageEntity" >
-    	select mi.Member_No,mi.Member_ID,mi.Logname,mai.Certification_ID,mai.Record_Date,mai.Status,mai.Attest_Type_ID,mat.Attest_TypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS Statuname 
+    	select mi.Member_No,mi.Member_ID,mi.Logname,mai.Certification_ID,mai.Record_Date,mai.Status,mai.Attest_Type_ID,mat.Attest_TypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname, 
+   		  CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) as realName,mai.End_Date
 			from Member_Attest_Info mai 
 			left join Member_Info mi ON mi.Member_ID=mai.Member_ID
 			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+			left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_Id
 			<where>
 				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
+				and mai.Status=#{map.status}
+				<if test="map.logname!=null and map.logname!=''">
+					and mi.Logname like '%${map.logname}%'
+				</if>
+				<if test="map.realName!=null and map.realName!='' ">
+					and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.realName}%'
+				</if>
 			</where>  
     </select>
+    <!-- 会员实名认证列表信息展示 -->
+    <select id="realNameAuthentication" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.MemberAttestByTypeEntity">
+    	select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID
+    	,mai.Record_Date recordDate,mai.Status status,mai.Attest_Type_ID attestTypeID,mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
+   		 CONVERT((AES_DECRYPT(UNHEX(prc.Personal_IDCard),#{map.skey})) using utf8) as personalIDCard, 
+   		  CONVERT((AES_DECRYPT(UNHEX(prc.Real_Name),#{map.skey})) using utf8) as realName,
+    		prc.SexID sexId,CONVERT((AES_DECRYPT(UNHEX(prc.Home_Town),#{map.skey})) using utf8) as homeTown,mai.End_Date validTime
+			from Member_Attest_Info mai 
+			left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+			left join Personal_RealName_Check prc on prc.Certification_ID=mai.Certification_ID
+			<where>
+				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
+				and mai.Status=#{map.status}
+				<if test="map.logname!=null and map.logname!=''">
+					and mi.Logname like '%${map.logname}%'
+				</if>
+				<if test="map.realName!=null and map.realName!='' ">
+					and CONVERT((AES_DECRYPT(UNHEX(prc.Real_Name),#{map.skey})) using utf8) like '%${map.realName}%'
+				</if>
+				<if test="map.idcard and map.idcard !=''">
+					and CONVERT((AES_DECRYPT(UNHEX(prc.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idcard}%'
+				</if>
+			</where> 
+
+    </select>
+    
+    
+    <!-- 根据认证类型id,会员类型分页查询住址认证信息 -->
+    <select id="AddressAuthentication" resultType="cn.membermng.model.MemberAttestByTypeEntity" parameterType="product_p2p.kit.pageselect.PageEntity" >
+    	select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID
+    	,mai.Record_Date recordDate,mai.Status,mai.Attest_Type_ID,mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname, 
+			CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) as realName,mac.Address address,mai.End_Date validTime
+			from Member_Attest_Info mai 
+			left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+			left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_Id
+			left join Member_Address_Check mac on mac.Certification_ID = mai.Certification_ID
+			<where>
+				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
+				and mai.Status=#{map.status}
+				<if test="map.logname!=null and map.logname!=''">
+					and mi.Logname like '%${map.logname}%'
+				</if>
+				<if test="map.realName!=null and map.realName!='' ">
+					and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.realName}%'
+				</if>
+			</where>  
+    </select>
+    
+    
+    
+     <!-- 根据认证类型id,会员类型分页查询婚姻认证所有会员信息 -->
+    <select id="marriageCertification" resultType="cn.membermng.model.MemberAttestByTypeEntity" parameterType="product_p2p.kit.pageselect.PageEntity" >
+    	select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID
+    	,mai.Record_Date recordDate,mai.Status,mai.Attest_Type_ID,mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
+			CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) as realName,minf.MaritalName maritalName,mai.End_Date validTime
+			from Member_Attest_Info mai 
+			left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+			left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_Id
+			left JOIN Member_Marriage_Check mmc on mmc.Certification_ID = mai.Certification_ID
+			left join Marital_Info minf on minf.Marital_ID= mmc.Is_Married 
+			<where>
+				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
+				and mai.Status=#{map.status}
+				<if test="map.logname!=null and map.logname!=''">
+					and mi.Logname like '%${map.logname}%'
+				</if>
+				<if test="map.realName!=null and map.realName!='' ">
+					and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.realName}%'
+				</if>
+			</where>  
+    </select>
+    
+    
+    
+     <!-- 根据认证类型id,会员类型分页查询学历认证所有会员信息 -->
+    <select id="EducationCertification" resultType="cn.membermng.model.MemberAttestByTypeEntity" parameterType="product_p2p.kit.pageselect.PageEntity" >
+    	select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID
+    	,mai.Record_Date recordDate,mai.Attest_Type_ID,mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
+			CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) as realName,ei.EducationName educationName,mai.End_Date validTime
+			from Member_Attest_Info mai 
+			left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+			left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_Id
+			left JOIN Member_Education_Check mec on mec.Certification_ID = mai.Certification_ID
+			left join Education_Info ei on mec.Education = ei.Education_ID
+			<where>
+				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
+				and mai.Status=#{map.status}
+				<if test="map.logname!=null and map.logname!=''">
+					and mi.Logname like '%${map.logname}%'
+				</if>
+				<if test="map.realName!=null and map.realName!='' ">
+					and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.realName}%'
+				</if>
+			</where>  
+    </select>
+    
     
     <!-- 认证附件信息 -->
     <resultMap type="cn.membermng.model.PersonalAttestAttachEntity" id="sPersonalAttestAttach">
@@ -49,6 +160,77 @@
     	(SELECT name1 from DICT where tcode='DICT_FJLX' and code1=Attach_Type LIMIT 1) AS Statuname
     	 from Personal_Attest_Attach where Attest_ID=#{attestID}
     </select>
+    
+    
+    <!-- 企业营业执照认证列表查询 -->
+    <select id="EnterpriseBLCertification" resultType="cn.membermng.model.EnterpriseLicenseAttestEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+    select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID,
+    mai.Record_Date recordDate,mai.Status status,mai.Attest_Type_ID attestTypeID,
+	mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
+	 ela.Firm_BLN firmBLN,ela.Firm_Address firmAddress,ela.Firm_Legal firmLegal,ela.Reg_Capital regCapital,ela.Reg_Business regBusiness,ela.Firm_Type firmType,ela.Reg_Date regDate
+	,CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) company
+	from Member_Attest_Info mai 
+	left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+	left join Company_Info ci on ci.Company_ID = mi.Company_ID
+	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+	LEFT JOIN Enterprise_License_Attest ela ON ela.Certification_ID=mai.Certification_ID
+	where mi.Member_Type=1 and mat.Attest_Type_ID=#{attestTypeID};
+    </select>
+    
+    
+    <!-- 企业工商执照认证列表查询 -->
+    <select id="EnterprisebusinessLC" resultType="cn.membermng.model.EnterpriseLicenseAttestEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+    select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID,
+    mai.Record_Date recordDate,mai.Status status,mai.Attest_Type_ID attestTypeID,
+	mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
+	ela.SetUp_Date setUpDate,ela.Firm_Legal firmLegal,ela.Reg_Capital regCapital,
+	ela.Reg_Business regBusiness,ela.Firm_Type firmType,ela.Residence residence
+	,CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) company
+	from Member_Attest_Info mai 
+	left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+	left join Company_Info ci on ci.Company_ID = mi.Company_ID
+	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+	LEFT JOIN Enterprise_BsnLicense_Attest ela ON ela.Certification_ID=mai.Certification_ID
+	where mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID};
+    </select>
+    
+    
+    <!-- 企业组织机构代码认证列表查询 -->
+    <select id="EnterpriseOrganizationCode" resultType="cn.membermng.model.EnterpriseLicenseAttestEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+    select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID,
+    mai.Record_Date recordDate,mai.Status status,mai.Attest_Type_ID attestTypeID,
+	mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
+	CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) company
+	,CONVERT((AES_DECRYPT(UNHEX(ela.Firm_OC),#{map.skey})) using utf8) firmOC
+	,ela.Reg_Date regDate
+	from Member_Attest_Info mai 
+	left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+	left join Company_Info ci on ci.Company_ID = mi.Company_ID
+	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+	LEFT JOIN Enterprise_OrgCode_Attest ela ON ela.Certification_ID=mai.Certification_ID
+	where mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID};
+    </select>
+    
+    
+    <!-- 企业开户许可证认证列表查询 -->
+    <select id="accountLicenseCode" resultType="cn.membermng.model.EnterpriseLicenseAttestEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+    select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID,
+    mai.Record_Date recordDate,mai.Status status,mai.Attest_Type_ID attestTypeID,
+	mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
+	CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) company
+	,CONVERT((AES_DECRYPT(UNHEX(ela.Permits_Code),#{map.skey})) using utf8) permitsCode
+	,CONVERT((AES_DECRYPT(UNHEX(ela.Permits_Bank),#{map.skey})) using utf8) permitsBank
+	,CONVERT((AES_DECRYPT(UNHEX(ela.Bank_No),#{map.skey})) using utf8) bankNo
+	from Member_Attest_Info mai 
+	left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+	left join Company_Info ci on ci.Company_ID = mi.Company_ID
+	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+	LEFT JOIN Enterprise_AccountPermits_Attest ela ON ela.Certification_ID=mai.Certification_ID
+	where mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID};
+    </select>
+    
+    
+    
     <!-- 查看企业营业执照认证信息 -->
     <resultMap type="cn.membermng.model.EnterpriseLicenseAttestEntity" id="sEnterpriseLicenseAttest">
     	<result column="Certification_ID" property="certificationID"/>
@@ -160,6 +342,11 @@
     <!-- 个人会员实名认证操作 -->
     <select id="handlenameAuthentication" resultType="Map" statementType="CALLABLE">
     <!-- statusT:2 通过审核 3：打回；rulest：1：操作成功 2：该认证项已认证 -->
+    <!-- 				#{spersonalIDCard,	 mode=IN,	jdbcType=VARCHAR}, -->
+<!-- 				#{spersonalName,	 mode=IN,	jdbcType=VARCHAR}, -->
+<!-- 				#{shomeTown,	 mode=IN,	jdbcType=VARCHAR}, -->
+<!-- 				#{sexIDs,	 mode=IN,	jdbcType=INTEGER}, -->
+<!-- 				#{nationId,	 mode=IN,	jdbcType=INTEGER}, -->
     	<![CDATA[{call handlenameAuthentication(
 				#{certificationID,	 mode=IN,	jdbcType=BIGINT},
 				#{memberType,	 mode=IN,	jdbcType=INTEGER},
@@ -170,11 +357,6 @@
 				#{endDate,	 mode=IN,	jdbcType=DATE},
 				#{creditIntegralID,	 mode=IN,	jdbcType=INTEGER},
 				#{personalID,	 mode=IN,	jdbcType=BIGINT},
-				#{spersonalIDCard,	 mode=IN,	jdbcType=VARCHAR},
-				#{spersonalName,	 mode=IN,	jdbcType=VARCHAR},
-				#{shomeTown,	 mode=IN,	jdbcType=VARCHAR},
-				#{sexIDs,	 mode=IN,	jdbcType=INTEGER},
-				#{nationId,	 mode=IN,	jdbcType=INTEGER},
 				#{skey,	 mode=IN,	jdbcType=VARCHAR},
 				#{rulest,	 mode=OUT,	jdbcType=INTEGER}
     		)}
@@ -217,5 +399,9 @@
 				#{rulest,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
+    </select>
+    <select id="VipPurchaseRecords" parameterType="Map" resultType="cn.membermng.model.VIPPurchaseRecordsEntity">
+    	select App_Date addTime,Certify_Type VipType,Certify_SDate statrTime,Certify_EDate endTime
+    		,Certify_Fee amount from Member_VIP_Record where Member_ID = #{memberID}
     </select>
 </mapper>   

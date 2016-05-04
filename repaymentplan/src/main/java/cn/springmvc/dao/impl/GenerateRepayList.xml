@@ -18,4 +18,12 @@
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)}
 	</select> 
+	<!-- 根据项目申请ID查询项目基本信息 -->  
+	<select id="selectProjectBaseInfo"  parameterType="map" resultMap="replayProjectDetail.resultBaseInfoentity" >
+	   select pbi.Repay_Way,pbi.Year_Rate,pbi.Amount,pbi.Deadline,
+	   pbi.Deadline_Type  ,pbi.Project_Base_ID,pbi.Project_Title,pbi.Uses,pbi.Repay_Source,pbi.Real_Amount,pbi.Project_Descript
+       from  Project_App_Record par
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID 
+	   where  par.Apply_Id=#{id}
+    </select> 
 </mapper>

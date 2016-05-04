@@ -66,8 +66,8 @@ public class OptRecordWriteDaoImpl extends SqlSessionDaoSupport{
 		param.put("ipv", entity.getsIp());
 		param.put("macv", entity.getsMac());
 		param.put("urlv", entity.getsUrl());
-		param.put("reurlv", entity.getsUrl());
-		param.put("sKeyWord", entity.getsReferrUrl());
+		param.put("reurlv", entity.getsReferrUrl());
+		param.put("sKeyWord", entity.getsKeyWord());
 		param.put("icountry", sIpInfo[0]);
 		param.put("iregion", sIpInfo[1]);
 		param.put("iprovince", sIpInfo[2]);
@@ -95,7 +95,7 @@ public class OptRecordWriteDaoImpl extends SqlSessionDaoSupport{
 	* @param @return 设定文件 			
 	* @return int 返回类型 					-1：非法操作 -2：未登录 -3:登录已过期 1：验证成功 0:验证失败
 	* @date 2016-3-22 下午5:16:51
-	* @throws
+	* @throws null
 	 */
 	public int MemberSessionCheck(String sSessionId,long lMemberId,short sIsNeedLogin,int iValidityPeriod,
 			String sIp,String[] sIpInfo){

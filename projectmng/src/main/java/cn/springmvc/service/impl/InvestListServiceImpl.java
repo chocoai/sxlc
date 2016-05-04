@@ -18,7 +18,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity; 
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.InvestListDao; 
 import cn.springmvc.model.ProjectAppRecordEntity; 
 import cn.springmvc.service.InvestListService;
@@ -35,7 +37,9 @@ public class InvestListServiceImpl implements InvestListService {
  
 	@Override
 	public List<ProjectAppRecordEntity> selectInvestList(PageEntity pageEntity) { 
-		List<ProjectAppRecordEntity> projectAppRecordList= investListDaoImpl.selectInvestList(pageEntity); 
+		pageEntity.getMap().put("sKey", DbKeyUtil.GetDbCodeKey());
+		List<ProjectAppRecordEntity> projectAppRecordList= investListDaoImpl.selectInvestList(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, projectAppRecordList);
         return projectAppRecordList;
 	}
 

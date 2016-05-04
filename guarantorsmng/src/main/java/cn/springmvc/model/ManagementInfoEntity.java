@@ -10,6 +10,10 @@ package cn.springmvc.model;
 public class ManagementInfoEntity {
 	private long managementID;//资产管理方ID
 	private long personalID;//法人信息ID
+	private String thirdPartyAccount;//第三方账户
+	private String personalName;//法人姓名
+	private String personalPhone;//法人手机号
+	private String personalIDCard;//法人身份证号
 	private String managementNO;//资产管理方编号
 	private String managementName;//资产管理机构名称
 	private String companyeBLN;//营业执照号码
@@ -154,6 +158,30 @@ public class ManagementInfoEntity {
 	}
 	public void setDeleteFlag(int deleteFlag) {
 		this.deleteFlag = deleteFlag;
+	}
+	public String getPersonalName() {
+		return personalName;
+	}
+	public void setPersonalName(String personalName) {
+		this.personalName = personalName;
+	}
+	public String getPersonalPhone() {
+		return personalPhone;
+	}
+	public void setPersonalPhone(String personalPhone) {
+		this.personalPhone = personalPhone;
+	}
+	public String getPersonalIDCard() {
+		return personalIDCard;
+	}
+	public void setPersonalIDCard(String personalIDCard) {
+		this.personalIDCard = personalIDCard;
+	}
+	public String getThirdPartyAccount() {
+		return thirdPartyAccount;
+	}
+	public void setThirdPartyAccount(String thirdPartyAccount) {
+		this.thirdPartyAccount = thirdPartyAccount;
 	}
 	
 }

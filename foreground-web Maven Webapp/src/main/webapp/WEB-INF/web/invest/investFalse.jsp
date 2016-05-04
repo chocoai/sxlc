@@ -20,7 +20,7 @@
    		<div class="register-box">
    			<div class="successBox">
    				<div class="congratulation">您的投资失败！</div>
-   				<div class="tiss">您的账户余额不足</div>
+   				<div class="tiss">${ }</div>
    			</div>
    		</div>
    	</div>

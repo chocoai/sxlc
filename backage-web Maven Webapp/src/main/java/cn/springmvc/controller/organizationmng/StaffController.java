@@ -21,8 +21,6 @@ import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.dictionaries.model.EducationInfoEntity;
 import cn.dictionaries.model.NationInfoEntity;
-import cn.springmvc.Util.HttpSessionUtil;
-import cn.springmvc.Util.LoadUrlUtil;
 import cn.springmvc.dao.impl.DictionariesCore;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.PersonalBaseInfo;
@@ -30,6 +28,8 @@ import cn.springmvc.model.StaffInfo;
 import cn.springmvc.service.IPostInfoServer;
 import cn.springmvc.service.IStaffInfoService;
 import cn.springmvc.service.SystemSetService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 /** 
 * @author 唐国峰
@@ -67,8 +67,13 @@ public class StaffController  {
 	public String toRoleEmpList(HttpServletRequest req){
 		List<EducationInfoEntity> eduList = dictionariesCore.GetEducationList();
 		List<NationInfoEntity> nationsList = dictionariesCore.GetNationInfoList();
+		PageEntity entity = new PageEntity();
+//		List<DeptInfo> depts = iDeptInfoServer.findall();
+//		List<PostInfo> posts = iPostInfoServer.getListByParam(entity);
 		req.setAttribute("educations", eduList);
 		req.setAttribute("nations", nationsList);
+//		req.setAttribute("depts", depts);
+//		req.setAttribute("posts", posts);
 		return "role/role-emp";
 	}
 	
@@ -248,6 +253,13 @@ public class StaffController  {
 		PageEntity pager = new PageEntity();
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
+		//获取查询参数
+		Map<String,Object> param=new HashMap<String,Object>();
+		String deptName = req.getParameter("deptName");
+		param.put("deptName", deptName);
+		String postName = req.getParameter("postName");
+		param.put("postName", postName);
+		pager.setMap(param);
 		iPostInfoServer.getListByParam(pager);
 		return pager;
 	}

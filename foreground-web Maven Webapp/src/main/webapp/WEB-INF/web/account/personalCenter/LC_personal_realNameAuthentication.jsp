@@ -12,6 +12,9 @@
 	<base href="<%=basePath%>">
     <title>实名认证</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/loanCertification.css">
 </head>
@@ -32,11 +35,11 @@
    					<div class="authenContent">
 	   					<div class="authen">
 	   						<p class="toolTips">请填写您本人真实有效的身份信息，一旦认证成功，信息将不可更改。</p>
-	   						<form id="shiMing">
+	   						<form id="shiMing1">
 		   						<ul class="inputArea">
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>姓名：</span></div>
-				   						<input class="inputText" type="text" datatype="enterperson" lang="请输入姓名" maxlength="20"/>
+				   						<input class="inputText realName" type="text" datatype="enterperson" lang="请输入姓名" maxlength="20"/>
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>民族：</span></div>
@@ -56,7 +59,7 @@
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>籍贯：</span></div>
-				   						<input class="inputText" type="text" datatype="enterperson" lang="请输入籍贯" maxlength="20"/>
+				   						<input class="inputText homeTown" type="text" datatype="enterperson" lang="请输入籍贯" maxlength="20"/>
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>性别：</span></div>
@@ -99,7 +102,7 @@
 				   						</div>
 				   					</li>	
 		   					        <li class="inputList">
-				   						<div class="btn">确认并保存</div>
+				   						<div class="btn btn1">确认并保存</div>
 				   					</li>
 				   				</ul>
 	   						</form>
@@ -113,23 +116,6 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			$("#shiMing").Validform({
-			tiptype:3,//提示信息类型
-			btnSubmit:".btn", 
-			datatype:extdatatype,
-			ajaxPost:{
-				url:"",
-				datatype:"json",
-				success:function(data,obj){
-		        },
-		        error:function(data,obj){
-		            console.log(data.status);
-		        }
-			}
-		});
-		});
-	</script>
+	<script type="text/javascript" src="js/account/personalCenter/LC_personal_realNameAuthentication.js"></script>
 </body>
 </html>

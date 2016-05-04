@@ -24,6 +24,9 @@
 	    <result column="End_Date" 			     property="endDate" />  
 		<result column="replayways" 	         property="replayways" /> 
 		<result column="Invest_Rate" 	         property="investRate" /> 
+		
+		<result column="Deadline" 	             property="deadline" /> 
+		<result column="Deadline_Type" 	         property="deadlineType" /> 
      </resultMap>     
        <!--     收益 -->
      <resultMap type="cn.membermng.model.InvestIncomeEntity" id="resultMyInome"> 

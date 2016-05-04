@@ -48,6 +48,7 @@ public class MemberBankCardEntity {
 	 *  银行卡状态 0：无效 1：有效 
 	 */
 	private int statu;
+	private String bankName;//银行卡名字
 	public long getReceiveCard() {
 		return receiveCard;
 	}
@@ -103,6 +104,12 @@ public class MemberBankCardEntity {
 				+ ", bankCardId=" + bankCardId + ", bankCardInfoEntity="
 				+ bankCardInfoEntity + ", recordDate=" + recordDate
 				+ ", removeDate=" + removeDate + ", statu=" + statu + "]";
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}		
 
 }

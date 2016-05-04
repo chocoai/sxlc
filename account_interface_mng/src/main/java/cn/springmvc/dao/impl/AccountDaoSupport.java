@@ -79,7 +79,7 @@ public class AccountDaoSupport extends SqlSessionDaoSupport implements AccountSu
     
     /**
      * 
-    * getGuaranteeInfo(这里用一句话描述这个方法的作用) 
+    * getGuaranteeInfo 获取项目担保机构 担保
     * TODO(描述)
     * @author 张友  
     * * @Title: getGuaranteeInfo 
@@ -98,7 +98,10 @@ public class AccountDaoSupport extends SqlSessionDaoSupport implements AccountSu
         return getSqlSession().selectOne("AccountDao.GetGuaranteeInfo", param);
 
     }
-
+    
+    /**
+     * 获取会员第三方账户信息
+     */
     public String getInvestMemberMark(long lMemberId) {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("memberId", lMemberId);

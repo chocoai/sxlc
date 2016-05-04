@@ -24,6 +24,7 @@ public class LoanTransferEntity {
 	private String notifyURL;//后台通知网址
 	private String signInfo;//签名信息
 	private int statu;//转账信息处理状态  0成功 1失败
+	private String massage;//转账信息处理消息
 	public String getLoanJsonList() {
 		return loanJsonList;
 	}
@@ -119,6 +120,12 @@ public class LoanTransferEntity {
 	}
 	public void setStatu(int statu) {
 		this.statu = statu;
+	}
+	public String getMassage() {
+		return massage;
+	}
+	public void setMassage(String massage) {
+		this.massage = massage;
 	}
 	
 }

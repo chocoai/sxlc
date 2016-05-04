@@ -9,19 +9,17 @@ $(function(){
 			phone = encrypt.encrypt(phone+"");
 			var str_Url = "personalCenter/sendEditBindPhoneCheckCode.html";
 			var json_Data = {phone:phone};
-			NetUtil.postRequest(
+			NetUtil.ajax(
 				str_Url, 
 				json_Data, 
-				null, 
 				function(r){
 					console.log(r);
 					var json = JSON.parse(r);
 					if(json.status == 1){
-						$(".codeBtn").html("已发送");
-						//差一个禁用标签
+						$(".codeBtn").html("已发送").addClass("disabled");
 						setTimeout(function(){
-							$(".codeBtn").html("重新发送");
-						},3000);
+							$(".codeBtn").html("重新发送").removeClass("disabled");
+						},30000);
 						
 					}else{
 						$(".codeBtn").html("发送失败")
@@ -48,7 +46,7 @@ $(function(){
 			
 			var soldPhone = $(".phoneBind").val();
 			soldPhone = encrypt.encrypt(soldPhone+"");
-			
+			console.log(soldPhone)
 			var snewPhone = $(".newphone").val();
 			snewPhone = encrypt.encrypt(snewPhone+"");
 			
@@ -60,10 +58,9 @@ $(function(){
 			
 			var str_Url = "personalCenter/editBindPhone.html";
 			
-			NetUtil.postRequest(
+			NetUtil.ajax(
 				str_Url,
 				{oldPhone:soldPhone,newPhone:snewPhone,imgCheckCode:simgCheckCode,phoneCode:sphoneCode},
-				null,
 				function(r){
 					var json = JSON.parse(r);
 					console.log(json)

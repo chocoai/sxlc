@@ -14,7 +14,13 @@ $(function(){
 						"data": function ( d ) {  
 						}  
 					},
-					columns: [  
+					columns: [ 
+					          {title:'',sWidth:"5%", 
+			                	  "mRender": function (data, type, full) {
+			                		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+			                		  return sReturn;
+			                	  }
+			                  },
 					          { title:"id","data":"id"},  
 					          { title:"添加时间","data": "recordDate"},  
 					          { title:"接口类型","data": "smsInterfaceType", 
@@ -53,10 +59,10 @@ $(function(){
 					          }
 					          ],
 		          aoColumnDefs : [
-		                          {"bVisible": false, "aTargets": [0]}, //控制列的隐藏显示
+		                          {"bVisible": false, "aTargets": [0,1]}, //控制列的隐藏显示
 		                          {
 		                        	  "orderable" : false,
-		                        	  "aTargets" : [1,2,3,4,5,6,7,8]
+		                        	  "aTargets" : [1,2,3,4,5,6,7,8,9]
 		                          } // 制定列不参与排序
 		                          ],
 		          pagingType: "simple_numbers",//设置分页控件的模式  
@@ -68,13 +74,16 @@ $(function(){
 		 
 		});//表格初始化完毕
 		 
-		//表格单选效果
+		//表格单选效果(有复选框)
 		 $('#table_id tbody').on( 'click', 'tr', function () {
 			    var $this = $(this);
+			    var $checkBox = $this.find("input:checkbox");
 		        if ( $this.hasClass('selected') ) {
+		        	 $checkBox.prop("checked",false);
 		        	$this.removeClass('selected');
-		        }
-		        else {
+		        } else {
+		        	$(".tr-checkbox").prop("checked",false);
+		        	$checkBox.prop("checked",true);
 		        	$('#table_id tr.selected').removeClass('selected');
 		        	$this.addClass('selected');
 		        }
@@ -138,7 +147,7 @@ function addOrUpdate(type){
 					function(data) { 
 						if(data > 0){
 							layer.alert("操作成功",{icon:1});
-							$(".layui-layer-btn1").click();
+							layer.close(index);
 							 var table = $('#table_id').DataTable();
 							 table.ajax.reload();
 						}else if(data==0){

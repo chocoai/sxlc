@@ -215,6 +215,9 @@ table{
 	margin-right:auto;
 	margin-top:30px;
 } */
+.assetimg{
+	float: left;
+}
 .assetimg img{
 	transform:scale(0.8);  
 }

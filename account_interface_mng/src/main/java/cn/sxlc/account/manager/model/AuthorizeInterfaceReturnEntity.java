@@ -32,35 +32,35 @@ public class AuthorizeInterfaceReturnEntity {
 	private String message;//返回信息
 	private String signInfo;//签名信息
 	private int statu;//授权状态 ：0成功 1失败
-	public AuthorizeInterfaceReturnEntity authorizationInformation() throws UnsupportedEncodingException{
-		AuthorizeInterfaceReturnEntity 
-			authorizeInterfaceReturnEntity=new AuthorizeInterfaceReturnEntity();
-		ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = attributes.getRequest();
-		request.setCharacterEncoding("UTF-8");
-		authorizeInterfaceReturnEntity.
-			setResultCode(request.getParameter("ResultCode"));
-		authorizeInterfaceReturnEntity
-			.setMessage(request.getParameter("Message"));//返回状态信息
-		if(authorizeInterfaceReturnEntity.getResultCode()!=null){
-			if(authorizeInterfaceReturnEntity.getResultCode().equals("88")){
-				if(!request.getParameter("AuthorizeTypeOpen").equals("")){
-					authorizeInterfaceReturnEntity.setAuthorizeStatu(1);//开启
-				}else {
-					authorizeInterfaceReturnEntity.setAuthorizeStatu(2);//关闭
-				}
-				authorizeInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
-				authorizeInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
-				authorizeInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
-				authorizeInterfaceReturnEntity
-					.setAuthorizeType(request.getParameter("AuthorizeType"));//当前操作的授权类型
-				authorizeInterfaceReturnEntity.setStatu(0);
-			}else{
-				authorizeInterfaceReturnEntity.setStatu(1);
-			}
-		}
-		return authorizeInterfaceReturnEntity;
-	} 
+//	public AuthorizeInterfaceReturnEntity authorizationInformation() throws UnsupportedEncodingException{
+//		AuthorizeInterfaceReturnEntity 
+//			authorizeInterfaceReturnEntity=new AuthorizeInterfaceReturnEntity();
+//		ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+//		HttpServletRequest request = attributes.getRequest();
+//		request.setCharacterEncoding("UTF-8");
+//		authorizeInterfaceReturnEntity.
+//			setResultCode(request.getParameter("ResultCode"));
+//		authorizeInterfaceReturnEntity
+//			.setMessage(request.getParameter("Message"));//返回状态信息
+//		if(authorizeInterfaceReturnEntity.getResultCode()!=null){
+//			if(authorizeInterfaceReturnEntity.getResultCode().equals("88")){
+//				if(!request.getParameter("AuthorizeTypeOpen").equals("")){
+//					authorizeInterfaceReturnEntity.setAuthorizeStatu(1);//开启
+//				}else {
+//					authorizeInterfaceReturnEntity.setAuthorizeStatu(2);//关闭
+//				}
+//				authorizeInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
+//				authorizeInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
+//				authorizeInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
+//				authorizeInterfaceReturnEntity
+//					.setAuthorizeType(request.getParameter("AuthorizeType"));//当前操作的授权类型
+//				authorizeInterfaceReturnEntity.setStatu(0);
+//			}else{
+//				authorizeInterfaceReturnEntity.setStatu(1);
+//			}
+//		}
+//		return authorizeInterfaceReturnEntity;
+//	} 
 	
 	
 	public String getMoneymoremoreId() {
@@ -166,6 +166,20 @@ public class AuthorizeInterfaceReturnEntity {
 
 	public void setStatu(int statu) {
 		this.statu = statu;
+	}
+	@Override
+	public String toString() {
+		return "AuthorizeInterfaceReturnEntity [moneymoremoreId="
+				+ moneymoremoreId + ", platformMoneymoremore="
+				+ platformMoneymoremore + ", authorizeStatu=" + authorizeStatu
+				+ ", authorizeTypeOpen=" + authorizeTypeOpen
+				+ ", authorizeTypeClose=" + authorizeTypeClose
+				+ ", authorizeType=" + authorizeType + ", randomTimeStamp="
+				+ randomTimeStamp + ", remark1=" + remark1 + ", remark2="
+				+ remark2 + ", remark3=" + remark3 + ", returnURL=" + returnURL
+				+ ", notifyURL=" + notifyURL + ", resultCode=" + resultCode
+				+ ", message=" + message + ", signInfo=" + signInfo
+				+ ", statu=" + statu + "]";
 	}
 	
 	

@@ -28,6 +28,22 @@ public interface GenerateRepayListService {
 	 * @return int 返回类型  -1项目信息不存在，1成功
 	 * @date 2016-4-1 下午1:58:20
 	 */
-	public int GenerateRepayList(int applyID);
+	int GenerateRepayList(int applyID);
+	
+	/**
+	 * 获取项目投资预期收益
+	* GetForecastIncome 获取投资预期收益
+	* TODO(描述)
+	* @author 张友  
+	* * @Title: GetForecastIncome 
+	* @Description: TODO 
+	* @param  lProId			项目ID
+	* @param  lInvestAmount		投资总金额  保留4位小数
+	* @param @return 			获取投资某个项目投资收益
+	* @return long 返回类型 
+	* @date 2016-5-3 下午2:38:39
+	* @throws null
+	 */
+	long GetForecastIncome(long lProId,long lInvestAmount);
 }
 

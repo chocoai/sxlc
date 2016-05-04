@@ -17,6 +17,7 @@ import java.util.Map;
   
 import cn.springmvc.model.CompanyInfoEntity;
 import cn.springmvc.model.InvestEntity;
+import cn.springmvc.model.LoanMemberInfoEntity;
 import cn.springmvc.model.LoanRealRepayEntity;
 import cn.springmvc.model.LoanRepayEntity;  
 import cn.springmvc.model.MemberAttestTypeEntity;
@@ -59,7 +60,7 @@ public interface ProjectDetailListDao {
 	 * @return MemberInfoEntity 会员信息实体 
 	 * @date 2016-3-21 下午3:26:08 
 	 */
-    public MemberInfoEntity selectMemberInfo(Map<String,Object> map);
+    public LoanMemberInfoEntity selectMemberInfo(Map<String,Object> map);
    
     /** 
 	 * @author 刘利   

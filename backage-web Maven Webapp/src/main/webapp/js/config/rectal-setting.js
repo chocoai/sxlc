@@ -4,23 +4,7 @@ encrypt.setPublicKey(publicKey_common);
 
 $(function() {
 	/* 添加 */
-	validform5("layui-layer-btn0","addlevelname",false,"3");
-	validform5("layui-layer-btn0","addinvsttotal",false,"3");
-	validform5("layui-layer-btn0","addlevelintroduce",false,"3");
-	validform5("layui-layer-btn0","addrecvip",false,"3");
-	validform5("layui-layer-btn0","addrecloanpercent",false,"3");
-	validform5("layui-layer-btn0","addrecprincipal",false,"3");
-	validform5("layui-layer-btn0","addrecinvestprofit",false,"3");
-	validform5("layui-layer-btn0","addinvestaward",false,"3");
-	/* 修改 */
-	validform5("layui-layer-btn0","modlevelname",false,"3");
-	validform5("layui-layer-btn0","modinvsttotal",false,"3");
-	validform5("layui-layer-btn0","modlevelintroduce",false,"3");
-	validform5("layui-layer-btn0","modrecvip",false,"3");
-	validform5("layui-layer-btn0","modrecloanpercent",false,"3");
-	validform5("layui-layer-btn0","modrecprincipal",false,"3");
-	validform5("layui-layer-btn0","modrecinvestprofit",false,"3");
-	validform5("layui-layer-btn0","modinvestaward",false,"3");
+	validform5(".layui-layer-btn0","dataForm",false,"3");
 	//表格初始化
 	$('#table_id').DataTable(
 			{	
@@ -32,6 +16,12 @@ $(function() {
 					}  
 				},
 				columns: [  
+				          {title:'',sWidth:"5%", 
+				        	  "mRender": function (data, type, full) {
+				        		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+				        		  return sReturn;
+				        	  }
+				          },
 				          { title:"id","data": "id"},  
 				          { title:"等级名称","data": "gradeName"},  
 				          { title:"等级投资总金额","data": "totalInvest"},  
@@ -53,10 +43,10 @@ $(function() {
 	
 				          ],
 	          aoColumnDefs : [
-	                          {"bVisible": false, "aTargets": [ 0]}, //控制列的隐藏显示
+	                          {"bVisible": false, "aTargets": [ 0,1]}, //控制列的隐藏显示
 	                          {
 	                        	  "orderable" : false,
-	                        	  "aTargets" : [0,1,2,3,4,5,6,7,8,9]
+	                        	  "aTargets" : [0,1,2,3,4,5,6,7,8,9,10]
 	                          } // 制定列不参与排序
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
@@ -68,13 +58,16 @@ $(function() {
 	 
 	});//表格初始化完毕
 	 
-	//表格单选效果
+	//表格单选效果(有复选框)
 	 $('#table_id tbody').on( 'click', 'tr', function () {
 		    var $this = $(this);
+		    var $checkBox = $this.find("input:checkbox");
 	        if ( $this.hasClass('selected') ) {
+	        	 $checkBox.prop("checked",false);
 	        	$this.removeClass('selected');
-	        }
-	        else {
+	        } else {
+	        	$(".tr-checkbox").prop("checked",false);
+	        	$checkBox.prop("checked",true);
 	        	$('#table_id tr.selected').removeClass('selected');
 	        	$this.addClass('selected');
 	        }

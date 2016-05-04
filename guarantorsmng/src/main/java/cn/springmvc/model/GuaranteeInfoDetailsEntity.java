@@ -3,6 +3,7 @@ package cn.springmvc.model;
 
 import java.util.List;
 
+
 /** 
  * 查询单个担保机构详情
 * @author 朱祖轶 
@@ -16,6 +17,7 @@ public class GuaranteeInfoDetailsEntity {
 	private List<GuaranteePeriodEntity> lGuaranteePeriodEntities;//根据保荐机构id,期限类型查询担保机构期限范围
 	private List<GuaranteeRelationalEntity> lGuaranteeRelationalEntities;//担保项目类型
 	private CompensationStatisticsEntity compensationStatisticsEntity;//代偿统计信息
+	private MemberThirdAuthInfoEntity memberThirdAuthInfoEntity;//第三方账户信息
 	public GuaranteeInfoEntity getGuaranteeInfoEntity() {
 		return guaranteeInfoEntity;
 	}
@@ -56,6 +58,13 @@ public class GuaranteeInfoDetailsEntity {
 	public void setCompensationStatisticsEntity(
 			CompensationStatisticsEntity compensationStatisticsEntity) {
 		this.compensationStatisticsEntity = compensationStatisticsEntity;
+	}
+	public MemberThirdAuthInfoEntity getMemberThirdAuthInfoEntity() {
+		return memberThirdAuthInfoEntity;
+	}
+	public void setMemberThirdAuthInfoEntity(
+			MemberThirdAuthInfoEntity memberThirdAuthInfoEntity) {
+		this.memberThirdAuthInfoEntity = memberThirdAuthInfoEntity;
 	}
 	
 }

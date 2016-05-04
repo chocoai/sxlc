@@ -210,5 +210,12 @@ ChannelSetService {
 		// TODO Auto-generated method stub return null;
 		return selectChannelSetDaoImpl.SMSHistory(pageEntity);
 	}
+	@Override
+	public int SetEnableDisable(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("启用禁用短信类型接口:"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		// TODO Auto-generated method stub return 0;
+		return handleChannelSetDaoImpl.SetEnableDisable(map);
+	}
 }
 

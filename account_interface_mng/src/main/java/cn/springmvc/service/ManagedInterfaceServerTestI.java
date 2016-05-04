@@ -2,6 +2,8 @@ package cn.springmvc.service;
 
 
 import javax.jws.WebService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 import cn.sxlc.account.manager.model.AuditEntity;
@@ -9,6 +11,7 @@ import cn.sxlc.account.manager.model.AuthorizeInterfaceEntity;
 import cn.sxlc.account.manager.model.LoanTransferEntity;
 import cn.sxlc.account.manager.model.RechargeEntity;
 import cn.sxlc.account.manager.model.RepayInterfaceEntity;
+import cn.sxlc.account.manager.model.TransferSubmitEntity;
 import cn.sxlc.account.manager.model.WithdrawsInterdaceEntity;
 
 /** 
@@ -51,7 +54,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return String 返回类型 
 	* @throws 
 	*/
-	public String testLoanRegisterBindReturn();
+	public String testLoanRegisterBindReturn(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	/** 
@@ -66,7 +69,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return void 返回类型 
 	* @throws 
 	*/
-	public void testLoanRegisterBindNotify();
+	public void testLoanRegisterBindNotify(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	
@@ -171,7 +174,8 @@ public interface ManagedInterfaceServerTestI {
 	* TODO(这里描述这个方法的执行流程 – 可选) 
 	* TODO(这里描述这个方法的使用方法 – 可选) 
 	* TODO(这里描述这个方法的注意事项 – 可选) 
-	* * @Title: testLoanAuthorize 
+	* * @Title: testLoanAuthorize MemberType MemberId authorizeTypeOpen:开启  1.投标 2.还款3.二次分配审核  多个时将所有数字用英文逗号(,)连成一个字符串
+	* authorizeTypeClose:关闭 1.投标 2.还款3.二次分配审核 多个时将所有数字用英文逗号(,)连成一个字符串
 	* @Description: TODO 
 	* @param @return 设定文件 
 	* @return AuthorizeInterfaceEntity 返回类型 
@@ -192,7 +196,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return String 返回类型 
 	* @throws 
 	*/
-	public String testLoanAuthorizeReturn();
+	public String testLoanAuthorizeReturn(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	/** 
@@ -207,7 +211,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return void 返回类型 
 	* @throws 
 	*/
-	public void testLoanAuthorizeNotify();
+	public void testLoanAuthorizeNotify(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	
@@ -631,4 +635,44 @@ public interface ManagedInterfaceServerTestI {
 	* @throws 
 	*/
 	public int PurchaseVipBack();
+	
+	
+	
+	
+	/** 
+	* PreInvestmentTreatment 投资提交第三方前信息处理 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: PreInvestmentTreatment 
+	* @Description: TODO 
+	* @param @param lProjectId 投资项目id
+	* @param @param lMemberId	投资会员id
+	* @param @param sIsAuto		是否为自动投标
+	* @param @param lAmount		投资总金额
+	* @param @param sRedpacketsInfo 红包使用金额		红包1ID,使用金额(单位元，保留4位小数);红包ID2,使用金额;
+	* @param @param lVouchers 	代金券金额		(单位元，保留4位小数)
+	* @param @param sDirectPwd	定向标密码
+	* @param @param sClient  0：pc 1：app 2：微信端
+	* @param @return 设定文件 
+	* @return LoanTransferEntity 返回类型 
+	* @date 2016-4-28 下午4:23:32
+	* @throws 
+	*/
+	public LoanTransferEntity PreInvestmentTreatment(long lProjectId, long lMemberId, short sIsAuto,long lAmount, String sRedpacketsInfo,
+            long lVouchers, String sDirectPwd,short sClient);
+	
+	
+	/** 
+	* earlyRepaymentSubm 提前还款提交第三方 数据处理 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: earlyRepaymentSubm 
+	* @Description: TODO 
+	* @param @param repayInterfaceEntity
+	* @param @return 设定文件 
+	* @return LoanTransferEntity 返回类型 
+	* @date 2016-5-3 下午8:23:27
+	* @throws 
+	*/
+	public LoanTransferEntity earlyRepaymentSubm(RepayInterfaceEntity repayInterfaceEntity);
 }

@@ -28,6 +28,7 @@ import cn.invitemastermng.model.AwardRecordEntity;
 import cn.invitemastermng.model.BayVIPEntity;
 import cn.invitemastermng.model.BorrowingDetailedEntity;
 import cn.invitemastermng.model.InvestDetailedEntity;
+import cn.invitemastermng.model.InvestRepaymentEntity;
 import cn.springmvc.dao.CommissionissuedListDao; 
 
 /** 
@@ -118,6 +119,22 @@ public class CommissionissuedListDaoImpl extends SqlSessionDaoSupport implements
 	public List<AwardPaymentRecordEntity> getAwardRecordsInvite(PageEntity page) {
 		
 		return getSqlSession().selectList("Commissionissued.getAwardRecord_Invite",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
+		
+	}
+
+	@Override
+	public List<InvestRepaymentEntity> getRepaymentAdvisor(PageEntity page) {
+		
+		return getSqlSession().selectList("Commissionissued.getRepayment_Advisor",page.getMap(),
+				new RowBounds(page.getPageNum(),page.getPageSize()));
+		
+	}
+
+	@Override
+	public List<InvestRepaymentEntity> getRepaymentInvite(PageEntity page) {
+		
+		return getSqlSession().selectList("Commissionissued.getRepayment_Invite",page.getMap(),
 				new RowBounds(page.getPageNum(),page.getPageSize()));
 		
 	} 

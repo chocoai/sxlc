@@ -47,7 +47,21 @@ public class MyinvestEntity {
 	private String  endDate;//投标结束时间
 	private String  replayways;//还款方式
 	private String  investRates;//投资进度
-	private long    investRate;//投资进度
+	private long    investRate;//投资进度 
+	private int     deadline;//借款期限 单位：月/天 
+	private int     deadlineType;	//期限类型  0：天标 1：月标 2：年标
+	public int getDeadline() {
+		return deadline;
+	}
+	public void setDeadline(int deadline) {
+		this.deadline = deadline;
+	}
+	public int getDeadlineType() {
+		return deadlineType;
+	}
+	public void setDeadlineType(int deadlineType) {
+		this.deadlineType = deadlineType;
+	}
 	public String getStartDate() {
 		return startDate;
 	}

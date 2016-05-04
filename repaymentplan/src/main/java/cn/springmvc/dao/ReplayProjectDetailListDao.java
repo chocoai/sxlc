@@ -1,5 +1,10 @@
 
 
+package cn.springmvc.dao; 
+
+import cn.springmvc.model.ProjectBaseInfoEntity;
+import cn.springmvc.model.ProjectDetailEntity;
+
 /** 
 * @Title: ReplayProjectDetailListDao.java 
 * @Package cn.springmvc.dao 
@@ -10,9 +15,7 @@
 * @date 2016-4-1 下午3:42:09 
 * @version V5.0 */
  
-package cn.springmvc.dao; 
 
-import cn.springmvc.model.ProjectAppRecordEntity;
 
 /** 
  * @author 刘利 
@@ -29,7 +32,22 @@ public interface ReplayProjectDetailListDao {
 	 * @return ProjectAppProcessEntity 返回类型 
 	 * @date 2016-3-21 下午1:55:21 
 	 */
-	public  ProjectAppRecordEntity  selectProjectDetailByID(int id);
+	ProjectDetailEntity  selectProjectDetailByID(long id);
+	
+	/**
+	 * 根据项目申请id获取项目基本信息
+	* selectProjectBaseInfoById	根据项目申请id获取项目基本信息
+	* TODO(描述)
+	* @author 张友  
+	* * @Title: selectProjectBaseInfoById 
+	* @Description: TODO 
+	* @param  lId					项目申请id
+	* @param @return 				项目基本信息
+	* @return ProjectBaseInformationEntity 返回类型 
+	* @date 2016-5-3 下午3:13:15
+	* @throws
+	 */
+	ProjectBaseInfoEntity selectProjectBaseInfoById(long lId); 
 	
 }
 

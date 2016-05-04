@@ -41,6 +41,67 @@ public class AwardPaymentRecordEntity {
 	private String repayAwards;//推荐还本提奖
 	private String awardAmounts;//推荐提奖总额
 	private String realAmounts;//实际发放金额
+	
+	private long     borrowAmount;//当期累计推荐借款总金额
+	private long     investAmount;//当期累计推荐投资总金额
+	private long     vipAmount;//当期累计推荐还本总金额
+	private long     repayAmount;//当期累计推荐购买VIP总金额
+	private String   borrowAmounts;//当期累计推荐借款总金额
+	private String   investAmounts;//当期累计推荐投资总金额
+	private String   vipAmounts;//当期累计推荐还本总金额
+	private String   repayAmounts;//当期累计推荐购买VIP总金额
+	public long getBorrowAmount() {
+		return borrowAmount;
+	}
+	public void setBorrowAmount(long borrowAmount) {
+		this.borrowAmount = borrowAmount;
+		this.borrowAmounts= IntegerAndString.LongToString(borrowAmount);
+	}
+	public long getInvestAmount() {
+		return investAmount;
+	}
+	public void setInvestAmount(long investAmount) {
+		this.investAmount = investAmount;
+		this.investAmounts = IntegerAndString.LongToString(investAmount);
+	}
+	public long getVipAmount() {
+		return vipAmount;
+	}
+	public void setVipAmount(long vipAmount) {
+		this.vipAmount = vipAmount;
+		this.vipAmounts = IntegerAndString.LongToString(vipAmount);
+	}
+	public long getRepayAmount() {
+		return repayAmount;
+	}
+	public void setRepayAmount(long repayAmount) {
+		this.repayAmount = repayAmount;
+		this.repayAmounts = IntegerAndString.LongToString(repayAmount);
+	}
+	public String getBorrowAmounts() {
+		return borrowAmounts;
+	}
+	public void setBorrowAmounts(String borrowAmounts) {
+		this.borrowAmounts = borrowAmounts;
+	}
+	public String getInvestAmounts() {
+		return investAmounts;
+	}
+	public void setInvestAmounts(String investAmounts) {
+		this.investAmounts = investAmounts;
+	}
+	public String getVipAmounts() {
+		return vipAmounts;
+	}
+	public void setVipAmounts(String vipAmounts) {
+		this.vipAmounts = vipAmounts;
+	}
+	public String getRepayAmounts() {
+		return repayAmounts;
+	}
+	public void setRepayAmounts(String repayAmounts) {
+		this.repayAmounts = repayAmounts;
+	}
 	public String getPersonalName() {
 		return personalName;
 	}

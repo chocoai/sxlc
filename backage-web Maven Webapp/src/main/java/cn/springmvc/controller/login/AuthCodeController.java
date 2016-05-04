@@ -18,9 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 /** 
 * @author 唐国峰
@@ -39,7 +37,7 @@ public class AuthCodeController {
     private Random random = new Random(); 
     private int xyresult;  //运算结果 
     private String randomString;//验证码字符串
-    private static final String CVCNUMBERS = "\u96F6\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\u4E58\u9664\u52A0\u51CF";//大写的数字
+    private static final String CVCNUMBERS = "零一二三四五六七八九十乘除加减";//大写的数字
     private static final Map<String, Integer> OPMap = new HashMap<String, Integer>();  
     static{  
         OPMap.put("*", 11);  
@@ -90,8 +88,8 @@ public class AuthCodeController {
 		          drawRandomString((Graphics2D)g,ch, j);  
 	        }  
 	        //生成后缀： “等于？”  
-	        drawRandomString((Graphics2D)g,"\u7B49\u4E8E\uFF1F", 3);  
-	        logsu.append("\u7B49\u4E8E \uFF1F");  
+	        drawRandomString((Graphics2D)g,"等于？", 3);  
+	        logsu.append("等于 ？");  
 	        randomString = logsu.toString();  
 	        
 	        HttpSession session = request.getSession(true);

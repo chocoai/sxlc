@@ -128,7 +128,26 @@
     <!-- 根据id查询项目类型 -->  
 	<select id="selectProjectBaseInfoentitybyID" parameterType="long"  resultMap="resultListProjectBaseInfo">
 	   select pbi.Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
-	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage,ptg.Content as  contentG,pty.Content as  contentR
+	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage,ptg.Content as  contentG,pty.Content as  contentR,
+	 (
+        select  Min_Daytime  
+        from  Project_Type_Term  where   Project_ID=pbi.Project_ID and Unit=0
+      ) as tminDaytime,
+     ( select   Max_Daytime  
+        from  Project_Type_Term  where   Project_ID=pbi.Project_ID and Unit=0 
+     ) as tmaxDaytime,
+      ( select  Min_Daytime as minDaytime 
+        from  Project_Type_Term  where   Project_ID=pbi.Project_ID and Unit=1 
+      ) as mminDaytime,
+      ( select   Max_Daytime  as maxDaytime
+        from  Project_Type_Term  where   Project_ID=pbi.Project_ID and Unit=1
+      ) as mmaxDaytime,
+      (  select  Min_Daytime as minDaytime 
+        from  Project_Type_Term  where   Project_ID=pbi.Project_ID and Unit=2 
+      ) as yminDaytime,
+      ( select   Max_Daytime  as maxDaytime
+        from  Project_Type_Term  where   Project_ID=pbi.Project_ID and Unit=2 
+      ) as ymaxDaytime 
 	   from  ProjectBaseInfo  pbi 
        left join Project_Type_Guide ptg  on pbi.Project_ID = ptg.Project_ID
        left join Project_Type_Reply pty  on pbi.Project_ID = pty.Project_ID
@@ -137,7 +156,26 @@
     <!--  项目类型列表 -->  
 	<select id="selectProjectBaseInfo"   resultMap="resultListProjectBaseInfo">
 	   select Project_ID,Project_Name, Min_Amount ,Max_Amount,  Min_Rate ,Max_Rate, Single_Min, Invest_Max, MinStart ,Brief_Introduction,
-	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage
+	   Apply_Member,  Pic_Url, Pic_Icon ,Is_Mortgage,
+	 (
+        select  Min_Daytime  
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=0
+      ) as tminDaytime,
+     ( select   Max_Daytime  
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=0 
+     ) as tmaxDaytime,
+      ( select  Min_Daytime as minDaytime 
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=1 
+      ) as mminDaytime,
+      ( select   Max_Daytime  as maxDaytime
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=1
+      ) as mmaxDaytime,
+      (  select  Min_Daytime as minDaytime 
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=2 
+      ) as yminDaytime,
+      ( select   Max_Daytime  as maxDaytime
+        from  Project_Type_Term  where   Project_ID=ProjectBaseInfo.Project_ID and Unit=2 
+      ) as ymaxDaytime 
 	   from  ProjectBaseInfo   where Statu = 1
     </select>    
      <!--  项目类型列表 下拉-->  

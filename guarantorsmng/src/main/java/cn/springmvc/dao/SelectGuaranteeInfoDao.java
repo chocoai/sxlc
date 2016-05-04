@@ -16,6 +16,7 @@ import cn.springmvc.model.GuaranteeRelationalEntity;
 import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
+import cn.springmvc.model.MemberThirdAuthInfoEntity;
 
 
 
@@ -205,5 +206,30 @@ public interface SelectGuaranteeInfoDao {
 	* @throws 
 	*/
 	public CompensationStatisticsEntity CompensationStatistics(Map<String, Object> map);
+	 /**
+     * 根据会员id,与会员type查询会员第三方账户信息
+     * @author    
+     * @Description: TODO 
+     * @param map查询参数
+     * @return MemberThirdAuthInfoEntity 会员第三方授权实体
+     * @date 2016-3-25 上午11:59:16
+     */
+    public MemberThirdAuthInfoEntity selectMemberThirdAuthInfoone(Map<String,Object> map);
+    
+   
+	
+	/** 
+	* findManagementAdmin  根据资产管理方id查询管理员信息
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findManagementAdmin 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<GuaranteeAdminEntity> 返回类型 
+	* @date 2016-5-4 下午5:27:39
+	* @throws 
+	*/
+	public List<GuaranteeAdminEntity> findManagementAdmin(PageEntity pageEntity);
 }
 

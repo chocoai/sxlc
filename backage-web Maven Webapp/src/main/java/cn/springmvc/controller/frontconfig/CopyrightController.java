@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
-import cn.springmvc.Util.HttpSessionUtil;
-import cn.springmvc.Util.LoadUrlUtil;
+
 import cn.springmvc.model.Admin;
 import cn.springmvc.service.SystemCopyrightService;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.springmvc.util.LoadUrlUtil;
 
 /**
  * 

@@ -25,6 +25,19 @@
     <param-value>springmvc.root</param-value>
   </context-param>
   
+  
+  <!-- 自定义检查用户请求参数控制器Filter -->
+	<filter>
+		<filter-name>loginCheckFilter</filter-name>
+		<filter-class>cn.springmvc.filter.LoginCheckFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginCheckFilter</filter-name>
+		<url-pattern>/personalCenter/*</url-pattern>
+		<url-pattern>/accountOverview/*</url-pattern>
+		<url-pattern>/loan/*</url-pattern>
+	</filter-mapping>
+  
   <!-- Spring字符集过滤器 -->
   <filter>
   	<filter-name>SpringEncodingFilter</filter-name>

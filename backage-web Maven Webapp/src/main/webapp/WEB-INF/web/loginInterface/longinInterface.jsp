@@ -77,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<img alt="点击刷新" id="vCodeImg" style="width: 90px;height:30px" class="img" title="点击刷新" src="authImage.do?tt=<%=System.currentTimeMillis()%>" onclick="refreshImg('vCodeImg');">
 						</div>
 						<div class="admForgetPassword">
-							<a href="javascript:;">忘记密码？</a>
+							<a href="web/loginInterface/forget_password.jsp">忘记密码？</a>
 						</div>
 						<div class="admRest">
 							<button type="button" id="loginBtn" class="admRestL btn">登录</button>
@@ -98,4 +98,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/loginInterface.js"></script>
+	
 </body>

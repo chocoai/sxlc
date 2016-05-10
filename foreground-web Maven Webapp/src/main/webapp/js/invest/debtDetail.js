@@ -1,17 +1,6 @@
 /*伍成然2016-3-30*/
 $(function(){
-	/*标签的切换&顶部链接切换*/	
-	$(".tab-head li").each(function(index){
-		var liNode =$(this);
-		$(this).click(function(){
-			$(".tab-content .c-content").removeClass("content-active");
-			$(".page-link .current-page").removeClass("on");
-			$(".tab-head .tab-li").removeClass("tab-ing");	
-			$(".tab-content .c-content").eq(index).addClass("content-active");
-			$(".page-link .current-page").eq(index).addClass("on");
-			liNode.addClass("tab-ing");
-		});
-	});
+	
 	/*立即投资弹出层*/	
 	/*标签选择*/	
 	$(".label-select label").click(function(){
@@ -28,50 +17,26 @@ $(function(){
 	$.changeColor(".grid-table1");
 	$.changeColor(".grid-table2");
 	$.changeColor(".proli-table");
-	/*登录与未登录状态*/	/*逻辑待改*/	
-	$(".login-now").click(function(){
-		$(".not-logined").css("display","none");
-		$(".logined").css("display","block");
-		$(".after-inv-li").css("display","none");
-	});
-	/*未登录与还款中状态*/	/*逻辑待改*/
-	$(".inv-now").click(function(){
-		$(".logined").css("display","none");
-		$(".repaying").css("display","block");
-		$(".after-inv-li").css("display","block");
-	});
-    /*债后监管展开*/
-	$(".info-short").click(function(){
-		if($(this).parents().parents().children(".info-top").css("display")=="none"){
-			$(this).parents().parents().children(".info-top").css("display","block");
-		}else
-		{
-			$(this).parents().parents().children(".info-top").css("display","none");
-		}
-	});
 	/*进度条*/
 	$(".progress").each(function(){
 		$(this).find(".barline").css("width",$(this).find(".progress_totle").html());
 	});
 	/*弹出层*/
-	$('.inv-now').on('click', function(){
-		layer.open({
-			title :'我要投资',//标题
-			skin: 'layer-ext-myskin',//皮肤
-	        type: 1,
-	        area: ['486px', '440px'],//大小宽*高
-	        shadeClose: true, //点击遮罩关闭
-	        content: $('.red-packets')//内容，里边是包含内容的div的class
-	    });
-	});
+	
 	/*radio样式切换效果*/	
 	$(".select label").click(function(){
 		$(this).parent().children().removeClass("active"); 
 		$(this).addClass("active");
 	});
-});
-/*伍成然2016-4-8项目历程弹出层*/
-$(function(){
+	
+	//倒计时
+		
+//	$('.J_CountDown').each(function () {
+//		var $this = $(this),
+//        data = $this.attr('data-config');
+//        $this.countDown(eval('(' + data + ')'));
+//	});
+	
 	$(".pro-ing").mouseover(function(){
 		$(this).parent().children(".proLi").css("display","block");
 		$(this).children("div").css("color","#72c0f3");
@@ -80,70 +45,395 @@ $(function(){
 		$(this).parent().children(".proLi").css("display","none");
 		$(this).children("div").css("color","#605f5f");
 	});
+	
 });
 
-/* 胥福星   2016-04-07   弹出提示层代码     */
+	
+	
+	
 jQuery.fn.layoutClick = function(str){
 	var s = str;
 	var m = '<div class="tipClick"><div class="contentTip">' + s + '<img class="imgTip" src="resource/img/invest/wytz_tip1.png"></div></div>';
 	this.parent().css('position','relative');
 	this.parent().append(m);
-	this.parent().find(".tipClick").css("left",this.offset().left - this.parent().offset().left - this.innerWidth());
+	this.parent().find(".tipClick").css("left",this.offset().left - this.parent().offset().left - this.innerWidth()/2);
 	this.parent().find(".tipClick").css("top",this.offset().top - this.parent().offset().top + this.innerHeight() + 15 );
 };
 
-/*  胥福星    2016-04-07  弹出提示层   */
-$(function(){
-	$(".input1").each(function(){
-		$(this).mouseover(function(){
-			$(this).layoutClick("有效期至：2015-06-10");
-		});
-		$(this).mouseout(function(){
-			$(this).parent().find(".tipClick").remove();
-		});
-	});
-});
+	//只要日期，不要时间
+	template.helper("$timeFixed",function(content){
+		var index = content.indexOf(" ");
+		return content.substring(0,index)
+	})
+	//金额取小数点后2位
+	template.helper("$toFixed",function(content){
+		return parseInt(content).toFixed(2);
+	})
+	//去掉时间后的.0
+	template.helper("$toDelete",function(content){
+		var index = content.indexOf(".");
+		return content.substring(0,index)
+	})
+		var detail = {
+			repaymentPlan:function(applyId){
+				var url = "invest/repaymentPlan/"+applyId+".html";
+				$.ajax({
+					type:"GET",
+					url:url,
+					dataType:"json",
+					success:function(r){
+						var data = {json:r};
+						
+						var total = 0;
+						for (var i=0;i<data.json.length;i++){
+							total = total + parseInt(data.json[i].sdPrincipalInterests)
+						}
+						$(".moneyFormat1").html(total);
+						var html = template("repay_Plan",data);
+						$("#repaymentPlan").append(html);	
+					}
+				})
+			},
+			investmentList:function(applyId){
+				var url = "invest/debtsInvestmentRecord/"+applyId+".html";
+				$.ajax({
+					type:"GET",
+					url:url,
+					dataType:"json",
+					success:function(r){
+						
+						$("#moneyFormat2").html(parseInt(r.availableAmount).toFixed(2));
+						$("#moneyFormat3").html(parseInt(r.investTotals).toFixed(2));
+						$("#moneyFormat4").html(parseInt(r.shenYuKeTou).toFixed(2));
+						var data = r
+						if (r.info.length>0){
+							var html = template("invest_List",r);
+							$("#investmentList").append(html)	
+						}
+					}
+				})
+			},
+			projectCourse:function(applyId){
+				var url = "invest/projectCourse/"+applyId+".html";
+				var data = {};
+				$.ajax({
+					type:"GET",
+					url:url,
+					dataType:"json",
+					success:function(r){
+						
+						if (r!=null){
+							data = r;
+							$.ajax({
+								type:"GET",
+								url:"invest/repaymentPlan/"+applyId+".html",
+								dataType:"json",
+								success:function(r){
+									if (r.toString()!=""){
+										data.info = r;
+										data.repayTime = r[0].repayMaxTime
+									}
+									var html = template("project_course",data);
+									$("#projectCourse").html(html);
+									
+									//项目历程弹出层
+									$(".pro-repay").mouseenter(function(){
+										$(this).parent().children(".proLi").show();
+										$(this).children("div").css("color","#72c0f3");
+									});
+									$(".pro-repay").mouseleave(function(){
+										setTimeout(function(){		
+											$(".proLi").hide();
+										},1000);
+										$(this).children("div").css("color","#605f5f");
+									});
+									$(".proLi").mouseenter(function(){
+										setTimeout(function(){		
+											$(".proLi").show();
+										},1000);
+									});
+								}
+							})
+					
+						}		
+					}
+				})
+			},
 
-/* 验证     */
-$(function(){
-	$("#notLoginBox").Validform({
-		tiptype:3,//提示信息类型
-		btnSubmit:".login-now", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
-		//btnReset:"#btnreset1",
-		datatype: extdatatype,//扩展验证类型
-		//showAllError:true,//提交前验证显示所有错误
-		ajaxPost:{//使用ajax提交时
-			url:"http://182.150.178.88:8031/GEB_P2P_Foreqround/selectmemberProvince.action",
-			datatype:"jsonp",
-			success:function(data,obj){
-	            //data是返回的json数据;
-	            //obj是当前表单的jquery对象;
-	        },
-	        error:function(data,obj){
-	            //data是{ status:**, statusText:**, readyState:**, responseText:** };
-	            //obj是当前表单的jquery对象;
-	            console.log(data.status);
-	        }
+			//风控措施
+			riskManagement:function(applyId){
+				var url = "invest/riskManagement/"+applyId+".html";
+				$.ajax({
+					type:"GET",
+					url:url,
+					dataType:"json",
+					success:function(r){
+						
+						$("#riskControl_detail").html(r.detail);
+						if (r.info.length>0){
+							var html = template("riskControl_list",r);
+							$("#riskControl_photo").html(html);
+						}
+					}
+				})
+			},
+			//投资获取账户
+			getaccountInfo:function(applyId,ctId,num){
+				var url = "invest/accountInfos/"+applyId+"/"+ctId+".html";
+				var num = num;
+			
+				$.ajax({
+					type:"GET",
+					url:url,
+					dataType:"json",
+					success:function(r){
+						console.log(r)
+						if (num<parseInt(r.userBalances)&&num<=parseInt(r.sSumAount)){
+							var hei = 423 + Math.ceil(r.redPackList.length /3)*40;
+							layer.open({
+								title :'我要投资',//标题
+								skin: 'layer-ext-myskin',//皮肤
+						        type: 1,
+						        area: ['486px',  hei+"px"],//大小宽*高
+						        shadeClose: true, //点击遮罩关闭
+						        content: $('.red-packets')//内容，里边是包含内容的div的class
+						    });
+							
+							var r = r;
+							var encrypt = new JSEncrypt();
+							encrypt.setPublicKey(publickey);
+							var data = {};
+							data.proId = encrypt.encrypt(applyId+"");
+							data.amount =  encrypt.encrypt(num+"");
+							var url = "invest/revenuePlan.html";
+							var profit = NetUtil.ajax(
+									url,
+									data,
+									function(profit){
+										r.num = num;
+										r.profit = profit;
+										r.maxRedNum = parseInt(r.num)*r.proportion;
+										console.log(r)
+										var html = template("confirmInfo",r)
+										
+										$("#red-packets-top").html(html);
+										
+										detail.calculation();
+										
+										$(".input1").each(function(n){
+											var n = n;
+											$(this).mouseover(function(){
+												$(this).layoutClick("有效期至"+r.redPackList[n].sEndDate);
+											});
+											$(this).mouseout(function(){
+												$(this).parent().find(".tipClick").remove();
+											});
+											
+											if (parseInt($(this).text())>r.maxRedNum){
+												$(this).addClass("disabled");
+											};
+											
+										});
+								
+										
+										$(".input1").on("click",function(e){
+											var eve = e.srcElement||e.target;
+											var inputVal = $("#useVouchers").val()||"0";
+											if (eve.nodeName == "LABEL"){
+												if ($(this).hasClass("active")){
+													$(this).removeClass("active");
+												}else{
+													$(this).addClass("active");
+												};
+												detail.calculation();
+												if (detail.getRedBags()>=r.maxRedNum-inputVal){
+													$(".input1").each(function(){
+														console.log(1)
+														if (!($(this).hasClass("active"))){
+															
+															$(this).addClass("disabled");
+														}
+													});
+												}
+											};
+										});
+										
+										$("#useVouchers").on("blur",function(){
+											var re = /^[0-9]*[1-9][0-9]*$/; //正整数
+											var str = detail.getRedBags();
+											var thisVal = $(this).val()||"0";
+											console.log(num-str);
+											if (thisVal>num-str){
+												layer.alert("超出本次投资总金额",function(index){
+													layer.close(index);
+													$("#useVouchers").val(num-str);
+												});
+											}
+											if (re.test($(this).val())||$(this).val()==""||$(this).val()=="0"){
+												detail.calculation();
+											}else{
+												layer.alert("请输入正整数");
+											}
+										});
+									}
+							)
+						}else{
+							layer.alert("余额不足");
+						}
+					}
+				})
+			},
+			//投资收益
+			getInvestMoney:function(applyId,amount){
+				var encrypt = new JSEncrypt();
+				encrypt.setPublicKey(publickey);
+				var data = {};
+				data.proId = encrypt.encrypt(applyId+"");
+				data.amount =  encrypt.encrypt(amount+"");
+				var url = "invest/revenuePlan.html";
+				NetUtil.ajax(
+						url,
+						data,
+						function(r){
+							$("#pageProfit").html(parseInt(r).toFixed(2));
+						}
+				)
+			},
+			//计算
+			calculation:function(){
+				$("#nowInvestNum").html($("#orangeNum").html());
+				if($("#useVouchers").val()==""||$("#useVouchers").val()==undefined){
+					$("#nowVoucher").html("0.00");
+				}else{
+					$("#nowVoucher").html(parseInt($("#useVouchers").val()).toFixed(2));
+				};			
+				var str = detail.getRedBags();
+				$("#nowBag").html(str);
+				var useNum = parseInt($("#nowInvestNum").html())-$("#nowVoucher").html()-$("#nowBag").html();
+				if(useNum>=0){
+					$("#nowAccountBalance").html(useNum.toFixed(2));
+				}else{
+					$("#nowAccountBalance").html("0.00");
+				}
+				
+			},
+			//已点击的红包金额
+			getRedBags:function(){
+				var str = 0;
+				$(".input1").each(function(){
+					if ($(this).hasClass("active")){
+						str += parseInt($(this).text());
+					}
+				});
+				return str;
+			}
+	};
+	
+	
+
+
+
+
+
+$(function(){	
+	/*标签的切换&顶部链接切换*/	
+	$(".tab-head li").each(function(index){
+		var liNode =$(this);
+		var index = index;
+		$(this).click(function(){
+			$(".tab-content .c-content").removeClass("content-active");
+			$(".page-link .current-page").removeClass("on");
+			$(".tab-head .tab-li").removeClass("tab-ing");	
+			$(".tab-content .c-content").eq(index).addClass("content-active");
+			$(".page-link .current-page").eq(index).addClass("on");
+			liNode.addClass("tab-ing");
+			if (index == "1"){
+				detail.repaymentPlan(ctId);
+			}
+			if (index == "2"){
+				detail.riskManagement(ctId);
+				
+			}
+			if (index == "3"){
+				detail.investmentList(ctId);
+				
+			}
+			if (index == "4"){
+				detail.projectCourse(ctId);
+			}
+		});
+	});
+	
+	
+	$("#inv-now").bind("click",function(){
+		var num = $("#investMoney").val();
+		if (num!="50元起投且金额为整数"){
+			var re = /^[0-9]*[1-9][0-9]*$/ ; //正整数
+			if (re.test(num) && num>=50){
+				detail.getaccountInfo(applyId,ctId,num);
+			}else{
+				layer.alert("50元起投且金额为整数")
+			}
 		}
 	});
-	$("#loginedBox").Validform({
-		tiptype:3,//提示信息类型
-		btnSubmit:".inv-now", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
-		//btnReset:"#btnreset1",
-		datatype:extdatatype,//扩展验证类型
-		//showAllError:true,//提交前验证显示所有错误
-		ajaxPost:{//使用ajax提交时
-			url:"http://182.150.178.88:8031/GEB_P2P_Foreqround/selectmemberProvince.action",
-			datatype:"jsonp",
-			success:function(data,obj){
-	            //data是返回的json数据;
-	            //obj是当前表单的jquery对象;
-	        },
-	        error:function(data,obj){
-	            //data是{ status:**, statusText:**, readyState:**, responseText:** };
-	            //obj是当前表单的jquery对象;
-	            console.log(data.status);
-	        }
+	
+	
+	
+	$("#investMoney").on("blur",function(){
+		var num = $(this).val();
+		if (num!="50元起投且金额为整数"&&num){
+			var re = /^[0-9]*[1-9][0-9]*$/ ; //正整数
+			if (re.test(num) && num>=50){
+				detail.getInvestMoney(applyId,num)
+			}
 		}
 	});
+	
+	$("#confirmSubmit").click(function(){
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publickey);
+		var data = {};
+		var sDirectPwd;
+		if($("#codeContent").html()==undefined){
+			
+		}else{
+			if ($("#directionalCode").val()){
+				sDirectPwd = encrypt.encrypt($("#directionalCode").val()+"");
+			}else{
+				layer.alert("请填写定向标密码");
+				return false;
+			}
+		}
+		
+		var slVouchers = encrypt.encrypt($("#nowVoucher").html());
+		var lAmount = encrypt.encrypt($("#nowInvestNum").html());
+		var arr = [];
+		$(".input1").each(function(n){
+			if ($(this).hasClass("active")){
+				arr.push($(this).children().val());
+			}
+		});
+		var redPacks = encrypt.encrypt(arr.join(",")+"");
+		var projectId = encrypt.encrypt(applyId+"");
+		
+		$("input[name='slVouchers']").val(slVouchers);
+		$("input[name='lAmount']").val(lAmount);
+		$("input[name='redPacks']").val(redPacks);
+		$("input[name='projectId']").val(projectId);
+		
+		var param = {slVouchers:slVouchers,lAmount:lAmount,redPacks:redPacks,projectId:projectId};
+		
+		
+		if ($("input[name='sDirectPwd']").length>0){
+			$("input[name='sDirectPwd']").val(sDirectPwd);
+			param.sDirectPwd = sDirectPwd;
+		}
+		
+		var obj = eval(param);
+		var sign = NetUtil.createSign(obj);
+		$("#sign").val(sign);
+		
+		$("#form1").submit();
+	});
+
 });

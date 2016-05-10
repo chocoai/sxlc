@@ -12,6 +12,9 @@
 	<base href="<%=basePath%>">
     <title>账户总览</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCWB/Rc81rhJIXj301mK7NZrhu8MM34BVOz4Ib1dhLvOwdu3LL1k6A5xgRR8Oxsgy4QJzktqqw71pVKjQF4qTrwmcWI9KpI2z8bxqYra7sHrD/bAF5/VqyfUzaGpu8pD+ar7q2WONBkWWjbQohBGus5H/s3x6TucTJKSvxCG7CEYQIDAQAB';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/accountOverview/accountOverview.css">
 	<%-- <jsp:include page="myPIChart.jsp"></jsp:include> --%>
@@ -36,7 +39,7 @@
 	   						</div>
 	   						<div class="accountOverviewM">
 	   							<div class="mainTitle">
-	   								账户总资产<span class="moneyFormat">0</span>
+	   								账户总资产<span class="moneyFormat totalAmount">0</span>
 	   								<label class="tipOrigin tipOrigin1"></label>
 	   								<!-- <div class="tipLeft">
 	   									<div class="contentLeft">可用余额+冻结金额+待收本金+待收收益-待还总额
@@ -56,7 +59,7 @@
 	   									<span class="secondarySharp"></span>
 	   									<div class="secondaryTitleInfoCont">
 	   										<div class="secondaryTitleWord">
-												<div class="secondaryTitleWordNum moneyFormat">0</div>
+												<div class="secondaryTitleWordNum moneyFormat totalAmount">0</div>
 													<div>账户总资产</div>
 											</div>
 	   										<div class="chartBox1" id="chartBox1">
@@ -69,115 +72,48 @@
 										            }
 										        });
 										        
-										        // 使用
-										        require(
-										            [
-										                'echarts',
-										                'echarts/theme/roma',
-										                'echarts/chart/pie', // 使用柱状图就加载bar模块，按需加载
-										                'echarts/chart/line'
-										            ],
-												 function (ec,theme) {
-								                // 基于准备好的dom，初始化echarts图表
-								                //环形
-								                 var myChart1 = ec.init(document.getElementById('chartBox1'),theme);
-								                 	var option1 = {
-												    series: [
-												        {
-												            name:'访问来源',
-												            type:'pie',
-												            radius: ['90%', '100%'],
-												            itemStyle : {
-											                normal : {
-												                    label : {
-												                        show : false
-												                    },
-												                    labelLine : {
-												                        show : false
-												                    }
-												                },
-												                emphasis : {
-												                    label : {
-												                        show : true,
-												                        position : 'center',
-												                        textStyle : {
-												                            fontSize : '30',
-												                            fontWeight : 'bold'
-												                        }
-												                    }
-												                }
-												            },
-												            data:[
-												                {value:20,itemStyle:{normal:{color:'#60b0ef'}}},
-												                {value:20,itemStyle:{normal:{color:'#f4653b'}}},
-												                {value:20,itemStyle:{normal:{color:'#8ac55b'}}},
-												                {value:20,itemStyle:{normal:{color:'#c8c8c8'}}},
-												                {value:20,itemStyle:{normal:{color:'#ffb43f'}}}
-												            ]
-												         }
-												     ],
-												    media: [ // 这里定义了 media query 的逐条规则。
-												        {
-												            query: {
-												            	minWidth: 500,
-															    maxHeight: 200,
-															    minAspectRatio: 1
-															},   // 这里写规则。
-												            option: {       // 这里写此规则满足下的option。	
-													            series: [                   // 两个饼图左右布局。
-													                {
-													                    radius: [20, '100%'],
-													                    center: ['100%', '60%']
-													                }
-													            ]
-												            }
-												        }
-												    ]
-							                };
-							                  //   为echarts对象加载数据 
-  												myChart1.setOption(option1);
-								                 });
+										       
 								            </script>
 											</div>
 											<div class="secondaryTitleInfoMiddle">
 												<div>
 													<label class="circle blue"></label>可用余额
 													<label class="whatever tipOrigin whatever1"></label>
-													<span class="highLight moneyFormat">100</span>
+													<span class="highLight moneyFormat userBalances">0</span>
 												</div>
 												<div>
 													<label class="circle red"></label>冻结金额
 													<label class="whatever tipOrigin whatever2"></label>
-													<span class="moneyFormat">50</span>
+													<span class="moneyFormat frozen">0</span>
 												</div>
 												<div>
 													<label class="circle green"></label>待收本金
 													<label class="whatever tipOrigin"></label>
-													<span class="moneyFormat">20</span>
+													<span class="moneyFormat willRecPrincipal">0</span>
 												</div>
 												<div>
 													<label class="circle orangeCircle"></label>待收收益
 													<label class="whatever tipOrigin"></label>
-													<span class="moneyFormat">50</span>
+													<span class="moneyFormat willRecInterest">0</span>
 												</div>
 												<div>
 													<label class="circle grey"></label>待还总额
 													<label class="whatever tipOrigin"></label>
-													<span class="moneyFormat">10</span>
+													<span class="moneyFormat repayAmount">0</span>
 												</div>
 											</div>
 											<div class="secondaryTitleInfoRight">
 												<div class="InfoRightM">
-													<label class="vouchers"></label>代金券<span class="firstSpan">50</span>
+													<label class="vouchers"></label>代金券<span class="firstSpan moneyFormat giftUserBalances">0</span>
 												</div>
 												<div class="InfoRightM">
-													<label class="luckyMoney"></label>红包<span class="secondSpan moneyFormat">2000</span>
+													<label class="luckyMoney"></label>红包<span class="secondSpan moneyFormat giftAmount">0</span>
 												</div>
 												<div class="InfoRightM">
-													<label class="intAble"></label>可用积分(分)<span class="thirdSpan">1200<a href="integralMall/mallIndex.html">兑换</a></span>
+													<label class="intAble"></label>可用积分(分)<span class="thirdSpan"><span class="integralResidue">0</span><a href="integralMall/mallIndex.html">兑换</a></span>
 												</div>
 												<div class="InfoRightM">
-													<label class="invitated"></label>已邀请好友(位)<span class="fourthSpan">2</span>
+													<label class="invitated"></label>已邀请好友(位)<span class="fourthSpan friends">0</span>
 												</div>
 											</div>
 	   									</div>
@@ -201,23 +137,23 @@
 	   							<div class="planMTitle">
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">累计投资</div>
-	   									<div class="planMItemNum moneyFormat">150</div>
+	   									<div class="planMItemNum moneyFormat investAmountValid">150</div>
 	   								</div>
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">累计收益</div>
-	   									<div class="planMItemNum highLight moneyFormat">100</div>
+	   									<div class="planMItemNum highLight moneyFormat realAmount">100</div>
 	   								</div>
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">投标奖励</div>
-	   									<div class="planMItemNum moneyFormat">0</div>
+	   									<div class="planMItemNum moneyFormat backAmount">0</div>
 	   								</div>
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">代金券抵扣</div>
-	   									<div class="planMItemNum moneyFormat">0</div>
+	   									<div class="planMItemNum moneyFormat investVouchersAmount">0</div>
 	   								</div>
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">红包抵扣</div>
-	   									<div class="planMItemNum moneyFormat">0</div>
+	   									<div class="planMItemNum moneyFormat investGiftAmount">0</div>
 	   								</div>
 	   							</div>
 	   							<div class="planMList">
@@ -231,97 +167,10 @@
 										            }
 										        });
 										        
-										        // 使用
-										        require(
-										            [
-										                'echarts',
-										                'echarts/theme/roma',
-										                'echarts/chart/pie', // 使用柱状图就加载bar模块，按需加载
-										                'echarts/chart/line'
-										            ],
-												 function (ec,theme) {
-								                // 基于准备好的dom，初始化echarts图表
-								                //环形
-								                 var myChart4 = ec.init(document.getElementById('chartBox4'),theme);
-								                 var option4 = {
-													    tooltip : {
-													        trigger: 'axis'
-													    },
-													    grid:{
-								 					    	x:50,
-								 					    	y:20,
-								 					    	x2:20,
-								 					    	y2:40,
-								 					    },
-													    toolbox: {
-													        show : true,
-													        feature : {
-													             dataZoom: {},
-								 					            dataView: {readOnly: false},
-								 					            magicType: {type: ['line', 'bar']},
-													            restore: {},
-													            saveAsImage: {}
-													        }
-													    },
-													    calculable : true,
-													    xAxis:  {
-								 					        type: 'category',
-								 					        axisLine:{lineStyle:{
-								 					            			color:'#dedede',
-													            			width:1,
-								 					            		}},
-								 					        axisLabel:{
-								 					        	textStyle:{color:'#787878'},
-								 					        },
-													        boundaryGap: false,
-													        data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-													    },
-													    yAxis: {
-													        type: 'value',
-													        axisLine:{lineStyle:{
-								 					            			color:'#dedede',
-													            			width:1,
-								 					            		}},
-								 					        axisLabel: {
-								 					            formatter: '{value}元',
-								 					        	textStyle:{color:'#787878'},
-								 					        },
-												  		},
-													    series : [
-													        {
-													            name:'回款',
-													            type:'line',
-													            symbol:'emptyCircle',
-													            itemStyle: {
-													                normal: {
-													                    lineStyle: {            // 系列级个性化折线样式，横向渐变描边
-													                        width: 1,
-													                        color:'#30adff',
-													                        shadowColor : 'rgba(0,0,0,0.5)',
-													                        shadowBlur: 10,
-													                        shadowOffsetX: 8,
-													                        shadowOffsetY: 8
-													                    }
-													                },
-													                emphasis : {
-													                    label : {show: true}
-													                }
-													            },
-													            data:[
-													                620, 732, 791, 
-													                890, 930, 820,
-													                620, 732, 791, 
-													                890, 930, 820,
-													            ]
-													        }
-													    ]
-													};
-							                  //   为echarts对象加载数据 
-  												myChart4.setOption(option4);
-								                 });
+										        
 								       </script>
 									</div>
-									<div class="time">2017年</div>
+									<div class="time">2016年</div>
 									<!-- <div class="planMListTip">
 										<div class="listTip"><label class="circle grey"></label>有回款</div>
 										<div class="listTip"><label class="circle blue"></label>无回款</div>
@@ -335,23 +184,23 @@
 	   							<div class="planMTitle">
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">累计借款</div>
-	   									<div class="planMItemNum moneyFormat">150</div>
+	   									<div class="planMItemNum moneyFormat amount">150</div>
 	   								</div>
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">待还本金</div>
-	   									<div class="planMItemNum highLight moneyFormat">100</div>
+	   									<div class="planMItemNum highLight moneyFormat willRepayPrincipal">100</div>
 	   								</div>
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">待还利息</div>
-	   									<div class="planMItemNum moneyFormat">0</div>
+	   									<div class="planMItemNum moneyFormat willRepayInterest">0</div>
 	   								</div>
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">逾期未还</div>
-	   									<div class="planMItemNum moneyFormat">150</div>
+	   									<div class="planMItemNum moneyFormat overdue">150</div>
 	   								</div>
 	   								<div class="planMItem">
 	   									<div class="planMItemWord">最近应还日期</div>
-	   									<div class="planMItemNum planMItemDetail">详情&gt;</div>
+	   									<div class="planMItemNum planMItemDetail"><div class="lastDate"></div>详情&gt;</div>
 	   								</div>
 	   							</div>
 	   							<div class="planMList">
@@ -365,97 +214,10 @@
 										            }
 										        });
 										        
-										        // 使用
-										        require(
-										            [
-										                'echarts',
-										                'echarts/theme/roma',
-										                'echarts/chart/pie', // 使用柱状图就加载bar模块，按需加载
-										                'echarts/chart/line'
-										            ],
-												 function (ec,theme) {
-								                // 基于准备好的dom，初始化echarts图表
-								                //环形
-								                 var myChart2 = ec.init(document.getElementById('chartBox2'),theme);
-								                 var option2 = {
-													    tooltip : {
-													        trigger: 'axis'
-													    },
-													    grid:{
-								 					    	x:50,
-								 					    	y:20,
-								 					    	x2:20,
-								 					    	y2:40,
-								 					    },
-													    toolbox: {
-													        show : true,
-													        feature : {
-													             dataZoom: {},
-								 					            dataView: {readOnly: false},
-								 					            magicType: {type: ['line', 'bar']},
-													            restore: {},
-													            saveAsImage: {}
-													        }
-													    },
-													    calculable : true,
-													    xAxis:  {
-								 					        type: 'category',
-								 					        axisLine:{lineStyle:{
-								 					            			color:'#dedede',
-													            			width:1,
-								 					            		}},
-								 					        axisLabel:{
-								 					        	textStyle:{color:'#787878'},
-								 					        },
-													        boundaryGap: false,
-													        data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-													    },
-													    yAxis: {
-													        type: 'value',
-													        axisLine:{lineStyle:{
-								 					            			color:'#dedede',
-													            			width:1,
-								 					            		}},
-								 					        axisLabel: {
-								 					            formatter: '{value}元',
-								 					        	textStyle:{color:'#787878'},
-								 					        },
-												  		},
-													    series : [
-													        {
-													            name:'还款',
-													            type:'line',
-													            symbol:'emptyCircle',
-													            itemStyle: {
-													                normal: {
-													                    lineStyle: {            // 系列级个性化折线样式，横向渐变描边
-													                        width: 1,
-													                        color:'#30adff',
-													                        shadowColor : 'rgba(0,0,0,0.5)',
-													                        shadowBlur: 10,
-													                        shadowOffsetX: 8,
-													                        shadowOffsetY: 8
-													                    }
-													                },
-													                emphasis : {
-													                    label : {show: true}
-													                }
-													            },
-													            data:[
-													                620, 732, 791, 
-													                890, 930, 820,
-													                620, 732, 791, 
-													                890, 930, 820,
-													            ]
-													        }
-													    ]
-													};
-							                  //   为echarts对象加载数据 
-  												myChart2.setOption(option2);
-								                 });
+										        
 								       </script>
 									</div>
-									<div class="time">2017年</div>
+									<div class="time">2016年</div>
 									<!-- <div class="planMListTip">
 										<div class="listTip"><label class="circle grey"></label>无还款</div>
 										<div class="listTip"><label class="circle blue"></label>有还款</div>
@@ -472,8 +234,8 @@
    								<span class="more" onclick="window.location='fundManagement/incomeExpenditure.html'">更多&gt;</span>
    							</div>
    							<div class="capitalDynamicsM">
-   								<ul>
-   									<%for(int i = 0;i<3;i++){ %>
+   								<ul class="repayRecordUL">
+   									<%-- <%for(int i = 0;i<3;i++){ %>
    									<li class="clearfix">
    										<div class="capitalDynamicsML">
    											<div class="DynamicsMLTop">2016-01<label class="circle grey"></label></div>
@@ -484,8 +246,8 @@
    											<div>充值10,000.00元   实际到账10,000.00元   账户余额20,000.00元   充值10,000.00元</div>
    										</div>
    									</li>
-   									<%} %>
-   									<li class="clearfix">
+   									<%} %>  --%>
+   									<li class="clearfix footli">
    										<div class="capitalDynamicsML">
    											<div class="leftTop"><label class="circle grey"></label></div>
    											<div class="leftBottom"></div>

@@ -11,6 +11,9 @@
 * @version V5.0 */
  
 package cn.springmvc.service;  
+import java.util.List;
+
+import cn.membermng.model.CreditorTransEntity;
 import product_p2p.kit.pageselect.PageEntity; 
 
 /** 
@@ -58,7 +61,7 @@ public interface InvestmentManagementService {
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param pageEntity
-	 * #{skey}#{Member_ID}
+	 * #{skey}#{Member_ID}#{Invest_Id}
 	 * @param @return 设定文件 
 	 * @return void 返回类型 
 	 * @date 2016-4-13 下午6:57:34
@@ -75,5 +78,17 @@ public interface InvestmentManagementService {
 	 * @date 2016-4-13 下午6:58:45
 	 */
 	public void getCreditorOff(PageEntity pageEntity);
+	
+	/**
+	 * 后台显示-会员转出债权
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param pageEntity
+	 * #{skey}#{Member_ID}
+	 * @param @return 设定文件 
+	 * @return List<CreditorTransEntity> 返回类型 
+	 * @date 2016-4-13 下午6:51:15
+	 */
+	public void getCreditorTransferBack(PageEntity pageEntity);
 }
 

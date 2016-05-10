@@ -17,12 +17,12 @@
                         <div class="menu_section">
                             <ul class="nav side-menu">
                                 <li id="pro_type"><a href="project/toProTypePg"><i class="fa fa-home"></i>项目类型管理</a></li>
-                                <li data-id="302" id="loan_apply_manage"><a href="project/toLoanApplyList"><i class="fa fa-edit"></i>借款申请管理</a></li>
-                                <li data-id="303" id="loan_exam"><a href="web/project/loan_exam.jsp"><i class="fa fa-edit"></i>借款审核</a></li>       
-                                <li data-id="304" id="pro_post"><a href="web/project/post_list.jsp"><i class="fa fa-edit"></i>项目发布</a> </li>
-                                <li data-id="305" id="loan_manage" class="li_level_one">
+                                <li data-id="302"><a href="web/project/loan_intention_1.jsp"><i class="fa fa-edit"></i>借款申请管理</a></li>
+                                <li data-id="303"><a href="web/project/loan_exam.jsp"><i class="fa fa-edit"></i>借款审核</a></li>
+                                <li data-id="304"><a href="web/project/post_list.jsp"><i class="fa fa-edit"></i>项目发布</a></li>        
+                                <li data-id="305">
                                 	<a><i class="fa fa-edit"></i>借款管理<span class="fa fa-chevron-down"></span></a>
-                                	<ul class="nav child_menu ul_level_one" style="display: none">
+                                	<ul class="nav child_menu" style="display: none">
                                         <li data-id="30501"><a href="web/project/apply_failed.jsp">申请失败项目管理</a></li>
                                         <li data-id="30502"><a href="web/project/examing.jsp">审核中项目管理</a></li>
                                         <li data-id="30503"><a href="web/project/not_released.jsp">未发布项目管理</a></li>
@@ -33,9 +33,9 @@
                                         <li data-id="30508"><a href="web/project/settled.jsp">已结清项目管理</a></li>
                                     </ul>
                                  </li>
-                                <li data-id="306" id="after_loan_manage" class="li_level_one">
+                                <li data-id="306">
                                 	<a><i class="fa fa-edit"></i>贷后管理<span class="fa fa-chevron-down"></span></a>
-                                	<ul class="nav child_menu ul_level_one" style="display: none">
+                                	<ul class="nav child_menu" style="display: none">
                                         <li data-id="30601"><a href="web/project/deal_pro_list.jsp">成交项目管理</a></li>
                                         <li data-id="30602"><a href="web/project/soon_pay_count.jsp">即将还款统计</a></li>
                                         <li data-id="30603"><a href="web/project/late_pay_count.jsp">逾期还款统计</a></li>

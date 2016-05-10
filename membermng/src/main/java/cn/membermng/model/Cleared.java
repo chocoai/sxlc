@@ -36,7 +36,8 @@ public class Cleared {
 	private String		sRepayOverdue;			//
 	private long		repayPenalty;			//违约金
 	private String		sRepayPenalty;			//
-	private int			statu;					//结清方式
+	private int			statu;					//结清方式	>0 提前还款 《=0 正常结清
+	private int 		sOverStatu;				//结清方式 》存在逾期还款 《=0不存在逾期还款
 	
 	
 	public Cleared() {}
@@ -301,6 +302,16 @@ public class Cleared {
 
 	public void setStatu(int statu) {
 		this.statu = statu;
+	}
+
+
+	public int getsOverStatu() {
+		return sOverStatu;
+	}
+
+
+	public void setsOverStatu(int sOverStatu) {
+		this.sOverStatu = sOverStatu;
 	}
 	
 	

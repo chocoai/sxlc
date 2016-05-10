@@ -26,29 +26,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="" role="main">
 					<div class="data_display">
 						<div class="recharge col-lg-12">
-							<form id="rechargeform" class="accrechargeform" action="">
-								<span class="con-item">
-									<span class="con-item-word">充值方式：</span>
-									<select class="rechargeway">
-										<option>企业网银</option>
-										<option>个人网银</option>
-										<option>汇款充值</option>
-										<option>快捷支付</option>
-									</select>
-								</span>
+							<form id="rechargeform" class="accrechargeform" action="account/recharge.do">
 								<span class="con-item">
 									<span class="con-item-word">充值金额：</span>
-									<input type="text" class="rechargeinput" placeholder="" datatype="amcountM"/>
+									<input id="amounts" type="text" class="rechargeinput" placeholder="" datatype="amcountM"/>
 									<label class="unit">元</label>
+									<input id="amount" type="hidden" name="amount" />
 								</span>
 								<span class="con-item">
-									<span class="con-item-word">备注：</span><textarea class="rechargeta ta-noresize" rows="2" cols=""></textarea>
+									<span class="con-item-word">充值方式：</span>
+									<select id="rechargeTypes" class="rechargeway">
+										<option value="4">企业网银</option>
+										<option value="">个人网银</option>
+										<option value="3">汇款充值</option>
+										<option value="2">快捷支付</option>
+									</select>
+									<input id="rechargeType" name="rechargeType" type="hidden" value="" />
+								</span>
+								<span class="con-item">
+									<span class="con-item-word">备注：</span><textarea id="remarks" class="rechargeta ta-noresize" rows="2" cols=""></textarea>
+									<input id="remark" type="hidden" name="remark" />
 								</span>
 								<span class="rechargecost">
-									<span>支付充值费用：</span><label class="cost moneyFormat">20</label>元
+									<span>支付充值费用：</span><label id="rechargeC" class="cost moneyFormat">20</label>元
 								</span>
 								<span class="acturallymoney">
-									<span>实际到账金额：</span><label class="creditedactually moneyFormat">1000</label>元
+									<span>实际到账金额：</span><label id="realMoney" class="creditedactually moneyFormat">1000</label>元
 								</span>
 							</form>
 							<div class="cmbtncontainer accrechargecon">
@@ -64,6 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/recommend/acc-recharge.js"></script>
 	<script type="text/javascript">
 	$(function(){
 		validform5(".commonbtn0","rechargeform",false,"3");

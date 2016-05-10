@@ -678,5 +678,34 @@ public interface SelectThreePartyDao {
 	* @throws 
 	*/
 	public List<AwardEntity> FinancialAdvisorAward(Map<String, Object> map);
+	
+	
+	/** 
+	* findYearMoney 查询出vip购买年费金额 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findYearMoney 
+	* @Description: TODO 
+	* @param @return 设定文件 
+	* @return long 返回类型 
+	* @date 2016-5-9 上午10:09:00
+	* @throws 
+	*/
+	public long findYearMoney();
+	
+	
+	/** 
+	* EndTimeComparison 比较购买vip时选择的vip购买开始时间
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: EndTimeComparison 
+	* @Description: TODO 
+	* @param @param map 
+	* @param @return 设定文件 
+	* @return Map<String,Object> 返回类型 
+	* @date 2016-5-9 上午10:57:45
+	* @throws 
+	*/
+	public int EndTimeComparison(long memberId,String startTime);
 }
 

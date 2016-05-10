@@ -28,7 +28,9 @@
 		<result column="Branch"         property="branch" /> 
 		<result column="Branch_Address" property="branchAddress" />
 		<result column="Bank_No"        property="bankNo" /> 
-		<result column="Bank_Phone"     property="bankPhone" /> 
+		<result column="Bank_Phone"     property="bankPhone" />
+		<result column="memberName"     property="memberName" /> 
+		<result column="Logname"        property="logname" /> 
     </resultMap>    
    
      <!--     市信息 -->

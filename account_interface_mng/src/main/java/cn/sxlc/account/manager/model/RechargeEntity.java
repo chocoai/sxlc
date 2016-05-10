@@ -15,12 +15,12 @@ public class RechargeEntity {
 	private String platformMoneymoremore;//平台乾多多标识
 	private String orderNo;//平台的充值订单号
 	private String amount;//充值金额
-	private String rechargeType;//双乾充值类型  空.网银充值  1.代扣充值(暂不可用)2.快捷支付3.汇款充值4.企业网银
+	private String rechargeType="";//双乾充值类型  空.网银充值  1.代扣充值(暂不可用)2.快捷支付3.汇款充值4.企业网银
 	//手续费类型
 	//1.充值成功时从充值人账户全额扣除2.充值成功时从平台自有账户全额扣除
 	//3.充值成功时从充值人账户扣除与提现手续费的差4.充值成功时从平台自有账户扣除与提现手续费的差值 
 	//快捷支付、汇款充值、企业网银必填，其他类型留空
-	private String feeType; 
+	private String feeType=""; 
 	
 	private String cardNo="";//银行卡号  可不填
 	private String randomTimeStamp="";

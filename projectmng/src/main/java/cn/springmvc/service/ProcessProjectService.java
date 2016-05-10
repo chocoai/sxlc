@@ -49,4 +49,11 @@ public interface ProcessProjectService {
 	 * @return
 	 */
 	public  ProcessProjectEntity  selectProcessProjectbyid(int id); 
+	
+	/**
+	 * 查询项目审批流程列表
+	 * @param 
+	 * @return
+	 */
+	public List<ProcessProjectEntity> selectProcessProjectList();
 }

@@ -25,11 +25,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="9" name="top_menu_index"/>
+				<jsp:param value="9" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-recommend.jsp"></jsp:include>
+			<jsp:include page="../common/cm-recommend.jsp">
+				<jsp:param value="906" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			
 			<!-- 主要内容 -->
 			<div class="right_col role-content" role="main">
@@ -49,26 +52,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<div>
 										<span class="con-item textRight2">
-											<span>项目编号</span><input type="text" class="notspecial" />
+											<span>项目编号</span><input id="projectNo" type="text" class="notspecial" />
 										</span>
 										<span class="con-item textRight2">
-											<span>项目名称</span><input type="text" class="notspecial" />
+											<span>项目名称</span><input  id="projectTitle" type="text" class="notspecial" />
 										</span>
 										<span class="con-item textRight2">
-											<span>借款人用户名</span><input type="text" class="notspecial" />
+											<span>借款人用户名</span><input id="logname" type="text" class="notspecial" />
 										</span>
-									</div>
-									<div>
 										<span class="con-item textRight2">
-											<span>借款人姓名</span><input type="text" class="notspecial" />
+											<span>借款人姓名</span><input id="personalName" type="text" class="notspecial" />
 										</span>
 										<span class="con-item textRight4">
 											<span>回款时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
 										</span>
 										<button class="obtn obtn-query glyphicon glyphicon-search compayrecbtn">查询</button>
-									</div>
 								</form>
 						  	</div>
 						 </div>
@@ -81,36 +80,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<div class="panel-body">
 							<table id="table_id" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>项目编号</th>
-										<th>项目名称</th>
-										<th>回款项目期数</th>
-										<th>借款人用户名</th>
-										<th>借款人姓名</th>
-										<th>回款金额</th>
-										<th>回款时间</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>项目编号</td>
-										<td>项目名称</td>
-										<td>回款项目期数</td>
-										<td>借款人用户名</td>
-										<td>借款人姓名</td>
-										<td><span class="moneyFormat">1000</span>元</td>
-										<td>回款时间</td>
-									</tr>
-									<%
-										}
-									%>
-								</tbody>
 							</table>
 						</div>
 					</div>
@@ -122,22 +91,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<script type="text/javascript" src="js/recommend/compensatory-payment-records.js"></script>
 	
 	<!-- 私用js -->
 	<script type="text/javascript">
-		$('#table_id').DataTable({
-			//"scrollY":400,
-			"scrollX":true,
-			//"autoWidth" : false,
-			"aaSorting" : [ [ 6,7, "desc" ] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,4,5]
-			} // 制定列不参与排序
-			],
-		});
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </body>
 

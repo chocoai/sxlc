@@ -1,0 +1,59 @@
+#addSEO span.tt,
+#alertSEO span.tt{
+	display:inline-block;
+	min-width:130px;
+	text-align:right;
+}
+#addSEO div,
+#alertSEO div{
+	margin:15px 0 15px 25px;
+}
+#addSEO input,
+#alertSEO input{
+	height:29px;
+	width:200px;
+}
+#addSEO select,
+#alertSEO select{
+	height:29px;
+	width:200px;
+	border:1px solid #ccc;
+}
+#addSEO,#alertSEO{
+	display:none;
+}
+.addBtn,
+.alertBtn,
+.cancelBtn{
+	border:none;
+	padding:3px 10px;
+	border-radius:3px;
+	outline:none;
+}
+.addBtn,
+.alertBtn{
+	margin-right:10px;
+    background: #2e8ded;
+    color: #fff;
+}
+.addBtn:hover,
+.alertBtn:hover{
+	background:#3E75B8;
+}
+.cancelBtn{
+	display:inline-block;
+	margin-right:30px;
+    background-color: #f1f1f1;
+    text-decoration:none;
+	color:#333;
+	cursor:pointer;
+}
+.cancelBtn:hover{
+	background:#ccc;
+	text-decoration:none;
+	color:#333;
+}
+.btnAdd{
+	text-align:right;
+	margin-bottom:15px;
+}

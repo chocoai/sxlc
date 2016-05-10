@@ -4,7 +4,7 @@ var uploadUrl = "";//服务器图片保存路径,全局变量
  * @param urlBtn 服务器返回路径保存的隐藏input元素
  */
 function expUpload(urlBtn) {
-			//上传初始化
+			//上传初始化 
 			var uploader = WebUploader.create({
 				auto: true,														//选完文件后，是否自动上传。
 			    swf: 'plugs/webuploader/0.1.5/Uploader.swf',					//swf文件路径

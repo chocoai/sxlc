@@ -5,6 +5,8 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page trimDirectiveWhitespaces="true" %> 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
@@ -17,6 +19,9 @@
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
    	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
    	<div class="main">
    		<div class="clearfix">
 		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
@@ -38,22 +43,34 @@
 	   									<div class="e-mail">邮件提醒</div>
    									</div>
    								</li>
-   								<%for(int i=0;i<7;i++){ %>
-   								<li>
-   									<div class="messageAlertMCont">
-   										<div class="settingContent">增加充值结果提醒</div>
-	   									<div class="shortMessage">
-	   										<label class="labelUnSelect"></label>
-	   									</div>
-	   									<div class="websiteMessage">
-	   										<label class="labelSelect"></label>
-	   									</div>
-	   									<div class="e-mail">
-	   										<label class="labelSelect"></label>
-	   									</div>
-   									</div>
-   								</li>
-   								<%} %>
+   								<c:forEach items="${list }" var="mm">
+   									<li>
+	   									<div class="messageAlertMCont" data-tId = "${mm.typeId }">
+	   										<div class="settingContent">${mm.typeName }</div>
+		   									<div class="shortMessage">
+		   										<label class="
+		   											<c:if test="${mm.sysSms == 1 && mm.useSms !=1 }">labelUnSelect</c:if>
+		   											<c:if test="${mm.sysSms == 1 && mm.useSms ==1}">labelSelect</c:if>
+		   											<c:if test="${mm.sysSms == 0}">disabled labelUnSelect</c:if>
+		   										"></label>
+		   									</div>
+		   									<div class="websiteMessage">
+		   										<label class="
+		   											<c:if test="${mm.sysLett == 1 && mm.useLett !=1 }">labelUnSelect</c:if>
+		   											<c:if test="${mm.sysLett == 1 && mm.useLett ==1}">labelSelect</c:if>
+		   											<c:if test="${mm.sysLett == 0}">disabled labelUnSelect</c:if>
+		   										"></label>
+		   									</div>
+		   									<div class="e-mail">
+		   										<label class=" 
+		   											<c:if test="${mm.sysemil == 1 && mm.useemil !=1 }">labelUnSelect</c:if>
+		   											<c:if test="${mm.sysemil == 1 && mm.useemil ==1}">labelSelect</c:if>
+		   											<c:if test="${mm.sysemil == 0}">disabled labelUnSelect</c:if>
+		   										"></label>
+		   									</div>
+	   									</div>	
+	   								</li>
+   								</c:forEach>
    							</ul>
    						</div>
    					</div>

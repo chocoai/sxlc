@@ -125,25 +125,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-				<%
-					if(operations.size()>0){
-						for(int i = 0;i < operations.size(); i++){
-							
-			      			if(operations.get(i).getOptID() == 50401){
-				%>				
 								<button class="obtn glyphicon glyphicon-plus obtn-manage-add" onclick="addOrUpdate(1)" type="button">添加</button>
-				<%      
-			      			}
-			      				
-			      			if(operations.get(i).getOptID() == 50402){
-				%>				
 								<button class="obtn glyphicon glyphicon-pencil obtn-manage-mod" onclick="addOrUpdate(2)" type="button">修改</button>
-				<%     
-			      			}
-				  		 }
-					 }
-			     %>	
-							
 							</div>
 						</div>
 						

@@ -21,6 +21,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import cn.membermng.model.MemberMessageConfig;
 import cn.membermng.model.SendSetEntity;
 import cn.springmvc.dao.MemberMsgSetDao;
 
@@ -81,6 +82,8 @@ public class MemberMsgSetDaoImpl extends SqlSessionDaoSupport  implements Member
 		return getSqlSession().update("sendSet.updateMemberLetterSendSet", sendSetEntity);
 		
 	}
+	
+	
  
 
 }

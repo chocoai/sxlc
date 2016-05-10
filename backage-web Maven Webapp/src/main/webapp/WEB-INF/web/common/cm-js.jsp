@@ -12,8 +12,8 @@
 		<script src="plugs/layer-v2.2/layer/layer.js"></script>
 		<script src="plugs/layer-v2.2/layer/extend/layer.ext.js"></script>
 		<script src="plugs/Validform/5.3.2/js/Validform.min.js"></script>
-		<script src="js/valid.js"></script>
 		<script src="js/common.js"></script>
+		<script src="js/valid.js"></script>
 		<script src="js/custom.js"></script>
 		<script src="js/debug.js"></script>
 		<script type="text/javascript" src="js/rsa/RSA.js"></script> 

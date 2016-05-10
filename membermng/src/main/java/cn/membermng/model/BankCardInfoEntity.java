@@ -51,6 +51,20 @@ public class BankCardInfoEntity {
 	 * 银行卡关联手机号	
 	 */
 	private String bankPhone;
+	private String memberName;//会员名称
+	private String logname;//会员用户名
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+	public String getLogname() {
+		return logname;
+	}
+	public void setLogname(String logname) {
+		this.logname = logname;
+	}
 	public long getBankCardId() {
 		return bankCardId;
 	}

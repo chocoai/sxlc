@@ -3,125 +3,80 @@ package cn.membermng.model;
 
 
 /***
-* 积分记录实体
+* 积分消费记录实体
 * @author 李杰
-* @Description: TODO 
 * @since 
 * @date 2016-3-30 上午10:12:48 
 *
  */
 public class IntegralRecords {
 	
-	private long 	integralId;								//序号
-	private long 	memberId;								//会员编号
-	private int  	integralDirection;						//积分变动方向
-	private long 	quantity;								//积分变动数量
-	private long	integralResidue;						//剩余可用积分
-	private String  recordTime;								//记录时间
-	private int		integralType;							//积分类型
-	private int 	integralEventId;						//积分事件编号
+	private long 					orderId;			//订单编号
+	private long					quantity;			//积分					
+	private String					eTName;				//兑换类型名称
+	private String					cName;				//商品名称
+	private String					numbers;			//兑换数量
+	private String					eTime;				//兑换时间
+	private String					rTime;				//收货时间
+	private String					oType;				//订单状态
+	private String					oTypeName;			//订单状态名称
 	
 	
-	public IntegralRecords() {}
-
-
-	public IntegralRecords(long integralId, long memberId,
-			int integralDirection, long quantity, long integralResidue,
-			String recordTime, int integralType, int integralEventId) {
-		super();
-		this.integralId = integralId;
-		this.memberId = memberId;
-		this.integralDirection = integralDirection;
-		this.quantity = quantity;
-		this.integralResidue = integralResidue;
-		this.recordTime = recordTime;
-		this.integralType = integralType;
-		this.integralEventId = integralEventId;
+	
+	public long getOrderId() {
+		return orderId;
 	}
-
-
-	public long getIntegralId() {
-		return integralId;
+	public void setOrderId(long orderId) {
+		this.orderId = orderId;
 	}
-
-
-	public void setIntegralId(long integralId) {
-		this.integralId = integralId;
-	}
-
-
-	public long getMemberId() {
-		return memberId;
-	}
-
-
-	public void setMemberId(long memberId) {
-		this.memberId = memberId;
-	}
-
-
-	public int getIntegralDirection() {
-		return integralDirection;
-	}
-
-
-	public void setIntegralDirection(int integralDirection) {
-		this.integralDirection = integralDirection;
-	}
-
-
 	public long getQuantity() {
 		return quantity;
 	}
-
-
 	public void setQuantity(long quantity) {
 		this.quantity = quantity;
 	}
-
-
-	public long getIntegralResidue() {
-		return integralResidue;
+	public String geteTName() {
+		return eTName;
 	}
-
-
-	public void setIntegralResidue(long integralResidue) {
-		this.integralResidue = integralResidue;
+	public void seteTName(String eTName) {
+		this.eTName = eTName;
 	}
-
-
-	public String getRecordTime() {
-		return recordTime;
+	public String getcName() {
+		return cName;
 	}
-
-
-	public void setRecordTime(String recordTime) {
-		this.recordTime = recordTime;
+	public void setcName(String cName) {
+		this.cName = cName;
 	}
-
-
-	public int getIntegralType() {
-		return integralType;
+	public String getNumbers() {
+		return numbers;
 	}
-
-
-	public void setIntegralType(int integralType) {
-		this.integralType = integralType;
+	public void setNumbers(String numbers) {
+		this.numbers = numbers;
 	}
-
-
-	public int getIntegralEventId() {
-		return integralEventId;
+	public String geteTime() {
+		return eTime;
 	}
-
-
-	public void setIntegralEventId(int integralEventId) {
-		this.integralEventId = integralEventId;
+	public void seteTime(String eTime) {
+		this.eTime = eTime;
 	}
-	
-	
-	
-	
+	public String getrTime() {
+		return rTime;
+	}
+	public void setrTime(String rTime) {
+		this.rTime = rTime;
+	}
+	public String getoType() {
+		return oType;
+	}
+	public void setoType(String oType) {
+		this.oType = oType;
+	}
+	public String getoTypeName() {
+		return oTypeName;
+	}
+	public void setoTypeName(String oTypeName) {
+		this.oTypeName = oTypeName;
+	}
 	
 	
 }

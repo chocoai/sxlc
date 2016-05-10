@@ -53,4 +53,12 @@
 	   LEFT JOIN Activities_Project ap   on on ap.Process_ID=pp.Process_ID    
 	   where pp.PP_ID=#{id}
     </select> 
+    
+    	<!--列表查询的项目审批流程-->  
+	<select id="selectProcessProjectList"    resultMap="resultListProcessProject" >
+	   select pp.PP_ID, pp.Process_ID,pp.Batch,pp.Indexs,pp.Statu,ap.AP_Name
+	   from  Process_Project  pp
+	   LEFT JOIN Activities_Project ap   on ap.Process_ID=pp.Process_ID  
+	   where ap.Statu = 1
+    </select> 
 </mapper>

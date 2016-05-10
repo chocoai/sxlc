@@ -163,7 +163,7 @@
          where Apply_Id=#{applyId}
        </select>
       
-       <!-- 项目发布-->  
+       <!-- 项目发布-->   
     <select id="publish"  statementType="CALLABLE" parameterType="Map"> 
 	     {call projectPublish(
 				#{ApplyId ,	     mode=IN,	jdbcType=BIGINT},
@@ -173,9 +173,7 @@
 				#{adminID,	     mode=IN,	jdbcType=INTEGER},
 				#{checkid,	     mode=IN,	jdbcType=INTEGER},
 				#{startDate,	 mode=IN,	jdbcType=VARCHAR},
-				#{endDate,	     mode=IN,	jdbcType=VARCHAR},
-				#{ProcessID,	 mode=IN,	jdbcType=INTEGER},
-				#{sIndexs ,	     mode=IN,	jdbcType=INTEGER},
+				#{endDate,	     mode=IN,	jdbcType=VARCHAR}, 
 				#{affix,	     mode=IN,	jdbcType=VARCHAR},
 				#{ImageUrl,	     mode=IN,	jdbcType=VARCHAR},
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}

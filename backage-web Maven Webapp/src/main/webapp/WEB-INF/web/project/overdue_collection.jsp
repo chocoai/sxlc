@@ -52,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="con-item"><span>借款项目编号</span><input type="text" class="notspecial"/></span>
 									<span class="con-item"><span>借款项目名称</span><input type="text" class="notspecial"/></span>
 									<span class="con-item"><span>借款人</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>还款时间</span><input type="text" class="notspecial"/></span>
+									<span class="con-item"><span>还款时间</span><input type="text" class="Wdate" value=""  onFocus="WdatePicker()"/></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -64,6 +64,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							  	<div class="action_item">
 						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-callback">电话回访</button>
 						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-generate-bill">生成账单</button>
+						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-bill-detail">账单详情</button>
+						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-loan-prodetail">借款标详情</button>
 								</div>
 							</div>
 							<div class="panel-body">
@@ -79,7 +81,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<th>还款时间</th>
 											<th>逾期时长</th>
 											<th>逾期费用</th>
-											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -91,12 +92,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<td>0000001</td>
 											<td>交电费</td>
 											<td>jiuyang</td>
-											<td>王书记</td>
-											<td>1234455415</td>
-											<td>200000</td>
+											<td class="moneyFormat">1000</td>
+											<td>12</td>
 											<td>12-01</td>
-											<td>200000</td>
-											<td>12-01</td>
+											<td>12</td>
+											<td class="moneyFormat">20000</td>
 										</tr>
 										<%
 											}
@@ -106,7 +106,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 						</div>
 						<!-- 电话回访 -->
-						<!-- 生成订单 -->
+						<!-- 生成账单-->
+						<div class="w-content generate_bill">
+							<table>
+								<tr>
+									<td class="tt"><label>账单内容：</label></td>
+									<td class="con">
+										<textarea rows="8" cols="100">自动生成内容</textarea>
+									</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>
 				<!-- 尾部 -->
@@ -116,6 +126,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/project/overdue_collection.js"></script>
 	<script type="text/javascript">
 		// 这样初始化，排序将会打开
 		$(function() {
@@ -132,7 +143,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 				{
 					"orderable" : false,
-					"aTargets" : [ 0, 1, 2, 3, 4, 5, 8, 9]
+					"aTargets" : [ 0, 1, 2, 3, 4, 5, 8]
 				} // 制定列不参与排序
 				],
 				colReorder : false,

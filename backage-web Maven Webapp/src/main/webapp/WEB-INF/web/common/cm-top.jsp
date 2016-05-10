@@ -90,6 +90,22 @@
 				</a>
 			</li>
 
+			<!-- 幸运抽奖 -->
+			<li data-m1="11" class="f-tab">
+				<a href="web/luckyDraw/luckyDraw.jsp">
+					<p><i class="fa fa-share-alt"></i></p>
+					<p>幸运抽奖</p>
+				</a>
+			</li>
+			
+			<!-- 新手体验管理 -->
+			<li data-m1="12" class="f-tab">
+				<a href="web/noviceExperience/noviceExperience.jsp">
+					<p><i class="fa fa-share-alt"></i></p>
+					<p>新手体验管理</p>
+				</a>
+			</li>
+			
 			<!-- 测试信息 -->
 			<li class="f-tab">
 				<a href="web/test/test.jsp">
@@ -97,6 +113,7 @@
 					<p>测试</p>
 				</a>
 			</li>
+			
 		</ul>
 	</div>
 </div>

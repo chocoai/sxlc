@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.datatrans.IntegerAndString;
@@ -23,6 +22,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.springmvc.model.MemberAttestTypeEntity;
 import cn.springmvc.model.ProjectBaseInfoEntity;
+import cn.springmvc.model.ProjectBaseInfoEntitys;
 import cn.springmvc.model.ProjectPurposeEntity;
 import cn.springmvc.model.ProjectPurposeSetEntity;
 import cn.springmvc.model.ProjectTypeTermEntity;
@@ -75,7 +75,6 @@ public class BorrowMoneyController {
 	* 查看新增借款需要填写的配置
 	* @author 邱陈东  
 	* * @Title: selectProjectPurposeSetValid 
-	* @Description: TODO 
 	* @param @param request
 	* @param @return 设定文件 
 	* @return String 返回类型 
@@ -222,7 +221,8 @@ public class BorrowMoneyController {
 	 */
 	@RequestMapping(value="/selectProjectTypeTermById",produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public String selectProjectTypeTermById(HttpServletRequest request,@RequestParam(value="id", required=true)Integer id){
+	public String selectProjectTypeTermById(HttpServletRequest request){
+		Integer id = IntegerAndString.StringToInt(request.getParameter("id"),0);
 		List<ProjectTypeTermEntity> list = projectBaseInfoService.selectProjectTypeTermByID(id);
 		Map<String,Object> message = new HashMap<String, Object>();
 		message.put("code", 200);
@@ -246,8 +246,9 @@ public class BorrowMoneyController {
 	 */
 	@RequestMapping(value="/selectMemberAttestByprojectType",produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public String selectMemberAttestByprojectType(HttpServletRequest request,@RequestParam(value="id", required=true)Integer id){
-		 List<MemberAttestTypeEntity> list = projectBaseInfoService.selectMemberAttestByprojectType(id);
+	public String selectMemberAttestByprojectType(HttpServletRequest request){
+		Integer id = IntegerAndString.StringToInt(request.getParameter("id"),0);
+		List<MemberAttestTypeEntity> list = projectBaseInfoService.selectMemberAttestByprojectType(id);
 		Map<String,Object> message = new HashMap<String, Object>();
 		message.put("code", 200);
 		message.put("message", "读取成功");

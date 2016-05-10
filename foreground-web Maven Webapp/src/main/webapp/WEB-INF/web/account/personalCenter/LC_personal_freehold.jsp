@@ -11,8 +11,13 @@
 	<base href="<%=basePath%>">
     <title>房产认证</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var appPath="<%=path%>";
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/loanCertification.css">
+	<link rel="stylesheet" type="text/css" href="plugs/webuploader/webuploader.css">
 </head>
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
@@ -39,31 +44,33 @@
 					   				<ul class="inputArea">
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>房产位置：</span></div>
-					   						<input class="inputText" datatype="enteraddr" type="text" lang="请输入房产位置" maxlength="25"/>
+					   						<input class="inputText address" datatype="enteraddr" type="text" lang="请输入房产位置" maxlength="25"/>
 					   					</li>
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>面积：</span></div>
-					   						<input class="inputText" datatype="acountM"  type="text" lang="请输入房产面积" maxlength="10"/>
+					   						<input class="inputText area" datatype="acountM"  type="text" lang="请输入房产面积" maxlength="10"/>
 					   					</li>
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>市场价值：</span></div>
-					   						<input class="inputText format" datatype="acountM" type="text" lang="请输入房产市场价值" maxlength="10"/>
+					   						<input class="inputText value" datatype="acountM" type="text" lang="请输入房产市场价值" maxlength="10"/>
 					   						<span class="unitPrice">元</span>
 					   					</li>
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>登记时间：</span></div>
-					   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker();" type="text" lang="请选择登记时间"/>
+					   						<input class="inputText dateSelect Wdate " onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择登记时间"/>
 					   					</li>
 					   					<li class="inputList">
 						   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
-						   					<div class="previewPicture">
+						   					<div class="previewPicture" id="file" style="float: none;" >
 						   						<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
-						   						<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput" onchange="preImg(this.id,'previewImg');" onblur="if(document.getElementById('previewImg').src=='null')document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" >
+						   						<input type='hidden' class='previewHide' id="0" >
 						   					</div>
 						   					<!-- <span class="hint">（请上传附件图片）</span> -->
 						   				</li>
 					   					<li class="inputList">
-					   						<div class="btn saveSubmit">确认并保存</div>
+					   						<div class="btn saveSubmit holdBtn" id="${requestScope.type}" >确认并保存</div>
+					   						<input type="hidden" value="0" class="editType" />
+					   						<input type="hidden" value="0" class="cid" />
 					   					</li>
 					   				</ul>
 				   				</form>
@@ -76,35 +83,13 @@
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
+   	<script type="text/javascript" src="plugs/webuploader/webuploader.js" ></script>
+   	<script type="text/javascript" src="js/exp-upload.js" ></script>	
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
+	<script type="text/javascript" src="js/account/personalCenter/loanCertification_picText.js"></script>
 	<script type="text/javascript">
-		/* 验证     */
-		$(function(){checkCAR();});
-			function checkCAR(){
-				$(".person_Renzheng").each(function(){
-					$(this).Validform({
-						tiptype:3,//提示信息类型
-						btnSubmit:".saveSubmit", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
-						//btnReset:"#btnreset1",
-						datatype:extdatatype,//扩展验证类型
-						//showAllError:true,//提交前验证显示所有错误
-						ajaxPost:{//使用ajax提交时
-							url:"",
-							datatype:"json",
-							success:function(data,obj){
-					            //data是返回的json数据;
-					            //obj是当前表单的jquery对象;
-					        },
-					        error:function(data,obj){
-					            //data是{ status:**, statusText:**, readyState:**, responseText:** };
-					            //obj是当前表单的jquery对象;
-					            console.log(data.status);
-					        }
-						}
-					});
-				});
-			}
+		expUpload(1);
 	</script>
 </body>
 </html>

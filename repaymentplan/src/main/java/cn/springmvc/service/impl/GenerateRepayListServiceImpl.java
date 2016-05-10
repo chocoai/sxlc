@@ -20,7 +20,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.hamcrest.core.Is;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.datatrans.IntegerAndString;
@@ -28,8 +27,8 @@ import product_p2p.kit.dbkey.DbKeyUtil;
 import cn.springmvc.dao.GenerateRepayListDao;
 import cn.springmvc.dao.ReplayProjectDetailListDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
-import cn.springmvc.model.LoanRepayEntity;
-import cn.springmvc.model.ProjectBaseInfoEntity;
+import cn.springmvc.model.LoanRepayEntitys;
+import cn.springmvc.model.ProjectBaseInfoEntitys;
 import cn.springmvc.model.ProjectDetailEntity;
 import cn.springmvc.service.GenerateRepayListService;
 import cn.springmvc.utitls.RepalyUtitls;
@@ -71,8 +70,8 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 				.getProjectBaseInfoentity().getRepayWay();
 		 SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
 		 String presentDate3 = sdf3.format(new Date());//获取当前系统时间
-		 List<LoanRepayEntity> planList = RepalyUtitls.getIncomePlan2(deadLineType,amounts,yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
-		 LoanRepayEntity planEntity = new LoanRepayEntity();
+		 List<LoanRepayEntitys> planList = RepalyUtitls.getIncomePlan2(deadLineType,amounts,yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
+		 LoanRepayEntitys planEntity = new LoanRepayEntitys();
 		 String planStr = "";
 		 Long id = generatorUtil.GetId();
 		 int iSize = planList.size();
@@ -106,7 +105,7 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 	@Override
 	public long GetForecastIncome(long lProId, long lInvestAmount) {
 		long lResult = 0;
-		ProjectBaseInfoEntity entity = replayProjectDetailListDao.selectProjectBaseInfoById(lProId);
+		ProjectBaseInfoEntitys entity = replayProjectDetailListDao.selectProjectBaseInfoById(lProId);
 		//3:年、2:月、1:日	 0：天标 1：月标 2：年标
 		int deadLineType = entity.getDeadlineType() + 1;	 
 		//借款金额
@@ -119,10 +118,10 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 		int replayway = entity.getRepayWay();
 		SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
 		String presentDate3 = sdf3.format(new Date());//获取当前系统时间
-		List<LoanRepayEntity> planList = RepalyUtitls.getIncomePlan2(deadLineType,amounts,yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
+		List<LoanRepayEntitys> planList = RepalyUtitls.getIncomePlan2(deadLineType,amounts,yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
 		
 		int iSize = 0;
-		LoanRepayEntity repayEntity = null;
+		LoanRepayEntitys repayEntity = null;
 		if(planList!=null){
 			iSize = planList.size();
 		}

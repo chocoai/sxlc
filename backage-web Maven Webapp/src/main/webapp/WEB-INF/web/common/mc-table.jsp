@@ -1,23 +1,28 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 
 <ul class="nav nav-tabs" id="navList">
-	<!-- <li id="0" class="active"><a href="web/member/realNameAuthen.jsp?content=0">实名认证</a></li>
-	<li id="1"><a href="web/member/per-senceAuthen.jsp?content=1">现场认证</a></li>
-	<li id="2"><a href="web/member/per-senceAuthen.jsp?content=2">征信认证</a></li>
-	<li id="3"><a href="web/member/per-addressAuthen.jsp?content=3">住址认证</a></li>
-	<li id="4"><a href="web/member/per-senceAuthen.jsp?content=4">职称认证</a></li>
-	<li id="5"><a href="web/member/per-senceAuthen.jsp?content=5">社保认证</a></li>
-	<li id="6"><a href="web/member/per-freeholdAuthen.jsp?content=6">房产认证</a></li>
-	<li id="7"><a href="web/member/per-carProductionAuthen.jsp?content=7">车产认证</a></li>
-	<li id="8"><a href="web/member/per-senceAuthen.jsp?content=8">银行流水证认证</a></li>
-	<li id="9"><a href="web/member/per-marrigeAuthen.jsp?content=9">婚姻认证</a></li>
-	<li id="10"><a href="web/member/per-titleAuthen.jsp?content=10">学历认证</a></li>
-	<li id="11"><a href="web/member/per-senceAuthen.jsp?content=11">其它</a></li> -->
+	<li id="1" class="active"><a href="web/member/realNameAuthen.jsp?content=1">实名认证</a></li>
+	<li id="2"><a href="web/member/per-senceAuthen.jsp?content=2">现场认证</a></li>
+	<li id="3"><a href="web/member/per-senceAuthen.jsp?content=3">征信认证</a></li>
+	<li id="4"><a href="web/member/per-addressAuthen.jsp?content=4">住址认证</a></li>
+	<li id="5"><a href="web/member/per-senceAuthen.jsp?content=5">职称认证</a></li>
+	<li id="6"><a href="web/member/per-senceAuthen.jsp?content=6">社保认证</a></li>
+	<li id="7"><a href="web/member/per-freeholdAuthen.jsp?content=7">房产认证</a></li>
+	<li id="8"><a href="web/member/per-carProductionAuthen.jsp?content=8">车产认证</a></li>
+	<li id="9"><a href="web/member/per-senceAuthen.jsp?content=9">银行流水证认证</a></li>
+	<li id="10"><a href="web/member/per-marrigeAuthen.jsp?content=10">婚姻认证</a></li>
+	<li id="11"><a href="web/member/per-titleAuthen.jsp?content=11">学历认证</a></li>
+	<li id="12"><a href="web/member/per-senceAuthen.jsp?content=12">其它</a></li>
 </ul>
 <script>
 	var num = location.search.slice(9,location.search.length);
 	$(function(){
-		TradeType();
+		$("#navList li").each(function(){
+			if ($(this).attr("id")==num){
+				$(this).addClass("active").siblings().removeClass("active");
+			}
+		});
+		//TradeType();
 	});
 	
 	/**

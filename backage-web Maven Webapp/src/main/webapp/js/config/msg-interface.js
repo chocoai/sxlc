@@ -21,7 +21,6 @@ $(function(){
 			                		  return sReturn;
 			                	  }
 			                  },
-					          { title:"id","data":"id"},  
 					          { title:"添加时间","data": "recordDate"},  
 					          { title:"接口类型","data": "smsInterfaceType", 
 					        	  "mRender": function (data, type, full) {
@@ -59,16 +58,17 @@ $(function(){
 					          }
 					          ],
 		          aoColumnDefs : [
-		                          {"bVisible": false, "aTargets": [0,1]}, //控制列的隐藏显示
 		                          {
 		                        	  "orderable" : false,
-		                        	  "aTargets" : [1,2,3,4,5,6,7,8,9]
+		                        	  "aTargets" : [0,2,3,4,5,6,7,8]
 		                          } // 制定列不参与排序
 		                          ],
 		          pagingType: "simple_numbers",//设置分页控件的模式  
 		          processing: true, //打开数据加载时的等待效果  
-		          serverSide: true,//打开后台分页  
-		//          info:false,
+		          serverSide: true,//打开后台分页 
+		          scrollCollapse: true,
+		          scrollX : "100%",
+		    	  scrollXInner : "100%",
 		          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 		          }
 		 

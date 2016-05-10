@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
 import cn.springmvc.dao.InvestIncomeListDao;
 import cn.springmvc.model.InvestIncomeEntity;
 import cn.springmvc.model.InvestRecordInfoEntity;
-import cn.springmvc.model.LoanRepayEntity;
+import cn.springmvc.model.LoanRepayEntitys;
 
 /** 
  * @author 刘利 
@@ -52,7 +52,7 @@ public class InvestIncomeListDaoImpl extends SqlSessionDaoSupport implements
 		
 	}
 	@Override
-	public List<LoanRepayEntity> selectLoanRepayIDByapplyID(long applyID) {
+	public List<LoanRepayEntitys> selectLoanRepayIDByapplyID(long applyID) {
 		
 		return  getSqlSession().selectList("investincome.selectLoanRepayIDByapplyID",applyID);
 		 

@@ -21,41 +21,43 @@ import product_p2p.kit.datatrans.IntegerAndString;
  * @date 2016-3-31 下午4:13:18  */
 
 public class InvestIncomeEntity {
-	public long      repayId; //还款计划ID		
-	public long      investId;	// 投资ID		
-	public long      memberID;// 	会员ID		
-	public int       sdRecvPrincipal;// 	应收本金(单位：分)		
-	public int       sdRecvInterest;// 应收收益(单位：分)	
-	public String    sdRecvPrincipals;// 	应收本金(单位：分)		
-	public String    sdRecvInterests;// 应收收益(单位：分)	
-	public String    sdRecvMaxTime;//	应收时间		
-	public int    	 statu;//	还款状态 0：未还 1：部分还款 2：还清		
-	public int       isValid;// 是否有效（-1:提前还款处理过程状态  0：有效，1：无效）		
-	public long      thirdTradeId;// 第三方交易记录ID																					
-	public int       incomeId;//	 收益计划ID		
-	public int       recvPrincipal;// 实收本金(单位：分)		
-	public int       recvInterest;//	 实收收益(单位：分)		
-	public int       repayOverdueInterest;// 逾期利息(单位：分)		
-	public int       repayOverdue;//	 实收逾期罚金(单位：分)		
-	public int       repayPenalty;//	 提前还款违约金(单位：分)		
-	public int       investMngFee;//	 	投资管理费(单位：分)	
-	public String    recvPrincipals;// 实收本金(单位：分)		
-	public String    recvInterests;//	 实收收益(单位：分)		
-	public String    repayOverdueInterests;// 逾期利息(单位：分)		
-	public String    repayOverdues;//	 实收逾期罚金(单位：分)		
-	public String    repayPenaltys;//	 提前还款违约金(单位：分)		
-	public String    investMngFees;//	 	投资管理费(单位：分)	
-	public String    recvTime;// 实收时间		
-	private String   replaystatu;//还款状态
-	private int      indexs;//期数
-	private long     totalOver;//逾期费总额
-	private long     totalincome;//总收益 
-	private String   totalOvers;//逾期费总额
-	private String   totalincomes;//总收益 
-	private long     recvAmount;//已收本息
-	private String   recvAmounts;//已收本息
-	private long     overdueAmount;//逾期应收收益
-	private String   overdueAmounts;//逾期应收收益
+	public long      repayId; 						//还款计划ID		
+	public long      investId;						//投资ID		
+	public long      memberID;						//会员ID		
+	
+	public int       sdRecvPrincipal;				//应收本金(单位：分)		
+	public int       sdRecvInterest;				//应收收益(单位：分)	
+	public String    sdRecvPrincipals;				//应收本金(单位：分)		
+	public String    sdRecvInterests;				//应收收益(单位：分)	
+	public String    sdRecvMaxTime;					//应收时间		
+	public int    	 statu;							//还款状态 0：未还 1：部分还款 2：还清		
+	public int       isValid;						//是否有效（-1:提前还款处理过程状态  0：有效，1：无效）		
+	public long      thirdTradeId;					//第三方交易记录ID																					
+	public int       incomeId;						//收益计划ID	
+	
+	public int       recvPrincipal;					//实收本金(单位：分)		
+	public int       recvInterest;					//实收收益(单位：分)		
+	public int       repayOverdueInterest;			//逾期利息(单位：分)		
+	public int       repayOverdue;					//实收逾期罚金(单位：分)		
+	public int       repayPenalty;					//提前还款违约金(单位：分)		
+	public int       investMngFee;					//投资管理费(单位：分)	
+	public String    recvPrincipals;				//实收本金(单位：分)		
+	public String    recvInterests;					//实收收益(单位：分)		
+	public String    repayOverdueInterests;			//逾期利息(单位：分)		
+	public String    repayOverdues;					//实收逾期罚金(单位：分)		
+	public String    repayPenaltys;					//提前还款违约金(单位：分)		
+	public String    investMngFees;					//投资管理费(单位：分)	
+	public String    recvTime;						//实收时间		
+	private String   replaystatu;					//还款状态
+	private int      indexs;						//期数
+	private long     totalOver;						//逾期费总额
+	private long     totalincome;					//总收益 
+	private String   totalOvers;					//逾期费总额
+	private String   totalincomes;					//总收益 
+	private long     recvAmount;					//已收本息
+	private String   recvAmounts;					//已收本息
+	private long     overdueAmount;					//逾期应收收益
+	private String   overdueAmounts;				//逾期应收收益
 	public long getRecvAmount() {
 		return recvAmount;
 	}

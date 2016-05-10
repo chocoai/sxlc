@@ -19,10 +19,13 @@ import cn.membermng.model.FlowLabel;
 import cn.membermng.model.InvestmentRecord;
 import cn.membermng.model.LoanApplyRecord;
 import cn.membermng.model.LoanRepay;
+import cn.membermng.model.MemberThirdAuthInfoEntity;
 import cn.membermng.model.RepaymentIn;
 import cn.membermng.model.RepaymentOfBorrowings;
 import cn.membermng.model.RepaymentOfBorrowingsRM;
+import cn.membermng.model.ReplayDetailEntity;
 import cn.membermng.model.StayStillPlan;
+import cn.springmvc.dao.IMyLoanWriteDao;
 import cn.springmvc.dao.impl.IMyLoanReadDao;
 import cn.springmvc.service.IMyLoanService;
 
@@ -42,6 +45,8 @@ public class MyLoanServiceImpl implements IMyLoanService {
 	
 	@Resource(name="myLoanReadDaoImpl")
 	private IMyLoanReadDao myLoanReadDao;
+	@Resource(name="myLoanWriteDaoImpl")
+	private IMyLoanWriteDao iMyLoanWriteDao;
 	
 	@Override
 	public List<Financing> financings(PageEntity entity) {
@@ -143,10 +148,85 @@ public class MyLoanServiceImpl implements IMyLoanService {
 
 
 	@Override
-	public LoanRepay selectReplayDetail(long replyaID) {
+	public ReplayDetailEntity selectReplayDetail(long replyaID,long memberID,int memberType) {
 		
-		return myLoanReadDao.selectReplayDetail(replyaID);
 		
+		ReplayDetailEntity entity = myLoanReadDao.selectReplayDetail(replyaID, memberID, memberType);
+		if(entity == null) {
+			return null;
+		}
+		Long userBalance = entity.getUserBalance();//账户可用余额 
+		//是否满足先还本金
+		if(entity.getLoanAmount() <=  entity.getUserBalance()) {
+			entity.setPaidAmount(entity.getLoanAmount());
+			userBalance = userBalance - entity.getLoanAmount(); 
+		}else {
+			entity.setPaidAmount(userBalance);
+			userBalance = 0L;
+		}
+		//是否满足还利息
+		if(entity.getLoanInterest() <= userBalance) {
+			entity.setPaidInterest(entity.getLoanInterest());
+			userBalance = userBalance - entity.getLoanInterest();
+		} else {
+			entity.setPaidInterest(userBalance);
+			userBalance = 0L;
+		}
+		//是否满足还罚金
+		if(entity.getOberdueFine() <= userBalance) {
+			
+			entity.setPaidOberdueFine(entity.getOberdueFine());
+			userBalance = userBalance - entity.getOberdueFine();
+		} else {
+			
+			entity.setPaidOberdueFine(userBalance);
+			userBalance = 0L;
+		}
+		//是否满足还罚息
+		if(entity.getOverdueInterest() <= userBalance) {
+			
+			entity.setPaidOverdueInterest(userBalance);
+			userBalance = userBalance - entity.getOberdueFine();
+		} else {
+			entity.setPaidOverdueInterest(userBalance);
+			userBalance = 0L;
+		} 
+	   if(entity.getUserBalance() <= entity.getSdReplayTotal()) { 
+		   entity.setPaisdReplayTotal(entity.getUserBalance());
+		}else {
+			entity.setPaisdReplayTotal(entity.getSdReplayTotal());
+		}
+		return entity;
+	}
+
+
+
+	@Override
+	public MemberThirdAuthInfoEntity selectMemberIsOpenAutoPay(long memberID,
+			int memberType) {
+		
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("memberID",     memberID);
+		map.put("memberType", memberType);
+		return myLoanReadDao.selectMemberIsOpenAutoPay(map);
+	}
+
+
+
+	@Override
+	public int updateIsAutoPay(Map<String, Object> map) {
+		
+		return iMyLoanWriteDao.updateAutoPay(map);
+		
+	}
+
+
+
+	@Override
+	public List<RepaymentOfBorrowingsRM> loanRepayback(PageEntity entity) {
+		
+		entity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
+		return myLoanReadDao.loanRepayback(entity);
 	}
 
 

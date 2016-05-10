@@ -28,7 +28,6 @@ function reanlNameIdentyList(memberId){
 			success:function(data) { 
 				if(data!=null){
 					$("#applyId").val(data.aid);
-					alert(data.aid);
 					$("#memberId").val(memberId);
 					if(data.realName!=null && data.realName!=""){
 						$("#realName").text(data.realName);
@@ -45,9 +44,7 @@ function reanlNameIdentyList(memberId){
 						$("#native").text(data.homeTown);
 					}
 					if(data.sEndDate!=null && data.sEndDate!=""){
-						$("#validTime").text(data.sEndDate);
-					}else{
-						$("#validTime").text("永久有效");
+						$("#sEndDate").text(data.sEndDate);
 					}
 					if(data.personalIDCard!="" && data.personalIDCard!=null){
 						$("#idcard").text(data.personalIDCard);
@@ -78,7 +75,7 @@ function submitIdentyList(){
 	var memberId = $("#memberId").val();
 	var attestId = $("#applyId").val();
 	var statu = $("#statu").val();
-	
+	var sEndDate = $("#sEndDate").val();
 	var encrypt = new JSEncrypt();
 	encrypt.setPublicKey(publicKey_common);
 	
@@ -86,12 +83,14 @@ function submitIdentyList(){
 	memberId = encrypt.encrypt(memberId+"");
 	attestId = encrypt.encrypt(attestId+"");
 	statu = encrypt.encrypt(statu+"");
+	sEndDate = encrypt.encrypt(sEndDate);
 	$.ajax( {  
 		 url:appPath+"/memberidety/submitRealName.do",
 			data:{
 				memberId:memberId,
 				attestId:attestId,
-				statu:statu
+				statu:statu,
+				sEndDate:sEndDate
 			},
 			type:'post',  
 			cache:false,  

@@ -7,6 +7,9 @@ import cn.sxlc.account.manager.model.LoanInfoSecondaryBean;
 import cn.sxlc.account.manager.model.TransferSubmitEntity;
 import cn.sxlc.account.manager.utils.InterfaceConstant;
 import cn.sxlc.account.manager.utils.InterfaceUtil;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import product_p2p.kit.datatrans.IntegerAndString;
 
@@ -281,5 +284,11 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
     	param = null;
     	
     	return lResult;
+    }
+
+    @Autowired
+    @Override
+    public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+    	super.setSqlSessionFactory(sqlSessionFactory);
     }
 }

@@ -33,6 +33,13 @@ $(function(){
  * 显示所有vip会员
  */
 function showMembervipList(){
+	var memberType = $("#memberType").val();
+	var Name = "姓名";
+	var Phone = "联系电话";
+	if(memberType ==1){
+		Name ="企业名称";
+		Phone ="联系人电话";
+	}
 	$('#table_id').DataTable(
 			{	autoWidth : false,
 				scrollY : 500,
@@ -57,6 +64,7 @@ function showMembervipList(){
 		            "url": appPath+"/member/getVipMembers.do",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {
+		            	var memberType = $("#memberType").val();
 		            	var member_Name = $("#member_Name").val();//会员姓名
 		            	var user_Name =  $("#user_Name").val();//用户名
 		            	var phone_Num =  $("#phone_Num").val();//电话
@@ -64,9 +72,11 @@ function showMembervipList(){
 		            	encrypt.setPublicKey(publicKey_common);
 		            	
 		            	//result 为加密后参数
+		            	memberType = encrypt.encrypt(memberType);
 		            	member_Name = encrypt.encrypt(member_Name);
 		            	user_Name = encrypt.encrypt(user_Name);
 		            	phone_Num = encrypt.encrypt(phone_Num);
+		            	d.memberType = memberType;
 		            	d.memberName=member_Name;
 		            	d.personalName=user_Name;
 		            	d.personalPhone=phone_Num;
@@ -79,8 +89,8 @@ function showMembervipList(){
 		                		  return sReturn;
 		                	  }
 		                  },
-		                  { title:"会员编码","data": "memberNo"},   
-		                  { title:"姓名","data": "personalName" },  
+		                  { title:"会员编号","data": "memberNo"},   
+		                  { title:Name,"data": "personalName" },
 		                  { title:"用户名","data": "memberName" },
 		                  { title:"手机号码","data": "personalPhone"},   
 		                  { title:"所属地区","mRender": function(data, type, full){

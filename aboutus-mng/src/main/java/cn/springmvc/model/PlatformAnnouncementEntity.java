@@ -1,4 +1,9 @@
 package cn.springmvc.model;
+
+import java.sql.Timestamp;
+
+import product_p2p.kit.datatrans.TimestampAndString;
+
 /**
  * 平台公告实体类
  * @author 刘利
@@ -37,6 +42,20 @@ public class PlatformAnnouncementEntity {
 	 * 最后一次操作员名称
 	 */
 	private String adminName; 
+	private long nexID;//下一篇ID
+	private long preID;//上一篇ID
+	public long getNexID() {
+		return nexID;
+	}
+	public void setNexID(long nexID) {
+		this.nexID = nexID;
+	}
+	public long getPreID() {
+		return preID;
+	}
+	public void setPreID(long preID) {
+		this.preID = preID;
+	}
 	public long getId() {
 		return id;
 	}
@@ -77,13 +96,13 @@ public class PlatformAnnouncementEntity {
 		return createTime;
 	}
 	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
+		this.createTime = TimestampAndString.TimestampToString(Timestamp.valueOf(createTime));
 	}
 	public String getOptDate() {
 		return optDate;
 	}
 	public void setOptDate(String optDate) {
-		this.optDate = optDate;
+		this.optDate = TimestampAndString.TimestampToString(Timestamp.valueOf(optDate));
 	} 	
 
 }

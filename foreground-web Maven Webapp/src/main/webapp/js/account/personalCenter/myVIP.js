@@ -27,26 +27,75 @@ $(function(){
 		$(".endT").text(bdy+tl+bdmd);
 	});
 });
-/***********验证***********/
+
+
+
+
 $(function(){
+	$("#sellYear").on("keyup",function(){
+		var num = parseInt($(this).val())*1000;
+		$("#needMoney").html(num);
+	});
+	//分页
+	
+	var pageSize = $("#pageSize").val();
+	var totalRecords = $("#tol").val();
+	var totalPage = Math.ceil(totalRecords/pageSize);
+	var pageNo = $("#cpage").val();
+	if (!pageNo) {
+		pageNo = 1;
+	};
+	
+	pager.generPageHtml({
+	pno : pageNo,
+	//总页码
+	total : totalPage,
+	//总数据条数
+	totalRecords : totalRecords,
+	//链接前部
+	hrefFormer : basePath + "personalCenter/myVIP/",
+	//链接尾部
+	hrefLatter : '.html',
+	mode : 'link',//默认值是link，可选link或者click
+	getLink : function(n) {
+		return this.hrefFormer+ n + this.hrefLatter ;//自定义格式
+	}
+});
+	
+	
 	$("#buyBox").Validform({
 		tiptype:3,//提示信息类型
 		btnSubmit:".buy-now", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		//btnReset:"#btnreset1",
 		datatype: extdatatype,//扩展验证类型
 		//showAllError:true,//提交前验证显示所有错误
-		ajaxPost:{//使用ajax提交时
-			url:"http://182.150.178.88:8031/GEB_P2P_Foreqround/selectmemberProvince.action",
-			datatype:"jsonp",
-			success:function(data,obj){
-	            //data是返回的json数据;
-	            //obj是当前表单的jquery对象;
-	        },
-	        error:function(data,obj){
-	            //data是{ status:**, statusText:**, readyState:**, responseText:** };
-	            //obj是当前表单的jquery对象;
-	            console.log(data.status);
-	        }
+		ajaxPost:true,
+		beforeSubmit:function(){
+			if ($("#sellYear").val()==undefined){
+				layer.alert("请输入年份");
+				return false
+			}
+			var encrypt = new JSEncrypt();
+			encrypt.setPublicKey(publickey);
+			var data = {};
+			data.startTime = encrypt.encrypt($("#startYear").val()+"");
+			data.years = encrypt.encrypt($("#sellYear").val()+"");
+			var url = "personalCenter/vipApply.html";
+			NetUtil.ajax(
+					url,
+					data,
+					function(r){
+						var data = JSON.parse(r);
+						if (data.status == "-2"){
+							layer.alert(data.startTime);
+						}else{
+							layer.alert("成功",function(){
+								window.location.reload();
+							})
+						}
+					}
+			)
+			return false;
 		}
 	});
 });

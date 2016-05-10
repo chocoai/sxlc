@@ -1,29 +1,66 @@
 td.tt{
-	text-align:left !important;
-	padding:5px 20px;
+	padding:5px 3px;
 }
 fieldset{
-	padding:10px;
 	margin:20px auto;
 	border:1px solid #D4D4D4;
 	border-radius:3px;
-	max-width: 1040px;
-	font-size:15px;
+	max-width: 1240px;
+	font-size:13px;
 }
 legend{
 	width:auto;
 	padding:0 10px;
 	margin-left:30px;
 	border:none;
-	font-size:15px;
+	font-size:13px;
 	font-weight:700;
 	text-align:center;
 }
-
-/* 表格样式调整待改 */
-/* .display{
-	width:100% !important;
-}
-.dataTables_scrollHeadInner{
-	width:100% !important;
+/* table{
+	margin:0 auto;
 } */
+.personAuthentication table{
+	width:100%;
+}
+.uploadEnclosure .col-md-6,
+.uploadEnclosure .col-md-12{
+	margin:10px 0;
+}
+/* .uploadEnclosure .tt{
+	width:150px;
+} */
+#exampleInputFile{
+	width:210px;
+}
+.auditResult{
+	height:30px;
+}
+.line{
+	display:inline-block;
+	width:5px;
+	height:1px;
+	vertical-align:middle;
+	border-top:1px solid #ccc;
+}
+.buttonS{
+	margin-bottom:15px;
+	text-align:right;
+}
+/* 条件查询   */
+.con-item{
+	display:inline-block;
+	min-width:325px;
+	max-width:325px;
+	text-align:right;
+	line-height:20px;
+}
+.con-item select{
+	width:200px;
+}
+.search .dateInput{
+	width:90px;
+}
+.search input{
+	width:200px;
+}

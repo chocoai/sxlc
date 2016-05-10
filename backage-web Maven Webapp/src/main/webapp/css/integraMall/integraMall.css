@@ -1,0 +1,25 @@
+#table_id .tt,table_id .con{
+	height:40px;
+}
+#table_id .tt{
+	text-align:right;
+	padding-right:15px;
+}
+#table_id input,#table_id .shi{
+	width:250px;
+	
+}
+#table_id .shi{
+	height:28px !important;
+}
+#table_id .shi1{
+	height:28px !important;
+	width:123px;
+}
+#table_id .data1{
+	width:120px;
+}
+#table_id .btn{
+	margin-top:5px;
+	margin-left:50px;
+}

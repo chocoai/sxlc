@@ -41,6 +41,7 @@
 	   									<input class="selectValue" value="1" >
 	   									<input class="selectInput iEDInputA" type="text" lang="充值" readOnly="true"/>
 									    <ul class="select iEDSelect" onselectstart="return false">
+									    	<li class="selectOption" value="0">全部</li>
 									    	<li class="selectOption" value="1">充值</li>
 									    	<li class="selectOption" value="2">生活缴费</li>
 									    </ul>

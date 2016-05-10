@@ -71,6 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							
 							<div class="panel-body">
+							<input type="hidden" name="memberType" id="memberType" value="0">
 								<table id="table_id" class="display">
 									<thead>
 									</thead>
@@ -91,7 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="w-content" id="prohibitedItem">
 			<span><input type="checkbox" ><label>禁止借款</label></span>
 			<span><input type="checkbox" ><label>禁止投资</label></span>
-			<input type="checkbox" ><label>禁止提现</label></span>
+			<span><input type="checkbox" ><label>禁止提现</label></span>
 			<span><input type="checkbox" ><label>禁止积分兑换</label></span>
 			<span><input type="checkbox" ><label>禁止抽奖</label></span>
 			<span><input type="checkbox" ><label>禁止抢红包</label></span>

@@ -79,6 +79,14 @@ public class InvestmentManagementListDaoImpl extends SqlSessionDaoSupport
 		return getSqlSession().selectList("Investment_management.getCreditorOff",pageEntity.getMap(),
  				new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 	}
+	@Override
+	public List<CreditorTransEntity> getCreditorTransferBack(
+			PageEntity pageEntity) {
+		
+		return getSqlSession().selectList("Investment_management.getCreditorTransferBack",pageEntity.getMap(),
+ 				new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		
+	}
 
 }
 

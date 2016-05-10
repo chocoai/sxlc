@@ -80,7 +80,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 				}
 				String resultJson = "{\"status\":"+result+",\"det\":"+det+"}";
 				arg1.getWriter().write(resultJson);
-				return false;//验证失败不执行了*/
+				return false;*/
 				return true;
 			}
 		}else{

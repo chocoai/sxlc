@@ -30,7 +30,7 @@
     <!-- 新增平台公告 -->  
 	<insert id="insertPlatform"  parameterType="cn.springmvc.model.PlatformAnnouncementEntity" >    
 		insert into 
-		Platform_Announcement( Platform_ID,   Title,   Content, Admin_ID) 
+		Platform_Announcement( Platform_ID,   Title,   Content, Admin_ID,Opt_Date) 
 		             values  (#{id},#{title},#{content},#{optId})    
 	</insert> 
 	<!-- 查询该标题的平台公告是否存在 -->  
@@ -66,8 +66,10 @@
     </update>  
     <!-- 根据id查询平台公告 -->  
 	<select id="selectPlatformByID"  parameterType="long" resultMap="resultListPlatformAnnouncement" >
-	   select pa.Platform_ID,   pa.Title,   pa.Content,   pa.Statu,   pa.CreateTime, 
-	    pa.Opt_Date, pa.Admin_ID 
+	    select pa.Platform_ID,   pa.Title,   pa.Content,   pa.Statu,   pa.CreateTime, 
+	    pa.Opt_Date, pa.Admin_ID ,
+	   (select Platform_ID from  Platform_Announcement where CreateTime &lt; pa.CreateTime and Statu =1 order by CreateTime desc limit 1) as  nexID,
+       (select Platform_ID from  Platform_Announcement where CreateTime > pa.CreateTime and Statu =1 order by CreateTime asc limit 1) as  preID
 	   from  Platform_Announcement pa   where  pa.Platform_ID =  #{id}
     </select>  
     <!-- 首页显示平台公告 -->  

@@ -7,8 +7,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import product_p2p.kit.dbkey.DbKeyUtil;
-
 import product_p2p.kit.datatrans.IntegerAndString;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
@@ -21,6 +19,7 @@ import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectGuaranteeInfoDaoImpl;
 import cn.springmvc.model.CompensationStatisticsEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
+import cn.springmvc.model.GuaranteeBankCard;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
 import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoDetailsEntity;
@@ -31,6 +30,7 @@ import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
 import cn.springmvc.model.MemberThirdAuthInfoEntity;
+import cn.springmvc.model.OverdueCompensationEntity;
 import cn.springmvc.service.GuaranteeInfoService;
 
 /**
@@ -72,12 +72,16 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 		guaranteeInfoDetailsEntity
 				.setlGuaranteeRelationalEntities(selectGuaranteeInfoDaoImpl
 						.selectGuaranteeRelational(map));
-		CompensationStatisticsEntity co=selectGuaranteeInfoDaoImpl.CompensationStatistics(map);
-		if (co!=null) {
-			co.setNoCompensatoryPayment(co.getAllCompensatoryPayment()-co.getTotalCompensationAmount());
+		CompensationStatisticsEntity co = selectGuaranteeInfoDaoImpl
+				.CompensationStatistics(map);
+		if (co != null) {
+			co.setNoCompensatoryPayment(co.getAllCompensatoryPayment()
+					- co.getTotalCompensationAmount());
 		}
 		guaranteeInfoDetailsEntity.setCompensationStatisticsEntity(co);
-		guaranteeInfoDetailsEntity.setMemberThirdAuthInfoEntity(selectGuaranteeInfoDaoImpl.selectMemberThirdAuthInfoone(map));
+		guaranteeInfoDetailsEntity
+				.setMemberThirdAuthInfoEntity(selectGuaranteeInfoDaoImpl
+						.selectMemberThirdAuthInfoone(map));
 		// TODO Auto-generated method stub return null;
 		return guaranteeInfoDetailsEntity;
 	}
@@ -87,7 +91,8 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 			PageEntity pageEntity) {
 
 		// TODO Auto-generated method stub return null;
-		List<GuaranteeInfoEntity> list = selectGuaranteeInfoDaoImpl.selectAllGuaranteeInfo(pageEntity);
+		List<GuaranteeInfoEntity> list = selectGuaranteeInfoDaoImpl
+				.selectAllGuaranteeInfo(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list);
 		return list;
 	}
@@ -112,7 +117,8 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 			PageEntity pageEntity) {
 
 		// TODO Auto-generated method stub return null;
-		List<ManagementInfoEntity> list = selectGuaranteeInfoDaoImpl.selectAllManagementInfo(pageEntity);
+		List<ManagementInfoEntity> list = selectGuaranteeInfoDaoImpl
+				.selectAllManagementInfo(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list);
 		return list;
 	}
@@ -209,9 +215,10 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 		}
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
-		
+
 		handleGuaranteeInfoDaoImpl.handleManagementInfo(map);
-		int num = IntegerAndString.StringToInt(map.get("result").toString(), -1);
+		int num = IntegerAndString
+				.StringToInt(map.get("result").toString(), -1);
 		if (num == 0 && type == 0) {
 			generatorUtil.SetIdUsed(guaranteeID);
 			generatorUtil.SetIdUsed(personalId);
@@ -323,7 +330,8 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 	public List<GuaranteeAdminEntity> findGuaranteeAdmin(PageEntity pageEntity) {
 
 		// TODO Auto-generated method stub return null;
-		List<GuaranteeAdminEntity> list = selectGuaranteeInfoDaoImpl.findGuaranteeAdmin(pageEntity);
+		List<GuaranteeAdminEntity> list = selectGuaranteeInfoDaoImpl
+				.findGuaranteeAdmin(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list);
 		return list;
 	}
@@ -356,43 +364,100 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 		// pageEntity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
 		List<InstitutionsRecordsEntity> list = selectGuaranteeInfoDaoImpl
-		.InstitutionsToRaiseCashRecords(pageEntity);
+				.InstitutionsToRaiseCashRecords(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list);
 		return list;
 	}
+
 	@Override
 	public MemberThirdAuthInfoEntity selectMemberThirdAuthInfoone(
 			Map<String, Object> map) {
-		
+
 		// TODO Auto-generated method stub return null;
-		return selectGuaranteeInfoDaoImpl
-				.selectMemberThirdAuthInfoone(map);
+		return selectGuaranteeInfoDaoImpl.selectMemberThirdAuthInfoone(map);
 	}
+
 	@Override
 	public List<GuaranteeAdminEntity> findManagementAdmin(PageEntity pageEntity) {
-		
+
 		// TODO Auto-generated method stub return null;
-		return selectGuaranteeInfoDaoImpl
+		List<GuaranteeAdminEntity> list = selectGuaranteeInfoDaoImpl
 				.findManagementAdmin(pageEntity);
+
+		PageUtil.ObjectToPage(pageEntity, list);
+
+		return list;
 	}
+
 	@Override
 	public int insertManagementAdmin(Map<String, Object> map,
 			InsertAdminLogEntity entity, String[] sIpInfo) {
-		
+
 		// TODO Auto-generated method stub return 0;
 		entity.setsDetail("添加资产管理方管理员:" + map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleGuaranteeInfoDaoImpl.insertManagementAdmin(map);
 	}
+
 	@Override
 	public int updateManagementAdmin(Map<String, Object> map,
 			InsertAdminLogEntity entity, String[] sIpInfo) {
-		
+
 		// TODO Auto-generated method stub return 0;
 		entity.setsDetail("启用禁用资产管理方管理员:" + map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleGuaranteeInfoDaoImpl.updateManagementAdmin(map);
+	}
+
+	@Override
+	public List<OverdueCompensationEntity> Overduecompensation(
+			PageEntity pageEntity) {
+
+		// TODO Auto-generated method stub return null;
+		List<OverdueCompensationEntity> list = selectGuaranteeInfoDaoImpl
+				.Overduecompensation(pageEntity);
+
+		PageUtil.ObjectToPage(pageEntity, list);
+
+		return list;
+	}
+	@Override
+	public List<OverdueCompensationEntity> PtOverduecompensation(
+			PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		List<OverdueCompensationEntity> list = selectGuaranteeInfoDaoImpl
+				.PtOverduecompensation(pageEntity);
+
+		PageUtil.ObjectToPage(pageEntity, list);
+
+		return list;
+	}
+	@Override
+	public List<OverdueCompensationEntity> PaymentOverduecompensation(
+			PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		List<OverdueCompensationEntity> list = selectGuaranteeInfoDaoImpl
+				.PaymentOverduecompensation(pageEntity);
+
+		PageUtil.ObjectToPage(pageEntity, list);
+
+		return list;
+	}
+	@Override
+	public List<GuaranteeBankCard> findbankcardforguaranteeID(
+			PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		// TODO Auto-generated method stub return null;
+		List<GuaranteeBankCard> list = selectGuaranteeInfoDaoImpl
+				.findbankcardforguaranteeID(pageEntity);
+
+		PageUtil.ObjectToPage(pageEntity, list);
+
+		return list;
 	}
 }

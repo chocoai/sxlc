@@ -22,7 +22,7 @@ import product_p2p.kit.datatrans.IntegerAndString;
 
 public class CreditorTransferListEntity { 
 	private String  projectTitle;//项目标题
-	private String  ProjectNo;//项目编号
+	private String  projectNo;//项目编号
 	private long    transPrincipal;//转让本金
 	private int     surplusTime;//剩余期限
 	private int     surplusTimeType;//剩余期限类型
@@ -49,6 +49,9 @@ public class CreditorTransferListEntity {
 	private String  investTotals;//已投资总额
 	private int     expectYearrate;//预期年化利率
 	private String  expectYearrates;//预期年化利率
+	private String  picIcon;//项目类型小图标
+	private int     surplusTimeSub;//剩余期限：二级时间
+	private String  transMaxTime;//最迟转让时间
 	public int getExpectYearrate() {
 		return expectYearrate;
 	}
@@ -126,11 +129,11 @@ public class CreditorTransferListEntity {
 	public void setProjectTitle(String projectTitle) {
 		this.projectTitle = projectTitle;
 	}
-	public String getProjectNo() {
-		return ProjectNo;
-	}
 	public void setProjectNo(String projectNo) {
-		ProjectNo = projectNo;
+		this.projectNo = projectNo;
+	}
+	public String getProjectNo() {
+		return projectNo;
 	}
 	public long getTransPrincipal() {
 		return transPrincipal;
@@ -224,6 +227,24 @@ public class CreditorTransferListEntity {
 	}
 	public void setApplyId(long applyId) {
 		this.applyId = applyId;
+	}
+	public String getPicIcon() {
+		return picIcon;
+	}
+	public void setPicIcon(String picIcon) {
+		this.picIcon = picIcon;
+	}
+	public int getSurplusTimeSub() {
+		return surplusTimeSub;
+	}
+	public void setSurplusTimeSub(int surplusTimeSub) {
+		this.surplusTimeSub = surplusTimeSub;
+	}
+	public String getTransMaxTime() {
+		return transMaxTime;
+	}
+	public void setTransMaxTime(String transMaxTime) {
+		this.transMaxTime = transMaxTime;
 	}
 }
 

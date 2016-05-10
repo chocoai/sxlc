@@ -51,8 +51,10 @@ $(function(){
 			                          ],
 			          pagingType: "simple_numbers",//设置分页控件的模式  
 			          processing: true, //打开数据加载时的等待效果  
-			          serverSide: true,//打开后台分页  
-			//          info:false,
+			          serverSide: true,//打开后台分页 
+			          scrollCollapse: true,
+			          scrollX : "100%",
+					  scrollXInner : "100%",
 			          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 			          }
 			 

@@ -65,7 +65,7 @@ public interface ProjectAppRecordService {
 	* @date 2016-3-22 下午7:13:18
 	* @throws 
 	*/
-	public Map<String, Object> handleProjectAppRecord(Map<String, Object> map,InsertAdminLogEntity entity, String[] sIpInfo);
+	public int handleProjectAppRecord(Map<String, Object> map,InsertAdminLogEntity entity, String[] sIpInfo);
 	
 	
 	/** 

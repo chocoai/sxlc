@@ -51,19 +51,19 @@
 		<result property = "investAmount"    	column = "Invest_Amount" /> 
     </resultMap>  											
 	 <!-- 查询首页统计 -->
-    <select id="selectIndexStatistic"  parameterType="Map" resultType="Map" >
+    <select id="selectIndexStatistic"  parameterType="Map" resultType="cn.springmvc.model.IndexStaticsEntity" >
 	   select (select (ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Principal),#{sKey})) as signed)),0) + 
 	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Recv_Interest),#{sKey})) as signed)),0)+ 
 	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Overdue),#{sKey})) as signed)),0)+ 
 	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Overdue_Interest),#{sKey})) as signed)),0)+ 
 	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Penalty),#{sKey})) as signed)),0))  
-	   from Invest_Real_Income lri  )  as IncomeTotal, 
+	   from Invest_Real_Income lri  )  as incomeTotal, 
 	   (select count(Member_ID) from member_info ) as countmember, 
 	   (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(pbi.Amount),#{sKey})) as signed)),0)  
 	   from project_base_info pbi 
        left join project_app_record par on  par.Project_Base_ID =pbi.Project_Base_ID
        where   par.Invest_Statu>=3 ) as totalLoanAmount ,
-       (select ifnull(Risk_Reserve_Fund,0) from System_Info_Set limit 1) as  RiskReserveFund
+       (select ifnull(Risk_Reserve_Fund,0) from System_Info_Set limit 1) as  riskReserveFund
 	</select>
 	 <!-- 首页预热投资项目列表 -->  
 	<select id = "selectInvestListIndex"   resultMap = "resultProjectDetailIndex">

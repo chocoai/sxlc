@@ -37,9 +37,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				<ul class="nav nav-tabs">
 					<li role="presentation" class="active"><a href="javascript:;">一审</a></li>
-					<li role="presentation"><a href="javascript:;">二审</a></li>
-					<li role="presentation"><a href="javascript:;">三审</a></li>
-					<li role="presentation"><a href="web/project/post_list.jsp">项目发布</a></li>
+					<li role="presentation"><a href="web/project/loan_examTwo.jsp">二审</a></li>
+					<li role="presentation"><a href="web/project/loan_examThree.jsp">三审</a></li>
 				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">
@@ -54,11 +53,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item col-md-2"><span>类型名称</span><input type="text" class=""></span>
-									<span class="con-item"><span>借款人申请时间</span><input type="text" class=""></span>
+									<span class="con-item"><span>类型名称</span><input type="text" class=""></span>
+									<span class="con-item"><span>借款人申请时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
 									<span class="con-item"><span>借款人用户名</span><input type="text" class=""></span>
 									<span class="con-item"><span>借款人姓名</span><input type="text" class=""></span>
-									<span class="con-item"><span>项目状态</span><input type="text" class=""></span>
+									<span class="con-item">
+										<span>项目状态</span>
+										<select>
+											<option>未通过</option>
+											<option>通过</option>
+										</select>
+									</span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -121,6 +126,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="js/project/loan_exam.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
+	 console.log(_index);
 	$('#table_loan_detail_list').DataTable({
 		scrollX:true,
 		autoWidth : false,

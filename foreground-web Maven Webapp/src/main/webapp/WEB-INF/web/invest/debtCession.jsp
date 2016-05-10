@@ -5,6 +5,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
@@ -17,6 +18,7 @@
 <body>
     <jsp:include page="../common/top.jsp"></jsp:include>
    	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
+   	<script type="text/javascript" src="js/common/template.js"></script>
     <!-- 此处加入代码 -->
     <!--伍成然2016-3-28-->
     <div class="main">
@@ -64,104 +66,126 @@
 				<div class="fliter-left"><!--筛选部分，active为选中 -->
 					<div class="tags-list-state tags-list">
 						<div class="left-title">项目状态:</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="投标中">投标中</label>
-						<label><input type="radio" name="tag" value="投标完成">投标完成</label>
+						<label class="active"><input type="radio" name="projectStatu" value="-1" checked>全部</label>
+						<label><input type="radio" name="projectStatu" value="0">投标中</label>
+						<label><input type="radio" name="projectStatu" value="1">流标</label>
+						<label><input type="radio" name="projectStatu" value="2">投标完成</label>
+						<label><input type="radio" name="projectStatu" value="3">还款中</label>
+						<label><input type="radio" name="projectStatu" value="4">已结清</label>
 					</div>
 					<div class="tags-list-type tags-list">
 						<div class="left-title">借款类型:</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="担保贷">担保贷</label>
-						<label><input type="radio" name="tag" value="抵押贷">抵押贷</label>
-						<label><input type="radio" name="tag" value="信用贷">信用贷</label>
+						<label class="active"><input type="radio" name="loanType" value="-1" checked>全部</label>
+						<c:forEach items="${projectBaseInfos }" var="pbi">
+							<label><input type="radio" name="loanType" value="${pbi.id }">${pbi.projectName }</label>
+						</c:forEach>
 					</div>
 					<div class="tags-list-rate tags-list">
 						<div class="left-title">年化利率:</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="8%以下">8%以下</label>
-						<label><input type="radio" name="tag" value="8%-12%">8%-12%</label>
-						<label><input type="radio" name="tag" value="12%以上">12%以上</label>			
+						<label class="active"><input type="radio" name="annualInterest" value="-1" checked>全部</label>
+						<label><input type="radio" name="annualInterest" value="8">8%以下</label>
+						<label><input type="radio" name="annualInterest" value="8,12">8%-12%</label>
+						<label><input type="radio" name="annualInterest" value="12">12%以上</label>			
 					</div>
 					<div class="tags-list-method tags-list">
 						<div class="left-title">还款方式:</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="等额本金">等额本金</label>
-						<label><input type="radio" name="tag" value="等额本息">等额本息</label>
-						<label><input type="radio" name="tag" value="先息后本">先息后本</label>
-						<label><input type="radio" name="tag" value="到期还本息">到期还本息</label>			
+						<label class="active"><input type="radio" name="repayment" value="-1" checked>全部</label>
+						<label><input type="radio" name="repayment" value="0">等额本息</label>
+						<label><input type="radio" name="repayment" value="1">先息后本</label>
+						<label><input type="radio" name="repayment" value="2">到期还本息</label>
+						<label><input type="radio" name="repayment" value="3">等额本金</label>			
 					</div>
 				</div>
 				<div class="fliter-right">	
 					<div class="tags-list-day tags-list">
 						<div class="left-title">投资期限(天):</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="1-15天">1-15天</label>
-						<label><input type="radio" name="tag" value="16-30天">16-30天</label>
-						<label><input type="radio" name="tag" value="31-45天">31-45天</label>	
-						<label><input type="radio" name="tag" value="45天以上">45天以上</label>			
+						<label class="active"><input type="radio" name="investDay" value="-1" checked>全部</label>
+						<label><input type="radio" name="investDay" value="1,15">1-15天</label>
+						<label><input type="radio" name="investDay" value="16,30">16-30天</label>
+						<label><input type="radio" name="investDay" value="31,45">31-45天</label>
+						<label><input type="radio" name="investDay" value="45,-1">45天以上</label>
 					</div>
 					<div class="tags-list-month tags-list">
 						<div class="left-title">投资期限(月):</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="1-3个月">1-3个月</label>
-						<label><input type="radio" name="tag" value="4-6个月">4-6个月</label>
-						<label><input type="radio" name="tag" value="7-9个月">7-9个月</label>
-						<label><input type="radio" name="tag" value="10-12个月">10-12个月</label>
-						<label><input type="radio" name="tag" value="12个月以上">12个月以上</label>				
+						<label class="active"><input type="radio" name="investMonth" value="-1" checked>全部</label>
+						<label><input type="radio" name="investMonth" value="1,3">1-3个月</label>
+						<label><input type="radio" name="investMonth" value="4,6">4-6个月</label>
+						<label><input type="radio" name="investMonth" value="7,9">7-9个月</label>
+						<label><input type="radio" name="investMonth" value="10,12">10-12个月</label>
+						<label><input type="radio" name="investMonth" value="12,-1">12个月以上</label>				
 					</div>
 					<div class="tags-list-year tags-list">
 						<div class="left-title">投资期限(年):</div>
-						<label class="active"><input type="radio" name="tag" value="全部">全部</label>
-						<label><input type="radio" name="tag" value="1年">1年</label>
-						<label><input type="radio" name="tag" value="2年">2年</label>
-						<label><input type="radio" name="tag" value="3年">3年</label>	
-						<label><input type="radio" name="tag" value="3年以上">3年以上</label>			
+						<label class="active"><input type="radio" name="investYear" value="-1" checked>全部</label>
+						<label><input type="radio" name="investYear" value="1,1">1年</label>
+						<label><input type="radio" name="investYear" value="2,2">2年</label>
+						<label><input type="radio" name="investYear" value="3,3">3年</label>
+						<label><input type="radio" name="investYear" value="3,-1">3年以上</label>	
 					</div>
 				</div>
 			</div>
 		</div><!--fliter-box  -->
 		<!--项目列表  -->
-		<ul class="invest-list">
-		<% for(int j = 0; j<2;j++){ %>
+		<ul class="invest-list" id="debtList">
+		</ul>
+		<script id="debt_list" type="text/html">
+		{{each infos as value index}}
 			<li class="inv-li">
 				<div class="inv-head clearfix">
 					<div class="inv-head-left">
-						<img src="resource/img/invest/dan.png"><!--担dan/抵di/信xin-->
-						<a href="invest/debtDetail.html">化工企业研发资金借款</a>
-						<span>【NO.20160306121】</span>
+						<img src="{{value.picIcon}}"><!--担dan/抵di/信xin-->
+						<a href="invest/debtDetail/{{value.ctaId}}.html">{{value.projectTitle}}</a>
+						<span>【{{value.projectNo}}】</span>
 					</div>
 				</div>
 				<div class="inv-info">
 					<div class="inv-rate">
-						<h1>16.20<span>%</span><span class="increase">+1.30%</span></h1>
+						<h1>{{value.expectYearrates}}<span>%</span>
+							{{if value.rateAddRate>0}}
+								<span class="increase">+{{value.rateAddRate}}%</span>
+							{{/if}}
+						</h1>
 						<p>预期年化利率</p>
 					</div>
 					<div class="inv-item-amount">
-						<h1 class="moneyFormat">5000</h1><span>元</span>
+						<h1 class="moneyFormat">{{$toFixed value.transPrincipals}}</h1><span>元</span>
 						<p>转让金额</P>
 					</div>
 					<div class="inv-time">
-						<h1>6<span>个月</span>2<span>天</span></h1><!--时间有年、月、天 -->
+						{{if value.surplusTimeType==0}}
+						<h1>{{value.surplusTime}}<span>天</span></h1><!--时间有年、月、天 -->
+						{{/if}}
+						{{if value.surplusTimeType==1}}
+						<h1>{{value.surplusTime}}<span>个月</span>{{value.surplusTimeSub}}<span>天</span></h1><!--时间有年、月、天 -->
+						{{/if}}
+						{{if value.surplusTimeType==2}}
+						<h1>{{value.surplusTime}}<span>年</span>{{value.surplusTimeSub}}<span>个月</span></h1><!--时间有年、月、天 -->
+						{{/if}}
 						<p>剩余期限</p>
 					</div>
 					<div class="inv-discount">
-						<h1>98<span>%</span></h1>
+						<h1>{{$toFixed value.transDiscounts}}<span>%</span></h1>
 						<p>转让折扣</p>
 					</div>
 					<div class="progress">
 						<div class="barbox"> 
 							<div class="barline" style="width: 60%;"></div> 
 						</div>
-						<span class="progress_totle">60%</span>
+						<span class="progress_totle">{{value.ctaInvestRate}}%</span>
 					</div>
 					<div class="inv-time-count">
-						<div class="repay-method">还款方式:<span>到期还本息</span></div><!--还款方式有:到期还本息，等额本金，等额本息，先息后本，到期还本息 -->
-						<input type="button" class="buy-now" value="立即购买" onclick="window.location.href='invest/debtDetail.html'"> 
+						<div class="repay-method">还款方式:<span>{{value.repalyways}}</span></div>
+						{{if value.transStatu == 0}}
+							<input type="button" class="buy-now" value="立即购买" onclick="window.location.href='invest/debtDetail/{{value.ctaId}}.html'"> 
+						{{/if}}
+						{{if value.transStatu != 0}}
+							<input type="button" class="buy-now" value="查看详情" onclick="window.location.href='invest/debtDetail/{{value.ctaId}}.html'"> 
+						{{/if}}
 					</div>
 				</div>
 			</li>
-		<%} %>
-		</ul>
+		{{/each}}
+		</script>
 		<div id="pager"></div>		
     </div><!--main  -->
    	<jsp:include page="../common/bottom.jsp"></jsp:include>

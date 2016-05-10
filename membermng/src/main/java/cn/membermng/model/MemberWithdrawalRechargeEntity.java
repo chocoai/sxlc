@@ -12,7 +12,10 @@
  
 package cn.membermng.model; 
 
+import java.util.Date;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 /** 
  * @author 刘利 
@@ -92,10 +95,15 @@ public class MemberWithdrawalRechargeEntity {
 	 */
 	private String realMoneys;
 
+	
+	private Date recordDate;
+	private String sRecordDate;	//申请时间
+	
 	/**
 	 * 到账时间
 	 */
-	private String receiveDate;
+	private Date   receiveDate;	//
+	private String sReceiveDate;
 	/**
 	 * 到账银行卡ID
 	 */
@@ -200,11 +208,26 @@ public class MemberWithdrawalRechargeEntity {
 		this.realMoney = realMoney;
 		this.realMoneys= IntegerAndString.LongToString(realMoney);
 	}
-	public String getReceiveDate() {
+	
+	public Date getRecordDate() {
+		return recordDate;
+	}
+	public void setRecordDate(Date recordDate) {
+		this.recordDate = recordDate;
+		this.sRecordDate = TimestampAndString.DateToString2(recordDate);
+	}
+	public String getsRecordDate() {
+		return sRecordDate;
+	}
+	public Date getReceiveDate() {
 		return receiveDate;
 	}
-	public void setReceiveDate(String receiveDate) {
+	public void setReceiveDate(Date receiveDate) {
 		this.receiveDate = receiveDate;
+		this.sReceiveDate = TimestampAndString.DateToString2(receiveDate);
+	}
+	public String getsReceiveDate() {
+		return sReceiveDate;
 	}
 	public long getReceiveCard() {
 		return receiveCard;

@@ -16,6 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/project/collection_has_bill.css" type="text/css">
 </head>
 <!-- 贷后管理-------项目催收-------催收已还账单 -->
 <body class="nav-md">
@@ -79,7 +80,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<th>账单期数</th>
 											<th>还款时间</th>
 											<th>实际还款时间</th>
-											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -91,11 +91,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<td>0000001</td>
 											<td>交电费</td>
 											<td>jiuyang</td>
-											<td>王书记</td>
-											<td>1234455415</td>
-											<td>200000</td>
+											<td>121212103</td>
+											<td>1234</td>
+											<td>20</td>
 											<td>12-01</td>
-											<td>200000</td>
 											<td>12-01</td>
 										</tr>
 										<%
@@ -136,7 +135,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 				{
 					"orderable" : false,
-					"aTargets" : [ 0, 1, 2, 3, 4, 6, 9]
+					"aTargets" : [ 0, 1, 2, 3, 4, 6]
 				} // 制定列不参与排序
 				],
 				colReorder : false,

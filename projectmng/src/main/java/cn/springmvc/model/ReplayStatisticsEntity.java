@@ -23,7 +23,7 @@ import product_p2p.kit.datatrans.IntegerAndString;
 public class ReplayStatisticsEntity {
 	private String 		projectNo;			//借款项目编号
 	private String 		projectTitle;		//借款项目名称
-	private String 		pogname;			//借款人用户名
+	private String 		logname;			//借款人用户名
 	private String 		personalName;		//借款人姓名
 	private long   		investAmountValid;	//借款金额
 	private String 		guaranteeName;		//担保机构
@@ -40,6 +40,12 @@ public class ReplayStatisticsEntity {
 	private String 		overdueAmounts;		//当期应还罚息
 	private int 		overdueDays;		//逾期天数
 	
+	public String getLogname() {
+		return logname;
+	}
+	public void setLogname(String logname) {
+		this.logname = logname;
+	}
 	public int getOverdueAmount() {
 		return overdueAmount;
 	}
@@ -70,12 +76,6 @@ public class ReplayStatisticsEntity {
 	}
 	public void setProjectTitle(String projectTitle) {
 		this.projectTitle = projectTitle;
-	}
-	public String getPogname() {
-		return pogname;
-	}
-	public void setPogname(String pogname) {
-		this.pogname = pogname;
 	}
 	public String getPersonalName() {
 		return personalName;

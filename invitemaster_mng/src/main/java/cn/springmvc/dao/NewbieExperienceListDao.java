@@ -45,5 +45,15 @@ public interface NewbieExperienceListDao {
 	 * @date 2016-4-19 下午3:34:30
 	 */
 	public NewbieExperienceSetEntity  getNewbieExperienceSet();
+	
+	/**
+	 * 首页查询查询新手体验标设置
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @return 设定文件 
+	 * @return NewbieExperienceSetEntity 返回类型 
+	 * @date 2016-4-19 下午3:34:30
+	 */
+	public NewbieExperienceSetEntity  getNewbieExperienceSetIndex();
 } 
 

@@ -17,14 +17,19 @@ import product_p2p.kit.constant.Constant;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.membermng.model.AutomaticBidSettingEntity;
 import cn.membermng.model.InvestIncomeEntity;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberThirdAuthInfoEntity;
 import cn.membermng.model.MyinvestEntity;
 import cn.springmvc.model.ProjectBaseInfoEntity;
+import cn.springmvc.model.TransferableCreditsEntity;
+import cn.springmvc.service.CertificationAuditService;
+import cn.springmvc.service.InvestmentManagementService;
 import cn.springmvc.service.MyinvestService;
 import cn.springmvc.service.ProjectBaseInfoService;
 import cn.springmvc.service.RecordsBalanceService;
+import cn.springmvc.service.TransferableCreditsService;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -54,6 +59,15 @@ public class InvestmentManagementController {
 	
 	@Autowired
 	private RecordsBalanceService balanceService;
+	
+	@Autowired
+	private InvestmentManagementService investmentManagementService;
+	
+	@Autowired
+	private TransferableCreditsService transferableCreditsService;
+	
+	@Autowired
+	private CertificationAuditService auditService;
 	
 	/**
 	* 我的投资
@@ -95,6 +109,7 @@ public class InvestmentManagementController {
 		param.put("sKey",DbKeyUtil.GetDbCodeKey());
 		param.put("memberID", memberInfo.getId());
 		param.put("order", orderBy);
+		entity.setMap(param);
 		List<MyinvestEntity> list = myinvestService.selectMyinvestCollect(entity);
 		
 		Map<String,Object> result = new HashMap<String, Object>();
@@ -102,34 +117,37 @@ public class InvestmentManagementController {
 		result.put("pageSize", entity.getPageSize());
 		result.put("tol", entity.getRecordsTotal());
 		result.put("infos", list);
-		return JSONObject.toJSONString(result,SerializerFeature.WriteNullStringAsEmpty);
+		String resultJSon = JSONObject.toJSONString(result, SerializerFeature.WriteMapNullValue);
+		System.out.println(resultJSon);
+		return resultJSon;
 	}
 	
 	
 	/***
-	* 查看收益计划
+	* 回收中的投资-查看收益计划
 	* 
 	* @author 李杰
 	* @return
 	* @date 2016-5-4 下午2:01:26
 	 */
-	@RequestMapping(value="revenuePlan/{investId:[0-9]+}",produces = "text/html;charset=UTF-8")
-	@ResponseBody
-	public String revenuePlan(HttpServletRequest request,@PathVariable long investId){
+	@RequestMapping(value="revenuePlan/{investId:[0-9]+}/{cpage:[0-9]+}",produces = "text/html;charset=UTF-8")
+	public String revenuePlan(HttpServletRequest request,@PathVariable long investId,@PathVariable int cpage){
 		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
 		PageEntity entity = new PageEntity();
+		entity.setPageNum(cpage);
+		entity.setPageSize(10);
+		
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("investID", investId);
 		param.put("sKey", DbKeyUtil.GetDbCodeKey());
 		param.put("memberID", memberInfo.getId());
 		entity.setMap(param);
 		List<InvestIncomeEntity> list = myinvestService.selectInvestIncome(entity);
-		Map<String,Object> result = new HashMap<String, Object>();
-		result.put("cpage", entity.getPageNum());
-		result.put("pageSize", entity.getPageSize());
-		result.put("tol", entity.getRecordsTotal());
-		result.put("infos", list);
-		return JSONObject.toJSONString(result,SerializerFeature.WriteMapNullValue);
+		request.setAttribute("list", list);
+		request.setAttribute("tol", entity.getRecordsTotal());
+		request.setAttribute("cpage", cpage);
+		request.setAttribute("pageSize", 10);
+		return "account/investmentManagement/revenuePlan";
 	}
 	
 	
@@ -156,13 +174,43 @@ public class InvestmentManagementController {
 		param.put("sKey",DbKeyUtil.GetDbCodeKey());
 		param.put("memberID", memberInfo.getId());
 		param.put("order", orderBy);
+		entity.setMap(param);
 		List<MyinvestEntity> list = myinvestService.selectMyinvestSettled(entity);
 		Map<String,Object> result = new HashMap<String, Object>();
 		result.put("cpage", entity.getPageNum());
 		result.put("pageSize", entity.getPageSize());
 		result.put("tol", entity.getRecordsTotal());
 		result.put("infos", list);
-		return JSONObject.toJSONString(result,SerializerFeature.WriteNullStringAsEmpty);
+		return JSONObject.toJSONString(result,SerializerFeature.WriteMapNullValue);
+	}
+	
+	
+	/***
+	* 已结清的投资-收益记录
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-9 下午2:13:56
+	*/
+	@RequestMapping(value="/revenueRecord/{investId:[0-9]+}/{cpage:[0-9]+}")
+	public String revenueRecord(HttpServletRequest request,@PathVariable long investId,@PathVariable int cpage){
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		PageEntity entity = new PageEntity();
+		entity.setPageNum(cpage);
+		entity.setPageSize(10);
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("sKey", 	  DbKeyUtil.GetDbCodeKey());
+		param.put("investID", investId);
+		param.put("memberID", memberInfo.getId());
+		entity.setMap(param);
+		
+		List<InvestIncomeEntity> list = myinvestService.selectRealincome(entity);
+		
+		request.setAttribute("list", list);
+		request.setAttribute("tol", entity.getRecordsTotal());
+		request.setAttribute("pageSize", entity.getPageSize());
+		request.setAttribute("cpage", entity.getPageNum());
+		return "account/investmentManagement/revenueRecord";
 	}
 	
 	
@@ -201,23 +249,8 @@ public class InvestmentManagementController {
 		result.put("pageSize", entity.getPageSize());
 		result.put("tol", entity.getRecordsTotal());
 		result.put("infos", list);
-		return JSONObject.toJSONString(result,SerializerFeature.WriteNullStringAsEmpty);
+		return JSONObject.toJSONString(result,SerializerFeature.WriteMapNullValue);
 	}
-	
-	
-	
-	
-	
-	@RequestMapping("/revenuePlan")
-	public String revenuePlan(){
-		return "account/investmentManagement/revenuePlan";
-	}
-	
-	@RequestMapping("/revenueRecord")
-	public String revenueRecord(){
-		return "account/investmentManagement/revenueRecord";
-	}
-	
 	
 	
 	/***
@@ -231,7 +264,8 @@ public class InvestmentManagementController {
 	public String autoBid(HttpServletRequest request){
 		//查询出设置列表信息
 		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
-		
+		AutomaticBidSettingEntity automaticBidSettingEntity = auditService.QueryMemberAutomaticBidSetting(memberInfo.getId());
+		request.setAttribute("automaticBidSettingEntity", automaticBidSettingEntity);
 		//查询出借款类型列表
 		List<ProjectBaseInfoEntity> projectTypes = baseInfoService.selectProjectBaseInfoCombox();
 		request.setAttribute("projectTypes",projectTypes);
@@ -245,31 +279,317 @@ public class InvestmentManagementController {
 	}
 	
 	
+	/***
+	* 设置自动投标
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-6 下午2:55:58
+	 */
 	@RequestMapping(value="/autoBidConfig",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String autoBidConfig(HttpServletRequest request){
-		long 	loanType 		= IntegerAndString.StringToLong(request.getParameter("loanType"),-1);
-		long 	repaymentType 	= IntegerAndString.StringToLong(request.getParameter("repaymentType"), -1);
-		String	minTime			= request.getParameter("minTime");
-		String  maxTIme 		= request.getParameter("maxTime");
-		int 	minInterest 	= IntegerAndString.StringToInt(request.getParameter("minInterest"), -1);
-		int 	maxInterest 	= IntegerAndString.StringToInt(request.getParameter("maxInterest"), -1);
-		long	investmentAmount= IntegerAndString.StringToLong(request.getParameter("investmentAmount"), -1);
-		long	reserveAmount	= IntegerAndString.StringToLong(request.getParameter("reserveAmount"), -1);
+		String	proType 	= request.getParameter("proType");											//借款类型多个逗号隔开
+		String  loanType	= request.getParameter("loanType");											//还款方式多个逗号隔开
+		long	everyMoney	= IntegerAndString.StringToLong(request.getParameter("everyMoney"));	//每次投资金额
+		long	rateMin		= IntegerAndString.StringToLong(request.getParameter("rateMin"));		//年化利率最小值
+		long	rateMax		= IntegerAndString.StringToLong(request.getParameter("rateMax"));		//年化利率最大值
+		long	yearMin		= IntegerAndString.StringToLong(request.getParameter("yearMin"),-1);	//年最小值
+		long	yearMax		= IntegerAndString.StringToLong(request.getParameter("yearMax"),-1);	//年最大值
+		long	monthMin	= IntegerAndString.StringToLong(request.getParameter("monthMin"),-1);	//月最小值
+		long	monthMax	= IntegerAndString.StringToLong(request.getParameter("monthMax"),-1);	//月最大值
+		long	dayMin		= IntegerAndString.StringToLong(request.getParameter("dayMin"), -1);	//最小天
+		long	dayMax		= IntegerAndString.StringToLong(request.getParameter("dayMax"), -1);	//最大天
+		long	reservedMoney= IntegerAndString.StringToLong(request.getParameter("reservedMoney"));//账户预留金额
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
 		
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("memberId", memberInfo.getId());
+		param.put("proType", proType);
+		param.put("status", loanType);
+		param.put("everyMoney", everyMoney);
+		param.put("rateMin", rateMin);
+		param.put("rateMax", rateMax);
+		param.put("yearMax", yearMax);
+		param.put("yearMin", yearMin);
+		param.put("monthMin", monthMin);
+		param.put("monthMax", monthMax);
+		param.put("dayMin", dayMin);
+		param.put("dayMax", dayMax);
+		param.put("reservedMoney", reservedMoney);
+		int result = auditService.AutomaticBidSetting(param);
 		
-		return null;
+		Map<String,Object> message = new HashMap<String,Object>();
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在自动投标设置");
+		}else if(result == -2){
+			message.put("status", "-2");
+			message.put("message", "还未开户，请开户");
+		}else if(result == -3){
+			message.put("status", "-3");
+			message.put("message", "还未进行自动投标授权");
+		}else if(result == 0){
+			message.put("status", "0");
+			message.put("message", "设置成功");
+		}
+		return JSONObject.toJSONString(message);
 	}
 	
 	
-	
-	
+	/***
+	* 投资管理-债权转让
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-5 下午7:46:19
+	 */
 	@RequestMapping("/debtAttorn")
 	public String debtAttorn(){
 		return "account/investmentManagement/debtAttorn";
 	}
-	@RequestMapping("/incomeList")
-	public String incomeList(){
+	
+	
+	/***
+	* 投资管理-债权转让-转让中
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-5 下午7:48:33
+	 */
+	@RequestMapping(value="transferIn",produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String transferIn(HttpServletRequest request){
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		int	pageSize = IntegerAndString.StringToInt(request.getParameter("pageSize"), 10);				//页大小
+		int cpage	 = IntegerAndString.StringToInt(request.getParameter("cpage"), 1);					//当前页
+		PageEntity entity = new PageEntity();
+		entity.setPageNum(cpage);
+		entity.setPageSize(pageSize);
+		Map<String,Object> param = new HashMap<String,Object>();
+		entity.setMap(param);
+		param.put("Member_ID", memberInfo.getId());
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		
+		investmentManagementService.getCreditorTransfer(entity);
+		
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("cpage", cpage);
+		result.put("pageSize", pageSize);
+		result.put("tol", entity.getRecordsTotal());
+		result.put("infos", entity.getResults());
+		return JSONObject.toJSONString(result,SerializerFeature.WriteMapNullValue);
+	}
+	
+	
+	/***
+	* 投资管理-债权转让-可转出
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-5 下午8:25:34
+	 */
+	@RequestMapping(value="canTurnOut",produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String canTurnOut(HttpServletRequest request){
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		int	pageSize = IntegerAndString.StringToInt(request.getParameter("pageSize"), 10);				//页大小
+		int cpage	 = IntegerAndString.StringToInt(request.getParameter("cpage"), 1);					//当前页
+		PageEntity entity = new PageEntity();
+		entity.setPageNum(cpage);
+		entity.setPageSize(pageSize);
+		Map<String,Object> param = new HashMap<String,Object>();
+		entity.setMap(param);
+		param.put("memberID", memberInfo.getId());
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		
+		List<TransferableCreditsEntity> list = transferableCreditsService.selectTransferableCredits(entity);
+		
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("cpage", cpage);
+		result.put("pageSize", pageSize);
+		result.put("tol", entity.getRecordsTotal());
+		result.put("infos", list);
+		return JSONObject.toJSONString(result,SerializerFeature.WriteMapNullValue);
+		
+	
+	}
+	
+	
+	/***
+	* 投资管理-债权转让-可转让-转让
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-5 下午8:51:26
+	*/
+	@RequestMapping(value="turnOutDebts",method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String turnOutDebts(HttpServletRequest request){
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		long extras 	= IntegerAndString.StringToLong(request.getParameter("extras"));				//转让金额
+		long discount 	= IntegerAndString.StringToLong(request.getParameter("discount"));				//转让折扣
+		long iId		= IntegerAndString.StringToLong(request.getParameter("iId"), 0);				//投资记录编号
+		Map<String,Object> parma = new HashMap<String,Object>();
+		parma.put("logId", memberInfo.getId());															//会员编号
+		parma.put("investId", iId);
+		parma.put("transPrincipal", extras);
+		parma.put("transDiscount", discount);
+		parma.put("transMaxTime", 1);					//小朱说传1								
+		parma.put("surplusTime", 1);
+		parma.put("surplusTimeType", 1);
+		
+		//1：成功 -1该债权转让不是本人 -2转让金额大于最大可转让金额
+		int result = transferableCreditsService.creditorTransApp(parma);
+		Map<String,Object> resultMessage = new HashMap<String,Object>();
+		if(result  == 1){
+			resultMessage.put("message", "转让成功");
+			resultMessage.put("status", 1);
+		}else if(result  == -1){
+			resultMessage.put("message", "转让失败");
+			resultMessage.put("status", -1);
+		}else if(result  == -2){
+			resultMessage.put("message", "转让金额大于可转让金额");
+			resultMessage.put("status", -2);
+		}else{
+			resultMessage.put("message", "转让失败");
+			resultMessage.put("status", -1);
+		}
+		return JSONObject.toJSONString(resultMessage);
+	}
+	
+	
+	/***
+	* 投资管理-债权转让-已转出
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-5 下午8:03:18
+	*/
+	@RequestMapping(value="turnOut",produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String turnOut(HttpServletRequest request){
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		int	pageSize = IntegerAndString.StringToInt(request.getParameter("pageSize"), 10);				//页大小
+		int cpage	 = IntegerAndString.StringToInt(request.getParameter("cpage"), 1);					//当前页
+		PageEntity entity = new PageEntity();
+		entity.setPageNum(cpage);
+		entity.setPageSize(pageSize);
+		Map<String,Object> param = new HashMap<String,Object>();
+		entity.setMap(param);
+		param.put("Member_ID", memberInfo.getId());
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		
+		investmentManagementService.getCreditorOut(entity);
+		
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("cpage", cpage);
+		result.put("pageSize", pageSize);
+		result.put("tol", entity.getRecordsTotal());
+		result.put("infos", entity.getResults());
+		return JSONObject.toJSONString(result,SerializerFeature.WriteMapNullValue);
+	}
+	
+	
+	/***
+	* 投资管理-债权转让-已转入
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-5 下午8:05:18
+	*/
+	@RequestMapping(value="changeInto",produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String changeInto(HttpServletRequest request){
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		int	pageSize = IntegerAndString.StringToInt(request.getParameter("pageSize"), 10);				//页大小
+		int cpage	 = IntegerAndString.StringToInt(request.getParameter("cpage"), 1);					//当前页
+		PageEntity entity = new PageEntity();
+		entity.setPageNum(cpage);
+		entity.setPageSize(pageSize);
+		Map<String,Object> param = new HashMap<String,Object>();
+		entity.setMap(param);
+		param.put("Member_ID", memberInfo.getId());
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		
+		investmentManagementService.getCreditorIn(entity);
+		
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("cpage", cpage);
+		result.put("pageSize", pageSize);
+		result.put("tol", entity.getRecordsTotal());
+		result.put("infos", entity.getResults());
+		return JSONObject.toJSONString(result,SerializerFeature.WriteMapNullValue);
+	}
+	
+	
+	/***
+	* 投资管理-债权转让-已结清
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-5 下午8:08:42
+	 */
+	@RequestMapping(value="debtsSettled",produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String debtsSettled(HttpServletRequest request){
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		int	pageSize = IntegerAndString.StringToInt(request.getParameter("pageSize"), 10);				//页大小
+		int cpage	 = IntegerAndString.StringToInt(request.getParameter("cpage"), 1);					//当前页
+		PageEntity entity = new PageEntity();
+		entity.setPageNum(cpage);
+		entity.setPageSize(pageSize);
+		Map<String,Object> param = new HashMap<String,Object>();
+		entity.setMap(param);
+		param.put("Member_ID", memberInfo.getId());
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		
+		investmentManagementService.getCreditorOff(entity);
+		
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("cpage", cpage);
+		result.put("pageSize", pageSize);
+		result.put("tol", entity.getRecordsTotal());
+		result.put("infos", entity.getResults());
+		return JSONObject.toJSONString(result,SerializerFeature.WriteMapNullValue);
+	}
+	
+	
+	/***
+	*已转入-收益列表
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-5 下午8:12:01
+	 */
+	@RequestMapping("/incomeList/{investmentId:[0-9]+}/{cpage:[0-9]+}")
+	public String incomeList(HttpServletRequest request,@PathVariable long investmentId,@PathVariable int cpage){
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		int	pageSize = IntegerAndString.StringToInt(request.getParameter("pageSize"), 10);				//页大小
+		PageEntity entity = new PageEntity();
+		entity.setPageNum(cpage);
+		entity.setPageSize(pageSize);
+		Map<String,Object> param = new HashMap<String,Object>();
+		entity.setMap(param);
+		param.put("Member_ID", memberInfo.getId());
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		param.put("Invest_Id", investmentId);				//投资记录编号
+		investmentManagementService.getInvest(entity);
+		
+		List<InvestIncomeEntity> list = entity.getResults();
+		request.setAttribute("list", list);
+		request.setAttribute("tol", entity.getRecordsTotal());
+		request.setAttribute("cpage", cpage);
+		request.setAttribute("pageSize", 10);
 		return "account/investmentManagement/incomeList";
 	}
+
+
+	
+
 }

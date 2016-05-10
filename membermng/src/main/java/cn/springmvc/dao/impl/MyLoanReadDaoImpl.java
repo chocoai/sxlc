@@ -21,9 +21,11 @@ import cn.membermng.model.FlowLabel;
 import cn.membermng.model.InvestmentRecord;
 import cn.membermng.model.LoanApplyRecord;
 import cn.membermng.model.LoanRepay;
+import cn.membermng.model.MemberThirdAuthInfoEntity;
 import cn.membermng.model.RepaymentIn;
 import cn.membermng.model.RepaymentOfBorrowings;
 import cn.membermng.model.RepaymentOfBorrowingsRM;
+import cn.membermng.model.ReplayDetailEntity;
 import cn.membermng.model.StayStillPlan;
 
 /***
@@ -154,28 +156,68 @@ public class MyLoanReadDaoImpl extends SqlSessionDaoSupport implements IMyLoanRe
 
 
 	@Override
-	public LoanRepay selectReplayDetail(long replyaID) {
+	public ReplayDetailEntity selectReplayDetail(long replyaID,long memberID,int memberType) {
 		
 		Map<String,Object>  param = new HashMap<String,Object>();
-		param.put("lId", replyaID);
+		param.put("lId",           replyaID);
+		param.put("memberID",      memberID);
+		param.put("memberType",  memberType);
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
-		LoanRepay loanRepay = getSqlSession().selectOne("myLoanReadDaoImpl.selectReplayDetail",param);
+		ReplayDetailEntity loanRepay = getSqlSession().selectOne("myLoanReadDaoImpl.selectReplayDetail",param);
+		Long  UserBalance   = getSqlSession().selectOne("myLoanReadDaoImpl.selectMemberUserBalance",param);
+		if(UserBalance == null) {
+			UserBalance = 0L;
+		}
 		if(loanRepay != null) {
-			
+			//应还总额
+			loanRepay.setSdReplayTotal(loanRepay.getLoanAmount()+loanRepay.getLoanInterest());
 			if(loanRepay.getOverDay() > 0) {
 				 getSqlSession().selectOne("myLoanReadDaoImpl.GetLoanRepayOverdueInfo",param); 
 				//逾期利息
 				loanRepay.setOverdueInterest(Long.parseLong(param.get("lOverdueInterest").toString()));
 				//逾期罚金
 				loanRepay.setOberdueFine(Long.parseLong(param.get("lOverdue").toString()));
-			}
-		    
-			//应还总额
-			loanRepay.setSdReplayTotal(loanRepay.getLoanAmount()+loanRepay.getLoanInterest()
-					+loanRepay.getOberdueFine()+loanRepay.getOverdueInterest());
+				//应还总额
+				loanRepay.setSdReplayTotal(loanRepay.getSdReplayTotal()+
+						+loanRepay.getOberdueFine()+loanRepay.getOverdueInterest());
+			} 
+			loanRepay.setUserBalance(UserBalance);
 		}
 		
 		return loanRepay;
+	}
+
+
+
+	@Override
+	public MemberThirdAuthInfoEntity selectMemberIsOpenAutoPay(Map<String,Object> map) {
+		
+		return getSqlSession().selectOne("myLoanReadDaoImpl.selectMemberIsOpenAutoPay");
+		
+	}
+
+
+
+	@Override
+	public List<RepaymentOfBorrowingsRM> loanRepayback(PageEntity entity) {
+		
+		List<RepaymentOfBorrowingsRM> list = getSqlSession().selectList("myLoanReadDaoImpl.loanRepayback",entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
+		Map<String,Object> param = new HashMap<String,Object>();
+		for (int i = 0; i < list.size(); i++) {
+			param.put("lId", list.get(i).getLid());
+			param.put("sKey", DbKeyUtil.GetDbCodeKey());
+			if(list.get(i).getIsYuQi() == 0){//未逾期不计算
+				continue;
+			}
+			getSqlSession().selectOne("myLoanReadDaoImpl.GetLoanRepayOverdueInfo",param);
+			list.get(i).setYuQiFeiYong(Long.parseLong(param.get("lOverdueInterest").toString())+Long.parseLong(param.get("lOverdue").toString()));
+			list.get(i).setOberdueFine(Long.parseLong(param.get("lOverdue").toString()));
+			list.get(i).setOberdueFine(Long.parseLong(param.get("lOverdueInterest").toString()));
+			list.get(i).setSdReplayTotal(list.get(i).getSdReplayTotal()+
+					Long.parseLong(param.get("lOverdue").toString())+Long.parseLong(param.get("lOverdueInterest").toString()));
+		}
+		return list;
+		
 	}
 
 

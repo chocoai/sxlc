@@ -30,5 +30,36 @@
     		)}
     	]]>
 	</select>
+	<!-- 根据会员id，短信类型查询是否存在发送该短信内容 -->
+	<select id="WhetherThereTextMessaging" parameterType="Map" resultType="String">
+		SELECT mf.Msg_Detail FROM Member_SmsSend_Set mss
+		LEFT JOIN Message_Format mf ON mf.Type_ID=mss.Type_ID WHERE mss.Member_ID = #{memberID} AND mss.Statu = 1 AND mss.Type_ID = #{typeId};
+	</select>
+	
+	<select id="getEmail" parameterType="Map" resultType="cn.springmvc.dao.impl.sms.EMessageEntity">
+		select Smtpservice smtpservice,Port_Number port_Number,Email_Address email_Address,
+			Email_Password email_Password from  Mail_Settings limit 1 
+	</select>
+	
+	
+	<insert id="insertEmailSmsRecord" parameterType="Map">
+		insert into Email_Record
+			(Member_Type,Member_ID,Msg_Detail,Short_Email,
+				Record_Type,Admin_ID,Record_Date,Statu)
+				values(#{memberType},#{memberID},#{sDetail},#{email},#{sSendType},#{lAdminId},now(),#{sStatu})
+	</insert>
+	
+	
+	<!-- 添加站内消息发送	-->
+	<select id="LetterSendRecord"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call LetterSendRecord(
+				#{vTmp,			mode=IN,	jdbcType=VARCHAR},
+				#{adminId,			mode=IN,	jdbcType=BIGINT},
+				#{sendType,			mode=IN,	jdbcType=BIGINT},
+				#{details,		mode=IN,	jdbcType=VARCHAR},
+				#{result,			mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+	</select>
 	
 </mapper>

@@ -16,6 +16,7 @@ import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.dao.SelectGuaranteeInfoDao;
 import cn.springmvc.model.CompensationStatisticsEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
+import cn.springmvc.model.GuaranteeBankCard;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
 import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoEntity;
@@ -25,6 +26,7 @@ import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
 import cn.springmvc.model.MemberThirdAuthInfoEntity;
+import cn.springmvc.model.OverdueCompensationEntity;
 
 
 
@@ -165,6 +167,34 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("GuaranteeInfoXML.findManagementAdmin", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+	}
+	@Override
+	public List<OverdueCompensationEntity> Overduecompensation(
+			PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("GuaranteeInfoXML.Overduecompensation", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+	}
+	@Override
+	public List<OverdueCompensationEntity> PtOverduecompensation(
+			PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("GuaranteeInfoXML.PtOverduecompensation", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+	}
+	@Override
+	public List<OverdueCompensationEntity> PaymentOverduecompensation(
+			PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("GuaranteeInfoXML.PaymentOverduecompensation", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+	}
+	@Override
+	public List<GuaranteeBankCard> findbankcardforguaranteeID(
+			PageEntity pageEntity) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("GuaranteeInfoXML.findbankcardforguaranteeID", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 	}
 }
 

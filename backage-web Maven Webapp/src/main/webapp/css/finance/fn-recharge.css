@@ -42,3 +42,129 @@
 .rechargeoption{
 	width:174px;
 }
+
+
+.buttonSet button,
+.buttonSet2 button{
+	min-width:75px;
+	border-radius:4px;
+	margin-left:10px;
+}
+.buttonSet2 button{
+	padding:2px 5px !important;
+	min-width:50px !important;
+}
+.buttonSet button:nth-of-type(2),
+.buttonSet2 button:nth-of-type(2){
+	background:#bbb;
+}
+.buttonSet{
+	width:65%;
+	min-width:100px;
+	vertical-align:top;
+	text-align:right;
+	margin-bottom:20px;
+}
+.buttonSet2{
+	display:inline-block;
+	float:right;
+	min-width:100px;
+	text-align:center;
+	margin-bottom:20px;
+	padding-right:20px;
+}
+.cmbtncontainer {
+    padding: 0 10px 12px;
+    pointer-events: auto;
+    margin-top: 30px;
+    margin-left: 20px;
+    text-align: center;
+}
+.accrechargecon {
+    margin-top: 20px;
+    text-align: right;
+}
+.cmbtncontainer .commonbtn0 {
+    border-color: #4898d5;
+    background-color: #2e8ded;
+    color: #fff;
+}
+.cmbtncontainer a {
+    height: 28px;
+    line-height: 28px;
+    margin: 0 6px;
+    padding: 0 15px;
+    border: 1px solid #dedede;
+    background-color: #f1f1f1;
+    color: #333;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: top;
+}
+.sc-cont input{
+	margin:5px 5px 5px 0px;
+	display: inline-block;
+}
+.sc-cont{
+	padding: 25px;
+}
+#sendCms .sc-cont label{
+	display: inline-block;
+	width:150px;
+	text-align: right;
+}
+.sc-cont p{
+	line-height: 20px;
+	display: inline-block;
+	width: 260px;
+	float: left;
+}
+.sc-cont p + div,
+.sc-cont p + div + div{
+	width:500px;
+	float: left;
+}
+#sendCms .sc-cont p + div{
+	margin-top:13px;
+}
+#sendCms{
+	display: none;
+}
+#sendCms .accrechargecon{
+	float: right;
+}
+#setAlert{
+	display: none;
+}
+.cms-st .con-item{
+	display: inline-block;
+	width: 300px;
+	text-align: right;
+}
+.con-item input,
+.con-item select{
+	width: 160px;
+}
+.cmsRe .con-item input,
+.cmsRe .con-item select,
+.cms-st .con-item input,
+.cms-st .con-item select{
+	width: 214px;
+}
+.cmsRe input.dateInput,
+.cms-st input.dateInput{
+	width:90px;
+}
+.cmsRe .con-item{
+	display: inline-block;
+	width: 300px;
+	max-width:300px;
+	min-width: 300px;
+	text-align: right;
+}
+.cms-st button{
+	margin-left:70px;
+}

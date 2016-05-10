@@ -80,6 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							
 							<div class="panel-body">
+								<input type="hidden" name="memberType" id="memberType" value="0">
 								<table id="table_id" class="display">
 									<thead>
 
@@ -88,7 +89,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</tbody>
 								</table>
 							</div>
-							
 						</div>
 					</div>
 				
@@ -103,5 +103,4 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/member/member.js"></script>
 	<script type="text/javascript" src="js/member/memberPwd.js"></script>
 	<script type="text/javascript" src="js/member/allmember.js"></script>
-
 </body>

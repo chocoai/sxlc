@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -13,6 +14,9 @@
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/loanManagement/autoRepay.css">
+	<script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 </head>
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
@@ -34,13 +38,16 @@
 	   					<div class="remind-box">
 	   						尊敬的客户，开启自动还款后，平台将自动进行还款操作。
 	   					</div>
-		   				<div class="auto-repay-ctrl">
+	   					<input id="thirdAuthInfo" type="hidden" value="${thirdAuthInfo.openAutoPay}"/>
+	   					<input id="openStatu" type="hidden" value="${thirdAuthInfo.isAutoPay}"/>
+	   					
+		   				<div id="toClose" class="auto-repay-ctrl">
 		   					<div>您已开启自动还款功能</div>
-		   					<input type="button" class="close-auto-repay btn" value="关闭自动还款">
+		   					<input type="button" class="close-auto-repay btn" value="关闭自动还款" data-statu="0">
 		   				</div>
-		   				<div class="auto-repay-ctrl active">
+		   				<div id="toOpen" class="auto-repay-ctrl">
 		   					<div>您尚未开启自动还款功能</div>
-		   					<input type="button" class="open-auto-repay btn" value="开启自动还款">
+		   					<input type="button" class="open-auto-repay btn" value="开启自动还款" data-statu="1">
 		   				</div>
 		   				<div class="remind-card">
 		   					自动还款规则:<br>

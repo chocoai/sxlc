@@ -18,6 +18,9 @@
     <jsp:include page="../common/top.jsp"></jsp:include>
    	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
    	<script type="text/javascript" src="js/common/template.js"></script>
+   	<script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
     <!-- 此处加入代码 -->
     <!--伍成然2016-3-28  -->
     <div class="main">
@@ -47,15 +50,21 @@
 				<div class="inv-info clearfix">
 					<div class="inv-rate">
 						<p>年化利率</p>
-						<h1>${appRecordEntity.projectBaseInfoentity.yearRates }<span>%</span><span class="increase">+${appRecordEntity.rateAddRate }%</span></h1>					
+						<h1>${appRecordEntity.projectBaseInfoentity.yearRates }<span>%</span>
+							<c:if test="${appRecordEntity.rateAddRate != 0}">
+							<span class="increase">+${appRecordEntity.rateAddRate }%</span>
+							</c:if>
+						</h1>					
 					</div>
 					<div class="inv-item-amount">
 						<p>项目金额</P>
 						<h1 class="moneyFormat">${appRecordEntity.projectBaseInfoentity.amounts }</h1><span>元</span>
+						<c:if test = "${appRecordEntity.rewardRates != 0.0000}">
 						<span class="reward">					
 						   	投资本金
 							<b>${appRecordEntity.rewardRates }%</b>
 						</span>
+						</c:if>
 					</div>
 					<div class="inv-time">
 						<p>项目期限</p>					
@@ -75,17 +84,27 @@
 						</div>
 						<span class="progress_totle">${appRecordEntity.investRate }%</span>
 					</div>
+					<c:if test="${investmentStatus == 1}">   <%-- 预热中 --%>
 					<div class="info-label">
 						<div class="left-title">剩余时间：</div>
-						<div class="time-ico">1天8小时17分41秒</div>
+						<div class="J_CountDown time-ico" data-config="{
+											'startTime':'${sysTime }',
+    										'endTime':'${endTime }'
+										}"></div>
 					</div>
+					</c:if>
+					<c:if test="${investmentStatus == 2}">	<%-- 投标中 --%>
+					<div class="info-label">
+						<div class="left-title">剩余时间：</div>
+						<div class="J_CountDown time-ico" data-config="{
+											'startTime':'${sysTime }',
+    										'endTime':'${endTime }'
+										}"></div>
+					</div>
+					</c:if>
 					<div class="info-label">
 						<div class="left-title">还款方式：</div>
 						<label>
-						<%-- <c:if test="${appRecordEntity.projectBaseInfoentity.repayWay == 0}">等额本息</c:if>
-						<c:if test="${appRecordEntity.projectBaseInfoentity.repayWay == 1}">每月还息</c:if>
-						<c:if test="${appRecordEntity.projectBaseInfoentity.repayWay == 2}">等额本息</c:if>
-						<c:if test="${appRecordEntity.projectBaseInfoentity.repayWay == 3}">到期还息本</c:if> --%>
 						${appRecordEntity.projectBaseInfoentity.replayWays}
 						</label>	
 					</div>
@@ -99,27 +118,59 @@
 					</div>																
 				</div>
 			</div><!--top-box结束  -->
-			<c:if test="${appRecordEntity.investStatu == 3}">
-				<!--inv-deal-box还款中状态  -->
+			
+ 			<!-- 还款中 -->
+			<c:if test="${investmentStatus == 3}">
 				<div class="inv-deal-box repaying">
-					<div class="count-down-title">
-						成功交易时间:
-					</div>
-					<div class="count-down">
-						2016-03-09&nbsp;16:00:58
-					</div>
-					<img src="resource/img/invest/wytzhkz.png"><!-- 已结清wytzyjq.png -->				
+					<div class="count-down-title">成功交易时间:</div>
+					<div class="count-down">${endTime }</div>
+					<img src="resource/img/invest/wytzhkz.png">	
 				</div>
-				<!--inv-deal-box还款中状态结束  -->
 			</c:if>
-			<c:if test="${appRecordEntity.investStatu != 3}">
+			
+			<!-- 投标完成 -->
+			<c:if test="${investmentStatus == 5}">
+				<div class="inv-deal-box repaying">
+					<div class="count-down-title">成功交易时间:</div>
+					<div class="count-down">${endTime }</div>
+					<img src="resource/img/invest/tbwc.png">		
+				</div>
+			</c:if>
+		
+			<!-- 预热中 -->
+			<c:if test="${investmentStatus == 1}">
+				<div class="inv-deal-box repaying">
+					<div class="count-down-title">投标开始时间:</div>
+					<div class="count-down">${endTime }</div>
+					<img src="resource/img/invest/yrz.png">		
+				</div>
+			</c:if>
+			
+			<!-- 已流标-->
+			<c:if test="${investmentStatus == 6}">
+				<div class="inv-deal-box repaying">
+					<div class="count-down-title">成功交易时间:</div>
+					<div class="count-down">${endTime }</div>
+					<img src="resource/img/invest/ylb.png">				
+				</div>
+			</c:if>
+			
+			<!-- 已结清 -->
+			<c:if test="${investmentStatus == 4}">
+				<div class="inv-deal-box repaying">
+					<div class="count-down-title">成功交易时间:</div>
+					<div class="count-down">${endTime }</div>
+					<img src="resource/img/invest/wytzyjq.png">		
+				</div>
+			</c:if> 
+			
+			<!-- 投标中 -->
+			<c:if test="${investmentStatus == 2}"> 
+				<!-- 未登录 -->
 				<c:if test="${loginUser == null }">
-					<!--inv-deal-box未登录状态  -->
 					<form id="notLoginBox">
 						<div class="inv-deal-box not-logined">
-							<div class="login-remind">
-								<a href="login.html">登录</a>&nbsp;&nbsp;后可查看可用余额
-							</div>
+							<div class="login-remind"><a href="login.html">登录</a>&nbsp;&nbsp;后可查看可用余额</div>
 							<div class="input-group">
 							    <input type="text" class="charge-input" datatype="acountM" maxlength="10" value="50元起投且金额为整数" 
 								onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
@@ -130,30 +181,31 @@
 							 <input type="button" class="login-now" value="立即登录">
 						</div>
 					</form>
-					<!--inv-deal-box未登录状态结束  -->
 				</c:if>
-				<c:if test="${loginUser != null }">
-					<!--inv-deal-box已登录状态  -->
+				
+				<!-- 已登录 -->
+				<c:if test="${loginUser != null }"> 
 					<form id="loginedBox">
 					<div class="inv-deal-box logined">
 						<div class="inv-available">本次可投金额<div class="right"><span>${sSumAount }</span>元</div></div>
-						<div class="amount-available">可用余额<div class="right"><span>${authInfoEntity.memberThirdInfoEntity.userBalances }</span>元</div></div>
+						<div class="amount-available">可用余额<div class="right"><span>${userBalances }</span>元</div></div>
 						<div class="input-group" style="height:50px;">
 						    <input type="text" class="charge-input" datatype="acountM" maxlength="10" value="50元起投且金额为整数" 
+						   	id="investMoney"
 							onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
 						    <div class="charge-addon">元</div>
 						    <input class="charge-btn" type="button" value="充值">
 						</div><!-- /input-group -->
-						<div class="expected-return">预期收益：<span>0.00</span>元</div>
-						<input type="button" class="inv-now" value="立即投资">
+						<div class="expected-return">预期收益：<span id="pageProfit">0.00</span>元</div>
+						<input type="button" class="inv-now" id="inv-now" value="立即投资">
 						<div class="remain-vouchers">剩余代金券&nbsp;${sVouchers }元<div class="right">剩余红包&nbsp;${redPackCount }个</div></div>
 					</div>
 					</form>
-					<!--deal-box已登录状态结束  -->
-				</c:if>
-			</c:if>
+				</c:if> 
+			</c:if> 
+			
 			<!--inv-bottom-box部分  -->
 			<div class="inv-bottom-box">
 				<ul class="tab-head">
@@ -190,43 +242,62 @@
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<!--弹出层  -->
 	<div class="red-packets">
-		<div class="red-packets-top">
-			<div class="info">
-				<div class="leftTitle">本次可投金额:</div>
-				<label><span>${sSumAount }</span>元</label>
-			</div>
-			<div class="info">
-				<div class="leftTitle">本次投资总金额:</div>
-				<label><span class="orange"></span>元</label>
-				<label>(预期收益：<span class="orange">100.00</span>元)</label>
-			</div>
-			<div class="info">
-				<div class="leftTitle" style="display:block">使用代金券:</div><!--代金券为0时display:none  -->
-				<input type="text" class="inputDJJ format" maxlength="6">
-				<span class="djj">元&nbsp;&nbsp;剩余代金券：${sVouchers }元</span>
-			</div>
-			<div class="info" style="display:none"><!--代金券为0时display:block  -->
-				<div class="leftTitle">剩余代金券:</div>
-				<label>0.00元</label>
-			</div>
-			<div class="info select">
-				<div class="leftTitle">剩余红包:</div>
-				<c:forEach items="${redPackList }" var="redPack">
-					<label class="active input1"><input type="radio" name="tag" value="${redPack.lId }">${redPack.sUnUsedAmount }元</label>
-				</c:forEach>
-			</div>
+		<div class="red-packets-top clearfix" id="red-packets-top">
+			<c:if test="${appRecordEntity.isDirect == 1 }">
+				<div class="info clearfix" id="codeContent">
+					<div class="leftTitle">定向标密码:</div>
+					<input type="text" id="directionalCode" class="inputDJJ1">
+				</div>
+			</c:if>
 		</div>
 		<div class="red-packets-bottom clearfix">
-			<div class="label">本次投资总金额：1,000.00元</div>
-			<div class="label">使用代金券：100.00元</div>
-			<div class="label">使用红包：200.00元</div>
-			<div class="label">使用账户余额：8880.00元</div>
+			<div class="label">本次投资总金额：<label  id="nowInvestNum">1,000.00</label>元</div>
+			<div class="label">使用代金券：<label  id="nowVoucher">100.00</label>元</div>
+			<div class="label">使用红包：<label  id="nowBag">200.00</label>元</div>
+			<div class="label">使用账户余额：<label  id="nowAccountBalance">8880.00</label>元</div>
 		</div>
-		<div class="btn-group">
-			<input type="button" class="confirm" value="确定" onclick="layer.closeAll()">
+		<div class="btn-group" >
+			<form action="invest/memberInvestment.html" id="form1" method="post" name="form1">
+			 	<input type="hidden" name="projectId" value="">
+			 	<input type="hidden" name="slVouchers" value="">
+			 	<input type="hidden" name="lAmount" value="">
+			 	<input type="hidden" name="redPacks" value="">
+			 	<c:if test="${appRecordEntity.isDirect == 1 }">
+			 		<input type="hidden" name="sDirectPwd" value="">
+			 	</c:if>
+			 	<input type="hidden" name="sign" value="">
+			</form>
+			<input type="button" class="confirm" value="确定" id="confirmSubmit">
 			<input type="button" class="cancel" value="取消" onclick="layer.closeAll()">
 		</div>	
 	</div>	
+	<script type="text/html" id="confirmInfo">
+			<div class="info">
+				<div class="leftTitle">本次可投金额:</div>
+				<label><span>{{sSumAount}}</span>元</label>
+			</div>
+			<div class="info">
+				<div class="leftTitle">本次投资总金额:</div>
+				<label><span class="orange" id="orangeNum">{{num}}</span>元</label>
+				<label>(预期收益：<span class="orange">{{$toFixed profit}}</span>元)</label>
+			</div>
+			{{if sVouchers!="0.00"}}
+			<div class="info">
+				<div class="leftTitle" style="display:block">使用代金券:</div>
+				<input type="text" id="useVouchers" class="inputDJJ format" maxlength="6">
+				<span class="djj">元&nbsp;&nbsp;剩余代金券：{{sVouchers}}元</span>
+			</div>
+			{{/if}}
+			<div class="info1 select clearfix">
+				<div class="leftTitle">剩余红包:</div>
+					<div style="width:325px;float:right" id="red_list">
+						{{each redPackList as value index}}
+							<label class="input1"><input  type="checkbox" value={{value.lId}}>{{$toFixed value.sUnUsedAmount}}元</label>
+						{{/each}}
+					</div>
+			</div>
+	</script>
 	<script type="text/javascript" src="js/invest/investmentDetail.js"></script>
+	<script type="text/javascript" src="js/common/countdown.js"></script>
 </body>
 </html>

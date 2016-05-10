@@ -69,7 +69,7 @@ public class ProjectAuditListDaoImpl extends SqlSessionDaoSupport implements Pro
 	public List<ProjectCheckRecordEntity> selectProjectCheckRecord(
 			PageEntity pageEntity) {
 		
- 		List<ProjectCheckRecordEntity>  projectCheckRecordList = getSqlSession().selectList("projectCheckRecord.selectProjectCheckRecord",pageEntity);
+ 		List<ProjectCheckRecordEntity>  projectCheckRecordList = getSqlSession().selectList("projectCheckRecord.selectProjectCheckRecord",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		return  projectCheckRecordList;
 	 
 	}
@@ -103,6 +103,13 @@ public class ProjectAuditListDaoImpl extends SqlSessionDaoSupport implements Pro
 	public int selectAttachindex() {
 		
 		return getSqlSession().selectOne("projectCheckAttach.selectAttachindex");
+		
+	}
+	@Override
+	public List<ProjectCheckAttachEntity> selectProjectAttachTotal(
+			long projectID) {
+		
+		return getSqlSession().selectList("projectCheckAttach.selectProjectAttachTotal",projectID);
 		
 	}
 }

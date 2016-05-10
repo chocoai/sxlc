@@ -70,7 +70,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<thead>
 										<tr>
 											<th></th>
-											<th>债权转让申请编号</th>
 											<th>债权转让申请时间</th>
 											<th>债权转让项目编号</th>
 											<th>项目名称</th>
@@ -78,8 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<th>转让会员</th>
 											<th>转让金额</th>
 											<th>转让价格</th>
-											<th>转让折扣</th>
-											<th>融资进度</th>
+											<th>转让折扣(%)</th>
 											<th>投标结束时间</th>
 											<th>转让状态</th>
 										</tr>
@@ -90,18 +88,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									 %>
 									<tr>
 										<td><input type="checkbox"></td>
-										<td>信用贷</td>
-										<td>20万~40万</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>简介:</td>
-										<td>无</td>
-										<td>img</td>
-										<td>img</td>
+										<td>2016-05-11</td>
+										<td>100001</td>
+										<td>项目名称</td>
+										<td>借款会员</td>
+										<td>转让会员</td>
+										<td class="moneyFormat">10000</td>
+										<td class="moneyFormat">10000</td>
+										<td>19</td>
+										<td>2016-05-18</td>
+										<td>未审核</td><!-- 未审核，已拒绝，融资中，待放款，已完成 -->
 									</tr>
 									<%
 										}
@@ -150,7 +146,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 							{
 								"orderable" : false,
-								"aTargets" : [ 0, 2, 3, 4, 5, 8, 9, 10, 11, 12]
+								"aTargets" : [ 0, 2, 3, 4, 5, 8, 9, 10]
 							} // 制定列不参与排序
 							],
 							colReorder : false,

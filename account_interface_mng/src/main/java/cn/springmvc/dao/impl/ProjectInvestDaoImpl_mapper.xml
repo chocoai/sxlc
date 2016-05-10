@@ -25,9 +25,10 @@
 				#{sRedpacketsInfo,		mode=IN,	jdbcType=VARCHAR},
 				#{lVouchers,			mode=IN,	jdbcType=BIGINT},
 				#{sKey,					mode=IN,	jdbcType=VARCHAR},
+				#{sDirectPwd,			mode=IN,	jdbcType=VARCHAR},
 				#{vResult,				mode=OUT,	jdbcType=VARCHAR},
 				#{lRedpackets,			mode=OUT,	jdbcType=BIGINT},
-				#{result,				mode=OUT,	jdbcType=BIGINT},
+				#{result,				mode=OUT,	jdbcType=BIGINT}
     		)}
     	]]>
 	</select>
@@ -47,7 +48,7 @@
 				#{lVouchers,			mode=IN,	jdbcType=BIGINT},
 				#{isAuto,				mode=IN,	jdbcType=TINYINT},
 				#{sKey,					mode=IN,	jdbcType=VARCHAR},
-				#{result,				mode=OUT,	jdbcType=BIGINT},
+				#{result,				mode=OUT,	jdbcType=BIGINT}
     		)}
     	]]>
 	</select>
@@ -73,7 +74,7 @@
 				#{lRiskMarginFee,	mode=IN,	jdbcType=BIGINT},
 				#{lBackRate,		mode=IN,	jdbcType=BIGINT},
 				#{lBackAmount,		mode=IN,	jdbcType=BIGINT},
-				#{result,			mode=OUT,	jdbcType=BIGINT},
+				#{result,			mode=OUT,	jdbcType=BIGINT}
     		)}
     	]]>
 	</select>
@@ -86,7 +87,7 @@
 				#{orderNo,			mode=IN,	jdbcType=VARCHAR},
 				#{iClient,			mode=IN,	jdbcType=TINYINT},
 				#{sKey,				mode=IN,	jdbcType=VARCHAR},
-				#{result,			mode=OUT,	jdbcType=BIGINT},
+				#{result,			mode=OUT,	jdbcType=BIGINT}
     		)}
     	]]>
 	</select>

@@ -93,8 +93,6 @@ public class SendSmsUtil {
 	* @throws
 	 */
 	public String[] SendSms(Map<String, Object> info,int iType,long lAdminId,Timestamp ttLastDate){
-		/*SmsReadDaoImpl smsReadDaoImpl = (SmsReadDaoImpl)SpringUtil.getBean("smsReadDaoImpl");
-		SmsWriteDaoImpl smsWriteDaoImpl = (SmsWriteDaoImpl)SpringUtil.getBean("smsWriteDaoImpl");*/
 		SmsSetInfoEntity smsSet = smsReadDaoImpl.GetSmsInfo();
 		String[] sInfo = {"-100","发送短信失败"};
 		short sType = 0;		// 0:首次发送	1：再次发送

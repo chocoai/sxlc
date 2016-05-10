@@ -40,9 +40,9 @@
 	   							<c:if test="${borr.status == 2 }">已认证</c:if>
 	   							<c:if test="${borr.status == 3 }">已打回</c:if>
 	   							<c:if test="${borr.status == 4 }">已过期</c:if></span>
-	   							<span class="link linkCheck"><a href="personalCenter/LC_personal_realNameAuthentication_v.html">查看</a></span>
-	   							<span class="link linkAuthen"><a href="personalCenter/LC_personal_realNameAuthentication.html">认证</a></span>
-	   							<span class="link linkAlert"><a href="personalCenter/LC_personal_realNameAuthentication_c.html">修改</a></span>
+	   							<span class="link linkCheck"><a href="personalCenter/authInfo/${borr.typeId}.html">查看</a></span>
+	   							<span class="link linkAuthen"><a href="personalCenter/authInfo/${borr.typeId}.html">认证</a></span>
+	   							<span class="link linkAlert"><a href="personalCenter/authInfo/${borr.typeId}.html">修改</a></span>
    							</li>   						
    						</c:forEach>
    					</ul>

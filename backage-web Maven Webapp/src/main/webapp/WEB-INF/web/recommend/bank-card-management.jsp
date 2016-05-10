@@ -24,11 +24,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="9" name="top_menu_index"/>
+				<jsp:param value="9" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-recommend.jsp"></jsp:include>
+			<jsp:include page="../common/cm-recommend.jsp">
+				<jsp:param value="907" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			
 			<!-- 主要内容 -->
 			<div class="right_col role-content" role="main">
@@ -40,41 +43,67 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel-heading">
 							<div class="action_item">
 								<button id class="obtn glyphicon glyphicon-plus obtn-dept-add" onclick="bankManagementAdd('添加银行卡','web/recommend/re-add/bank-card-management-add.jsp','1')">添加</button>
-								<button id class="obtn glyphicon glyphicon-pencil obtn-dept-mod" onclick="bankManagementMod('修改银行卡','web/recommend/re-add/bank-card-management-mod.jsp','1')">修改</button>
+								<button id class="obtn glyphicon glyphicon-pencil obtn-dept-mod" onclick="bankManagementMod()">修改</button>
 								<button id class="obtn glyphicon glyphicon-trash obtn-dept-del">删除</button>
 							</div>
 						</div>
 						<div class="panel-body">
 							<table id="table_id" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>银行卡类型</th>
-										<th>开户银行</th>
-										<th>开户行城市</th>
-										<th>开户行支行</th>
-										<th>银行卡卡号</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>借记卡</td>
-										<td>中国银行</td>
-										<td>成都</td>
-										<td>中国银行</td>
-										<td>62214785478544775</td>
-									</tr>
-									<%
-										}
-									%>
-								</tbody>
 							</table>
 						</div>
 					</div>
+					<div class="w-content pic-mod">
+					<form id="bankAdd" action="javascript:modBank()" type="post">
+						<table id="card_id">
+							<tr>
+								<td class="tt">银行卡类型</td>
+								<td class="con" id="cardType">
+									<select class="cardTypeOption">
+										<option value="0">借记卡</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="tt">开户银行</td>
+								<td class="con" id="depositBank"><!-- <input type="text" datatype="enterAddress" /> -->
+									<select id="bank" class="accountbankse">
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="tt">开户行城市</td>
+								<td class="con" id="depositCity">
+									<select id="province" class="cityoption">
+									</select>
+									<span class="line"></span>
+									<select id="city" class="cityoption">
+										<option>请选择省</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="tt">开户行支行</td>
+								<td class="con" id=""><input id="branch" type="text" datatype="enterAddress" /></td>
+							</tr>
+							<tr>
+								<td class="tt">银行卡卡号</td> 
+								<td class="con" id=""><input id="cardNo" type="text" datatype="bankNum" /></td>
+							</tr>
+							<tr>
+								<td class="tt">确认银行卡卡号</td>
+								<td class="con" id=""><input id="cardNo2" type="text" datatype="bankNum" /></td>
+							</tr>
+							<tr>
+								<td class="tt">开户手机号</td>
+								<td class="con" id=""><input id="phone" type="text" datatype="zphone" /></td>
+							</tr>
+						</table>
+					</form>
+					<div class="cmbtncontainer containerbtndiv">
+						<a class="commonbtn0">添加</a>
+						<a class="commonbtn1">取消</a>
+					</div>
+				</div>
 				</div>
 			</div>
 			<!-- 尾部 -->
@@ -85,20 +114,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/recommend/bank-card-management.js"></script>
+	<script type="text/javascript" src="js/recommend/bankMod.js"></script>
 	<script type="text/javascript">
-		$('#table_id').DataTable({
-			scrollX:true,
-			//scrollY:400,
-			autoWidth : false,
-			"aaSorting" : [  ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,4,5]
-			} // 制定列不参与排序
-			],
-		});
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </body>
 

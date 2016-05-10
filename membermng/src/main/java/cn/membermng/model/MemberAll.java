@@ -14,6 +14,7 @@ public class MemberAll {
 
 	private long 					memberId;				//会员编号
 	private String					memberNo;				//会员编号
+	private int						memberType;				//会员类型
 	private String					personalName;			//会员真实姓名
 	private String					memberName;				//会员登录名
 	private String 					personalPhone;			//会员手机号
@@ -396,8 +397,17 @@ public class MemberAll {
 	public void setAutomaticRepayment(int automaticRepayment) {
 		this.automaticRepayment = automaticRepayment;
 	}
-	
-	
+
+
+	public int getMemberType() {
+		return memberType;
+	}
+
+
+	public void setMemberType(int memberType) {
+		this.memberType = memberType;
+	}
+
 	
 	
 	

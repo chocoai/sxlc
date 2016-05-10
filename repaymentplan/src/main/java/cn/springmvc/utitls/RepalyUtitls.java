@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;  
-import cn.springmvc.model.LoanRepayEntity;
+import cn.springmvc.model.LoanRepayEntitys;
 
 /** 
  * @author 刘利 
@@ -39,7 +39,7 @@ public class RepalyUtitls {
 		 * @author 谢强
 		 * 
 		 */
-		public static List<LoanRepayEntity> getIncomePlan2(int dateType,String moneyNum,String yearRate,short dateTime,short typeSta,String prodate){
+		public static List<LoanRepayEntitys> getIncomePlan2(int dateType,String moneyNum,String yearRate,short dateTime,short typeSta,String prodate){
 			double countMoney = 0;		//总金额（息本）
 			double incomeMoney = 0;		//收益（利息）
 			double moneyMonth = 0;		//每月收款额
@@ -55,8 +55,8 @@ public class RepalyUtitls {
 			double rateMonth = Double.valueOf(yearRate)/100/12;		//月利率
 			double rateDay = Double.valueOf(yearRate)/100/365;		//天利率
 			
-			ArrayList<LoanRepayEntity> stanArray = new ArrayList<LoanRepayEntity>();
-			LoanRepayEntity stanEntity = null;
+			ArrayList<LoanRepayEntitys> stanArray = new ArrayList<LoanRepayEntitys>();
+			LoanRepayEntitys stanEntity = null;
 			
 			//计息开始时间
 			String date = RepalyUtitls.GetSysDate("yyyy-MM-dd", prodate, 0, 0,-1 );
@@ -67,7 +67,7 @@ public class RepalyUtitls {
 				incomeMoney = Double.valueOf(moneyNum) * rateDay * dateTime;		//总收益（利息）
 				String dateEnd = RepalyUtitls.GetSysDate("yyyy-MM-dd", date, 0, 0,dateTime );
 				
-				stanEntity = new LoanRepayEntity(); 
+				stanEntity = new LoanRepayEntitys(); 
 				stanEntity.setCorpus(moneyNum);//本金
 				stanEntity.setInterest(Double.toString(RepalyUtitls.doubleRetain2(incomeMoney)));//利息
 				stanEntity.setEndCorpusInterest(Double.toString(RepalyUtitls.doubleRetain2(countMoney)));//本息
@@ -81,7 +81,7 @@ public class RepalyUtitls {
 					double mLast = 0.00;
 					for(int i=0;i<dateTime;i++){
 						if(i == dateTime-1){
-							stanEntity = new LoanRepayEntity();
+							stanEntity = new LoanRepayEntitys();
 							moneyMonth = (Double.valueOf(moneyNum) * rateMonth * Math.pow((1 + rateMonth),dateTime))/(Math.pow((1 + rateMonth),dateTime)-1);
 							
 							String dateEnd = RepalyUtitls.GetSysDate("yyyy-MM-dd", date, 0, (i+1),0 );
@@ -96,7 +96,7 @@ public class RepalyUtitls {
 							incomeMoney = incomeMoney+RepalyUtitls.doubleRetain2(moneyMonth-mLast);
 						}else{
 							monthMoney = (Double.valueOf(moneyNum)-benjin) * rateMonth;		//每月利息
-							stanEntity = new LoanRepayEntity();
+							stanEntity = new LoanRepayEntitys();
 							moneyMonth = (Double.valueOf(moneyNum) * rateMonth * Math.pow((1 + rateMonth),dateTime))/(Math.pow((1 + rateMonth),dateTime)-1);
 							
 							String dateEnd = RepalyUtitls.GetSysDate("yyyy-MM-dd", date, 0, (i+1),0 );
@@ -117,7 +117,7 @@ public class RepalyUtitls {
 					incomeMoney = Double.valueOf(moneyNum) * rateMonth * dateTime;		//总利息
 					
 					for(int i=0;i<dateTime;i++){
-						stanEntity = new LoanRepayEntity();
+						stanEntity = new LoanRepayEntitys();
 						if(i != dateTime-1){
 							stanEntity.setCorpus("0.0");
 							stanEntity.setInterest(Double.toString(RepalyUtitls.doubleRetain2(monthMoney)));
@@ -138,7 +138,7 @@ public class RepalyUtitls {
 					countMoney = Double.valueOf(moneyNum) * (1+(rateMonth * dateTime));	//总代收金额（本息）
 					incomeMoney = Double.valueOf(moneyNum) * rateMonth * dateTime;		//总收益（利息）
 					
-					stanEntity = new LoanRepayEntity();
+					stanEntity = new LoanRepayEntitys();
 					stanEntity.setCorpus(moneyNum);
 					stanEntity.setInterest(Double.toString(RepalyUtitls.doubleRetain2(incomeMoney)));
 					stanEntity.setEndCorpusInterest(Double.toString(RepalyUtitls.doubleRetain2(countMoney)));
@@ -155,7 +155,7 @@ public class RepalyUtitls {
 					double grandTotal = 0;//累计金额
 					for(int i=0;i<dateTime;i++){
 						if(i == dateTime-1){
-							stanEntity = new LoanRepayEntity();
+							stanEntity = new LoanRepayEntitys();
 							monthlyPrincipal = Double.valueOf(moneyNum) - grandTotal;
 							
 							mLast = mTotal - benjin;
@@ -172,7 +172,7 @@ public class RepalyUtitls {
 						}else{
 							//monthMoney = (Double.valueOf(moneyNum)-benjin) * rateMonth;		//每月利息
 							//monthlyPrincipal += monthlyPrincipal;
-							stanEntity = new LoanRepayEntity();
+							stanEntity = new LoanRepayEntitys();
 							moneyMonth = (Double.valueOf(moneyNum) / dateTime) + ((Double.valueOf(moneyNum) - grandTotal) * rateMonth);
 							
 							grandTotal += monthlyPrincipal;
@@ -199,7 +199,7 @@ public class RepalyUtitls {
 					for(int i=0;i<count;i++){	
 						if(i == count - 1){
 							monthMoney = (Double.valueOf(moneyNum)-benjin) * rateYear;		//每月利息
-							stanEntity = new LoanRepayEntity();
+							stanEntity = new LoanRepayEntitys();
 							moneyMonth = (Double.valueOf(moneyNum) * rateYear * Math.pow((1 + rateYear),count))/(Math.pow((1 + rateYear),count)-1);
 							mLast = mTotal - benjin;
 							
@@ -215,7 +215,7 @@ public class RepalyUtitls {
 							
 						}else{
 							monthMoney = (Double.valueOf(moneyNum)-benjin) * rateYear;		//每月利息
-							stanEntity = new LoanRepayEntity();
+							stanEntity = new LoanRepayEntitys();
 							moneyMonth = (Double.valueOf(moneyNum) * rateYear * Math.pow((1 + rateYear),count))/(Math.pow((1 + rateYear),count)-1);
 							benjin = benjin+(RepalyUtitls.doubleRetain2(moneyMonth-monthMoney));
 							
@@ -236,7 +236,7 @@ public class RepalyUtitls {
 					incomeMoney = Double.valueOf(moneyNum) * Double.valueOf(yearRate)/100 * dateTime;		//总利息
 					
 					for(int i=0;i<count;i++){
-						stanEntity = new LoanRepayEntity();
+						stanEntity = new LoanRepayEntitys();
 						if(i != count-1){
 							stanEntity.setCorpus("0.0");
 							stanEntity.setInterest(Double.toString(RepalyUtitls.doubleRetain2(monthMoney)));
@@ -255,7 +255,7 @@ public class RepalyUtitls {
 					countMoney = Double.valueOf(moneyNum) * (1+(Double.valueOf(yearRate)/100 * dateTime));	//总代收金额（本息）
 					incomeMoney = Double.valueOf(moneyNum) * Double.valueOf(yearRate)/100 * dateTime;		//总收益（利息）
 					
-					stanEntity = new LoanRepayEntity();
+					stanEntity = new LoanRepayEntitys();
 					stanEntity.setCorpus(moneyNum);
 					stanEntity.setInterest(Double.toString(RepalyUtitls.doubleRetain2(incomeMoney)));
 					stanEntity.setEndCorpusInterest(Double.toString(RepalyUtitls.doubleRetain2(countMoney)));
@@ -273,7 +273,7 @@ public class RepalyUtitls {
 					double grandTotal = 0;//累计金额
 					for(int i=0;i<dateTime;i++){
 						if(i == dateTime-1){
-							stanEntity = new LoanRepayEntity();
+							stanEntity = new LoanRepayEntitys();
 							monthlyPrincipal = Double.valueOf(moneyNum) - grandTotal;
 							
 							mLast = mTotal - benjin;
@@ -290,7 +290,7 @@ public class RepalyUtitls {
 						}else{
 							//monthMoney = (Double.valueOf(moneyNum)-benjin) * rateMonth;		//每月利息
 							//monthlyPrincipal += monthlyPrincipal;
-							stanEntity = new LoanRepayEntity();
+							stanEntity = new LoanRepayEntitys();
 							moneyMonth = (Double.valueOf(moneyNum) / dateTime) + ((Double.valueOf(moneyNum) - grandTotal) * rateYear);
 							grandTotal += monthlyPrincipal;
 							String dateEnd = RepalyUtitls.GetSysDate("yyyy-MM-dd", date, (i+1), 0,0 );

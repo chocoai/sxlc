@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;  
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.ProjectAuitDao;
 import cn.springmvc.dao.ProjectAuitListDao; 
 import cn.springmvc.dao.impl.IdGeneratorUtil;
@@ -57,22 +58,14 @@ public class ProjectAuditServiceImpl implements ProjectAuitService {
         return projectAppRecordList;
 	}
 	@Override
-	public ProjectAppRecordEntity selectProjectDetailByID(int id) {
+	public ProjectAppRecordEntity selectProjectDetailByID(long id) {
 		
 		ProjectAppRecordEntity projectAppRecordEntity = null;
 		projectAppRecordEntity = projectAuditListDaoImpl.selectProjectDetailByID(id);  
 		return projectAppRecordEntity;
 		
 	}
-	 
-	@Override
-	public int projectAudit(Map<String, Object> map,InsertAdminLogEntity 
-			logentity,String[] sIpInfo) {
-		
-		return projectAuditDaoImpl.projectAudit(map);
-		
-	}
-	
+  
 	@Override
 	public List<ProjectAppAttachmentEntity> selectProjectAppAttachment(
 			long projectID) {
@@ -85,9 +78,9 @@ public class ProjectAuditServiceImpl implements ProjectAuitService {
 	@Override
 	public List<ProjectCheckRecordEntity> selectProjectCheckRecord(
 			PageEntity pageEntity) {
-		
-		return projectAuditListDaoImpl.selectProjectCheckRecord(pageEntity);
-		
+		List<ProjectCheckRecordEntity> list =  projectAuditListDaoImpl.selectProjectCheckRecord(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list); 
+		return list;
 	}
 	
 	 	
@@ -110,7 +103,7 @@ public class ProjectAuditServiceImpl implements ProjectAuitService {
 	
 	 	
 	@Override
-	public int projectAudit(Map<String, Object> map,String affix,long adminID,InsertAdminLogEntity 
+	public int projectAudit(Map<String, Object> map,InsertAdminLogEntity 
 			logentity,String[] sIpInfo) { 
 		
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
@@ -123,26 +116,8 @@ public class ProjectAuditServiceImpl implements ProjectAuitService {
 		}else{
 			generatorUtil.SetIdUsedFail(id);
 		} 
-		//审核通过插入附件
-		if(result == 1) { 
-			List<ProjectCheckAttachEntity> projectCheckAttachList = new ArrayList<ProjectCheckAttachEntity>();
-		 	if(affix != null && affix != ""){
-				String[] num = affix.split(";");
-				for(int i = 0;i< num.length;i++) {//循环截取字符串
-					String[] num1 = num[i].split(",");
-					String attachName= num1[0];//附件名称
-					String attachUrl=num1[1];//附件路径
-				 	ProjectCheckAttachEntity ProjectCheckAttachEntity = new ProjectCheckAttachEntity();  
-					ProjectCheckAttachEntity.setAdminID(adminID);
-					ProjectCheckAttachEntity.setAppCheckId(id);
-					ProjectCheckAttachEntity.setAttachIndex(i);
-					ProjectCheckAttachEntity.setAttachUrl(attachUrl); 
-					ProjectCheckAttachEntity.setDealType(0); 
-					ProjectCheckAttachEntity.setAttachTitle(attachName); 
-					projectCheckAttachList.add(ProjectCheckAttachEntity); 
-				}
-			}
-		    projectAuditDaoImpl.insertProjectCheckAttach(projectCheckAttachList); 
+		 
+		if(result == 1) {  
 		    StringBuffer detail =new StringBuffer("审核项目:"+map.get("projectTitle"));
 		    if(map.get("checkStatu").toString().equals("1")) {
 		    	detail.append("通过");
@@ -188,6 +163,35 @@ public class ProjectAuditServiceImpl implements ProjectAuitService {
 			ProjectCheckAttachDealEntity projectCheckAttachDealEntity) {
 		
 		return projectAuditDaoImpl.insertCheckAttachone(projectCheckAttachDealEntity);
+		
+	}
+	@Override
+	public int updateProjectDetail(Map<String, Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
+		
+		int result = projectAuditDaoImpl.updateProjectDetail(map);
+		if(result == 1) {
+		    logentity.setsDetail("修改项目基本信息：项目标题"+map.get("projectTitle"));
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
+		return result;
+		
+	}
+	@Override
+	public int updateaffix(Map<String, Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) { 
+		int result = projectAuditDaoImpl.updateaffix(map);
+		if(result == 1) {
+		    logentity.setsDetail("修改项目附件");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
+		return result; 
+	}
+	@Override
+	public List<ProjectCheckAttachEntity> selectProjectAttachTotal(
+			long projectID) {
+		
+		return projectAuditListDaoImpl.selectProjectAttachTotal(projectID);
 		
 	}
 }

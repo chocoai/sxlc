@@ -25,6 +25,7 @@ import product_p2p.kit.dbkey.DbKeyUtil;
  
 import cn.springmvc.dao.IndexDao;
 import cn.springmvc.model.CreditorTransferListEntity;
+import cn.springmvc.model.IndexStaticsEntity;
 import cn.springmvc.model.InvestEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.service.IndexService;
@@ -39,16 +40,10 @@ public class IndexServiceImpl implements IndexService {
 	@Resource(name="indexDaoImpl")
 	private  IndexDao indexDao;
 	@Override
-	public String selectIndexStatistic() {  
+	public IndexStaticsEntity selectIndexStatistic() {  
 		
-		Map<String, Object> map = indexDao.selectIndexStatistic(DbKeyUtil.GetDbCodeKey()); 
-		
-		StringBuffer results= new StringBuffer(map.get("countmember").toString());
-		results.append(","+IntegerAndString.LongToString(Long.valueOf(map.get("IncomeTotal").toString())));
-		results.append(","+IntegerAndString.LongToString(Long.valueOf(map.get("totalLoanAmount").toString())));
-		results.append(","+IntegerAndString.LongToString(Long.valueOf(map.get("RiskReserveFund").toString())));  
-       
-		return results.toString();
+		return  indexDao.selectIndexStatistic(DbKeyUtil.GetDbCodeKey()); 
+		 
 
 	}
 	@Override

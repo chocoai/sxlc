@@ -103,6 +103,20 @@ public class FinancialAdvisorServiceImpl implements FinancialAdvisorService {
 		map.put("skey",    DbKeyUtil.GetDbCodeKey());
 		return financialAdvisorListDao.selectFinancialMasterStatistic(map);
 		
+	}
+	@Override
+	public List<InviteMasterAwardRecordEntity> getFinancialAdvisorAwardExcel(
+			Map<String, Object> map) {
+		
+		return financialAdvisorListDao.getFinancialAdvisorAwardExcel(map);
+		
+	}
+	@Override
+	public List<AwardPaymentRecordEntity> getFinancialHistoryBackExcel(
+			Map<String, Object> map) {
+		
+		return financialAdvisorListDao.getFinancialHistoryBackExcel(map);
+		
 	}  
 	 
 

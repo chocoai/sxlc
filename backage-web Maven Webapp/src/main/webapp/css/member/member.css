@@ -28,3 +28,13 @@ input[type="radio"]{
 	top:40px;
 	left:-30px;
 }
+/* Ìõ¼þÀ©Õ¹  */
+.con-item{
+	display:inline-block;
+	min-width:300px;
+	max-width:300px;
+	text-align:right;
+}
+.con-item select{
+	width:169px;
+}

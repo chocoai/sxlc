@@ -56,7 +56,7 @@
 					<div class="input-group">
 					    <input type="text" class="search show" id="wd">
 					    <span class="input-group-btn">
-					        <input class="btn search-btn" type="button" value="搜索">
+					        <input class="btn search-btn" id="searchContent" type="button" value="搜索">
 					    </span>			    
 					</div><!-- /input-group -->	
 				</div>
@@ -249,7 +249,7 @@
 		</script>
 
 		<ul class="invest-list" id="invest-list">
-
+			
 		</ul>
 		<div id="pager"></div>	
     </div><!--main  -->

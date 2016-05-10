@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>项目管理</title>
+	<title>项目发布</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -29,19 +29,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-project.jsp">
-				<jsp:param value="303" name="_index_m2"/>
+				<jsp:param value="304" name="_index_m2"/>
 				<jsp:param value="" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-				<ul class="nav nav-tabs">
-					<li role="presentation"><a href="web/project/loan_exam.jsp">一审</a></li>
-					<li role="presentation"><a href="javascript:;">二审</a></li>
-					<li role="presentation"><a href="javascript:;">三审</a></li>
-					<li role="presentation" class="active"><a href="javascript:;">项目发布</a></li>
-				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">
 						<div class="panel panel-success">
@@ -56,14 +50,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="panel-body">
 								<form id="" class="" action="">
 									<span class="con-item"><span>项目名称</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>项目审批通过时间范围</span><input type="text"  class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+									<span class="con-item"><span>项目审批通过时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
 									<span class="con-item"><span>项目申请编号</span><input type="text" class="notspecial"/></span>
 									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial"/></span>
 									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial"/></span>
 									<span class="con-item"><span>借款人编号</span><input type="text" class="notspecial"/></span>
 									<span class="con-item"><span>借款人名称</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>状态</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>项目发布时间范围</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+									<span class="con-item">
+										<span>状态</span>
+										<select>
+											<option>未通过</option>
+											<option>通过</option>
+										</select>
+									</span>
+									<span class="con-item"><span>项目发布时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 							</div>
@@ -73,7 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 					  		<div class="panel-heading">
 					  			<div class="action_item">
-					  				<button id="post" class="obtn glyphicon glyphicon-plus">发布</button>
+					  				<a href="web/project/pro-add/loan_pro_post.jsp"><button id="post" class="obtn glyphicon glyphicon-plus">发布</button></a>
 									<button id="refuse" class="obtn glyphicon glyphicon-pencil">拒绝</button>
 									<button id="post_pro_detail" class="obtn glyphicon glyphicon-pencil" onclick="view_detail()">项目详情</button>
 									<button id="end_time_along" class="obtn glyphicon glyphicon-trash">项目借款结束日期延长</button>
@@ -146,38 +146,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<!-- 公用js -->
 		<jsp:include page="../common/cm-js.jsp"></jsp:include>
-		<script src="js/project/post_list.js"></script>
 		<!-- 私用js -->
-		<script type="text/javascript">
-		//默认禁用搜索和排序
-		/* $.extend( $.fn.dataTable.defaults, {
-		    searching: true,
-		    ordering:  false
-		} ); */
-		// 这样初始化，排序将会打开
-		$(function() {
-			$('#table_post_list').DataTable({
-				"autoWidth" : false,
-				scrollY : 500,
-				//paging : false,//分页
-				//"searching" : false,
-				"info" : false,//左下角信息
-				//"ordering": false,//排序
-				"aaSorting" : [ [ 2, "desc" ],[ 10, "desc" ],[ 13, "desc" ] ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [ 0, 1, 3, 4, 5, 6, 7, 8, 9, 11, 12 ]
-				} // 制定列不参与排序
-				],
-				colReorder : false,
-				"sScrollX" : "100%",
-				"sScrollXInner" : "100%",
-				"bScrollCollapse" : true
-			});
-		});
-		</script>
+		<script src="js/project/post_list.js"></script>
 	</div>
 </div>
 </body>

@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%-- <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -6,7 +6,17 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<script type="text/javascript">
+	_index.m2 = '<%=request.getParameter("_index_m2")%>';
+	_index.m3 = '<%=request.getParameter("_index_m3")%>';
+	//console.log(_index.m2+";"+_index.m3);
+</script> --%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+			<script type="text/javascript">
+				_index.m2 = '<%=request.getParameter("_index_m2")%>';
+				_index.m3 = '<%=request.getParameter("_index_m3")%>';
+				//console.log(_index.m2+";"+_index.m3);
+			</script>
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                 	<div class="navbar nav_title">
@@ -15,35 +25,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         	<span>产品后台管理</span>
                         </a>
                     </div>
-                    <div class="clearfix"></div>
-                
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <ul class="nav side-menu">
-                                <li id="department" class="active"><a><i class="fa fa-home"></i>项目放款管理</a></li>
-                                <li id="work"><a><i class="fa fa-edit"></i>债权转让放款管理</a></li>       
-                                <li id="employee"><a><i class="fa fa-edit"></i>体现审核</a> </li>
-                                <li id="admin" class="li_level_one">
-                                <a><i class="fa fa-edit"></i>平台自有账户管理<span class="fa fa-chevron-down"></span></a>
-                                	<ul class="nav child_menu ul_level_one" style="display: none">
-                                        <li><a href="web/finance/fn-recharge.jsp">账户充值</a></li>
-                                        <li><a href="web/finance/fn-withdraw.jsp">账户提现</a></li>
-                                        <li><a href="web/finance/fn-transaction-record.jsp">平台账户交易记录</a></li>
-                                    </ul>
-                                 </li>
-                                <li id="admin" class="li_level_one">
-                                <a><i class="fa fa-edit"></i>佣金发放<span class="fa fa-chevron-down"></span></a>
-                                	<ul class="nav child_menu ul_level_one" style="display: none">
-                                        <li><a>佣金统计</a></li>
-                                        <li><a>推荐借款明细</a></li>
-                                        <li><a>推荐投资明细</a></li>
-                                        <li><a>推荐还本明细</a></li>
-                                        <li><a>推荐VIP购买明细</a></li>
-                                        <li><a>佣金发放记录</a></li>
-                                    </ul>
-                                 </li>
-                                <li id="role"><a><i class="fa fa-edit"></i>代偿管理</a> </li>
+                                <li data-id="401"><a href="web/finance/fn-pro-lending.jsp"><i class="fa fa-home"></i>项目放款管理</a></li>
+                                <li data-id="402"><a href="web/finance/fn-trans-lending.jsp"><i class="fa fa-edit"></i>债权转让放款</a></li>       
+                                <li data-id="403"><a href="web/finance/fn-withdraw-verify.jsp"><i class="fa fa-edit"></i>提现审核</a> </li>
+                                <li data-id="404"><a href="web/finance/fn-IdCardManage.jsp"><i class="fa fa-edit"></i>平台自有账户银行卡管理</a></li>
+                                <li data-id="405"><a href="web/finance/fn-recharge.jsp"><i class="fa fa-edit"></i>平台自有账户充值</a></li>
+                                <li data-id="406"><a href="web/finance/fn-withdraw.jsp"><i class="fa fa-edit"></i>平台自有账户提现</a></li>
+                                <li data-id="407"><a href="web/finance/fn-transaction-record.jsp"><i class="fa fa-edit"></i>平台自有账户交易记录</a></li>
+                                <li data-id="408"><a href="web/finance/fn-cms-statistics.jsp"><i class="fa fa-edit"></i>佣金发放</a></li>
+                                <li data-id="409"><a href="web/finance/fn-cms-record.jsp"><i class="fa fa-edit"></i>佣金发放记录</a></li>
+                                <li data-id="410"><a href="web/finance/fn-compensation.jsp"><i class="fa fa-edit"></i>逾期代偿</a> </li>
+                                <li data-id="411"><a href="web/finance/fn-historyCompensatory.jsp"><i class="fa fa-edit"></i>代偿记录</a> </li>
+                                <li data-id="412"><a href="web/finance/fn-compensatoryRecord.jsp"><i class="fa fa-edit"></i>代偿回款记录</a> </li>
                             </ul>
                         </div>
                     </div>

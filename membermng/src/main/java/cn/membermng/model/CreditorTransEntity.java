@@ -49,6 +49,26 @@ public class CreditorTransEntity {
 	private String interestAmounts;//转让金额投资收益 
 	private long   tansID;//债券转让购买ID
 	private String transTime;//转入时间
+	private long   	yearRate;			//年化利率
+	private String	sYearRate;			//
+	
+	
+	
+	
+	
+	public long getYearRate() {
+		return yearRate;
+	}
+	public void setYearRate(long yearRate) {
+		this.yearRate = yearRate;
+		this.sYearRate = IntegerAndString.LongToString(yearRate);
+	}
+	public String getsYearRate() {
+		return sYearRate;
+	}
+	public void setsYearRate(String sYearRate) {
+		this.sYearRate = sYearRate;
+	}
 	public String getProjectTitle() {
 		return projectTitle;
 	}

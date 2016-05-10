@@ -31,5 +31,6 @@ public interface UpdatePasswordDao {
 	 * @date 2016-3-29 上午11:44:07
 	 */
 	public int updatepersonPassword(Map<String,Object> map); 
+	
 }
 

@@ -174,11 +174,6 @@
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency>
 
-    <dependency>
-    	<groupId>product_p2p</groupId>
-    	<artifactId>system-set</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
 
 	<dependency>
 	     <groupId>product_p2p</groupId>
@@ -197,7 +192,23 @@
 	     <artifactId>system-set</artifactId> 
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency>
-	
+    
+    <dependency>
+	   	<groupId>product_p2p</groupId>
+	   	<artifactId>guarantorsmng</artifactId>
+	   	<version>0.0.1-SNAPSHOT</version> 
+    </dependency>
+    
+    <dependency>
+    	<groupId>product_p2p</groupId>
+    	<artifactId>aboutus-mng</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+	 <dependency>
+    	<groupId>product_p2p</groupId>
+    	<artifactId>invitemaster_mng</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>foreground-web</finalName>

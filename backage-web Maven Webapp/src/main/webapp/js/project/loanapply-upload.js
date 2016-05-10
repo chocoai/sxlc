@@ -6,7 +6,7 @@ $(function(){
 	    server: '',	//文件接收服务端。
 	    // 选择文件的按钮。可选。
 	    pick: '#filePicker',											//内部根据当前运行是创建，可能是input元素，也可能是flash.
-	    fileNumLimit: 1,												//个数限制
+	    /*fileNumLimit: 1,*/												//个数限制
 		//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
 		fileSingleSizeLimit: 1024*512,
 /*	    accept: {														//只允许选择图片文件

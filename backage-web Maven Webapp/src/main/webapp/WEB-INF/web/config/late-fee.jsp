@@ -116,8 +116,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					"data": function ( d ) {  
 					}  
 				},
-				columns: [  
-				          { title:"id","data": "id"},  
+				columns: [
+							{title:'',sWidth:"3%", 
+								  "mRender": function (data, type, full) {
+									  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+									  return sReturn;
+								  }
+							},
 				          { title:"逾期起算天数","data": "overdueMin"},  
 				          { title:"逾期截止天数","data": "overdueMax"},  
 				          { title:"逾期罚息日利息(%)","data": "price"},  
@@ -128,7 +133,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				          }
 				          ],
 			  aoColumnDefs : [
-			                  {"bVisible": false, "aTargets": [0]}, //控制列的隐藏显示
 			                  {
 			                	  "orderable" : false,
 			                	  "aTargets" : [ 0,1,2,3,4]
@@ -137,23 +141,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  pagingType: "simple_numbers",//设置分页控件的模式  
 			  processing: true, //打开数据加载时的等待效果  
 			  serverSide: true,//打开后台分页  
-//			  info:false,
+	          scrollCollapse: true,
+	          scrollX : "100%",
+			  scrollXInner : "100%",
 			  rowCallback:function(row,data){//添加单击事件，改变行的样式      
 			  }
 			});
 			
-			//表格单选效果
+			//表格单选效果(有复选框)
 			 $('#table-id tbody').on( 'click', 'tr', function () {
 				    var $this = $(this);
+				    var $checkBox = $this.find("input:checkbox");
 			        if ( $this.hasClass('selected') ) {
+			        	 $checkBox.prop("checked",false);
 			        	$this.removeClass('selected');
-			        }
-			        else {
+			        } else {
+			        	$(".tr-checkbox").prop("checked",false);
+			        	$checkBox.prop("checked",true);
 			        	$('#table-id tr.selected').removeClass('selected');
 			        	$this.addClass('selected');
 			        }
 			  });
-			
 		   });
 		
 		/**

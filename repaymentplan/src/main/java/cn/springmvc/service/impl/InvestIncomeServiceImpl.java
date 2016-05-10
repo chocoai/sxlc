@@ -30,7 +30,7 @@ import cn.springmvc.dao.ReplayProjectDetailListDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.model.InvestIncomeEntity;
 import cn.springmvc.model.InvestRecordInfoEntity;
-import cn.springmvc.model.LoanRepayEntity;
+import cn.springmvc.model.LoanRepayEntitys;
 import cn.springmvc.model.ProjectDetailEntity;
 import cn.springmvc.service.InvestIncomeService;
 import cn.springmvc.utitls.RepalyUtitls;
@@ -80,9 +80,9 @@ public class InvestIncomeServiceImpl implements InvestIncomeService {
 		for(int i = 0;i < investRecordList.size();i++ ) {
 			 InvestRecordInfoEntity investRecordEntity = new InvestRecordInfoEntity();
 			 investRecordEntity = investRecordList.get(i);
-			 List<LoanRepayEntity> planList = RepalyUtitls.getIncomePlan2(deadLineType,investRecordEntity
+			 List<LoanRepayEntitys> planList = RepalyUtitls.getIncomePlan2(deadLineType,investRecordEntity
 					 .getInvestAmountValids(),yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
-			 LoanRepayEntity planEntity = new LoanRepayEntity();
+			 LoanRepayEntitys planEntity = new LoanRepayEntitys();
 			 String planStr = ""; 
 			 int iSize = planList.size();
 			 for(int m = 0;m < iSize; m++ ) { 
@@ -125,7 +125,7 @@ public class InvestIncomeServiceImpl implements InvestIncomeService {
 		applyID = investRecordEntity.getProjectId();
 		memberID = investRecordEntity.getMemberID();
 		//获取还款计划
-		List<LoanRepayEntity> RepayIDList= investIncomeListDao.selectLoanRepayIDByapplyID(applyID);
+		List<LoanRepayEntitys> RepayIDList= investIncomeListDao.selectLoanRepayIDByapplyID(applyID);
 		int iSize = RepayIDList.size();
 		int iLen = sRows.length;
 		//还款计划条数与收益计划条数不相等
@@ -175,7 +175,7 @@ public class InvestIncomeServiceImpl implements InvestIncomeService {
 	 */
 	public int RepayIncomePing(int applyID) {
 		int result = -1;
-		List<LoanRepayEntity> RepayIDList= investIncomeListDao.selectLoanRepayIDByapplyID(applyID);
+		List<LoanRepayEntitys> RepayIDList= investIncomeListDao.selectLoanRepayIDByapplyID(applyID);
 		for(int i = 0;i < RepayIDList.size();i++){
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("replayID",   RepayIDList.get(i).getRepayID());

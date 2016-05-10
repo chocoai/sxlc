@@ -40,12 +40,12 @@ public class DecryptHttpServletRequest extends HttpServletRequestWrapper{
 		if("auth".equals(name)){//角色权限
 			return ciphertext;
 		}
-		if("auth".equals(name)){//角色权限
-			return ciphertext;
-		}
 		if("content".equals(name)){//百度编辑器文本内容
 			return ciphertext;
 		}
+		if("annex".equals(name)){//附件名称
+			return ciphertext;
+		}		
 		if (privateKey == null || ciphertext == null) {
 			return ciphertext;
 		}else{

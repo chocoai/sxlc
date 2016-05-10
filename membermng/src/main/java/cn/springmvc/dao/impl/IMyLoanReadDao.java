@@ -12,9 +12,11 @@ import cn.membermng.model.FlowLabel;
 import cn.membermng.model.InvestmentRecord;
 import cn.membermng.model.LoanApplyRecord;
 import cn.membermng.model.LoanRepay;
+import cn.membermng.model.MemberThirdAuthInfoEntity;
 import cn.membermng.model.RepaymentIn;
 import cn.membermng.model.RepaymentOfBorrowings;
 import cn.membermng.model.RepaymentOfBorrowingsRM;
+import cn.membermng.model.ReplayDetailEntity;
 import cn.membermng.model.StayStillPlan;
 
 
@@ -205,11 +207,30 @@ public interface IMyLoanReadDao {
 	 * @Description: TODO 
 	 * @param @param replyaID 还款计划ID
 	 * @param @return 设定文件 
-	 * @return LoanRepay 返回类型 
+	 * @return ReplayDetailEntity 返回类型 
 	 * @date 2016-5-3 下午2:39:09
 	 */
-	 LoanRepay selectReplayDetail(long replyaID);
+	ReplayDetailEntity selectReplayDetail(long replyaID,long memberID,int memberType);
+	 
+	 /**
+	  * 查询该会员是否开通自动还款，是否授权自动还款
+	  * @author 刘利   
+	  * @Description: TODO 
+	  * @param @return 设定文件 
+	  * @return MemberThirdAuthInfoEntity 返回类型 
+	  * @date 2016-5-3 下午7:05:11
+	  */
+	 MemberThirdAuthInfoEntity selectMemberIsOpenAutoPay(Map<String,Object> map);
 	
-	
+	 /**
+	  * 后台显示还款中的还款计划
+	  * @author 刘利   
+	  * @Description: TODO 
+	  * @param @param entity
+	  * @param @return 设定文件 
+	  * @return List<RepaymentOfBorrowingsRM> 返回类型 
+	  * @date 2016-5-10 上午11:47:58
+	  */
+	 public List<RepaymentOfBorrowingsRM> loanRepayback(PageEntity entity);
 }
 

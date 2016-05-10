@@ -20,6 +20,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.dbkey.DbKeyUtil;
+
 import cn.membermng.model.BankCardInfoEntity;
 import cn.membermng.model.BankCodeEntity;
 import cn.membermng.model.CityDictionaryEntity;
@@ -131,6 +133,7 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("bankCardId", bankCardId);
 		map.put("memberID",     memberID);
+		map.put("sKey", 		DbKeyUtil.GetDbCodeKey());
 		return memberBankCardListDaoimpl.selectMemberBankCardByID(map);
 		
 	}

@@ -52,19 +52,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<form id="" class="" action="">
 							<div>
 								<span class="con-item textRight3">
-									<span>平台交易编号</span><input type="text" class="departmentname notspecial" placeholder="" />
+									<span>平台交易编号</span><input id="orderNumber" type="text" class="departmentname notspecial" placeholder="" />
 								</span>
 								<span class="con-item textRight3">
-									<span>第三方交易流水号</span><input type="text" class="licencenum notspecial" placeholder="" />
+									<span>第三方交易流水号</span><input id="batch" type="text" class="licencenum notspecial" placeholder="" />
 								</span>
 							</div>
 							<div>
 								<span class="con-item textRight2">
 									<span>状态</span>
-									<select class="rechargeoption">
-										<option>请选择</option>
-										<option>成功</option>
-										<option>失败</option>
+									<select id="statu" class="rechargeoption">
+										<option value="1">请选择</option>
+										<option value="1">成功</option>
+										<option value="0">失败</option>
 									</select>
 								</span>
 								<span class="con-item textRight4">
@@ -88,32 +88,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 					<div class="panel-body">
 						<table id="table_id" class="display">
-							<thead>
-								<tr>
-									<th class="table-checkbox"></th>
-									<th>交易时间</th>
-									<th>平台交易编号</th>
-									<th>第三方交易流水号</th>
-									<th>提现金额</th>
-									<th>提现手续费</th>
-									<th>实际到账金额</th>
-									<th>状态</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%for (int i = 0; i < 15; i++) {%>
-								<tr>
-									<td class="table-checkbox"><input type="checkbox" /></td>
-									<td>交易时间</td>
-									<td>平台交易编号</td>
-									<td>第三方交易流水号</td>
-									<td>提现金额</td>
-									<td>提现手续费</td>
-									<td><span class="moneyFormat">1000</span>元</td>
-									<td>成功</td>
-								</tr>
-								<%}%>
-							</tbody>
 						</table>
 					</div>
 				</div>
@@ -126,19 +100,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/recommend/recharge-record.js"></script>	
+	<script type="text/javascript" src="js/finance/fn-withdraw.js"></script>
 	<script type="text/javascript">
-		$('#table_id').DataTable({
-			scrollX:true,
-			autoWidth : false,
-			"aaSorting" : [ [ 4,5,6] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,7]
-			} // 制定列不参与排序
-			],
-		});
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </body>
 

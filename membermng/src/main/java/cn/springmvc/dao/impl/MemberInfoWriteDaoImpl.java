@@ -41,6 +41,25 @@ public class MemberInfoWriteDaoImpl extends SqlSessionDaoSupport implements IMem
 		getSqlSession().selectOne("memberInfoDaoImpl.editMemberComplanyInfo", param);
 		return IntegerAndString.StringToInt(param.get("result").toString(),-1);
 	}
+	
+	@Override
+	public int applyAddFriends(Map<String, Object> param) {
+		getSqlSession().selectOne("memberInfoDaoImpl.applyAddFriends", param);
+		return IntegerAndString.StringToInt(param.get("result").toString(),0);
+	}
+	
+	@Override
+	public int agreeAapplyForFriend(Map<String, Object> param) {
+		getSqlSession().selectOne("memberInfoDaoImpl.agreeAapplyForFriend", param);
+		return IntegerAndString.StringToInt(param.get("result").toString(),0);
+	}
+	
+	@Override
+	public int confirmReceipt(Map<String, Object> param) {
+		getSqlSession().selectOne("memberInfoDaoImpl.confirmReceipt",param);
+		return IntegerAndString.StringToInt(param.get("result").toString(), 0);
+				
+	}
 
 	@Autowired
 	@Override

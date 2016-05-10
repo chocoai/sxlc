@@ -607,7 +607,8 @@
 		  fap.Repay_Award,
 		  fap.Real_Amount,
 		  fap.Borrow_Award+fap.Invest_Award+fap.Vip_Award+fap.Real_Amount Award_Amount,
-		  fap.Pay_Date
+		  fap.Pay_Date,
+		  mi.Member_No
 		FROM FinancialAdvisor_Award_PayRecord fap
 		  JOIN Financial_Advisor fa
 			ON fa.FA_ID = fap.FA_ID
@@ -620,6 +621,8 @@
 		  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0)
 		  AND IF(#{Pay_Date_Min} IS NULL OR #{Pay_Date_Min} = '', 1=1, fap.Pay_Date>=#{Pay_Date_Min})
 		  AND IF(#{Pay_Date_Max} IS NULL OR #{Pay_Date_Max} = '', 1=1, fap.Pay_Date&lt;=#{Pay_Date_Max})
+		  AND IF(#{Start_Date} IS NULL OR #{Start_Date} = '', 1=1, fap.Start_Date>=#{Start_Date})
+		  AND IF(#{End_Date} IS NULL OR #{End_Date} = '', 1=1, fap.End_Date&lt;=#{End_Date})
 		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
 				WHEN 'PAY_DATE' THEN fap.Pay_Date
 				WHEN 'END_DATE' THEN fap.End_Date

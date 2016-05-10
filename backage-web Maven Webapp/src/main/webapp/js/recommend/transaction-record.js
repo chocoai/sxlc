@@ -33,9 +33,11 @@ $(function() {
             	if (endDate != null && endDate != "") {
             		var result3 = encrypt.encrypt((endDate + ""));
                 }
+            		var result4 = encrypt.encrypt((1 + ""));
                 	d.typeName = result1;
                 	d.startDate = result2;
                 	d.endDate = result3;
+                	d.memberType = result4;
             } 
         },
         columns: [  

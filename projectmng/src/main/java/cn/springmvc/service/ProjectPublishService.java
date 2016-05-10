@@ -54,14 +54,14 @@ public interface ProjectPublishService {
 	 * @author 刘利   
 	 * @Description: 发布 
 	 * @param map #{ApplyId}项目申请ID
-				  #{Indexs},审批流程序号
-				  #{checkStatu},审核结果
+				  #{Indexsnow},审批流程序号
+				  #{checkStatu},审核结果 1：通过 -1：打回
 				  #{CheckRemark},审核意见
 				  #{adminID},审核管理员 
 				  #{startDate}投标开始时间
-				  #{endDate},投标结束时间
-				  #{ProcessID},审批点ID
-				  #{sIndexs}上级审批流程序号 
+				  #{endDate},投标结束时间 
+				  #{affix},附件列表  (附件名称,附件路径 ;附件名称,附件路径 ;附件名称,附件路径)拼接
+				  #{ImageUrl},企业形象图url 
 	 * @return int 返回类型   -1 该项目已审核通过；-3 该项目该审核批次已审核； 1  审核通过  ,-4 上级审核批次未通过
 	 * @date 2016-3-23 下午6:34:20
 	 */

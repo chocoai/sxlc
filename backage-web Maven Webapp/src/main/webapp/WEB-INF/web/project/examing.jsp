@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="css/project/examing.css" type="text/css"></link>
+	<link rel="stylesheet" href="css/project/apply_faild.css" type="text/css"></link>
 </head>
 <!-- 借款管理-----------审核中 -->
 <body class="nav-md">
@@ -49,12 +49,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item conItem"><span>借款编号</span><input type="text" class="notspecial"/></span>
-									<span class="con-item conItem1"><span>借款金额范围</span><input type="text" class="notspecial" />-&nbsp;&nbsp;<input type="text" class="notspecial"/></span>
-									<span class="con-item conItem"><span>借款人姓名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item conItem1"><span>提交申请时间范围</span><input type="text" id="startDate" class="notspecial Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
-									<span class="con-item conItem"><span>借款人用户名</span><input type="text" class="notspecial"/></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search loanInquiry">查询</button>
+									<span class="con-item conItem"><span>借款编号</span><input type="text" class="notspecial Project_No"/></span>
+									<span class="con-item conItem1"><span>借款金额范围</span><input type="text" class="notspecial dateInput Amount_Min" />-&nbsp;&nbsp;<input type="text" class="notspecial dateInput Amount_Max"/></span>
+									<span class="con-item conItem"><span>借款人姓名</span><input type="text" class="notspecial Personal_Name" /></span>
+									<span class="con-item conItem1"><span>提交申请时间范围</span><input type="text" id="startDate" class="notspecial Wdate dateInput Record_Date_Min" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput Record_Date_Max" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item conItem"><span>借款人用户名</span><input type="text" class="notspecial Logname"/></span>
+									<button type ="button" class="obtn obtn-query glyphicon glyphicon-search loanInquiry">查询</button>
 								</form>
 						  	</div>
 						</div>
@@ -67,43 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 						<div class="panel-body">
-						<table id="table_examing" class="display">
-							<thead>
-								<tr>
-									<th></th>
-									<th>借款编号</th>
-									<th>借款名称</th>
-									<th>借款人用户名</th>
-									<th>借款人姓名</th>
-									<th>产品类型</th>
-									<th>借款期限</th>
-									<th>借款金额</th>
-									<th>年化利率</th>
-									<th>借款申请时间</th>
-									<th>借款审核阶段</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-									for(int i=0;i<15;i++){
-								 %>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-								</tr>
-								<%
-									}
-								 %>
-							</tbody>
+						<table id="table_id" class="display">
 						</table>
 					</div>
 				</div>
@@ -117,36 +81,108 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript">
-				//默认禁用搜索和排序
-				/* $.extend( $.fn.dataTable.defaults, {
-				    searching: true,
-				    ordering:  false
-				} ); */
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#table_examing').DataTable({
-						"autoWidth" : true,
-						"scrollY": 500,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [[ 7, "desc"],[ 9, "desc"]],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 8, 10 ]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
+	$(function() {	
+		//表格初始化
+		$('#table_id').DataTable(
+				{	
+					ajax: {  
+						"url": appPath+"/project/getLoanManageData",   
+						"dataSrc": "results", 
+						"type": "POST",
+						"data": function ( d ) {
+							//加密
+							var Project_No = encrypt.encrypt($(".Project_No").val());
+							var Amount_Min = encrypt.encrypt($(".Amount_Min").val());
+							var Amount_Max = encrypt.encrypt($(".Amount_Max").val());
+							var Personal_Name = encrypt.encrypt($(".Personal_Name").val());
+							var Record_Date_Min = encrypt.encrypt($(".Record_Date_Min").val());
+							var Record_Date_Max = encrypt.encrypt($(".Record_Date_Max").val());
+							var Logname = encrypt.encrypt($(".Logname").val());
+							
+							d.Project_No = Project_No;
+							d.Amount_Min = Amount_Min;
+							d.Amount_Max = Amount_Max;
+							d.Personal_Name = Personal_Name;
+							d.Record_Date_Min = Record_Date_Min;
+							d.Record_Date_Max = Record_Date_Max;
+							d.Logname = Logname;
+							//设置后台排序参数
+							d.ordercolumn = encrypt.encrypt("RECORD_DATE");//排序字段 AMOUNT  RECORD_DATE  
+							d.orderDsec = encrypt.encrypt(0+"");//1:ASC 0:DESC
+							//设置查询页面类型
+							d.pgType = encrypt.encrypt("2");
+						}  
+					},
+					columns: [  
+					          {title:'',sWidth:"3%", 
+					        	  "mRender": function (data, type, full) {
+					        		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+					        		  return sReturn;
+					        	  }
+					          },
+					          { title:"借款编号","data": "projectNo"},  
+					          { title:"借款名称","data": "projectBaseInfoentity.projectTitle"},  
+					          { title:"借款人用户名","data": "logname"},  
+					          { title:"借款人姓名","data": "memberName"},  
+					          { title:"产品类型","data": "projectName"},  
+					          { title:"借款期限","data": "projectBaseInfoentity", 
+					        	  "mRender": function (data, type, full) {
+					        		  	if(data.deadlineTypes == 0){
+					        	    		return data.deadline+"天";
+					        	    	}else if(data.deadlineTypes == 1){
+					        	    		return data.deadline+"月";
+					        	    	}else if(data.deadlineTypes == 2){
+					        	    		return data.deadline+"年";
+					        	    	}else{
+					        	    		return "无数据";
+					        	    	}  
+					        	  }
+					          },  
+					          { title:"借款金额","data": "projectBaseInfoentity.amount"},  
+					          { title:"年化利率","data": "projectBaseInfoentity.yearRate"},  
+					          { title:"借款申请时间","data": "recordDate"},  
+					          { title:"借款审核阶段","data": "apName"}  
+					          ],
+//	 			  aaSorting : [ [ 5, "desc" ],[ 12, "desc" ],[ 14, "desc" ] ],//默认第几个排序
+		          aoColumnDefs : [
+		                          {
+		                        	  "orderable" : false,
+		                        	  "aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 8, 10 ]
+		                          } // 制定列不参与排序
+		                          ],
+		          pagingType: "simple_numbers",//设置分页控件的模式  
+		          processing: true, //打开数据加载时的等待效果  
+		          serverSide: true,//打开后台分页  
+		          scrollCollapse: true,
+		          scrollX : "100%",
+				  scrollXInner : "100%",
+		          rowCallback:function(row,data){//添加单击事件，改变行的样式      
+		          },
+		});//表格初始化完毕
+		 
+		//表格单选效果(有复选框)
+		 $('#table_id tbody').on( 'click', 'tr', function () {
+			    var $this = $(this);
+			    var $checkBox = $this.find("input:checkbox");
+		        if ( $this.hasClass('selected') ) {
+		        	 $checkBox.prop("checked",false);
+		        	$this.removeClass('selected');
+		        } else {
+		        	$(".tr-checkbox").prop("checked",false);
+		        	$checkBox.prop("checked",true);
+		        	$('#table_id tr.selected').removeClass('selected');
+		        	$this.addClass('selected');
+		        }
+		  });
+		
+		 /**
+		  * 查询按钮
+		  */
+		 $(".glyphicon-search").on("click",function(){
+			$('#table_id').DataTable().ajax.reload();
+			
+		 });
+	});		
 			</script>
 		</div>
 	</div>

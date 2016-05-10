@@ -1,0 +1,90 @@
+
+#addEnv .dateInput,
+#alertEnv .dateInput{
+	width:90px;
+	margin-right:8px;
+}
+#addEnv .moneyInput,
+#alertEnv .moneyInput{
+	width:90px;
+}
+#addEnv span.tt,
+#alertEnv span.tt{
+	display:inline-block;
+	min-width:85px;
+	text-align:right;
+}
+#addEnv div,
+#alertEnv div{
+	margin:15px 0 15px 25px;
+}
+#addEnv input,
+#alertEnv input{
+	height:29px;
+	width:200px;
+}
+#addEnv select,
+#alertEnv select{
+	height:29px;
+	width:200px;
+	border:1px solid #ccc;
+}
+#addEnv,#alertEnv{
+	display:none;
+}
+.addBtn,
+.cancelBtn,
+.alertBtn,
+.okBtn{
+	border:none;
+	padding:3px 10px;
+	border-radius:3px;
+	outline:none;
+}
+.addBtn,
+.alertBtn,
+.okBtn{
+	margin-right:10px;
+    background: #2e8ded;
+    color: #fff;
+}
+.addBtn:hover,
+.alertBtn:hover,
+.okBtn:hover{
+	background:#3E75B8;
+}
+.cancelBtn{
+	display:inline-block;
+	margin-right:30px;
+    background-color: #f1f1f1;
+    text-decoration:none;
+	color:#333;
+	cursor:pointer;
+}
+.cancelBtn:hover{
+	background:#ccc;
+	text-decoration:none;
+	color:#333;
+}
+.btnAdd{
+	text-align:right;
+}
+.btnSubmit{
+	margin:15px 66px;
+}
+.conInput{
+	padding:5px 25px;
+}
+.conInput span.conInputList{
+	display:block;
+	margin:10px 0;
+}
+.conInput input{
+	height:29px;
+}
+a{
+	cursor:pointer;
+}
+.t1{
+	margin-right:4px;
+}

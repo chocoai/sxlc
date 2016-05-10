@@ -12,7 +12,7 @@
     <title>借款记录-融资中</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
-	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
+	<link rel="stylesheet" href="plugs/laypage/skin/laypage.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/loanManagement/myLoan.css">
 	
 </head>
@@ -89,7 +89,7 @@
 										</div>
 									</div>
 			   					</li>
-			   					<% for(int j = 0; j<2;j++){ %>
+			   					<%-- <% for(int j = 0; j<2;j++){ %>
 			   					<li>
 			   						<div class="contentOut3">
 										<div class="c-content">
@@ -141,9 +141,11 @@
 										</div>
 									</div>
 			   					</li>
-			   					<%} %>
+			   					<%} %> --%>
 			   				</ul>
-			   				<div id="pager"></div>
+			   				
+			   				<div class="cc"></div>
+			   				<div id="pager-financing" class="pager-box"></div>
 		   				</div>		   				
 	   				</div>
    				</div>
@@ -203,8 +205,11 @@
 			<%} %>
 		</ul>
    	</div>
-   	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
+   	<script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/myLoan.js"></script>
+	<script type="text/javascript">
+		getFinancing();
+	</script>
 </body>
 </html>

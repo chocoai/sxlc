@@ -1,4 +1,7 @@
 package cn.springmvc.model;
+
+import java.util.List;
+
 /**
  * 借款意向实体类
  * @author 刘利
@@ -13,6 +16,11 @@ public class ProjectPurposeEntity {
 	 * 会员ID
 	 */
 	private Long memberID;
+	/**
+	 * 会员类型
+	 */
+	private Integer  memberType;
+	
 	/**
 	 * 借款用途
 	 */
@@ -68,7 +76,12 @@ public class ProjectPurposeEntity {
 	private String PersonalPhone;
 	private int financial;//有无分配理财顾问 大于0则为有
 	private String sendrecordDate;//提交申请时间
-	private  Long projectID;//借款类型ID
+	private  long projectID;//借款类型ID
+	private long applyid;//项目申请id
+	private List<ProjectAppAttachmentEntity> pEntities;//项目申请附件资料
+	private List<ProjectInvestRedPackageEntity> pEntities2;//项目惊喜红包配置 
+	private ProjectAppAutoSetEntity pAppAutoSetEntity;//项目自动投标设置
+	private ProjectAppMngFeeEntity projectAppMngFeeEntity;//查询项目费用设置
 	
 	/**
 	 * 积分处理时间
@@ -206,7 +219,49 @@ public class ProjectPurposeEntity {
 	}
 	public void setProjectID(Long projectID) {
 		this.projectID = projectID;
+	}
+	public Integer getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(Integer memberType) {
+		this.memberType = memberType;
+	}
+	
+	public long getApplyid() {
+		return applyid;
+	}
+	public void setApplyid(long applyid) {
+		this.applyid = applyid;
+	}
+	public void setProjectID(long projectID) {
+		this.projectID = projectID;
+	}
+	public List<ProjectAppAttachmentEntity> getpEntities() {
+		return pEntities;
+	}
+	public void setpEntities(List<ProjectAppAttachmentEntity> pEntities) {
+		this.pEntities = pEntities;
+	}
+	public List<ProjectInvestRedPackageEntity> getpEntities2() {
+		return pEntities2;
+	}
+	public void setpEntities2(List<ProjectInvestRedPackageEntity> pEntities2) {
+		this.pEntities2 = pEntities2;
+	}
+	public ProjectAppAutoSetEntity getpAppAutoSetEntity() {
+		return pAppAutoSetEntity;
+	}
+	public void setpAppAutoSetEntity(ProjectAppAutoSetEntity pAppAutoSetEntity) {
+		this.pAppAutoSetEntity = pAppAutoSetEntity;
+	}
+	public ProjectAppMngFeeEntity getProjectAppMngFeeEntity() {
+		return projectAppMngFeeEntity;
+	}
+	public void setProjectAppMngFeeEntity(
+			ProjectAppMngFeeEntity projectAppMngFeeEntity) {
+		this.projectAppMngFeeEntity = projectAppMngFeeEntity;
 	} 
+
 	
 	
 }

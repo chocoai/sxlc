@@ -13,14 +13,14 @@
     <result column="Invest_Reward" property="investReward"/>
     <result column="Statu" property="statu"/>
   </resultMap>
-  <!--modified by TGF @2016-4-25修改id列名  -->
   <sql id="RewarSet_Column_List" >
-   	<if test="map.type==0">Grade_ID,</if>
-  	<if test="map.type==1">Reward_ID,</if>
-   	 Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward,Statu	
+    ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward,Statu	
   </sql>
   <select id="selectRewarSetByType" resultMap="RewarSet" parameterType="product_p2p.kit.pageselect.PageEntity">
-  	select <include refid="RewarSet_Column_List"></include> 
+  	select 
+	<if test="map.type==0">Grade_ID,</if>
+  	<if test="map.type==1">Reward_ID,</if>
+   	 Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward,Statu	
   	from 
   	<if test="map.type==0">InviteMaster_Reward_Set</if>
   	<if test="map.type==1">FinancialAdvisor_Reward_Set</if>
@@ -82,8 +82,8 @@
 		  	</if>
 	<set>Statu=0</set>
 	where 
-	<if test="map.type==0">Grade_ID</if>
-  	<if test="map.type==1">Reward_ID</if>
+	<if test="type==0">Grade_ID</if>
+  	<if test="type==1">Reward_ID</if>
 	=#{id}
   </update>
   

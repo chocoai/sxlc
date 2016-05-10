@@ -1,11 +1,13 @@
 package cn.springmvc.service.impl;
  
-import java.util.List; 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
- 
-import product_p2p.kit.pageselect.PageEntity; 
+
+import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 import cn.membermng.model.InvestIncomeEntity;
 import cn.membermng.model.MyinvestEntity;
 import cn.springmvc.dao.MyinvestListDao;
@@ -25,8 +27,9 @@ public class MyinvestServiceImpl implements MyinvestService{
 
 	@Override
 	public List<MyinvestEntity> selectMyinvestCollect(PageEntity pageEntity) {
-		
-		return myinvestListDaoImpl.selectMyinvestCollect(pageEntity);
+		List<MyinvestEntity> list = myinvestListDaoImpl.selectMyinvestCollect(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 		
 	}
 
@@ -53,8 +56,9 @@ public class MyinvestServiceImpl implements MyinvestService{
 
 	@Override
 	public List<InvestIncomeEntity> selectInvestIncome(PageEntity pageEntity) {
-		
-		return myinvestListDaoImpl.selectInvestIncome(pageEntity);
+		List<InvestIncomeEntity> list = myinvestListDaoImpl.selectInvestIncome(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 		
 	}
  

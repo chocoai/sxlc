@@ -33,7 +33,7 @@ public interface CreditorTransferService {
 	 * <p>map{projectinfo(项目编号或名称),investStatu(项目状态),
 	 *       repayWay(还款方式),         projectType(借款类型)
 	 *       yearratemin,yearratemax,deadlineType(期限类型 0：天标 1：月标 2：年标)，
-	 *       deadlinemin,deadlinemax,skey}
+	 *       deadlinemin,deadlinemax,sKey}
 	 * <p>        
 	 * @param @return 设定文件 
 	 * @return List<CreditorTransferListEntity> 返回类型 
@@ -49,7 +49,7 @@ public interface CreditorTransferService {
 	 * @return CreditorTransferListEntity 返回类型 
 	 * @date 2016-4-6 下午1:50:17
 	 */
-	public CreditorTransferListEntity selectCreditorTransferDetail(int ctaId);
+	public CreditorTransferListEntity selectCreditorTransferDetail(long ctaId);
 	/**
 	 * 查询该债权的剩余可投金额 
 	 * @author 刘利   
@@ -59,7 +59,7 @@ public interface CreditorTransferService {
 	 * @return CreditorTransferListEntity 返回类型 
 	 * @date 2016-4-6 下午2:04:09
 	 */
-	public CreditorTransferListEntity selectCreditorAvailableaAmount(int ctaId);
+	public CreditorTransferListEntity selectCreditorAvailableaAmount(long ctaId);
 	/**
 	 * 通过债权转让申请ID查询投资记录
 	 * @author 刘利   
@@ -69,6 +69,6 @@ public interface CreditorTransferService {
 	 * @return List<InvestEntity> 返回类型 
 	 * @date 2016-4-6 下午2:45:15
 	 */
-	public List<InvestEntity> selectCreditorInvestRecordByctaId(int ctaId);
+	public List<InvestEntity> selectCreditorInvestRecordByctaId(long ctaId);
 }
 

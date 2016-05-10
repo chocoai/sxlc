@@ -18,6 +18,10 @@
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
    	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
+   	<script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
+   	<script type="text/javascript" src="js/common/template.js"></script>
    	<div class="main">
    		<div class="clearfix">
 		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
@@ -35,8 +39,8 @@
    						<div class="Settled">已结清</div>
    					</div>
    					<div class="debtAttornM">
-   						<ul class="inTransferUl">
-   							<li>
+   						<ul class="inTransferUl" id="inTransferUl">
+   							<li id="inTransTop">
    								<div class="debtAttornMTitle">
 					   				<div class="productName">项目名称</div>
 					   				<div class="transferAmount">转让金额</div>
@@ -46,44 +50,49 @@
 					   				<div class="InvestmentProgress">投资进度</div>
 		   						</div>
    							</li>
-   							<%for(int i=0;i<8;i++){%>
+   							
+   							
+   						</ul>
+   						<script type="text/html" id="inTransferList">
+							{{each infos as value index}}
    							<li>
    								<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div>借款抵押贷</div>
+		   								<div>{{value.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferAmount divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.transPrincipals}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="investNum divOutside">
 		   							<div class="divIntside">
-		   								<div>99%</div>
+		   								<div>{{value.transDiscounts}}%</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferCoefficient divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.transAmounts}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="latestTransferTime divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div>{{$toDeletevalue.transMaxTime}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="InvestmentProgress divOutside">
 		   							<div class="divIntside">
-		   								<div>20%</div>
+		   								<div>{{value.ctaInvestRates}}%</div>
 		   							</div>
 		   						</div>
    							</li>
-   							<%}%>
+   							{{/each}}
    							<li class="page"><div id="pager"></div></li>
-   						</ul>
-   						<ul class="transferAbleUl">
-   							<li>
+   						</script>
+   						<!-- 可转出 -->
+   						<ul class="transferAbleUl" id="transferAbleUl">
+   							<li id="topTransferAble">
    								<div class="debtAttornMTitle">
 					   				<div class="productName">项目名称</div>
 					   				<div class="annualInterestRate">年化利率</div>
@@ -94,36 +103,39 @@
 					   				<div class="operations">操作</div>
 		   						</div>
    							</li>
-   							<%for(int i=0;i<8;i++){%>
-   							<li>
+
+   						</ul>
+   						<script id="transferAbleList" type="text/html">
+   								{{each infos as value index}}
+   								<li>
    								<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div> 借款抵押贷</div>
+		   								<div> {{value.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="annualInterestRate divOutside">
 		   							<div class="divIntside">
-		   								<div>8.00%</div>
+		   								<div>{{value.sYearRate}}%</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferable divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{value.sMoney}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="ResidualMaturity divOutside">
 		   							<div class="divIntside">
-		   								<div>2个月</div>
+		   								<div>{{value.cou}}{{value.deadlineTypeName}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="nextRepaymentTime divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div>{{value.nextTime}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="dueTime divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div>{{value.overTime}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="operations divOutside">
@@ -133,11 +145,15 @@
 		   							</div>
 		   						</div>
    							</li>
-   							<%}%>
+   							{{/each}}
    							<li class="page"><div id="pager1"></div></li>
-   						</ul>
-   						<ul class="transferOutedUl">
-   							<li>
+						
+						</script>
+   						
+   						
+   						<!-- 已转出 -->
+   						<ul class="transferOutedUl" id="transferOutedUl">
+   							<li id="topTransferOut">
    								<div class="debtAttornMTitle">
 					   				<div class="productName">项目名称</div>
 					   				<div class="annualInterestRate">年化利率</div>
@@ -149,54 +165,60 @@
 					   				<div class="transferIncome">转让收益</div>
 		   						</div>
    							</li>
-   							<%for(int i=0;i<8;i++){%>
+   				
+   						</ul>
+   						<script type="text/html" id="transferOutedList">
+   							{{each infos as value index}}
    							<li>
    								<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div> 借款抵押贷</div>
+		   								<div> {{value.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="annualInterestRate divOutside">
 		   							<div class="divIntside">
-		   								<div>8.00%</div>
+		   								<div>{{value.sYearRate}}%</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferable divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.transPrincipals}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="ResidualMaturity divOutside">
 		   							<div class="divIntside">
-		   								<div>90%</div>
+		   								<div>{{value.transDiscounts}}%</div>
 		   							</div>
 		   						</div>
 		   						<div class="transactionAmount divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.transAmounts}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferTime divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div>{{value.dealDate}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="investmentTime divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div>{{value.holdDate}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferIncome divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.interestAmounts}}</div>
 		   							</div>
 		   						</div>
    							</li>
-   							<%}%>
-   							<li class="page"><div id="pager2"></div></li>
-   						</ul>
-   						<ul class="transferInedUl">
-   							<li>
+   							{{/each}}
+   							<li class="page">
+								<div id="pager2"></div>
+							</li>
+   						</script>
+   						<!-- 已转入 -->
+   						<ul class="transferInedUl" id="transferInedUl">
+   							<li id="topTransferIned">
    								<div class="debtAttornMTitle">
 					   				<div class="productName">项目名称</div>
 					   				<div class="annualInterestRate">年化利率</div>
@@ -207,49 +229,53 @@
 					   				<div class="details">详情</div>
 		   						</div>
    							</li>
-   							<%for(int i=0;i<8;i++){%>
+
+   						</ul>
+   						<script type="text/html" id="transferInedList">
+							{{each infos as value}}
    							<li>
    								<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div> 借款抵押贷</div>
+		   								<div> {{value.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="annualInterestRate divOutside">
 		   							<div class="divIntside">
-		   								<div>8.00%</div>
+		   								<div>{{value.sYearRate}}%</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferAmount divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.transPrincipals}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="investNum divOutside">
 		   							<div class="divIntside">
-		   								<div>90%</div>
+		   								<div>{{value.transDiscounts}}%</div>
 		   							</div>
 		   						</div>
 		   						<div class="transactionAmount divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.transAmounts}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferTime divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div>{{$toDelete value.transTime}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="details divOutside">
 		   							<div class="divIntside">
-		   								<div><a class="profitList" href="investmentManagement/incomeList.html">收益列表</a></div>
+		   								<div><a class="profitList" href="investmentManagement/incomeList/{{value.investId}}/1.html?investId={{value.investId}}">收益列表</a></div>
 		   							</div>
 		   						</div>
    							</li>
-   							<%}%>
+   							{{/each}}
    							<li class="page"><div id="pager3"></div></li>
-   						</ul>
-   						<ul class="SettledUl">
-   							<li>
+						</script>
+						<!-- 已结清 -->
+   						<ul class="SettledUl" id="SettledUl">
+   							<li id="topSettledUl">
    								<div class="debtAttornMTitle">
 					   				<div class="productName">项目名称</div>
 					   				<div class="annualInterestRate">年化利率</div>
@@ -261,54 +287,56 @@
 					   				<div class="gainIncome">获取收益</div>
 		   						</div>
    							</li>
-   							<%for(int i=0;i<8;i++){%>
+
+   						</ul>
+   						<script type="text/html" id="SettledList">
+						{{each infos as value index}}
    							<li>
    								<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div> 借款抵押贷</div>
+		   								<div> {{value.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="annualInterestRate divOutside">
 		   							<div class="divIntside">
-		   								<div>8.00%</div>
+		   								<div>{{value.sYearRate}}%</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferable divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.transPrincipals}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="ResidualMaturity divOutside">
 		   							<div class="divIntside">
-		   								<div>90%</div>
+		   								<div>{{value.transDiscounts}}%</div>
 		   							</div>
 		   						</div>
 		   						<div class="transactionAmount divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.transAmounts}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferTime divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div>{{value.transTime}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="fullTime divOutside">
 		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
+		   								<div>{{value.dealDate}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="gainIncome divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
+		   								<div class="moneyFormat">{{$toFixed value.interestAmounts}}</div>
 		   							</div>
 		   						</div>
    							</li>
-   							<%}%>
+   							{{/each}}
    							<li class="page"><div id="pager4"></div></li>
-   						</ul>
+						</script>
    					</div>
-   					<div id="pager"></div>
    				</div>
    				<!-- 主体部分结束 王延君 2016-04-01 -->
    				</div>
@@ -320,13 +348,14 @@
    	<!--弹出层修改伍成然2016-4-6  -->
    	<div class="layerWindow">
 		<div class="layerWindowM">
-			<div>可转让金额：<span class="moneyFormat">10000</span>元</div>
-			<div><label>转让金额：</label><input class="format" type="text" lang="请输入转让金额" maxlength="10">元</div>
-			<div><label>转让折扣：</label><input class="numberReg" type="text" lang="请输入转让折扣" maxlength="10"></div>
-			<div class="attornProfit">转让成功预计所得收益：<span>10,100.00元</span></div>
+			<input type="hidden" value="" id="inputInvestId">	
+			<div>可转让金额：<span class="moneyFormat" id="transferableMoney">10000</span>元</div>
+			<div><label>转让金额：</label><input class="format" id="getTransNum" type="text" lang="请输入转让金额" maxlength="10">元</div>
+			<div><label>转让折扣：</label><input class="numberReg" id="getSaleNum" type="text" lang="请输入转让折扣(%)" maxlength="10"></div>
+			<div class="attornProfit">转让成功预计所得收益：<span id="shouyi">0</span>元</div>
 		</div>
 		<div class="layerWindowBtn">
-			<div class="btn" onselectstart="return false" onclick="layer.closeAll()">确定</div>
+			<div class="btn"  id="sureBtn">确定</div>
 		</div>
 	</div>
 	<script type="text/javascript" src="js/account/account.js"></script>

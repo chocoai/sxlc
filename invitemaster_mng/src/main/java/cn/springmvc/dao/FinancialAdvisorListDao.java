@@ -117,5 +117,26 @@ public interface FinancialAdvisorListDao {
 	 * @date 2016-5-1 下午3:26:05
 	 */
 	public InviteMasterAwardRecordEntity selectFinancialMasterStatistic(Map<String,Object> map);
+	
+	/**
+	 * 理财顾问提奖记录EXCEl
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param map
+	 * @param @return 设定文件 
+	 * @return List<InviteMasterAwardRecordEntity> 返回类型 
+	 * @date 2016-5-5下午8:35:22
+	 */
+	public List<InviteMasterAwardRecordEntity> getFinancialAdvisorAwardExcel(Map<String,Object> map);
+	/**
+	 *  理财顾问历史返现EXCEl
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param map
+	 * @param @return 设定文件 
+	 * @return List<AwardPaymentRecordEntity> 返回类型 
+	 * @date 2016-5-5 下午8:37:00
+	 */
+	public List<AwardPaymentRecordEntity> getFinancialHistoryBackExcel(Map<String,Object> map);
 }
 

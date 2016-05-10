@@ -16,6 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/project/investing.css" type="text/css">
 </head>
 
 <body class="nav-md">
@@ -40,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>投资完成时间</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+									<span class="con-item"><span>投资完成时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
 									<span class="con-item"><span>会员用户名</span><input type="text" class="notspecial"/></span>
 									<span class="con-item"><span>会员姓名</span><input type="text" class="notspecial"/></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
@@ -110,12 +111,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						//"searching" : false,
 						"info" : false,//左下角信息
 						//"ordering": false,//排序
-						"aaSorting" : [[ 0, "desc"],[ 3, "desc"],[ 4, "desc"],[ 5, "desc"],[ 6, "desc"]],//默认第几个排序
+						"aaSorting" : [[ 0, "desc"],[ 3, "desc"],[ 4, "desc"],[ 5, "desc"]],//默认第几个排序
 						"aoColumnDefs" : [
 						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 						{
 							"orderable" : false,
-							"aTargets" : [ 1, 2]
+							"aTargets" : [ 1, 2, 6]
 						} // 制定列不参与排序
 						],
 						colReorder : false,

@@ -62,7 +62,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 							  	<div class="action_item">
-						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-send-phonemsg">发送短信提醒</button>
+							  		<button id="" class="obtn glyphicon glyphicon-plus obtn-bill-detail">账单详情</button>
+						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-send-phonemsg">催收</button>
+						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-loan-prodetail">借款标详情</button>
 								</div>
 							</div>
 							<div class="panel-body">
@@ -76,7 +78,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<th>账单金额</th>
 											<th>账单期数</th>
 											<th>还款时间</th>
-											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -88,10 +89,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<td>0000001</td>
 											<td>交电费</td>
 											<td>jiuyang</td>
-											<td>王书记</td>
-											<td>1234455415</td>
-											<td>200000</td>
-											<td>12-01</td>
+											<td class="moneyFormat">10000</td>
+											<td>12</td>
+											<td>12-4</td>
 										</tr>
 										<%
 											}
@@ -106,7 +106,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<tr>
 									<td class="tt"><label>短信内容：</label></td>
 									<td class="con">
-										<script id="msgcontent" type="text/plain" style="height:260px;width:98%;"></script>
+										<textarea rows="8" cols="100">自动生成内容</textarea>
 									</td>
 								</tr>
 							</table>
@@ -119,9 +119,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
-	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/project/soon_due_bill.js"></script>
 	<script type="text/javascript">
 		// 这样初始化，排序将会打开
 		$(function() {
@@ -138,7 +137,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 				{
 					"orderable" : false,
-					"aTargets" : [ 0, 1, 2, 3, 5, 7]
+					"aTargets" : [ 0, 1, 2, 3, 5]
 				} // 制定列不参与排序
 				],
 				colReorder : false,
@@ -148,14 +147,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				"bScrollCollapse" : true
 			});
 		});
-		/* 自行编辑消息内容 */
-		var mc = UE.getEditor('msgcontent');
 		/* 发送消息 */
 		$(".obtn-send-phonemsg").on('click',function(){
 			layer.open({
 			    type: 1,
-			    area: ['800px', '580px'], //高宽
-			    title: "发送短信消息",
+			    area: ['500px', '298px'], //宽高
+			    title: "催收",
 			    content: $(".send-phonemsg"),//DOM或内容
 			    btn:['确定', '取消']
 				  ,yes: function(index, layero){ //或者使用btn1

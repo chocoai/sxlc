@@ -8,9 +8,31 @@ jQuery.fn.changeRemarks = function(){//用来剔除特殊字符
 	remarks2=remarks2.replace(/["'<>%;)(&+]/,"");//暂时使用！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 	$(this).val(remarks2);
 };
+
+function rechageDeal(){
+	var type=$(".regchType").attr("value");
+	var mount=$(".rechargeInput").val();
+	var fee=0;
+	if(type==3){
+		var sx="0.001";//千分之一手续费率
+		var fee=Number(mount)*sx;
+		fee=fee<1?1:fee;//手续费，小于1，等于1
+	}else if(type==2 || type==4){
+		fee=20;
+		if(mount<20){
+			mount=20;
+		}
+	}
+	$(".rechargeFee").text(fee.toFixed(2));
+	var endM=Number(mount)-Number(fee);
+	if(endM>=0){
+		$(".realAccount").text(endM);	
+	}
+}
+
 $(function(){
 	/***********输入验证**************/
-	var choosedOption = 1;//选择的充值方式
+	var choosedOption = $(".regchType").attr("value");//选择的充值方式
 	$(".rechargeInputFocus").focus(function(){//起充值设定
 		$(this).parent().layoutClean();
 		var minMoney = 0;//最小起充值
@@ -23,6 +45,7 @@ $(function(){
 		$(".rechargeInputFocus").blur(function(){
 			if(parseFloat((this.value + '').replace(/\,/g, '')) < parseFloat(minMoney)){
 				this.value = parseFloat(minMoney).toFixed(2);
+				rechageDeal();
 			}
 		});
 	});
@@ -31,6 +54,9 @@ $(function(){
 	});
 	$(".rechargeInput").keyup(function(){//备注的过滤
 		$(this).changeRemarks();
+	});
+	$(".rechargeInputFocus").keyup(function(){
+		rechageDeal();
 	});
 	/************提交数据部分***********/
 	$(".rechargeBtn").click(function(){
@@ -66,12 +92,33 @@ $(function(){
 		if(!door){
 			return;
 		}
-		alert(choosedOption1 + moneyInput1 + remarks1);
+		
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publickey);
+		choosedOption1=encrypt.encrypt(choosedOption1+"");
+		moneyInput1=encrypt.encrypt(moneyInput1+"");
+		remarks1=encrypt.encrypt(remarks1+"");
+		
+		$("input[name='rechargeType']").val(choosedOption1);
+		$("input[name='amount']").val(moneyInput1);
+		$("input[name='remark']").val(remarks1);
+		
+		var parm={"rechargeType":choosedOption1,"amount":moneyInput1,"remark":remarks1};
+		var obj=eval(parm);
+		var sign=NetUtil.createSign(obj);	
+		$("input[name='sign']").val(sign);
+		$("#chongZhi").submit();
+		
 		/**********Ajax传值结果的处理***********/
-		if(true){//成功
-			
-		}else{//失败
-			
+	});
+	
+	$(".selectOptionAab").click(function(){
+		var amount=$(".rechargeInput").val();
+		var m=parseFloat(amount.replace(/\,/g, ''));
+		if(Number(m)>0){
+			$(".cashFormat").val(m);
+			rechageDeal();			
 		}
 	});
+	
 });

@@ -118,6 +118,22 @@ public class InviteMasterApplyListDaoImpl extends SqlSessionDaoSupport implement
 		
 	   return  getSqlSession().selectOne("InviteMasterApply.selectInviteMasterStatistic",map);
 		
+	}
+
+	@Override
+	public List<InviteMasterAwardRecordEntity> getInviteMasterAwardRecordExcel(
+			Map<String, Object> map) {
+		
+		return getSqlSession().selectList("InviteMasterExcel.getInviteMasterAwardRecordExcel",map);
+		
+	} 
+	
+	@Override
+	public List<AwardPaymentRecordEntity> getInviteMasterHistoryBackExcel(
+			Map<String, Object> map) {
+		
+		return getSqlSession().selectList("InviteMasterExcel.getInviteMasterHistoryBackExcel",map);
+		
 	} 
 }
 

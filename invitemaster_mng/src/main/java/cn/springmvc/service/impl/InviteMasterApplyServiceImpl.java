@@ -32,6 +32,7 @@ import cn.invitemastermng.model.InvitationRecordEntity;
 import cn.invitemastermng.model.InviteMasterAwardRecordEntity;
 import cn.springmvc.dao.InviteMasterApplyDao;  
 import cn.springmvc.dao.InviteMasterApplyListDao; 
+import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.service.InviteMasterApplyService;
 
 /** 
@@ -46,16 +47,26 @@ public class InviteMasterApplyServiceImpl implements InviteMasterApplyService {
 	@Resource(name="inviteMasterApplyListDaoImpl")
 	private  InviteMasterApplyListDao inviteMasterApplyListDaoImpl; 
 	@Override
-	public int insertInviteMasterApply(Map<String, Object> map) {
+	public int insertInviteMasterApply(long memberID) {
 		
-		int result = 0;
-		long memberID = IntegerAndString.StringToLong(map.get("memberID").toString(),0);
+		int result = 0; 
 		result = inviteMasterApplyListDaoImpl.selectInviteMasterApplyIsExist(memberID);
 		//判断该会员是否是推荐达人，或者存在未审核的申请
 		if(result >0 ) {
 			return -1;
-		}
+		} 
+		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+		long id = generatorUtil.GetId();
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("memberID", memberID);
+		map.put("imApplyID", id);
 		result = inviteMasterApplyDao.insertInviteMasterApply(map); 
+		if(result == 1) {
+			generatorUtil.SetIdUsed(id); 
+	    }else{
+			generatorUtil.SetIdUsedFail(id);
+	    } 
 		return result;
 	}
 	@Override
@@ -111,6 +122,21 @@ public class InviteMasterApplyServiceImpl implements InviteMasterApplyService {
 		map.put("memberID",                memberID);
 		map.put("skey",    DbKeyUtil.GetDbCodeKey());
 		return inviteMasterApplyListDaoImpl.selectInviteMasterStatistic(map);
+		
+	}
+ 
+	@Override
+	public List<InviteMasterAwardRecordEntity> getInviteMasterAwardRecordExcel(
+			Map<String, Object> map) {
+		
+		return inviteMasterApplyListDaoImpl.getInviteMasterAwardRecordExcel(map);
+		
+	}
+	@Override
+	public List<AwardPaymentRecordEntity> getInviteMasterHistoryBackExcel(
+			Map<String, Object> map) {
+		
+		return inviteMasterApplyListDaoImpl.getInviteMasterHistoryBackExcel(map);
 		
 	}  
 	 

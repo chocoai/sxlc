@@ -11,8 +11,13 @@
 	<base href="<%=basePath%>">
     <title>婚姻认证</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var appPath="<%=path%>";
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>        
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/loanCertification.css">
+	<link rel="stylesheet" type="text/css" href="plugs/webuploader/webuploader.css">
 </head>
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
@@ -30,6 +35,7 @@
 	   				</div>
 	   				<div class="authenContent">
 	   					<div class="authen">
+	   					<form class="person_Renzheng">
 			   				<ul class="inputArea">
 			   					<li class="inputList">
 			   						<div class="mustLabel"><span><samp>*</samp>婚姻状况：</span></div>
@@ -38,21 +44,24 @@
 			   					</li>
 			   					<li class="inputList">
 			   						<div class="mustLabel"><span><samp>*</samp>登记日期：</span></div>
-			   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker()" type="text" lang="请选择登记日期"/>
+			   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择登记日期"/>
 			   					</li>
 			   					<li class="inputList clearfix">
 			   						<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
 			   					
-			   						<div class="previewPicture">
+			   						<div class="previewPicture" id="file" style="float: none;" >
 			   							<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
-			   							<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput" onchange="preImg(this.id,'previewImg');addElement(this.id);" onblur="if(document.getElementById('previewImg').src=='null')document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" >
+										<input type='hidden' class='previewHide' id="0" >
 			   						</div>
 	   								<!-- <span class="hint">（请上传附件图片）</span> -->
 			   					</li>
 			   					<li class="inputList">
-			   						<div class="btn">确认并保存</div>
+			   						<div class="btn saveSubmit  " id="${requestScope.type}" >确认并保存</div>
+			   						<input type="hidden" value="0" class="editType" />
+			   						<input type="hidden" value="0" class="cid" />			   						
 			   					</li>
 			   				</ul>
+			   			</form>	
 	   					</div>
 	   				</div>
    				</div>
@@ -61,30 +70,15 @@
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
+   	<script type="text/javascript" src="plugs/webuploader/webuploader.js" ></script>
+   	<script type="text/javascript" src="js/exp-upload.js" ></script>	
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
+	<script type="text/javascript" src="js/account/personalCenter/loanCertification_picText.js"></script>	
 	<script type="text/javascript">
+	expUpload(1);
 	$(function(){
-		
 		var marrigeState = $(".radio[checked=checked]").attr("value");//婚姻状况
-		var marrigeDate = "";//登记日期
-		var marrigePic = 0;//附件
-		var data ={"mngName":"测试","startTime":null,"atartTima":"a"}; 
-		NetUtil.ajax(
-			'<%=basePath %>' + '/front/toTeamList.do',//url
-			data,//请求参数
-			function(result){//成功回调函数
-				if(result==1){
-					alert("成功");
-				}else{
-					alert("失败");
-				}
-			},
-			null,//如果用不着这个参数，则可设置为null
-			function(){
-				alert("完成");
-			}
-		);
 	});
 	</script>
 </body>

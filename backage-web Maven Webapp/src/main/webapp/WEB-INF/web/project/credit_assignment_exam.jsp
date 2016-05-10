@@ -70,7 +70,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<thead>
 										<tr>
 											<th></th>
-											<th>债权转让申请编号</th>
 											<th>债权转让申请时间</th>
 											<th>债权转让项目编号</th>
 											<th>项目名称</th>
@@ -78,97 +77,92 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<th>转让会员</th>
 											<th>转让金额</th>
 											<th>转让价格</th>
-											<th>转让折扣</th>
-											<th>融资进度</th>
+											<th>转让折扣(%)</th>
 											<th>投标结束时间</th>
 											<th>转让状态</th>
 										</tr>
 									</thead>
-								<tbody>
-									<%
-										for(int i=0;i<15;i++){
-									 %>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>信用贷</td>
-										<td>20万~40万</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>20万</td>
-										<td>4%</td>
-										<td>20天</td>
-										<td>简介:</td>
-										<td>无</td>
-										<td>img</td>
-										<td>img</td>
-									</tr>
-									<%
-										}
-									 %>
-								</tbody>
+									<tbody>
+										<%
+											for(int i=0;i<15;i++){
+										 %>
+										<tr>
+											<td><input type="checkbox"></td>
+											<td>2016-05-11</td>
+											<td>100001</td>
+											<td>项目名称</td>
+											<td>借款会员</td>
+											<td>转让会员</td>
+											<td class="moneyFormat">10000</td>
+											<td class="moneyFormat">10000</td>
+											<td>19</td>
+											<td>2016-05-18</td>
+											<td>未审核</td><!-- 未审核，已拒绝，融资中，待放款，已完成 -->
+										</tr>
+										<%
+											}
+										 %>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- 债权转让审核 -->
+						<div class="w-content assignment_exam">
+							<table>
+								<tr>
+									<td class="tt"><label>管理员意见：</label></td>
+									<td class="con">
+										<input type="radio" name="state" class="" value="1" /> 同意
+										<input type="radio" name="state" class="" value="2" /> 拒绝
+									</td>
+								</tr>
+								<tr>
+									<td class="tt"><label class="ineed">选择结束时间：</label></td>
+									<td class="con">
+										<input type="text" class="Wdate"  onFocus="WdatePicker()" value="" />
+									</td>
+								</tr>
 							</table>
 						</div>
 					</div>
-					<!-- 债权转让审核 -->
-					<div class="w-content assignment_exam">
-						<table>
-							<tr>
-								<td class="tt"><label>管理员意见：</label></td>
-								<td class="con">
-									<input type="radio" name="state" class="" value="1" /> 同意
-									<input type="radio" name="state" class="" value="2" /> 拒绝
-								</td>
-							</tr>
-							<tr>
-								<td class="tt"><label class="ineed">选择结束时间：</label></td>
-								<td class="con">
-									<input type="text" class="Wdate"  onFocus="WdatePicker()" value="" />
-								</td>
-							</tr>
-						</table>
-					</div>
 				</div>
-			</div>
-		
 			<!-- 尾部 -->
-		</div>
-		<!-- 公用js -->
-		<jsp:include page="../common/cm-js.jsp"></jsp:include>
-		<script src="js/project/credit_assignment.js"></script>
-		<!-- 私用js -->
-		<script type="text/javascript">
-					//默认禁用搜索和排序
-					/* $.extend( $.fn.dataTable.defaults, {
-					    searching: true,
-					    ordering:  false
-					} ); */
-					// 这样初始化，排序将会打开
-					$(function() {
-						$('#table_credit_assignment_list').DataTable({
-							"autoWidth" : false,
-							//scrollY : 500,
-							//paging : false,//分页
-							//"searching" : false,
-							"info" : false,//左下角信息
-							//"ordering": false,//排序
-							"aaSorting" : [ [ 2, "desc" ],[ 7, "desc" ],[ 8, "desc" ] ],//默认第几个排序
-							"aoColumnDefs" : [
-							//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-							{
-								"orderable" : false,
-								"aTargets" : [ 0, 1, 3, 4, 5, 6, 9, 10, 11, 12]
-							} // 制定列不参与排序
-							],
-							colReorder : false,
-							"sScrollX" : "100%",
-							"sScrollXInner" : "100%",
-							"bScrollCollapse" : true
-						});
+			</div>
+			<!-- 公用js -->
+			<jsp:include page="../common/cm-js.jsp"></jsp:include>
+			<script src="js/project/credit_assignment.js"></script>
+			<!-- 私用js -->
+			<script type="text/javascript">
+				//默认禁用搜索和排序
+				/* $.extend( $.fn.dataTable.defaults, {
+				    searching: true,
+				    ordering:  false
+				} ); */
+				// 这样初始化，排序将会打开
+				$(function() {
+					$('#table_credit_assignment_list').DataTable({
+						"autoWidth" : false,
+						//scrollY : 500,
+						//paging : false,//分页
+						//"searching" : false,
+						"info" : false,//左下角信息
+						//"ordering": false,//排序
+						"aaSorting" : [ [ 1, "desc" ],[ 6, "desc" ],[ 7, "desc" ] ],//默认第几个排序
+						"aoColumnDefs" : [
+						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
+						{
+							"orderable" : false,
+							"aTargets" : [ 0, 2, 3, 4, 5, 8, 9, 10]
+						} // 制定列不参与排序
+						],
+						colReorder : false,
+						"sScrollX" : "100%",
+						"sScrollXInner" : "100%",
+						"bScrollCollapse" : true
 					});
-		</script>
+				});
+			</script>
+		</div>
 	</div>
-</div>
 </body>
-
 </html>

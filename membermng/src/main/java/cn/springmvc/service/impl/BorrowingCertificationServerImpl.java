@@ -134,6 +134,7 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 		param.put("memberId", memberId);
 		param.put("memberType", memberType);
 		param.put("typeId", typeId);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		return borrowingCertificationdao.showCurrencyAuth(param);
 	}
 	
@@ -175,7 +176,7 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	}
 	
 	@Override
-	public Map<String, Object> showAuthAddress(Long memberId) {
+	public CurrencyAuth showAuthAddress(Long memberId) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("memberId", memberId);
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
@@ -223,12 +224,22 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	}
 	
 	@Override
-	public List<Map<String, Object>> showAuthHousing(long memberId) {
+	public List<CurrencyAuth> showAuthHousing(long memberId) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("memberId", memberId);
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		return borrowingCertificationdao.showAuthHousing(param);
 	}
+	
+	
+	@Override
+	public CurrencyAuth showAuthHousingOne(long rid) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("rid", rid);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		return borrowingCertificationdao.showAuthHousingOne(param);
+	}
+	
 	
 	@Override
 	public int editAuthHousing(long memberId, long cid, String iaddress,String iArea, String ivalue, String endTime, String enclosure) {
@@ -277,11 +288,19 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	}
 	
 	@Override
-	public List<Map<String, Object>> showAuthProduction(long memberId) {
+	public List<CurrencyAuth> showAuthProduction(long memberId) {
 		
 		return borrowingCertificationdao.showAuthProduction(memberId);
 	}
 
+	@Override
+	public CurrencyAuth showAuthProductionOne(long rid) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("rid", rid);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		return borrowingCertificationdao.showAuthProductionOne(param);
+	}
+	
 	@Override
 	public int editAuthProduction(long memberId, long cid, String iBrand,String iModel, String iLicensePlate, String ivalue, String endTime,String enclosure) {
 		Map<String,Object> param = new HashMap<String, Object>();
@@ -323,7 +342,7 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 		
 	}
 	
-	public Map<String,Object> showAuthMarriage(Long memberId){
+	public CurrencyAuth showAuthMarriage(Long memberId){
 		
 		return borrowingCertificationdao.showAuthMarriage(memberId);
 	}
@@ -363,9 +382,12 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	}
 	
 	@Override
-	public Map<String, Object> showAuthEducation(long memberId) {
+	public CurrencyAuth  showAuthEducation(long memberId) {
 		
-		return borrowingCertificationdao.showAuthEducation(memberId);
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("memberId", memberId);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		return borrowingCertificationdao.showAuthEducation(param);
 	}
 	
 	public int editAuthEducation(long memberId, int education, String enclosure) {
@@ -699,8 +721,9 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 		return borrowingCertificationWritedao.editAuthApproval(param);
 	}
 	
-	
 
+	
+	
 	
 	
 	
@@ -712,10 +735,8 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 		param.put("projectId", projectId);
 		return borrowingCertificationdao.getAllByMemberAndLoanType(param);
 	}
-	
-	
-	
-	
+
+
 	
 	
 	

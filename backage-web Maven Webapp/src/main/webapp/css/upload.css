@@ -1,12 +1,12 @@
-/* 上传自定义样式 */
+/* 涓婁紶鑷畾涔夋牱寮�*/
 .rec-dimensions{color: #f00;margin: 15px 0 0 5px;}
 
 .portrait-box{}
 .portrait-box *{
 	vertical-align: middle;
 }
-/* 预览盒子 */
-/* 20160413---陈小花---图标删除样式 */
+/* 棰勮鐩掑瓙 */
+/* 20160413---闄堝皬鑺�--鍥炬爣鍒犻櫎鏍峰紡 */
 div.file-del{
 	position: absolute;
     top: -7px;
@@ -18,8 +18,9 @@ div.file-del{
 }
 
 #fileList{}
-#fileList .file-item{margin-right: 10px;}
-#fileList div.file-panel {
+#fileList .file-item,.fileList .file-item{margin-right: 10px;}
+#fileList div.file-panel,
+.fileList div.file-panel {
     position: absolute;
     height: 0;
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#80000000', endColorstr='#80000000')\0;
@@ -30,7 +31,8 @@ div.file-del{
     overflow: hidden;
 }
 
-#fileList div.file-panel span {
+#fileList div.file-panel span,
+.fileList div.file-panel span {
     width: 24px;
     height: 24px;
     display: inline;
@@ -42,28 +44,35 @@ div.file-del{
     cursor: pointer;
 }
 
-#fileList div.file-panel span.rotateLeft {
+#fileList div.file-panel span.rotateLeft,
+.fileList div.file-panel span.rotateLeft {
     background-position: 0 -24px;
 }
-#fileList div.file-panel span.rotateLeft:hover {
+#fileList div.file-panel span.rotateLeft:hover,
+.fileList div.file-panel span.rotateLeft:hover {
     background-position: 0 0;
 }
 
-#fileList div.file-panel span.rotateRight {
+#fileList div.file-panel span.rotateRight,
+.fileList div.file-panel span.rotateRight {
     background-position: -24px -24px;
 }
-#fileList div.file-panel span.rotateRight:hover {
+#fileList div.file-panel span.rotateRight:hover,
+.fileList div.file-panel span.rotateRight:hover {
     background-position: -24px 0;
 }
 
-#fileList div.file-panel span.cancel {
+#fileList div.file-panel span.cancel,
+.fileList div.file-panel span.cancel {
     background-position: -48px -24px;
 }
-#fileList div.file-panel span.cancel:hover {
+#fileList div.file-panel span.cancel:hover,
+.fileList div.file-panel span.cancel:hover {
     background-position: -48px 0;
 }
 
-#fileList .statusBar {
+#fileList .statusBar,
+.fileList .statusBar {
     height: 63px;
     border-top: 1px solid #dadada;
     padding: 0 20px;
@@ -72,7 +81,8 @@ div.file-del{
     position: relative;
 }
 
-#fileList .statusBar .progress {
+#fileList .statusBar .progress,
+.fileList .statusBar .progress {
     border: 1px solid #1483d8;
     width: 198px;
     background: #fff;
@@ -85,7 +95,8 @@ div.file-del{
     position: relative;
     margin: 0 10px 0 0;
 }
-#fileList .statusBar .progress span.percentage {
+#fileList .statusBar .progress span.percentage,
+.fileList .statusBar .progress span.percentage {
     width: 0;
     height: 100%;
     left: 0;
@@ -93,18 +104,21 @@ div.file-del{
     background: #1483d8;
     position: absolute;
 }
-#fileList .statusBar .progress span.text {
+#fileList .statusBar .progress span.text,
+.fileList .statusBar .progress span.text {
     position: relative;
     z-index: 10;
 }
 
-#fileList .statusBar .info {
+#fileList .statusBar .info,
+.fileList .statusBar .info {
     display: inline-block;
     font-size: 14px;
     color: #666666;
 }
 
-#fileList .statusBar .btns {
+#fileList .statusBar .btns,
+.fileList .statusBar .btns {
     position: absolute;
     top: 10px;
     right: 20px;
@@ -119,7 +133,11 @@ div.file-del{
 #fileList .statusBar .btns .webuploader-pick,
 #fileList .statusBar .btns .uploadBtn,
 #fileList .statusBar .btns .uploadBtn.state-uploading,
-#fileList .statusBar .btns .uploadBtn.state-paused {
+#fileList .statusBar .btns .uploadBtn.state-paused,
+.fileList .statusBar .btns .webuploader-pick,
+.fileList .statusBar .btns .uploadBtn,
+.fileList .statusBar .btns .uploadBtn.state-uploading,
+.fileList .statusBar .btns .uploadBtn.state-paused {
     background: #ffffff;
     border: 1px solid #cfcfcf;
     color: #565656;
@@ -134,20 +152,27 @@ div.file-del{
 #fileList .statusBar .btns .webuploader-pick-hover,
 #fileList .statusBar .btns .uploadBtn:hover,
 #fileList .statusBar .btns .uploadBtn.state-uploading:hover,
-#fileList .statusBar .btns .uploadBtn.state-paused:hover {
+#fileList .statusBar .btns .uploadBtn.state-paused:hover,
+.fileList .statusBar .btns .webuploader-pick-hover,
+.fileList .statusBar .btns .uploadBtn:hover,
+.fileList .statusBar .btns .uploadBtn.state-uploading:hover,
+.fileList .statusBar .btns .uploadBtn.state-paused:hover {
     background: #f0f0f0;
 }
 
-#fileList .statusBar .btns .uploadBtn {
+#fileList .statusBar .btns .uploadBtn,
+.fileList .statusBar .btns .uploadBtn {
     background: #00b7ee;
     color: #fff;
     border-color: transparent;
 }
-#fileList .statusBar .btns .uploadBtn:hover {
+#fileList .statusBar .btns .uploadBtn:hover,
+.fileList .statusBar .btns .uploadBtn:hover {
     background: #00a2d4;
 }
 
-#fileList .statusBar .btns .uploadBtn.disabled {
+#fileList .statusBar .btns .uploadBtn.disabled,
+.fileList .statusBar .btns .uploadBtn.disabled {
     pointer-events: none;
     opacity: 0.6;
 }

@@ -15,9 +15,8 @@ package cn.springmvc.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.membermng.model.MemberMessageConfig;
 import cn.membermng.model.SendSetEntity;
-
-import product_p2p.kit.pageselect.PageEntity; 
 
 /** 
  * @author 刘利 
@@ -56,6 +55,8 @@ public interface MemberMsgSetService {
 	 * @date 2016-3-30 上午11:47:00
 	 */
 	public int insertMemberLetterSendSet(SendSetEntity sendSetEntity);
+	
+	
 	/**
 	 * 修改 会员短信发送类型 设置
 	 * @author 刘利   
@@ -86,6 +87,8 @@ public interface MemberMsgSetService {
 	 * @date 2016-3-30 上午11:56:03
 	 */
 	public int updateMemberLetterSendSet(SendSetEntity sendSetEntity);
+
+	
 	/**
 	 * 查询平台消息类型列表
 	 * @author 刘利   
@@ -106,7 +109,8 @@ public interface MemberMsgSetService {
 	 */
 	public List<SendSetEntity> selectMemberSmsSendSet(long memberID);
 	/**
-	 *  根据会员ID查询会员勾选的邮件接收类型
+	 *  根据会员ID查询会员
+	 *  勾选的邮件接收类型
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param memberID 会员ID
@@ -125,6 +129,9 @@ public interface MemberMsgSetService {
 	 * @date 2016-3-30 上午11:19:08
 	 */
 	public List<SendSetEntity> selectMemberLetterSendSet(long memberID);
+	
+	
+	
 	/**
 	 * 根据会员ID与短信接收类型 查询会员该类型的短信接收 设置是否存在
 	 * @author 刘利   
@@ -155,6 +162,17 @@ public interface MemberMsgSetService {
 	 * @date 2016-3-30 上午11:24:56
 	 */
 	public int selectMemberLetterSendSetsExist(Map<String,Object> map);
+	
+	
+	/***
+	* 查询会员的消息设置信息
+	* 
+	* @author 李杰
+	* @param memberId
+	* @return
+	* @date 2016-5-9 下午5:24:00
+	 */
+	public List<MemberMessageConfig> memberMessageConfig(Long memberId);
  
 }
 

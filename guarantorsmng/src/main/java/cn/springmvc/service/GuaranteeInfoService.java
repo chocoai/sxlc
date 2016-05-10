@@ -7,6 +7,7 @@ import java.util.Map;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
+import cn.springmvc.model.GuaranteeBankCard;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
 import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoDetailsEntity;
@@ -17,6 +18,7 @@ import cn.springmvc.model.InstitutionsRecordsEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
 import cn.springmvc.model.MemberThirdAuthInfoEntity;
+import cn.springmvc.model.OverdueCompensationEntity;
 
 
 
@@ -471,6 +473,63 @@ public interface GuaranteeInfoService {
 	* @throws 
 	*/
 	public int insertManagementAdmin(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	
+	
+	/** 
+	* Overduecompensation 查询逾期代偿列表
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: Overduecompensation 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<OverdueCompensationEntity> 返回类型 
+	* @date 2016-5-6 下午5:37:28
+	* @throws 
+	*/
+	public List<OverdueCompensationEntity> Overduecompensation(PageEntity pageEntity);
+	
+	/** 
+	* PtOverduecompensation 查询平台代偿记录列表 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: PtOverduecompensation 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<OverdueCompensationEntity> 返回类型 
+	* @date 2016-5-6 下午5:55:24
+	* @throws 
+	*/
+	public List<OverdueCompensationEntity> PtOverduecompensation(PageEntity pageEntity);
+	/** 
+	* PaymentOverduecompensation 查询平台代偿回款记录列表
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: PaymentOverduecompensation 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<OverdueCompensationEntity> 返回类型 
+	* @date 2016-5-6 下午7:14:14
+	* @throws 
+	*/
+	public List<OverdueCompensationEntity> PaymentOverduecompensation(PageEntity pageEntity);
+	
+	
+	/** 
+	* findbankcardforguaranteeID 查询银行卡信息
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findbankcardforguaranteeID 
+	* @Description: TODO 
+	* @param @param pageEntity
+	* @param @return 设定文件 
+	* @return List<GuaranteeBankCard> 返回类型 
+	* @date 2016-5-6 下午7:43:13
+	* @throws 
+	*/
+	public List<GuaranteeBankCard> findbankcardforguaranteeID(PageEntity pageEntity);
 }
 
 

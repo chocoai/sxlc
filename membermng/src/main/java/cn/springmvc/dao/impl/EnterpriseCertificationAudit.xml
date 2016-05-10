@@ -49,12 +49,13 @@
     	select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID
     	,mai.Record_Date recordDate,mai.Status status,mai.Attest_Type_ID attestTypeID,mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
    		 CONVERT((AES_DECRYPT(UNHEX(prc.Personal_IDCard),#{map.skey})) using utf8) as personalIDCard, 
-   		  CONVERT((AES_DECRYPT(UNHEX(prc.Real_Name),#{map.skey})) using utf8) as realName,
+   		  CONVERT((AES_DECRYPT(UNHEX(prc.Real_Name),#{map.skey})) using utf8) as realName,ni.NationName as nationName,
     		prc.SexID sexId,CONVERT((AES_DECRYPT(UNHEX(prc.Home_Town),#{map.skey})) using utf8) as homeTown,mai.End_Date validTime
 			from Member_Attest_Info mai 
 			left join Member_Info mi ON mi.Member_ID=mai.Member_ID
 			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
 			left join Personal_RealName_Check prc on prc.Certification_ID=mai.Certification_ID
+			LEFT JOIN Nation_Info ni on ni.Nation_Id = prc.Nation
 			<where>
 				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
 				and mai.Status=#{map.status}
@@ -162,19 +163,58 @@
     </select>
     
     
+    
+      <!-- 企业公共认证列表查询 -->
+    <select id="EnterpriseCommonCertification" resultType="cn.membermng.model.EnterpriseLicenseAttestEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+    select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID,
+    mai.Record_Date recordDate,mai.Status status,mai.Attest_Type_ID attestTypeID,
+	mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
+	CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) company
+	from Member_Attest_Info mai 
+	left join Member_Info mi ON mi.Member_ID=mai.Member_ID
+	left join Company_Info ci on ci.Company_ID = mi.Company_ID
+	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
+	<where>
+	    mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID}
+		and mai.Status=#{map.status}
+		<if test="map.logname!=null and map.logname!=''">
+			and mi.Logname like '%${map.logname}%'
+		</if>
+		<if test="map.companyName!=null and map.companyName!='' ">
+			and CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) like '%${map.companyName}%'
+		</if>
+	</where>  
+    </select>
+    
+    
+    
+    
     <!-- 企业营业执照认证列表查询 -->
     <select id="EnterpriseBLCertification" resultType="cn.membermng.model.EnterpriseLicenseAttestEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
     select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.Certification_ID certificationID,
     mai.Record_Date recordDate,mai.Status status,mai.Attest_Type_ID attestTypeID,
 	mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
-	 ela.Firm_BLN firmBLN,ela.Firm_Address firmAddress,ela.Firm_Legal firmLegal,ela.Reg_Capital regCapital,ela.Reg_Business regBusiness,ela.Firm_Type firmType,ela.Reg_Date regDate
-	,CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) company
+	ela.Reg_Capital regCapital, ela.Firm_Type firmType,ela.Reg_Date regDate,
+	CONVERT((AES_DECRYPT(UNHEX(ela.Firm_BLN),#{map.skey})) using utf8) firmBLN,
+	CONVERT((AES_DECRYPT(UNHEX(ela.Firm_Address),#{map.skey})) using utf8) firmAddress,
+	CONVERT((AES_DECRYPT(UNHEX(ela.Firm_Legal),#{map.skey})) using utf8) firmLegal,
+	CONVERT((AES_DECRYPT(UNHEX(ela.Reg_Business),#{map.skey})) using utf8) regBusiness,
+	CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) company
 	from Member_Attest_Info mai 
 	left join Member_Info mi ON mi.Member_ID=mai.Member_ID
 	left join Company_Info ci on ci.Company_ID = mi.Company_ID
 	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
 	LEFT JOIN Enterprise_License_Attest ela ON ela.Certification_ID=mai.Certification_ID
-	where mi.Member_Type=1 and mat.Attest_Type_ID=#{attestTypeID};
+	<where>
+	    mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID}
+		and mai.Status=#{map.status}
+		<if test="map.logname!=null and map.logname!=''">
+			and mi.Logname like '%${map.logname}%'
+		</if>
+		<if test="map.companyName!=null and map.companyName!='' ">
+			and CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) like '%${map.companyName}%'
+		</if>
+	</where>  
     </select>
     
     
@@ -191,7 +231,16 @@
 	left join Company_Info ci on ci.Company_ID = mi.Company_ID
 	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
 	LEFT JOIN Enterprise_BsnLicense_Attest ela ON ela.Certification_ID=mai.Certification_ID
-	where mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID};
+	<where>
+	    mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID}
+		and mai.Status=#{map.status}
+		<if test="map.logname!=null and map.logname!=''">
+			and mi.Logname like '%${map.logname}%'
+		</if>
+		<if test="map.companyName!=null and map.companyName!='' ">
+			and CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) like '%${map.companyName}%'
+		</if>
+	</where>  
     </select>
     
     
@@ -208,7 +257,16 @@
 	left join Company_Info ci on ci.Company_ID = mi.Company_ID
 	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
 	LEFT JOIN Enterprise_OrgCode_Attest ela ON ela.Certification_ID=mai.Certification_ID
-	where mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID};
+	<where>
+	    mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID}
+		and mai.Status=#{map.status}
+		<if test="map.logname!=null and map.logname!=''">
+			and mi.Logname like '%${map.logname}%'
+		</if>
+		<if test="map.companyName!=null and map.companyName!='' ">
+			and CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) like '%${map.companyName}%'
+		</if>
+	</where>  
     </select>
     
     
@@ -226,9 +284,17 @@
 	left join Company_Info ci on ci.Company_ID = mi.Company_ID
 	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
 	LEFT JOIN Enterprise_AccountPermits_Attest ela ON ela.Certification_ID=mai.Certification_ID
-	where mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID};
+	<where>
+	    mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID}
+		and mai.Status=#{map.status}
+		<if test="map.logname!=null and map.logname!=''">
+			and mi.Logname like '%${map.logname}%'
+		</if>
+		<if test="map.companyName!=null and map.companyName!='' ">
+			and CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) like '%${map.companyName}%'
+		</if>
+	</where>  
     </select>
-    
     
     
     <!-- 查看企业营业执照认证信息 -->
@@ -254,12 +320,17 @@
     <select id="sEnterpriseLicenseAttestByID" resultMap="sEnterpriseLicenseAttest" parameterType="Map">
     select mi.Member_No,mi.Member_ID,mi.Logname,mai.Certification_ID,mai.Record_Date,mai.Status,mai.Attest_Type_ID,
 	mat.Attest_TypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS Statuname,
-	 ela.Firm_BLN,ela.Firm_Address,ela.Firm_Legal,ela.Reg_Capital,ela.Reg_Business,ela.Firm_Type,ela.Reg_Date
+	 ela.Reg_Capital,ela.Firm_Type,ela.Reg_Date,
+	 CONVERT((AES_DECRYPT(UNHEX(ela.Firm_BLN),#{map.skey})) using utf8) firmBLN,
+	CONVERT((AES_DECRYPT(UNHEX(ela.Firm_Address),#{map.skey})) using utf8) firmAddress,
+	CONVERT((AES_DECRYPT(UNHEX(ela.Firm_Legal),#{map.skey})) using utf8) firmLegal,
+	CONVERT((AES_DECRYPT(UNHEX(ela.Reg_Business),#{map.skey})) using utf8) regBusiness,
+	 
 	from Member_Attest_Info mai 
 	left join Member_Info mi ON mi.Member_ID=mai.Member_ID
 	LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
 	LEFT JOIN Enterprise_License_Attest ela ON ela.Certification_ID=mai.Certification_ID
-	where mi.Member_Type=1 and mai.Certification_ID=#{certificationID} and mi.Member_ID=#{memberID};
+	where mi.Member_Type=1 and mai.Certification_ID=#{certificationID};
     </select>
     <!-- 操作企业营业执照认证 -->
     <select id="handleEnterpriseCerAudit" resultType="Map" statementType="CALLABLE">
@@ -400,8 +471,168 @@
     		)}
     	]]>
     </select>
-    <select id="VipPurchaseRecords" parameterType="Map" resultType="cn.membermng.model.VIPPurchaseRecordsEntity">
-    	select App_Date addTime,Certify_Type VipType,Certify_SDate statrTime,Certify_EDate endTime
-    		,Certify_Fee amount from Member_VIP_Record where Member_ID = #{memberID}
+    <select id="VipPurchaseRecords" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.VIPPurchaseRecordsEntity">
+    	select 
+		App_Date 			as addTime,
+		Certify_Type 		as vipType,
+		Certify_SDate 		as statrTime,
+		Certify_EDate  		as endTime,
+		Certify_Fee 		as amount,
+		(select name1 from  dict where code1 = mvr.Certify_Type and tcode = 'DICT_VIPHQTJ') as vipTypeName
+		from Member_VIP_Record mvr
+    	where Member_ID = #{map.memberId}
+    </select>
+    
+    
+    
+    <!-- 根据会员id查询会员自动投标设置 -->
+    <select id="QueryMemberAutomaticBidSetting" parameterType="Map" resultType="cn.membermng.model.AutomaticBidSettingEntity">
+    	select Member_ID memberID,Pro_Type proType,Status status
+    	,Every_Money everyMoney,RateMin rateMin,
+    	RateMax rateMax,YearMin yearMin,YearMax yearMax,
+    	MonthMin monthMin,MonthMax monthMax,DayMin dayMin,DayMax dayMax ,
+    	Reserved_Money reservedMoney from Member_App_Auto_Set where Member_ID = #{memberID} limit 1
+    </select>
+    <!-- 根据项目类型id 查询项目类型名称 -->
+    <select id="findProjectBaseInfo" resultType="String" parameterType="Map">
+    	select Project_Name from ProjectBaseInfo where Project_ID = #{projectID} limit 1
+    </select>
+    
+    
+    <!-- 自动投标设置 -->
+     <select id="AutomaticBidSetting" resultType="Map" statementType="CALLABLE">
+    <!--result ：-1：已存在自动投标设置  -2：还未开户  -3：还未进行自动投标授权 0：成功-->
+    	<![CDATA[{call AutomaticBidSetting(
+				#{memberId,	 mode=IN,	jdbcType=BIGINT},
+				#{proType,	 mode=IN,	jdbcType=VARCHAR},
+				#{status,	 mode=IN,	jdbcType=VARCHAR},
+				#{everyMoney,	 mode=IN,	jdbcType=INTEGER},
+				#{rateMin,	 mode=IN,	jdbcType=INTEGER},
+				#{rateMax,	 mode=IN,	jdbcType=INTEGER},
+				#{yearMin,	 mode=IN,	jdbcType=INTEGER},
+				#{yearMax,	 mode=IN,	jdbcType=INTEGER},
+				#{monthMin,	 mode=IN,	jdbcType=INTEGER},
+				#{monthMax,	 mode=IN,	jdbcType=INTEGER},
+				#{dayMin,	 mode=IN,	jdbcType=INTEGER},
+				#{dayMax,	 mode=IN,	jdbcType=INTEGER},
+				#{reservedMoney,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+    <!-- 删除自动投标设置 -->
+    <delete id="delAutomaticBidSetting">
+    	delete from Member_App_Auto_Set where Member_ID=#{memberID}
+    </delete>
+    
+    <!-- 分配理财顾问列表查询 -->
+    <select id="findFinancialAdvisor"  parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.FinancialAdvisorEntity">
+    	select FA_ID fAID,fa.Service_No serviceNo,
+    	CONVERT((AES_DECRYPT(UNHEX(fa.Service_Phone),#{map.skey})) using utf8) servicePhone
+    	,mi.Logname logName,fa.Record_Date recordDate,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) realName
+    	from Financial_Advisor fa
+    	 left join Member_Info mi on fa.Member_ID= mi.Member_ID
+    	 left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_Id
+    	<where>
+    		fa.Service_Statu = 0
+    		<if test="map.servicePhone != null and map.servicePhone !='' ">
+    			servicePhone like '%${map.servicePhone}%'
+    		</if>
+    		<if test="map.realName != null and map.realName !='' ">
+    			realName like '%${map.realName}%'
+    		</if>
+    		<if test="map.serviceNo != null and map.serviceNo !='' ">
+    			serviceNo like '%${map.serviceNo}%'
+    		</if>
+    	</where>
+    </select>
+    <!-- 给会员分配理财顾问 -->
+    <select id="DistributionFinancialAdvisor" resultType="Map" statementType="CALLABLE">
+    	<!--types:1:分配理财顾问 2:变更理财顾问  result ：1:成功 ；-1; 已存在理财顾问，请到会员管理变更理财顾问-->
+    	<![CDATA[{call DistributionFinancialAdvisor(
+				#{memberID,	 mode=IN,	jdbcType=BIGINT},
+				#{advisorId,	 mode=IN,	jdbcType=BIGINT},
+				#{oldadvisorId,	 mode=IN,	jdbcType=BIGINT},
+				#{types,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+    <!-- 待分配理财顾问会员 -->
+    <select id="ExistingFinancialAdvisor" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.ExistingFinancialAdvisorEntity">
+		select * from(SELECT mi.Member_ID memberID,Logname logName,Reg_Date regDate,Member_No memberNo,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) personalName,
+		(SELECT count(*) from Member_Third_Info mti WHERE mti.Member_ID = mi.Member_ID AND mti.Member_Type=0) therStatu
+		from Member_Info mi  
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id = mi.Personal_Id
+    	<where>
+    		mi.Member_Type = #{map.memberType} and
+    	  (SELECT count(*) FROM Member_Financial_Advisor mfa WHERE mfa.Member_ID = mi.Member_ID )=0 ) cc
+		<!-- + 会员类型 -->
+    		<if test="map.memberNo!=null and map.memberNo !=''">
+    			memberNo like '%${map.memberNo}%'
+    		</if>
+    		<if test="map.logName!=null and map.logName !=''">
+    			logName like '%${map.logName}%'
+    		</if>
+    		<if test="map.personalName!=null and map.personalName !=''">
+    			personalName like '%${map.personalName}%'
+    		</if>
+    		<if test="map.startTime!=null and map.startTime !=''">
+    			regDate >= #{map.startTime}
+    		</if>
+    		<if test="map.endTime!=null and map.endTime !=''">
+    			#{map.endTime} >= regDate
+    		</if>
+    	</where>
+    </select>
+    
+    <select id="HasFinancialAdvisor" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.ExistingFinancialAdvisorEntity">
+    	select * from(SELECT mi.Member_ID memberID,Logname logName,Reg_Date regDate,Member_No memberNo,
+		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  personalName,
+		(SELECT count(*) from Member_Third_Info mti WHERE mti.Member_ID = mi.Member_ID AND mti.Member_Type=0) therStatu,
+		(SELECT CONVERT((AES_DECRYPT(UNHEX(pbis.Personal_Name),#{map.skey})) using utf8) userName FROM Member_Financial_Advisor mfa 
+			LEFT JOIN Financial_Advisor fa ON mfa.FA_ID = FA.FA_ID
+				LEFT JOIN Member_Info mei ON mei.Member_ID = mfa.Member_ID
+					LEFT JOIN Personal_Base_Info pbis ON pbis.Personal_Id = mei.Personal_Id 
+						WHERE mi.Member_ID=mfa.Member_ID LIMIT 1) fAName,
+		(SELECT mfa.FA_ID FROM Member_Financial_Advisor mfa 
+			LEFT JOIN Financial_Advisor fa ON mfa.FA_ID = fa.FA_ID
+				LEFT JOIN Member_Info mei ON mei.Member_ID = mfa.Member_ID
+					LEFT JOIN Personal_Base_Info pbis ON pbis.Personal_Id = mei.Personal_Id 
+						WHERE mi.Member_ID=mfa.Member_ID LIMIT 1) faid
+		from Member_Info mi  
+		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id = mi.Personal_Id  
+		<where>
+			mi.Member_Type = #{map.memberType} and (SELECT count(*) FROM Member_Financial_Advisor mfa WHERE mfa.Member_ID = mi.Member_ID )>0) cc
+			<if test="map.memberNo!=null and map.memberNo !=''">
+    			memberNo like '%${map.memberNo}%'
+    		</if>
+    		<if test="map.logName!=null and map.logName !=''">
+    			logName like '%${map.logName}%'
+    		</if>
+    		<if test="map.personalName!=null and map.personalName !=''">
+    			personalName like '%${map.personalName}%'
+    		</if>
+    		<if test="map.startTime!=null and map.startTime !=''">
+    			regDate >= #{map.startTime}
+    		</if>
+    		<if test="map.endTime!=null and map.endTime !=''">
+    			#{map.endTime} >= regDate
+    		</if>
+    		<if test="map.fAName!=null and map.fAName !=''">
+    			fAName like '%${map.fAName}%'
+    		</if>
+		</where>
+    </select>
+    
+    
+    <select id="ChangeHistory" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.ExistingFinancialAdvisorEntity">
+    	select pbi.Personal_Name fAName,mfa.Remove_Date regDate from Member_Financial_Advisor mfa left join Financial_Advisor fa
+    		on mfa.FA_ID = fa.FA_ID
+    		left join Staff_Info si on si.Staff_Id = fa.Staff_Id
+    		left join Personal_Base_Info pbi on si.Personal_Id = pbi.Personal_Id
+    		where mfa.Member_ID = #{map.memberID} and mfa.Remove_Date is not null
     </select>
 </mapper>   

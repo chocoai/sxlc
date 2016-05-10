@@ -49,12 +49,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>项目名称</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>借款人姓名</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>前距离还款日天数</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial Project_No" /></span>
+									<span class="con-item"><span>项目名称</span><input type="text" class="notspecial Project_Title"/></span>
+									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial Logname" /></span>
+									<span class="con-item"><span>借款人姓名</span><input type="text" class="notspecial Personal_Name"/></span>
+									<span class="con-item"><span>前距离还款日天数</span><input type="text" class="notspecial Wdate day" onFocus="WdatePicker()"/></span>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						</div>
@@ -67,45 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="panel-body">
-								<table id="table_soon_pay_count" class="display">
-									<thead>
-										<tr>
-											<th></th>
-											<th>项目编号</th>
-											<th>项目名称</th>
-											<th>借款金额</th>
-											<th>借款人用户名</th>
-											<th>借款人姓名</th>
-											<th>担保机构</th>
-											<th>应还日期</th>
-											<th>期次</th>
-											<th>当期应还总额</th>
-											<th>当期应还本金</th>
-											<th>当期应还利息</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for(int i=0;i<15;i++){
-										 %>
-										<tr>
-											<td><input type="checkbox"></td>
-											<td>0000001</td>
-											<td>交电费</td>
-											<td>jiuyang</td>
-											<td>王书记</td>
-											<td>1234455415</td>
-											<td>200000</td>
-											<td>12-01</td>
-											<td>方式</td>
-											<td>用途</td>
-											<td>来源</td>
-											<td>描述</td>
-										</tr>
-										<%
-											}
-										 %>
-									</tbody>
+								<table id="table_id" class="display">
 								</table>
 							</div>
 						</div>
@@ -115,11 +77,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<tr>
 									<td class="tt"><label>发送消息：</label></td>
 									<td class="con">
-										<select>
-											<option>请选择</option>
-											<option>站内信</option>
-											<option>短信</option>
-											<option>邮箱</option>
+										<select id="urgedType">
+											<option value="">请选择</option>
+											<option value="0">站内信</option>
+											<option value="1">短信</option>
+											<option value="2">邮箱</option>
 										</select>
 									</td>
 								</tr>
@@ -143,40 +105,102 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
-		//默认禁用搜索和排序
-		/* $.extend( $.fn.dataTable.defaults, {
-		    searching: true,
-		    ordering:  false
-		} ); */
-		// 这样初始化，排序将会打开
-		$(function() {
-			$('#table_soon_pay_count').DataTable({
-				"autoWidth" : true,
-				//"scrollY": 500,
-				//paging : false,//分页
-				
-				//"searching" : false,
-				"info" : false,//左下角信息
-				//"ordering": false,//排序
-				"aaSorting" : [[ 7, "desc"],[ 9, "desc"],[ 10, "desc"],[ 11, "desc"]],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 8]
-				} // 制定列不参与排序
-				],
-				colReorder : false,
-				"scrollX": true,
-				"sScrollX" : "100%",
-				"sScrollXInner" : "100%",
-				"bScrollCollapse" : true
-			});
-		});
+	$(function() {	
+		//表格初始化
+		$('#table_id').DataTable(
+				{	
+					ajax: {  
+						"url": appPath+"/project/getSoonPayData",   
+						"dataSrc": "results", 
+						"type": "POST",
+						"data": function ( d ) {
+							//加密
+							var Project_No = $(".Project_No").val();
+							var Project_Title = $(".Project_Title").val();
+							var Logname = $(".Logname").val();
+							var Personal_Name = $(".Personal_Name").val();
+							var day = $(".day").val();
+							//合同约定下一个还款日  条件还未加
+							
+							d.Project_No = encrypt.encrypt(Project_No);
+							d.Project_Title = encrypt.encrypt(Project_Title);
+							d.Personal_Name = encrypt.encrypt(Personal_Name);
+							d.Logname = encrypt.encrypt(Logname);
+							d.day = encrypt.encrypt(day);
+							
+							//设置后台排序参数
+							d.ordercolumn = encrypt.encrypt("REPAY_MAXTIME");//排序字段 REPAY_MAXTIME AMOUNT SDREPAY_PRINCIPAL SDREPAY_INTEREST Repay_MaxTime
+							d.orderDsec = encrypt.encrypt(0+"");//1:ASC 0:DESC
+						}  
+					},
+					columns: [  
+					          {title:'',sWidth:"3%", 
+					        	  "mRender": function (data, type, full) {
+					        		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+					        		  return sReturn;
+					        	  }
+					          },
+					          { title:"项目编号","data": "projectNo"},  
+					          { title:"项目名称","data": "projectTitle"},  
+					          { title:"借款金额","data": "investAmountValids"},  
+					          { title:"借款人用户名","data": "logname"},  
+					          { title:"借款人姓名","data": "personalName"},  
+					          { title:"担保机构","data": "guaranteeName"},  
+					          { title:"应还日期","data": "repayMaxTime"},  
+					          { title:"期次","data": "indexs"},  
+					          { title:"当期应还总额","data": "amounts"},  
+					          { title:"当期应还本金","data": "sdRepayPrincipals"},  
+					          { title:"当期应还利息","data": "sdRepayInterests"}
+					          ],
+	 			  aaSorting :[[ 7, "desc"],[ 9, "desc"],[ 10, "desc"],[ 11, "desc"]],//默认第几个排序
+		          aoColumnDefs : [
+		                          {
+		                        	  "orderable" : false,
+		                        	  "aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 8]
+		                          } // 制定列不参与排序
+		                          ],
+		          pagingType: "simple_numbers",//设置分页控件的模式  
+		          processing: true, //打开数据加载时的等待效果  
+		          serverSide: true,//打开后台分页  
+		          scrollCollapse: true,
+		          scrollX : "100%",
+				  scrollXInner : "100%",
+		          rowCallback:function(row,data){//添加单击事件，改变行的样式      
+		          },
+		});//表格初始化完毕
+		 
+		//表格单选效果(有复选框)
+		 $('#table_id tbody').on( 'click', 'tr', function () {
+			    var $this = $(this);
+			    var $checkBox = $this.find("input:checkbox");
+		        if ( $this.hasClass('selected') ) {
+		        	 $checkBox.prop("checked",false);
+		        	$this.removeClass('selected');
+		        } else {
+		        	$(".tr-checkbox").prop("checked",false);
+		        	$checkBox.prop("checked",true);
+		        	$('#table_id tr.selected').removeClass('selected');
+		        	$this.addClass('selected');
+		        }
+		  });
+		
+		 /**
+		  * 查询按钮
+		  */
+		 $(".glyphicon-search").on("click",function(){
+			$('#table_id').DataTable().ajax.reload();
+			
+		 });
+	});		
 		/* 自行编辑消息内容 */
 		var mc = UE.getEditor('msgcontent');
 		/* 发送消息 */
 		$(".obtn-sendmsg").on('click',function(){
+			 var rdata = $('#table_id').DataTable().rows('.selected').data();
+			 if(rdata.length<1){
+					layer.alert("请选择项目！",{icon:0});
+					return;
+			 }
 			layer.open({
 			    type: 1,
 			    area: ['800px', '580px'], //高宽
@@ -185,6 +209,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    btn:['确定', '取消']
 				  ,yes: function(index, layero){ //或者使用btn1
 				    //确定的回调
+				    var data={};
+				    var urgedType = $("#urgedType").val();
+				    var urgedDetail = mc.getContent();
+				    data.urgedType = encrypt.encrypt(urgedType); 
+				    data.urgedDetail = encrypt.encrypt(urgedDetail); 
+// 				    data.applyID = rdata[0].applyID;
+// 				    data.repayId = rdata[0].repayId;
+				    $.ajax( {  
+						url:appPath+"/project/sendMessage",
+						data:data,
+						type:'post',  
+						cache:false,  
+						dataType:'json',  
+						success:function(data) { 
+							if(data==1){
+								layer.alert("操作成功",{icon:1});
+								$(".layui-layer-btn1").click();
+							}else if(data==0){
+								layer.alert("操作失败",{icon:2});  
+							}
+						},  
+						error : function() {  
+							layer.alert("服务器异常",{icon:2});  
+						}  
+					});
 				  	
 				  },cancel: function(index){//或者使用btn2（concel）
 				  	//取消的回调

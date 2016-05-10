@@ -68,6 +68,12 @@ public class NewbieExperienceServiceImpl implements NewbieExperienceService {
 		return newbieExperienceListDao.getNewbieExperienceSet();
 		
 	}
+	@Override
+	public NewbieExperienceSetEntity getNewbieExperienceSetIndex() {
+		
+		return newbieExperienceListDao.getNewbieExperienceSetIndex();
+		
+	}
 
 }
 

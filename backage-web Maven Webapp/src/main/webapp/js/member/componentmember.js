@@ -33,6 +33,13 @@ $(function(){
  * 显示所有投资会员
  */
 function showMemberInvestList(){
+	var memberType = $("#memberType").val();
+	var Name = "姓名";
+	var Phone = "联系电话";
+	if(memberType ==1){
+		Name ="企业名称";
+		Phone ="联系人电话";
+	}
 	$('#table_id').DataTable(
 			{	autoWidth : false,
 				scrollY : 500,
@@ -57,6 +64,7 @@ function showMemberInvestList(){
 		            "url": appPath+"/member/getComponentMembers.do",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {
+		            	var memberType = $("#memberType").val();
 		            	var member_Name = $("#member_Name").val();//会员姓名
 		            	var user_Name =  $("#user_Name").val();//用户名
 		            	var phone_Num =  $("#phone_Num").val();//电话
@@ -64,11 +72,13 @@ function showMemberInvestList(){
 		            	encrypt.setPublicKey(publicKey_common);
 		            	
 		            	//result 为加密后参数
+		            	memberType= encrypt.encrypt(memberType+"");
 		            	member_Name = encrypt.encrypt(member_Name);
 		            	user_Name = encrypt.encrypt(user_Name);
 		            	phone_Num = encrypt.encrypt(phone_Num);
+		            	d.memberType = memberType;
 		            	d.memberName=member_Name;
-		            	d.personalName=user_Name;
+		            	d.userName=user_Name;
 		            	d.personalPhone=phone_Num;
 		            } 
 		        },
@@ -81,7 +91,7 @@ function showMemberInvestList(){
 		                	  }
 		                  },
 		                  { title:"会员编号","data": "memberNo"},   
-		                  { title:"姓名","data": "personalName" },  
+		                  { title:Name,"data": "personalName" },  
 		                  { title:"用户名","data": "logname" },
 		                  { title:"所属地区","mRender": function(data, type, full){
 		                  		var str="";
@@ -104,7 +114,7 @@ function showMemberInvestList(){
 		                  充值手续费合计（会员）、投资总额、累计收益管理费、提现总额、提现手续费合计（平台）、
 		                  提现手续费合计（会员）、借款总额、累计借款管理费、在借金额、已结清金额、
 		                  累计逾期未还本金、累计逾期未还利息。*/
-		                  { title:"手机号码","data": "personalPhone"},  
+		                  { title:Phone,"data": "personalPhone"},  
 		                  { title:"第三方账户","data": "thirdPartyAccount" },  
 		                  { title:"账户余额(元)","data": "sUserBalance" },
 		                  { title:"冻结金额(元)","data": "sFrozen"},

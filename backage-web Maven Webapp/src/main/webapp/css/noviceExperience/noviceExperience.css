@@ -1,0 +1,64 @@
+.drawSet {
+	padding:0 20px;
+}
+.drawSet input{
+	width:200px;
+	height:25px;
+	line-height:25px;
+	vertical-align:middle;
+}
+.drawSet .periodes{
+	min-width:100px;
+}
+.drawSet select{
+	width:200px;
+	height:25px;
+	border:1px solid #ccc;
+	line-height:25px;
+}
+.drawSet .dateInput{
+	width:89px;
+	margin-right:7px;
+}
+.drawSet .day{
+	width:50px;
+}
+.drawSet .dayInput{
+	width:146px;
+}
+td.tt{
+	display:inline-block;
+	padding:10px 5px 10px 25px;
+	min-width:165px;
+	text-align:right;
+}
+
+
+.addBtn,
+.cancelBtn{
+	border:none;
+	padding:3px 10px;
+	border-radius:3px;
+	outline:none;
+}
+.addBtn{
+	margin-right:10px;
+    background: #2e8ded;
+    color: #fff;
+}
+.addBtn:hover{
+	background:#3E75B8;
+}
+.cancelBtn{
+	display:inline-block;
+	margin-right:30px;
+    background-color: #f1f1f1;
+    text-decoration:none;
+	color:#333;
+	cursor:pointer;
+}
+.cancelBtn:hover{
+	background:#ccc;
+	text-decoration:none;
+	color:#333;
+}

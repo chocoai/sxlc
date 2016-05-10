@@ -1,6 +1,7 @@
 package cn.springmvc.dao.impl;
 
-import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,12 +10,14 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
-
+import cn.membermng.model.AutomaticBidSettingEntity;
+import cn.membermng.model.EnterpriseLicenseAttestEntity;
+import cn.membermng.model.ExistingFinancialAdvisorEntity;
+import cn.membermng.model.FinancialAdvisorEntity;
 import cn.membermng.model.MemberAttestByTypeEntity;
 import cn.membermng.model.MemberAttestTypeEntity;
 import cn.membermng.model.PersonalAttestAttachEntity;
@@ -57,7 +60,7 @@ public class SelectCertificationAuditDaoImpl extends SqlSessionDaoSupport implem
 	public List<VIPPurchaseRecordsEntity> VipPurchaseRecords(PageEntity page,Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectList("EnterpriseCAXML.selectMemberAttestByType",map,new RowBounds(page.getPageNum(),page.getPageSize()));
+		return getSqlSession().selectList("EnterpriseCAXML.VipPurchaseRecords",page,new RowBounds(page.getPageNum(),page.getPageSize()));
 	}
 	
 	public List<MemberAttestByTypeEntity> realNameAuthentication(
@@ -85,22 +88,78 @@ public class SelectCertificationAuditDaoImpl extends SqlSessionDaoSupport implem
 		return getSqlSession().selectList("EnterpriseCAXML.EducationCertification",page,new RowBounds(page.getPageNum(),page.getPageSize()));
 	}
 	@Override
-	public List<MemberAttestByTypeEntity> EnterpriseOrganizationCode(
+	public List<EnterpriseLicenseAttestEntity> EnterpriseOrganizationCode(
 			PageEntity page) {
 		
-		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectList("EnterpriseCAXML.EnterpriseOrganizationCode",page,new RowBounds(page.getPageNum(),page.getPageSize()));
+		String xml = (String)page.getMap().get("xmlSql");
+		return getSqlSession().selectList(xml,page,new RowBounds(page.getPageNum(),page.getPageSize()));
 	}
 	@Override
-	public List<MemberAttestByTypeEntity> EnterprisebusinessLC(PageEntity page) {
+	public List<EnterpriseLicenseAttestEntity> EnterprisebusinessLC(PageEntity page) {
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("EnterpriseCAXML.EnterprisebusinessLC",page,new RowBounds(page.getPageNum(),page.getPageSize()));
 	}
 	@Override
-	public List<MemberAttestByTypeEntity> accountLicenseCode(PageEntity page) {
+	public List<EnterpriseLicenseAttestEntity> accountLicenseCode(PageEntity page) {
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("EnterpriseCAXML.accountLicenseCode",page,new RowBounds(page.getPageNum(),page.getPageSize()));
+	}
+	@Override
+	public AutomaticBidSettingEntity QueryMemberAutomaticBidSetting(
+			long memberId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberID", memberId);
+		AutomaticBidSettingEntity aEntity=getSqlSession().selectOne("EnterpriseCAXML.QueryMemberAutomaticBidSetting",map);
+		if (aEntity!=null) {
+			aEntity.setsEveryMoney(IntegerAndString.LongToString(aEntity.getEveryMoney()));
+			aEntity.setsReservedMoney(IntegerAndString.LongToString(aEntity.getReservedMoney()));
+			if (aEntity.getProType()!=null && !aEntity.getProType().equals("")) {
+				String [] sty=aEntity.getProType().split(",");
+				String ss="";
+				for (int i = 0; i < sty.length; i++) {
+					Map<String, Object> map1 = new HashMap<String, Object>();
+					String pbi="";
+					//查询借款类型
+					pbi=getSqlSession().selectOne("EnterpriseCAXML.findProjectBaseInfo",map1);
+					if (ss!="") {
+						ss+=","+pbi;
+					}else {
+						ss+=pbi+",";
+					}
+				}
+				aEntity.setProTypesString(ss);
+			}
+		}
+		// TODO Auto-generated method stub return null;
+		return aEntity;
+	}
+	
+	@Override
+	public List<FinancialAdvisorEntity> findFinancialAdvisor(PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("EnterpriseCAXML.findFinancialAdvisor",page,new RowBounds(page.getPageNum(),page.getPageSize()));
+	}
+	@Override
+	public List<ExistingFinancialAdvisorEntity> ExistingFinancialAdvisor(
+			PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("EnterpriseCAXML.ExistingFinancialAdvisor",page,new RowBounds(page.getPageNum(),page.getPageSize()));
+	}
+	@Override
+	public List<ExistingFinancialAdvisorEntity> HasFinancialAdvisor(
+			PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("EnterpriseCAXML.HasFinancialAdvisor",page,new RowBounds(page.getPageNum(),page.getPageSize()));
+	}
+	@Override
+	public List<ExistingFinancialAdvisorEntity> ChangeHistory(PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("EnterpriseCAXML.ChangeHistory",page,new RowBounds(page.getPageNum(),page.getPageSize()));
 	}
 }

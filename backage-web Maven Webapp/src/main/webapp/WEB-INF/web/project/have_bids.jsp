@@ -16,6 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/project/apply_faild.css" type="text/css"></link>
 </head>
 <!-- 借款管理----------已流标 -->
 <body class="nav-md">
@@ -49,14 +50,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>借款人姓名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>项目发布日期</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
-									<span class="con-item"><span>借款期限</span><input type="text" class="notspecial" /><select><option>请选择</option><option>天</option><option>月</option></select></span>
-									<span class="con-item"><span>借款金额</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>流标时间</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()" /></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial Project_No"/></span>
+									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial Logname" /></span>
+									<span class="con-item"><span>借款人姓名</span><input type="text" class="notspecial Personal_Name" /></span>
+									<span class="con-item"><span>项目发布日期</span><input type="text" id="startDate" class="notspecial Wdate dateInput Record_Date_Min" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput Record_Date_Max" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item"><span>借款期限</span><input type="text" class="notspecial w1 Deadline"/><select class="w2 Deadline_Type"><option value="">请选择</option><option value="0">天</option><option value="1">月</option><option value="2">年</option></select></span>
+									<span class="con-item"><span>借款金额</span><input type="text" class="notspecial dateInput Amount_Min" />-&nbsp;&nbsp;<input type="text" class="notspecial dateInput Amount_Max"/></span>
+									<span class="con-item"><span>流标时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput Real_End_Date_Min" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput Real_End_Date_Max" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<button  type ="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						</div>
@@ -67,50 +68,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							  	<div class="action_item">
 							  		<button id="" class="obtn glyphicon glyphicon-plus obtn-export">导出</button>
 						  			<button id="have_bids_invest_record" class="obtn glyphicon glyphicon-plus">查看投资记录</button>
+						  			<input id="applyID" type="hidden">
 								</div>
 							</div>
 						<div class="panel-body">
-						<table id="table_have_bids" class="display">
-							<thead>
-								<tr>
-									<th></th>
-									<th>项目编号</th>
-									<th>借款人用户名</th>
-									<th>借款人姓名</th>
-									<th>项目名称</th>
-									<th>产品类型</th>
-									<th>借款期限</th>
-									<th>借款金额</th>
-									<th>年化利率</th>
-									<th>项目发布日期</th>
-									<th>投标开始结束日期</th>
-									<th>借款进度</th>
-									<th>流标时间</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-									for(int i=0;i<15;i++){
-								 %>
-								<tr>
-									<td><input type="checkbox"></td>
-									<td>0000001</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-									<td>用途</td>
-									<td>来源</td>
-									<td>描述</td>
-									<td><a href="javascript:;" class="btn-progress">查看</a></td>
-									<td>2016-01-02</td>
-								</tr>
-								<%
-									}
-								 %>
-							</tbody>
+						<table id="table_id" class="display">
 						</table>
 					</div>
 				</div>
@@ -124,38 +86,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script src="js/project/have_bids.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-				//默认禁用搜索和排序
-				/* $.extend( $.fn.dataTable.defaults, {
-				    searching: true,
-				    ordering:  false
-				} ); */
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#table_have_bids').DataTable({
-						"autoWidth" : true,
-						"scrollY": 500,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [[ 7, "desc"],[ 11, "desc"],[ 12, "desc"]],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 8, 9, 10]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
 		</div>
 	</div>
 </body>

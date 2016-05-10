@@ -98,7 +98,7 @@
 		<id column="member_id"				property="id"/>
 		<result	column="Personal_Name"		property="baseInfo.personalName"/>
 		<result	column="Nation_Id"			property="baseInfo.nationId"/>
-		<result	column="SexID"				property="baseInfo.sexID"/>
+		<result	column="SexID"				property="baseInfo.sexId"/>
 		<result	column="Personal_IDCard"	property="baseInfo.personalIDCard"/>
 		<result	column="Education"			property="baseInfo.education"/>
 		<result	column="Marital_Status"		property="baseInfo.maritalStatus"/>
@@ -232,42 +232,89 @@
 		<result	column="Reg_Date"			property="regDate"/>
 		<result	column="Record_Date"		property="recordDate"/>
 	</resultMap>
+	
+	
 	<!-- 会员邀请列表 -->
-	<select id="friendInvitation" parameterType="Map" resultMap="friendInvitation">
+	<select id="friendInvitation" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="friendInvitation">
 		select Logname,Personal_Phone,Reg_Date,mti.Record_Date
 		from member_info mi
 		left join personal_base_info pbi on pbi.Personal_Id = mi.Personal_ID
 		left join Member_Third_Info mti on mti.Member_ID = mi.Member_ID and mti.Member_Type = mi.Member_Type
-		where BeinvitateCode = (select InvitateCode from member_info where member_id = #{memberId} and member_type = #{memberType})
+		where BeinvitateCode = (select InvitateCode from member_info where member_id = #{map.memberId} and member_type = #{map.memberType})
 	</select>
 	
 	
-	<resultMap type="cn.membermng.model.IntegralRecords" id="addPoints">
-		<result		column="Quantity"					property="quantity"/>
-		<result		column="Integral_Event_ID"			property="integralEventId"/>
-		<result		column="Integral_Residue"			property="integralResidue"/>
-		<result		column="Integral_Direction"			property="integralDirection"/>
-	</resultMap>
+	<!-- 好友列表 -->
+	<select id="friendList" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.Friends">
+		
+		SELECT  CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) USING utf8) AS username,f.friendId,f.addTime FROM Member_Info mi INNER JOIN (
+			SELECT Member_ID_Receive AS friendId,Check_Date AS addTime FROM Member_FriendShip_Record WHERE Member_ID_Apply=#{map.memberId} AND Statu=1 AND Relieve_Statu=0
+			UNION ALL SELECT Member_ID_Apply,Check_Date FROM Member_FriendShip_Record WHERE Member_ID_Receive=#{map.memberId} AND Statu=1 AND Relieve_Statu=0
+		) AS f ON mi.Member_ID = f.friendId
+		LEFT JOIN personal_base_info pbi ON pbi.Personal_Id = mi.Personal_ID
+	</select>
+	
+	<!-- 待确认好友列表 -->
+	<select id="selectConfirmFriendList" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.Friends">
+		
+		SELECT  CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) USING utf8) AS username,
+		f.friendId,f.addTime,f.statu,f.type FROM Member_Info mi INNER JOIN
+		 (
+		 	<!-- 我想加的 -->
+			SELECT Member_ID_Receive AS friendId,Check_Date AS addTime,statu as statu ,1 as type 
+			FROM Member_FriendShip_Record 
+			WHERE Member_ID_Apply=#{map.memberId} AND statu in (-1,0) 
+			
+			<!-- 想加我的 -->
+			UNION ALL SELECT Member_ID_Apply,Check_Date,statu,0 
+			FROM Member_FriendShip_Record 
+			WHERE Member_ID_Receive=#{map.memberId} AND statu=0 
+		) AS f ON mi.Member_ID = f.friendId
+		LEFT JOIN personal_base_info pbi ON pbi.Personal_Id = mi.Personal_ID
+		order by f.type desc
+	</select>
+	
+	
+	
 	<!-- 会员获取积分记录 -->
-	<select id="addPoints" parameterType="Map" resultMap="addPoints">
-		select Quantity,Integral_Event_ID,Integral_Residue,Integral_Direction from Integral_Records where member_id = #{memberId}
+	<select id="addPoints" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.IntegralGETRecord">
+		select
+		quantity,
+		(select name1 from dict where tcode='DICT_JFLX' and code1 = ir.Integral_Type) as pointName,
+		ir.Record_Time as dateTime,
+		Integral_Residue as availableIntegral
+		from Integral_Records ir 
+		where Member_ID = #{map.memberId} order by Record_Time desc
 	</select>
+	
 	
 	<!-- 会员积分信息 -->
-	<select id="points" parameterType="Map" resultType="HashMap">
+	<select id="points" parameterType="Map" resultType="cn.membermng.model.MyPoint">
 		select 
-		(select sum(Quantity) from Integral_Records where Integral_Direction = 1 and member_id = mi.Member_ID) as sumPoint
-		,mi.Integral
-		,(select sum(Quantity) from Integral_Records where Integral_Direction = 1 and member_id = mi.Member_ID) as sumIntegral
+		(select sum(Quantity) from Integral_Records where Integral_Direction = 1 and member_id = mi.Member_ID) as cumulativeIntegral,
+		mi.Integral as availableIntegral,
+		(select sum(Quantity) from Integral_Records where Integral_Direction = -1 and member_id = mi.Member_ID) as usedIntegral
 		from member_info mi where mi.member_id = #{memberId} and member_Type = #{memberType}
 	</select>
 	
+	
 	<!-- 会员积分使用记录 -->
-	<select id="rePoints" parameterType="Map" resultMap="friendInvitation">
-		
+	<select id="rePoints" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.ExchangeRecords">
+		select 
+			ir.Quantity	as 				points,
+			(select name1 from dict where tcode ='DICT_DHLX' and code1 = orr.Exchange_Type)		as	eTypeName,
+			(select Commodity_Name from Commodity_Info where Commodity_ID = co.Commodity_ID)	as	goodName,
+			co.Quantity as numbers,
+			orr.Exchange_Time as eTime,
+			orr.Receive_Time as confirm,
+			orr.Order_Type as eType,
+			orr.order_id as eId,
+			(select name1 from dict where tcode='DICT_DDZT' and Order_Type = code1) as statusName 
+		from Integral_Records ir
+		left join Order_Records 	orr on orr.Order_ID = ir.Integral_Event_ID
+		left join Commodity_Order	co 	on co.Order_ID 	= orr.Order_ID
+		where Integral_Type = 5 and ir.Member_ID = #{map.memberId} order by Exchange_Time desc
 	</select>
-	
-	
 	
 	
 	
@@ -289,8 +336,8 @@
 		<result	column="Receive_Date"			property="receiveDate"/>
 		<result	column="Statu"					property="statu"/>
 	</resultMap>
-	<select id="redPackages" parameterType="Map" resultMap="redPackage">
-		select Gift_Amount,Gift_Type,Receive_Date,End_Date,Statu from Member_Redpackets mr where mr.Member_ID = #{member_id}		
+	<select id="redPackages" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="redPackage">
+		select Gift_Amount,Gift_Type,Receive_Date,End_Date,Statu from Member_Redpackets mr where mr.Member_ID = #{map.member_id}		
 	</select>
 	
 	
@@ -300,13 +347,32 @@
 	</select>
 	
 	<!-- 获取我的代金券获取记录 -->
-	<select id="vouchers" parameterType="Map" resultType="cn.membermng.model.MemberVouchers">
-		select Gift_Amount as sgiftAmount,Gift_Type as giftType,Receive_Date as receiveDate from Member_Vouchers where Member_ID = #{memberId}
+	<select id="vouchers" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.MemberVouchers">
+		select 
+		Gift_Amount 	as sgiftAmount,
+		Gift_Type 		as giftType,
+		Receive_Date 	as receiveDate 
+		from Member_Vouchers where Member_ID = #{map.memberId}
 	</select>
 	
+	
+	<!-- 获取我的账户总额 -->
+	<select id="getRemainderTotal" statementType="CALLABLE" parameterType="Map">
+		call GetRemainderTotal(
+			#{memberId,					mode=IN,				jdbcType=BIGINT},
+			#{sKey,						mode=IN,				jdbcType=VARCHAR},
+			#{result,					mode=OUT,				jdbcType=BIGINT}
+		)
+	</select>
+	
+	
 	<!-- 获取我的代金券使用记录 -->
-	<select id="addMyVouchers" parameterType="Map" resultType="cn.membermng.model.MemberVouchers">
-		select Gift_Amount as sgiftAmount,Invest_Typeas giftType,(select Invest_Date from Invest_Record ir where ir.Invest_Id = mvu.Invest_Id) as receiveDate ,statu from Member_Vouchers_UseRecord mvu 
+	<select id="addMyVouchers" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.MemberVouchers">
+		select Gift_Amount as sgiftAmount,
+		Invest_Typeas giftType,
+		(select Invest_Date from Invest_Record ir where ir.Invest_Id = mvu.Invest_Id and ir.memberId = #{memberId}) as receiveDate ,
+		statu 
+		from Member_Vouchers_UseRecord mvu  
 	</select>
 	
 	
@@ -322,6 +388,52 @@
 		from member_info mi where mi.member_id = #{memberId} and mi.member_type = #{memberType}
 	</select>
 	
+	<!-- 查询陌生人 -->
+	<select id="serachMemberByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.MemberInfo">
+		select mi.member_id,mi.Logname,pbi.Personal_Name,pbi.Personal_Phone
+		from member_info mi 
+		left join personal_base_info pbi on pbi.Personal_Id = mi.Personal_ID
+		where 	CONVERT(AES_DECRYPT(UNHEX(mi.Logname),#{sKey}) using utf8) 			like '#{memberName}' 
+		or	 	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{sKey}) using utf8) 	like '#{memberName}'
+		or	 	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{sKey}) using utf8) 	like '#{memberName}'	
+	</select>
+	
+	<!--  忘记密码-查询登录名与手机号是否匹配 -->
+	<select id="selectMemberIsExist"  parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM member_info mi INNER JOIN Personal_Base_Info pbi 
+		ON mi.Personal_Id=pbi.Personal_Id WHERE mi.Logname=#{loginName} AND pbi.Personal_Phone=#{phone}
+	</select>
+	
+	<!-- 忘记密码-根据手机号查询用户ID -->
+	<select id="selectMemberIdByPhone"  parameterType="Map" resultType="int">
+		SELECT mi.Member_ID FROM member_info mi INNER JOIN Personal_Base_Info pbi 
+		ON mi.Personal_Id=pbi.Personal_Id WHERE pbi.Personal_Phone=#{phone}
+	</select>
+	
+	<!-- 添加好友 -->
+	<select id="applyAddFriends" statementType="CALLABLE" parameterType="Map" >
+		call applyAddFriends(
+			#{myId,					mode=IN,			jdbcType=BIGINT},
+			#{fId,					mode=IN,			jdbcType=BIGINT},
+			#{result,				mode=OUT,			jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 同意好友申请 -->
+	<select id="agreeAapplyForFriend" statementType="CALLABLE" parameterType="Map" >
+		call agreeAapplyForFriend(
+			#{myId,					mode=IN,			jdbcType=BIGINT},
+			#{fId,					mode=IN,			jdbcType=BIGINT},
+			#{result,				mode=OUT,			jdbcType=INTEGER}
+		)
+	</select>
 	
 	
+	<!-- 确认收货 -->
+	<select id="confirmReceipt" statementType="CALLABLE" parameterType="Map">
+		call confirmReceipt(
+			#{memberId,				mode=IN,			jdbcType=BIGINT},
+			#{eId,					mode=IN,			jdbcType=BIGINT}
+		)
+	</select>
 </mapper>

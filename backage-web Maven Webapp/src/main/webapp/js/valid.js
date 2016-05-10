@@ -429,7 +429,9 @@ var roleNamea = function(gets,obj,curform,datatype) {
 };
 
 var roleNameb = function(gets,obj,curform,datatype) {
-	if(!roleNameB.test(gets)) {
+	if(!gets){
+		return "不可为空";
+	}else if(!roleNameB.test(gets)) {
 		return "30字以下";
 	}else {
 		return true;
@@ -437,7 +439,9 @@ var roleNameb = function(gets,obj,curform,datatype) {
 };
 
 var rolemarkC = function(gets,obj,curform,datatype) {
-	if(!roleMark.test(gets)) {
+	if(!gets){
+		return "不可为空";
+	}else if(!roleMark.test(gets)) {
 		return "125字以内";
 	}else {
 		return true;

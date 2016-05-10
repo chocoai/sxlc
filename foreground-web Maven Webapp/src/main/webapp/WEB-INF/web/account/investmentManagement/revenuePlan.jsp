@@ -5,6 +5,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
@@ -12,11 +13,16 @@
     <title>收益计划</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
+	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/investmentManagement/myInvestment.css">
 </head>
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
    	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
+  	<script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    	var basePath = '<%=basePath%>';
+    </script>
    	<div class="main">
    		<div class="clearfix">
 		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
@@ -29,6 +35,9 @@
    					<div class="revenuePlanContent">
    						<div class="myInvestmentH">
 	   						<div class="revenueRecord">回收中的投资-收益计划</div>
+	   						<input type="hidden" id="tol" value="${tol }">
+	   						<input type="hidden" id="cpage" value="${cpage }">	
+	   						<input type="hidden" id="pageSize" value="${pageSize }">
 	   					</div>
 	   					<div class="myInvestmentM">
 	   						<ul class="revenuePlanUl">
@@ -44,51 +53,23 @@
 						   				<div class="overdueReceivables">逾期应收收益</div>
 			   						</div>
 	   							</li>
-	   							<%for(int i=0;i<5;i++){%>
-	   							<li>
-	   								<div class="terms divOutside">
-			   							<div class="divIntside">
-			   								<div>1</div>
-			   							</div>
-			   						</div>
-			   						<div class="receivablePrincipal divOutside">
-			   							<div class="divIntside">
-			   								<div class="moneyFormat">1000</div>
-			   							</div>
-			   						</div>
-			   						<div class="interestReceivable divOutside">
-			   							<div class="divIntside">
-			   								<div class="moneyFormat">10</div>
-			   							</div>
-			   						</div>
-			   						<div class="scheduledPaymentDate divOutside">
-			   							<div class="divIntside">
-			   								<div>2016-04-07<br>12:12:00</div>
-			   							</div>
-			   						</div>
-			   						<div class="actualPaymentDate divOutside">
-			   							<div class="divIntside">
-			   								<div>--</div>
-			   							</div>
-			   						</div>
-			   						<div class="whetherThePayment divOutside">
-			   							<div class="divIntside">
-			   							<div class="unRepayment">未还</div>
-			   							</div>
-			   						</div>
-			   						<div class="interestReceived divOutside">
-			   							<div class="divIntside">
-			   								<div>--</div>
-			   							</div>
-			   						</div>
-			   						<div class="overdueReceivables divOutside">
-			   							<div class="divIntside">
-			   								<div class="moneyFormat">10</div>
-			   							</div>
-			   						</div>
-	   							</li>
-	   							<%}%>
+	   							<c:forEach items="${list }" var="ii">
+	   								<li>
+		   								<div class="terms divOutside"><div class="divIntside"><div>${ii.indexs }</div></div></div>
+				   						<div class="receivablePrincipal divOutside"><div class="divIntside"><div class="moneyFormat">${ii.sdRecvPrincipals }</div></div></div>
+				   						<div class="interestReceivable divOutside"><div class="divIntside"><div class="moneyFormat">${ii.sdRecvInterests }</div></div></div>
+				   						<div class="scheduledPaymentDate divOutside"><div class="divIntside"><div>${ii.sdRecvMaxTime }</div></div></div>
+				   						<div class="actualPaymentDate divOutside"><div class="divIntside"><div>
+					   						<c:if test="${ii.recvTime != null || ii.recvTime != ''}">${ii.recvTime }</c:if>
+					   						<c:if test="${ii.recvTime == null || ii.recvTime == ''}">--</c:if>
+				   						</div></div></div>
+				   						<div class="whetherThePayment divOutside"><div class="divIntside"><div class="unRepayment">${ii.replaystatu }</div></div></div>
+				   						<div class="interestReceived divOutside"><div class="divIntside"><div>${ii.recvAmounts }</div></div></div>
+				   						<div class="overdueReceivables divOutside"><div class="divIntside"><div class="moneyFormat">${ii.overdueAmounts }</div></div></div>
+		   							</li>
+	   							</c:forEach>
 	   						</ul>
+	   						<div id="pager"></div>
 	   					</div>
    					</div>
    				</div>
@@ -99,6 +80,7 @@
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" src="js/account/investmentManagement/myInvestment.js"></script>
+	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
+	<script type="text/javascript" src="js/account/investmentManagement/revenuePlan.js"></script>
 </body>
 </html>

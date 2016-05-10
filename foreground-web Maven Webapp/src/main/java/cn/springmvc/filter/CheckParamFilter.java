@@ -17,6 +17,8 @@ import cn.springmvc.httpRequest.DecryptHttpServletRequest;
 
 /***
 * 拦截用户请求  重写请求对象 
+* <br>
+* 解密请求中的参数
 * @author 李杰
 * @since 
 * @date 2016-3-30 下午3:18:53 
@@ -34,6 +36,12 @@ public class CheckParamFilter implements Filter{
 		exitRout.add("openThirdAccountCallbackPage");				//开户回调1
 		exitRout.add("openThirdAccountCallback");					//开户回调2
 		exitRout.add("fundList");									//我要投资-获取投资列表
+		exitRout.add("authorizedCallBack");							//二次分配授权
+		exitRout.add("authorizedCallBackPage");						//二次分配授权
+		exitRout.add("loanRechargeReturn");	
+		exitRout.add("loanRechargeNotify");
+		exitRout.add("loanList");									//我要投资-获取债权投资列表
+		exitRout.add("debtInvestmentBack");							//债权投资回调
 	}
 
 	@Override

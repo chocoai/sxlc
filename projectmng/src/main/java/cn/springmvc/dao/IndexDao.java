@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.springmvc.model.CreditorTransferListEntity;
+import cn.springmvc.model.IndexStaticsEntity;
 import cn.springmvc.model.InvestEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;
 
@@ -36,7 +37,7 @@ public interface IndexDao {
 	 *                                    totalLoanAmount（总的借款）,RiskReserveFund(前台显示风险备付金)}
 	 * @date 2016-4-8 上午11:38:50
 	 */
-	public Map<String, Object> selectIndexStatistic(String sKey);
+	public IndexStaticsEntity selectIndexStatistic(String sKey);
 	/**
 	 * 首页投资列表 
 	 * @author 刘利   

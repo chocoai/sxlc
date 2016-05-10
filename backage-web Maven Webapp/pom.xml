@@ -201,6 +201,26 @@
 	     <artifactId>projectmng</artifactId>
 	     <version>0.0.1-SNAPSHOT</version> 
     </dependency> 
+    <!--佣金  -->
+    <dependency> 
+	     <groupId>product_p2p</groupId>
+	     <artifactId>invitemaster_mng</artifactId>
+	     <version>0.0.1-SNAPSHOT</version> 
+    </dependency> 
+    <!--接口  -->
+    <dependency> 
+	     <groupId>product_p2p</groupId>
+  		 <artifactId>cn.sxlc.account.manager</artifactId>
+  		 <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
+    <!-- 积分商城 -->
+    <dependency> 
+	     <groupId>product_p2p</groupId>
+  		 <artifactId>integralmall</artifactId>
+  		 <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
     
   </dependencies>
   <build>

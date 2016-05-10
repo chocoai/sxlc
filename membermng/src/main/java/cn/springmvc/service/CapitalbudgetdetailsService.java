@@ -137,7 +137,7 @@ public interface CapitalbudgetdetailsService {
 	 * @Description: TODO 
 	 * @param {memberID,memberType }
 	 * @param @return 设定文件 
-	 * @return Map 返回类型 {totalfee(充值手续费),totalWithdrawal(实际到账总额 )}
+	 * @return Map 返回类型 {totalfee(提现手续费),totalWithdrawal(实际到账总额 )}
 	 * @date 2016-4-14 下午4:00:18
 	 */
 	public Map<String,Object> selectTotalWithdrawalInfo(Map<String,Object> map);

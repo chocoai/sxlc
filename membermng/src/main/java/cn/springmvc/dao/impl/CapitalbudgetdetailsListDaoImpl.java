@@ -71,7 +71,7 @@ public class CapitalbudgetdetailsListDaoImpl extends SqlSessionDaoSupport  imple
 			PageEntity pageEntity) {
 		
 		//memberTradingMap MemberTradingRecords.xml
-		return getSqlSession().selectList("memberTradingMap.selectWithdrawalList",pageEntity);
+		return getSqlSession().selectList("memberTradingMap.selectWithdrawalList",pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		
 	}
 

@@ -1,17 +1,19 @@
+<%@page import="product_p2p.kit.datatrans.IntegerAndString"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-String btn = request.getParameter("btn");
-int content = Integer.parseInt(request.getParameter("content"));
+String btn = request.getParameter("draw");
+int content = IntegerAndString.StringToInt(request.getParameter("content"),0);
+int typeId = IntegerAndString.StringToInt(request.getParameter("start"),1);
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 
 <head>
 	<base href="<%=basePath%>">
-	<title>公用查看或认证</title>
+	<title>车产认证</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -47,30 +49,34 @@ int content = Integer.parseInt(request.getParameter("content"));
 							<fieldset>
 								<legend class="titleLen"></legend>
 								<div class="introduce">
-									<span><samp>姓名：</samp>某某某</span>
-									<span><samp>会员登录名：</samp>某某某</span>
-									<span><samp>品牌：</samp>玛莎拉蒂</span>
-									<span><samp>车牌：</samp>川A111111</span>
+									<span><samp>姓名：</samp><label id="realName"></label></span>
+									<span><samp>会员登录名：</samp><label id="logName"></label></span>
+									<span><samp>品牌：</samp><label id="brand"></label></span>
+									<span><samp>车牌：</samp><label id="model"></label></span>
 								</div>
 								<div class="introduce">
-									<span><samp>型号：</samp>1564513514</span>
-									<span><samp>价值：</samp><label class="moneyFormat">10000</label>元</span>
-									<span><samp>有效期：</samp>2016-10-10</span>
+									<span><samp>型号：</samp><label id="licensePlate"></label></span>
+									<span><samp>价值：</samp><label class="moneyFormat" id="property"></label>元</span>
+									<samp>有效期：</samp><input readonly="readonly" id="sEndDate" name="sEndDate" class="Wdate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
 								</div>
-								<div><samp class="appendix">认证附件：</samp><img src="resoures/img/accessory.jpg" ><img src="resoures/img/accessory.jpg" ></div>
-								<div><samp>审核意见：</samp><select class="verifySelect"><option>同意</option><option>不同意</option></select></div>
+								<div><samp class="appendix">认证附件：</samp>
+										<table >
+												<tbody id="addImg" >
+												
+												</tbody>
+										</table>
+								
+								</div>
+								<div><samp>审核意见：</samp><select class="verifySelect" id="statu"><option value="2">同意</option><option value="3">打回</option></select></div>
 								<div>
-									<%
-										if(btn.equals("1")){
-									%>
-										<button class="submitAuthen">提交</button>
-									<%		
-										}else{
-									%>
+									<div id="submit" style="display: none">
+										<input type="hidden" id="applyId">
+										<input type="hidden" id="memberId">
+										<button class="submitAuthen" onclick="submitIdentyList()">提交</button>
+									</div>
+									<div id="back"   style="display: none">
 										<button class="backAuthen">返回</button>
-									<%
-										}
-									%>
+									</div>
 								</div>
 							</fieldset>
 						</div>
@@ -86,24 +92,12 @@ int content = Integer.parseInt(request.getParameter("content"));
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/member/member.js"></script>
 	<script type="text/javascript" src="js/member/personAuthen.js"></script>
-	<script type="text/javascript">
-		var content = <%=content %>
-		$("#"+content).addClass("active").siblings().removeClass("active");
-		$(".titleLen").text($('#'+content).text());
-		$(function(){
-			$('#table_id').DataTable({
-				"scrollX":true,
-				//"scrollY":true,
-				"aaSorting" : [  ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,1,2,3,4,5]
-				} // 制定列不参与排序
-				],
-			});
-		});
-		
+	<script type="text/javascript" src="js/member/personalIdentySorts/carDetail.js"></script>
+		<script type="text/javascript">
+		var memberId = "<%=content%>";
+		var typeId =<%=typeId%>;
+		var btn = "<%=btn%>"; 
+		$("#"+typeId).addClass("active").siblings().removeClass("active");
+		IdentyDetails(memberId);//会员认证详情
 	</script>
 </body>

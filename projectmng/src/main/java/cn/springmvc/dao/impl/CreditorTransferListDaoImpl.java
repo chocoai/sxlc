@@ -60,10 +60,9 @@ public class CreditorTransferListDaoImpl extends SqlSessionDaoSupport implements
 		
 	}
 	@Override
-	public List<InvestEntity> selectCreditorInvestRecordByctaId(
-			Map<String, Object> map) {
+	public List<InvestEntity> selectCreditorInvestRecordByctaId(Map<String, Object> map) {
 		
-		return getSqlSession().selectOne("investRecord.selectCreditorInvestRecordByctaId",map);
+		return getSqlSession().selectList("investRecord.selectCreditorInvestRecordByctaId",map);
 		
 	}
 

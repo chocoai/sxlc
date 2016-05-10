@@ -26,7 +26,7 @@
 	
 	<!-- 城市查询结果封装 -->
 	<resultMap type="cn.dictionaries.model.CityInfoEntity" id="CityInfo">
-		<result column="City_Id" property="iId" />
+		<id column="City_Id" property="cId" />
 		<result column="Province_Id" property="pId"/>
 		<result column="City_Name" property="cName"/>
 		<result column="City_No" property="cNo"/>

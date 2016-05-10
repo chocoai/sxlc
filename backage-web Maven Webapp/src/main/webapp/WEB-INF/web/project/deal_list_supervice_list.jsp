@@ -105,12 +105,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</td>
 								</tr>
 								<tr>
-									<td class="tt"><label>产生时间：</label></td>
-									<td class="con">
-										<input type="text" class="notspecial Wdate" onFocus="WdatePicker()" name="" value="" />
-									</td>
-								</tr>
-								<tr>
 									<td class="tt"><label>附件类型：</label></td>
 									<td class="con">
 										<input type="radio" name="doctype" value="" /> 图片
@@ -218,9 +212,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				} // 制定列不参与排序
 				],
 				colReorder : false,
-				"scrollX": true,
-				"sScrollX" : "100%",
-				"sScrollXInner" : "100%",
 				"bScrollCollapse" : true
 			});
 		});

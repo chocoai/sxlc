@@ -31,7 +31,7 @@ import cn.dictionaries.model.TownInfoEntity;
 public class DictionariesDaoImpl extends SqlSessionDaoSupport{
 	
 	/**
-	 * 获取学历列表 
+	 * 获取学历列表
 	* GetEducationList	获取学历列表
 	* TODO		获取学历列表
 	* @author 张友  

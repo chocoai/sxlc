@@ -40,25 +40,7 @@
 	   					</div>		
 	   				</div>
 	   				<ul class="card-list" id="bankListSelect">
-<!-- 	   					<li>
-	   						<div class="bank-name BOC">中国银行BOC 邮政储蓄银行POSB 
-	   							<img src="resource/img/account/personalCenter/zjgl_9.png">
-	   							中国银行
-	   						</div>
-	   						<div class="bank-card-num">
-	   							6214************123
-	   							<span>借记卡</span>
-	   						</div>
-	   						<div class="deal">
-	   							<div class="change">
-	   								修改
-	   							</div>
-	   							<div class="delete">
-	   								删除添加背景图 
-	   							</div>
-	   						</div>
-	   					</li> -->
-				<script id="bankList" type="text/html">
+					<script id="bankList" type="text/html">
 					{{each data as value index}}
 	   					<li>
 	   						<div class="bank-name BOC"><!--中国银行BOC 邮政储蓄银行POSB  -->
@@ -70,16 +52,16 @@
 	   							<span>借记卡</span>
 	   						</div>
 	   						<div class="deal">
-	   							<div class="change"  >
+	   							<div class="change" id="{{value.bankCardId}}" >
 	   								修改
 	   							</div>
-	   							<div class="delete" id="{{value.receiveCard}}" >
+	   							<div class="delete receiv_{{value.bankCardId}}" id="{{value.receiveCard}}" >
 	   								删除
 	   							</div>
 	   						</div>
 	   					</li>
 					{{/each}}
-   				</script>	   					
+   					</script>	   					
 	   				</ul>
 	   				<div class="remind">
 	   					<h2>&nbsp;&nbsp;&nbsp;&nbsp;温馨提示</h2><!--添加背景图  -->
@@ -191,60 +173,41 @@
    			<div class="input-group">
    				<div class="left-title">开户银行:</div>
    				<div class="selectArea selectArea1">
-   					<input class="selectValue" value="1" >
-					<input class="selectInput select1" type="text" lang="" readOnly="true"/>
-				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">中国银行<li>
-				        <li class="selectOption" value="2">2<li>
-				        <li class="selectOption" value="3">3<li>
-				        <li class="selectOption" value="5">4<li>
+   					<input class="selectValue bank_u_val " value="1"  >
+					<input class="selectInput select1 bank_u_input" type="text" lang="" readOnly="true"/>
+				    <ul class="select" id="addCard_selectBank_u" onselectstart="return false">
+
 				    </ul>
 				</div> 
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户行城市:</div>
    				<div class="selectArea">
-   					<input class="selectValue" value="1" >
-					<input class="selectInput" type="text" lang="" readOnly="true"/>
-				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">四川<li>
-				        <li class="selectOption" value="2">2<li>
-				        <li class="selectOption" value="3">3<li>
-				        <li class="selectOption" value="4">4<li>
+   					<input class="selectValue provinceSelect_u_val" value="1" >
+					<input class="selectInput provinceSelect_u_in " type="text" lang="" readOnly="true"/>
+				    <ul class="select" id="provinceSelect_u" onselectstart="return false">
+
 				    </ul>
 				</div> 
 				<div class="selectArea">
-					<input class="selectValue" value="1" >
-					<input class="selectInput" type="text" lang="" readOnly="true"/>
-				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">成都<li>
-				        <li class="selectOption" value="2">2<li>
-				        <li class="selectOption" value="3">3<li>
-				        <li class="selectOption" value="4">4<li>
+					<input class="selectValue citySelect_u_val" value="1" >
+					<input class="selectInput citySelect_u_in" type="text" lang="" readOnly="true"/>
+				    <ul class="select" id="citySelect_u" onselectstart="return false">
+
 				    </ul>
-				</div> 
-				<div class="selectArea">
-					<input class="selectValue" value="1" >
-					<input class="selectInput" type="text" lang="" readOnly="true"/>
-				    <ul class="select" onselectstart="return false">
-				        <li class="selectOption" value="1">郫县<li>
-				        <li class="selectOption" value="2">2<li>
-				        <li class="selectOption" value="3">3<li>
-				        <li class="selectOption" value="4">4<li>
-				    </ul>
-				</div> 
+				</div>  
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户行支行:</div>
-   				<input type="text" datatype="enteraddr" class="select1" lang="成都武侯支行">
+   				<input type="text" datatype="enteraddr" class="select1 zbank_u" >
    			</div>
    			<div class="input-group">
    				<div class="left-title">银行卡号:</div>
-   				<input type="text" datatype="zbankNum" class="select1" lang="6217903100018605618">
+   				<input type="text" datatype="zbankNum" class="select1 passID_card_u " >
    			</div> 		
    			<div class="input-group">
    				<div class="left-title">开户手机号:</div>
-   				<input type="text" datatype="zPhone" class="select1" maxlength="11" lang="12399809870">
+   				<input type="text" datatype="zPhone" class="select1 zPhone_u" maxlength="11">
    			</div>
    		</div>
    		<div class="bankcard-bottom">

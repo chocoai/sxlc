@@ -232,6 +232,31 @@
 	display:inline-block;
 	margin-left:320px;
 }
+
+.previewPictureDiv{
+	position: relative;
+}
+
+.wdateSelect{
+	position: absolute;
+	right:0;
+	display: none;
+}
+
+.previewPicture_f{
+	top:45px
+}
+
+.btn_u{
+	margin-left: 10px;
+	position: absolute;
+	bottom:8px;
+	left:0;
+	z-index: 99999;
+	bottom:-300px;
+	display: none
+}
+
 .hint{
 	font-size:16px;
 	color:#ff5a00;
@@ -255,6 +280,36 @@
 	font-size:16px;
 	color:#333;
 	vertical-align:bottom;
+}
+
+.authen{
+	padding-bottom:50px;
+	min-height:280px;
+}
+
+#file{
+	float: left;
+}
+
+.authPreviDiv_u{
+	float: left;
+	width: 620px;
+	margin-left: 10px;
+	margin-top: 45px;
+}
+
+.authPreviDiv{
+	float: left;
+	margin-left:10px;
+	margin-top: 5px;
+	background-color:#EEEEE0;
+	padding:5px;
+	
+}
+
+.authPreviDiv img{
+	width: 180px;
+	height:180px;	
 }
 
 /* 图片上传 */

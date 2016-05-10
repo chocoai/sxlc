@@ -50,11 +50,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>企业名称</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>用户名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>联系人手机号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>开启自动投标</span><select><option>是</option><option>否</option></select></span>
-									<span class="con-item"><span>开启自动还款</span><select><option>是</option><option>否</option></select></span>
+									<span class="con-item"><span>企业名称</span><input type="text" name="member_Name" id="member_Name" class="notspecial" /></span>
+									<span class="con-item"><span>用户名</span><input type="text" name="user_Name" id="user_Name" class="notspecial" /></span>
+									<span class="con-item"><span>联系人手机号</span><input type="text" name="phone_Num" id="phone_Num" class="notspecial" /></span>
+									<span class="con-item"><span>开启自动投标</span><select name="auto_tou" id="auto_tou"><option value="1">是</option><option value="0">否</option></select></span>
+									<span class="con-item"><span>开启自动还款</span><select name="auto_return" id="auto_return"><option value="1">是</option><option value="0">否</option></select></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -79,66 +79,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							
 							<div class="panel-body">
+								<input type="hidden" name="memberType" id="memberType" value="1"><!--会员类型  -->
 								<table id="table_id" class="display">
 									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>会员编号</th>
-											<th>企业名称</th>
-											<th>用户名</th>
-											<th>联系人手机号码</th>
-											<th>所属地区</th>
-											<th>会员等级</th>
-											<th>信用等级</th>
-											<th>第三方帐户</th>
-											<th>可用帐户余额(元)</th>
-											<th>冻结金额(元)</th>
-											<th>充值总额(元)</th>
-											<th>投资总额(元)</th>
-											<th>借款总额(元)</th>
-											<th>提现总额(元)</th>
-											<th>收益总额(元)</th>
-											<th>可用积分</th>
-											<th>赠送红包总额(元)</th>
-											<th>使用红包总额(元)</th>
-											<th>已过期红包总额(元)</th>
-											<th>剩余可用红包总额(元)</th>
-											<th>是否开启自动投标</th>
-											<th>是否开启自动还款</th>
-										</tr>
 									</thead>
 									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>1</td>
-											<td>企业名称</td>
-											<td>用户名</td>
-											<td>15225545878</td>
-											<td>所属地区</td>
-											<td>会员等级</td>
-											<td>信用等级</td>
-											<td>第三方帐户</td>
-											<td class="moneyFormat">100</td>
-											<td class="moneyFormat">1000</td>
-											<td class="moneyFormat">1000</td>
-											<td class="moneyFormat">1000</td>
-											<td class="moneyFormat">100</td>
-											<td class="moneyFormat">1000</td>
-											<td class="moneyFormat">1000</td>
-											<td>可用积分</td>
-											<td class="moneyFormat">1000</td>
-											<td class="moneyFormat">100</td>
-											<td class="moneyFormat">100</td>
-											<td class="moneyFormat">100</td>
-											<td>是</td>
-											<td>否</td>
-										</tr>
-										<%
-											}
-										%>
 									</tbody>
 								</table>
 							</div>
@@ -156,23 +101,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="plugs/My97DatePicker/WdatePicker.js"></script>
 	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/member/companyMembers.js"></script>
+	<!-- <script type="text/javascript" src="js/member/companyMembers.js"></script> -->
 	<script type="text/javascript" src="js/member/member.js"></script>
 	<script type="text/javascript" src="js/member/memberPwd.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			$('#table_id').DataTable({
-				"scrollX":true,
-				//"scrollY":true,
-				"aaSorting" : [ [ 6,7,9,10,11,12,13,14,15, "desc" ] ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,1,2,3,4,5,8,16,17,18,19,20,21,22]
-				} // 制定列不参与排序
-				],
-			});
-		});
-	</script>
+	<script type="text/javascript" src="js/member/allmember.js"></script>
 </body>

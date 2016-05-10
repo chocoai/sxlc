@@ -65,18 +65,21 @@ $(function(){/*
 
 /**
  * 跳转到审核或者查看详情页面
- * @param btn
- * @param url
+ * @param btn  区分页面
+ * @param url  路径
  */
-function jump(btn,url){
+function jump(typeId,btn,url){
 	/*window.localStorage.setItem("a",JSON.stringify(obj));*/
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
 	if(rowdata.length<1){
 		layer.alert("请选择要处理的事务！",{icon:0});
 		return;
 	}
-	content = rowdata[0].memberID;
-	location.href = url + '?content='+content+'&draw='+btn;
+	var content = rowdata[0].memberID;
+	if(typeId==7 || typeId ==8){//由于会员一对多，所以要传认证记录id
+		content = rowdata[0].certificationID;
+	}
+	location.href = url + '?start='+typeId+'&content='+content+'&draw='+btn;
  
 }
 
@@ -133,6 +136,8 @@ function IdentyList(attestTypeId){
 		            	if($("#idcard")!=null && $("#idcard").val()!=undefined){
 		            		idcard = $("#idcard").val();//身份证
 		            	}
+		            	
+		                var statu = $("#statu").val();
 		            	var encrypt = new JSEncrypt();
 		            	encrypt.setPublicKey(publicKey_common);
 		            	
@@ -141,10 +146,12 @@ function IdentyList(attestTypeId){
 		            	user_Name = encrypt.encrypt(user_Name);
 		            	idcard = encrypt.encrypt(idcard);
 		            	attestTypeID = encrypt.encrypt(attestTypeId+"");
+		            	statu = encrypt.encrypt(statu+"");
 		            	d.memberName=member_Name;
 		            	d.userName=user_Name;
 		            	d.idcard=idcard;
 		            	d.attestTypeID=attestTypeID;
+		            	d.statu=statu;
 		            } 
 		        },
 		        columns: [  
@@ -174,7 +181,7 @@ function IdentyList(attestTypeId){
 		                  { title:"车辆信息","data": "homeTown" },
 		                  { title:"婚姻状况","data": "homeTown" },
 		                  { title:"最高学历","data": "homeTown" },
-		                  { title:"申请时间","data": "recordDate" },
+		                  { title:"申请时间","data": "sRecordDate" },
 		                  { title:"有效期","mRender":function(data, type, full){
 		                	  var sReturn ="";
 		                	  if(full.sValidTime!="" && full.sValidTime!=null){

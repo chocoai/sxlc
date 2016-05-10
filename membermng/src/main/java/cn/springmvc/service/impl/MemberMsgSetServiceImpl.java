@@ -12,6 +12,7 @@
  
 package cn.springmvc.service.impl; 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.pageselect.PageEntity;
 
+import cn.membermng.model.MemberMessageConfig;
 import cn.membermng.model.SendSetEntity; 
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.dao.impl.MemberMsgSetDaoImpl;
@@ -50,8 +52,17 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 		result = memberMsgSetListDaoImpl.selectIsOpenSms(sendSetEntity.getTypeID());
 		if( result == 0 ) {
 			return -2;
-		} 
-		result = memberMsgSetDaoImpl.insertMemberSmsSendSet(sendSetEntity);
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("memberID", sendSetEntity.getMemberID());
+		map.put("typeID",    sendSetEntity.getTypeID());
+		result = memberMsgSetListDaoImpl.selectMemberSmsSendSetIsExist(map);
+		if(result == 0) {
+			result = memberMsgSetDaoImpl.insertMemberSmsSendSet(sendSetEntity);
+		}else {
+			result = memberMsgSetDaoImpl.updateMemberSmsSendSet(sendSetEntity);
+		}
+		
 		return result;
 	}
 	@Override
@@ -67,7 +78,15 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 		if( result == 0 ) {
 			return -2;
 		}
-		result = memberMsgSetDaoImpl.insertMemberEmailSendSet(sendSetEntity);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("memberID", sendSetEntity.getMemberID());
+		map.put("typeID",    sendSetEntity.getTypeID());
+		result = memberMsgSetListDaoImpl.selectMemberEmailSendSetIsExist(map);
+		if(result == 0) {
+			result = memberMsgSetDaoImpl.insertMemberEmailSendSet(sendSetEntity);
+		}else {
+			result = memberMsgSetDaoImpl.updateMemberEmailSendSet(sendSetEntity);
+		} 
 		return result;
 		
 	}
@@ -84,7 +103,15 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 		if( result == 0 ) {
 			return -2;
 		}
-		result = memberMsgSetDaoImpl.insertMemberLetterSendSet(sendSetEntity);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("memberID", sendSetEntity.getMemberID());
+		map.put("typeID",    sendSetEntity.getTypeID());
+		result = memberMsgSetListDaoImpl.selectMemberLetterSendSetsExist(map);
+		if(result == 0) {
+			result = memberMsgSetDaoImpl.insertMemberLetterSendSet(sendSetEntity);
+		}else {
+			result = memberMsgSetDaoImpl.updateMemberLetterSendSet(sendSetEntity);
+		}  
 		return result;
 		
 	}
@@ -180,6 +207,13 @@ public class MemberMsgSetServiceImpl implements MemberMsgSetService{
 		
 		return memberMsgSetListDaoImpl.selectMemberLetterSendSetsExist(map);
 		
-	} 
+	}
+	
+	
+	@Override
+	public List<MemberMessageConfig> memberMessageConfig(Long memberId) {
+		
+		return memberMsgSetListDaoImpl.memberMessageConfig(memberId);
+	}
 }
 

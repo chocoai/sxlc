@@ -56,7 +56,7 @@ public class CommodityTypeListDaoImpl<K extends BaseCommodityTypeEntity>
     }
 
     @Override
-    public K selectCommodityTypeByID(int id) {
+    public List<K> selectCommodityTypeByID(int id) {
         return getSqlSession().selectOne("CommodityType.selectCommodityTypeByID", id);
     }
 

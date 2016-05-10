@@ -1,10 +1,9 @@
 package cn.springmvc.service;
  
-import cn.integralmall.model.CommodityTypeEntity;
-
 import java.util.List;
 
 import product_p2p.kit.pageselect.PageEntity;
+import cn.integralmall.model.CommodityTypeEntity;
 
 /**
  * @author 黄勇
@@ -55,10 +54,10 @@ public interface CommodityTypeService {
     /**
      * 根据ID查询的商品分类类型
      *
-     * @param id 商品分类类型id
+     * @param id 商品分类类型id(实物或代金券编号)
      * @return CommodityTypeEntity 商品分类类型实体
      */
-    CommodityTypeEntity selectCommodityTypeByID(int id);
+   List<CommodityTypeEntity> selectCommodityTypeByID(int id);
 
     /**
      * 前台显示商品分类类型

@@ -130,4 +130,11 @@ public class ProcessProjectServiceImpl implements ProcessProjectService {
 		return  processProjectListDaoImpl.selectProcessProjectbyid(id); 
 	}
 
+	@Override
+	public List<ProcessProjectEntity> selectProcessProjectList() {
+		
+		return  processProjectListDaoImpl.selectProcessProjectList(); 
+		
+	}
+
 }

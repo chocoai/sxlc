@@ -21,8 +21,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
  
-import cn.springmvc.dao.ReplayProjectDetailListDao; 
-import cn.springmvc.model.ProjectBaseInfoEntity;
+import cn.springmvc.dao.ReplayProjectDetailListDao;  
+import cn.springmvc.model.ProjectBaseInfoEntitys;
 import cn.springmvc.model.ProjectDetailEntity;
 
 /** 
@@ -47,8 +47,8 @@ public class ReplayProjectDetailListDaoImpl extends SqlSessionDaoSupport impleme
 	}
 
 	@Override
-	public ProjectBaseInfoEntity selectProjectBaseInfoById(long lId) {
-		ProjectBaseInfoEntity entity = null;
+	public ProjectBaseInfoEntitys selectProjectBaseInfoById(long lId) {
+		ProjectBaseInfoEntitys entity = null;
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("id", lId);

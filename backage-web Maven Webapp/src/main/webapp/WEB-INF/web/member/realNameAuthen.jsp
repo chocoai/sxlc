@@ -59,15 +59,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<span class="con-item"><span>会员登录名</span><input type="text" class="notspecial" id="userName"></span>
 										<span class="con-item"><span>姓名</span><input type="text" class="notspecial" id="memberName"></span>
 										<span class="con-item"><span>身份证号</span><input type="text" class="notspecial"  id="idcard"></span>
-										<span class="con-item"><span>状态</span><select class="auditState"><option value="1">待审核</option><option value="2">通过</option><option value="3">驳回</option></select></span>
+										<span class="con-item"><span>状态</span><select class="auditState" id="statu"><option value="1" selected="selected">待审核</option><option value="2">通过</option><option value="3">驳回</option></select></span>
 										<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 									</form>
 							  	</div>
 							 </div>
 						</div> 		
 						<div class="buttonCombination" style="display:inline-block">
-							<button class="cerfiedBtn" onclick="jump(1,'web/member/nameAuthenResualt.jsp')">认证</button>
-							<button class="checkBtn" onclick="jump(2,'web/member/nameAuthenResualt.jsp')">查看</button>
+							<button class="cerfiedBtn" onclick="jump(<%=content %>,1,'web/member/nameAuthenResualt.jsp')">认证</button>
+							<button class="checkBtn" onclick="jump(<%=content %>,2,'web/member/nameAuthenResualt.jsp')">查看</button>
 						</div>
 						<div id="panel-body" class="panel-body">
 							<table id="table_id" class="display">

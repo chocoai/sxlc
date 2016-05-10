@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.membermng.model.BorrowingType;
 import cn.membermng.model.BorrowingTypeInfo;
 import cn.membermng.model.CurrencyAuth;
+import cn.membermng.model.LegalPersonReanName;
 import cn.membermng.model.RealNameAuth;
 
 
@@ -103,7 +104,7 @@ public interface IBorrowingCertificationReadDao {
 	* @Description: TODO
 	* @date 2016-3-24 下午6:01:59
 	 */
-	public Map<String, Object> showAuthAddress(Map<String, Object> param);
+	public CurrencyAuth showAuthAddress(Map<String, Object> param);
 	
 	
 	
@@ -127,10 +128,20 @@ public interface IBorrowingCertificationReadDao {
 	* @Description: TODO
 	* @date 2016-3-25 上午9:16:08
 	 */
-	public List<Map<String, Object>> showAuthHousing(Map<String, Object> param);
-
+	public List<CurrencyAuth> showAuthHousing(Map<String, Object> param);
 
 	
+	
+	/**
+	 * 根据认证编号获取会员房产认证详细信息
+	 * TODO
+	 * 创建日期：2016-5-5上午10:22:34
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return CurrencyAuth
+	 */
+	public CurrencyAuth showAuthHousingOne(Map<String, Object> param);
 	
 	
 	
@@ -149,16 +160,26 @@ public interface IBorrowingCertificationReadDao {
 	* attachName					附件名称<br>
 	* attachPath					附件路径<br>
 	* Brand							品牌<br>
-	* Model							型号<br>
+	* Model							型号<br>F
 	* licensePlate					车牌号<br>
 	* Value							价值<br>
 	* status						认证状态<br>
 	* @date 2016-3-24 上午11:35:48
 	*/
-	public List<Map<String, Object>> showAuthProduction(long memberId);
+	public List<CurrencyAuth> showAuthProduction(long memberId);
 
-	
-	
+
+	/**
+	 * 查看个人会员车产认证信息
+	 * TODO
+	 * 创建日期：2016-5-5上午10:09:52
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return CurrencyAuth
+	 */
+	public CurrencyAuth showAuthProductionOne(Map<String, Object> param);
+
 	
 	
 	
@@ -177,7 +198,7 @@ public interface IBorrowingCertificationReadDao {
 	* status						认证状态<br>
 	* @date 2016-3-24 下午1:55:52
 	 */
-	public Map<String, Object> showAuthMarriage(Long memberId);
+	public CurrencyAuth showAuthMarriage(Long memberId);
 
 	
 	
@@ -198,7 +219,7 @@ public interface IBorrowingCertificationReadDao {
 	* @Description: TODO
 	* @date 2016-3-24 下午2:57:13
 	 */
-	public Map<String, Object> showAuthEducation(long memberId);
+	public CurrencyAuth showAuthEducation(Map<String, Object> param);
 
 	
 
@@ -338,13 +359,13 @@ public interface IBorrowingCertificationReadDao {
 	* @date 2016-5-3 上午11:04:46
 	 */
 	public List<BorrowingTypeInfo> getAllByMemberAndLoanType(Map<String, Object> param);
-	
-	
 
-	
-	
-	
-	
+
+
+
+
+
+
 	
 
 

@@ -30,20 +30,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</tr>
 									</thead>
 									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>拉黑时间</td>
-											<td>拉黑操作管理员</td>
-											<td>取消拉黑时间</td>
-											<td>取消拉黑操作管理员</td>
-											<td>取消拉黑原因</td>
-										</tr>
-										<%
-											}
-										%>
 									</tbody>
 								</table>
 							</div>
@@ -61,20 +47,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/member/member.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			$('#table_id').DataTable({
-				"scrollX":true,
-				//"scrollY":true,
-				"aaSorting" : [  ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,1,2,3,4,5]
-				} // 制定列不参与排序
-				],
-			});
-		});
-	</script>
+	
 </div>

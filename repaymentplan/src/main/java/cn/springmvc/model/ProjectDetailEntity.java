@@ -49,7 +49,7 @@ public class ProjectDetailEntity {
 	/**
 	 * 项目基本信息实体类
 	 */
-	private ProjectBaseInfoEntity projectBaseInfoentity;
+	private ProjectBaseInfoEntitys projectBaseInfoentity;
     /**
      * 还款保障
      */
@@ -241,11 +241,11 @@ public class ProjectDetailEntity {
 	public void setProjectBaseID(long projectBaseID) {
 		this.projectBaseID = projectBaseID;
 	}
-	public ProjectBaseInfoEntity getProjectBaseInfoentity() {
+	public ProjectBaseInfoEntitys getProjectBaseInfoentity() {
 		return projectBaseInfoentity;
 	}
 	public void setProjectBaseInfoentity(
-			ProjectBaseInfoEntity projectBaseInfoentity) {
+			ProjectBaseInfoEntitys projectBaseInfoentity) {
 		this.projectBaseInfoentity = projectBaseInfoentity;
 	}
 	public String getRepayGuarantee() {

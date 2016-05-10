@@ -308,7 +308,7 @@
 		<result property = "projectName"    	column = "Project_Name" />  
 		<result property = "releaseDate"    	column = "Release_Date" />
 		<result property = "startDate"    	    column = "Start_Date" />
-		<result property = "enddate"    	    column = "End_Date" />
+		<result property = "endDate"    	    column = "End_Date" />
 		<result property = "investRate"    	    column = "Invest_Rate" />
 		<association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	    </association> 
@@ -397,7 +397,7 @@
 		<result property = "projectName"    	column = "Project_Name" />    
 		<result property = "releaseDate"    	column = "Release_Date" />
 		<result property = "startDate"    	    column = "Start_Date" />
-		<result property = "enddate"    	    column = "End_Date" />
+		<result property = "endDate"    	    column = "End_Date" />
 		<result property = "investRate"    	    column = "Invest_Rate" /> 
 		<association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	    </association> 
@@ -483,7 +483,7 @@
 		<result property = "projectName"    	column = "Project_Name" />  
 		<result property = "releaseDate"    	column = "Release_Date" />
 		<result property = "startDate"    	    column = "Start_Date" />
-		<result property = "enddate"    	    column = "End_Date" />
+		<result property = "endDate"    	    column = "End_Date" />
 		<result property = "investRate"    	    column = "Invest_Rate" />
 		<result property = "realEndDate"    	column = "Real_End_Date" />
 		<association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
@@ -575,7 +575,7 @@
 		<result property = "projectName"    	column = "Project_Name" />  
 		<result property = "releaseDate"    	column = "Release_Date" />
 		<result property = "startDate"    	    column = "Start_Date" />
-		<result property = "enddate"    	    column = "End_Date" />
+		<result property = "endDate"    	    column = "End_Date" />
 		<result property = "investRate"    	    column = "Invest_Rate" />  
 		<result property = "holdDate"    	    column = "Hold_Date" />
 		<result property = "endamount"    	    column = "Invest_Amount_Valid" />
@@ -712,7 +712,7 @@
 		<result property = "projectName"    	column = "Project_Name" />  
 		<result property = "releaseDate"    	column = "Release_Date" />
 		<result property = "startDate"    	    column = "Start_Date" />
-		<result property = "enddate"    	    column = "End_Date" /> 
+		<result property = "endDate"    	    column = "End_Date" /> 
 		<result property = "holdDate"    	    column = "Hold_Date" />
 		<result property = "settleDate"    	    column = "Settle_Date" />
 		<result property = "sdRepayAmount"    	column = "SDRepay_Amount" /> 
@@ -984,7 +984,7 @@
 		Is_Back,是否使用返现券
 	--> 
 	<!--传入参数整理
-		#{skey}#{Logname}#{Personal_Name}#{Hold_Date_Min}#{Hold_Date_Max}#{ordercolumn}
+		#{skey}#{applyID}#{Logname}#{Personal_Name}#{Hold_Date_Min}#{Hold_Date_Max}#{ordercolumn}
 	-->
 	<select id="getInvestmentRecord" parameterType="Map" resultMap="InvestmentRecord">
 		SELECT
@@ -1014,6 +1014,7 @@
 			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
 			  AND IF(#{Hold_Date_Min} IS NULL OR #{Hold_Date_Min} = '', 1=1, ir.Hold_Date>=#{Hold_Date_Min})
 			  AND IF(#{Hold_Date_Max} IS NULL OR #{Hold_Date_Max} = '', 1=1, ir.Hold_Date&lt;=#{Hold_Date_Max})
+			  AND IF(#{applyID} IS NULL OR #{applyID} = '', 1=1, ir.Apply_ID = #{applyID}) 
 		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
 				WHEN 'HOLD_DATE' THEN ir.Hold_Date
 				WHEN 'INVEST_AMOUNT' then Invest_Amount

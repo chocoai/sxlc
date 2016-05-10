@@ -35,7 +35,7 @@ public interface CommodityTypeListDao<K extends BaseCommodityTypeEntity> extends
      * @param id 商品分类类型id
      * @return CommodityTypeEntity  商品分类类型实体
      */
-    K selectCommodityTypeByID(int id);
+    List<K> selectCommodityTypeByID(int id);
 
     /**
      * 前台显示商品分类类型

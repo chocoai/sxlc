@@ -22,11 +22,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="9" name="top_menu_index"/>
+				<jsp:param value="9" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-recommend.jsp"></jsp:include>
+			<jsp:include page="../common/cm-recommend.jsp">
+				<jsp:param value="905" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -45,44 +48,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 					<div class="panel-body">
 						<form id="" class="" action="">
-							<div>
-								<span class="con-item textRight2">
-									<span>项目编号</span><input type="text" class="notspecial" placeholder="" />
+								<span class="con-item">
+									<span>项目编号</span><input id="projectNo" type="text" class="notspecial" placeholder="" />
 								</span>
-								<span class="con-item textRight2">
-									<span>项目名称</span><input type="text" class="notspecial" placeholder="" />
+								<span class="con-item">
+									<span>项目名称</span><input id="projectTitle" type="text" class="notspecial" placeholder="" />
 								</span>
-								<span class="con-item textRight2">
-									<span>借款人用户名</span><input type="text" class="notspecial" placeholder="" />
+								<span class="con-item">
+									<span>借款人用户名</span><input id="logname" type="text" class="notspecial" placeholder="" />
 								</span>
-							</div>
-							<div>
-								<span class="con-item textRight2">
-									<span>借款人姓名</span><input type="text" class="notspecial" placeholder="" />
+								<span class="con-item">
+									<span>借款人姓名</span><input id="personalName" type="text" class="notspecial" placeholder="" />
 								</span>
-								<span class="con-item textRight2">
-									<span>担保机构名称</span><input type="text" class="notspecial" placeholder="" />
+								<span class="con-item">
+									<span>担保机构名称</span><input id="guaranteeName" type="text" class="notspecial" placeholder="" />
 								</span>
-								<span class="con-item textRight3">
-									<span>借款人手机号</span><input type="text" class="notspecial" placeholder="" />
+								<span class="con-item">
+									<span>借款人手机号</span><input id="personalPhone" type="text" class="notspecial" placeholder="" />
 								</span>
-							</div>
-							<div>
-								<span class="con-item textRight3">
-									<span>代偿总金额</span><input type="text" class="notspecial" placeholder="" />
+								<span class="con-item">
+									<span>代偿总金额</span><input id="amountEncs" type="text" class="notspecial" placeholder="" />
 								</span>
-								<span class="con-item textRight5">
+								<span class="con-item">
 									<span>代偿时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
 								</span>
-							</div>
-							<div>
-								<span class="con-item textRight4">
-									<span>当期合约还款时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
+								<span class="con-item">
+									<span>当期合约还款时间</span><input type="text" id="cstartDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="cendDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
 								</span>
 								<span class="">
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</span>
-							</div>
 						</form>
 					</div>
 				</div>	
@@ -96,52 +91,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 					<div class="panel-body">
 						<table id="table_id" class="display">
-							<thead>
-								<tr>
-									<th class="table-checkbox"></th>
-									<th>项目编号</th>
-									<th>产品类型</th>
-									<th>项目名称</th>
-									<th>代偿期数</th>
-									<th>借款人姓名</th>
-									<th>借款人用户名</th>
-									<th>借款人手机号</th>
-									<th>担保机构名称</th>
-									<th>实际借款金额</th>
-									<th>当期合约还款时间</th>
-									<th>代偿时间</th>
-									<th>代偿本金</th>
-									<th>代偿利息</th>
-									<th>代偿逾期利息</th>
-									<th>代偿逾期罚金</th>
-									<th>代偿总金额</th>
-									<th>是否回款</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%for (int i = 0; i < 15; i++) {%>
-								<tr>
-									<td><input type="checkbox" /></td>
-									<td>项目编号</td>
-									<td>产品类型</td>
-									<td>项目名称</td>
-									<td>代偿期数</td>
-									<td>借款人姓名</td>
-									<td>借款人用户名</td>
-									<td>借款人手机号</td>
-									<td>担保机构名称</td>
-									<td><span class="moneyFormat">1000</span>元</td>
-									<td>当期合约还款时间</td>
-									<td>代偿时间</td>
-									<td><span class="moneyFormat">1000</span>元</td>
-									<td>代偿利息</td>
-									<td>代偿逾期利息</td>
-									<td><span class="moneyFormat">1000</span>元</td>
-									<td><span class="moneyFormat">1000</span>元</td>
-									<td>是</td>
-								</tr>
-								<%}%>
-							</tbody>
 						</table>
 					</div>
 				</div>
@@ -151,21 +100,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<script type="text/javascript" src="js/recommend/historical-compensation-records.js"></script>
 	
 	<!-- 私用js -->
 	<script type="text/javascript">
-		$('#table_id').DataTable({
-			scrollX:true,
-			autoWidth : false,
-			"aaSorting" : [ [ 9,10,11,12,13,14,15,16 ] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,4,5,6,7,8,17]
-			} // 制定列不参与排序
-			],
-		});
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>		
 </body>
 </html>

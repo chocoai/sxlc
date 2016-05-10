@@ -39,12 +39,12 @@ public class CreditorTransferServiceImpl implements CreditorTransferService {
 	@Override
 	public List<CreditorTransferListEntity> selectCreditorTransferList(
 			PageEntity pageEntity) {
-
+		pageEntity.getMap().put("sKey", DbKeyUtil.GetDbCodeKey());
 		return creditorTransferListDao.selectCreditorTransferList(pageEntity);
 
 	}
 	@Override
-	public CreditorTransferListEntity selectCreditorTransferDetail(int ctaId) {
+	public CreditorTransferListEntity selectCreditorTransferDetail(long ctaId) {
 		
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
@@ -53,7 +53,7 @@ public class CreditorTransferServiceImpl implements CreditorTransferService {
 		
 	}
 	@Override
-	public CreditorTransferListEntity selectCreditorAvailableaAmount(int ctaId) {
+	public CreditorTransferListEntity selectCreditorAvailableaAmount(long ctaId) {
 		
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
@@ -61,7 +61,7 @@ public class CreditorTransferServiceImpl implements CreditorTransferService {
 		return creditorTransferListDao.selectCreditorAvailableaAmount(map);
 	}
 	@Override
-	public List<InvestEntity> selectCreditorInvestRecordByctaId(int ctaId) {
+	public List<InvestEntity> selectCreditorInvestRecordByctaId(long ctaId) {
 		
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());

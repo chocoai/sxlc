@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
-
+import cn.membermng.model.ExchangeRecords;
+import cn.membermng.model.Friends;
+import cn.membermng.model.IntegralGETRecord;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberVouchers;
+import cn.membermng.model.MyPoint;
 import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.RadPackage;
 import cn.membermng.model.SecurityInfo;
@@ -93,7 +96,7 @@ public interface IMemberReadDao {
 	* @Description: TODO
 	* @date 2016-3-29 下午4:01:01
 	 */
-	public Map<String,Object> points(Map<String,Object> param);
+	public MyPoint points(Map<String,Object> param);
 	
 	/***
 	* 会员获取积分记录
@@ -106,23 +109,9 @@ public interface IMemberReadDao {
 	* @Description: TODO
 	* @date 2016-3-29 下午4:04:51
 	 */
-	public List addPoints(PageEntity entity);
+	public List<IntegralGETRecord> addPoints(PageEntity entity);
 	
-	/***
-	* 会员消费积分记录
-	* 
-	* @author 李杰
-	* @Title: addPoints
-	* @param memberId					会员编号
-	* @param memberType					会员类型
-	* @return
-	* @Description: TODO
-	* @date 2016-3-29 下午4:04:51
-	 */
-	public List rePoints(Map<String,Object> param);
 
-	
-	
 	
 	/***
 	* 获取我的红包信息
@@ -165,18 +154,34 @@ public interface IMemberReadDao {
 
 	/***
 	* 获取我的代金券列表
-	* myVouchers(这里用一句话描述这个方法的作用)
-	* TODO(描述)
 	* @author 李杰
-	* @Title: myVouchers
 	* @param entity
 	* @return
-	* @Description: TODO
 	* @date 2016-3-30 下午7:32:33
 	 */
 	public List<MemberVouchers> vouchers(PageEntity entity);
 
+	/***
+	* 我的代金券使用列表
+	* 
+	* @author 李杰
+	* @param entity
+	* @return
+	* @date 2016-5-9 下午7:47:56
+	 */
+	public List<MemberVouchers> useVochers(PageEntity entity);
 
+	/***
+	* 获取我的总余额
+	* 
+	* @author 李杰
+	* @param param
+	* @return
+	* @date 2016-5-5 下午2:59:45
+	*/
+	public long getRemainderTotal(Map<String, Object> param);
+	
+	
 	/**
 	* 查询会员信息
 	* 
@@ -198,6 +203,89 @@ public interface IMemberReadDao {
 	* @date 2016-4-26 下午6:52:20
 	 */
 	public SecurityInfo securityInfo(Map<String, Object> param);
+
+
+
+	/***
+	* 获取我的好友列表
+	* 
+	* @author 李杰
+	* @param entity
+	* @return
+	* @date 2016-5-5 上午10:40:55
+	 */
+	public List<Friends> friendList(PageEntity entity);
+
+
+	
+	/***
+	* 查询陌生人
+	* 
+	* @author 李杰
+	* @param entity
+	* @return
+	* @date 2016-5-6 下午1:26:02
+	 */
+	public List<MemberInfo> serachMemberByParam(PageEntity entity);
+
+	/**
+	 * 获取待确认好友列表
+	* selectConfirmFriendList
+	* @author 邱陈东  
+	* * @Title: selectConfirmFriendList 
+	* @param @param entity
+	* @param @return 设定文件 
+	* @return List<Friends> 返回类型 
+	* @date 2016-5-6 上午11:55:50
+	* @throws
+	 */
+	public List<Friends> selectConfirmFriendList(PageEntity entity);
+
+
+	/**
+	 * 忘记密码-查询登录名与手机号是否匹配
+	* selectMemberIsExist
+	* @author 邱陈东  
+	* * @Title: selectMemberInfoList 
+	* @param @param param
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-6 下午6:11:01
+	* @throws
+	 */
+	public int selectMemberIsExist(Map<String, Object> param);
+
+
+	/**
+	 * 忘记密码-根据手机号查询用户ID
+	* selectMemberIdByPhone
+	* @author 邱陈东  
+	* * @Title: selectMemberIdByPhone 
+	* @param @param param
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-6 下午6:25:08
+	* @throws
+	 */
+	public Long selectMemberIdByPhone(Map<String, Object> param);
+
+
+	
+	
+	/**
+	* 积分兑换记录
+	* 
+	* @author 李杰
+	* @param entity
+	* @return
+	* @date 2016-5-7 下午3:25:07
+	 */
+	public List<ExchangeRecords> exchangeRecords(PageEntity entity);
+
+
+
+
+	
 
 
 

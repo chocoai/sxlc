@@ -92,5 +92,10 @@ public class SelectProjectAppRecordDaoImpl extends SqlSessionDaoSupport  impleme
 		return getSqlSession().selectList("ProjectAppRecordXML.selectProjectAppAttachmentById", map);
 
 	}
-	
+	@Override
+	public Integer getIsopen(Map<String, Object> map) {
+		
+		return getSqlSession().selectOne("projectPurpose.getIsopen",map);
+		
+	}
 }

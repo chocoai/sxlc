@@ -24,11 +24,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="9" name="top_menu_index"/>
+				<jsp:param value="9" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-recommend.jsp"></jsp:include>
+			<jsp:include page="../common/cm-recommend.jsp">
+				<jsp:param value="911" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -48,30 +51,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<div class="panel-body">
 							<form id="" class="" action="">
-								<div>
-									<span class="con-item textRight3">
+									<span class="con-item">
 										<span>项目编号</span><input type="text" class="notspecial" placeholder="" />
 									</span>
-									<span class="con-item textRight3">
+									<span class="con-item">
 										<span>担保登记时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
 									</span>
-								</div>
-								<div>
-									<span class="con-item textRight3">
+									<span class="con-item">
 										<span>项目名称</span><input type="text" class="departmentname notspecial" placeholder="" />
 									</span>
-									<span class="con-item textRight3">
+									<span class="con-item">
 										<span>最近代偿时间</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
 									</span>
-								</div>
-								<div>
-									<span class="con-item textRight3">
+									<span class="con-item">
 										<span>是否代偿</span><input type="text" class="contactname notspecial" placeholder="" />
 									</span>
 									<span class="">
 										<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 									</span>
-								</div>
 							</form>
 						</div>
 					</div>

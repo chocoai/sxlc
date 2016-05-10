@@ -10,8 +10,13 @@ $(function(){
 						//加密
 						var memberNo = encrypt.encrypt($("#memberNo").val());
 						var logname = encrypt.encrypt($("#logname").val());
+						var personalPhone = encrypt.encrypt($("#personalPhone").val());
+						var repayWay = encrypt.encrypt($("#repayWay").val());
 						d.memberNo = memberNo;
 						d.logname = logname;
+						d.personalPhone = personalPhone;
+						d.repayWay = repayWay;
+						
 					}  
 				},
 				columns: [  
@@ -21,14 +26,10 @@ $(function(){
 				        		  return sReturn;
 				        	  }
 				          },
-				          { title:"会员编号","data": "MemberNo"},  
-				          { title:"会员用户名","data": "Logname", 
-				        	  "mRender": function (data, type, full) {
-				        		  return full.minAmounts+"~"+full.maxAmounts;
-				        	  }
-				          },  
-				          { title:"会员名称","data": "PersonalName"},  
-				          { title:"会员联系号码","data": "PersonalPhone"},  
+				          { title:"会员编号","data": "memberNo"},  
+				          { title:"会员用户名","data": "logname"},  
+				          { title:"会员名称","data": "personalName"},  
+				          { title:"会员联系号码","data": "personalPhone"},  
 				          { title:"借款金额","data": "amountStr"},  
 				          { title:"借款期限","data": "deadline"},  
 				          { title:"还款方式","data": "repayWay", 
@@ -76,7 +77,6 @@ $(function(){
 				          ],
 			  aaSorting : [ [ 5, "desc" ],[ 12, "desc" ],[ 14, "desc" ] ],//默认第几个排序
 	          aoColumnDefs : [
-	                          {"bVisible": false, "aTargets": [1]}, //控制列的隐藏显示
 	                          {
 	                        	  "orderable" : false,
 	                        	  "aTargets" : [ 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 13 ]
@@ -85,10 +85,11 @@ $(function(){
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
 	          serverSide: true,//打开后台分页  
-	//          info:false,
+	          scrollCollapse: true,
+	          scrollX : "100%",
+			  scrollXInner : "100%",
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
-	          }
-	 
+	          },
 	});//表格初始化完毕
 	 
 	//表格单选效果(有复选框)
@@ -132,43 +133,112 @@ $(function(){
 	        maxmin: true,
 	        shadeClose: true, //点击遮罩关闭层
 	        area : ['800px' , '520px'],
-	        content: 'web/project/pro-add/loan_exam_record.jsp'
+	        content: appPath+'/project/toCheckRecordPg'
 	    });
 	});
 	//拒绝借款
 	$('#refuse_payment').on('click', function(){
+		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		if(data.length<1){
+				layer.alert("请选择要拒绝借款的会员！",{icon:0});
+				return;
+		}
+		var params={};
+		var id = data[0].id;
+		params.id=encrypt.encrypt(id);
+		
 		layer.confirm('确定拒绝借款？', {
 			btn: ['确定','取消'] //按钮
 			}, function(){
-			  layer.msg('已拒绝', {icon: 1});
+				$.ajax( {  
+					url:appPath+"/project/refuseBorrow",
+					data:params,
+					type:'post',  
+					cache:false,  
+					dataType:'json',  
+					success:function(data) { 
+						if(data==1){
+							layer.alert("操作成功",{icon:1});
+						}else if(data==0){
+							layer.alert("操作失败",{icon:2});  
+						}
+					},  
+					error : function() {  
+						layer.alert("服务器异常",{icon:2});  
+					}  
+				});
+			  
 			});
 	});
 	//借款会员拉黑
 	$("#loan_member_black").on("click",function(){
+		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		if(data.length<1){
+				layer.alert("请选择要拉黑的会员！",{icon:0});
+				return;
+		}
+		var memberID = data[0].memberID;
         layer.prompt({title: '填写拉黑原因', formType: 2}, function(text){
-          layer.msg('拉黑原因：'+text);
+        	$.ajax( {  
+				url:appPath+"/project/blockMember",
+				data:{"memberId":encrypt.encrypt(memberID),"remark":encrypt.encrypt(text)},
+				type:'post',  
+				cache:false,  
+				dataType:'json',  
+				success:function(data) { 
+					if(data==0){
+						layer.alert("操作成功",{icon:1});
+					}else if(data==-1){
+						layer.alert("会员不存在",{icon:2});  
+					}else if(data==-2){
+						layer.alert("会员已被拉黑",{icon:2});  
+					}
+				},  
+				error : function() {  
+					layer.alert("服务器异常",{icon:2});  
+				}  
+			});
+        	
         });	      
 	});
 });
 /******补充资料*******/
 function addInfo(){
-	$(".right_col").load("web/project/pro-add/add_information.jsp");
+	var data = $('#table_id').DataTable().rows('.selected').data(); 
+	if(data.length<1){
+			layer.alert("请选择要操作的数据！",{icon:0});
+			return;
+	}
+	var id = data[0].id;
+	var applyid = data[0].applyid;
+	$(".right_col").load("project/toAddInformationPg",{"id":encrypt.encrypt(id+""),"applyid":encrypt.encrypt(applyid+"")});
 }
 /******查看借款项目详情*******/
 function view_detail(){
-	$(".right_col").load("web/project/pro-add/loan_pro_detail.jsp");
+	var data = $('#table_id').DataTable().rows('.selected').data(); 
+	if(data.length<1){
+			layer.alert("请选择要操作的数据！",{icon:0});
+			return;
+	}
+	var id = data[0].id;
+	var applyid = data[0].applyid;
+	$(".right_col").load("project/toBorrowDetail",{"id":encrypt.encrypt(id+""),"applyid":encrypt.encrypt(applyid+"")});
 }
 /******分配理财顾问*******/
 function allocation(){
 		var data = $('#table_id').DataTable().rows('.selected').data(); 
 		if(data.length<1){
-				layer.alert("请选择要分配理财顾问的会员！",{icon:0});
+				layer.alert("请选择要操作的数据！",{icon:0});
 				return;
 		}
+		if(data[0].financial>0){//已有理财顾问
+			layer.alert("已分配理财顾问！",{icon:0});
+			return;
+		}
 		var Logname = data[0].Logname;
-		$(".right_col").load("project/toProTypeDetail",{"Logname": encrypt.encrypt(Logname),"PersonalName":encrypt.encrypt(PersonalName)});
-	
-	$(".right_col").load("web/project/pro-add/loan_intention_allocation.jsp");
+		var PersonalName = data[0].PersonalName;
+		var memberID = data[0].memberID;
+		$(".right_col").load("project/toDistributionPg",{"memberID":encrypt.encrypt(memberID),"Logname": encrypt.encrypt(Logname),"PersonalName":encrypt.encrypt(PersonalName)});
 }
 
 

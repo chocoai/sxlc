@@ -156,7 +156,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 下午5:58:39
 	 */
-	public Map<String, Object> showAuthAddress(Long memberId);
+	public CurrencyAuth showAuthAddress(Long memberId);
 	
 	/***
 	* 修改个人地址认证信息
@@ -204,7 +204,18 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-25 上午9:13:39
 	 */
-	public List<Map<String, Object>> showAuthHousing(long memberId);
+	public  List<CurrencyAuth>  showAuthHousing(long memberId);
+	
+	/**
+	 * 查看个人会员房产认证信息 通过rid
+	 * TODO
+	 * 创建日期：2016-5-5上午10:17:04
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return CurrencyAuth
+	 */
+	public  CurrencyAuth  showAuthHousingOne(long rid);
 	
 	/***
 	* 修改个人房产认证信息
@@ -256,7 +267,19 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 上午10:36:16
 	*/
-	public List<Map<String, Object>> showAuthProduction(long memberId);
+	public List<CurrencyAuth> showAuthProduction(long memberId);
+	
+	
+	/**
+	 * 查看个人会员车产认证通过认证id
+	 * TODO
+	 * 创建日期：2016-5-5上午10:06:22
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<CurrencyAuth>
+	 */
+	public CurrencyAuth showAuthProductionOne(long rid);
 
 	/***
 	* 修改个人会员车产认证
@@ -307,7 +330,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 下午1:51:08
 	*/
-	public Map<String, Object> showAuthMarriage(Long memberId);
+	public CurrencyAuth showAuthMarriage(Long memberId);
 	
 	/***
 	* 修改个人会员婚姻认证信息
@@ -353,7 +376,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 下午2:49:35
 	 */
-	public Map<String, Object> showAuthEducation(long memberId);
+	public CurrencyAuth showAuthEducation(long memberId);
 
 	/**
 	* 修改个人会员学历认证
@@ -653,7 +676,7 @@ public interface IBorrowingCertificationServer {
 	 */
 	public int authApproval(long memberId,String fileSummary,String issueOrgan,String issueDate,String enclosure,String endTime);
 
-
+	
 	/***
 	* 查看批文认证
 	* 
@@ -665,9 +688,7 @@ public interface IBorrowingCertificationServer {
 	* @date 2016-3-28 下午7:57:21
 	 */
 	public Map<String, Object> showAuthApproval(long memberId);
-	
-	
-	
+
 	/***
 	* 修改批文认证
 	* 
@@ -685,10 +706,6 @@ public interface IBorrowingCertificationServer {
 	 */
 	public int editAuthApproval(long memberId,String fileSummary,String issueOrgan,String issueDate,String enclosure,String endTime);
 
-	
-	
-	
-	
 	
 	
 /***

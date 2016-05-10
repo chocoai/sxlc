@@ -30,9 +30,16 @@ $(function(){
 });
 
 /**
- * 显示所有认证会员
+ * 显示所有借款会员
  */
 function showMemberLoanList(){
+	var memberType = $("#memberType").val();
+	var Name = "姓名";
+	var Phone = "联系电话";
+	if(memberType ==1){
+		Name ="企业名称";
+		Phone ="联系人电话";
+	}
 	$('#table_id').DataTable(
 			{	autoWidth : false,
 				scrollY : 500,
@@ -57,6 +64,7 @@ function showMemberLoanList(){
 		            "url": appPath+"/member/getLoadMembers.do",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {
+		            	memberType = $("#memberType").val();
 		            	var member_Name = $("#member_Name").val();//会员姓名
 		            	var user_Name =  $("#user_Name").val();//用户名
 		            	var phone_Num =  $("#phone_Num").val();//电话
@@ -67,8 +75,10 @@ function showMemberLoanList(){
 		            	member_Name = encrypt.encrypt(member_Name);
 		            	user_Name = encrypt.encrypt(user_Name);
 		            	phone_Num = encrypt.encrypt(phone_Num);
+		            	memberType = encrypt.encrypt(memberType+"");
+		            	d.memberType = memberType;
 		            	d.memberName=member_Name;
-		            	d.personalName=user_Name;
+		            	d.userName=user_Name;
 		            	d.personalPhone=phone_Num;
 		            } 
 		        },
@@ -82,9 +92,9 @@ function showMemberLoanList(){
 		                  },
 		                 
 		                  { title:"会员编号","data": "memberNo"},   
-		                  { title:"姓名","data": "personalName" },  
+		                  { title:Name,"data": "personalName" },  
 		                  { title:"用户名","data": "logname" },
-		                  { title:"手机号码","data": "personalPhone"},  
+		                  { title:Phone,"data": "personalPhone"},  
 		                  { title:"所属地区","mRender": function(data, type, full){
 		                  		var str="";
 		                  		 if(full.provinceName!=null &&full.provinceName!=""){

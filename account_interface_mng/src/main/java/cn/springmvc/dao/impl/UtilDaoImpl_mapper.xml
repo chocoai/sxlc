@@ -5,12 +5,12 @@
 	
 	<!-- 获取平台自有账户 -->
 	<select id="GetOwnAccountMark" parameterType="Map" resultType ="string">
-		select ThirdParty_Mark from Own_Account_Info where Account_ID = 1
+		select ThirdParty_Mark from Own_Account_Info where Account_Type_ID = 1
 	</select>
 	
 	<!-- 获取平台风险保证金账户 -->
 	<select id="GetOwnRiskMarginAccountMark" parameterType="Map" resultType ="string">
-		select ThirdParty_Mark from Own_Account_Info where Account_ID = 2
+		select ThirdParty_Mark from Own_Account_Info where Account_Type_ID = 2
 	</select>
 	
 	<!-- 获取接口url -->

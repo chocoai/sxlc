@@ -53,4 +53,12 @@
 		  #{adminId,         jdbcType=BIGINT},
 		  #{projectID,       jdbcType=BIGINT}) 
 	</insert>  
+	 <!-- 判断用户是否开户，且开通二次分配授权 -->  
+	<select id = "getIsopen" parameterType = "Map"  resultType = "Integer">
+	 select  mtai.Open_Second_Distribute
+	 from  Member_Third_Auth_Info mtai
+	 left join Member_Third_Info mti on mtai.Account_Id=mti.Account_Id
+	 where  Member_ID =#{memberID} and Member_Type =#{memberType}
+	 and ThirdParty_Account is not null
+    </select>      
 </mapper>   

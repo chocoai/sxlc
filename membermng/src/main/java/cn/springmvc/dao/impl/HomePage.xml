@@ -25,9 +25,9 @@
 	<select id="getInvest_Income" parameterType="Map" resultMap="resultIncomeReplayPlan">
 		SELECT
 		  #{Member_ID} Member_ID,
-		  DATE_FORMAT(ii.SDRecv_MaxTime,'%Y%m') Month,
-		  ifnull(SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{skey})) AS SIGNED),0)+ifnull(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{skey})) AS SIGNED)),0) SDRecv_Amount
-		 FROM Invest_Income ii
+		  DATE_FORMAT(ii.SDRecv_MaxTime,'%m') Month,
+		  ifnull(SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{skey})) AS SIGNED)),0)+ifnull(sum(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{skey})) AS SIGNED)),0) SDRecv_Amount
+		  FROM Invest_Income ii
 		WHERE ii.Member_ID = #{Member_ID} AND ii.IsValid = 0
 		  AND ii.SDRecv_MaxTime BETWEEN STR_TO_DATE(CONCAT(#{Month_Min},'01') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(#{Month_Max}+'01','01') ,'%Y%m%d %H%i%s')
 		GROUP BY DATE_FORMAT(ii.SDRecv_MaxTime,'%Y%m')

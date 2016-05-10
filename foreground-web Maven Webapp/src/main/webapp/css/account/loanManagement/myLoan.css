@@ -1,7 +1,7 @@
-/*Îé³ÉÈ»2016-3-31*/
-/*½è¿î¼ÇÂ¼,½è¿îÉêÇë¼ÇÂ¼,´ýÈ·ÈÏ½è¿îÉêÇërecordÑùÊ½*/
+/*ï¿½ï¿½ï¿½È»2016-3-31*/
+/*ï¿½ï¿½ï¿½ï¿½Â¼,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼,ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½recordï¿½ï¿½Ê½*/
 .accountMain{
-	padding-bottom:20px;/*accountMain³ÅÆð´ý×ö*/
+	padding-bottom:20px;/*accountMainï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 }
 .my-loan-record{
 	font-size:18px;
@@ -17,15 +17,15 @@
 	margin-right:30px;
 	float:left;
 }
-/*Á´½ÓÑùÊ½  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½  */
 .loan-record-ing{
 	color:#72c0f3;
 	border-bottom:2px solid #72c0f3;
 }
 
-.my-loan-record a:link {color:#000;text-decoration:none;}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.my-loan-record a:visited {color:#000;}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.my-loan-record a:hover {color:#72c0f3;text-decoration:none;}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
+.my-loan-record a:link {color:#000;text-decoration:none;}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.my-loan-record a:visited {color:#000;}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.my-loan-record a:hover {color:#72c0f3;text-decoration:none;}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
 
 .my-loan-state{
 	position:absolute;
@@ -41,20 +41,20 @@
 	z-index:10;
 }
 
-.my-loan-state a:link {color:#000;text-decoration:none;}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.my-loan-state a:visited {color:#000}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.my-loan-state a:hover {color:#72c0f3;text-decoration:none;}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
+.my-loan-state a:link {color:#000;text-decoration:none;}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.my-loan-state a:visited {color:#000}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.my-loan-state a:hover {color:#72c0f3;text-decoration:none;}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
 
-.my-loan-table a:link {color:#fe7409;text-decoration:underline}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.my-loan-table a:visited {color:#fe7409}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.my-loan-table a:hover {text-decoration:underline}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
+.my-loan-table a:link {color:#fe7409;text-decoration:underline}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.my-loan-table a:visited {color:#fe7409}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.my-loan-table a:hover {text-decoration:underline}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
 
 .my-loan-table li:hover{
 	background-color:#e5eff4;
 }
-/*Á´½ÓÑùÊ½½áÊø  */
-/*record½áÊø*/
-/*ÈÚ×ÊÖÐ£¬ÈÚ×Ê½áÊø£¬»¹¿îÖÐ£¬ÒÑÁ÷±ê£¬ÒÑ½áÇåstateÑùÊ½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½  */
+/*recordï¿½ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê£¬ï¿½Ñ½ï¿½ï¿½ï¿½stateï¿½ï¿½Ê½*/
 .my-loan-group{
 	float:left;
 	width:935px;
@@ -74,8 +74,8 @@
 	background-color:#fff;
 	border:1px solid #ddd;
 }
-/*state½áÊø*/
-/*content,tableÑùÊ½*/
+/*stateï¿½ï¿½ï¿½ï¿½*/
+/*content,tableï¿½ï¿½Ê½*/
 .my-loan-content{
 	float:left;
 	width:885px;
@@ -151,9 +151,9 @@
 .my-loan-table li:first-child .contentOut4{
 	height:40px;
 }
-/*content£¬tableÑùÊ½½áÊø*/
-/*´ýÈ·ÈÏ½è¿îÉêÇë  */
-/*Ìá½»ÉóºË´ýÈ·ÈÏ  */
+/*contentï¿½ï¿½tableï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½á½»ï¿½ï¿½Ë´ï¿½È·ï¿½ï¿½  */
 .submitToConfirm{
 	color:#ff6e04;
 }
@@ -161,28 +161,28 @@
 	text-decoration:underline;
 	cursor:pointer;
 }
-/*Ìá½»ÉóºË´ýÈ·ÈÏ½áÊø*/
-/*·¢²¼´ýÈ·ÈÏ  */
+/*ï¿½á½»ï¿½ï¿½Ë´ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½  */
 .publishToConfirm:hover{
 	text-decoration:underline;
 	cursor:pointer;
 }
-/*·¢²¼´ýÈ·ÈÏ½áÊø */
-/*²é¿´ÏêÇé  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½ */
+/*ï¿½é¿´ï¿½ï¿½ï¿½ï¿½  */
 .viewDetails:hover{
 	text-decoration:underline;
 	cursor:pointer;	
 }
-/*²é¿´ÏêÇé½áÊø  */
-/*´ýÈ·ÈÏ½è¿îÉêÇë½áÊø  */
-/*½è¿îÉêÇë¼ÇÂ¼  */
-/*ÉóºËÖÐ  */
+/*ï¿½é¿´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½  */
 .checking{
 	color:#ff6e04;
 }
-/*ÉóºËÖÐ½áÊø */
-/*½è¿îÉêÇë¼ÇÂ¼½áÊø*/
-/*½è¿î¼ÇÂ¼  */
+/*ï¿½ï¿½ï¿½ï¿½Ð½ï¿½ï¿½ï¿½ */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½ï¿½ï¿½Â¼  */
 .invRecord{
 	color:#ff6e04;
 	text-decoration:underline;
@@ -209,12 +209,12 @@
 .inv-record-info li:first-child .contentOut5{
 	height:40px;
 }
-.my-loan-content .my-loan-table .loan-agreement{/*½è¿îÐ­ÒéÑùÊ½  */
+.my-loan-content .my-loan-table .loan-agreement{/*ï¿½ï¿½ï¿½Ð­ï¿½ï¿½ï¿½ï¿½Ê½  */
 	text-decoration:underline;
 	color:#575757;
 }
-/*½è¿î¼ÇÂ¼½áÊø*/
-/*»¹¿î¼Æ»®&»¹¿î¼ÇÂ¼ÑùÊ½ */
+/*ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½ï¿½ï¿½Æ»ï¿½&ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ê½ */
 .head{
 	height:70px;
 	width:100%;
@@ -238,7 +238,7 @@
 	width:128px;
 	float:left;
 }
-.remind{/*ÑùÊ½´ý¸Ä  */
+.remind{/*ï¿½ï¿½Ê½ï¿½ï¿½ï¿½  */
 	padding:0 20px;
 	margin:23px 0 0 20px;
 	border:1px solid #ddd;
@@ -256,7 +256,7 @@
 	color:#fe730a;
 }
 
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-»¹¿î¼Æ»®  */
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½Æ»ï¿½  */
 .mark{
 	color:red;
 }
@@ -269,16 +269,16 @@
 	text-align:center;
 	cursor:pointer;
 }
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-»¹¿î¼Æ»®½áÊø  */
-.head a:link {color:#72c0f3;text-decoration:none;}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.head a:visited {color:#72c0f3}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.head a:hover {color:#126dca;text-decoration:none;}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
-/*»¹¿î¼Æ»®&»¹¿î¼ÇÂ¼ÑùÊ½½áÊø */
-/*µ¯³ö²ãÑùÊ½  */
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½Æ»ï¿½ï¿½ï¿½ï¿½ï¿½  */
+.head a:link {color:#72c0f3;text-decoration:none;}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.head a:visited {color:#72c0f3}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.head a:hover {color:#126dca;text-decoration:none;}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½ï¿½ï¿½ï¿½Æ»ï¿½&ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½  */
 .inv-record{
 	display:none;
 }
-/*´ýÈ·ÈÏ½è¿îÉêÇë¡ª¡ª²é¿´ÏêÇé*/
+/*ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡ªï¿½ï¿½ï¿½é¿´ï¿½ï¿½ï¿½ï¿½*/
 .view-details{
 	display:none;
 }
@@ -301,8 +301,8 @@
 	text-align:center;
 	float:left;
 }
-/*´ýÈ·ÈÏ½è¿îÉêÇë¡ª¡ª²é¿´ÏêÇé½áÊø*/
-/*´ýÈ·ÈÏ½è¿îÉêÇë¡ª¡ª´ýÈ·ÈÏ*/
+/*ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡ªï¿½ï¿½ï¿½é¿´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡ªï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½*/
 .to-confirm{
 	display:none;
 }
@@ -350,8 +350,8 @@
 	border-radius:2px;
 	cursor:pointer;
 }
-/*´ýÈ·ÈÏ½è¿îÉêÇë¡ª¡ª´ýÈ·ÈÏ½áÊø*/
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-»¹¿î¼Æ»®  */
+/*ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡ªï¿½ï¿½ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½*/
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½Æ»ï¿½  */
 .repay-content{
 	display:none;
 	padding:10px;
@@ -422,8 +422,8 @@
 	border-radius:2px;
 	cursor:pointer;
 }
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-»¹¿î¼Æ»®½áÊø  */
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-ÌáÇ°»¹¿î*/
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½Æ»ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½*/
 .early-repay-content{
 	display:none;
 }
@@ -454,5 +454,15 @@
 	border-radius:2px;
 	cursor:pointer;
 }
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-ÌáÇ°»¹¿î½áÊø*/
-/*µ¯³ö²ãÑùÊ½½áÊø  */
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½  */
+
+
+.my-loan-table .w70{width: 70px;}
+.my-loan-table .w79{width: 79px;}
+.my-loan-table .w79{width: 79px;}
+.my-loan-table .w79{width: 79px;}
+.my-loan-table .w79{width: 79px;}
+.my-loan-table .w80{width: 80px;}
+.my-loan-table .w88{width: 88px;}
+.my-loan-table .w110{width: 110px;}

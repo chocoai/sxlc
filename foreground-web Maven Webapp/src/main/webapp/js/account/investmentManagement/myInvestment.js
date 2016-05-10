@@ -13,12 +13,7 @@ $(function(){
 	/*切换显示部分开始*/
 	$(".recycle").css("color","#45a7e6");
 	$(".recycle").css("border-bottom","2px solid #45a7e6");
-	$(".myInvestmentH div").click(function(){
-		var index=$(this).index();
-		$(this).css("color","#45a7e6").siblings().css("color","#000");
-		$(this).css("border-bottom","2px solid #45a7e6").siblings().css("border-bottom","none");
-		$(".myInvestmentM ul").eq(index).show().siblings("ul").hide();
-	});
+	
 	
 	/*切换显示部分结束*/
 	
@@ -35,22 +30,29 @@ $(function(){
 	//去掉时间后的.0
 	template.helper("$toDelete",function(content){
 		var index = content.indexOf(".");
-		return content.substring(0,index)
+		if (index>=0){
+			return content.substring(0,index)
+		}
+		
 	})
 
 	var myInvestment = {
 			//回收中
 			recycling:function(order,cpage,pageSize){
-//				(1根据剩余期数升序,-1根据剩余期数降序，2 根据下期回款时间升序，-2 根据下期回款时间降序)}
+//				(1根据剩余期数升序,-1根据剩余期数降序，2 根据下期回款时间升序，-2 根据下期回款时间降序)};
+				
 				var data = {};
 				var encrypt = new JSEncrypt();
 				encrypt.setPublicKey(publickey);
 
 				if (order!=undefined){
 					data.order = encrypt.encrypt(order+"");
-				};
+					var needOrder = order;
+				}else{
+					data.order = encrypt.encrypt('-1'+"");
+					var needOrder = "-1";
+				}
 				if (cpage!=undefined){
-//					console.log(cpage)
 					data.cpage = encrypt.encrypt(cpage+"");
 				};
 				if (pageSize!=undefined){
@@ -63,12 +65,15 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
+							console.log(data)
 							if (data.tol>0){
 								var html = template("recy_list",data);
+								$("#recyTop").siblings().remove();
 								$("#recycleUl").append(html);
 								var totalPage = Math.ceil(data.tol/data.pageSize);
 								var totalRecords = data.tol;
 								var pageNo = data.cpage;
+								$("#pager").html("");
 								pager.generPageHtml({
 								pno : pageNo,
 								//总页码
@@ -77,16 +82,10 @@ $(function(){
 								totalRecords : totalRecords,
 								mode : 'click',//默认值是link，可选link或者click
 								click : function(n) {
-									data.cpage = encrypt.encrypt(n+"");
-										NetUtil.ajax(
-												url,
-												data,
-												function(r){
-													var data = JSON.parse(r);
-													var html = template("recy_list",data);
-													$("#recycleUl").append(html);
-												}
-											)
+										
+										myInvestment.recycling(needOrder,n);
+										this.selectPage(n);
+										return false;
 									}
 								});
 							}
@@ -101,6 +100,10 @@ $(function(){
 				
 				if (order!=undefined){
 					data.order = encrypt.encrypt(order+"");
+					var needOrder = order;
+				}else{
+					data.order = encrypt.encrypt('-1'+"");
+					var needOrder = "-1";
 				}
 				if (cpage!=undefined){
 					
@@ -118,6 +121,7 @@ $(function(){
 							var data = JSON.parse(r);
 							if (data.tol>0){
 								var html = template("settled_list",data);
+								$("#settledTop").siblings().remove();
 								$("#settledUl").append(html);
 								var totalPage = Math.ceil(data.tol/data.pageSize);
 								var totalRecords = data.tol;
@@ -130,16 +134,9 @@ $(function(){
 								totalRecords : totalRecords,
 								mode : 'click',//默认值是link，可选link或者click
 								click : function(n) {
-									data.cpage = encrypt.encrypt(n+"");
-										NetUtil.ajax(
-												url,
-												data,
-												function(r){
-													var data = JSON.parse(r);
-													var html = template("settled_list",data);
-													$("#settledUl").append(html);
-												}
-											)
+									myInvestment.settled(needOrder,n);
+									this.selectPage(n);
+									return false;
 									}
 								});
 							}
@@ -153,7 +150,11 @@ $(function(){
 				data.statu = encrypt.encrypt("0"+"");
 				if (order!=undefined){
 					data.order = encrypt.encrypt(order+"");
-				};
+					var needOrder = order;
+				}else{
+					data.order = encrypt.encrypt('-1'+"");
+					var needOrder = "-1";
+				}
 				if (cpage!=undefined){
 					data.cpage = encrypt.encrypt(cpage+"");
 				};
@@ -169,6 +170,7 @@ $(function(){
 //							console.log(data);
 							if (data.tol>0){
 								var html = template("biding_list",data);
+								$("#bidingTop").siblings().remove();
 								$("#bidingUl").append(html);
 								var totalPage = Math.ceil(data.tol/data.pageSize);
 								var totalRecords = data.tol;
@@ -181,16 +183,9 @@ $(function(){
 								totalRecords : totalRecords,
 								mode : 'click',//默认值是link，可选link或者click
 								click : function(n) {
-									data.cpage = encrypt.encrypt(n+"");
-										NetUtil.ajax(
-												url,
-												data,
-												function(r){
-													var data = JSON.parse(r);
-													var html = template("biding_list",data);
-													$("#bidingUl").append(html);
-												}
-											)
+									myInvestment.bidding(needOrder,n);
+									this.selectPage(n);
+									return false;
 									}
 								});
 							}
@@ -204,7 +199,11 @@ $(function(){
 				data.statu = encrypt.encrypt("1"+"");
 				if (order!=undefined){
 					data.order = encrypt.encrypt(order+"");
-				};
+					var needOrder = order;
+				}else{
+					data.order = encrypt.encrypt('-1'+"");
+					var needOrder = "-1";
+				}
 				if (cpage!=undefined){
 					data.cpage = encrypt.encrypt(cpage+"");
 				};
@@ -220,6 +219,7 @@ $(function(){
 //							console.log(data);
 							if (data.tol>0){
 								var html = template("bidMissed_list",data);
+								$("#bidMisseTop").siblings().remove();
 								$("#bidMissedUl").append(html);
 								var totalPage = Math.ceil(data.tol/data.pageSize);
 								var totalRecords = data.tol;
@@ -232,16 +232,9 @@ $(function(){
 								totalRecords : totalRecords,
 								mode : 'click',//默认值是link，可选link或者click
 								click : function(n) {
-									data.cpage = encrypt.encrypt(n+"");
-										NetUtil.ajax(
-												url,
-												data,
-												function(r){
-													var data = JSON.parse(r);
-													var html = template("bidMissed_list",data);
-													$("#bidMissedUl").append(html);
-												}
-											)
+									myInvestment.bidding(needOrder,n);
+									this.bidders(n);
+									return false;
 									}
 								});
 							}
@@ -255,7 +248,11 @@ $(function(){
 				data.statu = encrypt.encrypt("2"+"");
 				if (order!=undefined){
 					data.order = encrypt.encrypt(order+"");
-				};
+					var needOrder = order;
+				}else{
+					data.order = encrypt.encrypt('-1'+"");
+					var needOrder = "-1";
+				}
 				if (cpage!=undefined){
 					data.cpage = encrypt.encrypt(cpage+"");
 				};
@@ -271,6 +268,7 @@ $(function(){
 //							console.log(data);
 							if (data.tol>0){
 								var html = template("bidEnd_list",data);
+								$("#bidEndTop").siblings().remove();
 								$("#bidEndUl").append(html);
 								var totalPage = Math.ceil(data.tol/data.pageSize);
 								var totalRecords = data.tol;
@@ -283,16 +281,9 @@ $(function(){
 								totalRecords : totalRecords,
 								mode : 'click',//默认值是link，可选link或者click
 								click : function(n) {
-									data.cpage = encrypt.encrypt(n+"");
-										NetUtil.ajax(
-												url,
-												data,
-												function(r){
-													var data = JSON.parse(r);
-													var html = template("bidEnd_list",data);
-													$("#bidEndUl").append(html);
-												}
-											)
+									myInvestment.bid_success(needOrder,n);
+									this.bidders(n);
+									return false;
 									}
 								});
 							}
@@ -302,10 +293,27 @@ $(function(){
 	}
 	//初始化
 	myInvestment.recycling();
-	myInvestment.settled();
-	myInvestment.bidding();
-	myInvestment.bidders();
-	myInvestment.bid_success();
+	$(".myInvestmentH div").click(function(){
+		var index=$(this).index();
+		$(this).css("color","#45a7e6").siblings().css("color","#000");
+		$(this).css("border-bottom","2px solid #45a7e6").siblings().css("border-bottom","none");
+		$(".myInvestmentM ul").eq(index).show().siblings("ul").hide();
+		if (index == "0"){
+			myInvestment.recycling();
+		}
+		if(index == 1){
+			myInvestment.settled();
+		};
+		if(index == 2){
+			myInvestment.bidding();
+		};
+		if(index == 3){
+			myInvestment.bidders();
+		};
+		if(index == 4){
+			myInvestment.bid_success();
+		};
+	});
 	
 	//回收中 升序 降序。。。。(1根据剩余期数升序,-1根据剩余期数降序，2 根据下期回款时间升序，-2 根据下期回款时间降序)}
 	$("#remainingNum em").on("click",function(){

@@ -12,7 +12,7 @@
     <title>还款管理</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
-	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
+	<link rel="stylesheet" href="plugs/laypage/skin/laypage.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/loanManagement/repayManagement.css">
 </head>
 <body> 
@@ -28,14 +28,14 @@
    				<!--伍成然2016-3-31  -->
    					<!--标签切换  -->
 	   				<ul class="my-repay-tab">
-	   					<li class="tab-li tab-ing">待还计划</li>
-	   					<li class="tab-li">还款中的借款</li>	   					
+	   					<li class="tab-li tab-ing" onclick="getStayStillPlans();">待还计划</li>
+	   					<li class="tab-li" onclick="getRepayManagementin();">还款中的借款</li>	   					
 	   				</ul>
 	   				<!--标签切换结束-->
 	   				<!--待还计划开始  -->
 	   				<div class="tab-content">
 	   				<div class="my-repay-content active clearfix">
-		   				<ul class="my-loan-table">
+		   				<ul class="my-loan-table stayStillPlans">
 		   					<li>
 		   						<div class="contentOut0">
 									<div class="c-content">
@@ -93,7 +93,7 @@
 									</div>
 								</div>								
 		   					</li>
-		   					<% for(int j = 0; j<2;j++){ %>
+		   					<%-- <% for(int j = 0; j<2;j++){ %>
 		   					<li>
 		   						<div class="contentOut0">
 									<div class="c-content">
@@ -212,14 +212,15 @@
 									</div>
 								</div>
 		   					</li>
-		   					<%} %>
+		   					<%} %> --%>
 		   				</ul>
-		   				<div id="pager"></div>   				
+		   				<div id="pager-stayStillPlans" class="pager-box"></div>   				
 	   				</div>
 	   				<!--待还计划结束-->
+	   				
 	   				<!--还款中的借款-->
 	   				<div class="my-repay-content clearfix">
-		   				<ul class="my-loan-table">
+		   				<ul class="my-loan-table repayManagementin">
 		   					<li>
 		   						<div class="contentOut1">
 									<div class="c-content">
@@ -282,7 +283,7 @@
 									</div>
 								</div>								
 		   					</li>
-		   					<% for(int j = 0; j<2;j++){ %>
+		   					<%-- <% for(int j = 0; j<2;j++){ %>
 		   					<li>
 		   						<div class="contentOut1">
 									<div class="c-content">
@@ -349,9 +350,9 @@
 									</div>
 								</div>
 		   					</li>
-		   					<%} %>
+		   					<%} %> --%>
 		   				</ul>
-		   				<div id="pager1"></div>	   				
+		   				<div id="pager-repayManagementin" class="pager-box"></div>	   				
 	   				</div>
 	   				<!--还款中的借款结束-->	   				
 	   				</div>
@@ -418,7 +419,10 @@
    		</div>
    	</div>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/repayManagement.js"></script>
+	<script type="text/javascript">
+		getStayStillPlans();
+	</script>
 </body>
 </html>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="FinancialAdvisorExcel"> 
+     <!--           理财顾问提奖记录 -->
+    <select id="getFinancialAdvisorAwardExcel" parameterType="map"
+     resultType = "cn.invitemastermng.model.InviteMasterAwardRecordEntity">
+      select
+		bmi.Logname as logname,
+		CASE
+			WHEN bmi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			WHEN bmi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
+		END memberName	 ,
+		(select sum(pbi.Real_amount) from  Project_App_Record par 
+		left join Project_Base_Info pbi on par.Project_Base_ID = pbi.Project_Base_ID
+		left join Project_App_Process pap on pap.Apply_ID = par.Apply_ID
+		where par.member_ID = bmi.Member_ID and par.Invest_Statu >= 3
+		and mfp.Record_Date &lt;pap.Record_Date and ( pap.Record_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
+		<if test="startTime != null and startTime !=''">
+		    and pap.Hold_Date > #{startTime}
+		  </if>
+		  <if test="endTime != null and endTime !=''">
+		    and pap.Hold_Date &lt; #{endTime}
+		  </if>
+          <!-- 		    今天 -->
+		  <if test="dateStart != null and  dateStart ==1">
+		    and  to_days(pap.Hold_Date) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="dateStart != null and dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(pap.Hold_Date)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="dateStart != null and dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(pap.Hold_Date)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="dateStart != null and dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(pap.Hold_Date)
+		  </if>
+		) as loanTotalAmount,
+		
+		(select sum(ir.Invest_Amount_Valid) from invest_record ir 
+		where ir.Member_ID= bmi.Member_ID and ir.IsValid = 0
+		and mfp.Record_Date &lt;ir.Invest_Date and (ir.Invest_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
+	    <if test="startTime != null and startTime !=''">
+		    and ir.Invest_Date > #{startTime}
+		  </if>
+		  <if test="endTime != null and endTime !=''">
+		    and ir.Invest_Date &lt; #{endTime}
+		  </if>
+          <!-- 		    今天 -->
+		  <if test="dateStart != null and  dateStart ==1">
+		    and  to_days(ir.Invest_Date) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="dateStart != null and dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(ir.Invest_Date)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="dateStart != null and dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(ir.Invest_Date)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="dateStart != null and dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(ir.Invest_Date)
+		  </if>
+		) as investTotalAmountValid,
+		
+		(select count(mvpr.MV_Pay_ID) from Member_VIP_Pay_Record mvpr 
+		where mvpr.Member_ID = bmi.Member_ID and mvpr.Statu = 1
+		and mfp.Record_Date &lt;mvpr.Record_Date and (mvpr.Record_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
+		
+		  <if test="startTime != null and startTime !=''">
+		    and mvpr.Record_Date > #{startTime}
+		  </if>
+		  <if test="endTime != null and endTime !=''">
+		    and mvpr.Record_Date &lt; #{endTime}
+		 </if>
+          <!-- 		    今天 -->
+		  <if test="dateStart != null and  dateStart ==1">
+		    and  to_days(mvpr.Record_Date) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="dateStart != null and dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(mvpr.Record_Date)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="dateStart != null and dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(mvpr.Record_Date)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="dateStart != null and dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(mvpr.Record_Date)
+		  </if>
+		) as countPayVIP,
+		
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Principal),#{skey})) as signed)),0) 
+		from Loan_Real_Repay lrr 
+		left join Project_App_Record par  on par.Apply_ID = lrr.Apply_ID
+		where  par.Member_ID = bmi.Member_ID
+		and mfp.Record_Date &lt;lrr.Repay_Time and (lrr.Repay_Time&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
+		
+		<if test="startTime != null and startTime !=''">
+		    and lrr.Repay_Time > #{startTime}
+		 </if>
+		  <if test="endTime != null and endTime !=''">
+		    and lrr.Repay_Time &lt; #{endTime}
+		 </if>
+          <!-- 		    今天 -->
+		  <if test="dateStart != null and  dateStart ==1">
+		    and  to_days(lrr.Repay_Time) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="dateStart != null and dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(lrr.Repay_Time)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="dateStart != null and dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(lrr.Repay_Time)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="dateStart != null and dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(lrr.Repay_Time)
+		  </if>
+		) as replayPrincipal,
+		
+		(select sum(iar.Award_Amount) from FinancialAdvisor_Award_Record iar
+		left join Project_App_Record  par  on par.Apply_ID = iar.Project_Id
+		where par.Member_ID =bmi.Member_ID and iar.Award_Type = 0 and iar.Pay_Statu =2
+		 <if test="startTime != null and startTime !=''">
+		    and iar.Award_Date > #{startTime}
+		 </if>
+		  <if test="endTime != null and endTime !=''">
+		    and iar.Award_Date &lt; #{endTime}
+		 </if>
+          <!-- 		    今天 -->
+		  <if test="dateStart != null and  dateStart ==1">
+		    and  to_days(iar.Award_Date) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="dateStart != null and dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="dateStart != null and dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="dateStart != null and dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		) as loanAward,
+		
+		(select sum(iar.Award_Amount) from FinancialAdvisor_Award_Record iar
+		left join invest_record  ir  on ir.Invest_ID = iar.Project_Id
+		where ir.Member_ID =bmi.Member_ID and iar.Award_Type = 1 and iar.Pay_Statu =2
+		<if test="startTime != null and startTime !=''">
+		    and iar.Award_Date > #{startTime}
+		 </if>
+		  <if test="endTime != null and endTime !=''">
+		    and iar.Award_Date &lt; #{endTime}
+		 </if>
+          <!-- 		    今天 -->
+		  <if test="dateStart != null and  dateStart ==1">
+		    and  to_days(iar.Award_Date) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="dateStart != null and dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="dateStart != null and dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="dateStart != null and dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		) as investAward,
+		 
+		(select sum(iar.Award_Amount) from FinancialAdvisor_Award_Record iar
+		left join Member_VIP_Pay_Record  vip  on vip.MV_Pay_ID = iar.Project_Id
+		where vip.Member_ID =bmi.Member_ID and iar.Award_Type = 3 and iar.Pay_Statu =2
+		<if test="startTime != null and startTime !=''">
+		    and iar.Award_Date > #{startTime}
+		 </if>
+		  <if test="endTime != null and endTime !=''">
+		    and iar.Award_Date &lt; #{endTime}
+		 </if>
+          <!-- 		    今天 -->
+		  <if test="dateStart != null and  dateStart ==1">
+		    and  to_days(iar.Award_Date) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="dateStart != null and dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="dateStart != null and dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="dateStart != null and dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		) as vipAward,
+		
+		(select sum(iar.Award_Amount) from FinancialAdvisor_Award_Record iar
+		left join Loan_Real_Repay  lrr  on lrr.Real_Repay_ID = iar.Project_Id
+		left join Project_App_Record par  on par.Apply_ID = lrr.Apply_ID
+		where  par.Member_ID = bmi.Member_ID and iar.Award_Type = 2 and iar.Pay_Statu =2
+		 <if test="startTime != null and startTime !=''">
+		    and iar.Award_Date > #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime !=''">
+		    and iar.Award_Date &lt; #{endTime}
+		 </if>
+          <!-- 		    今天 -->
+		  <if test="dateStart != null and  dateStart ==1">
+		    and  to_days(iar.Award_Date) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="dateStart != null and dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="dateStart != null and dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="dateStart != null and dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		) as repayAward
+		
+		from  Financial_Advisor im 
+		join Member_Financial_Advisor mfp on im.FA_ID = mfp.FA_ID
+	    join member_info bmi on bmi.Member_ID = mfp.Member_ID
+		left join personal_base_info pbi  	on  bmi.Personal_Id = pbi.Personal_Id
+		left join  Company_Info ci 	on bmi.Personal_Id = ci.Company_ID
+		where im.Member_ID =  #{memberID}  
+    </select>
+    
+    <!--  理财顾问历史返现记录 -->
+    <select id="getFinancialHistoryBackExcel"  parameterType="map"
+     resultType = "cn.invitemastermng.model.AwardPaymentRecordEntity">
+       SELECT	  
+		  fap.Start_Date    as startDate,
+		  fap.End_Date      as endDate,
+          fap.Borrow_Amount as borrowAmount,
+          fap.Invest_Amount as investAmount,
+          fap.Vip_Amount    as vipAmount,
+          fap.Repay_Amount  as repayAmount, 
+		  fap.Borrow_Award  as borrowAward,
+		  fap.Invest_Award  as investAward,
+		  fap.Vip_Award     as vipAward,
+		  fap.Repay_Award   as repayAward,
+		  fap.Real_Amount   as realAmount,
+		  fap.Borrow_Award+fap.Invest_Award+fap.Vip_Award+fap.Real_Amount as awardAmount,
+		  fap.Pay_Date      as payDate,
+          fap.Pay_Statu     as payStatu,
+          case when fap.Pay_Statu = -1 then  "发放失败"
+               when fap.Pay_Statu = 0  then  "未发放"
+               when fap.Pay_Statu = 1  then  "发放中"
+               when fap.Pay_Statu = 0  then  "发放成功"
+          end  payStatus
+		  from FinancialAdvisor_Award_PayRecord fap
+		  left join  Financial_Advisor fa 	on fa.FA_ID = fap.FA_ID
+		  where fa.Member_ID =  #{memberID}  
+		  <!-- 		     提奖统计月份 -->
+		  <if test="month != null and month !=''">
+		    and  (date_format(fap.Start_Date , '%m' ) = #{month}
+		         or date_format(fap.End_Date , '%m' ) = #{month})
+		  </if> 
+          <!-- 		     提奖发放时间 -->
+		  <if test="startTime != null and startTime !=''">
+		    and fap.Pay_Date > #{startTime}
+		 </if>
+		  <!-- 		     提奖发放时间 -->
+		  <if test="endTime != null and endTime !=''">
+		    and fap.Pay_Date &lt; #{endTime}
+		 </if>
+    </select>
+   
+</mapper>

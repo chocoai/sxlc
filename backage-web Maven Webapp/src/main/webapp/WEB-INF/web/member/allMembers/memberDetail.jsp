@@ -31,19 +31,7 @@
 								<th>花费金额(元)</th>
 							</tr>
 						</thead>
-						<tbody>
-							<%
-								for (int i = 0; i <5; i++) {
-							%>
-							<tr>
-								<td>2015-01-02</td>
-								<td>2016-10-10</td>
-								<td>购买</td>
-								<td><span class="moneyFormat">20000</span><samp>元</samp></td>
-							</tr>
-							<%
-								}
-							%>
+						<tbody id="vipRecord">
 						</tbody>
 					</table>
 				</div>
@@ -164,6 +152,7 @@
 		encrypt.setPublicKey(publicKey_common);
 		//result 为加密后参数
 		memberId = encrypt.encrypt(memberId+"");
+		showVipRecord(memberId); //会员vip记录
 		showMemberDetail(memberId);//会员基本信息
 		showMemberThirdInfo(memberId);//第三方信息
 		showMemberIdentyInfo(memberId);//会员认证项基本信息

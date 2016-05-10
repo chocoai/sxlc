@@ -24,6 +24,7 @@ public class AwardPaymentRecordEntity {
 	
 	private String personalName;//姓名
 	private String logname;//用户名
+	private String memberNo;//会员编号
 	private String personalPhone;//联系电话
 	private String personalIDCard;//身份证号
 	private String startDate;//统计开始时间
@@ -42,14 +43,17 @@ public class AwardPaymentRecordEntity {
 	private String awardAmounts;//推荐提奖总额
 	private String realAmounts;//实际发放金额
 	
+	
 	private long     borrowAmount;//当期累计推荐借款总金额
 	private long     investAmount;//当期累计推荐投资总金额
-	private long     vipAmount;//当期累计推荐还本总金额
-	private long     repayAmount;//当期累计推荐购买VIP总金额
+	private long     vipAmount;//当期累计推荐购买VIP总金额
+	private long     repayAmount;// 当期累计推荐还本总金额
 	private String   borrowAmounts;//当期累计推荐借款总金额
 	private String   investAmounts;//当期累计推荐投资总金额
-	private String   vipAmounts;//当期累计推荐还本总金额
-	private String   repayAmounts;//当期累计推荐购买VIP总金额
+	private String   vipAmounts;//当期累计推荐购买VIP总金额
+	private String   repayAmounts;// 当期累计推荐还本总金额
+	private int         payStatu;//发放状态 -1：发放失败 0：未发放 1：发放中 2：发放成功
+	private String      payStatus;//发放状态
 	public long getBorrowAmount() {
 		return borrowAmount;
 	}
@@ -222,6 +226,28 @@ public class AwardPaymentRecordEntity {
 	public void setRealAmounts(String realAmounts) {
 		this.realAmounts = realAmounts;
 	}
+
+	public int getPayStatu() {
+		return payStatu;
+	}
+	public void setPayStatu(int payStatu) {
+		this.payStatu = payStatu;
+	}
+	public String getPayStatus() {
+		return payStatus;
+	}
+	public void setPayStatus(String payStatus) {
+		this.payStatus = payStatus;
+	}
+
+	public String getMemberNo() {
+		return memberNo;
+	}
+	public void setMemberNo(String memberNo) {
+		this.memberNo = memberNo;
+	}
+	
+
 
 }
 

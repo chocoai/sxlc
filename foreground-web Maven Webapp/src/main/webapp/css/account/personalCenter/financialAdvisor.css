@@ -283,7 +283,7 @@
 	white-space:initial;
 	word-break:break-all;
 	width:100%;
-	height:auto;
+	line-height:20px;
 }
 .awardStatisticsUl .trueName,
 .awardStatisticsUl .userName{
@@ -484,11 +484,10 @@
 }
 /* �б����ݲ��ֽ��� */
 .page{
-	width:100%;
-	height:162px !important;
-	line-height:162px;
+	height:100px;
+	line-height:100px;
 }
-#pager{
+/* #pager{
 	width:100% !important;
 	text-align:center;
-}
+} */

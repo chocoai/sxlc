@@ -36,10 +36,12 @@ public class InviteMasterAwardRecordEntity {
 	private String  		investAwards;//推荐投资提奖金额
 	private long  			vipAward;//推荐购买VIP提奖金额
 	private String  		vipAwards;//推荐购买VIP提奖金额
-	private long  			repayAward;//推荐购买VIP提奖金额
-	private String  		repayAwards;//推荐购买VIP提奖金额
+	private long  			repayAward;//推荐还本提奖金额
+	private String  		repayAwards;//推荐还本提奖金额
 	private long            totalPayVIP;//推荐购买VIP总额
 	private String          totalPayVIPs;//推荐购买VIP总额
+	private long            awardTotal;//提奖总额
+	private String          awardTotals;//提奖总额
 	public long getTotalPayVIP() {
 		return totalPayVIP;
 	}
@@ -162,5 +164,19 @@ public class InviteMasterAwardRecordEntity {
 	public void setRepayAwards(String repayAwards) {
 		this.repayAwards = repayAwards;
 	}
+	public long getAwardTotal() {
+		return awardTotal;
+	}
+	public void setAwardTotal(long awardTotal) {
+		this.awardTotal = awardTotal;
+		this.awardTotals= IntegerAndString.LongToString(awardTotal);
+	}
+	public String getAwardTotals() {
+		return awardTotals;
+	}
+	public void setAwardTotals(String awardTotals) {
+		this.awardTotals = awardTotals;
+	}
+	
 }
 

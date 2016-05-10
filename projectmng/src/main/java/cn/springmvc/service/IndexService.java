@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.springmvc.model.CreditorTransferListEntity;
+import cn.springmvc.model.IndexStaticsEntity;
 import cn.springmvc.model.InvestEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;
 
@@ -31,11 +32,11 @@ public interface IndexService {
 	 * @author 刘利   
 	 * @Description: TODO  
 	 * @param @return 设定文件 
-	 * @return String 返回类型 
+	 * @return IndexStaticsEntity 返回类型 
 	 *  {总会员,总收益,总的借款,风险备用金 用逗号分隔}
 	 * @date 2016-4-8 上午11:35:42
 	 */
-	public String selectIndexStatistic();
+	public IndexStaticsEntity selectIndexStatistic();
 	/**
 	 * 首页投资列表 
 	 * @author 刘利   

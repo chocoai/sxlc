@@ -74,6 +74,10 @@ public class LoanRepayEntity {
 	 * 已还金额
 	 */
 	private String replayTotals;
+	private long			overdueInterest;			//逾期利息
+	private String			sOverdueInterest;	
+	private long			oberdueFine;				//逾期罚金
+	private String			sOberdueFine;	
 	private String corpus;		//应付本金（元）
 	private String interest;		//应付利息（元）
 	private String endCorpusInterest;		//待付息本（元）
@@ -84,6 +88,33 @@ public class LoanRepayEntity {
 	private String loanStatu;//还款状态
 	private long sdPrincipalInterest;//应还本息
 	private String sdPrincipalInterests;//应还本息
+	public long getOverdueInterest() {
+		return overdueInterest;
+	}
+	public void setOverdueInterest(long overdueInterest) {
+		this.overdueInterest = overdueInterest;
+		this.sOverdueInterest= IntegerAndString.LongToString(overdueInterest);
+	}
+	public String getsOverdueInterest() {
+		return sOverdueInterest;
+	}
+	public void setsOverdueInterest(String sOverdueInterest) {
+		this.sOverdueInterest = sOverdueInterest;
+	}
+	public long getOberdueFine() {
+		return oberdueFine;
+	}
+	public void setOberdueFine(long oberdueFine) {
+		this.oberdueFine = oberdueFine;
+		this.sOberdueFine= IntegerAndString.LongToString(oberdueFine);
+	}
+	public String getsOberdueFine() {
+		return sOberdueFine;
+	}
+	public void setsOberdueFine(String sOberdueFine) {
+		this.sOberdueFine = sOberdueFine;
+	}
+	
 	public String getCorpus() {
 		return corpus;
 	}

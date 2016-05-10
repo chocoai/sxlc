@@ -22,7 +22,7 @@ $(function(){
 });
 
 /**
- * 显示会员投资项目
+ * 显示会员邀請記錄
  */
 function showMemberInviteList(memberId){
 	$('#table_id').DataTable(
@@ -62,10 +62,9 @@ function showMemberInviteList(memberId){
 		                  { title:"会员用户名","data": "logName" },  
 		                  { title:"会员名称","data": "userName" },
 		                  { title:"手机号","data": "memberPhone"},   
-		                  { title:"注册时间","data": "investGiftAmounts" },
-		                  { title:"开通第三方时间","data": "investVouchersAmounts"},   
-		                  { title:"邀请总投资金额","data": "sHoldDate" },  
-		                  { title:"邀请总借款金额","data": "investRates" },
+		                  { title:"注册时间","data": "sRregDate" },
+		                  { title:"邀请总投资金额","data": "sInvestmentSum" },  
+		                  { title:"邀请总借款金额","data": "sLoanSum" },
 		        ],
 		        aoColumnDefs : [
 		        				// {"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示

@@ -343,7 +343,6 @@ body .main{
 /*inv-deal-box������״̬  */
 .repaying{
 	padding:20px;
-	/* display:none; */
 }
 .count-down-title{
 	width:105px;
@@ -735,6 +734,10 @@ body .main{
 	height:30px;
 	width:60px;
 }
+.inputDJJ1{
+	height:30px;
+	width:160px;
+}
 .djj{
 	font-size:14px !important;
 }
@@ -778,6 +781,8 @@ body .main{
 /*�����ѡ����ʽ����  */
 .red-packets{
 	display:none;
+	padding-bottom:30px;
+	width:486px;
 }
 .red-packets-bottom{
 	padding:10px 30px;
@@ -890,4 +895,11 @@ body .main{
 	font-size:16px;
 	border-bottom:1px solid #ddd;
 }
-/*��Ŀ��̵��������
+.info1{
+	line-height: 40px;
+    margin: 5px 0;
+}
+.disabled{
+	opacity:0.5;
+	pointer-events:none;
+}

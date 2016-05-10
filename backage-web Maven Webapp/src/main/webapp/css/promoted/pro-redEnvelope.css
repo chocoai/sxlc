@@ -1,0 +1,79 @@
+
+#addRedE .dateInput,
+#alertRedE .dateInput{
+	width:90px;
+	margin-right:8px;
+}
+#addRedE .moneyInput,
+#alertRedE .moneyInput{
+	width:90px;
+}
+#addRedE span.tt,
+#alertRedE span.tt{
+	display:inline-block;
+	min-width:130px;
+	text-align:right;
+}
+#addRedE div,
+#alertRedE div{
+	margin:15px 0 15px 25px;
+}
+#addRedE input,
+#alertRedE input{
+	height:29px;
+	width:200px;
+}
+#addRedE select,
+#alertRedE select{
+	height:29px;
+	width:200px;
+	border:1px solid #ccc;
+}
+#addRedE,#alertRedE{
+	display:none;
+}
+.addBtn,
+.cancelBtn{
+	border:none;
+	padding:3px 10px;
+	border-radius:3px;
+	outline:none;
+}
+.redEAdd,.redDelete{
+	margin-left:10px;
+}
+#addRedE div.redEContent,
+#alertRedE div.redEContent{
+	padding:0;
+	margin:10px 0;
+}
+.addBtn{
+	margin-right:10px;
+    background: #2e8ded;
+    color: #fff;
+}
+.addBtn:hover{
+	background:#3E75B8;
+}
+.cancelBtn{
+	display:inline-block;
+	margin-right:30px;
+    background-color: #f1f1f1;
+    text-decoration:none;
+	color:#333;
+	cursor:pointer;
+}
+.cancelBtn:hover{
+	background:#ccc;
+	text-decoration:none;
+	color:#333;
+}
+.btnAdd{
+	text-align:right;
+}
+a{
+	cursor:pointer;
+}
+.t1{
+	margin-right:4px;
+}

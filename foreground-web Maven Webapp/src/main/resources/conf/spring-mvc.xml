@@ -30,7 +30,7 @@
 
 	<mvc:interceptors>
 		<mvc:interceptor>
-    		<mvc:mapping path="/*"/>
+    		<mvc:mapping path="/**"/>
     		<bean class="cn.springmvc.interceptor.SessionCheckInterceptor"></bean>
     	</mvc:interceptor>
     </mvc:interceptors>

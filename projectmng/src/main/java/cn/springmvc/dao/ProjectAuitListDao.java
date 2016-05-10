@@ -102,5 +102,16 @@ public interface ProjectAuitListDao {
 	 * @date 2016-3-23 下午4:04:47
 	 */
 	public int selectAttachindex();
+	/**
+	 * 根据项目申请id查询项目的所有附件
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param projectID
+	 * @param @return 设定文件 
+	 * @return List<selectProjectCheckAttachTotal> 返回类型 
+	 * @date 2016-3-23 下午4:04:47
+	 */
+	public List<ProjectCheckAttachEntity> selectProjectAttachTotal(long projectID);
+	
 }
 

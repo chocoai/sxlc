@@ -3,12 +3,15 @@ package cn.springmvc.dao;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.pageselect.PageEntity;
+import cn.membermng.model.AutomaticBidSettingEntity;
+import cn.membermng.model.EnterpriseLicenseAttestEntity;
+import cn.membermng.model.ExistingFinancialAdvisorEntity;
+import cn.membermng.model.FinancialAdvisorEntity;
 import cn.membermng.model.MemberAttestByTypeEntity;
 import cn.membermng.model.MemberAttestTypeEntity;
 import cn.membermng.model.PersonalAttestAttachEntity;
 import cn.membermng.model.VIPPurchaseRecordsEntity;
-
-import product_p2p.kit.pageselect.PageEntity;
 
 /*import cn.springmvc.model.MemberAttestByTypeEntity;
 import cn.springmvc.model.MemberAttestTypeEntity;
@@ -158,7 +161,7 @@ public interface SelectCertificationAuditDao {
 	* @date 2016-5-3 下午8:00:30
 	* @throws 
 	*/
-	public List<MemberAttestByTypeEntity> EnterpriseOrganizationCode(
+	public List<EnterpriseLicenseAttestEntity> EnterpriseOrganizationCode(
 			PageEntity page);
 	
 	
@@ -174,7 +177,7 @@ public interface SelectCertificationAuditDao {
 	* @date 2016-5-3 下午8:04:05
 	* @throws 
 	*/
-	public List<MemberAttestByTypeEntity> EnterprisebusinessLC(
+	public List<EnterpriseLicenseAttestEntity> EnterprisebusinessLC(
 			PageEntity page);
 	
 	
@@ -190,7 +193,86 @@ public interface SelectCertificationAuditDao {
 	* @date 2016-5-3 下午8:14:48
 	* @throws 
 	*/
-	public List<MemberAttestByTypeEntity> accountLicenseCode(
+	public List<EnterpriseLicenseAttestEntity> accountLicenseCode(
+			PageEntity page);
+	
+	
+	/** 
+	* QueryMemberAutomaticBidSetting  根据会员id查询会员自动投标设置 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: QueryMemberAutomaticBidSetting 
+	* @Description: TODO 
+	* @param @param memberId
+	* @param @return 设定文件 
+	* @return AutomaticBidSettingEntity 返回类型 
+	* @date 2016-5-4 上午10:40:40
+	* @throws 
+	*/
+	public AutomaticBidSettingEntity QueryMemberAutomaticBidSetting(long memberId);
+	
+	
+	/** 
+	* findFinancialAdvisor 分配理财顾问列表查询  
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findFinancialAdvisor 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<FinancialAdvisorEntity> 返回类型 
+	* @date 2016-5-5 下午1:34:42
+	* @throws 
+	*/
+	public  List<FinancialAdvisorEntity> findFinancialAdvisor(
+			PageEntity page);
+	
+	
+	/** 
+	* ExistingFinancialAdvisor 待分配理财顾问会员  
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: ExistingFinancialAdvisor 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<ExistingFinancialAdvisorEntity> 返回类型 
+	* @date 2016-5-5 下午5:04:45
+	* @throws 
+	*/
+	public  List<ExistingFinancialAdvisorEntity> ExistingFinancialAdvisor(
+			PageEntity page);
+	
+	
+	/** 
+	* ExistingFinancialAdvisor 已分配理财顾问会员
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: ExistingFinancialAdvisor 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<ExistingFinancialAdvisorEntity> 返回类型 
+	* @date 2016-5-5 下午9:24:52
+	* @throws 
+	*/
+	public  List<ExistingFinancialAdvisorEntity> HasFinancialAdvisor(
+			PageEntity page);
+	
+	
+	/** 
+	* ChangeHistory 历史变更理财会员
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: ChangeHistory 
+	* @Description: TODO 
+	* @param @param page
+	* @param @return 设定文件 
+	* @return List<ExistingFinancialAdvisorEntity> 返回类型 
+	* @date 2016-5-10 上午10:18:56
+	* @throws 
+	*/
+	public  List<ExistingFinancialAdvisorEntity> ChangeHistory(
 			PageEntity page);
 }
 

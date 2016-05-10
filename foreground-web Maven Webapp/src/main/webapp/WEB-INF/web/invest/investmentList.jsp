@@ -14,7 +14,7 @@
 	{{each info as value index}}
 		<li>
       		<div>{{value.logname}}</div>
-      		<div><span class="moneyFormat">{{$toFixed value.investAmount}}</span>元</div>
+      		<div><span class="moneyFormat">{{$toFixed value.investAmounts}}</span>元</div>
       		<div>{{$toDelete value.investDate}}</div>
 			{{if value.isAuto=="1"}}
       			<div>自动</div>

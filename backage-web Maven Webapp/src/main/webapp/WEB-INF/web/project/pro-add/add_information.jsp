@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
@@ -63,145 +65,159 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 借款详细信息展示 -->
 			<fieldset class="infoDisplay">
 				<legend>借款详细信息</legend>
+				<input type="hidden" id="ppid" value="${proPurpose.id}" >
+				<input type="hidden" id="pbiid" value="${proRecord.projectBaseInfoentity.id}" >
 				<table>
 					<tr class="col-md-6">
 						<td class="tt"><label>借款金额：</label></td>
 						<td class="con">
-							<span class="moneyFormat">200000</span>元
+							<span class="moneyFormat">${proPurpose.amount}</span>元
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>还款保障：</label></td>
 						<td class="con">
-							<span>还款保障</span>
+							<span>${proRecord.repayGuarantee}</span>
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>借款项目类型：</label></td>
 						<td class="con">
-							<span>借款项目类型</span>
+							<span>${proRecord.projectTypeentity.projectName}</span>
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>借款期限：</label></td>
 						<td class="con">
-							<span>借款期限</span>
+							<span>${proPurpose.deadline}</span>
+							<c:if test="${proPurpose.deadlineType == 0}">
+								 天
+							</c:if>		
+							<c:if test="${proPurpose.deadlineType == 1}">
+								 月
+							</c:if>		
+							<c:if test="${proPurpose.deadlineType == 2}">
+								 年
+							</c:if>		
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>还款来源：</label></td>
 						<td class="con">
-							<span>还款来源</span>
+							<span>${proPurpose.repaySource}</span>
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>借款用途：</label></td>
 						<td class="con">
-							<span>借款用途</span>
+							<span>${proPurpose.uses}</span>
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>抵押物描述：</label></td>
 						<td class="con">
-							<span>抵押物描述</span>
+							<span>${proRecord.guarantyDescribe}</span>
 						</td>
 					</tr>
 				</table>
 			</fieldset>
 			<!-- 借款详细信息修改 -->
 			<fieldset class="modInfo">
-			<form id="modInfo">		
+			<form id="modInfo" action="javascript:nextSave();" method="post">		
 			<table>
 				<tr class="col-md-6">
 					<td class="tt"><label>借款项目名称：</label></td>
 					<td class="con">
-						<input type="text" class="enterN-r " datatype="enterNameR" maxlength="16">
+						<input type="text" class="enterN-r"  value="${proRecord.projectBaseInfoentity.projectTitle}" datatype="enterNameR" maxlength="16">
 					</td>
 				</tr>
 				<tr class="col-md-6">
 					<td class="tt"><label>借款金额：</label></td>
 					<td class="con">
-						<input type="text" class="loanMoney numberReg" datatype="amcountM" maxlength="8">
+						<input type="text" class="loanMoney numberReg" value="${proPurpose.amount}" datatype="amcountM" maxlength="8">
 					</td>
 				</tr>				
 				<tr class="col-md-6">
 					<td class="tt"><label>借款期限：</label></td>
 					<td class="con">
-						<input type="text" class="con-term numberReg" datatype="nNum0" maxlength="6">
-						<select class="conT">
-							<option>天</option>
-							<option>月</option> 
-							<option>年</option>
+						<input type="text" class="con-term numberReg" value="${proPurpose.deadline}" datatype="nNum0" maxlength="6">
+						<select class="conT" value="${proPurpose.deadlineType}">
+							<option value="0">天</option>
+							<option value="1">月</option> 
+							<option value="2">年</option>
 						</select>
 					</td>
 				</tr>
 				<tr class="col-md-6">
 					<td class="tt ttMax"><label>最大投资比例：</label></td>
 					<td class="con">
-						<input type="text" class="con-PP numberReg" datatype="hundredNum" maxlength="3">
+						<input type="text" class="con-PP numberReg" value="${proRecord.investMax}" datatype="hundredNum" maxlength="3">
 						<span>%</span>
 					</td>
 				</tr>
 				<tr class="col-md-6">
 					<td class="tt"><label>年化利率：</label></td>
 					<td class="con">
-						<input type="text" class="startTY numberReg" datatype="hundredNum" maxlength="3">
+						<input type="text" class="startTY numberReg" value="${proPurpose.yearRate}" datatype="hundredNum" maxlength="3">
 						<span>%</span>
 					</td>
 				</tr>
 				<tr class="col-md-6">
 					<td class="tt"><label>起投金额：</label></td>
 					<td class="con">
-						<input type="text" class="startingIA numberReg" datatype="amcountM" maxlength="8">
+						<input type="text" class="startingIA numberReg" value="${proRecord.minStart}" datatype="amcountM" maxlength="8">
 						<span>元</span>
 					</td>
 				</tr>
 				<tr class="col-md-6">
 					<td class="tt"><label>加价幅度：</label></td>
 					<td class="con">
-						<input type="text" class="conIncrease numberReg" datatype="amcountM" maxlength="8">
+						<input type="text" class="conIncrease numberReg" value="${proRecord.increaseRange}" datatype="amcountM" maxlength="8">
 						<span>元</span>
 					</td>
 				</tr>
 				<tr class="col-md-12">
 					<td class="tt"><label>还款方式：</label></td>
 					<td class="con">
-						<select>
-							<option>等额本金</option>
-							<option>等额本息</option>
-							<option>先息后本</option>
-							<option>到期还本息</option>
+						<select class="repayWay" value="${proPurpose.repayWay}">
+							<option value="3" >等额本金</option>
+							<option value="0" >等额本息</option>
+							<option value="1" >先息后本</option>
+							<option value="2" >到期还本息</option>
 						</select>
 					</td>
 				</tr>
 				<tr class="col-md-12">
 					<td class="tt"><label>还款保障：</label></td>
 					<td class="con" id="Repayment-g">
-						<textarea cols="20" rows="3" name="" maxlength="125"></textarea>
+						<textarea cols="20" rows="3" name="" class="repayGuarantee"  maxlength="125">${proRecord.repayGuarantee}</textarea>
 					</td>
 				</tr>
 				<tr class="col-md-12">
 					<td class="tt"><label>借款用途：</label></td>
 					<td class="con" id="usage-loan">
-						<textarea cols="20" rows="3" name="" maxlength="125"></textarea>
+						<textarea cols="20" rows="3" name="" class="uses" maxlength="125">${proPurpose.uses}</textarea>
 					</td>
 				</tr>
 				<tr class="col-md-12">
 					<td class="tt"><label>项目描述：</label></td>
 					<td class="con" id="con-Increase">
-						<textarea cols="20" rows="3" name="" maxlength="200"></textarea>
+						<textarea cols="20" rows="3" name=""  class="projectDescript" maxlength="200">${proRecord.projectTypeentity.projectDescript}</textarea>
 					</td>
 				</tr>
 				<tr class="col-md-12">
 					<td class="tt dyInfo"><label>抵押物描述：</label></td>
 					<td class="con">
+						<div style="display: none" id="guarantyDescribe">
+							${proRecord.guarantyDescribe}
+						</div>
 						<script id="payguide" type="text/plain" style="width:100%"></script>
 					</td>
 				</tr>
 				<tr class="col-md-8 col-md-offset-4">
 					<td class="tt"></td>
 					<td class="con">
-						<button type="submit" class="btn btn-success nextBtn">下一步</button>
+						<button type="button" class="btn btn-success nextBtn">下一步</button>
 						<button type="submit" class="btn btn-default"  onclick="window.location.href='web/project/loan_intention_1.jsp';">返回</button>
 					</td>
 				</tr>
@@ -210,39 +226,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</fieldset>
 				<!-- 下一步部分 -->
 				<fieldset class="nextField" style="display:none">
-					<form id="next_field">
+					<form id="next_field" action="javascript:saveLast();" >
 					<table>
 					<!-- 自动投标 -->
 					<tr class="col-md-12">
 						<td class="tt auto_bid"><label>自动投标：</label></td>
 						<td class="con">
 							<span>投标开始后</span>
-							<input type="text" class="autoBid numberReg" maxlength="6">
+							<input type="text" class="autoBid numberReg autoStart" value="${proPurpose.pAppAutoSetEntity.autoStart}" maxlength="6">
 							<span>分钟开始执行自动投标，自动投标总金额占比</span>
-							<input type="text" class="autoBid numberReg" maxlength="3">
+							<input type="text" class="autoBid numberReg auotInvestMax" value="${proPurpose.pAppAutoSetEntity.autoInvestMax}" maxlength="3">
 							<span>%</span>
 						</td>
 					</tr><!-- 自动投标结束 -->
 					<tr class="col-md-12">
-						<td class="tt"><input type="checkbox" class="check_select">是否为加息标：</td>
+						<td class="tt"><input type="checkbox" class="check_select isAddRates">是否为加息标：</td>
 						<td class="con con-width">
 							<span>添加利息：</span>
-							<input type="text" class="select_able numberReg" datatype="hundredNum" disabled='disabled' datatype="nNum0" maxlength="6">
+							<input type="text" value="${proRecord.rateAddRates}" class="select_able numberReg rateAddRates" dataTyValue="hundredNum" disabled='disabled' maxlength="6">
 							<span>%</span>
 						</td>
 					</tr>
 					<tr class="col-md-12">
-						<td class="tt"><input type="checkbox" class="check_select">是否为定向标：</td>
+						<td class="tt"><input type="checkbox" class="check_select isDirect" value="${proRecord.isDirect}">是否为定向标：</td>
 						<td class="con con-width">
 							<span>投资密码：</span>
-							<input type="password" class="select_able" disabled='disabled' datatype="newpass" maxlength="16">
+							<input type="password" class="select_able directPwd" value="${proRecord.directPwd}" disabled='disabled' dataTyValue="newpass" maxlength="16">
 						</td>
 					</tr>
 					<tr class="col-md-12">
-						<td class="tt"><input type="checkbox" class="check_select">是否为奖励标：</td>
+						<td class="tt"><input type="checkbox" class="check_select isRewardRate">是否为奖励标：</td>
 						<td class="con con-width">
 							<span>填写返现：</span>
-							<input type="text" class="select_able numberReg" disabled='disabled' datatype="hundredNum" maxlength="6">
+							<input type="text" value="${proRecord.rewardRates}" class="select_able numberReg rewardRates" disabled='disabled' dataTyValue="hundredNum" maxlength="6">
 							<span>%*本金</span>
 						</td>
 					</tr>
@@ -251,61 +267,78 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<td class="con con-money">
 							<span class="addRed glyphicon glyphicon-plus"></span>
 							<span class="reduceRed glyphicon glyphicon-minus"></span>
+							<input type="hidden" id="redListSize" value="${fn:length(proPurpose.pEntities2)}">
 							<ul class="red_list">
-								<li class="red_add">
-									<span>投资达到</span>
-									<input class="redPack numberReg" disabled='disabled' maxlength="8">
-									<span>元的前</span>
-									<input class="redPack numberReg" disabled='disabled' maxlength="8">
-									<span>个，平台代付</span>
-									<input class="redPack numberReg" disabled='disabled' maxlength="8">
-									<span>元红包</span>
+								<li class="red_add" >
+									<c:if test="${fn:length(proPurpose.pEntities2) > 0}">
+										<c:forEach var="item" items="${proPurpose.pEntities2}">
+											<span>投资达到</span>
+											<input class="redPack numberReg" value="${item.investRedPackageMin}" disabled='disabled' maxlength="8">
+											<span>元的前</span>
+											<input class="redPack numberReg" value="${item.investNum}" disabled='disabled' maxlength="8">
+											<span>个，平台代付</span>
+											<input class="redPack numberReg" value="${item.redPackage}" disabled='disabled' maxlength="8">
+											<span>元红包</span>
+										</c:forEach>
+									</c:if>		
+									<c:if test="${fn:length(proPurpose.pEntities2) == 0}">
+											<span>投资达到</span>
+											<input class="redPack numberReg"  disabled='disabled' maxlength="8">
+											<span>元的前</span>
+											<input class="redPack numberReg"  disabled='disabled' maxlength="8">
+											<span>个，平台代付</span>
+											<input class="redPack numberReg"  disabled='disabled' maxlength="8">
+											<span>元红包</span>
+									</c:if>		
 								</li>
 							</ul>
 						</td>
 					</tr>	
 					<tr class="col-md-12">
 						<!-- 选择担保机构 -->
-						<td class="tt"><input type="checkbox" class="check_select">担保机构：</td>
 						<td class="con con-width">
-							<button class="add_mechanism" onclick="select_mechanism()">选择担保机构</button>
+							<button type="button" class="add_mechanism" onclick="select_mechanism()">选择担保机构</button>
 							<span class="mechanism"></span>
-							<input type="text" class="select_input2 select_able numberReg" disabled='disabled' maxlength="8">
-							<select class="unit_select">
-								<option>%</option>
-								<option>元</option>
-							</select>
+							<input type="hidden" class="guaranteeID">
+							<input type="text" class="select_input2 select_able numberReg guaranteeName" disabled='disabled' maxlength="8">
 						</td>
 					</tr>	
 					<tr class="col-md-12">
-						<td class="tt"><input type="checkbox" class="check_select">资产管理方：</td>
 						<td class="con con-width">
-							<button class="add_assetManagement" onclick="select_assetManagement()">选择资产管理方</button>
+							<button type="button" class="add_assetManagement" onclick="select_assetManagement()">选择资产管理方</button>
 							<span class="assetManagement"></span>
-							<input type="text" class="select_input2 select_able numberReg" disabled='disabled' maxlength="8">
-							<span>%</span>
+							<input type="hidden" class="assetManagerID">
+							<input type="text" class="select_input2 select_able numberReg managementName" disabled='disabled' maxlength="8">
 						</td>
 					</tr>	
 					<tr class="col-md-12">
-						<td class="tt"><input type="checkbox" class="check_select">项目风险保证金：</td>
+						<td class="tt"><input type="checkbox" class="check_select isRiskMargin">项目风险保证金：</td>
 						<td class="con con-width" id="conProM">
-							<input type="text" class="select_able numberReg" disabled='disabled' maxlength="8">
-							<select class="unit_select">
-								<option>%</option>
-								<option>元</option>
+							<c:if test="${proPurpose.projectAppMngFeeEntity.riskMarginType == 0}">
+								<input type="text" value="${proPurpose.projectAppMngFeeEntity.riskMarginRate}" class="select_able numberReg riskMarginValue" disabled='disabled' maxlength="8">
+							</c:if>
+							<c:if test="${proPurpose.projectAppMngFeeEntity.riskMarginType == 1}">
+								<input type="text" value="${proPurpose.projectAppMngFeeEntity.riskMarginFee}" class="select_able numberReg riskMarginValue" disabled='disabled' maxlength="8">
+							</c:if>
+							<c:if test="${proPurpose.projectAppMngFeeEntity.riskMarginType != 0 && proPurpose.projectAppMngFeeEntity.riskMarginType != 1}">
+								<input type="text" value="${proPurpose.projectAppMngFeeEntity.riskMarginFee}" class="select_able numberReg riskMarginValue" disabled='disabled' maxlength="8">
+							</c:if>
+							<select class="unit_select riskMarginType" vlaue="${proPurpose.projectAppMngFeeEntity.riskMarginType}">
+								<option value="0">%</option>
+								<option value="1">元</option>
 							</select>
 						</td>
 					</tr>				
 					<tr class="col-md-12">
-						<td class="tt"><input type="checkbox" class="check_select">收取借款管理费 ：</td>
+						<td class="tt"><input type="checkbox" class="check_select isMngFeeRate">收取借款管理费 ：</td>
 						<td class="con con-width" id="conSQJKF">
-							<input type="text" class="select_able" disabled='disabled' maxlength="6"><span>%</span>
+							<input type="text" class="select_able mngFeeRate" value="${proPurpose.projectAppMngFeeEntity.mngFeeRate}" disabled='disabled' maxlength="6"><span>%</span>
 						</td>
 					</tr>				
 					<tr class="col-md-12">
 						<td class="tt"><label>允许投标人数 ：</label></td>
 						<td class="con con-width" id="numberOF">
-							<input type="text" class="select_able numberReg" datatype="nNum0" maxlength="8"><span>人</span>
+							<input type="text" class="select_able numberReg investCountMax" value="${proRecord.investCountMax}" datatype="nNum0" maxlength="8"><span>人</span>
 						</td>
 					</tr>
 					<tr class="col-md-8 col-md-offset-4">
@@ -324,11 +357,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul class="authen">
 				<li>
 					<div class="detailTitle">
-						<span>附件类型</span><span>标题</span><span>有效期：永久有效</span>
-						<button class="viewDetail">查看详情</button>
+						<c:forEach var="item" items="${proPurpose.pEntities}">
+							<span>
+								<c:if test="${item.attachInfoType == 0}">
+									 其他
+								</c:if>
+								<c:if test="${item.attachInfoType == 1}">
+									 借款方资料
+								</c:if>
+								<c:if test="${item.attachInfoType == 2}">
+									 抵押资料
+								</c:if>
+								<c:if test="${item.attachInfoType == 3}">
+									 现场调查资料
+								</c:if>
+							</span>
+							<span>${item.attachTitle}</span>
+							<button class="viewDetail">查看详情</button>
+						</c:forEach>
 					</div>
 					<div class="w-content detailAuthen">
-						<div><samp>附件：</samp><img src="resoures/img/accessory.jpg"><img src="resoures/img/accessory.jpg"></div>
+						<div><samp>附件：</samp>
+							<c:forEach var="item" items="${proPurpose.pEntities}">
+								<img src="${hostPath}${item.attachUrl}">
+							</c:forEach>
+					 </div>
 					</div>
 				</li>
 			</ul>
@@ -338,18 +391,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<td class="tt"><label>申请附件类型：</label></td>
 						<td class="con">
 							<select class="doc">
-								<option>附件类型</option>
-								<option>借款方信息</option>
-								<option>抵押信息</option>
-								<option>现场调查信息</option>
-								<option>其它</option>
+								<option value="">==选择==</option>
+								<option value="1">借款方信息</option>
+								<option value="2">抵押信息</option>
+								<option value="3">现场调查信息</option>
+								<option value="0">其它</option>
 							</select>
 						</td>
 					</tr>
 					<tr class="col-md-12">
 						<td class="tt"><label>附件标题：</label></td>
 						<td class="con conAddTitle" id="addTitle">
-							<input type="text" class=" add-title" datatype="roleNameb" value="" >
+							<input type="text" class="add-title" datatype="roleNameb" value="" >
 						</td>
 					</tr>	
 					<tr class="col-md-12">

@@ -21,7 +21,6 @@ import cn.sxlc.account.manager.model.WithdrawsInterdaceEntity;
 * @since 
 * @date 2016-3-7 下午2:17:23  */
 @WebService
-
 public interface ManagedInterfaceServerTestI {
 	
 	
@@ -102,7 +101,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return String 返回类型 
 	* @throws 
 	*/
-	public String testLoanRechargeReturn();
+	public String testLoanRechargeReturn(HttpServletRequest request);
 	
 	
 	/** 
@@ -117,7 +116,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return void 返回类型 
 	* @throws 
 	*/
-	public void testLoanRechargeNotify();
+	public void testLoanRechargeNotify(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	
@@ -148,7 +147,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return String 返回类型 
 	* @throws 
 	*/
-	public String testLoanWithdrawsReturn();
+	public String testLoanWithdrawsReturn(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	/** 
@@ -163,7 +162,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return void 返回类型 
 	* @throws 
 	*/
-	public void testLoanWithdrawsNotify();
+	public void testLoanWithdrawsNotify(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	
@@ -288,7 +287,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return String 返回类型 
 	* @throws 
 	*/
-	public String testInvestmentReturn();
+	public String testInvestmentReturn(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	/** 
@@ -303,7 +302,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return void 返回类型 
 	* @throws 
 	*/
-	public void testInvestmentNotify();
+	public void testInvestmentNotify(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	/** 
@@ -600,13 +599,13 @@ public interface ManagedInterfaceServerTestI {
 	* @Description: TODO 
 	* @param @param memberId 会员id
 	* @param @param years 购买年限
-	* @param @param amount
+	* @param startTime 购买开始时间
 	* @param @return 设定文件 
 	* @return LoanTransferEntity 返回类型 
 	* @date 2016-4-20 下午3:21:55
 	* @throws 
 	*/
-	public LoanTransferEntity PurchaseVIP(long memberId,int years,long amount);
+	public LoanTransferEntity PurchaseVIP(long memberId,int years,String startTime);
 	
 	
 	/** 
@@ -620,7 +619,7 @@ public interface ManagedInterfaceServerTestI {
 	* @date 2016-4-21 下午3:13:23
 	* @throws 
 	*/
-	public String PurchaseVipReturn();
+	public String PurchaseVipReturn(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	/** 
@@ -634,7 +633,7 @@ public interface ManagedInterfaceServerTestI {
 	* @date 2016-4-21 下午3:14:00
 	* @throws 
 	*/
-	public int PurchaseVipBack();
+	public int PurchaseVipBack(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	
@@ -654,9 +653,8 @@ public interface ManagedInterfaceServerTestI {
 	* @param @param sDirectPwd	定向标密码
 	* @param @param sClient  0：pc 1：app 2：微信端
 	* @param @return 设定文件 
-	* @return LoanTransferEntity 返回类型 
+	* @return 0LoanTransferEntity 返回类型 
 	* @date 2016-4-28 下午4:23:32
-	* @throws 
 	*/
 	public LoanTransferEntity PreInvestmentTreatment(long lProjectId, long lMemberId, short sIsAuto,long lAmount, String sRedpacketsInfo,
             long lVouchers, String sDirectPwd,short sClient);
@@ -675,4 +673,44 @@ public interface ManagedInterfaceServerTestI {
 	* @throws 
 	*/
 	public LoanTransferEntity earlyRepaymentSubm(RepayInterfaceEntity repayInterfaceEntity);
+	
+	
+	
+	
+	/** 
+	* TransferOfCreditorsRights 债权转让投资信息提交前处理
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: TransferOfCreditorsRights 
+	* @Description: TODO 
+	* @param @param lProjectId  项目ID
+	* @param @param lMemberId 会员ID
+	* @param @param lCreditorTransAppId 债权转让的申请id
+	* @param @param sIsAuto 是否为自动投标	0:否	1：是
+	* @param @param lAmount  投资总金额		(单位元，保留4位小数)
+	* @param @param sRedPacketsInfo 红包使用金额		红包1ID,使用金额(单位元 格式：0.20元，保留2位小数);红包ID2,使用金额;
+	* @param @param lVouchers 代金券金额		(单位元，保留4位小数)
+	* @param @param sClient  0：pc 1：app 2：微信端
+	* @param @return 设定文件 
+	* @return LoanTransferEntity 返回类型 
+	* @date 2016-5-5 下午7:44:36
+	* @throws 
+	*/
+	public LoanTransferEntity TransferOfCreditorsRights(long lProjectId, long lMemberId, long lCreditorTransAppId,short sIsAuto,
+            long lAmount, String sRedPacketsInfo, long lVouchers,short sClient);
+	
+	
+	/** 
+	* TransferOfCreditorsInvest 债权转让投资 第三方服务器返回
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: TransferOfCreditorsInvest 
+	* @Description: TODO 
+	* @param @param request
+	* @param @param response 设定文件 
+	* @return void 返回类型 
+	* @date 2016-5-9 上午11:16:39
+	* @throws 
+	*/
+	public void TransferOfCreditorsInvest(HttpServletRequest request,HttpServletResponse response);
 }

@@ -287,3 +287,13 @@ img{
 	border-left:1px solid #ccc;
 	color:#444;
 }
+/* Ìõ¼þÀ©Õ¹  */
+.con-item{
+	display:inline-block;
+	min-width:300px;
+	max-width:300px;
+	text-align:right;
+}
+.con-item select{
+	width:169px;
+}

@@ -31,23 +31,16 @@
 						</div>
 						<div class="panel-body">
 							<form id="" class="alignment" action="">
-								<div>
 									<span class="con-item textRight2"><span>借款编号</span><input type="text" id="b_no" class="notspecial" ></span>
 									<span class="con-item textRight2"><span>放款时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
 									<span class="con-item textRight"><span>借款编号</span><input type="text" class="notspecial" ></span>
 									<span class="con-item textRight"><span class="projectStatus">项目状态</span><select class="stateSelect"><option>已结清</option><option>待还款</option></select></span>
 									<span class="con-item textRight"><span>放款时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
 									<span class="con-item textRight"><span class="approval">审批通过时间</span><input type="text" id="startDate3" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate3\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate3" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate3\')}' ,maxDate:'2020-10-01' })" ></span>
-								</div>
-								<div>
 									<span class="con-item textRight2"><span>借款名称</span><input type="text" id="b_name" class="notspecial" ></span>
 									<span class="con-item textRight2"><span>结清时间</span><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" ></span>
-								</div>
-								<div>
 									<span class="con-item textRight2"><span>担保机构名称</span><input type="text" class="notspecial" id="gua_name"></span>
 									<span class="con-item textRight2"><span>提交借款意向时间</span><input type="text" id="startDate2" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate2\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate2" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate2\')}' ,maxDate:'2020-10-01' })" ></span>
-								</div>
-								<div>
 									<span class="con-item textRight2"><span>项目状态</span>
 									<select id="p_statu" class="stateSelect">
 										<option value="">请选择</option>
@@ -64,7 +57,6 @@
 									<span class="con-item textRight"><span>结清时间</span><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" ></span>
 									<span class="con-item textRight"><span>提交借款意向时间</span><input type="text" id="startDate2" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate2\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate2" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate2\')}' ,maxDate:'2020-10-01' })" ></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search inquiryBtn">查询</button>
-								</div>
 							</form>
 					  	</div>
 					 </div>

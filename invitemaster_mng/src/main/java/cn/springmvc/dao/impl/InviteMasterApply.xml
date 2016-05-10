@@ -27,7 +27,7 @@
 			WHEN bmi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)
 			WHEN bmi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)
 		END memberName	 ,
-		(select sum(pbi.Real_amount) from  Project_App_Record par 
+		(select ifnull(sum(pbi.Real_amount),0) from  Project_App_Record par 
 		left join Project_Base_Info pbi on par.Project_Base_ID = pbi.Project_Base_ID
 		left join Project_App_Process pap on pap.Apply_ID = par.Apply_ID
 		where par.member_ID = bmi.Member_ID and par.Invest_Statu >= 3
@@ -57,7 +57,7 @@
 		  
 		) as loanTotalAmount,
 		
-		(select sum(ir.Invest_Amount_Valid) from invest_record ir 
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.skey})) as signed)),0)  from invest_record ir 
 		 where ir.Member_ID= bmi.Member_ID and ir.IsValid = 0
 		 and mfp.Record_Date &lt;ir.Invest_Date and (ir.Invest_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
 		  <if test="map.startTime != null and map.startTime !=''">
@@ -140,7 +140,7 @@
 		  </if>
 		) as replayPrincipal,
 		
-		(select sum(iar.Award_Amount) from InviteMaster_Award_Record iar
+		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar
 		left join Project_App_Record  par  on par.Apply_ID = iar.Project_Id
 		where par.Member_ID =bmi.Member_ID and iar.Award_Type = 0 and iar.Pay_Statu =2
 		 <if test="map.startTime != null and map.startTime !=''">
@@ -167,7 +167,7 @@
 		  </if>
 		) as loanAward,
 		
-		(select sum(iar.Award_Amount) from InviteMaster_Award_Record iar
+		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar
 		left join invest_record  ir  on ir.Invest_ID = iar.Project_Id
 		where ir.Member_ID =bmi.Member_ID and iar.Award_Type = 1 and iar.Pay_Statu =2
 		 <if test="map.startTime != null and map.startTime !=''">
@@ -194,7 +194,7 @@
 		  </if>
 		) as investAward,
 		 
-		(select sum(iar.Award_Amount) from InviteMaster_Award_Record iar
+		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar
 		left join Member_VIP_Pay_Record  vip  on vip.MV_Pay_ID = iar.Project_Id
 		where vip.Member_ID =bmi.Member_ID and iar.Award_Type = 3 and iar.Pay_Statu =2
 		 <if test="map.startTime != null and map.startTime !=''">
@@ -221,7 +221,7 @@
 		  </if>
 		) as vipAward,
 		
-		(select sum(iar.Award_Amount) from InviteMaster_Award_Record iar
+		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar
 		left join Loan_Real_Repay  lrr  on lrr.Real_Repay_ID = iar.Project_Id
 		left join Project_App_Record par  on par.Apply_ID = lrr.Apply_ID
 		where  par.Member_ID = bmi.Member_ID and iar.Award_Type = 2 and iar.Pay_Statu =2
@@ -247,7 +247,35 @@
 		  <if test="map.dateStart != null and map.dateStart ==4">
 		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(iar.Award_Date)
 		  </if>
-		) as repayAward
+		) as repayAward,
+		
+		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar
+		left join Loan_Real_Repay  lrr  on lrr.Real_Repay_ID = iar.Project_Id
+		left join Project_App_Record par  on par.Apply_ID = lrr.Apply_ID
+		where  par.Member_ID = bmi.Member_ID and iar.Pay_Statu =2
+		 <if test="map.startTime != null and map.startTime !=''">
+		    and iar.Award_Date > #{map.startTime}
+		 </if>
+		 <if test="map.endTime != null and map.endTime !=''">
+		    and iar.Award_Date &lt; #{map.endTime}
+		 </if>
+          <!-- 		    今天 -->
+		  <if test="map.dateStart != null and  map.dateStart ==1">
+		    and  to_days(iar.Award_Date) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="map.dateStart != null and map.dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="map.dateStart != null and map.dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="map.dateStart != null and map.dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		) as awardTotal
 		
 		from  Invite_Master im 
 		join Member_Financial_Planner mfp on im .Im_Apply_ID = mfp.Im_Apply_ID
@@ -306,7 +334,7 @@
 			WHEN bmi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)
 			WHEN bmi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)
 		END memberName,
-        bmi.Reg_Date,
+        bmi.Reg_Date as regDate,
         case when  mti.ThirdParty_Account is null then 0
              when mti.ThirdParty_Account is not null then 1
         END isopenThird
@@ -319,11 +347,11 @@
         where im.Member_ID =  #{map.memberID}
            <!-- 		    开户状态  开户-->
 		  <if test="map.isopenThird != null and map.isopenThird == 1">
-		    and mti.ThirdParty_Account is null
+		    and mti.ThirdParty_Account is not null
 		  </if> 
 		  <!-- 		    开户状态  未开户-->
 		  <if test="map.isopenThird != null and map.isopenThird == 2">
-		    and mti.ThirdParty_Account is null
+		    and mti.ThirdParty_Account is  null
 		  </if> 
 		  <!-- 		     注册时间 -->
 		  <if test="map.startTime != null and map.startTime !=''">
@@ -336,9 +364,17 @@
 		  <!-- 		     会员/用户名 -->
 		  <if test="map.name != null and map.name !=''">
 		    and (bmi.Logname like '%${map.name}%' or 
-		        ci.Compang_Name like '%${map.name}%' or
-		        pbi.Personal_Name like '%${map.name}%'
+		        CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)  like '%${map.name}%' or
+		        CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  like '%${map.name}%'
 		    )
+		 </if>
+		  <!-- 		     根据注册时间降序 -->
+		  <if test="map.order != null and map.order == 1">
+		    order by   bmi.Reg_Date desc
+		 </if>
+		  <!-- 		     根据注册时间升序 -->
+		  <if test="map.order != null and map.order == 2">
+		    order by   bmi.Reg_Date asc
 		 </if>
     </select>
     
@@ -355,23 +391,22 @@
 			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)
 			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)
 		  END Personal_Name,	
-		  pp.Deadline,
-		  pp.Deadline_Type,
-		  (select d.name1 from dict d where d.code1 = pp.Deadline_Type AND d.tcode = 'DICT_QXLX') name1,
-		  pp.Amount,
-		  pp.Year_Rate,
+		  prbi.Deadline,
+		  prbi.Deadline_Type,
+		  (select d.name1 from dict d where d.code1 = prbi.Deadline_Type AND d.tcode = 'DICT_QXLX') name1,
+		  ifnull(prbi.Amount,0) Amount,
+		  prbi.Year_Rate,
 		  pap.Hold_Date
 		  from project_app_record pa 
-		  join project_base_info prbi 	ON pa.Project_Base_ID = prbi.Project_Base_ID
-		  join project_purpose pp 	ON pp.Purpose_ID = pa.Purpose_ID
-		  join member_info mi 	ON pp.Member_ID = mi.Member_ID
-		  join Project_App_Process pap   ON pa.Apply_Id = pap.Apply_Id
+		  join project_base_info prbi 	ON pa.Project_Base_ID = prbi.Project_Base_ID 
+		  join member_info mi 	ON pa.Member_ID = mi.Member_ID
+		  left join Project_App_Process pap   ON pa.Apply_Id = pap.Apply_Id
 		  LEFT join personal_base_info pbi	  ON mi.Personal_Id = pbi.Personal_Id
 		  LEFT join Company_Info ci ON mi.Personal_Id = ci.Company_ID
 	      join Member_Financial_Planner 	 mfp on  mfp.Member_ID = mi.Member_ID
 	      join Invite_Master im on im .Im_Apply_ID = mfp.Im_Apply_ID
 	      where im.Member_ID =  #{map.memberID} and pa.Invest_Statu >=3
-	       and mfp.Record_Date &lt;pap.Record_Date and (pap.Record_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
+	      and mfp.Record_Date &lt;pap.Record_Date and (pap.Record_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
 	    
 	      <!-- 		  借款名称 -->
 		  <if test="map.projectTitle != null and map.projectTitle != ''">
@@ -388,8 +423,8 @@
 		  <!-- 		     会员/用户名 -->
 		  <if test="map.name != null and map.name != ''">
 		    and (mi.Logname like '%${map.name}%' or 
-		        ci.Compang_Name like '%${map.name}%' or
-		        pbi.Personal_Name like '%${map.name}%'
+		        CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)  like '%${map.name}%' or
+		        CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  like '%${map.name}%'
 		    )
 		 </if>
 		  <!-- 		     根据放款时间降序 -->
@@ -404,7 +439,8 @@
       <!-- 推荐达人投资明细 -->
     <select id="getInviteInvest" parameterType="product_p2p.kit.pageselect.PageEntity"
     resultMap="CommissionIssuedMap.Invest">
-      SELECT 
+       select * from ( 
+       SELECT 
 		  prbi.Project_Title,
 		  CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.skey})) AS SIGNED) Invest_Amount_Valid,
 		  mi.Logname,
@@ -412,11 +448,13 @@
 			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)
 			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)
 		  END Personal_Name,	
-		  (SELECT SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{map.skey})) AS SIGNED)) FROM Invest_Income ii WHERE ii.Invest_Id = ir.Invest_Id) SDRecv_Principal,
-		  (SELECT SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{map.skey})) AS SIGNED)) FROM Invest_Income ii WHERE ii.Invest_Id = ir.Invest_Id) SDRecv_Interest,
-		  ir.Hold_Date
-		FROM Invest_Record ir 
-        join InviteMaster_Award_Record far   ON ir.Invest_Id = far.Project_Id AND far.Award_Type = 1
+		  ifnull((SELECT SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{map.skey})) AS SIGNED)) FROM Invest_Income ii WHERE ii.Invest_Id = ir.Invest_Id),0) SDRecv_Principal,
+		  ifnull( (SELECT SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{map.skey})) AS SIGNED)) FROM Invest_Income ii WHERE ii.Invest_Id = ir.Invest_Id),0) SDRecv_Interest,
+		  
+		  (select iic.SDRecv_MaxTime  from  invest_income iic
+		  where   ir.Invest_Id = iic.Invest_Id   and iic.Statu =0 and iic.IsValid = 0 order by iic.SDRecv_MaxTime asc limit 1) as nextReplayDay,
+	      ir.Hold_Date
+		FROM Invest_Record ir  
 	    join project_app_record Pa 	ON ir.Apply_Id = pa.Apply_Id
 		join project_base_info prbi ON pa.Project_Base_ID = prbi.Project_Base_ID
 		join member_info mi ON ir.Member_ID = mi.Member_ID
@@ -427,34 +465,36 @@
 	    join Invite_Master im on im .Im_Apply_ID = mfp.Im_Apply_ID
 	    where im.Member_ID =  #{map.memberID} and ir.IsValid = 0
 	    and mfp.Record_Date &lt;ir.Invest_Date and (ir.Invest_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
-	
+	    ) as pp
+	    <where>
 	       <!-- 		  借款名称 -->
 		  <if test="map.projectTitle != null and map.projectTitle != ''">
-		    and    prbi.Project_Title like '%${map.projectTitle}%'  
+		    and    Project_Title like '%${map.projectTitle}%'  
 		  </if>
 	       <!-- 	预期收益时间 -->
 		  <if test="map.startTime != null and map.startTime != ''">
-		    and  ir.Invest_Date > #{map.startTime}
+		    and    nextReplayDay > #{map.startTime}
 		 </if>
 		  <!-- 		     预期收益时间 -->
 		  <if test="map.endTime != null and map.endTime != ''">
-		    and  ir.Invest_Date &lt; #{map.endTime}
+		    and  nextReplayDay &lt; #{map.endTime}
 		 </if>
 		  <!-- 		     会员/用户名 -->
 		  <if test="map.name != null and map.name != ''">
-		    and (mi.Logname like '%${map.name}%' or 
-		        ci.Compang_Name like '%${map.name}%' or
-		        pbi.Personal_Name like '%${map.name}%'
+		    and (    
+		           Logname like '%${map.name}%' or 
+		           Personal_Name like '%${map.name}%'
 		    )
 		 </if>
 		  <!-- 		     预期收益时间降序 -->
 		  <if test="map.order != null and map.order == 1">
-		    order by   ir.Invest_Date desc
+		    order by   nextReplayDay desc
 		 </if>
 		  <!-- 		     预期收益时间升序 -->
 		  <if test="map.order != null and map.order == 2">
-		    order by   ir.Invest_Date asc
+		    order by   nextReplayDay asc
 		 </if>
+		 </where>
     </select>
     
     <!--           推荐达人VIP购买明细 -->
@@ -468,11 +508,10 @@
 			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)
 		  END Personal_Name,	
 		  mvr.Certify_SDate,
-		  mvr.Certify_EDate,
-		  mvp.Amount,
+		  mvr.Certify_EDate, 
+		  ifnull(sum(CAST((AES_DECRYPT(UNHEX(mvp.Amount),#{map.skey})) as signed)),0) as Amount,
 		  mvp.Record_Date
-		  FROM Member_VIP_Pay_Record mvp
-		  join FinancialAdvisor_Award_Record far ON mvp.MV_Pay_ID = far.Project_Id AND far.Award_Type = 3
+		  FROM Member_VIP_Pay_Record mvp 
 		  join Member_VIP_Record mvr ON mvp.MV_Pay_ID = mvr.MV_Pay_ID
 		  join member_info mi ON mvp.Member_ID = mi.Member_ID
 		  left join personal_base_info pbi	 	ON mi.Personal_Id = pbi.Personal_Id
@@ -493,8 +532,8 @@
 		  <!-- 		     会员/用户名 -->
 		  <if test="map.name != null and map.name != ''">
 		    and (mi.Logname like '%${map.name}%' or 
-		        ci.Compang_Name like '%${map.name}%' or
-		        pbi.Personal_Name like '%${map.name}%'
+		       CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)  like '%${map.name}%' or
+		        CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  like '%${map.name}%'
 		    )
 		 </if>
 		  <!-- 		     支付时间降序 -->
@@ -525,11 +564,11 @@
 	  prbi.Project_Title,
 	  mi.Logname,
 	  CASE
-		  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),'22')) using utf8)
-		  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),'22')) using utf8)
+		  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)
+		  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)
 	  END Personal_Name,	
-	  CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),'22')) AS SIGNED) Repay_Principal,
-	  CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),'22')) AS SIGNED) Repay_Interest,
+	  ifnull(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{map.skey})) AS SIGNED),0) Repay_Principal,
+	  ifnull(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{map.skey})) AS SIGNED),0) Repay_Interest,
 	  lrr.Repay_Time,lr.Repay_MaxTime,
 	  (CASE when lr.Repay_MaxTime >= lrr.Repay_Time then 0 
 			else 1
@@ -560,8 +599,8 @@
 		  <!-- 		     会员/用户名 -->
 		  <if test="map.name != null and map.name != ''">
 		    and (mi.Logname like '%${map.name}%' or 
-		        ci.Compang_Name like '%${map.name}%' or
-		        pbi.Personal_Name like '%${map.name}%'
+		      CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)  like '%${map.name}%' or
+		      CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  like '%${map.name}%'
 		    )
 		  </if>
 		   <!-- 	逾期 -->
@@ -587,34 +626,38 @@
        select 
 		(select ifnull(sum(pbi.Real_amount),0) from  Project_App_Record par 
 		 left join Project_Base_Info pbi on par.Project_Base_ID = pbi.Project_Base_ID
-		 left join Project_App_Process pap on pap.Apply_ID = par.Apply_ID
-	 	 where par.member_ID = bmi.Member_ID and par.Invest_Statu >= 3 
+		 left join Project_App_Process pap on pap.Apply_ID = par.Apply_ID 
+		 join Member_Financial_Planner mfp  on par.member_ID = mfp.Member_ID 
+	 	 where mfp.Im_Apply_ID = im.Im_Apply_ID and par.Invest_Statu >= 3 
 	 	 and mfp.Record_Date &lt;pap.Record_Date and (pap.Record_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
 	    ) as loanTotalAmount,
 		
-		(select ifnull(sum(ir.Invest_Amount_Valid),0) from invest_record ir 
-		 where ir.Member_ID= bmi.Member_ID and ir.IsValid = 0
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) as signed)),0)  
+		 from invest_record ir  
+		 join Member_Financial_Planner mfp on ir.Member_ID = mfp.Member_ID 
+	 	 where mfp.Im_Apply_ID = im.Im_Apply_ID and ir.IsValid = 0
 		 and mfp.Record_Date &lt;ir.Invest_Date and (ir.Invest_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
 	    ) as investTotalAmountValid,
 		
-		(select sum(mvpr.Amount) from Member_VIP_Pay_Record mvpr 
-		 where mvpr.Member_ID = bmi.Member_ID  and mvpr.Statu = 1
+		(select  ifnull(sum(CAST((AES_DECRYPT(UNHEX(mvpr.Amount),#{skey})) as signed)),0)
+		 from Member_VIP_Pay_Record mvpr 
+		 join Member_Financial_Planner mfp on  mvpr.Member_ID = mfp.Member_ID 
+	 	 where mfp.Im_Apply_ID = im.Im_Apply_ID  and mvpr.Statu = 1
 		 and mfp.Record_Date &lt;mvpr.Record_Date and (mvpr.Record_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
 	  	 ) as totalPayVIP,
 		
 		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Repay_Principal),#{skey})) as signed)),0) 
 		from Loan_Real_Repay lrr 
 		left join Project_App_Record par  on par.Apply_ID = lrr.Apply_ID
-		where  par.Member_ID = bmi.Member_ID 
+		join Member_Financial_Planner mfp  on par.Member_ID = mfp.Member_ID 
+	 	where mfp.Im_Apply_ID = im.Im_Apply_ID 
 		and mfp.Record_Date &lt;lrr.Repay_Time and (lrr.Repay_Time&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
 		) as replayPrincipal,
 		
-		(select sum(iar.Award_Amount) from InviteMaster_Award_Record iar
-		left join Project_App_Record  par  on par.Apply_ID = iar.Project_Id
-		where par.Member_ID =bmi.Member_ID  and iar.Pay_Statu =2) as totalAward
-        from  Invite_Master im 
-		join Member_Financial_Planner mfp on im .Im_Apply_ID = mfp.Im_Apply_ID
-		left join member_info bmi on bmi.Member_ID = mfp.Member_ID 
+		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar 
+		join Member_Financial_Planner mfp on iar.Member_ID = mfp.Member_ID 
+	 	where mfp.Im_Apply_ID = im.Im_Apply_ID  and iar.Pay_Statu =2) as awardTotal 
+        from  Invite_Master im  
 		where im.Member_ID = #{memberID}  
     </select> 
 </mapper>

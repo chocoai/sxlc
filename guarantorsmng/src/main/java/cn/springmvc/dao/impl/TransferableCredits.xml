@@ -12,6 +12,8 @@
     <result column="money" property="money"/>
     <result column="cou" property="cou"/>
     <result column="nextTime" property="nextTime"/>
+    <result column="deadlineTypeName" property="deadlineTypeName"/>
+    <result column="overTime" property="overTime"/>
   </resultMap>
   <!-- 债权转让规则 -->
   <resultMap type="cn.springmvc.model.TransferRulesEntity" id="sTransferRules">
@@ -26,27 +28,36 @@
   	SELECT Hold_Day,Range_Day,Interest_Day FROM Trans_Setting
   </select>
   <!-- 分页查询可转让债权信息 -->
+  <!-- (select tname from DICT where code1 = pbi.Deadline_Type and tcode = 'DICT_QXLX' limit 1) deadlineTypeName, -->
   <select id="selectTransferableCredits" resultMap="sTransferableCredits" parameterType="product_p2p.kit.pageselect.PageEntity">
-  	select ir.Invest_Id,pbi.Project_Title,pbi.Year_Rate,pbi.Deadline_Type,CAST(((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.skey}))) as signed) AS money,
-(SELECT name1 from DICT WHERE code1=pbi.Deadline_Type AND tcode='DICT_QXLX' LIMIT 1) AS DeadlineTypeName,
-(SELECT COUNT(1) FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 or 2) AND IsValid=0) AS cou,
-(SELECT SDRecv_MaxTime FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 or 2) ORDER BY SDRecv_MaxTime DESC LIMIT 1) AS nextTime 
-from Invest_Record ir 
-		 left join Project_App_Record pi on pi.Apply_Id = ir.Apply_Id	
-			LEFT JOIN Project_Base_Info pbi ON pbi.Project_Base_ID = pi.Project_Base_ID 
-where NOW()>DATE_ADD(ir.Hold_Date,INTERVAL #{map.holdDate} DAY) 
-and pi.Apply_Id not in (select Apply_Id from Loan_Repay where (Statu=0 or Statu=1)
- and DATE_ADD(NOW(),INTERVAL #{map.repayMaxTime} DAY)>Repay_MaxTime)  
- and pi.Apply_Id in (select Apply_Id from Loan_Repay where (Statu=0) 
- and Repay_MaxTime>DATE_ADD(NOW(),INTERVAL #{map.sRepayMaxTime} DAY)) 
- and ir.Member_ID=#{map.memberID} 
- and ir.Invest_Id not in (select Invest_Id from Creditor_Trans_App 
- 		where (Check_Statu=1 or Check_Statu=0) and (Statu=0 or Statu=2)) 
- and ir.IsValid = 0 and ir.Invest_Id=1 and pi.Invest_Statu=3 ;
+  	select 
+	  	ir.Invest_Id,
+	  	pbi.Project_Title,
+	  	pbi.Year_Rate,
+	  	
+	  	CAST(((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.skey}))) as signed) AS money,
+		(SELECT name1 from DICT WHERE code1=pbi.Deadline_Type AND tcode='DICT_QXLX' LIMIT 1) AS DeadlineTypeName,
+		(SELECT COUNT(1) FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 or 2) AND IsValid=0) AS cou,
+		(SELECT SDRecv_MaxTime FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 or 2) ORDER BY SDRecv_MaxTime DESC LIMIT 1) AS nextTime,
+		(SELECT SDRecv_MaxTime FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 or 2) ORDER BY SDRecv_MaxTime asc LIMIT 1) AS overTime 
+	from Invest_Record ir 
+	left join Project_App_Record pi on pi.Apply_Id = ir.Apply_Id
+	LEFT JOIN Project_Base_Info pbi ON pbi.Project_Base_ID = pi.Project_Base_ID 
+	where NOW()>DATE_ADD(ir.Hold_Date,INTERVAL #{map.holdDate} DAY) 
+	and pi.Apply_Id not in (select Apply_Id from Loan_Repay where (Statu=0 or Statu=1)
+	and DATE_ADD(NOW(),INTERVAL #{map.repayMaxTime} DAY)>Repay_MaxTime)  
+	and pi.Apply_Id in (select Apply_Id from Loan_Repay where (Statu=0) 
+	and Repay_MaxTime>DATE_ADD(NOW(),INTERVAL #{map.sRepayMaxTime} DAY)) 
+	and ir.Member_ID=#{map.memberID} 
+	and ir.Invest_Id not in (select Invest_Id from Creditor_Trans_App where (Check_Statu=1 or Check_Statu=0) and (Statu=0 or Statu=2)) 
+  	and ir.IsValid = 0 and ir.Invest_Id=1 and pi.Invest_Statu=3
   </select>
  <!-- 添加债权转让申请记录 -->
  <select id="creditorTransApp" resultType="Map" statementType="CALLABLE">
- 	<!-- -->
+ 	<!-- ctaId:债权转让申请id，logId：操作前台会员id ,investId:投资记录id，
+ 	transPrincipal：转让金额 ，transDiscount：债权转让折扣，transMaxTime：最迟转让时间，surplusTime：剩余期限
+ 	surplusTimeType：剩余期限类型，
+ 	result：1：成功 -1该债权转让不是本人 -2转让金额大于最大可转让金额 -->
   		<![CDATA[{call creditorTransApp(
 				#{ctaId,	 mode=IN,	jdbcType=BIGINT},
 				#{logId,	 mode=IN,	jdbcType=BIGINT},

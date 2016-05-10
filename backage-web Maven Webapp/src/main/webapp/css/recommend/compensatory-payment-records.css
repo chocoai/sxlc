@@ -1,6 +1,6 @@
 .line{
 	display:inline-block;
-	width:20px;
+	width:5px;
 	height:1px;
 	vertical-align:middle;
 	border-top:1px solid #ccc;
@@ -38,4 +38,23 @@
 }
 .compayrecbtn{
 	margin-left:36px;
+}
+
+
+/* Ìõ¼þ²éÑ¯   */
+.con-item{
+	display:inline-block;
+	min-width:325px;
+	max-width:325px;
+	text-align:right;
+	line-height:20px;
+}
+.con-item select{
+	width:169px;
+}
+.search .dateInput{
+	width:90px;
+}
+.search input{
+	width:200px;
 }

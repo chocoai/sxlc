@@ -36,12 +36,12 @@ public interface InviteMasterApplyService {
 	/**
 	 * 推荐达人申请  
 	 * @author 刘利    
-	 * @param map map内传 会员ID memberID，推荐达人ID:imApplyID
+	 * @param 会员ID memberID，推荐达人ID:imApplyID
 	 * @param @return 设定文件 
-	 * @return int 返回类型 1成功，0失败 ，-1该会员意识推荐达人，或改会员存在未审核的申请记录
+	 * @return int 返回类型 1成功，0失败 ，-1该会员已是推荐达人，或存在未审核的申请记录
 	 * @date 2016-4-5 上午11:07:37
 	 */
-	public int insertInviteMasterApply(Map<String,Object> map);
+	public int insertInviteMasterApply(long memberID);
 	/**
 	 * 推荐达人提奖记录
 	 * @author 刘利   
@@ -69,7 +69,7 @@ public interface InviteMasterApplyService {
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param @param page
-	 * map{memberID,isopenThird(1开户，2未开户，-1全部),startTime ,endTime,name(会员/用户名),memberID}
+	 * map{memberID,isopenThird(1开户，2未开户，-1全部),startTime ,endTime,name(会员/用户名)，order（1降序,2升序） }
 	 * @param @return 设定文件 
 	 * @return List<InvitationRecordEntity> 返回类型 
 	 * @date 2016-4-28 下午8:37:50
@@ -98,7 +98,7 @@ public interface InviteMasterApplyService {
 	 */
 	public List<InvestDetailedEntity> getInviteInvest(PageEntity page);
 	/**
-	 *  推荐达人VIP购买明细
+	 * 推荐达人VIP购买明细
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param @param page
@@ -131,5 +131,27 @@ public interface InviteMasterApplyService {
 	 */
 	public InviteMasterAwardRecordEntity selectInviteMasterStatistic(long memberID);
 	
+	/**
+	 * 推荐达人提奖记录excel导出
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param  map{skey,startTime ,endTime,dateStart(1今天，2近一本周，3近一月，4近6月),memberID}
+	 * @param @return 设定文件 
+	 * @return List<InviteMasterAwardRecordEntity> 返回类型 
+	 * @date 2016-4-28 下午8:35:22
+	 */
+	public List<InviteMasterAwardRecordEntity> getInviteMasterAwardRecordExcel(Map<String,Object> map);
+	
+	
+	/**
+	 * 推荐达人历史返现EXCEl导出
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param map{month(提奖统计月份一月：01，二月:02),startTime ,endTime,memberID}
+	 * @param @return 设定文件 
+	 * @return List<AwardPaymentRecordEntity> 返回类型 
+	 * @date 2016-4-28 下午8:37:00
+	 */
+	public List<AwardPaymentRecordEntity> getInviteMasterHistoryBackExcel(Map<String,Object> map);
 }
 

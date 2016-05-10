@@ -204,7 +204,6 @@ $(function(){
 			
 			
 			var vsign = sendBef(sendDate);
-			console.log(vsign);
 			$.ajax({
 				url:"register.html",
 				type:"post",

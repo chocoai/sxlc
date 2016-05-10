@@ -11,11 +11,15 @@
 	<base href="<%=basePath%>">
     <title>我要借款</title>
     <jsp:include page="../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>    
 	<link rel="stylesheet" type="text/css" href="css/loan/loan.css">
 </head>
 <body>
     <jsp:include page="../common/top.jsp"></jsp:include>
    	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
+   	<script type="text/javascript" src="js/common/template.js"></script>
     <!-- 在这里加入页面内容 -->
     <!-- 我要借款静态界面     胥福星     2016-03-27 -->
     <div class="nowPosition">
@@ -68,10 +72,12 @@
 	    			<div class="selectArea selectArea1">
 					    <input class="selectValue selectType" value="1" >
 					    <input class="selectInput selectInput1" type="text" lang="请选择借款类型" readOnly="true"/>
-					    <ul class="select" onselectstart="return false">
-					        <li class="selectOption" value="1">担保贷</li>
-					        <li class="selectOption" value="2">信用贷</li>
-					        <li class="selectOption" value="3">抵押贷</li>
+					    <ul class="select" id="typeSelect" onselectstart="return false">
+					        <script id="typeSelectList" type="text/html">
+					        {{each data as value index}}
+					        	<li class="selectOption"  value="{{value.id}}">{{value.projectName}}</li>
+					        {{/each}}
+							</script>
 					    </ul>
 					</div>
     			</div>
@@ -126,48 +132,20 @@
 	    			<textarea class="input miaoShu" ignore="ignore" lang="请输入借款描述"></textarea>
     			</div>
     			<div>
-    				<div class="submit" onclick="clickUp();">提交申请</div>
+    				<div class="submit">提交申请</div>
     				<!-- 成功使用clickUp();    失败则使用 clickDown()  -->
     			</div>
     		</form>
     	</div>
     	<div id="productMode" class="loan loan1">
-    		<div class="borrowModeDiv">
-	    		<div class="borrowMode">
-	    			<img src="resource/img/loan/mode1.png" />
-	    			<div class="borrowDetail">
-	    				<p>信用贷款是为政府公务员、事业单位员工、个体户主、企业高管、白领阶层等量身定制的一款借款产品。帮助满足个人消费需求，提高生活品质。</p>
-	    				<a class="more credit" href="loan/loan.html#guide">查看详情</a>
-	    			</div>
-	    			<div class="flowTop">
-	    				<img src="resource/img/loan/xyd.png" />
-	    			</div>
-	    			<div class="flowTopHover">
-	    				<p>
-	    					<span class="span">金额范围：</span>
-	    					<span class="priceRange">0-30万</span>
-	    				</p>
-	    				<p>
-	    					<span class="span">利率范围：</span>
-	    					<span>10.00%-18.00%</span>
-	    				</p>
-	    				<p>
-	    					<span class="span">期限范围：</span>
-	    					<span>1-12个月</span>
-	    				</p>
-	    				<p>
-	    					<span class="span">会员限制：</span>
-	    					<span>个人会员、企业会员</span>
-	    				</p>
-	    			</div>
-	    		</div>
-    		</div>
-    		<div class="borrowModeDiv borrowMode1">
+    		<script id="loanList" type="text/html">
+			{{each data as value index}}
+    		<div class="borrowModeDiv borrowMode1" id="{{value.id}}" >
 	    		<div class="borrowMode">
 	    			<img src="resource/img/loan/mode2.png" />
 	    			<div class="borrowDetail">
-	    				<p>担保贷是为小微企业、个人等打造的一款借款产品。帮助资金周转等燃眉之急。</p>
-	    				<a class="more assure" href="loan/loan.html#guide">查看详情</a>
+	    				<p>{{value.briefIntroduction}}</p>
+	    				<a class="more assure" href="javascript:quryDeatail({{value.id}})">查看详情</a>
 	    			</div>
 	    			<div class="flowTop">
 	    				<img src="resource/img/loan/dbd.png" />
@@ -175,76 +153,55 @@
 	    			<div class="flowTopHover">
 	    				<p>
 	    					<span class="span">金额范围：</span>
-	    					<span class="priceRange">0-30万</span>
+	    					<span class="priceRange">{{value.minAmount/10000}}-{{value.maxAmount/10000}}万</span>
 	    				</p>
 	    				<p>
 	    					<span class="span">利率范围：</span>
-	    					<span>10.00%-18.00%</span>
+	    					<span>{{value.minRates}}%-{{value.maxRates}}%</span>
 	    				</p>
 	    				<p>
 	    					<span class="span">期限范围：</span>
-	    					<span>1-12个月</span>
+	    					<span>
+							{{value.mminDaytime}}-{{value.mmaxDaytime}}个月,
+							{{value.yminDaytime}}-{{value.ymaxDaytime}}年,
+							{{value.tminDaytime}}-{{value.tmaxDaytime}}天
+							</span>
 	    				</p>
 	    				<p>
 	    					<span class="span">会员限制：</span>
-	    					<span>个人会员、企业会员</span>
+	    					<span>{{if value.applyMember==0}}无限制 {{/if}}
+								  {{if value.applyMember==1}}个人会员 {{/if}}
+								  {{if value.applyMember==2}}企业会员 {{/if}} 
+							</span>
 	    				</p>
 	    			</div>
 	    		</div>
-    		</div>
-    		<div class="borrowModeDiv borrowMode1">
-	    		<div class="borrowMode">
-	    			<img src="resource/img/loan/mode3.png" />
-	    			<div class="borrowDetail">
-	    				<p>信用贷款是为政府公务员、事业单位员工、个体户主、企业高管、白领阶层等量身定制的一款借款产品。帮助满足个人消费需求，提高生活品质。</p>
-	    				<a class="more guaranty" href="loan/loan.html#guide">查看详情</a>
-	    			</div>
-	    			<div class="flowTop">
-	    				<img src="resource/img/loan/dyd.png" />
-	    			</div>
-	    			<div class="flowTopHover">
-	    				<p>
-	    					<span class="span">金额范围：</span>
-	    					<span class="priceRange">0-30万</span>
-	    				</p>
-	    				<p>
-	    					<span class="span">利率范围：</span>
-	    					<span>10.00%-18.00%</span>
-	    				</p>
-	    				<p>
-	    					<span class="span">期限范围：</span>
-	    					<span>1-12个月</span>
-	    				</p>
-	    				<p>
-	    					<span class="span">会员限制：</span>
-	    					<span>个人会员、企业会员</span>
-	    				</p>
-	    			</div>
-	    		</div>
-    		</div>
+    		</div>	
+			{{/each}}				
+			</script>
     	</div>
     	<div class="loan" id="guide">
     		<div class="quickLoan">
-    			<span class="guideTitle">信用贷</span>
+    			<span class="guideTitle"></span>
     			<a class="back" href="loan/loan.html#productMode">返回类型选择</a>
     		</div>
     		<div class="guideList">
 	    		<div class="guideLi">
 	    			<span>项目简介</span>
-	    			<p class="guideP">信用贷是为政府公务员、事业单位员工、个体户主、企业高管、白领阶层等量身定制的一款借款产品。帮助满足个人消费需求，提高生活品质。</p>
+	    			<p class="guideP projectProfile"></p>
 	    		</div>
 	    		<div class="guideLi">
 	    			<span>项目描述</span>
 	    			<ul class="guideP">
-	    				<li><span>额度范围：</span><samp>0-30万</samp></li>
-	    				<li><span>期限范围：</span>1-12个月</li>
-	    				<li><span>利率范围：</span>10.00%-18.00%</li>
-	    				<li><span>会员限制：</span>个人会员</li>
+	    				<li><span>额度范围：</span><samp><font class="projectMinAmount"></font>-<font class="projectMaxAmount"></font>万</samp></li>
+	    				<li><span>期限范围：</span> <font class="deadLineRange"></font> </li>
+	    				<li><span>利率范围：</span><font class="minRate"></font>%-<font class="maxRate"></font>%</li>
+	    				<li><span>会员限制：</span><font class="memLimit"></font> </li>
 	    			</ul>
 	    		</div>
 	    		<div class="guideLi">
 	    			<span>准备资料</span>
-	    			<p class="material"><span>身份证认证</span>+<span>征信认证</span>+<span>户籍认证</span>+<span>住址认证</span>+<span>婚姻认证</span>+<span>银行流水认证</span>+<span>户籍认证</span>+<span>住址认证</span>+<span>婚姻认证</span>+<span>银行流水认证</span></p>
+	    			<p class="material"></p>
 	    		</div>
 	    		<div class="guideLi">
 	    		    <span>申请指南</span>
@@ -335,7 +292,7 @@
    			<span>我们将很快进行审核！</span>
    		</div>
    		<div class="apply-bottom">
-   			<input type="button" class="btn" value="确定" onclick="window.location.href='integralMall/itemList.html';">
+   			<input type="button" class="btn" value="确定" onclick="closePlate(2)">
    		</div>
    	</div>
     <div class="applyTalent2">
@@ -345,7 +302,7 @@
    			<span>请重新检查您的借款申请！</span>
    		</div>
    		<div class="apply-bottom">
-   			<input type="button" class="btn" value="确定" onclick="window.location.href='integralMall/itemList.html';">
+   			<input type="button" class="btn" value="确定" onclick="closePlate(1)">
    		</div>
    	</div>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>

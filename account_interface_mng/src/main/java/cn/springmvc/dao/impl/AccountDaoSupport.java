@@ -8,6 +8,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -45,9 +46,11 @@ public class AccountDaoSupport extends SqlSessionDaoSupport implements AccountSu
      */
     public long getRemainderVouchers(long lMemberId) {
         long lResult = 0;
+        String sKey = DbKeyUtil.GetDbCodeKey();
 
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("lMemberId", lMemberId);
+        param.put("sKey", sKey);
         param.put(DaoConstant.PARAM_RESULT, 0);
 
         getSqlSession().selectOne("AccountDao.GetRemainderVouchers", param);

@@ -21,43 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 	<div class="container add_type_contianer">
 		<div class="panel-body">
-			<table id="table_loan_exam_record" class="display">
-				<thead>
-					<tr>
-						<th>项目名称</th>
-						<th>审核管理员名称</th>
-						<th>审核点</th>
-						<th>审核时间</th>
-						<th>审核状态</th>
-						<th>审核意见</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>项目</td>
-						<td>管理员</td>
-						<td>审核地址</td>
-						<td>2016.2.11</td>
-						<td>同意</td>
-						<td>快速机动款到即发</td>
-					</tr>
-					<tr>
-						<td>项目</td>
-						<td>管理员</td>
-						<td>审核地址</td>
-						<td>2016.2.11</td>
-						<td>同意</td>
-						<td>快速机动款到即发</td>
-					</tr>
-					<tr>
-						<td>项目</td>
-						<td>管理员</td>
-						<td>审核地址</td>
-						<td>2016.2.11</td>
-						<td>同意</td>
-						<td>快速机动款到即发</td>
-					</tr>
-				</tbody>
+			<table id="table_id" class="display">
 			</table>
 		</div>
 	</div>
@@ -65,34 +29,53 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript">
-			//默认禁用搜索和排序
-			/* $.extend( $.fn.dataTable.defaults, {
-			    searching: true,
-			    ordering:  false
-			} ); */
-			// 这样初始化，排序将会打开
-			$(function() {
-				$('#table_loan_exam_record').DataTable({
-					"autoWidth" : false,
-					//scrollY : 500,
-					//paging : false,//分页
-					//"searching" : false,
-					"info" : false,//左下角信息
-					//"ordering": false,//排序
-					"aaSorting" : [],//默认第几个排序
-					"aoColumnDefs" : [
-					//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-					{
-						"orderable" : false,
-						"aTargets" : [ 0, 1, 2, 3, 4, 5]
-					} // 制定列不参与排序
-					],
-					colReorder : false,
-					"sScrollX" : "100%",
-					"sScrollXInner" : "100%",
-					"bScrollCollapse" : true
-				});
-			});
+	//表格初始化
+	$('#table_id').DataTable(
+			{	
+				ajax: {  
+					"url": appPath+"/project/getChkRecordData",   
+					"dataSrc": "results", 
+					"type": "POST",
+					"data": function ( d ) {
+					}  
+				},
+				columns: [
+				          { title:"项目名称","data": "MemberNo"},  
+				          { title:"审核管理员名称","data": "Logname"},  
+				          { title:"审核点","data": "PersonalName"},  
+				          { title:"审核时间","data": "PersonalPhone"},  
+				          { title:"审核状态","data": "amountStr"},  
+				          { title:"审核意见","data": "deadline"}
+				          ],
+	          aoColumnDefs : [
+	                          {
+	                        	  "orderable" : false,
+	                        	  "aTargets" : [ 0, 1, 2, 3, 4, 5]
+	                          } // 制定列不参与排序
+	                          ],
+	          pagingType: "simple_numbers",//设置分页控件的模式  
+	          processing: true, //打开数据加载时的等待效果  
+	          serverSide: true,//打开后台分页  
+// 	          info:false,
+	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
+	          }
+	 
+	});//表格初始化完毕
+	 
+	//表格单选效果
+	 $('#table_id tbody').on( 'click', 'tr', function () {
+		    var $this = $(this);
+		    var $checkBox = $this.find("input:checkbox");
+	        if ( $this.hasClass('selected') ) {
+	        	 $checkBox.prop("checked",false);
+	        	$this.removeClass('selected');
+	        } else {
+	        	$checkBox.prop("checked",true);
+	        	$('#table_id tr.selected').removeClass('selected');
+	        	$this.addClass('selected');
+	        }
+	  });
+	
 	</script>
 </body>
 

@@ -139,5 +139,15 @@ public interface SelectProjectAppRecordDao {
 	* @throws 
 	*/
 	public List<ProjectAppAttachmentEntity> selectProjectAppAttachmentById(Map<String, Object> map);
+	/**
+	 * 查询该会员是否开通二次分配授权
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return Integer 返回类型 
+	 * @date 2016-5-5 下午3:19:05
+	 */
+	public Integer getIsopen(Map<String,Object> map);
 }
 

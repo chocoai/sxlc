@@ -26,6 +26,7 @@ import cn.springmvc.service.CapitalbudgetdetailsService;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
  
 
 /** 
@@ -40,9 +41,9 @@ public class CapitalbudgetdetailsServiceImpl implements CapitalbudgetdetailsServ
 	@Override
 	public List<MemberTradingRecordsEntity> selectMemberTradingRecords(
 			PageEntity pageEntity) {
-		    
-		return capitalbudgetdetailsListDao.selectMemberTradingRecords(pageEntity);
-		
+		List<MemberTradingRecordsEntity> list = capitalbudgetdetailsListDao.selectMemberTradingRecords(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	@Override
@@ -56,16 +57,16 @@ public class CapitalbudgetdetailsServiceImpl implements CapitalbudgetdetailsServ
 	@Override
 	public List<MemberWithdrawalRechargeEntity> selectRechargeList(
 			PageEntity pageEntity) {
-		
-		return capitalbudgetdetailsListDao.selectRechargeList(pageEntity);
-		
+		List<MemberWithdrawalRechargeEntity> list =  capitalbudgetdetailsListDao.selectRechargeList(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list ;
 	}
 
 	@Override
-	public List<MemberWithdrawalRechargeEntity> selectWithdrawalList(
-			PageEntity pageEntity) {
-		
-		return capitalbudgetdetailsListDao.selectWithdrawalList(pageEntity);
+	public List<MemberWithdrawalRechargeEntity>  selectWithdrawalList(PageEntity pageEntity) {
+		List<MemberWithdrawalRechargeEntity> list =  capitalbudgetdetailsListDao.selectWithdrawalList(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list ;
 		
 	}
 

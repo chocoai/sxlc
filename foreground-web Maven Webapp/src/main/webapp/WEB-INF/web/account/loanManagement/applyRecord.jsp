@@ -12,7 +12,7 @@
     <title>借款申请记录</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
-	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
+	<link rel="stylesheet" href="plugs/laypage/skin/laypage.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/loanManagement/myLoan.css">
 </head>
 <body> 
@@ -75,7 +75,7 @@
 									</div>
 								</div>					
 		   					</li>
-		   					<% for(int j = 0; j<2;j++){ %>
+		   					<%-- <% for(int j = 0; j<2;j++){ %>
 		   					<li>
 		   						<div class="contentOut4">
 									<div class="c-content">
@@ -164,9 +164,9 @@
 									</div>
 								</div>
 		   					</li>
-		   					<%} %>
+		   					<%} %> --%>
 		   				</ul> 
-		   				<div id="pager"></div>  				
+		   				<div id="pager" class="pager-box"></div>  				
 	   				</div>   				
    				</div>
    			</div>
@@ -174,7 +174,10 @@
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/myLoan.js"></script>
+	<script type="text/javascript">
+		getApplyRecord();
+	</script>
 </body>
 </html>

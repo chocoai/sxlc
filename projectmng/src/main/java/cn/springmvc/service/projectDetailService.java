@@ -123,7 +123,7 @@ public interface projectDetailService {
 	public  String selectProjectDescript(long projectID);
  
 	 /**
-     * 查询项目直投剩余可投金额-已投资总额-转让本金 
+     * 查询项目直投剩余可投金额-已投资总额-借款本金 
      * @author 刘利   
      * @Description: TODO 
      * @param map {applyID，sKey}

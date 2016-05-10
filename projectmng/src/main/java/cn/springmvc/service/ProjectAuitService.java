@@ -32,8 +32,8 @@ import cn.springmvc.model.ProjectCheckRecordEntity;
 public interface ProjectAuitService {
 	/**
 	 *  实现审核列表查询
-	 *  @param pageEntity  分页实体 map{sIndexs(上级项目审批流程序号大于等于0)，ProjectTitle，Logname
-	 *                              ，statu（1已审核，-1未审核），Indexs （当前审批活动点序号），name（借款人姓名）
+	 *  @param pageEntity  分页实体 map{ProjectTitle，Logname
+	 *                              ，statu（1已审核，-1未审核），sIndexs （当前审批活动点序号），name（借款人姓名）
 	 *                              startTime，endTime,keys}
 	 *  @author 刘利 
 	 *  @Description: 实现审核列表查询 
@@ -49,18 +49,8 @@ public interface ProjectAuitService {
 	 * @return ProjectAppRecordEntity 返回类型 
 	 * @date 2016-3-21 下午1:55:21 
 	 */
-	public  ProjectAppRecordEntity  selectProjectDetailByID(int id);
-	
-	/**
-	 * 审核项目 
-	 * @author 刘利   
-	 * @Description: 审核项目  
-	 * @param @param map  
-	 * @return int 返回类型  -1 该项目已审核通过；-3 该项目该审核批次已审核；-2 借款标题已存在 ； 1  审核通过  
-	 * @date 2016-3-23 下午3:46:38
-	 */
-	public int projectAudit(Map<String,Object> map,InsertAdminLogEntity 
-			logentity,String[] sIpInfo);
+	public  ProjectAppRecordEntity  selectProjectDetailByID(long id);
+ 
 	
 	/**
 	 *  根据项目申请id查询项目申请审核附件
@@ -103,32 +93,15 @@ public interface ProjectAuitService {
 	 * @author 刘利   
 	 * @Description: 审核项目  
 	 * @param map #{ApplyId}项目申请ID
-	  			#{Indexs}当前审批流程序号
-				#{projectTitle}项目名称
-				#{uses}借款用途
-				#{repaySource}还款来源
-				#{amount}借款金额
-				#{projectDescript},项目描述
-				#{deadline},借款期限
-				#{deadlineType},期限类型  0：天标 1：月标 2：年标
-				#{repayWay},还款方式
-				#{yearRate},年化利率
-				#{minStart}, 起投金额 0：表示无限制
-				#{increaseRange},加价幅度 0：表示无限制
-				#{investMax},最大投资比例 
-				#{investCountMax},最大投资笔数 0
+	  			#{Indexs}当前审批流程序号 
 				#{checkStatu} 1：通过 -1：打回  2通过需补齐资料
 				#{CheckRemark},审核意见
-				#{adminID},操作员
-				#{checkid},审核意见ID
-				#{ProcessID},审批点ID
-				#{sIndexs},上一审批流程序号 
-	 * @param affix 附件列表  附件名称,附件路径 ;附件名称,附件路径 ;附件名称,附件路径 
-	 * @param adminID 操作员 
+				#{adminID},操作员 
+	 *          #{affix 附件列表  附件名称,附件路径 ;附件名称,附件路径 ;附件名称,附件路径  }
 	 * @return int 返回类型  -1 该项目已审核通过；-3 该项目该审核批次已审核；-2 借款标题已存在 ； 1  审核通过  ,-4 上级审核批次未通过
 	 * @date 2016-3-23 下午3:46:38
 	 */
-	public int projectAudit(Map<String,Object> map,String affix,long adminID,InsertAdminLogEntity 
+	public int projectAudit(Map<String,Object> map,InsertAdminLogEntity 
 			logentity,String[] sIpInfo);
 	
 	/**
@@ -169,5 +142,58 @@ public interface ProjectAuitService {
 	 * @date 2016-3-23 下午6:34:20
 	 */
 	public int insertCheckAttachone(ProjectCheckAttachDealEntity projectCheckAttachDealEntity);
+	
+	
+	/**
+	 * 审核项目 -修改项目基本信息
+	 * @author 刘利   
+	 * @Description: 审核项目  
+	 * @param map 
+	 *          #{ApplyId}项目申请ID
+	 *          #{projectTitle}项目名称
+				#{uses}借款用途
+				#{repaySource}还款来源
+				#{amount}借款金额
+				#{projectDescript},项目描述
+				#{deadline},借款期限
+				#{deadlineType},期限类型  0：天标 1：月标 2：年标
+				#{repayWay},还款方式
+				#{yearRate},年化利率
+				#{minStart}, 起投金额 0：表示无限制
+				#{increaseRange},加价幅度 0：表示无限制
+				#{investMax},最大投资比例 
+				#{investCountMax},最大投资笔数 0 
+				#{RepayGuarantee},还款保障 
+	 * @return int 返回类型   -3 该项目该审核批次已审核；-2 借款标题已存在 ； 1  修改成功  
+	 * @date 2016-3-23 下午3:46:38
+	 */
+	public int updateProjectDetail(Map<String,Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo); 
+	
+	/**
+	 * 修改附件
+	 * @author 刘利   
+	 * @Description: 审核项目  
+	 * @param @param map 
+	 *          #{ProjectAppId,},项目申请ID
+				#{affix ,}, 新增的附件（ 附件名称,附件路径 ;附件名称,附件路径 ;附件名称,附件路径 ）
+				#{deleteaffix }, 删除的附件（附件编码；附件编码；附件编码；附件编码；）
+				#{adminID,},     
+	 * @return int   1 成功 0失败
+	 * @date 2016-3-23 下午3:46:38
+	 */
+	public int updateaffix(Map<String,Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo); 
+	
+	/**
+	 * 根据项目申请id查询项目的所有附件
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param projectID
+	 * @param @return 设定文件 
+	 * @return List<selectProjectCheckAttachTotal> 返回类型 
+	 * @date 2016-3-23 下午4:04:47
+	 */
+	public List<ProjectCheckAttachEntity> selectProjectAttachTotal(long projectID);
 }
 

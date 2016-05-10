@@ -24,9 +24,9 @@
 			beforeSubmit:function(){
 				var encrypt = new JSEncrypt();
 				encrypt.setPublicKey(publickey);
-				var oldPassword = $(".password").val();
-				var newPassword = $(".newPassword").val();
-				var confirmPwd = $(".okPassword").val();
+				var oldPassword = hex_md5($(".password").val());
+				var newPassword = hex_md5($(".newPassword").val());
+				var confirmPwd = hex_md5($(".okPassword").val());
 				var imgCheckCode = $(".imgCode").val();
 				console.log([oldPassword,newPassword,confirmPwd,imgCheckCode]);
 				var str_Url = "personalCenter/resetPassword.html";
@@ -38,8 +38,9 @@
 						function(r){
 							var json = JSON.parse(r);
 							if(json.status == "1"){
-								layer.alert(json.message);
-								window.location = "personalCenter/securityCenter.html";
+								layer.alert(json.message,function(){
+									window.location = "personalCenter/securityCenter.html";
+								});
 							}else{
 								layer.alert(json.message);
 							}

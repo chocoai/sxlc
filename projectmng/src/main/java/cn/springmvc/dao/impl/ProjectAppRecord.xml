@@ -23,10 +23,11 @@
 		<result column="Personal_Phone" property="PersonalPhone" />
 		<result column="Financial" property="financial" />
 		<result column="sendrecordDate" property="sendrecordDate" />
+		<result column="Apply_Id" property="applyid" />
    </resultMap>
    <!-- 借款意向分页条件查询 -->
    <select id="selectAllProjectPurpose" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="ProjectPurpose">
-   		select pp.*,mi.Member_No,mi.Logname,
+   		select pp.*,mi.Member_No,mi.Logname,paar.Apply_Id,
    		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) Personal_Name,
    		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) Personal_Phone, 
    		(select count(*) from Member_Financial_Advisor where Member_ID = pp.Member_ID and (Remove_Date>now() or Remove_Date is null) ) Financial,
@@ -34,15 +35,15 @@
    		
    		from Project_Purpose pp 
    		left join Member_Info mi on pp.Member_ID = mi.Member_ID 
-   		left join Personal_Base_Info pbi on pbi.ID = mi.Personal_ID
-   		<where>
-   			<if test="map.repayWay!=-1">pp.Repay_Way = #{map.repayWay}</if>
-   			<if test="map.memberNo!=null">mi.Member_No like '%${map.memberNo}%'</if>
-   			<if test="map.logname!=null">mi.Logname like '%${map.logname}%'</if>
-   			<if test="map.personalPhone!=null">pbi.Personal_Phone like '%${map.personalPhone}%'</if>
+   		left join Personal_Base_Info pbi on pbi.Personal_ID = mi.Personal_ID
+   		left join Project_App_Record paar on paar.Purpose_ID = pp.Purpose_ID
+   		where 1=1
+   			<if test="map.repayWay!=-1 and map.repayWay!='' ">and pp.Repay_Way = #{map.repayWay}</if>
+   			<if test="map.memberNo!=null and map.memberNo !='' ">and mi.Member_No like '%${map.memberNo}%'</if>
+   			<if test="map.logname!=null and map.logname!='' ">and mi.Logname like '%${map.logname}%'</if>
+   			<if test="map.personalPhone!=null and map.personalPhone!='' ">and pbi.Personal_Phone like '%${map.personalPhone}%'</if>
    			<!-- 只允许绑定了该理财顾问的管理员查看 -->
-   			<if test="map.adminid!=-1">pp.Admin_Id = #{map.adminid}</if>
-   		</where>
+   			<if test="map.adminid!=-1 and map.adminid!='' ">and pp.Admin_Id = #{map.adminid}</if>
    		order by 
    		<if test="map.amount==1">Amount </if>
    		<if test="map.recordDate==1">Record_Date</if>
@@ -51,7 +52,7 @@
    </select>
    <!-- 根据借款意向id查询借款信息 -->
    <select id="selectProjectPurposeById" resultMap="ProjectPurpose" parameterType="Map">
-   		select pp.*,mi.Member_No,mi.Logname,
+   		select pp.*,mi.Member_No,mi.Logname,paar.Apply_Id,
    		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) Personal_Name,
    		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) Personal_Phone,
    		(select count(*) from Member_Financial_Advisor where Member_ID = pp.Member_ID and (Remove_Date>now() or Remove_Date is null) ) Financial
@@ -60,7 +61,9 @@
    		
    		 from Project_Purpose pp 
    		left join Member_Info mi on pp.Member_ID = mi.Member_ID 
-   		left join Personal_Base_Info pbi on pbi.ID = mi.Personal_ID where Purpose_ID = #{id}
+   		left join Personal_Base_Info pbi on pbi.Personal_ID = mi.Personal_ID 
+   		left join Project_App_Record paar on paar.Purpose_ID = pp.Purpose_ID
+   		where pp.Purpose_ID = #{id}
    </select>
    <!-- 借款意向打回 -->
    <update id="updateProjectPurposeById" parameterType="Map">
@@ -72,15 +75,40 @@
    			Purpose_ID = #{id}
    		</where>
    </update>
-   <!-- 分配理财顾问 -->
-   <update id="distributionOfFC" parameterType="Map">
+   <!-- 分配理财顾问 DistributionFinancialAdvisor-->
+   <insert id="distributionOfFC" parameterType="Map">
    		insert into Member_Financial_Advisor(Member_ID,Advisor_Id)
    		values(#{memberID},#{advisorId})
-   </update>
+   </insert>
    
    <!-- 提交意向为申请或保存草稿 -->
    <select id="handleProjectAppRecord" resultType="Map" statementType="CALLABLE">
-    <!-- cStatu:1:提交申请，2：保存草稿 -->
+    <!-- cStatu:1:提交申请，2：保存草稿 
+    projectTitle： 项目名称  		amount：借款金额
+    ppid：意向借款id			projectDescript：项目描述
+    pbiid：项目基础信息id		deadline：借款期限 单位：月/天
+    uses：借款用途				deadlineType：0	天标1	月标2	年标
+    repaySource：还款来源		repayWay：0等额本息 1先息后本 2到期还本付息 3等额本金
+    yearRate：预计年化收益率(百万万分之) parId：项目申请id
+    memberID：会员id			projectType：项目类型id
+    repayGuarantee：还款保障	guarantyDescribe：抵押物描述
+    minStart：起投金额 0：表示无限制 increaseRange：加价幅度 0：表示无限制
+    checkStatu：申请状态-1	审核打回0未审核1审核通过
+    investMax：最大投资比例 保留四位小数 0-1000000 0，1000000表示无限制（同一个会员投资总金额不能超过借款金额*最大投资比例）
+    publishStatu：项目发布状态 0	investStatu：融资状态 -1
+    isDirect：是否定向标 0：否 1：是	directPwd：定向标密码
+    assetManagerID：资产管理方ID	guaranteeID：担保机构id
+   	rateAddRate： 加息率 0：表示非加息标 单位：百万分之	rewardRate：奖励百分比 0：表示非奖励标 单位：百万分之
+   	rewardIcon：奖励标图标 空表示不单独配置，使用默认		investCountMax：最大投资笔数 0：表示无限制
+   	merBillNo：项目登记商户订单号(环迅接口使用)传空字符串	guaranteeRate：担保费率 单位：百万分之
+   	guaranteeType：担保费类型 0：百分比 1：固定金额		guaranteeFee：收取担保费金额
+   	riskMarginRate：风险保证金费率 单位：百万分之		riskMarginType：风险保证金类型 0：百分比 1：固定金额
+   	riskMarginFee：收取风险保证金金额				mngFeeRate:管理费比例、天标起收比例 单位：百万分之
+   	mngFeeRateIncreace:管理费增量 单位：百万分之		mngFeeAmount:管理费金额
+   	autoStart:自动投标开始时间（投标开始N分钟后才能开始自动投标）auotInvestMax:自动投标最大比例（所有自动投标所占借款总金额的最大比例，单位：一百万分之）
+		styp:1：第一步只修改第一步的参数 2：第二步 只修改第二步的参数		
+				result:1;/*提交申请成功*/ 2;/*信息保存成功*/
+    -->
  		<![CDATA[{call handleProjectAppRecord(
 				#{projectTitle,	 mode=IN,	jdbcType=VARCHAR},
 				#{ppid,	 mode=IN,	jdbcType=INTEGER},
@@ -117,13 +145,15 @@
 				#{guaranteeType,	 mode=IN,	jdbcType=INTEGER},
 				#{guaranteeFee,	 mode=IN,	jdbcType=INTEGER},
 				#{riskMarginRate,	 mode=IN,	jdbcType=INTEGER},
+				#{riskMarginType,	 mode=IN,	jdbcType=INTEGER},
+				#{riskMarginFee,	 mode=IN,	jdbcType=INTEGER},
 				#{mngFeeRate,	 mode=IN,	jdbcType=INTEGER},
-				#{riskMarginRate,	 mode=IN,	jdbcType=INTEGER},
 				#{mngFeeRateIncreace,	 mode=IN,	jdbcType=INTEGER},
 				#{mngFeeAmount,	 mode=IN,	jdbcType=INTEGER},
 				#{autoStart,	 mode=IN,	jdbcType=INTEGER},
 				#{auotInvestMax,	 mode=IN,	jdbcType=INTEGER},
 				#{cStatu,	 mode=IN,	jdbcType=INTEGER},
+				#{styp,	 mode=IN,	jdbcType=INTEGER},
 				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
@@ -188,7 +218,7 @@
    
    <!-- 项目费用设置信息 -->
    <resultMap type="cn.springmvc.model.ProjectAppMngFeeEntity" id="sProjectAppMngFee">
-   		<result property = "projectID" column = "Project_ID" />
+   		<result property = "projectID" column = "Apply_Id" />
    		<result property = "guaranteeRate" column = "Guarantee_Rate" />
    		<result property = "guaranteeType" column = "Guarantee_Type" />
    		<result property = "guaranteeFee" column = "Guarantee_Fee" />
@@ -201,18 +231,18 @@
    </resultMap>
    <!-- 根据项目申请id 查询项目费用设置 -->
    <select id="selectProjectAppMngFeeById" resultMap="sProjectAppMngFee" parameterType="Map">
-   		select * from Project_App_MngFee <where>Project_ID=#{projectId}</where> 
+   		select * from Project_App_MngFee <where>Apply_Id=#{applyId}</where> 
    </select>
    
    <!-- 项目自动投标设置 -->
     <resultMap type="cn.springmvc.model.ProjectAppAutoSetEntity" id="sProjectAppAutoSet">
-   		<result property = "projectID" column = "Project_ID" />
+   		<result property = "projectID" column = "Apply_Id" />
    		<result property = "autoStart" column = "Auto_Start" />
    		<result property = "autoInvestMax" column = "Auto_Invest_Max" />
    </resultMap>
    <!-- 根据项目申请id 查询自动投标设置 -->
    <select id="selectProjectAppAutoSetById" resultMap="sProjectAppAutoSet" parameterType="Map">
-   		select * from Project_App_Auto_Set <where>Project_ID = #{projectID}</where>
+   		select * from Project_App_Auto_Set <where>Apply_Id=#{applyId}</where> limit 1
    </select>
    
    <!-- 项目惊喜红包配置 -->

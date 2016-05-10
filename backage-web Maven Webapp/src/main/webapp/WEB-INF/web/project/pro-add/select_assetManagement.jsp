@@ -8,75 +8,54 @@
 			+ path + "/";
 %>
 <!DOCTYPE html>
+<html lang="zh-CN">
 
+<head>
+	<base href="<%=basePath%>">
+	<title>选择担保机构</title>
+	<!-- 公用meta -->
+	<jsp:include page="../../common/top-meta.jsp"></jsp:include>
+	<!-- 私用meta -->
+	<!-- 公用css -->
+	<jsp:include page="../../common/cm-css.jsp"></jsp:include>
+	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" >
+	<link rel="stylesheet" href="css/upload.css" >
+	<!-- 私用css -->
+	<link rel="stylesheet" href="css/project/loan_intention.css" type="text/css">
+</head>
+<!-- 借款申请管理--------借款意向列表查询 -->
+<body class="nav-md">
 
 <div class="nav-md">
 	<div class="container body">
 		<div class="main_container">
 			<!-- 主要内容 -->
 			<!-- 地址导航 -->
-			<jsp:include page="../../common/cm-addr.jsp"></jsp:include>
 			<div class="nav-tabs-con active">
 				<div class="data_display">
-					<div class="selectMember">
-						<span><samp>选择会员：</samp>某某某</span>
-						<span><samp>姓名：</samp>某某某</span>
-					</div>
 					<div class="search">
 						<div class="panel panel-success">
-							<div class="panel-heading">
-								<div class="i-fl search_title">条件查询</div>
-								<div class="i-fr action_item">
-									<ul class="list_item list-inline">
-										<li><a class="state">展开&nbsp;<span class="glyphicon glyphicon-chevron-down"></span> </a></li>
-									</ul>
-								</div>
-							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>机构名称</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>法人姓名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>法人手机号</span><input type="text" class="notspecial" /></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>编号</span><input id="" type="text" class="notspecial managementNO" /></span>
+									<span class="con-item"><span>机构名称</span><input type="text" class="notspecial managementName" /></span>
+									<span class="con-item"><span>营业执照号</span><input type="text" class="notspecial companyeBLN" /></span>
+									<span class="con-item"><span>联系人姓名</span><input type="text" class="notspecial contactName" /></span>
+									<span class="con-item"><span>手机号</span><input type="text" class="notspecial contactPhone" /></span>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 					 	</div>
 					 </div>
 					 <div class="panel-body">
-						<table id="table_id" class="display">
-							<thead>
-								<tr>
-									<th class="table-checkbox"></th>
-									<th>机构名称</th>
-									<th>法人姓名</th>
-									<th>法人手机号</th>
-									<th>联系人姓名</th>
-									<th>联系人手机号</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-									for (int i = 0; i < 15; i++) {
-								%>
-								<tr>
-									<td><input type="checkbox" /></td>
-									<td>机构名称</td>
-									<td>法人姓名</td>
-									<td>法人手机号</td>
-									<td>联系人姓名</td>
-									<td>联系人手机号</td>
-								</tr>
-								<%
-									}
-								%>
-							</tbody>
+						<table id="tableId" class="display">
 						</table>
 					</div>
 				</div>
 			</div>
 			<div class="buttonSet2">
-				<button class="obtn obtn-query">确定</button>
-				<button class="obtn obtn-query" onclick="window.location.href='web/project/loan_intention_1.jsp'">取消</button>
+				<button class="obtn obtn-query" onclick="submitData();">确定</button>
+				<button class="obtn obtn-query" onclick="cancel();">取消</button>
 			</div>
 		</div>
 	</div>
@@ -87,19 +66,110 @@
 	
 	<!-- 私用js -->
 	<script type="text/javascript">
-		$(function(){
-			$('#table_id').DataTable({
-				"scrollX":true,
-				//"scrollY":true,
-				"aaSorting" : [  ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,1,2,3,4,5]
-				} // 制定列不参与排序
-				],
-			});
-		});
+	$(function(){
+		$(".panel-body").show();
+		//表格初始化
+		$('#tableId').DataTable(
+				{	
+					ajax: {  
+						"url": appPath + "/asset/assetList.do",   
+						"dataSrc": "results", 
+						"type": "POST",
+						"data": function ( d ) {
+							//加密
+							var managementNO = $(".managementNO").val();
+							var managementName = $(".managementName").val();
+							var companyeBLN = $(".companyeBLN").val();
+							var contactName = $(".contactName").val();
+							var contactPhone = $(".contactPhone").val();
+							
+							d.managementNO = encrypt.encrypt(managementNO);
+							d.managementName = encrypt.encrypt(managementName);
+							d.companyeBLN = encrypt.encrypt(companyeBLN);
+							d.contactName = encrypt.encrypt(contactName);
+							d.contactPhone = encrypt.encrypt(contactPhone);
+							
+							
+						}  
+					},
+					columns: [  
+			                   {title:'',sWidth:"3%", 
+					        	  "mRender": function (data, type, full) {
+					        		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+					        		  return sReturn;
+					        	  }
+					          },
+			                  { title:"编号","data": "managementNO" },
+			                  { title:"机构名称","data": "managementName" },
+			                  { title:"营业执照号","data": "companyeBLN" },
+			                  { title:"联系人姓名","data": "contactName" },  
+			                  { title:"手机号","data": "contactPhone" }
+			        ],
+		          aoColumnDefs : [
+		                          {
+		                        	  "orderable" : false,
+		                        	  "aTargets" : [0,1,2,3,4,5]
+		                          } // 制定列不参与排序
+		                          ],
+		          pagingType: "simple_numbers",//设置分页控件的模式  
+		          processing: true, //打开数据加载时的等待效果  
+		          serverSide: true,//打开后台分页  
+		//          info:false,
+		          rowCallback:function(row,data){//添加单击事件，改变行的样式      
+		          },
+		});//表格初始化完毕
+		 
+		//表格单选效果(有复选框)
+		 $('#tableId tbody').on( 'click', 'tr', function () {
+			    var $this = $(this);
+			    var $checkBox = $this.find("input:checkbox");
+		        if ( $this.hasClass('selected') ) {
+		        	 $checkBox.prop("checked",false);
+		        	$this.removeClass('selected');
+		        } else {
+		        	$(".tr-checkbox").prop("checked",false);
+		        	$checkBox.prop("checked",true);
+		        	$('#tableId tr.selected').removeClass('selected');
+		        	$this.addClass('selected');
+		        }
+		 });
+		
+		 /**
+		  * 查询按钮
+		  */
+		 $(".glyphicon-search").on("click",function(){
+			$('#tableId').DataTable().ajax.reload();
+		 });
+		
+	});
+	
+	//确定按钮，点击将选中值保存到父页面中
+	function submitData(){
+		 var index = parent.layer.getFrameIndex(window.name);
+		 var data = $('#tableId').DataTable().rows('.selected').data();
+		 if(data.length<1){
+				layer.alert("请选择资产管理方！",{icon:0});
+				return;
+		 }
+		 var managementID = data[0].managementID;
+		 var managementName = data[0].managementName;
+         parent.$(".assetManagerID").val(managementID);
+         parent.$(".managementName").val(managementName);
+	     parent.layer.close(index);
+	}
+	
+	//取消按钮，点击关闭父页面弹出层
+	function cancel(){
+		 var index = parent.layer.getFrameIndex(window.name);
+	     parent.layer.close(index);
+	}
 	</script>
 </div>
+	<jsp:include page="../../common/cm-js.jsp"></jsp:include>
+	<script type="text/javascript" src="js/valid.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
+	<!-- 私用js -->
+	<script type="text/javascript" src="js/project/loan_intention_1.js"></script>
+</body>
+</html>

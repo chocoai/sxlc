@@ -40,50 +40,50 @@ public class WithdrawsInterdaceReturnEntity {
 	private String signInfo;//签名信息
 	private int statu;//提现状态 0：提现申请成功，等待平台审核  1：提现成功 2：提现失败3:提现银行退回
 	
-	public WithdrawsInterdaceReturnEntity mentionReturnInformation() throws UnsupportedEncodingException{
-		ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = attributes.getRequest();
-		request.setCharacterEncoding("UTF-8");
-		WithdrawsInterdaceReturnEntity 
-			withdrawsInterdaceReturnEntity=new WithdrawsInterdaceReturnEntity();
-		String ResultCode = request.getParameter("ResultCode");
-		String Message = request.getParameter("Message");
-		if(ResultCode!=null){
-			if (ResultCode.equals("88") || ResultCode.equals("90") || ResultCode.equals("89")) {//提现信息提交成功
-				withdrawsInterdaceReturnEntity.setMessage(Message);
-				withdrawsInterdaceReturnEntity.setWithdrawMoneymoremore(request.getParameter("WithdrawMoneymoremore"));
-				withdrawsInterdaceReturnEntity.setPlatformMoneymoremore(request.getParameter("PlatformMoneymoremore"));
-				withdrawsInterdaceReturnEntity.setLoanNo(request.getParameter("LoanNo"));
-				withdrawsInterdaceReturnEntity.setOrderNo(request.getParameter("OrderNo"));
-				withdrawsInterdaceReturnEntity.setAmount(request.getParameter("Amount"));
-				withdrawsInterdaceReturnEntity.setFeeMax(request.getParameter("FeeMax"));
-				withdrawsInterdaceReturnEntity.setFeeWithdraws(request.getParameter("FeeWithdraws"));
-				withdrawsInterdaceReturnEntity.setFeePercent(request.getParameter("FeePercent"));
-				withdrawsInterdaceReturnEntity.setFee(request.getParameter("Fee"));
-				withdrawsInterdaceReturnEntity.setFreeLimit(request.getParameter("FreeLimit"));
-				withdrawsInterdaceReturnEntity.setFeeRate(request.getParameter("FeeRate"));
-				withdrawsInterdaceReturnEntity.setFeeSplitting(request.getParameter("FeeSplitting"));
-				withdrawsInterdaceReturnEntity.setRandomTimeStamp(request.getParameter("RandomTimeStamp"));
-				withdrawsInterdaceReturnEntity.setRemark1(request.getParameter("Remark1"));
-				withdrawsInterdaceReturnEntity.setRemark2(request.getParameter("Remark2"));
-				withdrawsInterdaceReturnEntity.setRemark3(request.getParameter("Remark3"));
-				withdrawsInterdaceReturnEntity.setReturnTimes(request.getParameter("ReturnTimes"));
-				withdrawsInterdaceReturnEntity.setSignInfo(request.getParameter("SignInfo"));
-				if(ResultCode.equals("88")){//提现成功
-					withdrawsInterdaceReturnEntity.setStatu(1);
-				}else if(ResultCode.equals("90")){//提现申请成功，等待平台审核
-					withdrawsInterdaceReturnEntity.setStatu(0);
-				}else {
-					withdrawsInterdaceReturnEntity.setStatu(3);//提现银行退回
-				}
-			}else {
-				withdrawsInterdaceReturnEntity.setStatu(2);
-				withdrawsInterdaceReturnEntity.setMessage(Message);
-			}
-		}
-		
-		return withdrawsInterdaceReturnEntity;
-	}
+//	public WithdrawsInterdaceReturnEntity mentionReturnInformation() throws UnsupportedEncodingException{
+//		ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+//		HttpServletRequest request = attributes.getRequest();
+//		request.setCharacterEncoding("UTF-8");
+//		WithdrawsInterdaceReturnEntity 
+//			withdrawsInterdaceReturnEntity=new WithdrawsInterdaceReturnEntity();
+//		String ResultCode = request.getParameter("ResultCode");
+//		String Message = request.getParameter("Message");
+//		if(ResultCode!=null){
+//			if (ResultCode.equals("88") || ResultCode.equals("90") || ResultCode.equals("89")) {//提现信息提交成功
+//				withdrawsInterdaceReturnEntity.setMessage(Message);
+//				withdrawsInterdaceReturnEntity.setWithdrawMoneymoremore(request.getParameter("WithdrawMoneymoremore"));
+//				withdrawsInterdaceReturnEntity.setPlatformMoneymoremore(request.getParameter("PlatformMoneymoremore"));
+//				withdrawsInterdaceReturnEntity.setLoanNo(request.getParameter("LoanNo"));
+//				withdrawsInterdaceReturnEntity.setOrderNo(request.getParameter("OrderNo"));
+//				withdrawsInterdaceReturnEntity.setAmount(request.getParameter("Amount"));
+//				withdrawsInterdaceReturnEntity.setFeeMax(request.getParameter("FeeMax"));
+//				withdrawsInterdaceReturnEntity.setFeeWithdraws(request.getParameter("FeeWithdraws"));
+//				withdrawsInterdaceReturnEntity.setFeePercent(request.getParameter("FeePercent"));
+//				withdrawsInterdaceReturnEntity.setFee(request.getParameter("Fee"));
+//				withdrawsInterdaceReturnEntity.setFreeLimit(request.getParameter("FreeLimit"));
+//				withdrawsInterdaceReturnEntity.setFeeRate(request.getParameter("FeeRate"));
+//				withdrawsInterdaceReturnEntity.setFeeSplitting(request.getParameter("FeeSplitting"));
+//				withdrawsInterdaceReturnEntity.setRandomTimeStamp(request.getParameter("RandomTimeStamp"));
+//				withdrawsInterdaceReturnEntity.setRemark1(request.getParameter("Remark1"));
+//				withdrawsInterdaceReturnEntity.setRemark2(request.getParameter("Remark2"));
+//				withdrawsInterdaceReturnEntity.setRemark3(request.getParameter("Remark3"));
+//				withdrawsInterdaceReturnEntity.setReturnTimes(request.getParameter("ReturnTimes"));
+//				withdrawsInterdaceReturnEntity.setSignInfo(request.getParameter("SignInfo"));
+//				if(ResultCode.equals("88")){//提现成功
+//					withdrawsInterdaceReturnEntity.setStatu(1);
+//				}else if(ResultCode.equals("90")){//提现申请成功，等待平台审核
+//					withdrawsInterdaceReturnEntity.setStatu(0);
+//				}else {
+//					withdrawsInterdaceReturnEntity.setStatu(3);//提现银行退回
+//				}
+//			}else {
+//				withdrawsInterdaceReturnEntity.setStatu(2);
+//				withdrawsInterdaceReturnEntity.setMessage(Message);
+//			}
+//		}
+//		
+//		return withdrawsInterdaceReturnEntity;
+//	}
 	
 	
 	

@@ -154,12 +154,12 @@ public class ExcelKit<T> {
 	 */
 	public void out(HttpServletResponse response,List<T> objs,String fileName,OutExcel excel){
 		//创建工作流   
-		ServletOutputStream os = null; 
+		OutputStream os = null; 
 		try {
 			//设置弹出对话框   
-			response.setContentType("application/DOWLOAD");
+			response.setContentType("application/form-data");
 			try {
-				name = new String(name.getBytes(), "iso8859-1");//解决中文 文件名问题  
+				name = new String(fileName.getBytes(), "iso8859-1");//解决中文 文件名问题  
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -169,6 +169,12 @@ public class ExcelKit<T> {
 			init(os, objs, fileName, excel);
 		}catch (Exception e) {
 			
+		}
+		if(os != null){
+			try {
+				os.flush();
+			} catch (Exception e) {
+			}
 		}
 	}
 	

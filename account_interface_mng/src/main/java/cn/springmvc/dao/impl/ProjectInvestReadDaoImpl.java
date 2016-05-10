@@ -7,6 +7,7 @@ import cn.sxlc.account.manager.model.LoanInfoSecondaryBean;
 import cn.sxlc.account.manager.model.TransferSubmitEntity;
 import cn.sxlc.account.manager.utils.InterfaceConstant;
 import cn.sxlc.account.manager.utils.InterfaceUtil;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
@@ -108,6 +109,7 @@ public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements Proje
         param.put(DaoConstant.PARAM_RED_PACKETS_INFO, sRedpacketsInfo);
         param.put(DaoConstant.PARAM_VOUCHERS, lVouchers);
         param.put(DaoConstant.PARAM_ENCRYPT_KEY, sKey);
+        param.put("sDirectPwd", sDirectPwd);
         param.put("vResult", "");
         param.put(DaoConstant.PARAM_RED_PACKETS, 0);
         param.put(DaoConstant.PARAM_RESULT, 0);
@@ -356,7 +358,8 @@ public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements Proje
         //支付管理费，支付担保费，支付风险保证金
         sRemark = lMngFee + "A" + lGuaranteeFee + "A" + lRiskMarginFee + "";
         entity.setRemark2(sRemark);
-
+        entity.setLoanInfoBeanSubmits(list);
+        
         // 平台给平台：红包M(管理费) + 代金券M(管理费)
         return entity;
     }
@@ -366,7 +369,7 @@ public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements Proje
     	int iResult = 0;
     	
     	String sInfo = getSqlSession().selectOne("ProjectInvestDao.GetRedpacketsInvestRate");
-    	IntegerAndString.StringToInt(sInfo, 0);
+    	iResult=IntegerAndString.StringToInt(sInfo, 0);
     	
     	return iResult;
     }

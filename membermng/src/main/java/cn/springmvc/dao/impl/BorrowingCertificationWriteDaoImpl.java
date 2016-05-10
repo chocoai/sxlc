@@ -252,8 +252,7 @@ public class BorrowingCertificationWriteDaoImpl extends SqlSessionDaoSupport imp
 	
 	
 	
-	
-	
+
 	
 	
 	

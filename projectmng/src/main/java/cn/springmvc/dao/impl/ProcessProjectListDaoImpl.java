@@ -47,5 +47,11 @@ public class ProcessProjectListDaoImpl extends SqlSessionDaoSupport implements P
 		 return index;
 		
 	}
+	@Override
+	public List<ProcessProjectEntity> selectProcessProjectList() {
+		
+		return getSqlSession().selectList("processProject.selectProcessProjectList");
+		
+	}
 
 }

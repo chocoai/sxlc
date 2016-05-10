@@ -45,7 +45,6 @@
 		}
 	%>
 </script>
-<script type="text/javascript" src="../../plugs/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script></head>
 
 <body class="nav-md">
 	<div class="container body">
@@ -213,7 +212,7 @@
 							type:"POST",
 							async : false,
 							cache:false,
-							url: getRootPath()+"/PostController/finddapt.do",
+							url: "<%=basePath%>/PostController/finddapt.do",
 							dataType:"json",
 							success:function(data){
 								// 如果返回数据不为空，加载"业务模块"目录

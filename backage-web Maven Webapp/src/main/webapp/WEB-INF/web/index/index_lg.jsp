@@ -13,7 +13,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/md5.js"></script>
 	<script type="text/javascript" src="js/login.js"></script>
     <title>后台登录</title>
-  </head>
+</head>
 <body style="background:#F7F7F7;">
     <div class="">
         <a class="hiddenanchor" id="toregister"></a>

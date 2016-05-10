@@ -23,6 +23,7 @@ import org.springframework.stereotype.Repository;
 
 import cn.springmvc.dao.IndexDao;
 import cn.springmvc.model.CreditorTransferListEntity;
+import cn.springmvc.model.IndexStaticsEntity;
 import cn.springmvc.model.InvestEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;
 
@@ -38,7 +39,7 @@ public class IndexDaoImpl extends SqlSessionDaoSupport implements IndexDao{
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
 	@Override
-	public Map<String, Object> selectIndexStatistic(String sKey) {
+	public IndexStaticsEntity selectIndexStatistic(String sKey) {
 		
 		 return getSqlSession().selectOne("Index.selectIndexStatistic",sKey);
 		

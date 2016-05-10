@@ -1,9 +1,9 @@
-/*Îé³ÉÈ»2016-3-31*/
-/*½è¿î¼ÇÂ¼,½è¿îÉêÇë¼ÇÂ¼,´ýÈ·ÈÏ½è¿îÉêÇërecordÑùÊ½*/
+/*ï¿½ï¿½ï¿½È»2016-3-31*/
+/*ï¿½ï¿½ï¿½ï¿½Â¼,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼,ï¿½ï¿½È·ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½recordï¿½ï¿½Ê½*/
 .accountMain{
-	padding-bottom:20px;/*accountMain³ÅÆð´ý×ö*/
+	padding-bottom:20px;/*accountMainï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 }
-/*±êÇ©ÇÐ»»  */
+/*ï¿½ï¿½Ç©ï¿½Ð»ï¿½  */
 .my-repay-tab{
 	font-size:18px;
 	height:70px;
@@ -37,7 +37,7 @@
 	display:none;
 }
 
-/*±êÇ©ÇÐ»»½áÊø  */
+/*ï¿½ï¿½Ç©ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½  */
 .head{
 	height:70px;
 	width:100%;
@@ -61,7 +61,7 @@
 	width:128px;
 	float:left;
 }
-.remind{/*ÑùÊ½´ý¸Ä  */
+.remind{/*ï¿½ï¿½Ê½ï¿½ï¿½ï¿½  */
 	padding:0 20px;
 	margin:23px 0 0 20px;
 	border:1px solid #ddd;
@@ -75,26 +75,26 @@
 	background-repeat: no-repeat;
 	background-position:8px 8px;
 }
-/*Á´½ÓÑùÊ½  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½  */
 
-.head a:link {color:#72c0f3;text-decoration:none;}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.head a:visited {color:#72c0f3}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.head a:hover {color:#126dca;text-decoration:none;}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
+.head a:link {color:#72c0f3;text-decoration:none;}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.head a:visited {color:#72c0f3}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.head a:hover {color:#126dca;text-decoration:none;}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
 
-.my-loan-state a:link {color:#000;text-decoration:none;}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.my-loan-state a:visited {color:#000}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.my-loan-state a:hover {color:#72c0f3;text-decoration:none;}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
+.my-loan-state a:link {color:#000;text-decoration:none;}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.my-loan-state a:visited {color:#000}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.my-loan-state a:hover {color:#72c0f3;text-decoration:none;}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
 
-.my-loan-table a:link {color:#fe7409;text-decoration:underline}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.my-loan-table a:visited {color:#fe7409}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.my-loan-table a:hover {text-decoration:underline}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
+.my-loan-table a:link {color:#fe7409;text-decoration:underline}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.my-loan-table a:visited {color:#fe7409}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.my-loan-table a:hover {text-decoration:underline}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
 
 .my-loan-table li:hover{
 	background-color:#e5eff4;
 }
-/*Á´½ÓÑùÊ½½áÊø  */
-/*record½áÊø*/
-/*ÈÚ×ÊÖÐ£¬ÈÚ×Ê½áÊø£¬»¹¿îÖÐ£¬ÒÑÁ÷±ê£¬ÒÑ½áÇåstateÑùÊ½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½  */
+/*recordï¿½ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê£¬ï¿½Ñ½ï¿½ï¿½ï¿½stateï¿½ï¿½Ê½*/
 .my-loan-group{
 	float:left;
 	width:935px;
@@ -114,8 +114,8 @@
 	background-color:#fff;
 	border:1px solid #ddd;
 }
-/*state½áÊø*/
-/*contentÑùÊ½*/
+/*stateï¿½ï¿½ï¿½ï¿½*/
+/*contentï¿½ï¿½Ê½*/
 .my-loan-content{
 	float:left;
 	width:885px;
@@ -140,7 +140,7 @@
 	color:#262626;
 	height:40px;
 }
-/*×Ô¶¨ÒåÈÝÆ÷´óÐ¡  */
+/*ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡  */
 .contentOut0{
 	height:80px;
 	width:7%;
@@ -192,11 +192,11 @@
 .my-loan-table li:first-child .contentOut4{
 	height:40px;
 }
-/*×Ô¶¨ÒåÈÝÆ÷´óÐ¡½áÊø  */
+/*ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½  */
 .myLoan .mark{
 	color:#fe730a;
 }
-/*´ý»¹¼Æ»®  */
+/*ï¿½ï¿½Æ»ï¿½  */
 .mark{
 	color:red;
 }
@@ -209,15 +209,15 @@
 	text-align:center;
 	cursor:pointer;
 }
-/*´ý»¹¼Æ»®½áÊø  */
-/*»¹¿îÖÐµÄ½è¿î  */
-.my-repay-content .my-loan-table .loan-agreement{/*½è¿îÐ­ÒéÑùÊ½  */
+/*ï¿½ï¿½Æ»ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½  */
+.my-repay-content .my-loan-table .loan-agreement{/*ï¿½ï¿½ï¿½Ð­ï¿½ï¿½ï¿½ï¿½Ê½  */
 	text-decoration:underline;
 	color:#575757;
 }
-/*»¹¿îÖÐµÄ½è¿î½áÊø  */
-/*µ¯³ö²ã  */
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-»¹¿î¼Æ»®  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½Æ»ï¿½  */
 .repay-content{
 	display:none;
 	padding:10px;
@@ -288,8 +288,8 @@
 	border-radius:2px;
 	cursor:pointer;
 }
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-»¹¿î¼Æ»®½áÊø  */
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-ÌáÇ°»¹¿î*/
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½Æ»ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½*/
 .early-repay-content{
 	display:none;
 }
@@ -320,5 +320,5 @@
 	border-radius:2px;
 	cursor:pointer;
 }
-/*ÎÒµÄ½è¿î-»¹¿îÖÐµÄ½è¿î-ÌáÇ°»¹¿î½áÊø*/
-/*µ¯³ö²ãÑùÊ½½áÊø  */
+/*ï¿½ÒµÄ½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½-ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½  */

@@ -12,12 +12,12 @@ public class AuthorizeInterfaceEntity {
 	private int    memberType;//会员类型
 	private String moneymoremoreId;//用户乾多多标识
 	private String platformMoneymoremore;//平台乾多多标识
-	private String authorizeTypeOpen;//开启授权类型
-	private String authorizeTypeClose;//关闭授权类型
-	private String randomTimeStamp;//
-	private String remark1;//
-	private String remark2;//
-	private String remark3;//
+	private String authorizeTypeOpen="";//开启授权类型
+	private String authorizeTypeClose="";//关闭授权类型
+	private String randomTimeStamp="";//
+	private String remark1="";//
+	private String remark2="";//
+	private String remark3="";//
 	private String submitURL;//接口提交地址
 	private String returnURL;//页面返回网址
 	private String notifyURL;//后台通知网址

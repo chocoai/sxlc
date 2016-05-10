@@ -278,3 +278,14 @@ img{
 .resgisterTimeC{
 	width:65px;
 }
+
+/* Ìõ¼þÀ©Õ¹  */
+.con-item{
+	display:inline-block;
+	min-width:300px;
+	max-width:300px;
+	text-align:right;
+}
+.con-item select{
+	width:169px;
+}

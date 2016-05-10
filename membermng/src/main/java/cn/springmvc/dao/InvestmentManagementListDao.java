@@ -81,5 +81,17 @@ public interface InvestmentManagementListDao {
 	 * @date 2016-4-13 下午6:58:45
 	 */
 	public List<CreditorTransEntity> getCreditorOff(PageEntity pageEntity);
+	
+	/**
+	 * 后台显示-会员转出债权
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param pageEntity
+	 * #{skey}#{Member_ID}
+	 * @param @return 设定文件 
+	 * @return List<CreditorTransEntity> 返回类型 
+	 * @date 2016-4-13 下午6:51:15
+	 */
+	public List<CreditorTransEntity> getCreditorTransferBack(PageEntity pageEntity);
 }
 

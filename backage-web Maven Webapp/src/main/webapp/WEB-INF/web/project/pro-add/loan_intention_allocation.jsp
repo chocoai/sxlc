@@ -8,8 +8,6 @@
 			+ path + "/";
 %>
 <!DOCTYPE html>
-
-
 <div class="nav-md">
 	<div class="container body">
 		<div class="main_container">
@@ -19,8 +17,9 @@
 			<div class="nav-tabs-con active">
 				<div class="data_display">
 					<div class="selectMember">
-						<span><samp>选择会员：</samp>某某某</span>
-						<span><samp>姓名：</samp>某某某</span>
+						<input id="memberID" type="hidden" value="${memberID}">
+						<span><samp>选择会员：</samp>${Logname}</span>
+						<span><samp>姓名：</samp>${PersonalName}</span>
 					</div>
 					<div class="search">
 						<div class="panel panel-success">
@@ -34,50 +33,24 @@
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>姓名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>编号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>手机号</span><input type="text" class="notspecial" /></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>姓名</span><input id="realName" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>编号</span><input id="serviceNo" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>手机号</span><input id="servicePhone" type="text" class="notspecial" /></span>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 					 	</div>
 					 </div>
 					<div class="panel-body">
 						<table id="table_id" class="display">
-							<thead>
-								<tr>
-									<th class="table-checkbox"></th>
-									<th>姓名</th>
-									<th>编号</th>
-									<th>手机号</th>
-									<th>会员登录名</th>
-									<th>成为理财顾问时间</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-									for (int i = 0; i < 15; i++) {
-								%>
-								<tr>
-									<td><input type="checkbox" /></td>
-									<td>姓名</td>
-									<td>编号</td>
-									<td>手机号</td>
-									<td>会员登录名</td>
-									<td>成为理财顾问时间</td>
-								</tr>
-								<%
-									}
-								%>
-							</tbody>
 						</table>
 					</div>
 						
 				</div>
 			</div>
 			<div class="buttonSet2">
-				<button class="obtn obtn-query">确定</button>
-				<button class="obtn obtn-query" onclick="window.location.href='web/project/loan_intention_1.jsp'">取消</button>
+				<button class="obtn obtn-query" onclick="distributeAdviser()">确定</button>
+				<button class="obtn obtn-query" onclick="window.location.href='project/toLoanApplyList'">取消</button>
 			</div>
 		</div>
 	</div>
@@ -89,19 +62,107 @@
 	<!-- 私用js -->
 	<script type="text/javascript">
 		$(function(){
-			$('#table_id').DataTable({
-				"scrollX":true,
-				//"scrollY":true,
-				"aaSorting" : [  ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,1,2,3,4,5]
-				} // 制定列不参与排序
-				],
-			});
+			
+			//表格初始化
+			$('#table_id').DataTable(
+					{	
+						ajax: {  
+							"url": appPath+"/project/getAdviserData",   
+							"dataSrc": "results", 
+							"type": "POST",
+							"data": function ( d ) {
+								//加密
+								var realName = encrypt.encrypt($("#realName").val());
+								var serviceNo = encrypt.encrypt($("#serviceNo").val());
+								var servicePhone = encrypt.encrypt($("#servicePhone").val());
+								d.realName = realName;
+								d.serviceNo = serviceNo;
+								d.servicePhone = servicePhone;
+							}  
+						},
+						columns: [  
+						          {title:'',sWidth:"3%", 
+						        	  "mRender": function (data, type, full) {
+						        		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+						        		  return sReturn;
+						        	  }
+						          },
+						          { title:"姓名","data": "staffName"},  
+						          { title:"编号","data": "serviceNo"},  
+						          { title:"手机号","data": "servicePhone"},  
+						          { title:"会员登录名","data": "logName"},  
+						          { title:"成为理财顾问时间","data": "sRecordDate"}
+						          ],
+			          aoColumnDefs : [
+			                          {
+			                        	  "orderable" : false,
+			                        	  "aTargets" : [ 0, 1, 2, 3,4,5 ]
+			                          } // 制定列不参与排序
+			                          ],
+			          pagingType: "simple_numbers",//设置分页控件的模式  
+			          processing: true, //打开数据加载时的等待效果  
+			          serverSide: true,//打开后台分页  
+			//          info:false,
+			          rowCallback:function(row,data){//添加单击事件，改变行的样式      
+			          }
+			 
+			});//表格初始化完毕
+			 
+			//表格单选效果(有复选框)
+			 $('#table_id tbody').on( 'click', 'tr', function () {
+				    var $this = $(this);
+				    var $checkBox = $this.find("input:checkbox");
+			        if ( $this.hasClass('selected') ) {
+			        	 $checkBox.prop("checked",false);
+			        	$this.removeClass('selected');
+			        } else {
+			        	$(".tr-checkbox").prop("checked",false);
+			        	$checkBox.prop("checked",true);
+			        	$('#table_id tr.selected').removeClass('selected');
+			        	$this.addClass('selected');
+			        }
+			  });
+			
+			 /**
+			  * 查询按钮
+			  */
+			 $(".glyphicon-search").on("click",function(){
+				$('#table_id').DataTable().ajax.reload();
+			 });
+			
 		});
+		
+		/**
+		 * 确定按钮
+		 */
+		function distributeAdviser(){
+			var rData =  $("#table_id").DataTable().rows('.selected').data();
+			if(rData.length<1){
+				layer.alert("请选择要分配的理财顾问！",{icon:0});
+				return;
+			}
+			var data={};
+			var advisorId = encrypt.encrypt(data[0].id+"");
+			var memberID = encrypt.encrypt($("#memberID").val());
+			data.advisorId=advisorId;
+			data.memberID=memberID;
+			
+			NetUtil.ajax(
+				appPath+"/project/distributeAdviser",
+				data,
+				function(data) { 
+					if(data == 1){
+						layer.alert("操作成功",{icon:1});
+						window.location.href="project/toLoanApplyList";
+					}else if(data==0){
+						layer.alert("操作失败",{icon:2});  
+					}
+				} 
+			);
+					  
+		}
+		
+		
 	</script>
 </div>
 

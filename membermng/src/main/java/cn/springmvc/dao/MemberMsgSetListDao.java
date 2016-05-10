@@ -15,6 +15,7 @@ package cn.springmvc.dao;
 import java.util.List;
 import java.util.Map;
 
+import cn.membermng.model.MemberMessageConfig;
 import cn.membermng.model.SendSetEntity;
  
 /** 
@@ -123,5 +124,16 @@ public interface MemberMsgSetListDao {
 	 * @date 2016-3-30 上午11:31:15
 	 */
 	public int selectIsOpenLetter(long typeID);
+	
+	
+	/***
+	* 获取会员消息设置信息
+	* 
+	* @author 李杰
+	* @param memberId
+	* @return
+	* @date 2016-5-9 下午5:29:34
+	 */
+	public List<MemberMessageConfig> memberMessageConfig(long memberId);
 }
 

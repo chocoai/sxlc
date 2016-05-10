@@ -23,7 +23,7 @@
 	    where ir.Invest_ID=#{investID}
     </select> 
      <!-- 根据项目ID查询项目还款计划ID-->  
-	 <select id="selectLoanRepayIDByapplyID" parameterType="long"  resultType="cn.springmvc.model.LoanRepayEntity">
+	 <select id="selectLoanRepayIDByapplyID" parameterType="long"  resultType="cn.springmvc.model.LoanRepayEntitys">
 	    select Repay_ID as repayID from Loan_Repay where Apply_ID = #{applyID} and Statu=0 and IsCompensatory=0 order by Repay_MaxTime asc
      </select> 
      <!-- 新增收益计划 -->

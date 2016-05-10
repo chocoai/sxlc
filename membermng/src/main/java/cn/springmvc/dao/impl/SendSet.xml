@@ -9,10 +9,32 @@
 		<result column="Type_Name" 		    property="typeName" /> 
     </resultMap>
     <!--            查询会员消息接收类型 列表 -->
-    <select id="selectMessageTypeList"   resultMap="resultSendSet">
+   	<select id="selectMessageTypeList"   resultMap="resultSendSet">
 	    select MT.Type_Name,MT.Type_ID,MT.Statu
         from Message_Type MT where  MT.Statu = 1 
-	</select> 
+	</select>
+	
+	<select id="memberMessageConfig" parameterType="long" resultType="cn.membermng.model.MemberMessageConfig">
+		select 
+			MT.Type_Name	as	typeName,
+			MT.Type_ID		as	typeId,
+			IFNULL((select Statu from SmsSend_Set 				ss  where ss.Type_ID = MT.Type_ID),0) sysSms,
+			IFNULL((select Statu from LetterSend_Set 			ls  where ls.Type_ID = MT.Type_ID),0) sysLett,
+			IFNULL((select Statu from EmailSend_Set				es 	where es.Type_Id = MT.Type_ID),0) sysemil, 
+			IFNULL((select Statu from member_smssend_set 		ss2 where ss2.Member_ID = #{memberId} and ss2.Type_ID = MT.Type_ID),0) useSms,
+			IFNULL((select Statu from member_lettersend_set 	ls2 where ls2.member_Id = #{memberId} and ls2.Type_ID = MT.Type_ID),0) useLett,
+			IFNULL((select Statu from Member_EmailSend_Set 		es2 where es2.member_Id = #{memberId} and es2.Type_ID = MT.Type_ID),0) useemil
+		from Message_Type MT 
+		where  MT.Statu = 1 
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
      <!-- 	查询会员短信接收 设置 -->
 	<select id="selectMemberSmsSendSet" parameterType="long"  resultMap="resultSendSet">
 	   	select msss.Type_ID

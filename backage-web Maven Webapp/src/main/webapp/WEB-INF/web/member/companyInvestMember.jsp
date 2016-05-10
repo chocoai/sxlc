@@ -50,10 +50,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>用户名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>企业名称</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>联系人手机号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>第三方帐户</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>企业名称</span><input type="text" name="member_Name" id="member_Name" class="notspecial" /></span>
+									<span class="con-item"><span>用户名</span><input type="text" name="user_Name" id="user_Name" class="notspecial" /></span>
+									<span class="con-item"><span>联系人手机号</span><input type="text" name="phone_Num" id="phone_Num" class="notspecial" /></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -72,56 +71,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							
 							<div class="panel-body">
+							<input type="hidden" name="memberType" id="memberType" value="1">
 								<table id="table_id" class="display">
 									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>会员编号</th>
-											<th>企业名称</th>
-											<th>用户名</th>
-											<th>联系人手机号码</th>
-											<th>第三方帐户</th>
-											<th>邀请码</th>
-											<th>所属地区</th>
-											<th>帐户可用余额(元)</th>
-											<th>冻结金额(元)</th>
-											<th>充值总额(元)</th>
-											<th>充值手续费合计(平台/元)</th>
-											<th>充值手续费合计(会员/元)</th>
-											<th>投资总额(元)</th>
-											<th>累计收益管理费(元)</th>
-											<th>提现总额(元)</th>
-											<th>提现手续费合计(平台/元)</th>
-											<th>提现手续费合计(会员/元)</th>
-										</tr>
 									</thead>
 									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>会员编号</td>
-											<td>企业名称</td>
-											<td>用户名</td>
-											<td>手机号码</td>
-											<td>第三方帐户</td>
-											<td>邀请码</td>
-											<td>所属地区</td>
-											<td class="moneyFormat">1200</td>
-											<td class="moneyFormat">100</td>
-											<td class="moneyFormat">1200</td>
-											<td class="moneyFormat">1200</td>
-											<td class="moneyFormat">1200</td>
-											<td class="moneyFormat">1200</td>
-											<td class="moneyFormat">1200</td>
-											<td class="moneyFormat">1200</td>
-											<td class="moneyFormat">1200</td>
-											<td class="moneyFormat">200</td>
-										</tr>
-										<%
-											}
-										%>
 									</tbody>
 								</table>
 							</div>
@@ -140,20 +94,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/member/member.js"></script>
 	<script type="text/javascript" src="js/member/companyMembers.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			$('#table_id').DataTable({
-				"scrollX":true,
-				//"scrollY":true,
-				"aaSorting" : [ [ 8,10,13,15, "desc" ] ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,1,2,3,4,5,6,7,9,11,12,14,16,17]
-				} // 制定列不参与排序
-				],
-			});
-		});
-	</script>
+	<script type="text/javascript" src="js/member/investmember.js"></script>
 </body>

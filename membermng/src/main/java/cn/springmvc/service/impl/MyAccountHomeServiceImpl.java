@@ -12,6 +12,7 @@
  
 package cn.springmvc.service.impl; 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,7 +124,36 @@ public class MyAccountHomeServiceImpl implements MyAccountHomeService{
 		map.put("Member_ID", memberID); 
 		map.put("Month_Min", monthmin); 
 		map.put("Month_Max", monthmax); 
-		return myAccountHomeListDao.getInvestIncome(map);
+		List<IncomeReplayPlanEntity> IncomeReplayList = myAccountHomeListDao.getInvestIncome(map);
+
+		if(IncomeReplayList.size()==0 ) {
+			for (int i = 0; i < 12; i++) {
+				IncomeReplayPlanEntity entity = new IncomeReplayPlanEntity();
+				entity.setMemberID(memberID);
+				entity.setMonth(i+1);
+				entity.setSdRecvAmount(0);
+				IncomeReplayList.add(entity);
+			}
+			return IncomeReplayList;
+		} 
+		List<IncomeReplayPlanEntity> incomeReplayList2 = new ArrayList<IncomeReplayPlanEntity>();
+		for (int i = 0; i < 12; i++) {
+			for (int j = 0; j < IncomeReplayList.size(); j++) {
+				if (IncomeReplayList.get(j).getMonth() == i+1) {
+					incomeReplayList2.add( IncomeReplayList.get(j));
+					j=IncomeReplayList.size()+1;
+				}
+			}
+			if(incomeReplayList2.size()<i+1){
+				IncomeReplayPlanEntity entity = new IncomeReplayPlanEntity();
+				entity.setMemberID(memberID);
+				entity.setMonth(i+1);
+				entity.setSdRecvAmount(0);
+				incomeReplayList2.add(entity);
+			}
+			
+		}
+		return incomeReplayList2;
 		
 	}
 
@@ -145,7 +175,37 @@ public class MyAccountHomeServiceImpl implements MyAccountHomeService{
 		map.put("Member_ID", memberID); 
 		map.put("Month_Min", monthmin); 
 		map.put("Month_Max", monthmax);   
-		return myAccountHomeListDao.getLoanRepay(map); 
+		
+		List<IncomeReplayPlanEntity> IncomeReplayList = myAccountHomeListDao.getLoanRepay(map);
+
+		if(IncomeReplayList.size()==0 ) {
+			for (int i = 0; i < 12; i++) {
+				IncomeReplayPlanEntity entity = new IncomeReplayPlanEntity();
+				entity.setMemberID(memberID);
+				entity.setMonth(i+1);
+				entity.setSdRecvAmount(0);
+				IncomeReplayList.add(entity);
+			}
+			return IncomeReplayList;
+		} 
+		List<IncomeReplayPlanEntity> incomeReplayList2 = new ArrayList<IncomeReplayPlanEntity>();
+		for (int i = 0; i < 12; i++) {
+			for (int j = 0; j < IncomeReplayList.size(); j++) {
+				if (IncomeReplayList.get(j).getMonth() == i+1) {
+					incomeReplayList2.add( IncomeReplayList.get(j));
+					j=IncomeReplayList.size()+1;
+				}
+			}
+			if(incomeReplayList2.size()<i+1){
+				IncomeReplayPlanEntity entity = new IncomeReplayPlanEntity();
+				entity.setMemberID(memberID);
+				entity.setMonth(i+1);
+				entity.setSdRecvAmount(0);
+				incomeReplayList2.add(entity);
+			}
+			
+		}
+		return incomeReplayList2;
 		
 	}
 

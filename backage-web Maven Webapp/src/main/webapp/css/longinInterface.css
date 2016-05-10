@@ -1,4 +1,4 @@
-/* 陈小花 */
+/* 闄堝皬鑺�*/
 body{
 	min-width:320px;
 }
@@ -99,12 +99,13 @@ body{
 	padding:8px 0;
 	border-bottom:1px solid #D5D5D5;
 }
-.admUser , .admPasword , .admPhoneCode {
+.admUser , .admPasword , .admPhoneCode,.admPhoneCode1 {
 	border:1px solid #DADADA;
 }
 .admUser,
 .admPasword,
-.admPhoneCode{
+.admPhoneCode,
+.admPhoneCode1{
 	width:100%;
 	margin-top:30px;
 }
@@ -125,7 +126,10 @@ i.loginIcon{
 .phone{
 	background:url(../resources/img/loginPhone.jpg) no-repeat center center;
 	margin-left:2px;
-} 
+}
+.phone1{
+	background:url(../resources/img/loginPhone.jpg) no-repeat center center;
+}
 .admUser input, 
 .admPasword input 
 {
@@ -141,6 +145,13 @@ i.loginIcon{
 {
 	height:40px;
 	width:159px;
+	outline:none;
+	border:none;
+}
+.admPhoneCode1 input 
+{
+	height:40px;
+	width:261px;
 	outline:none;
 	border:none;
 }
@@ -183,8 +194,21 @@ input[type=text]:focus, input[type=password]:focus{
 .admUser:hover ,
 .admPasword:hover ,
 .admPhoneCode:hover
+.admPhoneCode1:hover
 {
 	border:1px solid #0079FF ;
+}
+.tijiao_change{
+		margin-top:10px;
+	}
+.getYan{
+	position:absolute;
+	top:141px;
+	left:39px;
+}
+.getYan span{
+	font-size:10px;
+	color:green;
 }
  @media(max-width:1030px){
 	.longinTopFont.longinTopImage {

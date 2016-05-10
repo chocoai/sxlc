@@ -11,6 +11,9 @@
 	<base href="<%=basePath%>">
     <title>我要充值</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>    
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/fundManagement/recharge.css">
 </head>
@@ -30,38 +33,42 @@
    						<span class="rechargeHeadFont">我要充值</span>
    					</div>
    					<div class="rechargeContent">
-						<form id="chongZhi">
+						<form id="chongZhi" action="loanRecharge/loanRecharge.html" method="post" target="_blank">
 							<ul>
 							<li class="rechargeContentLi_one">
 								<label>充值方式：</label>
 								<div class="selectArea rechargeSelect clearfix">
-									<input class="selectValue" value="1" >
+									<input class="selectValue regchType" type="text" value="" >
    									<input class="selectInput rechargeMethod" type="text" lang="" readOnly="true"/>
 								    <ul class="select" onselectstart="return false">
-								        <li class="selectOption selectOptionAab" value="1">个人网银<li>
+								        <li class="selectOption selectOptionAab" value="">个人网银<li>
 								        <li class="selectOption selectOptionAab" value="2">汇款充值<li>
 								        <li class="selectOption selectOptionAab" value="3">快捷支付<li>
 								        <li class="selectOption selectOptionAab" value="4">企业网银<li>
 								    </ul>
+								    <input type="hidden"  name="rechargeType" />
 								</div>
 							</li>
 							<li class="rechargeContentLi">
 								<label>充值金额：</label>
 								<div class="amount"><input  class="rechargeInput rechargeInputFocus format cashFormat" type="text" lang="请输入充值金额" maxlength="10"><span class="rechargeDistance">元</span></div>					
+								<input type="hidden" name="amount" />
 							</li>
 							<li class="rechargeContentLi">
 								<label>备注：</label>
-								<input class="rechargeInput rechargeRemarks" type="text" lang="请输入备注内容" maxlength="25">
+								<input class="rechargeInput rechargeRemarks" type="text"  lang="请输入备注内容" maxlength="25">
+								<input type="hidden" name="remark" />
 							</li>
 							<li class="rechargeContentLi">
 								<label>支付充值费用：</label>
-								<span class="rechargeSpan moneyFormat">10</span>
+								<span class="rechargeSpan moneyFormat rechargeFee ">0</span>
 								<span>元</span>
 							</li>
 							<li class="rechargeContentLi">
 								<label>实际到账金额：</label>
-								<span class="rechargeSpan rechargeSpanFont moneyFormat">100000000</span>
+								<span class="rechargeSpan rechargeSpanFont moneyFormat realAccount ">0</span>
 								<span class="rechargeSpanFont">元</span>
+								<input type="hidden" name="sign"  />
 							</li>
 						</ul>
    						<div class="btn rechargeBtn" onselectstart="return false"><span>充值</span></div>

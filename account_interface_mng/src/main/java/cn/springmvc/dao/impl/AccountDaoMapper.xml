@@ -15,6 +15,7 @@
 	<select id="GetRemainderVouchers"  statementType="CALLABLE" resultType="Map">
 		<![CDATA[{call GetRemainderVouchers(
 				#{lMemberId,		mode=IN,	jdbcType=BIGINT},
+				#{sKey,				mode=IN,	jdbcType=VARCHAR},
 				#{result,			mode=OUT,	jdbcType=BIGINT}
     		)}
     	]]>
@@ -23,7 +24,7 @@
 	<!-- 获取可用红包 -->
 	<select id="GetUnUsedRedpackets" parameterType="Map" resultMap ="unUsedRedpacketsEntity">
 		select mr.Member_RP_ID,mr.End_Date,mr.Gift_Amount,(select sum(Gift_Amount) from Member_Redpackets_UseRecord mru where mru.Member_RP_ID=mr.Member_RP_ID and mru.Statu!=-1) as usedAmount 
-			from Member_Redpackets mr where mr.Member_ID=#{memberId} and mr.End_Date > now() 
+			from Member_Redpackets mr where mr.Member_ID=#{memberId} and (mr.End_Date > now() or mr.End_Date is null) 
 			and (mr.Statu =0 or mr.Statu = 1) order by mr.End_Date asc
 	</select>
 	

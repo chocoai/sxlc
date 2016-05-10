@@ -23,72 +23,53 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="container body">
 		<div class="container body">
 			<div class="main_container">
-			
 				<div class="w-content ishow pic-add">
-					<table id="card_id">
-						<tr>
-							<td class="tt">银行卡类型</td>
-							<td class="con" id="cardType">
-								<select class="cardTypeOption">
-									<option>借记卡</option>
-									<option>信用卡</option>
-									<option>储蓄卡</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td class="tt">开户银行</td>
-							<td class="con" id="depositBank"><!-- <input type="text" datatype="enterAddress" /> -->
-								<select class="accountbankse">
-									<option>中国银行</option>
-									<option>建设银行</option>
-									<option>工商银行</option>
-									<option>农商银行</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td class="tt">开户行城市</td>
-							<td class="con" id="depositCity">
-								<select class="cityoption">
-									<option>请选择省</option>
-									<option>四川</option>
-									<option>山东</option>
-									<option>云南</option>
-								</select>
-								<span class="line"></span>
-								<select class="cityoption">
-									<option>请选择市</option>
-									<option>成都</option>
-									<option>济南</option>
-									<option>大理</option>
-								</select>
-								<span class="line"></span>
-								<select class="cityoption">
-									<option>请选择区/县</option>
-									<option>高新西区</option>
-									<option>历下区</option>
-									<option>盘龙区</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td class="tt">开户行支行</td>
-							<td class="con" id=""><input type="text" datatype="enterAddress" /></td>
-						</tr>
-						<tr>
-							<td class="tt">银行卡卡号</td>
-							<td class="con" id=""><input type="text" datatype="bankNum" /></td>
-						</tr>
-						<tr>
-							<td class="tt">确认银行卡卡号</td>
-							<td class="con" id=""><input type="text" datatype="bankNum" /></td>
-						</tr>
-						<tr>
-							<td class="tt">开户手机号</td>
-							<td class="con" id=""><input type="text" datatype="zphone" /></td>
-						</tr>
-					</table>
+					<form id="bankAdd" action="javascript:addBank()" type="post">
+						<table id="card_id">
+							<tr>
+								<td class="tt">银行卡类型</td>
+								<td class="con" id="cardType">
+									<select id="bankType" class="cardTypeOption">
+										<option value="0">借记卡</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="tt">开户银行</td>
+								<td class="con" id="depositBank"><!-- <input type="text" datatype="enterAddress" /> -->
+									<select id="bank" class="accountbankse">
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="tt">开户行城市</td>
+								<td class="con" id="depositCity">
+									<select id="province" class="cityoption">
+									</select>
+									<span class="line"></span>
+									<select id="city" class="cityoption">
+										<option>请选择省</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="tt">开户行支行</td>
+								<td class="con" id=""><input id="branch" type="text" datatype="enterAddress" /></td>
+							</tr>
+							<tr>
+								<td class="tt">银行卡卡号</td>
+								<td class="con" id=""><input id="cardNo" type="text" datatype="bankNum" /></td>
+							</tr>
+							<tr>
+								<td class="tt">确认银行卡卡号</td>
+								<td class="con" id=""><input id="cardNo2" type="text" datatype="bankNum" /></td>
+							</tr>
+							<tr>
+								<td class="tt">开户手机号</td>
+								<td class="con" id=""><input id="phone" type="text" datatype="zphone" /></td>
+							</tr>
+						</table>
+					</form>
 					<div class="cmbtncontainer containerbtndiv">
 						<a class="commonbtn0">添加</a>
 						<a class="commonbtn1">取消</a>
@@ -102,11 +83,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/recommend/bank-card-management.js"></script>
+	<script type="text/javascript" src="js/recommend/bankAdd.js"></script>
 	<script>
 		$(".commonbtn1").click(function(){
 		var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 		parent.layer.close(index); //再执行关闭  
 	});
+	</script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </body>
 

@@ -31,8 +31,7 @@ import cn.springmvc.service.InvestmentManagementService;
  * @since 
  * @date 2016-4-13 下午7:08:01  */
 @Service("investmentManagementServiceImpl")
-public class InvestmentManagementServiceImpl implements
-		InvestmentManagementService {
+public class InvestmentManagementServiceImpl implements	InvestmentManagementService {
 	@Resource(name="investmentManagementListDaoImpl")
     private InvestmentManagementListDao investmentManagementListDao;
 	@Override
@@ -72,6 +71,14 @@ public class InvestmentManagementServiceImpl implements
 		List<CreditorTransEntity> list = investmentManagementListDao.getCreditorOff(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list); 
 
+	}
+
+	@Override
+	public void getCreditorTransferBack(PageEntity pageEntity) {
+		
+		List<CreditorTransEntity> list = investmentManagementListDao.getCreditorTransferBack(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		
 	}
 
 }

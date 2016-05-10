@@ -10,14 +10,18 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 import cn.dictionaries.model.CityInfoEntity;
 import cn.dictionaries.model.CountyInfoEntity;
 import cn.dictionaries.model.NationInfoEntity;
 import cn.dictionaries.model.ProvinceInfoEntity;
 import cn.membermng.model.CompanyInfo;
-import cn.membermng.model.IntegralRecords;
+import cn.membermng.model.ExchangeRecords;
+import cn.membermng.model.Friends;
+import cn.membermng.model.IntegralGETRecord;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberVouchers;
+import cn.membermng.model.MyPoint;
 import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.PersonalBaseInfo;
 import cn.membermng.model.RadPackage;
@@ -178,7 +182,20 @@ public class MemberInfoServiceImpl implements IMemberService{
 	
 	
 	@Override
-	public Map<String, Object> points(long memberId,int memberType) {
+	public List<Friends> friendList(PageEntity entity) {
+		
+		return memberDao.friendList(entity);
+	}
+	
+	
+	@Override
+	public List<Friends> selectConfirmFriendList(PageEntity entity) {
+		
+		return memberDao.selectConfirmFriendList(entity);
+	}
+	
+	@Override
+	public MyPoint points(long memberId,int memberType) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("memberId", memberId);
 		param.put("memberType", memberType);
@@ -187,9 +204,10 @@ public class MemberInfoServiceImpl implements IMemberService{
 	
 	
 	@Override
-	public List<IntegralRecords> addPoints(PageEntity entity) {
-		
-		return memberDao.addPoints(entity);
+	public List<IntegralGETRecord> addPoints(PageEntity entity) {
+		List<IntegralGETRecord> list = memberDao.addPoints(entity);
+		PageUtil.ObjectToPage(entity, list);
+		return list;
 	}
 	
 	
@@ -220,8 +238,25 @@ public class MemberInfoServiceImpl implements IMemberService{
 	
 	@Override
 	public List<MemberVouchers> vouchers(PageEntity entity) {
-		
-		return memberDao.vouchers(entity);
+		List<MemberVouchers> list = memberDao.vouchers(entity);
+		PageUtil.ObjectToPage(entity, list);
+		return list;
+	}
+	
+	
+	@Override
+	public List<MemberVouchers> useVouchers(PageEntity entity) {
+		List<MemberVouchers> list = useVouchers(entity);
+		PageUtil.ObjectToPage(entity, list);
+		return list;
+	}
+	
+	@Override
+	public long getRemainderTotal(long memberId) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("memberId", memberId);
+		param.put("sKey", DbKeyUtil.GetDbCodeKey());
+		return memberDao.getRemainderTotal(param);
 	}
 	
 	
@@ -257,8 +292,6 @@ public class MemberInfoServiceImpl implements IMemberService{
 		return memberDao.securityInfo(param);
 	}
 	
-	
-	
 	@Override
 	public MemberInfo findMemberInfoByParam(String logname, String memberPwd,int memberType) {
 		Map<String,Object> param = new HashMap<String,Object>();
@@ -268,4 +301,59 @@ public class MemberInfoServiceImpl implements IMemberService{
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		return memberDao.findMemberInfoByParam(param);
 	}
+	
+	@Override
+	public List<MemberInfo> serachMemberByParam(PageEntity entity) {
+		entity.getMap().put("sKey", DbKeyUtil.GetDbCodeKey());
+		return memberDao.serachMemberByParam(entity);
+	}
+	
+	@Override
+	public int applyAddFriends(long myId, long fId) {
+		if(myId == fId){
+			return -4;
+		}
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("myId", myId);
+		param.put("fId", fId);
+		return memberWriteDao.applyAddFriends(param);
+	}
+
+	@Override
+	public List<ExchangeRecords> exchangeRecords(PageEntity entity) {
+		
+		return memberDao.exchangeRecords(entity);
+	}
+	
+	@Override
+	public int agreeAapplyForFriend(long myId, long fId) {
+		if(myId == fId){
+			return -4;
+		}
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("myId", myId);
+		param.put("fId", fId);
+		return memberWriteDao.agreeAapplyForFriend(param);
+	}
+	
+	@Override
+	public int selectMemberIsExist(String loginName,String phone) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("loginName", loginName);
+		param.put("phone", phone);
+		return memberDao.selectMemberIsExist(param);
+	}
+	
+	@Override
+	public Long selectMemberIdByPhone(String loginName,String phone) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("phone", phone);
+		return memberDao.selectMemberIdByPhone(param);
+	}
+
+	@Override
+	public int confirmReceipt(Map<String, Object> param) {
+		return memberWriteDao.confirmReceipt(param);
+	}
+	
 }

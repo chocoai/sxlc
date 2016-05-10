@@ -20,6 +20,7 @@ import cn.springmvc.service.CommodityInfoService;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity; 
+import product_p2p.kit.pageselect.PageUtil;
 @Service("commodityInfoServiceImpl")
 public class CommodityInfoServiceImpl implements CommodityInfoService {
 	@Resource(name="commodityInfoDaoImpl")
@@ -29,10 +30,10 @@ public class CommodityInfoServiceImpl implements CommodityInfoService {
 	@Resource(name="optRecordWriteDaoImpl")
 	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	@Override
-	public List<CommodityInfoEntity> selectCommodityInfoList(
-			PageEntity pageEntity) {
-		
-		return  commodityInfoListDao.selectCommodityInfoList(pageEntity);
+	public List<CommodityInfoEntity> selectCommodityInfoList(PageEntity pageEntity) {
+		List<CommodityInfoEntity> list = commodityInfoListDao.selectCommodityInfoList(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return  list;
 		
 	}
 	@Override

@@ -18,7 +18,7 @@ import java.util.Map;
 
 import cn.springmvc.model.InvestIncomeEntity;
 import cn.springmvc.model.InvestRecordInfoEntity;
-import cn.springmvc.model.LoanRepayEntity;
+import cn.springmvc.model.LoanRepayEntitys;
 
 /** 
  * @author 刘利 
@@ -56,7 +56,7 @@ public interface InvestIncomeListDao {
 	 * @return List<LoanRepayEntity> 返回类型 
 	 * @date 2016-4-12 下午3:16:00
 	 */
-	public List<LoanRepayEntity> selectLoanRepayIDByapplyID(long applyID);
+	public List<LoanRepayEntitys> selectLoanRepayIDByapplyID(long applyID);
 
 	/**
 	 * 根据还款计划ID查询收益计划的总的应收本金与应收利息  

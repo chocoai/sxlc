@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-cache" /> 
 <meta http-equiv="Expires" content="0" /> 
 <%
-	AuthorizeInterfaceEntity member=(AuthorizeInterfaceEntity)request.getAttribute("author");
+	AuthorizeInterfaceEntity member=(AuthorizeInterfaceEntity)request.getAttribute("accountInterfaceEntity");
  %>
 <title>网贷授权 - 乾多多</title>
 <script type="text/javascript">

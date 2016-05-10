@@ -32,6 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-recommend.jsp">
 				<jsp:param value="901" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -51,7 +52,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<div class="panel-body">
 							<form id="" class="" action="">
-								<div>
 									<span class="con-item textRight2">
 										<span>编号</span><input id="gNo" type="text" class="" placeholder="" class=""/>
 									</span>
@@ -61,8 +61,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="con-item textRight2">
 										<span>营业执照号</span><input id="gNum" type="text" class="licencenum" placeholder="" />
 									</span>
-								</div>
-								<div>
 									<span class="con-item textRight2">
 										<span>联系人姓名</span><input id="gpName" type="text" class="contactname" placeholder="" />
 									</span>
@@ -77,12 +75,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<option value="0">停用</option>
 										</select>
 									</span>
-								</div>
-								<div class="checkstatebtn">
 									<span class="">
 										<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 									</span>
-								</div>
 							</form>
 						</div>
 					</div>

@@ -16,7 +16,7 @@ import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
-import cn.membermng.model.MemberAttestTypeEntity;
+import cn.membermng.model.CurrencyAuth;
 import cn.membermng.model.RealNameAuth;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.model.Admin;
@@ -153,12 +153,18 @@ public class IdentyMemController {
 		long attestId = IntegerAndString.StringToLong(request.getParameter("attestId"), 0);
 		long memberId = IntegerAndString.StringToLong(request.getParameter("memberId"), 0);
 		int  statusT = IntegerAndString.StringToInt(request.getParameter("statu"), 2);
+		String endDate = request.getParameter("sEndDate");
+		if(endDate!=null && !endDate.equals("")){
+			endDate +=" 11:59:59";
+		}
 		map.put("certificationID", attestId);
-		map.put("memberId", memberId);
+		map.put("memberID", memberId);
 		map.put("memberType", 0);
 		map.put("statusT", statusT);
 		map.put("remark", "");
-		map.put("endDate", null);
+		map.put("endDate", endDate);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
+		map.put("personalID", memberId);
 		IdGeneratorUtil idGeneratorUtil = new IdGeneratorUtil();
 		map.put("creditIntegralID", idGeneratorUtil.GetId());
 		InsertAdminLogEntity entity = new InsertAdminLogEntity();
@@ -174,49 +180,59 @@ public class IdentyMemController {
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 	    Map<String, Object> Ma=  certificationAuditService.handlenameAuthentication(map, entity, sIpInfo);
-	    int iResult =(int) Ma.get("result");
+	    int iResult =(int) Ma.get("rulest");
 		return iResult;
 	}
 	/*************************实名认证end*************************************************************/
-	/*************************现场认证start*************************************************************/		
+	/*************************公用认证 （现场认证，征信认证，职称认证，社保认证，银行流水认证 等）start*************************************************************/		
 	/**
-	 * 个人会员现场认证详情
+	 * 公用认证 详情
 	 * TODO
-	 * 创建日期：2016-5-3下午4:04:57
+	 * 创建日期：2016-5-4下午2:06:20
 	 * 修改日期：
 	 * 作者：pengran
 	 * @param
-	 * 
+	 * return CurrencyAuth
 	 */
-	@RequestMapping(value ="/spotIdenty", method = RequestMethod.POST)
+	@RequestMapping(value ="/conmonIdenty", method = RequestMethod.POST)
 	@ResponseBody
-	public RealNameAuth spotIdenty(HttpServletRequest req){
-		long   memberId = IntegerAndString.StringToLong(req.getParameter("content"), 1);
-		RealNameAuth realNameAuth =  borrowingCertificationServer.showAuthRealName(memberId);
-		return realNameAuth;
+	public CurrencyAuth conmonIdenty(HttpServletRequest req){
+		long   memberId = IntegerAndString.StringToLong(req.getParameter("memberId"), 0);
+		int typeId = IntegerAndString.StringToInt(req.getParameter("typeId"), 1);
+		CurrencyAuth auth=  borrowingCertificationServer.showCurrencyAuth(memberId, 0, typeId);
+		return auth;
 	}
 	/**
-	 * 提交现场认证
+	 * 提交公共认证
 	 * TODO
-	 * 创建日期：2016-5-3下午6:57:08
+	 * 创建日期：2016-5-4下午2:06:27
 	 * 修改日期：
 	 * 作者：pengran
 	 * @param
 	 * return int
 	 */
-	@RequestMapping(value ="/submitspot", method = RequestMethod.POST)
+	@RequestMapping(value ="/submitCommonIdty", method = RequestMethod.POST)
 	@ResponseBody
-	public int submitSpot(HttpServletRequest request){
+	public int submitCommonIdty(HttpServletRequest request){
 		Map<String,Object> map = new HashMap<>();
 		long attestId = IntegerAndString.StringToLong(request.getParameter("attestId"), 0);
 		long memberId = IntegerAndString.StringToLong(request.getParameter("memberId"), 0);
 		int  statusT = IntegerAndString.StringToInt(request.getParameter("statu"), 2);
+		String endDate = request.getParameter("sEndDate");
+		if(endDate!=null && !endDate.equals("")){
+			endDate +=" 11:59:59";
+		}else{
+			endDate =null;
+		}
 		map.put("certificationID", attestId);
 		map.put("memberId", memberId);
 		map.put("memberType", 0);
 		map.put("statusT", statusT);
 		map.put("remark", "");
-		map.put("endDate", "");
+		map.put("endDate", endDate);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
+		map.put("personalID", memberId);
+		
 		IdGeneratorUtil idGeneratorUtil = new IdGeneratorUtil();
 		map.put("creditIntegralID", idGeneratorUtil.GetId());
 		InsertAdminLogEntity entity = new InsertAdminLogEntity();
@@ -231,12 +247,256 @@ public class IdentyMemController {
 		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
-	    Map<String, Object> Ma=  certificationAuditService.handlenameAuthentication(map, entity, sIpInfo);
-	    int iResult =(int) Ma.get("result");
+	    Map<String, Object> Ma=  certificationAuditService.handleAttest(map, entity, sIpInfo);
+	    int iResult =(int) Ma.get("rulest");
 		return iResult;
 	}
-	/*************************实名认证end*************************************************************/
+	/*************************公共认证end*************************************************************/
+	/*************************住址认证 start*************************************************************/		
+	/**
+	 * 住址认证 详情
+	 * TODO
+	 * 创建日期：2016-5-4下午3:05:00
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return CurrencyAuth
+	 */
+	@RequestMapping(value ="/addressIdenty", method = RequestMethod.POST)
+	@ResponseBody
+	public CurrencyAuth addressIdenty(HttpServletRequest req){
+		long   memberId = IntegerAndString.StringToLong(req.getParameter("rid"), 0);
+		CurrencyAuth auth=  borrowingCertificationServer.showAuthAddress(memberId);
+		return auth;
+	}
+	/**
+	 * 提交住址认证 
+	 * TODO
+	 * 创建日期：2016-5-4下午3:05:10
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	@RequestMapping(value ="/submitAddress", method = RequestMethod.POST)
+	@ResponseBody
+	public int submitAddressIdty(HttpServletRequest request){
+		Map<String,Object> map = new HashMap<>();
+		long attestId = IntegerAndString.StringToLong(request.getParameter("attestId"), 0);
+		long memberId = IntegerAndString.StringToLong(request.getParameter("memberId"), 0);
+		int  statusT = IntegerAndString.StringToInt(request.getParameter("statu"), 2);
+		String endDate = request.getParameter("sEndDate");
+		if(endDate!=null && !endDate.equals("")){
+			endDate +=" 11:59:59";
+		}else{
+			endDate=null;
+		}
+		map.put("certificationID", attestId);
+		map.put("memberId", memberId);
+		map.put("memberType", 0);
+		map.put("statusT", statusT);
+		map.put("remark", "");
+		map.put("endDate", endDate);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
+		map.put("personalID", 0);
+		
+		IdGeneratorUtil idGeneratorUtil = new IdGeneratorUtil();
+		map.put("creditIntegralID", idGeneratorUtil.GetId());
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)request.getSession().getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+			map.put("adminID", userInfo.getId());
+		}
+		entity.setlOptId(10201);
+		entity.setlModuleId(102);
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+	    Map<String, Object> Ma=  certificationAuditService.handleAddress(map, entity, sIpInfo);
+	    int iResult =(int) Ma.get("rulest");
+		return iResult;
+	}
+	/*************************住址认证 end*************************************************************/
 	
+	/*************************房产认证 start*************************************************************/		
+	/**
+	 * 房产认证详情
+	 * TODO
+	 * 创建日期：2016-5-4下午4:00:37
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return CurrencyAuth
+	 */
+	@RequestMapping(value ="/houseIdenty", method = RequestMethod.POST)
+	@ResponseBody
+	public CurrencyAuth houseIdenty(HttpServletRequest req){
+		long   rid = IntegerAndString.StringToLong(req.getParameter("rid"), 0);
+		CurrencyAuth auth=  borrowingCertificationServer.showAuthHousingOne(rid);
+		return auth;
+	}
+	/*************************房产认证 end*************************************************************/
+	
+	
+	/*************************车产认证 start*************************************************************/		
+	/**
+	 * 车产认证详情
+	 * TODO
+	 * 创建日期：2016-5-4下午4:07:16
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return CurrencyAuth
+	 */
+	@RequestMapping(value ="/carIdenty", method = RequestMethod.POST)
+	@ResponseBody
+	public CurrencyAuth carIdenty(HttpServletRequest req){
+		long   rid = IntegerAndString.StringToLong(req.getParameter("rid"), 0);
+		CurrencyAuth auth=  borrowingCertificationServer.showAuthProductionOne(rid);
+		return auth;
+	}
+	/*************************车产认证 end*************************************************************/
+
+	/*************************婚姻认证 start*************************************************************/		
+	/**
+	 * 婚姻认证详情
+	 * TODO
+	 * 创建日期：2016-5-4下午8:33:39
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return CurrencyAuth
+	 */
+	@RequestMapping(value ="/marryIdenty", method = RequestMethod.POST)
+	@ResponseBody
+	public CurrencyAuth marryIdenty(HttpServletRequest req){
+		long   memberId = IntegerAndString.StringToLong(req.getParameter("memberId"), 0);
+		
+		CurrencyAuth auth=  borrowingCertificationServer.showAuthMarriage(memberId);
+		return auth;
+	}
+	/**
+	 * 提交婚姻认证 
+	 * TODO
+	 * 创建日期：2016-5-5上午11:44:58
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	@RequestMapping(value ="/submitMarry", method = RequestMethod.POST)
+	@ResponseBody
+	public int submitMarry(HttpServletRequest request){
+		Map<String,Object> map = new HashMap<>();
+		long attestId = IntegerAndString.StringToLong(request.getParameter("attestId"), 0);
+		long memberId = IntegerAndString.StringToLong(request.getParameter("memberId"), 0);
+		int  statusT = IntegerAndString.StringToInt(request.getParameter("statu"), 2);
+		String endDate = request.getParameter("sEndDate");
+		if(endDate!=null && !endDate.equals("")){
+			endDate +=" 11:59:59";
+		}else{
+			endDate=null;
+		}
+		map.put("certificationID", attestId);
+		map.put("memberId", memberId);
+		map.put("memberType", 0);
+		map.put("statusT", statusT);
+		map.put("remark", "");
+		map.put("endDate", endDate);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
+		map.put("personalID",memberId);
+		
+		IdGeneratorUtil idGeneratorUtil = new IdGeneratorUtil();
+		map.put("creditIntegralID", idGeneratorUtil.GetId());
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)request.getSession().getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+			map.put("adminID", userInfo.getId());
+		}
+		entity.setlOptId(10201);
+		entity.setlModuleId(102);
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+	    Map<String, Object> Ma=  certificationAuditService.handlemarriage(map, entity, sIpInfo);
+	    int iResult =(int) Ma.get("rulest");
+		return iResult;
+	}
+	/*************************婚姻认证 end*************************************************************/
+
+	
+	/*************************学历认证 start*************************************************************/		
+	/**
+	 * 学历认证详情
+	 * TODO
+	 * 创建日期：2016-5-4下午8:33:39
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return CurrencyAuth
+	 */
+	@RequestMapping(value ="/graduateIdenty", method = RequestMethod.POST)
+	@ResponseBody
+	public CurrencyAuth graduateIdenty(HttpServletRequest req){
+		long   memberId = IntegerAndString.StringToLong(req.getParameter("memberId"), 0);
+		CurrencyAuth auth=  borrowingCertificationServer.showAuthEducation(memberId);
+		return auth;
+	}
+	/**
+	 * 提交学历认证 
+	 * TODO
+	 * 创建日期：2016-5-5上午11:46:12
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	@RequestMapping(value ="/submitEducation", method = RequestMethod.POST)
+	@ResponseBody
+	public int submitEducation(HttpServletRequest request){
+		Map<String,Object> map = new HashMap<>();
+		long attestId = IntegerAndString.StringToLong(request.getParameter("attestId"), 0);
+		long memberId = IntegerAndString.StringToLong(request.getParameter("memberId"), 0);
+		int  statusT = IntegerAndString.StringToInt(request.getParameter("statu"), 2);
+		String endDate = request.getParameter("sEndDate");
+		if(endDate!=null && !endDate.equals("")){
+			endDate +=" 11:59:59";
+		}else{
+			endDate=null;
+		}
+		map.put("certificationID", attestId);
+		map.put("memberId", memberId);
+		map.put("memberType", 0);
+		map.put("statusT", statusT);
+		map.put("remark", "");
+		map.put("endDate", endDate);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
+		map.put("personalID", memberId);
+		
+		IdGeneratorUtil idGeneratorUtil = new IdGeneratorUtil();
+		map.put("creditIntegralID", idGeneratorUtil.GetId());
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[6];
+		Admin userInfo = (Admin)request.getSession().getAttribute("LoginPerson");
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+			map.put("adminID", userInfo.getId());
+		}
+		entity.setlOptId(10201);
+		entity.setlModuleId(102);
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+	    Map<String, Object> Ma=  certificationAuditService.handlemarriage(map, entity, sIpInfo);
+	    int iResult =(int) Ma.get("rulest");
+		return iResult;
+	}
+	/*************************学历认证 end*************************************************************/
+		/**
 /*************************会员认证操作 end *************************************************************/		
 }
 

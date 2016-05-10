@@ -117,6 +117,22 @@ public class FinancialAdvisorListDaoImpl extends SqlSessionDaoSupport implements
 		
 		 return  getSqlSession().selectOne("FinancialAdvisor.selectFinancialMasterStatistic",map);
 		
+	}
+
+	@Override
+	public List<InviteMasterAwardRecordEntity> getFinancialAdvisorAwardExcel(
+			Map<String, Object> map) {
+		
+		 return  getSqlSession().selectList("FinancialAdvisorExcel.getFinancialAdvisorAwardExcel",map);
+		
+	}
+
+	@Override
+	public List<AwardPaymentRecordEntity> getFinancialHistoryBackExcel(
+			Map<String, Object> map) {
+		
+		 return  getSqlSession().selectOne("FinancialAdvisorExcel.getFinancialHistoryBackExcel",map);
+		
 	} 
 }
 

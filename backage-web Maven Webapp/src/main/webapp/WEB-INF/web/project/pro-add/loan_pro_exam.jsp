@@ -4,308 +4,368 @@ request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<head>
+	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
+	<link rel="stylesheet" href="css/upload.css" />
+</head>
 <jsp:include page="../../common/cm-addr.jsp"></jsp:include>
-<ul class="nav nav-tabs">
-	<li role="presentation" class="active"><a href="javascript:;">基本信息</a></li>
-	<li role="presentation"><a href="javascript:;">历史审核记录</a></li>
-	<li role="presentation"><a href="javascript:;">历史审核附件</a></li>
-	<li role="presentation"><a href="javascript:;">附件删除记录</a></li>
-	<li role="presentation"><a href="javascript:;">项目附件审核信息</a></li>
-</ul>
-<div class="nav-tabs-con active">
-	<div id="checkDetail">
-		<div class="container add_type_contianer">
-			<div class="container body addContainer">
-				<div class="main_container">
-					<div class="w-content ishow pic-add">
-						<!-- 信息展示模块 -->
-						<div class="infoDisplay">
-							<fieldset>
-								<legend>项目基本信息</legend>
-								<table>
-									<tr class="col-md-6">
-										<td class="tt"><label>借款项目名称：</label></td>
-										<td class="con" id="inputMoney">借款项目名称</td>
-									</tr>	
-									<tr class="col-md-6">
-										<td class="tt"><label>借款金额：</label></td>
-										<td class="con" id="inputMoney">借款金额</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>还款方式：</label></td>
-										<td class="con" id="inputMoney">还款方式</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>还款保障：</label></td>
-										<td class="con" id="inputMoney">还款保障</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>借款用途：</label></td>
-										<td class="con" id="inputMoney">借款用途</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>还款来源：</label></td>
-										<td class="con" id="inputMoney">还款来源</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>借款期限：</label></td>
-										<td class="con" id="inputMoney">借款期限</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>最大投资比例：</label></td>
-										<td class="con" id="inputMoney">设置最大投资比例</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>年化利率：</label></td>
-										<td class="con" id="inputMoney">年化利率</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>起投金额：</label></td>
-										<td class="con" id="inputMoney">起投金额</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>加价幅度：</label></td>
-										<td class="con" id="inputMoney">加价幅度</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>投资上限：</label></td>
-										<td class="con" id="inputMoney">投资上限</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>项目描述：</label></td>
-										<td class="con" id="inputMoney">项目描述</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>借款人信息：</label></td>
-										<td class="con" id="inputMoney">借款人信息</td>
-									</tr>
-									<tr class="col-md-7 col-md-offset-5">	
-										<td class="tt">
-											<button class="btn btn-info btnMod">修改</button>
-										</td>
-									</tr>
-								</table>
-							</fieldset>
-						</div><!-- 信息展示模块结束 -->
-						<!-- 信息修改模块开始 -->
-						<div class="infoMod" style="display:none">
-							<fieldset>
-								<legend>项目基本信息修改</legend>
-								<table>
-									<tr class="col-md-6">
-										<td class="tt"><label>借款项目名称：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>	
-									<tr class="col-md-6">
-										<td class="tt"><label>借款金额：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>还款方式：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>还款保障：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>借款用途：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>还款来源：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>借款期限：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>最大投资比例：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>年化利率：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>起投金额：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>加价幅度：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>投资上限：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>项目描述：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>借款人信息：</label></td>
-										<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-									</tr>
-									<tr class="col-md-7 col-md-offset-5">
-										<td class="tt">
-											<button class="btn btn-success btnPreserve">保存</button>
-											<button class="btn btn-default btnCancel">取消</button>
-										</td>
-									</tr>
-								</table>
-							</fieldset>
-						</div><!-- 信息修改模块结束 -->
-						<!-- 认证展示模块 -->
-						<fieldset class="person" style="display:block"><!-- 个人信息 -->
-							<legend>会员基本信息</legend>
-							<div class="w-content ishow">
-								<table>
-									<tr>
-										<td class="tt"><label>会员编号：</label><span>会员编号</span></td>
-										<td class="tt"><label>会员用户名：</label><span>会员用户名</span></td>
-										<td class="tt"><label>真实姓名：</label><span>真实姓名</span></td>
-									</tr>
-									<tr>
-										<td class="tt"><label>身份证号：</label><span>20221552255412554411</span></td>
-										<td class="tt"><label>手机号码：</label><span>18454845847</span></td>
-										<td class="tt"><label>最高学历：</label><span>本科</span></td>
-									</tr>
-									<tr>
-										<td class="tt"><label>婚姻状况：</label><span>已婚</span></td>
-										<td class="tt"><label>地区：</label><span>北京</span></td>
-										<td class="tt"><label>月均收入：</label><span>10000元</span></td>
-										
-									</tr>
-									<tr>
-										<td class="tt"><label>注册时间：</label><span>2016-4-20</span></td>
-									</tr>
-								</table>
-							</div>
-						</fieldset>
-						<fieldset class="enterprise" style="display:none"><!-- 企业信息 -->
-							<legend>会员基本信息</legend>
-							<div class="w-content ishow">
-								<table>
-									<tr>
-										<td class="tt"><label>会员编号：</label><span>会员编号</span></td>
-										<td class="tt"><label>会员用户名：</label><span>会员用户名</span></td>
-										<td class="tt"><label>企业名称：</label><span>企业名称</span></td>
-									</tr>
-									<tr>
-										<td class="tt"><label>营业执照号：</label><span>20221552255412554411</span></td>
-										<td class="tt"><label>联系人：</label><span>哈哈</span></td>
-										<td class="tt"><label>联系人手机号：</label><span>18454845847</span></td>
-									</tr>
-									<tr>
-										<td class="tt"><label>地区：</label><span>北极</span></td>
-										<td class="tt"><label>注册时间：</label><span>2016-04-27</span></td>
-									</tr>
-								</table>
-							</div>
-						</fieldset><!-- 认证展示模块结束 -->
-						<!-- 信用统计模块 -->
+<div id="checkDetail">
+	<div class="container add_type_contianer">
+		<div class="container body addContainer">
+			<div class="main_container">
+				<div class="w-content ishow pic-add">
+					<!-- 信息展示模块 -->
+					<div class="infoDisplay">
 						<fieldset>
-							<legend>借款信用统计</legend>
-							<div class="w-content ishow">
-								<table>
-									<tr>
-										<td class="tt"><label>成功借款：</label><span>N</span>笔</td>
-										<td class="tt"><label>成功还款：</label><span>N</span>笔</td>
-										<td class="tt"><label>成功投资：</label><span>N</span>笔</td>
-									</tr>
-									<tr>
-										<td class="tt"><label>逾期还款：</label><span>N</span>笔</td>
-										<td class="tt"><label>严重逾期还款：</label><span>N</span>笔</td>
-										<td class="tt"><label>逾期未还款：</label><span>N</span>笔</td>
-									</tr>
-									<tr>
-										<td class="tt"><label>提前还款：</label><span>N</span>笔</td>
-									</tr>
-								</table>
-							</div>
-						</fieldset><!-- 信用统计模块结束 -->
-						<!-- 投资统计模块 -->
-						<fieldset>
-							<legend>投资统计信息</legend>
-							<div class="w-content ishow">
-								<table>
-									<tr>
-										<td class="tt"><label>成功投资笔数：</label><span>N</span>笔</td>
-										<td class="tt"><label>成功投资金额：</label><span>N</span>笔</td>
-										<td class="tt"><label>累计已收本金：</label><span>N</span>笔</td>
-									</tr>
-									<tr>
-										<td class="tt"><label>累计已收收益：</label><span>N</span>笔</td>
-										<td class="tt"><label>待收本金：</label><span>N</span>笔</td>
-										<td class="tt"><label>待收收益：</label><span>N</span>笔</td>
-									</tr>
-								</table>
-							</div>
-						</fieldset><!-- 投资统计模块结束 -->
-						<!-- 认证模块 -->
-						<fieldset class="personAuthentication"><!-- 个人认证 -->
-							<legend>借款会员认证信息</legend>
-							<div class="w-content ishow">
-								<table>
-									<tr>
-										<td class="tt"><a>实名认证</a></td>
-										<td class="tt"><a>手机认证</a></td>
-										<td class="tt"><a>征信认证</a></td>
-										<td class="tt"><a>住址认证</a></td>
-										<td class="tt"><a>婚姻认证</a></td>
-										<td class="tt"><a>工作认证</a></td>
-										<td class="tt"><a>学历认证</a></td>
-										<td class="tt"><a>股权认证</a></td>
-									</tr>
-									<tr>
-										<td class="tt"><a>职称认证</a></td>
-										<td class="tt"><a>社保认证</a></td>
-										<td class="tt"><a>房产认证</a></td>
-										<td class="tt"><a>车产认证</a></td>
-										<td class="tt"><a>银行流水认证</a></td>
-										<td class="tt"><a>其它</a></td>
-									</tr>
-								</table>
-							</div>
+							<legend>项目基本信息</legend>
+							<table>
+								<tr class="col-md-4">
+									<td class="tt"><label>借款项目名称：</label></td>
+									<td class="con">借款项目名称</td>
+								</tr>	
+								<tr class="col-md-4">
+									<td class="tt"><label>借款金额：</label></td>
+									<td class="con">借款金额</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>还款方式：</label></td>
+									<td class="con">还款方式</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>还款保障：</label></td>
+									<td class="con">还款保障</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>借款用途：</label></td>
+									<td class="con">借款用途</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>还款来源：</label></td>
+									<td class="con">还款来源</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>借款期限：</label></td>
+									<td class="con">借款期限</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>最大投资比例：</label></td>
+									<td class="con">设置最大投资比例</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>年化利率：</label></td>
+									<td class="con">年化利率</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>起投金额：</label></td>
+									<td class="con">起投金额</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>加价幅度：</label></td>
+									<td class="con">加价幅度</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>投资上限：</label></td>
+									<td class="con">投资上限</td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>项目描述：</label></td>
+									<td class="con">项目描述</td>
+								</tr>
+								<tr class="col-md-7 col-md-offset-5">	
+									<td class="tt">
+										<button class="btn btn-info btnMod">修改</button>
+									</td>
+								</tr>
+							</table>
 						</fieldset>
-						<fieldset class="enterpriseAuthentication" style="display:none"><!-- 企业认证 -->
-							<legend>借款会员认证信息</legend>
-							<div class="w-content ishow">
-								<table>
-									<tr>
-										<td class="ts"><a>营业执照认证</a></td>
-										<td class="ts"><a>工商执照认证</a></td>
-										<td class="ts"><a>组织机构代码认证</a></td>
-										<td class="ts"><a>开户许可证认证</a></td>
-										<td class="ts"><a>企业银行流水认证</a></td>
-										<td class="ts"><a>实地考察认证</a></td>
-										<td class="ts"><a>税务登记认证</a></td>
-										<td class="ts"><a>批文认证认证</a></td>
-									</tr>
-									<tr>
-										<td class="ts"><a>财务资料认证</a></td>
-										<td class="ts"><a>监管单位认证</a></td>
-										<td class="ts"><a>房产认证</a></td>
-										<td class="ts"><a>车产认证</a></td>
-										<td class="ts"><a>担保考察认证</a></td>
-										<td class="ts"><a>法人身份认证</a></td>
-										<td class="ts"><a>其它</a></td>
-									</tr>
-								</table>
-							</div>
-						</fieldset><!-- 认证模块结束 -->
-					</div>
+					</div><!-- 信息展示模块结束 -->
+					<!-- 信息修改模块开始 -->
+					<div class="infoMod" style="display:none">
+						<fieldset>
+							<legend>项目基本信息修改</legend>
+							<table>
+								<tr class="col-md-4">
+									<td class="tt"><label>借款项目名称：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>	
+								<tr class="col-md-4">
+									<td class="tt"><label>借款金额：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>还款方式：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>还款保障：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>借款用途：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>还款来源：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>借款期限：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>最大投资比例：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>年化利率：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>起投金额：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>加价幅度：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>投资上限：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-4">
+									<td class="tt"><label>项目描述：</label></td>
+									<td class="con"><input type="text"></td>
+								</tr>
+								<tr class="col-md-7 col-md-offset-5">
+									<td class="tt">
+										<button class="btn btn-success btnPreserve">保存</button>
+										<button class="btn btn-default btnCancel">取消</button>
+									</td>
+								</tr>
+							</table>
+						</fieldset>
+					</div><!-- 信息修改模块结束 -->
+					<!-- 认证展示模块 -->
+					<fieldset class="person" style="display:block"><!-- 个人信息 -->
+						<legend>会员基本信息</legend>
+						<div class="w-content ishow">
+							<table>
+								<tr class="col-md-3">
+									<td class="tt"><label>会员编号：</label></td>
+									<td class="con">012304</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>会员用户名：</label></td>
+									<td class="con">会员用户名</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>真实姓名：</label></td>
+									<td class="con">真实姓名</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>身份证号：</label></td>
+									<td class="con">748590339285559401</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>手机号码：</label></td>
+									<td class="con">18454845847</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>最高学历：</label></td>
+									<td class="con">本科</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>婚姻状况：</label></td>
+									<td class="con">已婚</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>地区：</label></td>
+									<td class="con">北京</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>月均收入：</label></td>
+									<td class="con">10000<span>元</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>注册时间：</label></td>
+									<td class="con">2016-4-20</td>
+								</tr>
+							</table>
+						</div>
+					</fieldset>
+					<fieldset class="enterprise" style="display:none"><!-- 企业信息 -->
+						<legend>会员基本信息</legend>
+						<div class="w-content ishow">
+							<table>
+								<tr class="col-md-3">
+									<td class="tt"><label>会员编号：</label></td>
+									<td class="con">0231322</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>会员用户名：</label></td>
+									<td class="con">会员用户名</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>企业名称：</label></td>
+									<td class="con">企业名称</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>营业执照号：</label></td>
+									<td class="con">0231322</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>联系人：</label></td>
+									<td class="con">哈哈</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>联系人手机号：</label></td>
+									<td class="con">18454845847</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>地区：</label></td>
+									<td class="con">北极</td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>注册时间：</label></td>
+									<td class="con">2016-04-27</td>
+								</tr>
+							</table>
+						</div>
+					</fieldset><!-- 认证展示模块结束 -->
+					<!-- 信用统计模块 -->
+					<fieldset>
+						<legend>借款信用统计</legend>
+						<div class="w-content ishow">
+							<table>
+								<tr class="col-md-3">
+									<td class="tt"><label>成功借款：</label></td>
+									<td class="con">10<span>笔</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>成功还款：</label></td>
+									<td class="con">10<span>笔</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>成功投资：</label></td>
+									<td class="con">10<span>笔</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>逾期还款：</label></td>
+									<td class="con">10<span>笔</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>严重逾期还款：</label></td>
+									<td class="con">10<span>笔</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>逾期未还款：</label></td>
+									<td class="con">10<span>笔</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>提前还款：</label></td>
+									<td class="con">10<span>笔</span></td>
+								</tr>
+							</table>
+						</div>
+					</fieldset><!-- 信用统计模块结束 -->
+					<!-- 投资统计模块 -->
+					<fieldset>
+						<legend>投资统计信息</legend>
+						<div class="w-content ishow">
+							<table>
+								<tr class="col-md-3">
+									<td class="tt"><label>成功投资笔数：</label></td>
+									<td class="con">10<span>笔</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>成功投资笔数：</label></td>
+									<td class="con">100<span>元</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>成功投资笔数：</label></td>
+									<td class="con">100<span>元</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>累计已收收益：</label></td>
+									<td class="con">100<span>元</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>待收本金：</label></td>
+									<td class="con">100<span>元</span></td>
+								</tr>
+								<tr class="col-md-3">
+									<td class="tt"><label>待收收益：</label></td>
+									<td class="con">100<span>元</span></td>
+								</tr>
+							</table>
+						</div>
+					</fieldset><!-- 投资统计模块结束 -->
+					<!-- 认证模块 -->
+					<fieldset class="personAuthentication"><!-- 个人认证 -->
+						<legend>借款会员认证信息</legend>
+						<div class="w-content ishow">
+							<table>
+								<tr>
+									<td class="tt"><a>实名认证</a></td>
+									<td class="tt"><a>手机认证</a></td>
+									<td class="tt"><a>征信认证</a></td>
+									<td class="tt"><a>住址认证</a></td>
+									<td class="tt"><a>婚姻认证</a></td>
+									<td class="tt"><a>工作认证</a></td>
+									<td class="tt"><a>学历认证</a></td>
+									<td class="tt"><a>股权认证</a></td>
+								</tr>
+								<tr>
+									<td class="tt"><a>职称认证</a></td>
+									<td class="tt"><a>社保认证</a></td>
+									<td class="tt"><a>房产认证</a></td>
+									<td class="tt"><a>车产认证</a></td>
+									<td class="tt"><a>银行流水认证</a></td>
+									<td class="tt"><a>其它</a></td>
+								</tr>
+							</table>
+						</div>
+					</fieldset>
+					<fieldset class="enterpriseAuthentication" style="display:none"><!-- 企业认证 -->
+						<legend>借款会员认证信息</legend>
+						<div class="w-content ishow">
+							<table>
+								<tr>
+									<td class="ts"><a>营业执照认证</a></td>
+									<td class="ts"><a>工商执照认证</a></td>
+									<td class="ts"><a>组织机构代码认证</a></td>
+									<td class="ts"><a>开户许可证认证</a></td>
+									<td class="ts"><a>企业银行流水认证</a></td>
+									<td class="ts"><a>实地考察认证</a></td>
+									<td class="ts"><a>税务登记认证</a></td>
+									<td class="ts"><a>批文认证认证</a></td>
+								</tr>
+								<tr>
+									<td class="ts"><a>财务资料认证</a></td>
+									<td class="ts"><a>监管单位认证</a></td>
+									<td class="ts"><a>房产认证</a></td>
+									<td class="ts"><a>车产认证</a></td>
+									<td class="ts"><a>担保考察认证</a></td>
+									<td class="ts"><a>法人身份认证</a></td>
+									<td class="ts"><a>其它</a></td>
+								</tr>
+							</table>
+						</div>
+					</fieldset><!-- 认证模块结束 -->
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+<!-- tab切换 -->
+<ul class="nav nav-tabs">
+	<li role="presentation" class="active"><a href="javascript:;">历史审核记录</a></li>
+	<li role="presentation"><a href="javascript:;">历史审核附件</a></li>
+	<li role="presentation"><a href="javascript:;">附件删除记录</a></li>
+</ul>
 <!-- 第一页基本信息结束 -->
 <!-- 审核记录审核附件删除记录 -->
-<div class="nav-tabs-con">
+<div class="nav-tabs-con active">
 	<div class="data_display">
 		<div class="panel panel-success">
 			<div class="panel-body">
@@ -407,44 +467,67 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 </div>
 <!-- 审核记录审核附件删除记录结束 -->
-<div class="nav-tabs-con">
-	<fieldset class="personAuthentication"><!-- 个人认证 -->
-		<legend>上传项目审核附件信息</legend>
-		<table>
-			<tr class="col-md-6">
-				<td class="tt"><label>附件名称：</label></td>
-				<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-			</tr>	
-			<tr class="col-md-6">
-				<td class="tt"><label>附件备注：</label></td>
-				<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-			</tr>
-			<tr class="col-md-6">
-				<td class="tt"><label>上传附件：</label></td>
-				<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-			</tr>
-			<tr class="col-md-6">
-				<td class="tt"><label>选择审核结果：</label></td>
-				<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-			</tr>
-			<tr class="col-md-6">
-				<td class="tt"><label>填写审核意见：</label></td>
-				<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
-			</tr>
-			<tr class="col-md-7 col-md-offset-5">
-				<td class="tt">
-					<button class="btn btn-success btnPreserve">提交</button>
-					<button class="btn btn-default btnCancel">重置</button>
-				</td>
-			</tr>
-		</table>
-	</fieldset>
-</div>
+<fieldset class="uploadEnclosure">
+	<legend>上传项目审核附件信息</legend>
+	<table>
+		<tr class="col-lg-6 col-md-6">
+			<td class="tt"><label>附件名称：</label></td>
+			<td class="con"><input type="text"></td>
+		</tr>	
+		<tr class="col-lg-6 col-md-6">
+			<td class="tt"><label>附件备注：</label></td>
+			<td class="con"><input type="text"></td>
+		</tr>
+		<tr class="col-lg-12 col-md-12">
+			<td class="tt">上传附件：</td>
+			<td class="con">
+				<!--dom结构部分-->
+				<div id="uploader">
+				    <!--用来存放item-->
+				    <div id="filePicker">图片选择</div>
+				</div>
+			</td>
+		</tr>
+		<tr class="col-lg-12 col-md-12">
+			<td class="tt" valign="top"></td>
+			<td class="con" id="fileList"></td>
+		</tr>
+		<tr class="col-lg-12 col-md-12 buttonS">
+			<td class="ts">
+				<button class="btn btn-success btnPreserve">提交</button>
+				<button class="btn btn-default btnCancel">重置</button>
+			</td>
+		</tr>
+	</table>
+</fieldset>
+<fieldset class="uploadEnclosure">
+	<table>
+		<tr class="col-md-12">
+			<td class="tt"><label>选择审核结果：</label></td>
+			<td class="con">
+				<select class="auditResult">
+					<option>同意</option>
+					<option>驳回</option>
+					<option>借款项目终止</option>
+				</select>
+			</td>
+		</tr>
+		<tr class="col-md-12">
+			<td class="tt"><label>填写审核意见：</label></td>
+			<td class="con">
+				<textarea rows="5" cols="80"></textarea>
+			</td>
+		</tr>
+	</table>		
+</fieldset>		
+
 
 <!-- 公用js -->
 <jsp:include page="../../common/cm-js.jsp"></jsp:include>
+<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 <!-- 私用js -->
 <script type="text/javascript" src="js/project/loan_pro_exam.js"></script>
+<script type="text/javascript" src="js/project/investing.js"></script>
 
 
 

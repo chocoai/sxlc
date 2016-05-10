@@ -12,7 +12,7 @@
 body {color:#000; background:#fff; font-family: "Microsoft YaHei", Verdana, Arial, sans-serif,"宋体"; font-size: 14px;}
 body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div, tr{margin:0 auto; padding:0;}
 /* 设置内容左对齐，恢复因BODY设置剧中产生的继承 */
-body div {text-align:left;}
+body div {/* text-align:left; */}
 /* 标签属性，textarea,input 强制输入时内容超出时换行 */
 textarea, input {word-wrap:break-word; word-break:break-all; padding:0px;font-family: "Microsoft YaHei", Verdana, Arial, sans-serif,"宋体";}
 input, select {font-size:12px; vertical-align:middle;}
@@ -130,3 +130,10 @@ i {margin:0 5px;}
 .color_xx { color: }
 /* 清除浮动 */
 .clearfix{*zoom: 1;}.clearfix:before,.clearfix:after{display:table;line-height:0;content:"";}.clearfix:after{clear: both;}
+
+.pager-box{text-align: center!important;width: 100%!important;}
+.noData{font-size: 20px;text-align: center;line-height: 100px;color: #575757;}
+.my-loan-table .noData:hover,
+.my-loan-table li.noData:hover{
+	background-color:#fff;
+}

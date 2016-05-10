@@ -197,3 +197,15 @@ ul,li{
 .detailAuthen div{
 	margin:5px 15px;
 }
+
+.search .panel-body .con-item{
+	width: 300px !important;
+    text-align: right;
+    display: inline-block;
+}
+.buttonSet2{
+	text-align: center;
+}
+.search button{
+	float: none;
+}

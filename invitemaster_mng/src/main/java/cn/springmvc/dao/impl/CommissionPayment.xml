@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="CommissionPayment"> 
+	<resultMap id="CommissionPaymentRecordsEntity" type="cn.invitemastermng.model.CommissionPaymentRecordsEntity" >
+  	 <result column="Start_Date" property="startDate"/>
+  	 <result column="End_Date" property="endDate"/>
+  	 <result column="Borrow_Award" property="borrowAward"/>
+  	 <result column="Invest_Award" property="investAward"/>
+  	 <result column="Vip_Award" property="vipAward"/>
+  	 <result column="Repay_Award" property="repayAward"/>
+  	 <result column="Real_Amount" property="realAmount"/>
+  	 <result column="Pay_Date" property="payDate"/>
+  	 <result column="Logname" property="logname"/>
+  	 <result column="Personal_Name" property="personalName"/>
+  	 <result column="Personal_IDCard" property="personalIDCard"/>
+  	 <result column="Personal_Phone" property="personalPhone"/>
+  	 <result column="Member_No" property="memberNo"/>
+  	 
+  </resultMap>
+    <!-- 分页查询佣金发放记录 -->
+  <select id="CommissionPaymentRecords" resultMap="CommissionPaymentRecordsEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+  	SELECT * FROM (SELECT iap.Start_Date,iap.End_Date,
+	iap.Borrow_Award,iap.Invest_Award,iap.Vip_Award,iap.Repay_Award,iap.Real_Amount,iap.Pay_Date,
+	mi.Logname,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone,mi.Member_No
+	,(iap.Borrow_Award+iap.Invest_Award+iap.Vip_Award+iap.Repay_Award) allmoney
+	FROM InviteMaster_Award_PayRecord iap 
+	LEFT JOIN Invite_Master im ON iap.IM_ID=im.IM_ID
+	LEFT JOIN Member_Info mi ON mi.Member_ID=im.Member_ID
+	LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id=mi.Personal_ID
+	UNION ALL
+	SELECT fap.Start_Date,fap.End_Date,
+	fap.Borrow_Award,fap.Invest_Award,fap.Vip_Award,fap.Repay_Award,fap.Real_Amount,fap.Pay_Date,
+	mi.Logname,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone,mi.Member_No
+	,(fap.Borrow_Award+fap.Invest_Award+fap.Vip_Award+fap.Repay_Award) allmoney
+	FROM FinancialAdvisor_Award_PayRecord fap
+	LEFT JOIN Financial_Advisor fa ON fap.FA_ID=fa.FA_ID
+	LEFT JOIN Member_Info mi ON mi.Member_ID=fa.Member_ID
+	LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id=mi.Personal_ID
+	) newTab 
+	<where>
+		<if test="map.personalName!=null">
+			Personal_Name like '%#{map.personalName}%'
+		</if>
+		<if test="map.personalPhone!=null">
+			Personal_Phone like '%#{map.personalPhone}%'
+		</if>
+		<if test="map.memberNo!=null">
+			Member_No like '%#{map.memberNo}%'
+		</if>
+		<if test="map.starpayDate!=null">
+			Pay_Date >= #{map.starpayDate}
+		</if>
+		<if test="map.endpayDate!=null">
+			#{map.endpayDate} >= Pay_Date
+		</if>
+		<if test="map.startDate!=null">
+			 Start_Date >= #{map.startDate}
+		</if>
+		<if test="map.endDate!=null">
+			#{map.endDate} >=End_Date
+		</if>
+	</where>
+  	<if test="map.payDateStatu==1">
+  		order by Pay_Date desc
+  	</if>
+  	<if test="#{map.payDateStatu}==2">
+  		order by Pay_Date asc
+  	</if>
+  	<if test="#{map.startDateStatu}==1">
+  		order by Start_Date desc
+  	</if>
+  	<if test="#{map.startDateStatu}==2">
+  		order by Start_Date asc
+  	</if>
+  	<if test="#{map.allmoneyStatu}==1">
+  		order by allmoney desc
+  	</if>
+  	<if test="#{map.allmoneyStatu}==2">
+  		order by allmoney asc
+  	</if>
+  	<if test="#{map.realAmountStatu}==1">
+  		order by Real_Amount desc
+  	</if>
+  	<if test="#{map.realAmountStatu}==2">
+  		order by Real_Amount asc
+  	</if>
+  	<if test="#{map.borrowAwardStatu}==1">
+  		order by Borrow_Award desc
+  	</if>
+  	<if test="#{map.borrowAwardStatu}==2">
+  		order by Borrow_Award asc
+  	</if>
+  	<if test="#{map.investAwardStatu}==1">
+  		order by Invest_Award desc
+  	</if>
+  	<if test="#{map.investAwardStatu}==2">
+  		order by Invest_Award asc
+  	</if>
+  	
+  	<if test="#{map.vipAwardStatu}==1">
+  		order by Vip_Award desc
+  	</if>
+  	<if test="#{map.vipAwardStatu}==2">
+  		order by Vip_Award asc
+  	</if>
+  	
+  	<if test="#{map.repayAwardStatu}==1">
+  		order by Repay_Award desc
+  	</if>
+  	<if test="#{map.repayAwardStatu}==2">
+  		order by Repay_Award asc
+  	</if>
+  </select>
+  
+  
+  
+  <resultMap id="CommissionStatisticsCountEntity" type="cn.invitemastermng.model.CommissionPaymentRecordsEntity" >
+  	 <result column="jktj" property="borrowAward"/>
+  	 <result column="tztj" property="investAward"/>
+  	 <result column="vipgm" property="vipAward"/>
+  	 <result column="hbtj" property="repayAward"/>
+  	 <result column="Logname" property="logname"/>
+  	 <result column="Personal_Name" property="personalName"/>
+  	 <result column="Personal_IDCard" property="personalIDCard"/>
+  	 <result column="Personal_Phone" property="personalPhone"/>
+  	 <result column="allmoney" property="allmoney"/>
+  	 <result column="Member_No" property="memberNo"/>
+  	 <result column="Member_ID" property="memberID"/>
+  </resultMap>
+  <!-- 分页查询佣金统计 -->
+  <select id="CommissionStatisticsCount" resultMap="CommissionStatisticsCountEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+  	SELECT *,jktj+tztj+hbtj+vipgm allmoney from ( SELECT
+	(SELECT SUM(Award_Amount) FROM InviteMaster_Award_Record iar 
+				WHERE iar.Award_Type=0  AND Pay_Statu = #{map.payStatu}
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) jktj,
+	(SELECT SUM(Award_Amount) FROM InviteMaster_Award_Record iar 
+				WHERE iar.Award_Type=1  AND Pay_Statu = #{map.payStatu}
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) tztj,
+	(SELECT SUM(Award_Amount) FROM InviteMaster_Award_Record iar 
+				WHERE iar.Award_Type=2  AND Pay_Statu = #{map.payStatu}
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) hbtj,
+	(SELECT SUM(Award_Amount) FROM InviteMaster_Award_Record iar 
+				WHERE iar.Award_Type=3  AND Pay_Statu = #{map.payStatu}
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) vipgm,
+	mi.Logname,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone 
+	FROM Member_Info mi
+	LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id=mi.Personal_ID 
+	WHERE mi.Member_ID 
+			in (SELECT Member_ID from InviteMaster_Award_Record 
+						WHERE Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D')  AND Pay_Statu = #{map.payStatu}) 
+	UNION ALL
+	SELECT 
+	(SELECT SUM(Award_Amount) FROM FinancialAdvisor_Award_Record iar 
+				WHERE iar.Award_Type=0 AND Pay_Statu = #{map.payStatu}
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) jktj,
+	(SELECT SUM(Award_Amount) FROM FinancialAdvisor_Award_Record iar 
+				WHERE iar.Award_Type=1  AND Pay_Statu = #{map.payStatu}
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) tztj,
+	(SELECT SUM(Award_Amount) FROM FinancialAdvisor_Award_Record iar 
+				WHERE iar.Award_Type=2  AND Pay_Statu = #{map.payStatu}
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) hbtj,
+	(SELECT SUM(Award_Amount) FROM FinancialAdvisor_Award_Record iar 
+				WHERE iar.Award_Type=3  AND Pay_Statu = #{map.payStatu}
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) vipgm,
+	mi.Logname,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone
+	FROM Member_Info mi
+	LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id=mi.Personal_ID 
+	WHERE mi.Member_ID 
+			in (SELECT Member_ID from FinancialAdvisor_Award_Record 
+						WHERE Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D')  AND Pay_Statu = #{map.payStatu})
+  	) newTab
+  	<where>
+  		<if test="map.PersonalName!=null">
+  			Personal_Name like '%${map.PersonalName}%'
+  		</if>
+  		<if test="map.PersonalPhone!=null">
+  			Personal_Phone like '%${map.PersonalPhone}%'
+  		</if>
+  		<if test="map.memberNo!=null">
+			Member_No like '%${map.memberNo}%'
+		</if>
+  	</where> 
+  	<if test="map.allmoneyStatu==1">
+  		order by allmoney desc
+  	</if>
+  	<if test="map.allmoneyStatu==2">
+  		order by allmoney asc
+  	</if>
+  	<if test="map.borrowAwardStatu==1">
+  		order by jktj desc
+  	</if>
+  	<if test="map.borrowAwardStatu==2">
+  		order by jktj asc
+  	</if>
+  	<if test="map.investAwardStatu==1">
+  		order by tztj desc
+  	</if>
+  	<if test="map.investAwardStatu==2">
+  		order by tztj asc
+  	</if>
+  	
+  	<if test="map.vipAwardStatu==1">
+  		order by vipgm desc
+  	</if>
+  	<if test="map.vipAwardStatu==2">
+  		order by vipgm asc
+  	</if>
+  	<if test="map.repayAwardStatu==1">
+  		order by hbtj desc
+  	</if>
+  	<if test="map.repayAwardStatu==2">
+  		order by hbtj asc
+  	</if>
+  </select>
+  
+  <resultMap id="PlatformAccountRecordEntity" type="cn.invitemastermng.model.PlatformAccountRecordEntity" >
+  	 <result column="Record_Date" property="recordDate"/>
+  	 <result column="amount" property="amount"/>
+  	 <result column="tname" property="recordType"/>
+  	 <result column="Type_Name" property="accountTType"/>
+  	 <result column="Abstract" property="abstractText"/>
+  </resultMap>
+  <!-- 分页查询平台账户交易记录 -->
+  <select id="PlatformAccountRecord" resultMap="PlatformAccountRecordEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+  		SELECT otr.Record_Date,CAST(((AES_DECRYPT(UNHEX(otr.Amount),#{map.skey}))) as signed) amount,
+	(SELECT tt.Type_Name FROM Trade_Type_Second tt WHERE tt.Trade_Type_Id = otr.Trade_Own_Id LIMIT 1) tname
+	,oat.Type_Name,otr.Abstract
+	FROM 
+	Own_Trading_Records otr
+	LEFT JOIN Own_Account_Type oat
+		ON otr.Account_Type_ID=oat.Account_Type_ID
+	<where>
+		<if test="#{map.startDate}!=null">otr.Record_Date >= #{map.startDate}</if>
+		<if test="#{map.endDate}!=null">#{map.endDate} >= otr.Record_Date</if>
+		<if test="#{map.tradeOwnId}!=-1">otr.Trade_Own_Id = #{map.tradeOwnId}</if>
+		<if test="#{map.accountTypeID}!=-1">otr.Account_Type_ID = #{map.accountTypeID}</if>
+	</where>
+	<if test="#{map.dateStatu}==1">order by otr.Record_Date desc</if>
+	<if test="#{map.dateStatu}==2">order by otr.Record_Date asc</if>
+	<if test="#{map.amountStatu}==1">order by amount desc</if>
+	<if test="#{map.amountStatu}==2">order by amount asc</if>
+  </select>
+  
+</mapper>

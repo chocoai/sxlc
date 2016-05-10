@@ -34,16 +34,19 @@ public class DecryptHttpServletRequest extends HttpServletRequestWrapper{
 		if("length".equals(name)){
 			return ciphertext;
 		}
+		if("pAuthCode".equals(name)){//验证码
+			return ciphertext;
+		}
 		if("draw".equals(name)){//datatable 视图 可不传
 			return ciphertext;
 		}
-		if("_index_m1".equals(name)){//视图 可不传
+		if("_index_m1".equals(name)){//页面传参1
 			return ciphertext;
 		}
-		if("_index_m2".equals(name)){// 视图 可不传
+		if("_index_m2".equals(name)){// 页面传参2
 			return ciphertext;
 		}
-		if("_index_m3".equals(name)){// 视图 可不传
+		if("_index_m3".equals(name)){// 页面传参3
 			return ciphertext;
 		}
 		if("auth".equals(name)){//角色权限

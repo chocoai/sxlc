@@ -88,7 +88,11 @@ $(function() {
 		          pagingType: "simple_numbers",//设置分页控件的模式  
 		          processing: true, //打开数据加载时的等待效果  
 		          serverSide: true,//打开后台分页  
-//		          info:false,
+		          scrollCollapse: true,//表格高度自动调节
+		          scrollX : "100%",//超出屏幕宽度显示水平滚动条
+		          scrollXInner : "100%",
+//		          ordering:false,
+//		          aaSorting : [ [ 5, "desc" ],[ 12, "desc" ],[ 14, "desc" ] ],//默认第几个排序
 		          aoColumnDefs : [
 		                          {"bVisible": false, "aTargets": [1,2]}, //控制列的隐藏显示
 		                          {

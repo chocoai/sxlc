@@ -113,5 +113,49 @@ public interface HandleCertificationAuditDao {
 	* @throws 
 	*/
 	public Map<String, Object> handleAddress(Map<String, Object> map);
+	
+	
+	/** 
+	* delAutomaticBidSetting 删除自动投标设置 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: delAutomaticBidSetting 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-4 下午2:21:37
+	* @throws 
+	*/
+	public int delAutomaticBidSetting(Map<String, Object> map);
+	
+	/** 
+	* AutomaticBidSetting 添加自动投标设置  
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: AutomaticBidSetting 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return Map<String,Object> 返回类型 
+	* @date 2016-5-4 下午2:22:05
+	* @throws 
+	*/
+	public Map<String, Object> AutomaticBidSetting(Map<String, Object> map);
+	
+	
+	/** 
+	* DistributionFinancialAdvisor 给会员分配理财顾问
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: DistributionFinancialAdvisor 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return Map<String,Object> 返回类型 
+	* @date 2016-5-5 下午2:34:24
+	* @throws 
+	*/
+	public Map<String, Object> DistributionFinancialAdvisor(Map<String, Object> map);
 }
 

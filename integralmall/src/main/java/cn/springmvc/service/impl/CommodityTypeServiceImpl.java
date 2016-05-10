@@ -6,6 +6,7 @@ import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.service.CommodityTypeService;
 import org.springframework.stereotype.Service;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -69,11 +70,13 @@ public class CommodityTypeServiceImpl implements CommodityTypeService {
 
     @Override
     public List<CommodityTypeEntity> selectCommodityTypeListPage(PageEntity pageEntity) {
-        return CommodityTypeListDaoImpl.selectCommodityTypeAllPage(pageEntity);
+    	List<CommodityTypeEntity> list = CommodityTypeListDaoImpl.selectCommodityTypeAllPage(pageEntity);
+    	PageUtil.ObjectToPage(pageEntity, list);
+        return list;
     }
 
     @Override
-    public CommodityTypeEntity selectCommodityTypeByID(int id) {
+    public List<CommodityTypeEntity> selectCommodityTypeByID(int id) {
         return CommodityTypeListDaoImpl.selectCommodityTypeByID(id);
     }
 

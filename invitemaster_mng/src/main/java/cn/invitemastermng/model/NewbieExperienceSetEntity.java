@@ -29,10 +29,11 @@ public class NewbieExperienceSetEntity {
 	private int    yearRate;//体验产品年化收益率
 	private String yearRates;//体验产品年化收益率
 	private int    deadline;//借款期限
-	private int    deadlineType;//期限类型
+	private int    deadlineType;//期限类型  0：天标 1：月标 2：年标
 	private long   vouchersAmount;//投资即得代金券面值
 	private String vouchersAmounts;//投资即得代金券面值
 	private int    statu;//1启用0停用
+	private String replayways;//还款方式字符窜
 	
 	public long getProjectID() {
 		return projectID;
@@ -119,6 +120,12 @@ public class NewbieExperienceSetEntity {
 				+ ", 借款期限=" + deadline + ", 期限类型=" + deadlineType
 				+ ", 投资即得代金券面值="
 				+ vouchersAmounts + ", 状态（1启用0停用）=" + statu + "]";
+	}
+	public String getReplayways() {
+		return replayways;
+	}
+	public void setReplayways(String replayways) {
+		this.replayways = replayways;
 	}
 
 }

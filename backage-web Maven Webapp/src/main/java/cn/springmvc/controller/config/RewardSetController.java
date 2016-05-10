@@ -190,8 +190,8 @@ public class RewardSetController {
 			result = rewarSetService.insertRewarSet(entity,logEntity,sIpInfo);
 		}else if(type.equals("2")){//修改操作
 			logEntity.setlOptId(6010602);
-			Long reportId = Long.parseLong(req.getParameter("reportId"));
-			entity.setId(reportId);
+			Long rewardId = Long.parseLong(req.getParameter("rewardId"));
+			entity.setId(rewardId);
 			result = rewarSetService.updateRewarSet(entity,logEntity,sIpInfo);
 		}
 		return result;

@@ -5,13 +5,18 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.springmvc.model.Admin;
 import cn.springmvc.service.GuaranteeAgenciesService;
 import cn.springmvc.service.GuaranteeInfoService;
+import cn.springmvc.service.ManagedInterfaceServerTestI;
+import cn.springmvc.util.HttpSessionUtil;
+import cn.sxlc.account.manager.model.RechargeEntity;
 
 import product_p2p.kit.pageselect.PageEntity;
 /**
@@ -36,6 +41,12 @@ public class PlatAccountOptionController {
 	 */
 	@Resource(name="guaranteeAgenciesServiceImpl")
 	private GuaranteeAgenciesService guaranteeAgenciesService;
+	
+	/**
+	 * //第三方接口
+	 */
+	@Resource(name="managedInterfaceTestIImpl")
+	private ManagedInterfaceServerTestI managedInterfaceServerTestI;
 	
 	/**
 	 * 
@@ -64,13 +75,16 @@ public class PlatAccountOptionController {
 		String statu = request.getParameter("statu");
 		String startDate = request.getParameter("startDate");
 		String endDate = request.getParameter("endDate");
+		String dealType = request.getParameter("dealType");
+		String memberType = request.getParameter("memberType");
 		
 		req.put("orderNumber", orderNumber);
 		req.put("thirdMerBillno", thirdMerBillno);
 		req.put("statu", statu);
 		req.put("startdealTime", startDate);
 		req.put("enddealTime", endDate);
-		req.put("dealType", 0);
+		req.put("dealType", dealType);
+		req.put("memberType", memberType);
 		
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));
@@ -105,10 +119,12 @@ public class PlatAccountOptionController {
 		String typeName = request.getParameter("typeName");
 		String startDate = request.getParameter("startDate");
 		String endDate = request.getParameter("endDate");
+		String memberType = request.getParameter("memberType");
 		
 		req.put("Record_Date_Min", startDate);
 		req.put("Record_Date_Max", endDate);
 		req.put("typeName", typeName);
+		req.put("memberType", memberType);
 		
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));
@@ -116,6 +132,42 @@ public class PlatAccountOptionController {
 		
 		guaranteeAgenciesService.getTransaction(pager);
 		return pager;
+	}
+	
+	/**
+	 * 
+	* recharge保荐机构充值 
+	* TODO保荐机构充值
+	* @author 杨翰林  
+	* * @Title: recharge 
+	* @Description: 保荐机构充值 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return RechargeEntity 返回类型 
+	* @date 2016-5-10 上午11:38:41
+	* @throws
+	 */
+	@RequestMapping("/recharge")
+	@ResponseBody
+	public RechargeEntity recharge(HttpServletRequest request) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String rechargeType = request.getParameter("rechargeType");
+		String amount =request.getParameter("amount");//充值金额
+		String remark = request.getParameter("remark");//备注
+		
+		RechargeEntity recharge = new RechargeEntity();
+		recharge.setMemberId(userInfo.getId());
+		recharge.setMemberType(1);
+		recharge.setRechargeType(rechargeType);
+		recharge.setAmount(amount);
+		recharge.setRemark3(remark);
+		
+		RechargeEntity rechargeEntity = managedInterfaceServerTestI.testLoanRecharge(recharge);
+		
+		return rechargeEntity;
 	}
 }
 

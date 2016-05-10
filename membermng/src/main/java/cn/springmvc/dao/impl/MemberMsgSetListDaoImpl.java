@@ -21,6 +21,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import cn.membermng.model.MemberMessageConfig;
 import cn.membermng.model.SendSetEntity; 
 import cn.springmvc.dao.MemberMsgSetListDao;
  
@@ -95,8 +96,14 @@ public class MemberMsgSetListDaoImpl extends SqlSessionDaoSupport  implements Me
 	public int selectIsOpenLetter(long typeID) {
 		
 		return getSqlSession().selectOne("sendSet.selectIsOpenLetter",typeID);
+	}
+	
+	@Override
+	public List<MemberMessageConfig> memberMessageConfig(long memberId) {
 		
+		return getSqlSession().selectList("sendSet.memberMessageConfig",memberId);
 	}
 
+	
 }
 

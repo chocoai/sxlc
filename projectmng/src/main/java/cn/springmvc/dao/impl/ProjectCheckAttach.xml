@@ -90,4 +90,21 @@
 	    update  Project_Check_Attach  set   Type_Statu=0 
 	    where Attach_Index = #{attachIndex} and App_Check_Id =#{appCheckId}
     </update> 
+    
+     <!--非审核阶段上传附件  -->  
+    <select id="updateaffix"  statementType="CALLABLE" parameterType="Map"> 
+	     {call updateaffix(
+				#{ProjectAppId,	mode=IN,	jdbcType=BIGINT},
+				#{affix ,	     mode=IN,	jdbcType=INTEGER}, 
+				#{deleteaffix ,	 mode=IN,	jdbcType=INTEGER}, 
+				#{adminID,	     mode=IN,	jdbcType=INTEGER}, 
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)}
+	</select>
+	 <!-- 根据项目申请id查询该项目的所有附件 -->  
+	<select id = "selectProjectAttachTotal" parameterType = "long"  resultMap ="resultProjectCheckAttach">
+	   select  pca.Attach_Index,pca.Attach_Title,pca.Attach_Url 
+	   from Project_Check_Attach pca  
+	   where  pca.Project_App_Id = #{projectID} and pca.Type_Statu=1
+    </select> 
 </mapper>   

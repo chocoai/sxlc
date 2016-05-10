@@ -51,10 +51,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel-body">
 						<form id="" class="" action="">
 							<span class="con-item textRight">
-								<span>账户类型</span><input type="text" class="departmentname notspecial" placeholder="" />
-							</span>
-							<span class="con-item textRight">
-								<span>交易类型</span><input type="text" class="licencenum notspecial" placeholder="" />
+								<span>交易类型</span><input id="typeName" type="text" class="licencenum notspecial" placeholder="" />
 							</span>	
 							<span class="con-item textRight2">
 								<span>交易时间段</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
@@ -76,28 +73,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 					<div class="panel-body">
 						<table id="table_id" class="display">
-							<thead>
-								<tr>
-									<th class="table-checkbox"></th>
-									<th>交易时间</th>
-									<th>交易金额</th>
-									<th>交易类型</th>
-									<th>账户类型</th>
-									<th>摘要</th>									
-								</tr>
-							</thead>
-							<tbody>
-								<%for (int i = 0; i < 15; i++) {%>
-								<tr>
-									<td class="table-checkbox"><input type="checkbox" /></td>
-									<td>交易时间</td>
-									<td><span class="moneyFormat">1000</span>元</td>
-									<td>交易类型</td>
-									<td>账户类型</td>
-									<td>摘要</td>										
-								</tr>
-								<%}%>
-							</tbody>
 						</table>
 					</div>
 				</div>
@@ -109,20 +84,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/recommend/recharge-record.js"></script>	
+	<script type="text/javascript" src="js/recommend/recharge-record.js"></script>
+	<script type="text/javascript" src="js/finance/fn-transaction-record.js"></script>	
 	<script type="text/javascript">
-		$('#table_id').DataTable({
-			scrollX:true,
-			autoWidth : false,
-			"aaSorting" : [ [1,2] ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,3,4,5]
-			} // 制定列不参与排序
-			],
-		});
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 	</script>
 </body>
 

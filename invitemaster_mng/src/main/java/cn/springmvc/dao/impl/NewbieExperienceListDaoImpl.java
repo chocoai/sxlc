@@ -53,6 +53,12 @@ public class NewbieExperienceListDaoImpl extends SqlSessionDaoSupport implements
 		return getSqlSession().selectOne("Newbie_Experience.getNewbieExperienceSet");
 		
 	}
+	@Override
+	public NewbieExperienceSetEntity getNewbieExperienceSetIndex() {
+		
+		return getSqlSession().selectOne("Newbie_Experience.getNewbieExperienceSetIndex");
+		
+	}
 
 }
 

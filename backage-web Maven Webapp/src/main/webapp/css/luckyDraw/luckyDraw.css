@@ -1,0 +1,90 @@
+.scaleImg{
+	dispaly:inline-block;
+	width:18px;
+	height:18px;
+}
+.drawSet span{
+	display:inline-block;
+	min-width:230px;
+	max-width:325px;
+	text-align:right;
+	padding:10px 0;
+}
+.drawSet {
+	padding:0 20px;
+}
+.drawSet input{
+	width:130px;
+	height:25px;
+}
+.drawSet .periodes{
+	min-width:100px;
+}
+.drawSet select{
+	width:130px;
+	height:25px;
+	border:1px solid #ccc;
+}
+.drawSet .dateInput{
+	width:89px;
+	margin-right:7px;
+}
+
+
+td.tt{
+	display:inline-block;
+	padding:10px 5px 10px 25px;
+	min-width:120px;
+	text-align:right;
+}
+td.col{
+	max-width:350px;
+}
+tr.con-item input{
+	margin-right:8px;
+	height:25px;
+	width:174px;
+}
+tr.con-item select{
+	width:174px;
+	height:25px;
+	border:1px solid #ccc;
+}
+#addluckyDraw{
+	display:none;
+}
+#uploader{
+	display:inline-block;
+	vertical-align:middle;
+}
+.addBtn,
+.cancelBtn{
+	border:none;
+	padding:3px 10px;
+	border-radius:3px;
+	outline:none;
+}
+.addBtn{
+	margin-right:10px;
+    background: #2e8ded;
+    color: #fff;
+}
+.addBtn:hover{
+	background:#3E75B8;
+}
+.cancelBtn{
+	display:inline-block;
+	margin-right:30px;
+    background-color: #f1f1f1;
+    text-decoration:none;
+	color:#333;
+	cursor:pointer;
+}
+.cancelBtn:hover{
+	background:#ccc;
+	text-decoration:none;
+	color:#333;
+}
+.btnAdd{
+	text-align:right;
+}

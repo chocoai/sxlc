@@ -45,34 +45,46 @@ public class BorrowingCertificationReadDaoImpl extends SqlSessionDaoSupport impl
 	
 
 	@Override
-	public Map<String, Object> showAuthAddress(Map<String, Object> param) {
+	public CurrencyAuth showAuthAddress(Map<String, Object> param) {
 		
 		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showAuthAddress",param);
 	}
 	
 
 	@Override
-	public List<Map<String, Object>> showAuthHousing(Map<String, Object> param) {
+	public List<CurrencyAuth> showAuthHousing(Map<String, Object> param) {
 		
 		return getSqlSession().selectList("borrowingCertificationDaoImpl.showAuthHousing",param);
 	}
 
+
 	@Override
-	public List<Map<String, Object>> showAuthProduction(long memberId) {
+	public CurrencyAuth showAuthHousingOne(Map<String, Object> param) {
+		
+		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showAuthHousingOne",param);
+	}	
+	
+	
+	@Override
+	public List<CurrencyAuth> showAuthProduction(long memberId) {
 		return getSqlSession().selectList("borrowingCertificationDaoImpl.showAuthProduction", memberId);
 	}
 	
+	@Override
+	public CurrencyAuth showAuthProductionOne(Map<String, Object> param) {
+		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showAuthProductionOne", param);
+	}
 	
 	@Override
-	public Map<String, Object> showAuthMarriage(Long memberId) {
+	public CurrencyAuth showAuthMarriage(Long memberId) {
 		
 		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showAuthMarriage", memberId);
 	}
 	
 	
 	@Override
-	public Map<String, Object> showAuthEducation(long memberId) {
-		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showAuthEducation", memberId);
+	public CurrencyAuth showAuthEducation(Map<String, Object> param) {
+		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showAuthEducation", param);
 	}
 	
 	
@@ -135,10 +147,7 @@ public class BorrowingCertificationReadDaoImpl extends SqlSessionDaoSupport impl
 	}
 	
 	
-	
-	
-	
-	
+
 	
 	
 	

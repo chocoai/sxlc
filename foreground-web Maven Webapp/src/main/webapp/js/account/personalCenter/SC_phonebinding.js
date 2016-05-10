@@ -46,7 +46,7 @@ $(function(){
 			
 			var soldPhone = $(".phoneBind").val();
 			soldPhone = encrypt.encrypt(soldPhone+"");
-			console.log(soldPhone)
+			
 			var snewPhone = $(".newphone").val();
 			snewPhone = encrypt.encrypt(snewPhone+"");
 			

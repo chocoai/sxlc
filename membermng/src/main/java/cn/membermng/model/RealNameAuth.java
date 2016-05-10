@@ -16,12 +16,23 @@ public class RealNameAuth {
 	private int					sexId;			//性别
 	private String				homeTown;		//籍贯
 	private int					aationId;		//民族
+	private String              nationName;		//民族
 	private String				endDate;		//有效期
 	private String				positive;		//身份证图片
 	private String				reverse;		//身份证图片
 	private int					status;			//认证状态
 	
 	
+	public String getNationName() {
+		return nationName;
+	}
+
+
+	public void setNationName(String nationName) {
+		this.nationName = nationName;
+	}
+
+
 	public RealNameAuth() {}
 
 

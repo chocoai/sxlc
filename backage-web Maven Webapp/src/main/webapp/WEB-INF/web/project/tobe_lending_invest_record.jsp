@@ -16,16 +16,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/project/apply_faild.css" type="text/css"></link>
 </head>
-
+<!-- 借款管理--------待放款 -->
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
 			<!-- 头部 -->
+			<jsp:include page="../common/cm-top.jsp">
+				<jsp:param value="3" name="_index_m1"/>
+			</jsp:include>
+			
+			<!-- 左侧菜单 -->
+			<jsp:include page="../common/cm-project.jsp">
+				<jsp:param value="305" name="_index_m2"/>
+				<jsp:param value="30505" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
-				<%-- <jsp:include page="../common/cm-addr.jsp"></jsp:include> --%>
+				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				<div class="nav-tabs-con active">
 					<div class="search">
 						<div class="panel panel-success">
@@ -40,10 +50,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>投资完成时间</span><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
-									<span class="con-item"><span>会员用户名</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>会员姓名</span><input type="text" class="notspecial"/></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>项目编号</span><input type="text" class="notspecial Project_No"/></span>
+									<span class="con-item"><span>借款人用户名</span><input type="text" class="notspecial Logname" /></span>
+									<span class="con-item"><span>借款人姓名</span><input type="text" class="notspecial Personal_Name" /></span>
+									<span class="con-item"><span>项目发布日期</span><input type="text" id="startDate" class="notspecial Wdate dateInput Record_Date_Min" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput Record_Date_Max" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item"><span>借款期限</span><input type="text" class="notspecial w1 Deadline"/><select class="w2 Deadline_Type"><option value="">请选择</option><option value="0">天</option><option value="1">月</option><option value="2">年</option></select></span>
+									<span class="con-item"><span>借款金额</span><input type="text" class="notspecial dateInput Amount_Min" />-&nbsp;&nbsp;<input type="text" class="notspecial dateInput Amount_Max"/></span>
+									<button  type ="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						</div>
@@ -51,58 +64,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="data_display">
 						<div class="panel panel-success">
 							<div class="panel-heading">
+							  	<div class="action_item">
+							  		<button id="" class="obtn glyphicon glyphicon-plus obtn-export">导出</button>
+						  			<button id="" class="obtn glyphicon glyphicon-plus tobe_lending_invest_record">查看投资记录</button>
+						  			<input id="applyID" type="hidden">
+								</div>
 							</div>
 						<div class="panel-body">
-						<table id="table_tobe_lending_invest_record" class="display">
-							<thead>
-								<tr>
-									<th>投资完成时间</th>
-									<th>会员用户名</th>
-									<th>会员姓名</th>
-									<th>投资金额</th>
-									<th>使用红包抵扣金额</th>
-									<th>使用代金券抵扣金额</th>
-									<th>是否使用返现券</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-								</tr>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-								</tr>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-								</tr>
-								<tr>
-									<td>01-22</td>
-									<td>jiuyang</td>
-									<td>九阳股份</td>
-									<td>1234455415</td>
-									<td>200000</td>
-									<td>12-01</td>
-									<td>方式</td>
-								</tr>
-							</tbody>
+						<table id="table_id" class="display">
 						</table>
 					</div>
 				</div>
@@ -114,39 +83,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<script src="js/project/tobe_lending.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-				//默认禁用搜索和排序
-				/* $.extend( $.fn.dataTable.defaults, {
-				    searching: true,
-				    ordering:  false
-				} ); */
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#table_tobe_lending_invest_record').DataTable({
-						"autoWidth" : true,
-						"scrollY": 500,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [[ 0, "desc"],[ 3, "desc"],[ 4, "desc"],[ 5, "desc"],[ 6, "desc"]],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 1, 2]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
 		</div>
 	</div>
 </body>

@@ -183,15 +183,19 @@
 		  ii.SDRecv_MaxTime,
 		  iri.Recv_Time,
 		  ii.Statu,
-		  CAST((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{skey})) AS SIGNED) Recv_Amount,
-		  CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey})) AS SIGNED)+CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{skey})) AS SIGNED) Overdue_Amount
+		  CAST((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{skey})) AS SIGNED)
+		  +
+		  CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{skey})) AS SIGNED) Recv_Amount,
+		  CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey})) AS SIGNED)
+		  +
+		  CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{skey})) AS SIGNED) Overdue_Amount
 		FROM Invest_Income ii
 		  JOIN Loan_Repay lr
 			ON ii.Repay_ID = lr.Repay_ID
 		  LEFT JOIN Invest_Real_Income iri
 		    ON ii.Income_Id = iri.Income_Id
 		WHERE ii.IsValid = 0
-		  AND ii.Invest_Id = #{Invest_Id}
+		  AND ii.Invest_Id = #{Invest_Id} and ii.Member_ID = #{Member_ID}
 		ORDER BY lr.Indexs DESC
 
 	</select>	
@@ -250,4 +254,36 @@
 		ORDER BY cta.Deal_Date DESC
 	</select>			
 	
+	
+	<!-- 后台会员转出债权
+		CTA_Id,债券转让申请ID
+		Project_Title,项目名称
+		Trans_Principal,转让金额
+		Trans_Discount,转让系数
+		Trans_Amount,转让价格
+		Trans_MaxTime,最晚转让时间
+		Cta_Invest_Rate,投资进度
+	--> 
+	<!--传入参数整理
+		#{skey}#{Member_ID}
+	-->
+	<select id="getCreditorTransferBack" parameterType="Map" resultMap="CreditorTransfer">
+		SELECT
+		  cta.CTA_Id,
+		  prbi.Project_Title,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED) Trans_Principal,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount),#{skey})) AS SIGNED) Trans_Discount,
+		  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED)*CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount),#{skey})) AS SIGNED) Trans_Amount,
+		  cta.Trans_MaxTime,
+		  cta.Cta_Invest_Rate
+		FROM Creditor_Trans_App cta
+		  JOIN Invest_Record ir
+			ON cta.Invest_Id = ir.Invest_Id
+		  JOIN Project_App_Record pa
+			ON ir.Apply_Id = pa.Apply_Id
+		  JOIN Project_Base_Info prbi
+			ON pa.Project_Base_ID = prbi.Project_Base_ID
+		WHERE ir.Member_ID = #{Member_ID}
+		ORDER BY cta.Cta_Invest_Rate DESC 
+	</select>	
 </mapper>

@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.datatrans.IntegerAndString;
@@ -58,7 +57,7 @@ public class StationLetterController {
 		MemberSessionMng.GetLoginMemberInfo(req,lMemberInfo); 
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("memberID",lMemberInfo[0]);
-		param.put("memberID",1);
+		//param.put("memberID",1);
 		param.put("readStatu", Read_Statu);
 		PageEntity pager = new PageEntity();
 		pager.setMap(param);
@@ -66,6 +65,8 @@ public class StationLetterController {
 		pager.setPageSize(length);
 		List<MemberMsgRecordEntity> list = memberMsgRecordService.selectMemberMsgList(pager);
 		PageUtil.ObjectToPage(pager, list);
+		pager.getMap().remove("skey");
+		
 		return JSONObject.toJSONString(pager);
 	}
 	/**
@@ -75,13 +76,14 @@ public class StationLetterController {
 	 */
 	@RequestMapping(value="/updateMemberMsgIsRead",produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public String updateMemberMsgIsRead(HttpServletRequest req,
-			@RequestParam(value="recordDate", required=false)String recordDate){
+	public String updateMemberMsgIsRead(HttpServletRequest req){
+		String recordDate = req.getParameter("recordDate");
+		
 		Map<String, Object> map = new HashMap<String,Object>();
 		long[] lMemberInfo = new long[2] ;
 		MemberSessionMng.GetLoginMemberInfo(req,lMemberInfo); 
-		//map.put("memberID", lMemberInfo[0]);
-		map.put("memberID", 1);
+		map.put("memberID", lMemberInfo[0]);
+		//map.put("memberID", 1);
 		map.put("recordDate", recordDate.substring(0,recordDate.length()-2));
 		map.put("msgType", 2);
 		int result = memberMsgRecordService.updateMemberMsgIsRead(map);
@@ -112,13 +114,15 @@ public class StationLetterController {
 		Map<String,Object> param=new HashMap<String,Object>();
 		
 		param.put("memberID", lMemberInfo[0]);
-		param.put("memberID", 1);
+		//param.put("memberID", 1);
 		PageEntity pager = new PageEntity();
 		pager.setMap(param);
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
 		List<MemberStationLetterEntity> list = memberStationService.selectSendLetter(pager);
 		PageUtil.ObjectToPage(pager, list);
+		pager.getMap().remove("skey");
+		
 		return JSONObject.toJSONString(pager);
 	}
 	/**
@@ -138,7 +142,7 @@ public class StationLetterController {
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("keys", DbKeyUtil.GetDbCodeKey());//加密解密用的秘钥
 		param.put("memberID", lMemberInfo[0]);
-		param.put("memberID", 1);
+		//param.put("memberID", 1);
 		param.put("isRead", isRead);
 		PageEntity pager = new PageEntity();
 		pager.setMap(param);
@@ -146,6 +150,8 @@ public class StationLetterController {
 		pager.setPageSize(length);
 		List<MemberStationLetterEntity> list = memberStationService.selectRecLetter(pager);
 		PageUtil.ObjectToPage(pager, list);
+		pager.getMap().remove("skey");
+		
 		return JSONObject.toJSONString(pager);
 	}
 	
@@ -171,11 +177,12 @@ public class StationLetterController {
 		Map<String,Object> param=new HashMap<String,Object>();
 		
 		param.put("memberID", lMemberInfo[0]);
-		param.put("memberID", 1);
+		//param.put("memberID", 1);
 		param.put("letterID", letterID);
 		param.put("keys", DbKeyUtil.GetDbCodeKey());//加密解密用的秘钥
 		
 		MemberStationLetterEntity entity = memberStationService.selectSendLetterDetail(param);
+		
 		return JSONObject.toJSONString(entity);
 	}
 	/**
@@ -200,7 +207,7 @@ public class StationLetterController {
 		Map<String,Object> param=new HashMap<String,Object>();
 		
 		param.put("memberID", lMemberInfo[0]);
-		param.put("memberID", 1);
+		//param.put("memberID", 1);
 		param.put("letterID", letterId);
 		param.put("keys", DbKeyUtil.GetDbCodeKey());//加密解密用的秘钥
 		
@@ -324,7 +331,7 @@ public class StationLetterController {
 		
 		MemberStationLetterEntity entity = new MemberStationLetterEntity();
 		entity.setMemberID(lMemberInfo[0]);
-		entity.setMemberID(1);
+		//entity.setMemberID(1);
 		entity.setTitle(title);
 		entity.setDetail(detail);
 		entity.setPreID(0);

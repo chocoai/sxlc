@@ -152,15 +152,18 @@
 		mwr.Receive_Date,mwr.Third_Mer_Billno,Recharge_Type,mwr.Statu
 		from  Member_Withdrawal_Recharge mwr
 		<where>  
-		     mwr.Member_ID =#{map.memberID} and mwr.Member_Type =#{map.memberType} and mwr.Deal_Type=0
-		    <if test="map.thirdMerBillno != null">
-		      and mwr.Third_Mer_Billno like '%${map.thirdMerBillno}%'
+		     mwr.Member_ID =#{map.memberID} and mwr.Deal_Type=0   and mwr.Member_Type =#{map.memberType}   
+		    <if test="map.threeNum != ''">
+		      and mwr.Third_Mer_Billno like '%${map.threeNum}%'
 		    </if>
-		    <if test="map.startTime != null">
+		    <if test="map.startDate != '' and map.endDate != '' ">
+		      and mwr.Receive_Date between #{map.startDate} and  and #{map.endDate} 
+		    </if>
+		     <if test="map.startTime != null and map.startTime != ''">
 		      and mwr.Receive_Date >= #{map.startTime}
 		    </if>
-		    <if test="map.endtimeTime != null">
-		      and #{map.startTime} >= mwr.Receive_Date
+		    <if test="map.endtimeTime != null and map.endtimeTime != ''">
+		      and #{map.endtimeTime} >= mwr.Receive_Date
 		    </if>
 		    <if test="map.statu != -1">
 		      and mwr.Statu =  #{map.statu}
@@ -211,7 +214,7 @@
 	  </select>
         <!-- 	       提现记录列表 -->
 	   <select id="selectWithdrawalList" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="memberTradingRecordsMap.resultMemberWithdrawalRecharge">
-		select 
+		select  mwa.Receive_Date as record_Date,
 		CAST((AES_DECRYPT(UNHEX(mwr.Withdrawal_Money),#{map.sKey})) as signed)  Withdrawal_Money,
 		CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee),#{map.sKey})) as signed)           Mng_Fee,
 		CAST((AES_DECRYPT(UNHEX(mwr.Third_Mng_Fee),#{map.sKey})) as signed)     Third_Mng_Fee,
@@ -227,14 +230,29 @@
 		left join Bank_Info bi on bi.Bank_ID = bc.Bank_ID
 		left join DICT  checkStatu on mwa.Statu =  checkStatu.code1 and  checkStatu.tcode = 'DICT_TXSQZT'
 		<where>  
-		     mwr.Member_ID =#{map.memberID} and mwr.Member_Type =#{map.memberType} and mwr.Deal_Type=1
-		   
-		    <if test="map.startTime != null">
+		     mwr.Member_ID =#{map.memberID}  and mwr.Deal_Type=1   and mwr.Member_Type =#{map.memberType}  
+		   <!-- 申请时间  + -->
+		    <if test="map.startDate != '' and map.endDate!='' ">
+		      and  mwa.Receive_Date between #{map.startDate} and  #{map.endDate}
+		    </if>
+		     <!-- 到账时间  + -->
+		     <if test="map.startDate1 != '' and map.endDate1!='' ">
+		      and  mwr.Receive_Date between #{map.startDate1} and  #{map.endDate1}
+		    </if>
+		     <if test="map.startTime != null and map.startTime != ''">
 		      and  mwr.Receive_Date >= #{map.startTime}
 		    </if>
-		    <if test="map.endtimeTime != null">
-		      and  #{map.startTime} >= mwr.Receive_Date
+		    <if test="map.endtimeTime != null and  map.endtimeTime != ''">
+		      and  mwr.Receive_Date &lt;=#{map.endtimeTime}  
 		    </if> 
+		     <!-- 平台交易流水号 + -->
+		     <if test="map.tradeNum != ''">
+		      and  mwr.Mer_Billno like  '%${map.tradeNum}%'
+		    </if>
+		    <!-- 第三方交易账号 + -->
+		     <if test="map.threeNum != ''">
+		      and  mwr.Third_Mer_Billno like '%${map.threeNum}%'
+		    </if>
 		 </where>
 		     <if test="map.order == 1"> 
 	          order by  Withdrawal_Money desc
@@ -255,6 +273,7 @@
 		       order by  Real_Money asc
 		     </if>
 	  </select>
+	  
       <!-- 	  总的提现手续费 -->
 	  <select id="selectTotalWithdrawalFee" parameterType="Map" resultType="Long">
 		select  

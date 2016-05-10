@@ -57,15 +57,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<form id="" class="" action="">
 										<span class="con-item"><span>会员登录名</span><input type="text" class="notspecial" id="userName"></span>
 										<span class="con-item"><span>姓名</span><input type="text" class="notspecial" id="memberName"></span>
-										<span class="con-item"><span>状态</span><select class="auditState"><option value ="0">待审核</option><option value="1">通过</option><option value="-1">驳回</option></select></span>
+										<span class="con-item"><span>状态</span><select class="auditState" id="statu" ><option value ="1" selected="selected">待审核</option><option value="2">通过</option><option value="3">驳回</option></select></span>
 										<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 									</form>
 							  	</div>
 							 </div>
 						</div>  		
 						<div class="buttonCombination" style="display:inline-block">
-							<button class="" onclick="jump(1,'web/member/per-comAuthenResualt.jsp')">认证</button>
-							<button class="" onclick="jump(2,'web/member/per-comAuthenResualt.jsp')">查看</button>
+							<button class="" onclick="jump(<%=content %>,1,'web/member/per-comAuthenResualt.jsp')">认证</button>
+							<button class="" onclick="jump(<%=content %>,2,'web/member/per-comAuthenResualt.jsp')">查看</button>
 						</div>
 						<div id="panel-body" class="panel-body">
 							<table id="table_id" class="display">

@@ -2,7 +2,7 @@
 
 package cn.springmvc.dao; 
 
-import cn.springmvc.model.ProjectBaseInfoEntity;
+import cn.springmvc.model.ProjectBaseInfoEntitys;
 import cn.springmvc.model.ProjectDetailEntity;
 
 /** 
@@ -25,7 +25,7 @@ import cn.springmvc.model.ProjectDetailEntity;
 
 public interface ReplayProjectDetailListDao {
 	/** 
-	 * 根据项目申请记录id查询项目详情  
+	 * 根据项目申请记录id查询项目详情   ProjectBaseInfoEntitys
 	 * @author 刘利   
 	 * @Description: 根据项目申请记录id查询项目详情  
 	 * @param id  项目申请记录id 
@@ -47,7 +47,7 @@ public interface ReplayProjectDetailListDao {
 	* @date 2016-5-3 下午3:13:15
 	* @throws
 	 */
-	ProjectBaseInfoEntity selectProjectBaseInfoById(long lId); 
+	ProjectBaseInfoEntitys selectProjectBaseInfoById(long lId); 
 	
 }
 

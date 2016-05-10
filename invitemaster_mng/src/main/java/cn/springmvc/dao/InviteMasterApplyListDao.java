@@ -125,5 +125,27 @@ public interface InviteMasterApplyListDao {
 	 */
 	public InviteMasterAwardRecordEntity selectInviteMasterStatistic(Map<String,Object> map);
 	
+	/**
+	 * 推荐达人提奖记录excel导出
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return List<InviteMasterAwardRecordEntity> 返回类型 
+	 * @date 2016-4-28 下午8:35:22
+	 */
+	public List<InviteMasterAwardRecordEntity> getInviteMasterAwardRecordExcel(Map<String,Object> map);
+	
+	/**
+	 * 推荐达人历史返现EXCEl导出
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param Map
+	 * @param @return 设定文件 
+	 * @return List<AwardPaymentRecordEntity> 返回类型 
+	 * @date 2016-4-28 下午8:37:00
+	 */
+	public List<AwardPaymentRecordEntity> getInviteMasterHistoryBackExcel(Map<String,Object> map);
+	
 }
 

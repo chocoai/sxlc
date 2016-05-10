@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,25 +21,37 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import product_p2p.kit.StringUtil.StringUtils;
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
+import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 import product_p2p.kit.redisPlug.Core;
 import cn.dictionaries.model.NationInfoEntity;
+import cn.invitemastermng.model.InviteMasterAwardRecordEntity;
 import cn.membermng.model.BorrowingType;
 import cn.membermng.model.CurrencyAuth;
+import cn.membermng.model.ExchangeRecords;
+import cn.membermng.model.IntegralGETRecord;
 import cn.membermng.model.MemberInfo;
+import cn.membermng.model.MemberMessageConfig;
+import cn.membermng.model.MyPoint;
 import cn.membermng.model.RealNameAuth;
 import cn.membermng.model.SecurityInfo;
+import cn.membermng.model.SendSetEntity;
+import cn.membermng.model.VIPPurchaseRecordsEntity;
 import cn.springmvc.dao.impl.sms.SendSmsUtil;
+import cn.springmvc.service.CertificationAuditService;
 import cn.springmvc.service.EmailBindingService;
+import cn.springmvc.service.FinancialAdvisorService;
 import cn.springmvc.service.IBorrowingCertificationServer;
 import cn.springmvc.service.IMemberService;
 import cn.springmvc.service.ManagedInterfaceServerTestI;
-import cn.springmvc.service.UpdatePasswordService;
-//import cn.springmvc.service.ManagedInterfaceServerTestI;
+import cn.springmvc.service.MemberMsgSetService;
 import cn.springmvc.service.MobilePhoneBindingService;
+import cn.springmvc.service.UpdatePasswordService;
 import cn.springmvc.util.MemberSessionMng;
 import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 import cn.sxlc.account.manager.model.AuthorizeInterfaceEntity;
-//import cn.sxlc.account.manager.model.AccountInterfaceEntity;
+import cn.sxlc.account.manager.model.LoanTransferEntity;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -54,7 +65,7 @@ import com.alibaba.fastjson.JSONObject;
  */
 @Controller
 @RequestMapping("personalCenter")
-public class PersonalCenterController {
+public class PersonalCenterController{
 
 	private Logger logger = Logger.getLogger(LoginRegisterController.class);
 
@@ -78,6 +89,15 @@ public class PersonalCenterController {
 
 	@Autowired
 	private UpdatePasswordService passwordService;
+	@Autowired
+	private CertificationAuditService auditService;
+	
+	@Autowired
+	private MemberMsgSetService memberMsgSetService;
+	
+	@Autowired
+	private FinancialAdvisorService financialAdvisorService;
+
 	/****
 	 * 会员基本信息
 	 * 
@@ -88,11 +108,12 @@ public class PersonalCenterController {
 	 */
 	@RequestMapping(value = "/baseInformationForPerson")
 	public String baseInformationForPerson(HttpServletRequest request) {
-		MemberInfo loginMember = (MemberInfo) request.getSession().getAttribute("loginUser");
+		MemberInfo loginMember = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
 		MemberInfo memberInfo = null;
 
+		//企业会员额外处理
 		if (loginMember.getMemberType().intValue() == 1) {
-			memberInfo = this.memberService.memberComplanyInfo(loginMember.getId().longValue());
+			memberInfo = this.memberService.memberComplanyInfo(loginMember.getId());
 			if (memberInfo.getBaseInfo().getPersonalPhone() != null && memberInfo.getBaseInfo().getPersonalPhone().length() == 11) {
 				memberInfo.getBaseInfo().setPersonalPhone(memberInfo.getBaseInfo().getPersonalPhone().substring(0, 3)+ "****"+ memberInfo.getBaseInfo().getPersonalPhone().substring(memberInfo.getBaseInfo().getPersonalPhone().length() - 3,memberInfo.getBaseInfo().getPersonalPhone().length()));
 			}
@@ -103,8 +124,9 @@ public class PersonalCenterController {
 			request.setAttribute("userInfo", memberInfo);
 			return "account/personalCenter/baseInformationForEnterprise";
 		}
-		memberInfo = this.memberService.memberPersonalInfo(loginMember.getId()
-				.longValue());
+		
+		//个人会员处理
+		memberInfo = this.memberService.memberPersonalInfo(loginMember.getId());
 		if (memberInfo.getBaseInfo().getPersonalPhone() != null && memberInfo.getBaseInfo().getPersonalPhone().length() == 11) {
 			memberInfo.getBaseInfo().setPersonalPhone(memberInfo.getBaseInfo().getPersonalPhone().substring(0, 3)+ "****"+ memberInfo.getBaseInfo().getPersonalPhone().substring(memberInfo.getBaseInfo().getPersonalPhone().length() - 3,memberInfo.getBaseInfo().getPersonalPhone().length()));
 		}
@@ -327,6 +349,7 @@ public class PersonalCenterController {
 		return JSONObject.toJSONString(this.memberService.getCountyList(cid));
 	}
 
+	
 	@RequestMapping({ "/baseInformationForEnterprise" })
 	public String baseInformationForEnterprise() {
 		return "account/personalCenter/baseInformationForEnterprise";
@@ -407,16 +430,161 @@ public class PersonalCenterController {
 		return "account/personalCenter/SC_resetPWD";
 	}
 
-	@RequestMapping({ "/myVIP" })
-	public String myVIP() {
+	
+	
+	/***
+	* 我的VIP
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-7 下午4:09:26
+	 */
+	@RequestMapping(value="/myVIP/{cpage:[0-9]+}")
+	public String myVIP(HttpServletRequest request,@PathVariable int cpage) {
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		//查询我的VIP购买列表
+		PageEntity entity = new PageEntity();
+		entity.setPageNum(cpage);
+		entity.setPageSize(10);
+		Map<String,Object> param = new HashMap<String,Object>();
+		entity.setMap(param);
+		param.put("memberId", memberInfo.getId());
+		//查询VIP年费
+		
+		List<VIPPurchaseRecordsEntity> list = auditService.VipPurchaseRecords(entity, null);
+		request.setAttribute("list", list);
+		request.setAttribute("cpage", cpage);
+		request.setAttribute("pageSize", 10);
+		request.setAttribute("tol",entity.getRecordsTotal());
 		return "account/personalCenter/myVIP";
 	}
 
-	@RequestMapping({ "/integralManagement" })
-	public String integralManagement() {
-		return "account/personalCenter/integralManagement";
+	/***
+	* 提交VIP申请
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-7 下午8:29:50
+	 */
+	@RequestMapping(value="vipApply",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String applyVip(HttpServletRequest request){
+		String startTime 	= request.getParameter("startTime");				//VIP 开始时间
+		String years 		= request.getParameter("years");					//年数
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Map<String,Object> message = new HashMap<String, Object>();		//返回消息
+ 		Date   startDate	= null;
+		Date   cDate		= new Date();
+		try {
+			startDate		= sdf.parse(startTime + "23:59:59");
+			if(startDate.before(cDate)){		//购买时间必须是在今天之后
+				message.put("startTime", "VIP开始时间无效");
+			}
+		} catch (Exception e) {
+			message.put("startTime", "VIP开始时间无效");
+		}
+		
+		try {
+			Integer.parseInt(years);
+		} catch (Exception e) {
+			message.put("years", "年限输入有误");
+		}
+		
+		if(message.keySet().size() > 0){
+			message.put("status", "-2");
+			return JSONObject.toJSONString(message);
+		}
+		MemberInfo info = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		LoanTransferEntity entity = interfaceServerTestI.PurchaseVIP(info.getMemberId(),Integer.parseInt(years),startTime + " 00:00:01");
+		if(entity.getStatu() == 2){
+			message.put("status", "1");
+			message.put("message", entity.getMassage());
+		}else if(entity.getStatu() == 1){
+			message.put("status", "-1");
+			message.put("message", entity.getMassage());
+		}
+		return JSONObject.toJSONString(message);
 	}
 
+	
+	/***
+	* 积分管理
+	* <br>
+	* 当type等于1的时候返回的
+	* @author 李杰
+	* @param request
+	* @param page
+	* @param type
+	* @return
+	* @date 2016-5-6 下午7:27:36
+	 */
+	@RequestMapping(value="/integralManagement/{page:[0-9]+}/{type:[1|2]}")
+	public String integralManagement(HttpServletRequest request,@PathVariable int page,@PathVariable int type) {
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		//查询我的积分
+		MyPoint myPoint = memberService.points(memberInfo.getId(), memberInfo.getMemberType());
+		request.setAttribute("myPoint", myPoint);
+		request.setAttribute("type", type);
+		request.setAttribute("cpage", page);
+		request.setAttribute("pageSize", 10);
+		
+		
+		PageEntity entity = new PageEntity();
+		entity.setPageNum(page);
+		entity.setPageSize(10);
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("memberId", memberInfo.getId());
+		entity.setMap(param);
+		if(type == 1){				//查询出积分获取记录
+			List<IntegralGETRecord> list = memberService.addPoints(entity);
+			request.setAttribute("pointList", list);
+			request.setAttribute("tol", entity.getRecordsTotal());
+		}else{						//查询出积分使用记录
+			List<ExchangeRecords> list = memberService.exchangeRecords(entity);
+			request.setAttribute("pointList", list);
+			request.setAttribute("tol", entity.getRecordsTotal());
+		}
+		return "account/personalCenter/integralManagement";
+	}
+	
+	/***
+	* 确认收货
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-9 上午9:53:58
+	*/
+	@RequestMapping(value="confirmReceipt",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String confirmReceipt(HttpServletRequest request){
+		long exchangeId		=	IntegerAndString.StringToLong(request.getParameter("exchangeId"),-1);
+		if(exchangeId == -1){
+			return null;
+		}
+		MemberInfo memberinfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("memberId", memberinfo.getId());
+		param.put("eId", exchangeId);
+		int result = memberService.confirmReceipt(param);
+		Map<String,Object> message = new HashMap<String,Object>();
+		
+		if(result == 1){
+			message.put("status", 1);
+			message.put("message", "操作成功");
+		}
+		
+		return JSONObject.toJSONString(message);
+	}
+	
+	
+	/***
+	* 银行卡
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-9 下午3:13:38
+	 */
 	@RequestMapping({ "/bankCard" })
 	public String bankCard() {
 		return "account/personalCenter/bankCard";
@@ -463,16 +631,56 @@ public class PersonalCenterController {
 	 */
 	@RequestMapping(value = "authInfo/{typeId:[0-9]+}", method = RequestMethod.GET)
 	public String authInfo(HttpServletRequest request,
-			@PathVariable("typeId") long typeId) {
+			@PathVariable("typeId") Integer typeId) {
 		String pagePath = "";
-		if (typeId == 1L) // 个人会员实名认证
-		{
-			List<NationInfoEntity> nationList = this.memberService
-					.GetNationList();
-			request.setAttribute("nationList", nationList);
-			pagePath = "account/personalCenter/LC_personal_realNameAuthentication";
+			
+		switch(typeId){
+			case 1:
+				List<NationInfoEntity> nationList = this.memberService
+				.GetNationList();
+				request.setAttribute("nationList", nationList);
+				pagePath = "account/personalCenter/LC_personal_realNameAuthentication";				
+			break;
+			case 2 :
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;
+			case 3:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;	
+			case 4:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;
+			case 5:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;	
+			case 6:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;
+			case 7:
+				pagePath = "account/personalCenter/LC_personal_freehold";
+			break;
+			case 8:
+				pagePath = "account/personalCenter/LC_personal_voiture";
+			break;
+			case 9:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;
+			case 10:
+				pagePath = "account/personalCenter/LC_personal_marriage";
+			break;	
+			case 11:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;	
+			case 1136091:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;	
+			case 12:
+				pagePath = "account/personalCenter/LC_company_BL";
+			break;			
 		}
 
+		request.setAttribute("type",typeId);
+		
 		return pagePath;
 	}
 
@@ -676,9 +884,9 @@ public class PersonalCenterController {
 		long[] lMemberInfo = new long[2] ;
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
-		Map<String, Object> data = borrowingCertificationServer.showAuthAddress(lMemberInfo[0]);
+		CurrencyAuth data = borrowingCertificationServer.showAuthAddress(lMemberInfo[0]);
 		
-		if(data.size()>0){
+		if(data!=null){
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
@@ -771,7 +979,7 @@ public class PersonalCenterController {
 		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
-		List<Map<String, Object>> data = borrowingCertificationServer.showAuthHousing(lMemberInfo[0]);
+		 List<CurrencyAuth> data = borrowingCertificationServer.showAuthHousing(lMemberInfo[0]);
 		
 		if(data.size()>0){
 			message.put("status", 0);
@@ -872,7 +1080,7 @@ public class PersonalCenterController {
 		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
-		List<Map<String, Object>> data = borrowingCertificationServer.showAuthProduction(lMemberInfo[0]);
+		List<CurrencyAuth> data = borrowingCertificationServer.showAuthProduction(lMemberInfo[0]);
 		
 		if(data.size()>0){
 			message.put("status", 0);
@@ -971,9 +1179,9 @@ public class PersonalCenterController {
 		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
-		Map<String, Object> data = borrowingCertificationServer.showAuthEducation(lMemberInfo[0]);
+		CurrencyAuth data = borrowingCertificationServer.showAuthEducation(lMemberInfo[0]);
 		
-		if(data.size()>0){
+		if(data!=null){
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
@@ -1055,9 +1263,9 @@ public class PersonalCenterController {
 		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
-		Map<String, Object> data = borrowingCertificationServer.showAuthMarriage(lMemberInfo[0]);
+		CurrencyAuth data = borrowingCertificationServer.showAuthMarriage(lMemberInfo[0]);
 		
-		if(data.size()>0){
+		if(data!=null){
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
@@ -1557,6 +1765,8 @@ public class PersonalCenterController {
 		return JSONObject.toJSONString(message);
 	}
 	
+	
+	
 //=================================================================================================================
 // 
 //  上面是借款 认证
@@ -1564,6 +1774,183 @@ public class PersonalCenterController {
 //================================================================================================================
 	
 	
+	/**
+	 * 获取邀请好友列表
+	* loadFriendInviteList
+	* @author 邱陈东  
+	* * @Title: loadFriendInviteList 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-5 上午9:39:10
+	* @throws
+	 */
+	public String loadFriendInviteList(HttpServletRequest request){
+		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
+		int length = IntegerAndString.StringToInt(request.getParameter("length"),10) ; 
+		
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("memberID",lMemberInfo[0]);
+		param.put("memberType",lMemberInfo[1]);
+		
+		PageEntity entity = new PageEntity();
+		entity.setMap(param);
+		entity.setPageNum(start/length+1);
+		entity.setPageSize(length);
+		
+		List<MemberInfo> list = memberService.friendInvitation(entity);
+		PageUtil.ObjectToPage(entity, list);
+		
+		return JSONObject.toJSONString(entity);
+	}
+	
+	
+
+	/**
+	 * 获取待确认好友列表
+	* selectConfirmFriendList
+	* @author 邱陈东  
+	* * @Title: selectConfirmFriendList 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-6 下午1:44:24
+	* @throws
+	 */
+	@RequestMapping(value="selectConfirmFriendList",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String selectConfirmFriendList(HttpServletRequest request){
+		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
+		int length = IntegerAndString.StringToInt(request.getParameter("length"),10) ; 
+		
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("memberId",lMemberInfo[0]);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		PageEntity entity = new PageEntity();
+		entity.setMap(param);
+		entity.setPageNum(start/length+1);
+		entity.setPageSize(length);
+		
+		//List<Friends> list = memberService.selectConfirmFriendList(entity);
+		entity.getMap().remove("skey");
+		//PageUtil.ObjectToPage(entity, list);
+		
+		return JSONObject.toJSONString(entity);
+	}
+	
+	/**
+	 * 查找陌生人
+	* serachMemberByParam
+	* @author 邱陈东  
+	* * @Title: serachMemberByParam 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-6 下午1:59:50
+	* @throws
+	 */
+	@RequestMapping(value="serachMemberByParam",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String serachMemberByParam(HttpServletRequest request){
+		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
+		int length = IntegerAndString.StringToInt(request.getParameter("length"),10) ; 
+		String memberName = request.getParameter("memberName");    			//会员用户名or姓名or手机号
+		
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("memberName", memberName);
+		
+		PageEntity entity = new PageEntity();
+		entity.setMap(param);
+		entity.setPageNum(start/length+1);
+		entity.setPageSize(length);
+		
+		List<MemberInfo> list = memberService.serachMemberByParam(entity);
+		entity.getMap().remove("skey");
+		PageUtil.ObjectToPage(entity, list);
+		
+		return JSONObject.toJSONString(entity);
+	}
+	
+	/**
+	 * 请求添加好友
+	* applyAddFriends
+	* @author 邱陈东  
+	* * @Title: applyAddFriends 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-6 下午2:13:06
+	* @throws
+	 */
+	@RequestMapping(value="applyAddFriends",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String applyAddFriends(HttpServletRequest request){
+
+		Long newFriendId =Long.parseLong(request.getParameter("newFriendId"));    			//想添加好友的人的ID
+		
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result =  memberService.applyAddFriends(lMemberInfo[0],newFriendId);
+		
+		Map<String,Object> message = new HashMap<String, Object>();
+		if(result==1){
+			message.put("statu", 0);
+			message.put("message", "好友申请成功");
+			message.put("data",result);
+		}else if(result==-1){
+			message.put("statu", 1);
+			message.put("message", "好友不存在");
+			message.put("data",result);
+		}else if(result==-2){
+			message.put("statu", 1);
+			message.put("message", "等待对方确认");
+			message.put("data",result);
+		}else if(result==-3){
+			message.put("statu", 1);
+			message.put("message", "以经是好友了");
+			message.put("data",result);
+		}
+		
+		return JSONObject.toJSONString(message);
+	}
+	
+	@RequestMapping(value="agreeAapplyForFriend",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String agreeAapplyForFriend(HttpServletRequest request){
+
+		Long newFriendId =Long.parseLong(request.getParameter("newFriendId"));    			//发来好友申请人的ID
+		
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result =  0;//memberService.agreeAapplyForFriend(lMemberInfo[0],newFriendId);
+		
+		Map<String,Object> message = new HashMap<String, Object>();
+		if(result==0){
+			message.put("statu", 0);
+			message.put("message", "添加好友成功");
+			message.put("data",result);
+		}else if(result==-1){
+			message.put("statu", 1);
+			message.put("message", "以经是好友了");
+			message.put("data",result);
+		}else if(result==-2){
+			message.put("statu", 1);
+			message.put("message", "没有这条好友申请");
+			message.put("data",result);
+		}
+		
+		return JSONObject.toJSONString(message);
+	}
+	
+
 	/***
 	 * 设置会员登录验证方式
 	 * 
@@ -1807,11 +2194,12 @@ public class PersonalCenterController {
 		return JSONObject.toJSONString(param);
 	}
 
+	
+	
 	/***
 	 * 修改邮箱绑定信息
 	 * 
 	 * @author 李杰
-	 * @Title: editBindEmail
 	 * @param request
 	 * @return
 	 * @date 2016-4-27 上午11:05:07
@@ -1884,6 +2272,8 @@ public class PersonalCenterController {
 		return JSONObject.toJSONString(message);
 	}
 
+	
+	
 	/***
 	 * 开通第三方
 	 * 
@@ -1903,6 +2293,7 @@ public class PersonalCenterController {
 		return "dryLot/loanregisterbindtest";
 	}
 	
+
 	/***
 	* 开户返回页面
 	* 
@@ -1920,6 +2311,7 @@ public class PersonalCenterController {
 	}
 	
 	
+	
 	/***
 	* 开户返回 回调
 	* 
@@ -1931,6 +2323,7 @@ public class PersonalCenterController {
 	public void openThirdAccountCallback1(HttpServletRequest request,HttpServletResponse response){
 		interfaceServerTestI.testLoanRegisterBindNotify(request, response);
 	}
+	
 	
 	
 	
@@ -2000,6 +2393,7 @@ public class PersonalCenterController {
 	
 	
 	
+	
 	/***
 	* 二次分配授权
 	* 
@@ -2021,10 +2415,10 @@ public class PersonalCenterController {
 	}
 	
 	
+	
 	/***
 	* 二次分配授权回调
 	* @author 李杰
-	* @Title: authorizedCallBackPage
 	* @return
 	* @date 2016-4-29 上午11:32:17
 	 */
@@ -2042,6 +2436,7 @@ public class PersonalCenterController {
 	}
 	
 	
+	
 	/***
 	* 二次分配授权回调
 	* 
@@ -2054,6 +2449,9 @@ public class PersonalCenterController {
 	public void authorizedCallBack(HttpServletRequest request,HttpServletResponse response){
 		interfaceServerTestI.testLoanAuthorizeNotify(request,response);
 	}
+	
+	
+	
 	
 	
 	
@@ -2426,6 +2824,9 @@ public class PersonalCenterController {
 		return "account/personalCenter/mail";
 	}
 
+	
+	
+	
 	@RequestMapping({ "/M_receivedDetail" })
 	public String M_receivedDetail() {
 		return "account/personalCenter/M_receivedDetail";
@@ -2451,18 +2852,91 @@ public class PersonalCenterController {
 		return "account/personalCenter/stationMessage";
 	}
 
-	@RequestMapping({ "/messageAlert" })
-	public String messageAlert() {
+	
+	/***
+	* 消息提醒设置
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-9 下午3:18:57
+	*/
+	@RequestMapping(value="/messageAlert")
+	public String messageAlert(HttpServletRequest request) {
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		
+		//查询出配置列表
+		List<MemberMessageConfig> list = memberMsgSetService.memberMessageConfig(memberInfo.getId());
+		
+		request.setAttribute("list", list);
 		return "account/personalCenter/messageAlert";
 	}
 
+	
+	/***
+	* 设置消息提醒设置
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-9 下午3:32:18
+	*/
+	@RequestMapping(value="messageConfig",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String messageConfig(HttpServletRequest request){
+		String projectId 	= request.getParameter("projectId");			//类型
+		String typeId		= request.getParameter("typeId");				//1短信 、2站内信 、3邮件
+		String option		= request.getParameter("option");				//0 取消 1是设置
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		
+		SendSetEntity entity  = new SendSetEntity();
+		entity.setTypeID(Long.parseLong(projectId));
+		entity.setMemberID(memberInfo.getMemberId());
+		entity.setStatu(Integer.parseInt(option));
+		
+		int result 			= -2;
+		if(typeId != null){
+			if(typeId.equals("1")){
+				result = memberMsgSetService.insertMemberSmsSendSet(entity);
+			}else if(typeId.equals("2")){
+				result = memberMsgSetService.insertMemberLetterSendSet(entity);
+			}else if(typeId.equals("3")){
+				result = memberMsgSetService.insertMemberEmailSendSet(entity);
+			}
+		}
+		Map<String,Object> param = new HashMap<String, Object>();
+		if(result == -2){
+			param.put("status", "-2");
+			param.put("message", "参数错误");
+		}else if(result == -1){
+			param.put("status", "-1");
+			param.put("message", "参数错误");
+		}else if(result == -2){
+			param.put("status", "-3");
+			param.put("message", "平台未开通该消息提醒");
+		}else if(result == 1){
+			param.put("status", "1");
+			param.put("message", "设置成功");
+		}else{
+			param.put("status", "0");
+			param.put("message", "设置失败");
+		}
+		return JSONObject.toJSONString(param);
+	}
+	
+	
+	
+	
 	@RequestMapping({ "/recommendedTalent" })
 	public String recommendedTalent() {
 		return "account/personalCenter/recommendedTalent";
 	}
 
 	@RequestMapping({ "/financialAdvisor" })
-	public String financialAdvisor() {
+	public String financialAdvisor(HttpServletRequest request) {
+		long[] lMemberInfo = new long[2] ;		
+	    MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo);  
+		InviteMasterAwardRecordEntity entity = financialAdvisorService.selectFinancialMasterStatistic(lMemberInfo[0]);
+		request.setAttribute("advisorGenneral", entity);
 		return "account/personalCenter/financialAdvisor";
 	}
 }

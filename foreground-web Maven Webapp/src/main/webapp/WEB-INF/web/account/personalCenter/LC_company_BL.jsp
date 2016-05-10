@@ -72,6 +72,8 @@
 					   				</li>
 				   					<li class="inputList">
 				   						<div class="btn">确认并保存</div>
+				   						<input type="hidden" value="0" class="editType" />
+				   						<input type="hidden" value="0" class="cid" />					   						
 				   					</li>
 				   				</ul>
 			   				</form>

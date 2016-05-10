@@ -1,8 +1,12 @@
 package cn.springmvc.service;
 
 import java.util.List;
+import java.util.Map;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.membermng.model.BlackLimitEntity;
+import cn.membermng.model.BlackRecordEntity;
 import cn.membermng.model.BorrowingStatistics;
 import cn.membermng.model.InvitationMembers;
 import cn.membermng.model.MemberAll;
@@ -13,6 +17,7 @@ import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberInvestmentInfo;
 import cn.membermng.model.MemberThirdInfo;
 import cn.membermng.model.MemberTradingRecordsEntity;
+import cn.membermng.model.MyRecommand;
 import cn.membermng.model.TradingTypeEntity;
 import cn.membermng.model.VIPMemberInfos;
 
@@ -25,8 +30,6 @@ import cn.membermng.model.VIPMemberInfos;
  *
  */
 public interface IMemberManangerService {
-
-	
 	
 	
 	/**
@@ -37,7 +40,7 @@ public interface IMemberManangerService {
 	 * personalPhone			会员联系电话<br>
 	 * automaticBidding			是否开启自动投标<br>
 	 * automaticRepayment		是否开启自动还款<br>
-	 * 
+	 * memberType				会员类型<br>20160506添加
 	 * @return
 	 */
 	public List<MemberAll> getMembersByParam(PageEntity pageEntity);
@@ -52,7 +55,6 @@ public interface IMemberManangerService {
 	public MemberDetaileInfo memberInfoById(Long memberId);
 
 
-
 	
 	/***
 	* 拉黑某个会员
@@ -63,14 +65,12 @@ public interface IMemberManangerService {
 	* @param  mac							客户端MAC地址
 	* @param  ipaddress						客户端IP地址
 	* @param  referer						请求来源
+	* @param  remark						描述(原因)
 	* @param  sessionId						
 	* @return -1会员不存在、-2会员已被拉黑				
 	* @date 2016-3-21 上午11:51:35
 	*/
-	public int pullBlack(Long id, Long memberId, String mac, String ipaddress,String referer,String sessionId);
-
-
-
+	public int pullBlack(Map<String,Object> map,InsertAdminLogEntity entity,String[] sIpInfo );
 	
 	
 	
@@ -81,12 +81,11 @@ public interface IMemberManangerService {
 	* @param userName					用户姓名
 	* @param memberName					会员登录名
 	* @param phone						会员电话
+	* @param memberType					会员类型
 	* @return List<MemberInfo> 返回类型 
 	* @date 2016-3-21 下午5:17:03
 	 */
 	public List<VIPMemberInfos> getVIPMemberByParam(PageEntity pageEntity);
-
-
 
 	
 	
@@ -94,7 +93,7 @@ public interface IMemberManangerService {
 	/***
 	* 注册会员列表
 	* registers :获取所有注册了过后没有进行任何认证项认证的会员
-	* 我也不晓得这个功能是用来干嘛的,查看哪些会员注册后就不用了？看看活跃用户有多少？也不是这样弄的啊
+	* 
 	* @author 李杰
 	* @param  memberName				会员登录名
 	* @param  userName					用户姓名
@@ -102,6 +101,7 @@ public interface IMemberManangerService {
 	* @param  idCard					会员身份证
 	* @param  regDate					会员注册时间
 	* @param  regType					会员注册客户端类型（PC or Android or IOS）
+	* @param  memberType				会员类型
 	* @return 会员集合
 	* @date   2016-3-22 上午11:10:47
 	*/
@@ -120,6 +120,7 @@ public interface IMemberManangerService {
 	* @param idCard						会员身份证号
 	* @param regDate					会员注册时间段
 	* @param endDate					会员注册时间段
+	* @param memberType					会员类型
 	* @return
 	* @Description: TODO
 	* @date 2016-3-22 下午1:49:49
@@ -137,6 +138,7 @@ public interface IMemberManangerService {
 	* @param memberName					会员登录名称
 	* @param userName					用户姓名
 	* @param phone						用户手机号
+	* @param memberType					会员类型
 	* @return
 	* @Description: TODO
 	* @date 2016-3-22 下午2:44:47
@@ -158,6 +160,8 @@ public interface IMemberManangerService {
 	*/
 	public List<MemberInfo> investmentMember(PageEntity pageEntity);
 
+	
+	
 	/**
 	 * 复合会员列表
 	 * TODO
@@ -170,6 +174,7 @@ public interface IMemberManangerService {
 	public List<MemberInfo> componentMembers(PageEntity pageEntity);
 
 	
+	
 	/***
 	* 会员黑名单列表
 	* 
@@ -180,6 +185,7 @@ public interface IMemberManangerService {
 	* @param phone
 	* @param startTime
 	* @param endTime
+	* @param memberType 
 	* @return
 	* @Description: TODO
 	* @date 2016-3-22 下午5:43:58
@@ -295,6 +301,8 @@ public interface IMemberManangerService {
 	 */
 	public List<TradingTypeEntity> memberTradingTypes() ;
 	
+	
+	
 	/**
 	 * 会员交易列表
 	 * TODO
@@ -308,5 +316,97 @@ public interface IMemberManangerService {
 	
 	
 	
+	/**
+	 * 会员重置密码列表
+	 * TODO
+	 * 创建日期：2016-5-5下午4:02:14
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return void
+	 */
+	public  void memberResetPwdList(PageEntity entity);
 	
+	
+	
+	/**
+	 * 会员重置密码
+	 * TODO
+	 * 创建日期：2016-5-5下午7:09:18
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return Map<String,Object>
+	 */
+	public int memberResetPwd(Map<String, Object> param,InsertAdminLogEntity entity,String[] sIpInfo);
+	
+	
+	/**
+	 * 我的邀请人
+	 * TODO
+	 * 创建日期：2016-5-6上午10:45:23
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return MyRecommand
+	 */
+	public MyRecommand  MyRecommandMan(Map<String,Object> map);
+	
+	
+	/**
+	 * 期望的邀請人列表 及排除本人和现在的邀请人
+	 * TODO
+	 * 创建日期：2016-5-5下午8:35:31
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return void
+	 */
+	public  List<MyRecommand> ExceptMyRecommandMan(PageEntity entity);
+	
+	
+	/**
+	 * 
+	 * TODO
+	 * 创建日期：2016-5-6下午3:01:01
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<BlackRecordEntity>
+	 */
+	public void  blackRecord(PageEntity entity);
+	
+	/**
+	 * 移除黑名单
+	 * TODO
+	 * 创建日期：2016-5-9下午7:37:02
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	public int removeBlack(Map<String, Object> param,InsertAdminLogEntity entity,String[] sIpInfo);
+	
+	
+	/**
+	 * 查询黑名单受限
+	 * TODO
+	 * 创建日期：2016-5-10上午10:45:26
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<BlackLimitEntity>
+	 */
+	public List<BlackLimitEntity> blackLimtList();
+	
+	/**
+	 * 添加黑名单受限
+	 * TODO
+	 * 创建日期：2016-5-10上午10:45:56
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	public int addLimitList(int[] strings,InsertAdminLogEntity entity,String[] sIpInfo);
 }

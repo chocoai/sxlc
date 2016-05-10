@@ -94,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 			 					<label for="lastname" class="i-fl control-label col3 formsettinglabel">借款收取借款管理费：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" name="borrow_Fee"  id="borrow_Fee" placeholder="">
+			 						<input type="text" class="form-control" name="borrow_Fee" datatype="hundredNum"  id="borrow_Fee" placeholder="">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i>*</i></span>

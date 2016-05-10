@@ -21,7 +21,7 @@ public class Test implements OutExcel{
 		Admin admin = null;
 		//导出数据
 		List<Admin> list = new ArrayList<Admin>();
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 3; i++) {
 			admin = new Admin();
 			admin.setEmail("email"+i);
 			admin.setName("name"+i);
@@ -36,7 +36,7 @@ public class Test implements OutExcel{
 		ExcelKit<Admin> kit = new ExcelKit<Admin>();
 		//2
 		kit.init(fos, list, "列表", this);
-		
+		//kit.out(response, list, "列表", this);
 		System.out.println("列表生成中");
 		boolean islook = true;
 		while (islook) {

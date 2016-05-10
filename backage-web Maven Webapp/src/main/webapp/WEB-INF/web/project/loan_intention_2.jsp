@@ -68,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 							  	<div class="action_item">
-						  			<button id="add_intention_loan" class="obtn glyphicon glyphicon-plus" onclick="addBorrow()" >添加意向借款</button>
+						  			<button id="add_intention_loan" class="obtn glyphicon glyphicon-plus" onclick="addBorrow()">添加意向借款</button>
 								</div>
 							</div>
 						<div class="panel-body">
@@ -79,8 +79,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 		
-			<!-- 尾部 -->
-			
+		<!-- 尾部 -->
+		<!-- 添加意向借款弹出层 -->	
 		<div class="borrowingCull" id="con-account">
 		  <form action="javascript:addData();" id="dataForm" method="post">
 			<table >
@@ -95,9 +95,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</td>
 				</tr>
 				<tr>
+					<td class="tt"><label>借款人：</label></td>
+					<td class="con">
+						<input type="hidden" id="memberType" class="inputWidtn" maxlength="12">
+						<input type="text" disabled="disabled" id="memberID" class="inputWidtn" maxlength="12">
+						<button type="button"  class="obtn obtn-query" onclick="findBorrower()">查询</button>
+					</td>
+				</tr>
+				<tr>
 					<td class="tt"><label>借款金额：</label></td>
 					<td class="con">
-						<input type="text" id="amount" class=" inputWidtn" datatype="nNum" maxlength="8" >
+						<input type="text" id="amount" class="inputWidtn" datatype="nNum" maxlength="8" >
 						<span>元</span>
 					</td>
 				</tr>
@@ -151,7 +159,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</table>
 			</form>
 		</div>
-			
+		<!-- 添加意向借款弹出层 -->
+		<div class="borrower" style="display:none">
+			<div class="panel-body">
+				<form id="" class="" action="">
+					<span class="con-item"><span>会员编号</span><input id="memberNo" type="text" class="notspecial"></span>
+					<span class="con-item"><span>会员用户名</span><input id="memberName" type="text" class="notspecial"></span>
+					<span class="con-item"><span>手机号</span><input id="personalPhone" type="text" class="notspecial"></span>
+					<button  type="button" id="memberQuery" class="obtn obtn-query glyphicon glyphicon-search" >查询</button>
+				</form>
+		  	</div>
+			<div class="data_display">
+				<div class="panel panel-success">
+					<div class="panel-body">
+						<table id="table_borrow" class="display">
+				    	</table>
+				    </div>
+				</div>
+			</div>
+		</div>	
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>

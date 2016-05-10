@@ -1,3 +1,5 @@
+var encrypt = new JSEncrypt();
+encrypt.setPublicKey(publicKey_common);
 $(document).ready(function() {
 //启用停用
 	$(".btn-enable").on("click touchstart",function(){
@@ -49,3 +51,75 @@ function compenFunction(){
 	});
 }
 /* 代偿结束  */
+/**
+ * 表格初始化
+ */
+$(function() {
+	var appPath = getRootPath();//项目根路径
+	$('#table_id').DataTable(
+	{
+		autoWidth : false,
+		scrollY : 500,
+		pagingType: "simple_numbers",//设置分页控件的模式  
+		lengthMenu:[[5,10,25,50,-1],[5,10,25,50,"全部"]],
+		colReorder : false,
+		scrollX : true,
+		sScrollX : "100%",
+		sScrollXInner : "100%",
+		bScrollCollapse : true,  
+		processing: true, //打开数据加载时的等待效果  
+        serverSide: true,//打开后台分页  
+        ajax: {  
+            "url": appPath + "/compensatory/guCompensatoryList.do",   
+            "dataSrc": "results", 
+            "data": function ( d ) {  
+            } 
+        },
+        columns: [  
+                  {title:'<input type="checkbox" class="table-checkbox"  value="1" />',
+                	  "mRender": function (data, type, full) {
+                		  sReturn = '<input type="checkbox" value="1" />';
+                		  return sReturn;
+                	  }
+//                	  "sClass": "table-checkbox"
+                  },
+                  { title:"项目申请记录id","data": "applyId" },
+                  { title:"项目编号","data": "projectNo" },
+                  { title:"产品类型","data": "projectName" },  
+                  { title:"项目名称","data": "projectTitle" },  
+                  { title:"期数","data": "indexs" },  
+                  { title:"借款人姓名","data": "personalName" },  
+                  { title:"借款人用户名","data": "logname" },
+                  { title:"借款人手机号","data": "personalPhone" },
+                  { title:"担保机构名称","data": "guaranteeName" },
+                  { title:"实际借款金额","data": "realAmount" },
+                  { title:"当期合约还款时间","data": "repayMaxTime" },
+                  { title:"应代偿金额","data": "addDate" },
+                  { title:"状态","data": "isCompensatory" },
+                  { title:"操作","data": "isCompensatory" }
+                  
+        ],
+        aoColumnDefs : [
+        				// {"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
+        				{
+        					sDefaultContent: '',
+        					orderable : false,
+        					aTargets: [ '_all' ]
+        				},
+        				{  
+                            "aTargets":[1],  
+                            "visible":true  
+                        }
+        				],
+        rowCallback:function(row,data){//添加单击事件，改变行的样式      
+//        	if($.inArray(data.DT_RowId,selected)!==-1){
+//        		$(row).addClass('selected'); 
+//        	}
+        }
+});
+ var table = $('#table_id').DataTable();
+//设置选中change颜色
+ $('#table_id tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+  });
+});

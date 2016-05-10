@@ -60,12 +60,12 @@
 	
 	<!-- 获取个人会员实名认证信息 -->
 	<select id="showAuthRealName" parameterType="Map" resultType="cn.membermng.model.RealNameAuth">
-		select 
+		select mai.Certification_ID AS aid,
 		CONVERT(AES_DECRYPT(UNHEX(prc.Real_Name),#{skey}) using utf8) as realName,
 		CONVERT(AES_DECRYPT(UNHEX(prc.Personal_IDCard),#{skey}) using utf8) as personalIDCard,
 		prc.SexID,
 		CONVERT(AES_DECRYPT(UNHEX(prc.Home_Town),#{skey}) using utf8) as homeTown,
-		prc.Nation as aationId,
+		prc.Nation as aationId,ni.NationName as nationName,
 		mai.End_Date as endDate,
 		(select Attach_Path from personal_attest_attach where Attest_ID = mai.Certification_ID limit 0,1) as positive,
 		(select Attach_Path from personal_attest_attach where Attest_ID = mai.Certification_ID limit 1,2) as reverse,
@@ -75,6 +75,7 @@
 		else `status` end) as status
 		from Member_Attest_Info mai 
 		left join Personal_RealName_Check prc on prc.Certification_ID = mai.Certification_ID
+		left join Nation_Info ni on ni.Nation_Id = prc.Nation
 		where mai.Member_ID = #{memberId} and Member_Type = 0 and Attest_Type_ID = 1
 		order by mai.Record_Date desc limit 0,1
 	</select>
@@ -107,19 +108,22 @@
 			#{memberType,	mode=IN,				jdbcType=INTEGER},
 			#{enclosure,	mode=IN,				jdbcType=VARCHAR},
 			#{endTime,		mode=IN,				jdbcType=VARCHAR},
-			#{typeId,		mode=IN,				jdbcType=INTEGER},
+			#{typeId,		mode=IN,				jdbcType=BIGINT},
 			#{result,		mode=OUT,				jdbcType=INTEGER}
 		)
 	</select>
 	
 	<!-- 查看企业|个人通用认证 -->
 	<select id="showCurrencyAuth" parameterType="Map" resultType="cn.membermng.model.CurrencyAuth">
-		select 
-		if(mai.End_Date is null,'',mai.End_Date) as endDate,
+		select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as realName,
+		mai.End_Date as endDate,
 		group_concat(paa.Attach_Name) as attachName,
 		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath,
 		status
 		from Member_Attest_Info mai 
+		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
+		left join  Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
 		where mai.Member_ID = #{memberId} and mai.Member_Type = #{memberType} and Attest_Type_ID = #{typeId} 
 		order by mai.Record_Date desc limit 0,1
@@ -154,12 +158,16 @@
 	</select>
 	 
 	<!-- 查看个人会员住在认证信息 -->
-	<select id="showAuthAddress" parameterType="Map" resultType="Map">
-		select if(mai.End_Date is null,'',mai.End_Date) as endDate,
+	<select id="showAuthAddress" parameterType="Map" resultType="cn.membermng.model.CurrencyAuth">
+		select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as realName,
+		mai.End_Date as endDate,
 		group_concat(paa.Attach_Name) as attachName,paa.Attach_Type as attachType,
 		group_concat(paa.Attach_Path) as attachPath,
-		CONVERT(AES_DECRYPT(UNHEX(mac.Address),#{skey}) using utf8) as Address,status
+		CONVERT(AES_DECRYPT(UNHEX(mac.Address),#{skey}) using utf8) as address,mai.status
 		from Member_Attest_Info mai 
+		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
+		left join  Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
 		left join Member_Address_Check mac on mac.Certification_ID = mai.Certification_ID
 		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 4
@@ -196,13 +204,34 @@
 	</select>
 	
 	<!-- 个人会员房产认证查看 -->
-	<select id="showAuthHousing" parameterType="Map" resultType="Map">
-		select mai.Certification_ID as certificationId,if(mai.End_Date is null,'',mai.End_Date) as endDate,group_concat(paa.Attach_Name) as attachName,
-		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath, mec.Address,status 
+	<select id="showAuthHousing" parameterType="Map" resultType="cn.membermng.model.CurrencyAuth">
+		select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as realName,
+		mai.End_Date as endDate,group_concat(paa.Attach_Name) as attachName,
+		mec.Address as homeAddress,mec.Area as area,mec.Value as value,
+		paa.Attach_Type as attachType,group_concat(paa.Attach_Path) as attachPath, mai.status 
 		from Member_Attest_Info mai 
+		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
+		left join  Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
 		left join Member_Estate_Check mec on mec.Certification_ID = mai.Certification_ID 
 		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 7 GROUP BY mai.Certification_ID
+	</select>
+	
+	
+		<!-- 个人会员房产认证查看 -->
+	<select id="showAuthHousingOne" parameterType="Map" resultType="cn.membermng.model.CurrencyAuth">
+		select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as realName,
+		mai.End_Date as endDate,group_concat(paa.Attach_Name) as attachName,
+		mec.Address as homeAddress,mec.Area as area,mec.Value as value,
+		paa.Attach_Type as attachType,group_concat(paa.Attach_Path) as attachPath, mai.status 
+		from Member_Attest_Info mai 
+		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
+		left join  Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
+		left join Member_Estate_Check mec on mec.Certification_ID = mai.Certification_ID 
+		where mai.Certification_Id = #{rid}
 	</select>
 	
 	<!-- 个人会员房产认证修改 -->
@@ -238,13 +267,33 @@
 	</select>
 	
 	<!-- 个人会员车产认证查看 -->
-	<select id="showAuthProduction" parameterType="Long" resultType="Map">
-		select mai.Certification_ID as certificationId,if(mai.End_Date is null,'',mai.End_Date) as endDate,group_concat(paa.Attach_Name) as attachName,
-		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath, mcc.Brand,mcc.Model,mcc.License_Plate as licensePlate,mcc.Value,status 
+	<select id="showAuthProduction" parameterType="Long" resultType="cn.membermng.model.CurrencyAuth">
+		select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
+		mai.End_Date as endDate,group_concat(paa.Attach_Name) as attachName,
+		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath,
+		 mcc.Brand as brand,mcc.Model as model,mcc.License_Plate as licensePlate,mcc.Value as value,mai.status 
 		from Member_Attest_Info mai 
+		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
+		left join Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
 		left join Member_Car_Check mcc on mcc.Certification_ID = mai.Certification_ID 
 		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 8 GROUP BY mai.Certification_ID
+	</select>
+	
+	
+	<!-- 个人会员车产认证查看 -->
+	<select id="showAuthProductionOne" parameterType="Map" resultType="cn.membermng.model.CurrencyAuth">
+		select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as realName,
+		mai.End_Date as endDate,group_concat(paa.Attach_Name) as attachName,
+		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath,
+		 mcc.Brand as brand,mcc.Model as model,mcc.License_Plate as licensePlate,mcc.Value as value,mai.status 
+		from Member_Attest_Info mai 
+		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
+		left join Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
+		left join Member_Car_Check mcc on mcc.Certification_ID = mai.Certification_ID 
+		where mai.Certification_Id = #{rid} 
 	</select>
 	
 	<!-- 个人会员车产认证修改 -->
@@ -278,12 +327,18 @@
 	</select>
 	
 	<!-- 查看个人会员婚姻认证信息 -->
-	<select id="showAuthMarriage" parameterType="Long" resultType="Map">
-		select if(mai.End_Date is null,'',mai.End_Date) as endDate,group_concat(paa.Attach_Name) as attachName,group_concat(paa.Attach_Path) as attachPath,mmc.Is_Married as isMarried,mai.status
+	<select id="showAuthMarriage" parameterType="Long" resultType="cn.membermng.model.CurrencyAuth">
+		select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as realName,
+		mai.End_Date ,group_concat(paa.Attach_Name) as attachName,group_concat(paa.Attach_Path) as attachPath,mmc.Is_Married as isMarried,mai.status,
+		maf.MaritalName as maritalName
 		from Member_Attest_Info mai
+		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
+		left join Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
 		left join Member_Marriage_Check mmc on mmc.Certification_ID = mai.Certification_ID
+		left join Marital_Info maf on maf.Marital_ID = mmc.Is_Married
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
-		where mai.Attest_Type_ID = 10 and mai.Member_ID = #{memberId} and Member_Type = 0 
+		where mai.Attest_Type_ID = 10 and mai.Member_ID = #{memberId} and mai.Member_Type = 0 
 		order by mai.Record_Date desc limit 0,1
 	</select>
 	
@@ -313,12 +368,18 @@
 	</select>
 	
 	<!-- 查看个人会员学历认证信息 -->
-	<select id="showAuthEducation" parameterType="long" resultType="Map">
-		select group_concat(paa.Attach_Name) as attachName,group_concat(paa.Attach_Path) as attachPath,mai.status,mec.Education
+	<select id="showAuthEducation" parameterType="Map" resultType="cn.membermng.model.CurrencyAuth">
+	select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as realName,
+		group_concat(paa.Attach_Name) as attachName,group_concat(paa.Attach_Path) as attachPath,mai.status,mec.Education as education,
+		ei.EducationName as educationName
 		from member_attest_info mai
+		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
+		left join Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
 		left join Member_Education_Check mec on mai.Certification_ID = mec.Certification_ID
+		left join Education_Info ei on ei.Education_ID =mec.Education
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
-		where mai.Attest_Type_ID = 11 and mai.Member_ID = #{memberId} and Member_Type = 0 
+		where mai.Attest_Type_ID = 11 and mai.Member_ID = #{memberId} and mi.Member_Type = 0 
 		order by mai.Record_Date desc limit 0,1
 	</select>
 	
@@ -371,7 +432,7 @@
 	
 	<!-- 查看企业会员营业执照认证 -->
 	<select id="showBusinessLicense" parameterType="Map" resultType="Map">
-		select status,if(mai.End_Date is null,'',mai.End_Date) as End_Date,
+		select status,mai.End_Date as End_Date,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_BLN),#{skey}) using utf8) as Firm_BLN,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_Address),#{skey}) using utf8) as Firm_Address,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_Legal),#{skey}) using utf8) as Firm_Legal,Reg_Capital,
@@ -429,7 +490,7 @@
 	
 	<!-- 查看企业会员工商执照认证 -->
 	<select id="showCommercialLicense" parameterType="Map" resultType="Map">
-		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,Residence,
+		select mai.End_Date as End_Date,Residence,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_Legal),#{skey}) using utf8) as Firm_Legal,
 		Reg_Capital,Firm_Type,Real_Capital,
 		CONVERT(AES_DECRYPT(UNHEX(Reg_Business),#{skey}) using utf8) as Reg_Business,SetUp_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
@@ -475,7 +536,7 @@
 	
 	<!-- 查看组织机构认证 -->
 	<select id="showOrganizational" parameterType="Map" resultType="Map">
-		select status,CONVERT(AES_DECRYPT(UNHEX(eoa.Firm_OC),#{skey}) using utf8) as Firm_OC,eoa.Reg_Date,if(mai.End_Date is null,'',mai.End_Date) as End_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		select status,CONVERT(AES_DECRYPT(UNHEX(eoa.Firm_OC),#{skey}) using utf8) as Firm_OC,eoa.Reg_Date,mai.End_Date as End_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
 		from member_attest_info mai
 		left join Enterprise_OrgCode_Attest eoa on eoa.Certification_ID = mai.Certification_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
@@ -516,7 +577,7 @@
 	
 	<!-- 查看开户许可认证 -->
 	<select id="showAccountOpening" parameterType="Map" resultType="Map">
-		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,mai.status,CONVERT(AES_DECRYPT(UNHEX(eaa.Permits_Code),#{skey}) using utf8) as Permits_Code,
+		select mai.End_Date as End_Date,mai.status,CONVERT(AES_DECRYPT(UNHEX(eaa.Permits_Code),#{skey}) using utf8) as Permits_Code,
 		CONVERT(AES_DECRYPT(UNHEX(eaa.Permits_Bank),#{skey}) using utf8) as Permits_Bank,
 		CONVERT(AES_DECRYPT(UNHEX(eaa.Bank_No),#{skey}) using utf8) as Bank_No,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
 		from member_attest_info mai
@@ -557,7 +618,7 @@
 	
 	<!-- 查看税务登记认证 -->
 	<select id="showTaxRegistration" parameterType="Map" resultType="Map">
-		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,mai.status,Issue_Organ,
+		select mai.End_Date as End_Date,mai.status,Issue_Organ,
 		CONVERT(AES_DECRYPT(UNHEX(eta.Credentials_NO),#{skey}) using utf8) as Credentials_NO,
 		group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
 		from member_attest_info mai
@@ -599,7 +660,7 @@
 	
 	<!-- 批文认证 -->
 	<select id="showAuthApproval" parameterType="Map" resultType="Map">
-		select if(mai.End_Date is null,'',mai.End_Date) as End_Date,mai.status,Issue_Organ,File_Summary,Issue_Organ,Issue_Date,
+		select mai.End_Date as End_Date,mai.status,Issue_Organ,File_Summary,Issue_Organ,Issue_Date,
 		group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
 		from member_attest_info mai
 		left join Enterprise_RedHead_Attest era on era.Certification_ID = mai.Certification_ID
@@ -641,7 +702,7 @@
 	
 	<!-- 个人会员房产认证查看 -->
 	<select id="complayShowAuthHousing" parameterType="Map" resultType="Map">
-		select mai.Certification_ID,if(mai.End_Date is null,'',mai.End_Date) as End_Date,group_concat(paa.Attach_Name) as Attach_Name,
+		select mai.Certification_ID,mai.End_Date as End_Date,group_concat(paa.Attach_Name) as Attach_Name,
 		paa.Attach_Type,group_concat(paa.Attach_Path) as Attach_Path, mec.Address,status 
 		from Member_Attest_Info mai 
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
@@ -683,7 +744,7 @@
 	
 	<!-- 个人会员车产认证查看 -->
 	<select id="complayShowAuthProduction" parameterType="Long" resultType="Map">
-		select mai.Certification_ID,if(mai.End_Date is null,'',mai.End_Date) as End_Date,group_concat(paa.Attach_Name) as Attach_Name,
+		select mai.Certification_ID,mai.End_Date as End_Date,group_concat(paa.Attach_Name) as Attach_Name,
 		paa.Attach_Type,group_concat(paa.Attach_Path) as Attach_Path, mcc.Brand,mcc.Model,mcc.License_Plate,mcc.Value,status 
 		from Member_Attest_Info mai 
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
@@ -705,5 +766,8 @@
 			#{result,			mode=OUT,				jdbcType=INTEGER}
 		)
 	</select>
+	
+	
+	
 	
 </mapper>

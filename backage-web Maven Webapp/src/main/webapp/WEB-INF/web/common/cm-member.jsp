@@ -25,8 +25,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <ul class="nav side-menu">
-                                 <li data-id="201" id="admin" class="li_level_one active">
-                                	<a><i class="fa fa-edit"></i>个人会员<span class="fa fa-chevron-down"></span></a>
+                                 <li data-id="201" id="admin" class="li_level_one">
+                                	<a><i class="fa fa-edit"></i>个人会员<span cla
+                                	ss="fa fa-chevron-down"></span></a>
                                 	<ul class="nav child_menu ul_level_one" style="display: none">
                                         <li data-id="20101"><a href="web/member/member.jsp">全部会员</a></li>
                                         <li data-id="20102"><a href="web/member/membersVip.jsp">VIP会员</a></li>
@@ -36,7 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                         <li data-id="20106"><a href="web/member/investmentMember.jsp">投资会员</a></li>
                                         <li data-id="20107"><a href="web/member/compositeMember.jsp">复合会员</a></li>
                                         <li data-id="20108"><a href="web/member/memberBlackList.jsp">会员黑名单</a></li>
-                                        <li data-id="20109"><a href="web/member/realNameAuthen.jsp?content=0">资料认证</a></li>
+                                        <li data-id="20109"><a href="web/member/realNameAuthen.jsp?content=1">资料认证</a></li>
                                         <li data-id="20110"><a href="web/member/memberFinancialAdvisor.jsp">会员分配理财顾问</a></li>
                                         <li data-id="20111"><a href="web/member/changeOfFinancialAdvisor.jsp">理财顾问变更</a></li>
                                     </ul>
@@ -57,8 +58,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                         <li data-id="20211"><a href="web/member/companyChangeFinAdvisor.jsp">理财顾问变更</a></li>
                                     </ul>
                                  </li>
-                                <li id="admin" class="li_level_one">
-                                <a><i class="fa fa-edit"></i>客户意见反馈<span class="fa fa-edit"></span></a></li>
+                                <li data-id="203" id="admin" class="li_level_one" >
+                                <a href="web/member/user_fanKui.jsp" ><i class="fa fa-edit"></i>客户意见反馈<span class="fa fa-edit"></span></a></li>
                             </ul>
                         </div>
                     </div>

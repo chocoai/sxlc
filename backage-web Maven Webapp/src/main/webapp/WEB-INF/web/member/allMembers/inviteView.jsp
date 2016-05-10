@@ -77,7 +77,7 @@
 		encrypt.setPublicKey(publicKey_common);
 		//result 为加密后参数
 		memberId = encrypt.encrypt(memberId+"");
-		showMemberInviteList(memberId);//交易
+		showMemberInviteList(memberId);//邀請
 	</script>
 </div>
 

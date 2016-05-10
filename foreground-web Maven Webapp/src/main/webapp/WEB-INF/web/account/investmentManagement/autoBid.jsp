@@ -5,6 +5,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
@@ -17,6 +18,9 @@
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
    	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
+   	<script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
    	<div class="main">
    		<div class="clearfix">
 		   	<jsp:include page="../../account/accountCommonLeft.jsp"></jsp:include>
@@ -65,45 +69,45 @@
 						   			<div class="actualPaymentDate">操作</div>
 			   					</div>
 	   						</li>
-	   						<%for(int i=0;i<1;i++){%>
-	   						<li>
-	   							<div class="terms divOutside">
-			   						<div class="divIntside">
-			   							<div>抵押贷</div>
-			   						</div>
-			   					</div>
-			   					<div class="receivablePrincipal divOutside">
-			   						<div class="divIntside">
-			   							<div>2个月</div>
-			   						</div>
-			   					</div>
-			   					<div class="interestReceivable divOutside">
-			   						<div class="divIntside">
-			   							<div>9.00%</div>
-			   						</div>
-			   					</div>
-			   					<div class="scheduledPaymentDate divOutside">
-			   						<div class="divIntside">
-			   							<div>等额本金</div>
-			   						</div>
-			   					</div>
-			   					<div class="principalInterestPaid divOutside">
-			   						<div class="divIntside">
-			   							<div class="moneyFormat">100</div>
-			   						</div>
-			   					</div>
-			   					<div class="overdueIncome divOutside">
-			   						<div class="divIntside">
-			   							<div class="moneyFormat">1000</div>
-			   						</div>
-			   					</div>
-			   					<div class="actualPaymentDate divOutside">
-			   						<div class="divIntside">
-			   							<div class="highLight"><a class="highLight">删除</a></div>
-			   						</div>
-			   					</div>
-	   						</li>
-	   					<%}%>
+	   						<c:if test="${automaticBidSettingEntity != null }">
+	   							<li>
+		   							<div class="terms divOutside">
+				   						<div class="divIntside">
+				   							<div>${automaticBidSettingEntity.proTypesString }</div>
+				   						</div>
+				   					</div>
+				   					<div class="receivablePrincipal divOutside">
+				   						<div class="divIntside">
+				   							<div>2个月</div>
+				   						</div>
+				   					</div>
+				   					<div class="interestReceivable divOutside">
+				   						<div class="divIntside">
+				   							<div>${automaticBidSettingEntity.rateMin }%-${automaticBidSettingEntity.rateMax }%</div>
+				   						</div>
+				   					</div>
+				   					<div class="scheduledPaymentDate divOutside">
+				   						<div class="divIntside">
+				   							<div>${automaticBidSettingEntity.proType }</div>
+				   						</div>
+				   					</div>
+				   					<div class="principalInterestPaid divOutside">
+				   						<div class="divIntside">
+				   							<div class="moneyFormat">${automaticBidSettingEntity.sReservedMoney }</div>
+				   						</div>
+				   					</div>
+				   					<div class="overdueIncome divOutside">
+				   						<div class="divIntside">
+				   							<div class="moneyFormat">${automaticBidSettingEntity.sEveryMoney }</div>
+				   						</div>
+				   					</div>
+				   					<div class="actualPaymentDate divOutside">
+				   						<div class="divIntside">
+				   							<div class="highLight"><a class="highLight">删除</a></div>
+				   						</div>
+				   					</div>
+		   						</li>
+	   						</c:if>
 	   				</ul>
 	   			</div>
 	   		</div>
@@ -116,44 +120,44 @@
 	   	<div class="auto-top">
 	   		<div class="info-input">
 	   			<div class="left-title">账户可用余额:</div>
-	   			<div class="orange">10,000.00元</div>
+	   			<div class="orange">${authInfoEntity.memberThirdInfoEntity.userBalances }元</div>
 	   		</div>
-	   		<div class="info-input info">
+	   		<div class="info-input info  clearfix">
 	   			<div class="left-title ">借款类型:</div>
-	   			<label class="quanBu att1"><input type="radio" name="tag" value="全部">全部</label>
-				<label class="active att1"><input type="radio" name="tag" value="1">抵押贷</label>
-				<label class="att1"><input type="radio" name="tag" value="2">信用贷</label>
-				<label class="att1"><input type="radio" name="tag" value="3">担保贷</label>
+	   			<label class="quanBu att1 active"><input type="checkbox" class="proType" value="-1" checked>全部</label>
+	   			<c:forEach items="${projectTypes }" var="pt">
+					<label class="att1 active"><input type="checkbox" class="proType" value="${pt.id }" checked>${pt.projectName }</label>
+	   			</c:forEach>
 	   		</div>
-	   		<div class="info-input1 info">
+	   		<div class="info-input1 info clearfix">
 	   			<div class="left-title ">还款方式:</div>
 	   			<div class="input-group-out">
-		   			<label class="quanBu"><input type="radio" name="tag" value="0">全部</label>
-					<label class="active"><input type="radio" name="tag" value="1">等额本金</label>
-					<label><input type="radio" name="tag" value="2">等额本息</label>
-					<label><input type="radio" name="tag" value="3">先息后本</label>
-					<label><input type="radio" name="tag" value="4">到期还本息</label>
+		   			<label class="quanBu active"><input type="checkbox" class="loanType"  value="-1" checked>全部</label>
+					<label class="active"><input type="checkbox" class="loanType"  value="3" checked>等额本金</label>
+					<label class="active"><input type="checkbox" class="loanType"  value="0" checked>等额本息</label>
+					<label class="active"><input type="checkbox" class="loanType"  value="1" checked>先息后本</label>
+					<label class="active"><input type="checkbox" class="loanType" value="2" checked>到期还本息</label>
 	   			</div>			
 	   		</div>
 	   		<div class="info-input2">
 	   			<div class="left-title">项目期限:</div>
 	   			<div class="input-group-out">
 		   			<div class="input-group">
-		   				<input  class="numberReg numberReg1" type="text" maxlength="4">
+		   				<input  class="numberReg numberReg1" id="yearMin" type="text" maxlength="4">
 		   				<span>-</span>
-		   				<input  class="numberReg numberReg2" type="text" maxlength="4">
+		   				<input  class="numberReg numberReg2" id="yearMax" type="text" maxlength="4">
 		   				<span class="spanTwo">年</span>
 		   			</div>
 		   			<div class="input-group">
-		   				<input  class="numberReg numberReg1" type="text" maxlength="2">
+		   				<input  class="numberReg numberReg1" id="monthMin" type="text" maxlength="2">
 		   				<span>-</span>
-		   				<input  class="numberReg numberReg2" type="text" maxlength="2">
+		   				<input  class="numberReg numberReg2" id="monthMax" type="text" maxlength="2">
 		   				<span class="spanTwo">月</span>
 		   			</div>
 		   			<div class="input-group">
-		   				<input class="numberReg numberReg1" type="text" maxlength="2">
+		   				<input class="numberReg numberReg1" type="text" id="dayMin" maxlength="2">
 		   				<span>-</span>
-		   				<input class="numberReg numberReg2" type="text" maxlength="2">
+		   				<input class="numberReg numberReg2" type="text" id="dayMax" maxlength="2">
 		   				<span class="spanTwo">日</span>
 		   			</div>
 	   			</div>
@@ -161,15 +165,15 @@
 	   		<div class="info-input">
 	   			<div class="left-title">年化利率:</div>
 	   			<div class="input-group2">
-	   				<input type="text" class="yearText1" maxlength="5">
+	   				<input type="text" class="yearText1" id="rateMin" maxlength="5">
 	   				<span>-</span>
-	   				<input type="text" class="yearText2" maxlength="5">
+	   				<input type="text" class="yearText2" id="rateMax" maxlength="5">
 	   				<span>%</span>
 	   			</div>
 	   		</div>
 	   		<div class="info-input3 info-input33">
 	   			<div class="left-title">每次投标金额:</div>
-	   			<input datatype="acountM" class="format" type="text" lang="请输入每次投标金额" maxlength="10">
+	   			<input datatype="acountM" class="format" type="text" id="everyMoney" lang="请输入每次投标金额" maxlength="10">
 	   			<span>元</span>
 	   		</div>
 	   		<div class="remind">
@@ -177,7 +181,7 @@
 	   		</div>
 	   		<div class="info-input3 info-input34">
 	   			<div class="left-title">最低预留金额:</div>
-	   			<input class=" formatM" datatype="acountM" type="text" lang="请输入最低预留金额" maxlength="10">
+	   			<input class=" formatM" datatype="acountM" type="text" id="reservedMoney" lang="请输入最低预留金额" maxlength="10">
 	   			<span>元</span>
 	   		</div>
    		</div>

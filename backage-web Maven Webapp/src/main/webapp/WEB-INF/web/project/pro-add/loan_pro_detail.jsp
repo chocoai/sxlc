@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- 借款申请管理——查看项目详情 -->
 <head>
 	<base href="<%=basePath%>">
-	<title>项目管理</title>
+	<title>项目详情</title>
 	<!-- 公用meta -->
 	<jsp:include page="../../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -20,6 +20,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </head>
 <body>
 	<div class="container add_type_contianer">
+		<!-- 地址导航 -->
+		<jsp:include page="../../common/cm-addr.jsp"></jsp:include>
 	<!-- 信息不完整 -->
 	  	<div class="w-content ishow">
 		<!-- 认证信息 -->
@@ -82,50 +84,60 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<tr class="col-md-6">
 						<td class="tt"><label>借款金额：</label></td>
 						<td class="con">
-							<span class="moneyFormat">200000</span>元
+							<span class="moneyFormat">${proPurpose.amount}</span>元
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>还款保障：</label></td>
 						<td class="con">
-							<span>还款保障</span>
+							<span>${proRecord.repayGuarantee}</span>
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>借款项目类型：</label></td>
 						<td class="con">
-							<span>借款项目类型</span>
+							<span>${proRecord.projectTypeentity.projectName}</span>
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>借款期限：</label></td>
 						<td class="con">
-							<span>借款期限</span>
+							<span>${proPurpose.deadline}</span>
+							<c:if test="${proPurpose.deadlineType == 0}">
+								 天
+							</c:if>		
+							<c:if test="${proPurpose.deadlineType == 1}">
+								 月
+							</c:if>		
+							<c:if test="${proPurpose.deadlineType == 2}">
+								 年
+							</c:if>	
+							
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>还款来源：</label></td>
 						<td class="con">
-							<span>还款来源</span>
+							<span>${proPurpose.repaySource}</span>
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>借款用途：</label></td>
 						<td class="con">
-							<span>借款用途</span>
+							<span>${proPurpose.uses}</span>
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt"><label>抵押物描述：</label></td>
 						<td class="con">
-							<span>抵押物描述</span>
+							<span>${proRecord.guarantyDescribe}</span>
 						</td>
 					</tr>
 					<!-- 自动投标 -->
 					<tr class="col-md-12">
 						<td class="tt"><label>自动投标：</label></td>
 						<td class="con">
-							投标开始后<span>3</span>分钟开始执行自动投标，自动投标总金额占比<span>10</span>%
+							投标开始后<span>${proPurpose.pAppAutoSetEntity.autoStart}</span>分钟开始执行自动投标，自动投标总金额占比<span>${proPurpose.pAppAutoSetEntity.autoInvestMax}</span>%
 						</td>
 					</tr><!-- 自动投标结束 -->
 					<!-- 附件信息修改 -->
@@ -152,19 +164,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<tr class="col-md-6">
 						<td class="tt">是否为加息标：</td>
 						<td class="con">
-							添加利息：<span></span>%
+							添加利息：<span>${proRecord.rateAddRates}</span>%
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt">定向标：</td>
 						<td class="con">
-							已开启
+							<c:if test="${proRecord.isDirect == 1}">
+								已开启
+							</c:if>		
+							<c:if test="${proRecord.isDirect == 0}">
+								未开启
+							</c:if>		
 						</td>
 					</tr>
 					<tr class="col-md-6">
 						<td class="tt">奖励标：</td>
 						<td class="con">
-							返现：本金*<span>20</span>%
+							返现：本金*<span>${proRecord.rewardRates}</span>%
 						</td>
 					</tr>
 					<tr class="col-md-12">
@@ -177,21 +194,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<!-- 选择担保机构 -->
 						<td class="tt">担保机构：</td>
 						<td class="con">
-							<span class="mechanism">某机构</span>
-							<span>30</span>%
+							<span class="mechanism">${proRecord.guaranteeName}</span>
 						</td>
 					</tr>	
 					<tr class="col-md-6">
 						<td class="tt">资产管理方：</td>
 						<td class="con">
-							<span class="mechanism">某机构</span>
+							<span class="mechanism">${proRecord.managementName}</span>
 							<span>30</span>%
 						</td>
 					</tr>	
 					<tr class="col-md-6">
 						<td class="tt">项目风险保证金：</td>
 						<td class="con">
-							<span>1000</span>元
+							<span>${proPurpose.projectAppMngFeeEntity.riskMarginFee}</span>
+							<c:if test="${proPurpose.projectAppMngFeeEntity.riskMarginType == 0}">
+								%
+							</c:if>		
+							<c:if test="${proPurpose.projectAppMngFeeEntity.riskMarginType == 1}">
+								元
+							</c:if>		
 						</td>
 					</tr>				
 					<tr class="col-md-6">
@@ -203,7 +225,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<tr class="col-md-6">
 						<td class="tt"><label>允许投标人数 ：</label></td>
 						<td class="con">
-							<span>100</span>人
+							<span>${proRecord.investCountMax}</span>人
 						</td>
 					</tr>
 				</table>

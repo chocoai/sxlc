@@ -61,8 +61,9 @@
 		<result column="Third_Mng_Fee" 		 property="thirdMngFee" /> 
 		<result column="Mng_Fee_Repay" 		 property="mngFeeRepay" />
 		<result column="Real_Money" 		 property="realMoney" /> 
+		<result column="record_Date" 		 property="recordDate" /> 
 		<result column="Receive_Date" 		 property="receiveDate" /> 
-		<result column="Receive_Card" 		 property="receiveCard" /> 
+		<result column="Receive_Card" 		 property="receiveCard" />
 		<result column="Statu" 	    		 property="statu" />   
 		<result column="Remark" 			 property="remark" /> 
 		<result column="totalfee" 			 property="totalfee" />  

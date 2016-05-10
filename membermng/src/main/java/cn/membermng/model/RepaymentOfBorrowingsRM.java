@@ -33,9 +33,52 @@ public class RepaymentOfBorrowingsRM {
 	private String			shiJiHuanKuanRi;			//实际还款日
 	
 	
+	private long			overdueInterest;			//逾期利息
+	private String			sOverdueInterest;	        //逾期利息
+	private long			oberdueFine;				//逾期罚金
+	private String			sOberdueFine;		        //逾期罚金  
+	private long            sdReplayTotal;               //应还总额
+	private String          sdReplayTotals;              //应还总额
 	
 	
-	
+	public long getOverdueInterest() {
+		return overdueInterest;
+	}
+	public void setOverdueInterest(long overdueInterest) {
+		this.overdueInterest = overdueInterest;
+	}
+	public String getsOverdueInterest() {
+		return sOverdueInterest;
+	}
+	public void setsOverdueInterest(String sOverdueInterest) {
+		this.sOverdueInterest = sOverdueInterest;
+	}
+	public long getOberdueFine() {
+		return oberdueFine;
+	}
+	public void setOberdueFine(long oberdueFine) {
+		this.oberdueFine = oberdueFine;
+		this.sOberdueFine = IntegerAndString.LongToString(oberdueFine);
+	}
+	public String getsOberdueFine() {
+		return sOberdueFine;
+	}
+	public void setsOberdueFine(String sOberdueFine) {
+		this.sOberdueFine = sOberdueFine;
+	}
+	public long getSdReplayTotal() {
+		return sdReplayTotal;
+	}
+	public void setSdReplayTotal(long sdReplayTotal) {
+		this.sdReplayTotal = sdReplayTotal;
+		this.sdReplayTotals = IntegerAndString.LongToString(sdReplayTotal);
+	}
+	public String getSdReplayTotals() {
+		return sdReplayTotals;
+	}
+	public void setSdReplayTotals(String sdReplayTotals) {
+		this.sdReplayTotals = sdReplayTotals;
+	}
 	public long getLid() {
 		return lid;
 	}

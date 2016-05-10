@@ -22,7 +22,7 @@ public class LoanRepay {
 	private Long			loanInterest;				//应还利息
 	private String			sLoanInterest;				//
 	private String			loanTime;					//还款时间
-	private int				statu;						//还款状态
+	private int				statu;						//还款状态 0：未还 1：还款中 2：部分还完 3：已还
 	private Long			overdueInterest;			//逾期利息
 	private String			sOverdueInterest;	
 	private Long			oberdueFine;				//逾期罚金

@@ -1,0 +1,16 @@
+/* Ìõ¼þÀ©Õ¹  */
+.con-item{
+	display:inline-block;
+	min-width:300px;
+	max-width:300px;
+	text-align:right;
+}
+.con-item input{
+	width:200px;
+}
+.con-item select{
+	width:200px;
+}
+.con-item .dateInput{
+	width:89px;
+}

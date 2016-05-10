@@ -87,6 +87,24 @@ public class ProjectAuditDaoImpl extends SqlSessionDaoSupport implements Project
 		return getSqlSession().update("projectCheckAttach.insertCheckAttachone", projectCheckAttachDealEntity);
 		
 	}
+
+
+	@Override
+	public int updateProjectDetail(Map<String, Object> map) {
+		
+		 getSqlSession().selectOne("projectAudit.updateProjectDetail",map);
+		 return IntegerAndString.StringToInt(map.get("result").toString(), 0);
+		
+	}
+
+
+	@Override
+	public int updateaffix(Map<String, Object> map) {
+		
+		 getSqlSession().selectOne("projectCheckAttach.updateaffix",map);
+		 return IntegerAndString.StringToInt(map.get("result").toString(), 0);
+		
+	}
  
 }
 

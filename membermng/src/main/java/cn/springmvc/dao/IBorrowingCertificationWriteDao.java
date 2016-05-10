@@ -384,6 +384,7 @@ public interface IBorrowingCertificationWriteDao {
 	 */
 	public int editAuthApproval(Map<String, Object> param);
 
+
 	
 	
 	

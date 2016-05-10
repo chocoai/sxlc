@@ -41,7 +41,8 @@
         <result property = "levelMark" 	        column = "Level_Mark" /> 
         <result property = "investTotal"        column = "InvestTotal" /> 
         <result property = "startDate"       	column = "Start_Date" />
-        <result property = "endDate"       	   column = "End_Date" /> 
+        <result property = "endDate"       	    column = "End_Date" /> 
+        <result property = "picIcon"       	    column = "Pic_Icon" /> 
        <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	   </association>
     </resultMap> 

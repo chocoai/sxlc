@@ -5,13 +5,18 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import product_p2p.kit.datatrans.IntegerAndString;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
  
 import cn.springmvc.service.ManagedInterfaceServerTestI;
@@ -51,7 +56,6 @@ public class LoanRechargeColltroller {
 		
 		long[] lMemberInfo = new long[2] ;		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
-		lMemberInfo[0]=1;
 		
 		RechargeEntity recharge = new RechargeEntity();
 		recharge.setMemberId(lMemberInfo[0]);
@@ -62,16 +66,25 @@ public class LoanRechargeColltroller {
 		recharge.setIsApp(0);
 		
 		recharge =managedInterfaceServer.testLoanRecharge(recharge);
-		message.put("code", 200);
-		message.put("message", "获取交易信息成功");
-		message.put("data", recharge);
-		request.setAttribute("recharge", recharge);
-		return "dryLot/loanrechargetest.jsp";
+	
+		request.setAttribute("rechange", recharge);
+		return "dryLot/loanrechargetest";
 	}
 
+	/**
+	 * 充值后  双乾会自动跳到这个地址
+	* loanRechargeReturn
+	* @author 邱陈东  
+	* * @Title: loanRechargeReturn 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-9 下午4:14:41
+	* @throws
+	 */
 	@RequestMapping(value="/loanRechargeReturn")
 	public String loanRechargeReturn(HttpServletRequest request){
-		String returnstr =  managedInterfaceServer.testLoanRechargeReturn();
+		String returnstr =  managedInterfaceServer.testLoanRechargeReturn(request);
 		request.setAttribute("data", returnstr);
 		if(returnstr.equals("SUCCESS")){
 			return "account/fundManagement/rechargeSuccess";
@@ -79,10 +92,22 @@ public class LoanRechargeColltroller {
 			return "account/fundManagement/rechargeFalse";
 		}
 	}
+	
+	/**
+	 * 充值后  双乾会把交易信息返回到这里
+	* loanRechargeNotify
+	* @author 邱陈东  
+	* * @Title: loanRechargeNotify 
+	* @param @param request
+	* @param @param response 设定文件 
+	* @return void 返回类型 
+	* @date 2016-5-9 下午4:15:12
+	* @throws
+	 */
 	@RequestMapping(value="/loanRechargeNotify",produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public void loanRechargeNotify(HttpServletRequest request){
-		managedInterfaceServer.testLoanRechargeNotify();
+	public void loanRechargeNotify(HttpServletRequest request,HttpServletResponse response){
+		managedInterfaceServer.testLoanRechargeNotify(request,response);
 	}
 	
 }

@@ -587,11 +587,10 @@
 			  pa.Member_ID in 
 	         (
 	          select mfa.Member_ID from  Member_Financial_Advisor  mfa
-	          left join Financial_Advisor fa on  mfa.FA_ID =  fa.FA_ID
-	          left join Staff_Info sti on sti.Staff_Id =   fa.Staff_Id 
-	          where  sti.Staff_Id  in (
-	           select Staff_Id from  Admin where (Staff_Type = 0 and   Admin_ID =#{map.adminID})  
-	           )
+	          join Financial_Advisor fa on  mfa.FA_ID =  fa.FA_ID
+	          join Staff_Info sti on sti.Staff_Id =   fa.Staff_Id
+	          join  Admin  a on  a.Staff_Id = sti.Staff_Id
+	          where   a.Staff_Type = 0 and   a.Admin_ID =#{map.adminID}
 	          and  mfa.Record_Date &lt;NOW() and ( NOW()&lt;mfa.Remove_Date  or  mfa.Remove_Date is null)
 	          and fa.Service_Statu = 0
 	           ) 

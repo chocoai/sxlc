@@ -1,6 +1,10 @@
 package cn.springmvc.dao;
 
+import java.util.List;
 import java.util.Map;
+
+import product_p2p.kit.pageselect.PageEntity;
+import cn.membermng.model.MemberResetPwdEntity;
 
 
 
@@ -32,8 +36,50 @@ public interface IMemberManagerWriteDao {
 	* @throws
 	 */
 	public int pullBlack(Map<String,Object> param);
+	
+	/**
+	 * 取消黑名单
+	 * TODO
+	 * 创建日期：2016-5-5下午9:23:24
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return Map<String,Object>
+	 */
+	public  Map<String, Object> removeBlack(Map<String, Object> param);	  
 
+	
+	/**
+	 * 会员密码重置
+	 * TODO
+	 * 创建日期：2016-5-5下午7:08:31
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return Map<String,Object>
+	 */
+	public Map<String, Object> memberResetPwd(Map<String, Object> param);	
 
+	/**
+	 * 添加黑名单限制
+	 * TODO
+	 * 创建日期：2016-5-10上午10:41:33
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	public int addLimitList (int[] str);
 
+	/**
+	 * 删除黑名单限制
+	 * TODO
+	 * 创建日期：2016-5-10上午10:42:53
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	public int deleteLimitList();
 	
 }

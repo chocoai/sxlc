@@ -9,9 +9,12 @@ import cn.dictionaries.model.CountyInfoEntity;
 import cn.dictionaries.model.NationInfoEntity;
 import cn.dictionaries.model.ProvinceInfoEntity;
 import cn.membermng.model.CompanyInfo;
-import cn.membermng.model.IntegralRecords;
+import cn.membermng.model.ExchangeRecords;
+import cn.membermng.model.Friends;
+import cn.membermng.model.IntegralGETRecord;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberVouchers;
+import cn.membermng.model.MyPoint;
 import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.PersonalBaseInfo;
 import cn.membermng.model.RadPackage;
@@ -44,7 +47,6 @@ public interface IMemberService {
 	 * @return
 	 */
 	public int corporateMember(MemberInfo member,CompanyInfo companyInfo);
-
 
 
 	/***
@@ -166,6 +168,33 @@ public interface IMemberService {
 	
 	
 	/***
+	* 获取好友列表
+	* 
+	* @author 李杰
+	* @param entity
+	* 
+	* memberName					根据名称模糊查询
+	* 
+	* @return
+	* @date 2016-5-5 上午10:39:00
+	 */
+	public List<Friends> friendList(PageEntity entity);
+	
+	
+	/**
+	 * 获取待确认好友列表
+	* selectConfirmFriendList
+	* @author 邱陈东  
+	* * @Title: selectConfirmFriendList 
+	* @param @param entity
+	* @param @return 设定文件 
+	* @return List<Friends> 返回类型 
+	* @date 2016-5-6 上午11:55:59
+	* @throws
+	 */
+	public List<Friends> selectConfirmFriendList(PageEntity entity);
+	
+	/***
 	* 获取会员积分信息
 	* 
 	* @author 李杰
@@ -175,7 +204,8 @@ public interface IMemberService {
 	* @Description: TODO
 	* @date 2015-9-1 上午9:37:00
 	 */
-	public Map<String,Object> points(long memberId,int memberType);
+	public MyPoint points(long memberId,int memberType);
+	
 	
 	/***
 	* 获取积分记录
@@ -188,7 +218,8 @@ public interface IMemberService {
 	* @Description: TODO
 	* @date 2016-3-30 上午10:43:04
 	 */
-	public List<IntegralRecords> addPoints(PageEntity entity);
+	public List<IntegralGETRecord> addPoints(PageEntity entity);
+	
 	
 	/***
 	* 获取会员的红包信息
@@ -220,17 +251,17 @@ public interface IMemberService {
 	
 	/***
 	* 我的代金券
-	* myVouchers(这里用一句话描述这个方法的作用)
 	* @author 李杰
 	* @Title: myVouchers
 	* @param memberId
 	* @param memberType
 	* @return
-	* @Description: TODO
 	* @date 2016-3-30 下午5:39:09
 	 */
 	public MemberVouchers myVouchers(long memberId, int memberType);
 
+	
+	
 	/***
 	* 我的代金券列表
 	* vouchers(这里用一句话描述这个方法的作用)
@@ -244,6 +275,27 @@ public interface IMemberService {
 	 */
 	public List<MemberVouchers> vouchers(PageEntity entity);
 	
+	
+	/***
+	* 我的代金券使用列表
+	* 
+	* @author 李杰
+	* @param entity
+	* @return
+	* @date 2016-5-9 下午7:39:16
+	 */
+	public List<MemberVouchers> useVouchers(PageEntity entity);
+	
+	
+	/***
+	* 获取会员总余额
+	* 
+	* @author 李杰
+	* @param memberId
+	* @return
+	* @date 2016-5-5 下午2:55:57
+	 */
+	public long getRemainderTotal(long memberId);
 	
 	/***
 	* 获取省份列表
@@ -311,10 +363,93 @@ public interface IMemberService {
 	public SecurityInfo securityInfo(long memberId, int memberType);
 
 
+	/***
+	* 查找陌生人
+	* 
+	* @author 李杰
+	* @param entity
+	* @param memberName				会员用户名or姓名or手机号
+	* @return
+	* @date 2016-5-6 下午1:22:57
+	*/
+	public List<MemberInfo> serachMemberByParam(PageEntity entity);
+	
+	/***
+	* 添加好友
+	* 
+	* @author 李杰
+	* @param myId				我的编号
+	* @param fId				对方编号
+	* @return
+	* -1 对方不存在、-2等待对方确认、-3已经是好友了、-4不能添加自己、1提交申请成功、0提交申请失败
+	* @date 2016-5-6 下午1:50:29
+	 */
+	public int applyAddFriends(long myId,long fId);
+
+	
+	/***
+	* 获取兑换列表
+	* 
+	* @author 李杰
+	* @param entity
+	* @return
+	* @date 2016-5-6 下午5:35:00
+	 */
+	public List<ExchangeRecords> exchangeRecords(PageEntity entity);
 	
 	
+	/**
+	 * 同意别人发的好友申请
+	* agreeAapplyForFriend
+	* @author 邱陈东  
+	* * @Title: agreeAapplyForFriend 
+	* @param @param myId
+	* @param @param fId
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-6 下午2:17:53
+	* @throws
+	 */
+	public int agreeAapplyForFriend(long myId,long fId);
 	
+	/**
+	 * 忘记密码-查询登录名与手机号是否匹配
+	* selectMemberIsExist
+	* @author 邱陈东  
+	* * @Title: selectMemberIsExist 
+	* @param @param loginName
+	* @param @param phone
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-6 下午6:08:45
+	* @throws
+	 */
+	public int selectMemberIsExist(String loginName,String phone);
+
+	/**
+	 * 忘记密码-根据手机号查询用户ID
+	* selectMemberIdByPhone
+	* @author 邱陈东  
+	* * @Title: selectMemberIdByPhone 
+	* @param @param phone
+	* @param @return 设定文件 
+	* @return Long 返回类型 
+	* @date 2016-5-6 下午6:29:35
+	* @throws
+	 */
+	public Long selectMemberIdByPhone(String loginName,String phone);
+
 	
-	
+	/**
+	* 确认收货
+	* 
+	* @author 李杰
+	* @param param
+	* memberId					会员编号
+	* eId						兑换记录编号
+	* @return
+	* @date 2016-5-9 上午10:06:37
+	 */
+	public int confirmReceipt(Map<String, Object> param);
 	
 }

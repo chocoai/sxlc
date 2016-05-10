@@ -416,7 +416,7 @@
   	 <result column="Third_Mer_Billno" property="loanNumber"/>
   	 <result column="Statu" property="statu"/>
   </resultMap>
-  <!-- 分页查询担保机构充值、提现记录 -->
+  <!-- 分页查询担保机构充值、提现记录  memberType:0：会员 1：担保机构 2：平台  dealType:0：充值 1：提现 -->
   <select id="InstitutionsToRaiseCashRecords" resultMap="GuaranteeInfoToRaiseCashRecords" parameterType="product_p2p.kit.pageselect.PageEntity">
   	select 
 		CAST(((AES_DECRYPT(UNHEX(Real_Money),#{map.skey}))) as signed) RealMoney,
@@ -425,7 +425,7 @@
 		Receive_Date,Mer_Billno,Third_Mer_Billno,Statu
  	from Member_Withdrawal_Recharge 
   	<where>
-  		Member_Type = 1 and
+  		Member_Type = #{map.memberType} and
   		Deal_Type = #{map.dealType}
   		<if test="map.startdealTime!=null and map.startdealTime!=''">
   			and Receive_Date>=#{map.startdealTime}
@@ -523,4 +523,187 @@
 	 left join Member_Third_Info mti on mtai.Account_Id=mti.Account_Id
 	 where  Member_ID =#{GuaranteeID} and Member_Type =#{memberType}
     </select>  
+    
+    
+    <!-- 查询逾期代偿列表 -->
+    <select id="Overduecompensation" resultType="cn.springmvc.model.OverdueCompensationEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+	select * from (SELECT par.Apply_Id applyId,par.Project_No projectNo,p.Project_Name,
+		pbi.Project_Title projectTitle,lr.Indexs indexs,
+		CONVERT((AES_DECRYPT(UNHEX(per.Personal_Name),#{map.skey})) using utf8) personalName,
+		mi.Logname logname,
+		CONVERT((AES_DECRYPT(UNHEX(per.Personal_Phone),#{map.skey})) using utf8) personalPhone,
+		gi.Guarantee_Name guaranteeName,
+		pbi.Real_Amount realAmount,lr.Repay_MaxTime repayMaxTime,
+		CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{map.skey})) as signed) sDRepayPrincipal,
+		CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{map.skey})) as signed) sDRepayInterest,
+		p.Project_ID projectID,lr.IsCompensatory isCompensatory,
+		lr.Repay_ID repayID,gi.Guarantee_ID guaranteeID
+		 FROM Loan_Repay lr
+		LEFT JOIN Project_App_Record par on par.Apply_Id = lr.Apply_Id
+		LEFT JOIN Project_Base_Info  pbi ON pbi.Project_Base_ID = par.Project_Base_ID
+		LEFT JOIN ProjectBaseInfo    p   ON p.Project_ID = par.Project_ID
+		LEFT JOIN Member_Info				 mi  ON mi.Member_ID = par.Member_ID
+		LEFT JOIN Personal_Base_Info per ON per.Personal_Id = mi.Personal_ID
+		LEFT JOIN Guarantee_Info		 gi	 ON gi.Guarantee_ID = par.Guarantee_ID
+		WHERE lr.Statu in (0,1)  AND lr.IsValid = 0 AND NOW()>lr.Repay_MaxTime)
+		cc
+		<where>
+			<if test="map.projectNo != null and map.projectNo!=''">
+				projectNo like '%${map.projectNo}%'
+			</if>
+			<if test="map.projectID!=-1">
+				projectID = #{map.projectID}
+			</if>
+			<if test="map.projectTitle != null and map.projectTitle != ''">
+				projectTitle like '%${map.projectTitle}%'
+			</if>
+			<if test="map.logname != null and map.logname != ''">
+				logname like '%${map.logname}%'
+			</if>
+			<if test="map.personalPhone != null and map.personalPhone != ''">
+				personalPhone like '%${map.personalPhone}%'
+			</if>
+			<if test="map.personalName != null and map.personalName != ''">
+				personalName like '%${map.personalName}%'
+			</if>
+			<if test="map.guaranteeID!=-1">
+				guaranteeID = #{map.guaranteeID}
+			</if>
+			<if test="map.isCompensatory!=-1">
+				isCompensatory= #{map.isCompensatory}
+			</if>
+		</where>
+    </select>
+    
+    
+    
+    
+    
+    
+     <!-- 查询平台代偿记录列表 -->
+    <select id="PtOverduecompensation" resultType="cn.springmvc.model.OverdueCompensationEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+	select *,sDRepayPrincipal+sDRepayInterest+repayOverdueInterest+repayOverdue allmoney
+	 from (SELECT par.Apply_Id applyId,par.Project_No projectNo,p.Project_Name,
+		pbi.Project_Title projectTitle,lrp.Indexs indexs,
+		CONVERT((AES_DECRYPT(UNHEX(per.Personal_Name),#{map.skey})) using utf8) personalName,
+		mi.Logname logname,
+		CONVERT((AES_DECRYPT(UNHEX(per.Personal_Phone),#{map.skey})) using utf8) personalPhone,
+		gi.Guarantee_Name guaranteeName,
+		pbi.Real_Amount realAmount,lr.Record_Date repayMaxTime,
+		CAST((AES_DECRYPT(UNHEX(lr.Corpus_Enc),#{map.skey})) as signed) sDRepayPrincipal,
+		CAST((AES_DECRYPT(UNHEX(lr.Interest_Enc),#{map.skey})) as signed) sDRepayInterest,
+		CAST((AES_DECRYPT(UNHEX(lr.Overdue_Interest_Enc),#{map.skey})) as signed) repayOverdueInterest,
+		CAST((AES_DECRYPT(UNHEX(lr.Overdue_Fee_Enc),#{map.skey})) as signed) repayOverdue,
+		p.Project_ID projectID,lrp.IsCompensatory isCompensatory,
+		lr.Repay_ID repayID,gi.Guarantee_ID guaranteeID
+		 FROM Instead_RePay_Record lr
+		 left join Loan_Repay lrp on lrp.Repay_ID = lr.Repay_ID
+		LEFT JOIN Project_App_Record par on par.Apply_Id = lrp.Apply_Id
+		LEFT JOIN Project_Base_Info  pbi ON pbi.Project_Base_ID = par.Project_Base_ID
+		LEFT JOIN ProjectBaseInfo    p   ON p.Project_ID = par.Project_ID
+		LEFT JOIN Member_Info				 mi  ON mi.Member_ID = par.Member_ID
+		LEFT JOIN Personal_Base_Info per ON per.Personal_Id = mi.Personal_ID
+		LEFT JOIN Guarantee_Info		 gi	 ON gi.Guarantee_ID = par.Guarantee_ID
+		WHERE  lr.Repay_Type != 0 )
+		cc
+		<where>
+			<if test="map.projectNo != null and map.projectNo!=''">
+				projectNo like '%${map.projectNo}%'
+			</if>
+			<if test="map.projectID!=-1">
+				projectID = #{map.projectID}
+			</if>
+			<if test="map.projectTitle != null and map.projectTitle != ''">
+				projectTitle like '%${map.projectTitle}%'
+			</if>
+			<if test="map.logname != null and map.logname != ''">
+				logname like '%${map.logname}%'
+			</if>
+			<if test="map.personalPhone != null and map.personalPhone != ''">
+				personalPhone like '%${map.personalPhone}%'
+			</if>
+			<if test="map.personalName != null and map.personalName != ''">
+				personalName like '%${map.personalName}%'
+			</if>
+			<if test="map.startTime != null and map.startTime != ''">
+				repayMaxTime > #{map.startTime}
+			</if>
+			<if test="map.endTime != null and map.endTime != ''">
+				 #{map.endTime} > repayMaxTime
+			</if>
+		</where>
+    </select>
+    
+     <!-- 查询平台代偿回款记录列表 -->
+    <select id="PaymentOverduecompensation" resultType="cn.springmvc.model.OverdueCompensationEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+	select *
+	 from (SELECT par.Apply_Id applyId,par.Project_No projectNo,p.Project_Name,
+		pbi.Project_Title projectTitle,lrp.Indexs indexs,
+		CONVERT((AES_DECRYPT(UNHEX(per.Personal_Name),#{map.skey})) using utf8) personalName,
+		mi.Logname logname,
+		CONVERT((AES_DECRYPT(UNHEX(per.Personal_Phone),#{map.skey})) using utf8) personalPhone,
+		gi.Guarantee_Name guaranteeName,
+		pbi.Real_Amount realAmount,lr.Record_Date repayMaxTime,
+		CAST((AES_DECRYPT(UNHEX(otr.Amount),#{map.skey})) as signed) allmoney,
+		p.Project_ID projectID,otr.Record_Date paymentTime,
+		lr.Repay_ID repayID,gi.Guarantee_ID guaranteeID
+		 FROM Instead_RePay_Record lr
+		 left join Loan_Repay lrp on lrp.Repay_ID = lr.Repay_ID
+		 left join Own_Trading_Records otr on otr.Project_ID = lr.Repay_ID
+		LEFT JOIN Project_App_Record par on par.Apply_Id = lrp.Apply_Id
+		LEFT JOIN Project_Base_Info  pbi ON pbi.Project_Base_ID = par.Project_Base_ID
+		LEFT JOIN ProjectBaseInfo    p   ON p.Project_ID = par.Project_ID
+		LEFT JOIN Member_Info				 mi  ON mi.Member_ID = par.Member_ID
+		LEFT JOIN Personal_Base_Info per ON per.Personal_Id = mi.Personal_ID
+		LEFT JOIN Guarantee_Info		 gi	 ON gi.Guarantee_ID = par.Guarantee_ID
+		WHERE  otr.Own_Trading_ID > 0 )
+		cc
+		<where>
+			<if test="map.projectNo != null and map.projectNo!=''">
+				projectNo like '%${map.projectNo}%'
+			</if>
+			<if test="map.projectID!=-1">
+				projectID = #{map.projectID}
+			</if>
+			<if test="map.projectTitle != null and map.projectTitle != ''">
+				projectTitle like '%${map.projectTitle}%'
+			</if>
+			<if test="map.logname != null and map.logname != ''">
+				logname like '%${map.logname}%'
+			</if>
+			<if test="map.personalPhone != null and map.personalPhone != ''">
+				personalPhone like '%${map.personalPhone}%'
+			</if>
+			<if test="map.personalName != null and map.personalName != ''">
+				personalName like '%${map.personalName}%'
+			</if>
+			<if test="map.startTime != null and map.startTime != ''">
+				repayMaxTime > #{map.startTime}
+			</if>
+			<if test="map.endTime != null and map.endTime != ''">
+				 #{map.endTime} > repayMaxTime
+			</if>
+			
+			<if test="map.startpaymentTime != null and map.startpaymentTime != ''">
+				paymentTime > #{map.startpaymentTime}
+			</if>
+			<if test="map.endpaymentTime != null and map.endpaymentTime != ''">
+				 #{map.endpaymentTime} > endpaymentTime
+			</if>
+		</where>
+    </select>
+    
+    <!-- 查询担保机构银行卡信息 -->
+    <select id="findbankcardforguaranteeID" resultType="cn.springmvc.model.GuaranteeBankCard" parameterType="product_p2p.kit.pageselect.PageEntity">
+    	SELECT mbc.Bank_Card_Id bankCardId,
+    	bci.Branch bankBranch,bci.Bank_No bankNo,bi.BankName bankName,cd.City_Name bankCity FROM Member_Bank_Card mbc
+			LEFT JOIN Bank_Card_Info bci ON bci.Bank_Card_Id = mbc.Bank_Card_Id
+			LEFT JOIN Bank_Info bi ON bi.Bank_ID = bci.Bank_Id
+			LEFT JOIN City_Dictionary cd on cd.City_Id = bci.Card_City
+			WHERE mbc.Member_Type = #{map.memberType}  
+			<if test="map.guaranteeID != -1">
+				AND Member_ID = #{map.guaranteeID}
+			</if>
+			
+    </select>
 </mapper>

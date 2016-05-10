@@ -20,6 +20,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /** 
 * @author 唐国峰
 * @Description: 验证码控制器
@@ -31,7 +33,7 @@ public class AuthCodeController {
     private static final int IMG_WIDTH=146; 
     private static final int IMG_HEIGHT=30; 
     //设置干扰线条数
-    private static final int DISTURB_LINE_SIZE = 15;  
+    private static final int DISTURB_LINE_SIZE = 1;  
     //设置字体及字号
     private final Font font = new Font("黑体", Font.BOLD, 18);  
     private Random random = new Random(); 
@@ -57,6 +59,7 @@ public class AuthCodeController {
 	@RequestMapping("/authImage")
 	public void authImage(HttpServletRequest request,
 			HttpServletResponse response) {
+		Integer type = IntegerAndString.StringToInt(request.getParameter("type"),0);//0 登录等地方  1忘记密码    
 		try {
 	        BufferedImage image = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, BufferedImage.TYPE_INT_RGB);  
 	        //画笔
@@ -93,8 +96,16 @@ public class AuthCodeController {
 	        randomString = logsu.toString();  
 	        
 	        HttpSession session = request.getSession(true);
-			session.removeAttribute("AUTH_IMG_CODE_IN_SESSION");
-			session.setAttribute("AUTH_IMG_CODE_IN_SESSION", xyresult);
+	        if(type==0){
+	        	session.removeAttribute("AUTH_IMG_CODE_IN_SESSION");
+	        	session.setAttribute("AUTH_IMG_CODE_IN_SESSION", xyresult);
+	        }else if(type==1){//忘记密码
+	        	session.removeAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD");
+	        	session.setAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD", xyresult);
+	        }else{
+	        	session.removeAttribute("AUTH_IMG_CODE_IN_SESSION");
+	        	session.setAttribute("AUTH_IMG_CODE_IN_SESSION", xyresult);
+	        }
 			//设置http响应头
 			response.setHeader("Pragma", "No-cache");
 			response.setHeader("Cache-Control", "no-cache");

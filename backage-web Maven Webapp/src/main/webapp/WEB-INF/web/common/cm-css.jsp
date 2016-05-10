@@ -16,5 +16,4 @@
 		<script src="js/jquery-1.11.0.min.js"></script>
 		<!-- right_col样式  -->
 		<link href="css/conditionstyle.css" rel="stylesheet" />
-
 		

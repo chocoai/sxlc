@@ -42,7 +42,7 @@
 	</bean>
    	<!-- 对模型视图添加前后缀 -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-	 p:prefix="/WEB-INF/web/" p:suffix=".jsp"/>
+	 p:prefix="/web/" p:suffix=".jsp"/>
 	<!-- 注册SpringUtil -->
 	<bean id="springUtil" class="product_p2p.kit.spring.SpringUtil"></bean>
 	<mvc:default-servlet-handler/>

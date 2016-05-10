@@ -43,12 +43,13 @@
         <result property = "memberNo" 		    column = "Member_No" />   
         <result property = "personalName" 		column = "Personal_Name" />  
         <result property = "compangName" 		column = "Compang_Name" />  
-        <result property = "memberName" 		column = "memberName" />  
-       
+        <result property = "memberName" 		column = "memberName" />   
         <result property = "recordDate"       	column = "Record_Date" /> 
         <result property = "startDate"       	column = "Start_Date" />
         <result property = "endDate"       	    column = "End_Date" /> 
         <result property = "holdDate"       	column = "Hold_Date" /> 
+        <result property = "managementName"     column = "Management_Name" /> 
+         <result property = "guaranteeName"     column = "Guarantee_Name" /> 
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"></association>
     </resultMap> 
      <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
@@ -66,7 +67,7 @@
      </resultMap>
     <!-- 根据项目申请ID查询审核项目列表 -->  
 	<select id="selectProjectAuitList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectDetail" >
-	   select par.Apply_Id,pap.Record_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,
+	   select gua.Guarantee_Name,mana.Management_Name,par.Apply_Id,pap.Record_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,
 	   mi.Company_ID,mi.Personal_ID,pbi.Project_Title,par.Project_ID,
 	   pty.Project_Name,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,pbi.Repay_Way,par.Invest_Statu,
 	   pbi.Amount, par.Project_Base_ID, replayway.name1,par.Check_Statu,
@@ -80,21 +81,34 @@
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
 	   left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
-	   left join Member_Info mi on mi.Member_ID = par.Member_ID  
+	   join Member_Info mi on mi.Member_ID = par.Member_ID  
 	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id and mi.Member_Type=0
 	   left join Company_Info  ci  on ci.Company_ID=mi.Company_ID and mi.Member_Type=1
+	   left join Management_Info mana on mana.Management_ID = par.Management_ID
+	   left join Guarantee_Info gua on gua.Guarantee_ID = gua.Guarantee_ID
 	    <where> 
-         <!--  par.Apply_Id=#{map.ID} -->
-         <!-- 上一级审核通过   -->
-	     <if test = "map.sIndexs !=  0">  
-	      and par.Apply_Id in
-	      (select Apply_Id  
-	       from  Project_Check_Record pck
-	       left join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
-	       where  ap.Process_ID in  (select Process_ID from Process_Project where Indexs =#{map.sIndexs}) 
-	       and pck.Check_Statu = 1
-	       ) 
-	    </if>
+         <!--  par.Apply_Id=#{map.ID} --> 
+	       (
+		      par.Apply_Id in
+		      (
+			       select Apply_Id  
+			       from  Project_Check_Record pck
+			       left join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
+			       where  
+			        ap.Process_ID =  
+				    (select Process_ID from Process_Project where Indexs &lt;#{map.sIndexs} 
+				       and statu =1 order by Indexs desc limit 1) 
+				  
+			        and pck.Check_Statu = 1
+		       ) 
+	       
+		       or 
+		       
+		       (select count(Process_ID) from Process_Project where Indexs &lt;#{map.sIndexs} 
+		        and statu =1 order by Indexs desc limit 1
+		        ) = 0
+		    )    
+	        
 	     <if test = "map.ProjectTitle !=  null"> 
 	      and  pbi.Project_Title like '%${map.ProjectTitle}%'
 	     </if>
@@ -107,7 +121,7 @@
 	       (select Apply_Id  
 	        from  Project_Check_Record pck
 	        left join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
-	        where  ap.Process_ID in  (select Process_ID from Process_Project where Indexs =#{map.Indexs})
+	        where  ap.Process_ID in  (select Process_ID from Process_Project where Indexs =#{map.sIndexs})
 	        and pck.Check_Statu != 2  
 	        ) 
 	     </if>
@@ -118,7 +132,7 @@
 	       (select Apply_Id  
 	        from  Project_Check_Record pck
 	        left join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
-	        where  ap.Process_ID in  (select Process_ID from Process_Project where Indexs =#{map.Indexs}) 
+	        where  ap.Process_ID in  (select Process_ID from Process_Project where Indexs =#{map.sIndexs}) 
 	        and  pck.Check_Statu !=2
 	        ) 
 	     </if>
@@ -137,7 +151,7 @@
     </select>
      
      <!-- 根据项目申请ID查询借款项目详情 -->  
-	<select id="selectProjectdetail"  parameterType="int" resultMap="resultProjectDetail" >
+	<select id="selectProjectdetail"  parameterType="long" resultMap="resultProjectDetail" >
 	   select pbi.Project_Title,pbi.Amount,replayway.name1,pbi.Repay_Way,pbi.Uses,
 	   pbi.Repay_Source,pbi.Deadline,pbi.Deadline_Type,par.Invest_Max,pbi.Year_Rate,
 	   par.MinStart,par.Increase_Range,pbi.Project_Descript,
@@ -152,11 +166,11 @@
 	   where  par.Apply_Id=#{ID}
     </select>
      
-    <!-- 审核修改项目基本信息 -->  
-    <select id="projectAudit"  statementType="CALLABLE" parameterType="Map"> 
-	     {call projectAudit(
-				#{ApplyId ,	     mode=IN,	jdbcType=BIGINT},
-				#{Indexsnow,	     mode=IN,	jdbcType=INTEGER},
+     
+      <!--  修改项目基本信息 -->  
+    <select id="updateProjectDetail"  statementType="CALLABLE" parameterType="Map"> 
+	     {call updateProjectDetail(
+				#{ApplyId ,	     mode=IN,	jdbcType=BIGINT}, 
 				#{projectTitle,	 mode=IN,	jdbcType=VARCHAR},
 				#{uses,	         mode=IN,	jdbcType=VARCHAR},
 				#{repaySource,	 mode=IN,	jdbcType=VARCHAR},
@@ -169,13 +183,20 @@
 				#{minStart,	     mode=IN,	jdbcType=INTEGER}, 
 				#{increaseRange, mode=IN,	jdbcType=INTEGER},
 				#{investMax,	 mode=IN,	jdbcType=INTEGER},
-				#{investCountMax,mode=IN,	jdbcType=INTEGER},
+				#{investCountMax,mode=IN,	jdbcType=INTEGER}, 
+				#{RepayGuarantee,	 mode=IN,	jdbcType=VARCHAR}, 
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)}
+	</select>
+    <!-- 审核 项目  -->  
+    <select id="projectAudit"  statementType="CALLABLE" parameterType="Map"> 
+	     {call projectAudit(
+				#{ApplyId ,	     mode=IN,	jdbcType=BIGINT},
+				#{Indexsnow,	mode=IN,	jdbcType=INTEGER}, 
 				#{checkStatu,	 mode=IN,	jdbcType=INTEGER},
 				#{CheckRemark,	 mode=IN,	jdbcType=VARCHAR},
 				#{adminID,	     mode=IN,	jdbcType=INTEGER},
-				#{checkid,	     mode=IN,	jdbcType=INTEGER},
-				#{ProcessID,	 mode=IN,	jdbcType=INTEGER},
-				#{sIndexs,	     mode=IN,	jdbcType=INTEGER},
+				#{checkid,	     mode=IN,	jdbcType=INTEGER}, 
 				#{affix,	     mode=IN,	jdbcType=VARCHAR},
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)}

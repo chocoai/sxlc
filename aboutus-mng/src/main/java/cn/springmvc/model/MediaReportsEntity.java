@@ -45,6 +45,14 @@ public class MediaReportsEntity {
 	 * 最后一次操作员名称
 	 */
 	private String adminName; 
+	private long nexID;//下一篇ID
+	private long preID;//上一篇ID
+	public long getPreID() {
+		return preID;
+	}
+	public void setPreID(long preID) {
+		this.preID = preID;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -104,5 +112,11 @@ public class MediaReportsEntity {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public long getNexID() {
+		return nexID;
+	}
+	public void setNexID(long nexID) {
+		this.nexID = nexID;
 	} 
 }

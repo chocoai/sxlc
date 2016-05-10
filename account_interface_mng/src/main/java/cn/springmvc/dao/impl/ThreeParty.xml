@@ -166,31 +166,60 @@
   </select>
   
   <!-- 提现成功返回 -->
+<!--   <select id="MemberWithdrawalBack_Qianduoduo" resultType="Map" statementType="CALLABLE"> -->
+  
+<!--   		<![CDATA[{call MemberWithdrawalBack_Qianduoduo( -->
+<!-- 				#{merbillno,	 mode=IN,	jdbcType=VARCHAR}, -->
+<!-- 				#{rechargeID,	 mode=IN,	jdbcType=BIGINT}, -->
+<!-- 				#{memberType ,	 mode=IN,	jdbcType=INTEGER}, -->
+<!-- 				#{memberID ,	 mode=IN,	jdbcType=BIGINT}, -->
+<!-- 				#{thirdMerBillno ,	 mode=IN,	jdbcType=VARCHAR}, -->
+<!-- 				#{withdrawalMoney ,	 mode=IN,	jdbcType=BIGINT}, -->
+<!-- 				#{mngFeeRepay ,	 mode=IN,	jdbcType=BIGINT}, -->
+<!-- 				#{userFee ,	 mode=IN,	jdbcType=BIGINT}, -->
+<!-- 				#{remark ,	 mode=IN,	jdbcType=VARCHAR}, -->
+<!-- 				#{tradeID ,	 mode=IN,	jdbcType=BIGINT}, -->
+<!-- 				#{tradeIDtow ,	 mode=IN,	jdbcType=BIGINT}, -->
+<!-- 				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR}, -->
+<!-- 				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR}, -->
+<!-- 				#{integralID ,	 mode=IN,	jdbcType=BIGINT}, -->
+<!-- 				#{memberRPID ,	 mode=IN,	jdbcType=BIGINT}, -->
+<!-- 				#{skey ,	 mode=IN,	jdbcType=VARCHAR}, -->
+<!-- 				#{result,	 mode=OUT,	jdbcType=INTEGER} -->
+<!--     		)} -->
+<!--     	]]> -->
+<!--   </select> -->
+  <!-- 提现成功返回 -->
   <select id="MemberWithdrawalBack_Qianduoduo" resultType="Map" statementType="CALLABLE">
   <!--
    -->
   		<![CDATA[{call MemberWithdrawalBack_Qianduoduo(
-				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
-				#{rechargeID,	 mode=IN,	jdbcType=BIGINT},
-				#{memberType ,	 mode=IN,	jdbcType=INTEGER},
-				#{memberID ,	 mode=IN,	jdbcType=BIGINT},
-				#{thirdMerBillno ,	 mode=IN,	jdbcType=VARCHAR},
-				#{withdrawalMoney ,	 mode=IN,	jdbcType=BIGINT},
-				#{mngFeeRepay ,	 mode=IN,	jdbcType=BIGINT},
-				#{userFee ,	 mode=IN,	jdbcType=BIGINT},
-				#{remark ,	 mode=IN,	jdbcType=VARCHAR},
-				#{tradeID ,	 mode=IN,	jdbcType=BIGINT},
+  				#{tradeID ,	 mode=IN,	jdbcType=BIGINT},
 				#{tradeIDtow ,	 mode=IN,	jdbcType=BIGINT},
+				#{memberID ,	 mode=IN,	jdbcType=BIGINT},
+				#{rechargeID,	 mode=IN,	jdbcType=BIGINT},
+				#{cardid,	 mode=IN,	jdbcType=BIGINT},
+				#{memberType ,	 mode=IN,	jdbcType=INTEGER},
+				#{withdrawalID ,	 mode=IN,	jdbcType=INTEGER},
+				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{thirdBillNo ,	 mode=IN,	jdbcType=VARCHAR},
+				#{iMoney ,	 mode=IN,	jdbcType=BIGINT},
+				#{iMngFee ,	 mode=IN,	jdbcType=BIGINT},
+				#{iThirdMngFee ,	 mode=IN,	jdbcType=BIGINT},
+				#{feeWithdraws ,	 mode=IN,	jdbcType=BIGINT},
+				#{bankCardNo ,	 mode=IN,	jdbcType=VARCHAR},
+				#{isNeedCheck ,	 mode=IN,	jdbcType=INTEGER},
+				#{sMoney ,	 mode=IN,	jdbcType=VARCHAR},
+				#{sMngFee ,	 mode=IN,	jdbcType=VARCHAR},
+				#{sThirdMng ,	 mode=IN,	jdbcType=VARCHAR},
+				#{PlatformFee ,	 mode=IN,	jdbcType=INTEGER},
 				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
 				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
-				#{integralID ,	 mode=IN,	jdbcType=BIGINT},
-				#{memberRPID ,	 mode=IN,	jdbcType=BIGINT},
 				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
 				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
   </select>
-  
   
   <!-- 提现平台审核返回 、银行打回 -->
   <select id="WithdraBack" resultType="Map" statementType="CALLABLE">
@@ -676,6 +705,11 @@
   			values(#{mvPayId},#{memberId},HEX(AES_ENCRYPT(#{amount},#{skey})),now(),0,#{recordNo}
   					,#{thirdId},now(),'')
   </insert>
+  <!-- 查询出vip购买年费金额 -->
+  <select id="findYearMoney" resultType="long">
+  	select VIP_Attest from VIP_Set_Sub limit 1
+  </select>
+  
   
   <!-- 购买vip返回处理 -->
   <select id="PurchaseVipBack" resultType="Map" statementType="CALLABLE">
@@ -692,9 +726,20 @@
 				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
 				#{skey ,	 	 mode=IN,	jdbcType=VARCHAR},
 				#{subStrin ,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{startDate ,	 	 mode=IN,	jdbcType=VARCHAR},
 				#{result,	 	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
+  </select>
+  
+  <select id="EndTimeComparison" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call EndTimeComparison(
+				#{memberId,	 	 mode=IN,	jdbcType=BIGINT},
+  				#{startTime,	 	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  
   </select>
   
 </mapper>

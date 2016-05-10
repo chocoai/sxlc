@@ -1,0 +1,37 @@
+td.tt{
+	padding:10px 25px;
+}
+td.con{
+	max-width:350px;
+}
+td.con img{
+	width:100px;
+	height:100px;
+}
+.con-item input{
+	margin-right:8px;
+}
+#alertAudit{
+	display:none;
+}
+/* 图片展示 */
+.imgDisplay{
+	float:left;
+}
+/* 条件查询   */
+.con-item{
+	display:inline-block;
+	min-width:325px;
+	max-width:325px;
+	text-align:right;
+	line-height:20px;
+}
+.con-item select{
+	width:200px;
+}
+.search .dateInput{
+	width:90px;
+}
+.search input{
+	width:200px;
+}

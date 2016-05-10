@@ -41,11 +41,15 @@ $(function() {
             	if (endDate != null && endDate != "") {
             		var result5 = encrypt.encrypt((endDate + ""));
                 }
+            		var result = encrypt.encrypt((1 + ""));
+            		var result6 = encrypt.encrypt((1 + ""));
                 	d.orderNumber = result1;
                 	d.batch = result2;
                 	d.statu = result3;
                 	d.startDate = result4;
                 	d.endDate = result5;
+                	d.dealType = result;
+                	d.memberType = result6;
             } 
         },
         columns: [  

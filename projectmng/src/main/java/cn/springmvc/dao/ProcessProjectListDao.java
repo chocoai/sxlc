@@ -36,4 +36,11 @@ public interface ProcessProjectListDao {
 	 * @return 
 	 */
 	public  int  selectProcessProjectindex();
+	
+	/**
+	 * 查询项目审批流程列表
+	 * @param 
+	 * @return
+	 */
+	public List<ProcessProjectEntity> selectProcessProjectList();
 }

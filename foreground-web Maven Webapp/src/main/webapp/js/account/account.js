@@ -200,10 +200,7 @@ $(function(){
 
 /*以下为封装内容*/
 /* input标签的输入改变      */
-$(function(){
-	inputText("");
-	inputSelect();
-});
+
 function inputText(str){
 	$(str+" :text").each(function(){
 		$(this).val($(this).attr("lang"));
@@ -261,6 +258,10 @@ function inputSelect(){
 		});
 	});
 }
+$(function(){
+	inputText("");
+	inputSelect();
+});
 /*    图片预览js代码         胥福星             20160331   */
 function getFileUrl(sourceId){
 	var url; 

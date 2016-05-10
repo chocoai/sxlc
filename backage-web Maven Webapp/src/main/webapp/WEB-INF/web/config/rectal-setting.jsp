@@ -40,8 +40,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="panel panel-success">
 						<div class="panel-heading">
 							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-pic-add" onclick="addOrUpdate(1)" type="button">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-pic-mod" onclick="addOrUpdate(2)" type="button">修改</button>
+								<button class="obtn glyphicon glyphicon-plus obtn-pic-add" onclick="handleBtn(1)" type="button">添加</button>
+								<button class="obtn glyphicon glyphicon-pencil obtn-pic-mod" onclick="handleBtn(2)" type="button">修改</button>
 							</div>
 						</div>
 						<div class="panel-body">
@@ -55,6 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				   <form action="" id="dataForm" method="post">
 					<table>
 						<tr>
+							<input type="hidden" id="rewardId">
 							<td class="tt"><label class="ineed">等级名称</label></td>
 							<td class="con"><input type="text" class="gradeName" placeholder="" datatype="rolename"></td>
 						</tr>
@@ -64,7 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">等级描述</label></td>
-							<td class="con" ><textarea datatype="rolemark" class="recaltextarea"></textarea></td>
+							<td class="con" ><textarea datatype="describeC" class="recaltextarea"></textarea></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">推荐VIP提奖金额</label></td>

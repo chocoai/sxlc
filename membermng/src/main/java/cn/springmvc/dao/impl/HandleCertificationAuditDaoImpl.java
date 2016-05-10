@@ -75,6 +75,25 @@ public class HandleCertificationAuditDaoImpl extends SqlSessionDaoSupport implem
 		getSqlSession().selectOne("EnterpriseCAXML.handleAddress", map);
 		return map;
 	}
-
-
+	@Override
+	public Map<String, Object> AutomaticBidSetting(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return null;
+		getSqlSession().selectOne("EnterpriseCAXML.AutomaticBidSetting", map);
+		return map;
+	}
+	@Override
+	public int delAutomaticBidSetting(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().delete("EnterpriseCAXML.delAutomaticBidSetting", map);
+	}
+	@Override
+	public Map<String, Object> DistributionFinancialAdvisor(
+			Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return null;
+		getSqlSession().selectOne("EnterpriseCAXML.DistributionFinancialAdvisor", map);
+		return map;
+	}
 }

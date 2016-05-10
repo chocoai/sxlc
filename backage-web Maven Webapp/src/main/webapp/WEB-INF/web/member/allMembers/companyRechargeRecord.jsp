@@ -26,10 +26,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<div>
-										<span class="con-item"><span>充值金额</span><input type="text" class="" /></span>
+									<span class="con-item"><span>充值金额</span><input type="text" class="" /></span>
 									<span class="con-item"><span>充值时间范围</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
-									</div>
 									<span class="con-item"><span>充值状态</span><input type="text" class="notspecial" /></span>
 									<span class="con-item"><span>到账时间范围</span><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" ></span>
 									<span class="con-item"><span>第三方交易流水号</span><input type="text" class="notspecial" /></span>

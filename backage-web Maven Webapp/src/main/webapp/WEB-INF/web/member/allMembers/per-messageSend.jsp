@@ -11,7 +11,7 @@
 
 <head>
 	<base href="<%=basePath%>">
-	<title>会员重置密码</title>
+	<title>会员消息发送</title>
 	<!-- 公用meta -->
 	<jsp:include page="../../common/top-meta.jsp"></jsp:include>
 	<!-- 公用css -->
@@ -29,9 +29,9 @@
 					<div class="linkMan"><label>手机号：</label><span>18855848784</span></div>
 					<div class="linkMan"><label>邮箱：</label><span>44845147@qq.com</span></div>
 					<div class="mode"><label>发送方式：</label>
-						<input name="transmitMode" type="radio" checked ><label for="transmitMode">手机</label>
-						<input name="transmitMode" type="radio" ><label for="transmitMode">邮箱</label>
-						<input name="transmitMode" type="radio" ><label for="transmitMode">站内信</label>
+						<label for="transmitphone"><input name="transmit" id="transmitphone" type="radio" checked >手机</label>
+						<label for="transmitemail"><input name="transmit" id="transmitemail" type="radio" >邮箱</label>
+						<label for="transmitIemail"><input name="transmit" id="transmitIemail" type="radio" >站内信</label>
 					</div>
 					<div><label>消息内容：</label><textarea class="sentContent"></textarea></div>
 				</div>

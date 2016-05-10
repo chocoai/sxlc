@@ -31,6 +31,7 @@ public class InvestDetailedEntity {
 	private String sdRecvPrincipals;//预期本金
 	private String sdRecvInterests;//预期收益
 	private String holdDate;//投资成功时间
+	private String nextReplayDay;//预期收益时间
 	public String getProjectTitle() {
 		return projectTitle;
 	}
@@ -93,6 +94,12 @@ public class InvestDetailedEntity {
 	}
 	public void setHoldDate(String holdDate) {
 		this.holdDate = holdDate;
+	}
+	public String getNextReplayDay() {
+		return nextReplayDay;
+	}
+	public void setNextReplayDay(String nextReplayDay) {
+		this.nextReplayDay = nextReplayDay;
 	}
 }
 

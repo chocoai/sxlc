@@ -40,7 +40,7 @@
    					</div>
    					<div class="myInvestmentM">
    						<ul class="recycleUl" id="recycleUl">
-   							<li>
+   							<li id="recyTop">
    								<div class="myInvestmentMTitle">
 					   				<div class="productNum">项目编号</div>
 					   				<div class="productName">项目名称</div>
@@ -55,68 +55,6 @@
 					   				<div class="opreations">操作</div>
 		   						</div>
    							</li>
-   							
-   							<!-- <li>
-   								<div class="productNum divOutside">
-		   							<div class="divIntside">
-		   								<div> XMBH-<br>00000001</div>
-		   							</div>
-		   						</div>
-		   						<div class="productName divOutside">
-		   							<div class="divIntside">
-		   								<div>借款信用贷</div>
-		   								<div>买房急需钱</div>
-		   							</div>
-		   						</div>
-		   						<div class="lender divOutside">
-		   							<div class="divIntside">
-		   								<div>刘***5</div>
-		   							</div>
-		   						</div>
-		   						<div class="investNum divOutside">
-		   							<div class="divIntside">
-		   								<div class="moneyFormat">200</div>
-		   							</div>
-		   						</div>
-		   						<div class="remainingNum divOutside">
-		   							<div class="divIntside">
-		   								<div>2个月</div>
-		   							</div>
-		   						</div>
-		   						<div class="remainingMoney divOutside">
-		   							<div class="divIntside">
-		   								<div class="moneyFormat">100</div>
-		   							</div>
-		   						</div>
-		   						<div class="remainingInterest divOutside">
-		   							<div class="divIntside">
-		   								<div class="moneyFormat">10</div>
-		   							</div>
-		   						</div>
-		   						<div class="nextPaymentT divOutside">
-		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
-		   							</div>
-		   						</div>
-		   						<div class="nextPaymentM divOutside">
-		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
-		   							</div>
-		   						</div>
-		   						<div class="nextPaymentI divOutside">
-		   							<div class="divIntside">
-		   								<div class="moneyFormat">100</div>
-		   							</div>
-		   						</div>
-   								<div class="opreations divOutside">
-		   							<div class="divIntside">
-		   								<div class="profitPlan"><a href="investmentManagement/revenuePlan.html">收益计划</a></div>
-		   								<div class="agreement"><a href="#">协议</a></div>
-		   								<div class="supervise"><span></span><a href="#">贷后监管</a></div>
-		   							</div>
-		   						</div>
-   							</li> -->
-   							
    						</ul>
    						<!-- 回收中模版 -->
    						<script id="recy_list" type="text/html">
@@ -162,27 +100,27 @@
 		   						</div>
 		   						<div class="remainingInterest divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">{{$toFixed infos.remaimInterests}}</div>
+		   								<div class="moneyFormat">{{infos.remaimInterests}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="nextPaymentT divOutside">
 		   							<div class="divIntside">
-		   								<div>{{$toDelete infos.nextReplayDay}}</div>
+		   								<div>{{infos.nextReplayDay}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="nextPaymentM divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">{{$toFixed infos.nextPrincipals}}</div>
+		   								<div class="moneyFormat">{{infos.nextPrincipals}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="nextPaymentI divOutside">
 		   							<div class="divIntside">
-		   								<div class="moneyFormat">{{$toFixed infos.nextInterests}}</div>
+		   								<div class="moneyFormat">{{infos.nextInterests}}</div>
 		   							</div>
 		   						</div>
    								<div class="opreations divOutside">
 		   							<div class="divIntside">
-		   								<div class="profitPlan"><a href="investmentManagement/revenuePlan/{{infos.investId}}.html">收益计划</a></div>
+		   								<div class="profitPlan"><a href="investmentManagement/revenuePlan/{{infos.investId}}/1.html?investId={{infos.investId}}">收益计划</a></div>
 		   								<div class="agreement"><a href="#">协议</a></div>
 		   								<div class="supervise"><span></span><a href="#">贷后监管</a></div>
 		   							</div>
@@ -192,7 +130,7 @@
 						<li class="page"><div id="pager"></div></li>
    						</script>
    						<ul class="settledUl" id="settledUl">
-   							<li>
+   							<li id="settledTop">
    								<div class="myInvestmentMTitle">
 					   				<div class="productNum">项目编号</div>
 					   				<div class="productName">项目名称</div>
@@ -254,7 +192,7 @@
 		   						</div>
    								<div class="opreations divOutside">
 		   							<div class="divIntside">
-		   								<div class="profitPlan"><a href="investmentManagement/revenuePlan/{{infos.investId}}.html">收益计划</a></div>
+		   								<div class="profitPlan"><a href="investmentManagement/revenueRecord/{{infos.investId}}/1.html?investId={{infos.investId}}">收益计划</a></div>
 		   								<div class="agreement"><a href="#">协议</a></div>
 		   							</div>
 		   						</div>
@@ -263,7 +201,7 @@
    							<li class="page"><div id="pager1"></div></li>
    						</script>
    						<ul class="bidingUl" id="bidingUl">
-   							<li>
+   							<li id="bidingTop">
    								<div class="myInvestmentMTitle">
 					   				<div class="productNum">项目编号</div>
 					   				<div class="productName">项目名称</div>
@@ -277,56 +215,7 @@
 		   						</div>
    							</li>
    							
-   							<!-- <li>
-   								<div class="productNum divOutside">
-		   							<div class="divIntside">
-		   								<div> XMBH-<br>00000001</div>
-		   							</div>
-		   						</div>
-		   						<div class="productName divOutside">
-		   							<div class="divIntside">
-		   								<div>借款信用贷</div>
-		   								<div>买房急需钱</div>
-		   							</div>
-		   						</div>
-		   						<div class="lender divOutside">
-		   							<div class="divIntside">
-		   								<div>刘***5</div>
-		   							</div>
-		   						</div>
-		   						<div class="investNum divOutside">
-		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
-		   							</div>
-		   						</div>
-		   						<div class="annualInterestRate divOutside">
-		   							<div class="divIntside">
-		   								<div>8%</div>
-		   							</div>
-		   						</div>
-		   						<div class="investmentProgress divOutside">
-		   							<div class="divIntside">
-		   								<div>50%</div>
-		   							</div>
-		   						</div>
-		   						<div class="bidTerm divOutside">
-		   							<div class="divIntside">
-		   								<div>2个月</div>
-		   							</div>
-		   						</div>
-		   						<div class="repaymentMethod divOutside">
-		   							<div class="divIntside">
-		   								<div>到期还本息</div>
-		   							</div>
-		   						</div>
-		   						<div class="biddingTime divOutside">
-		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
-		   							</div>
-		   						</div>
-   							</li>
-   							
-   							<li class="page"><div id="pager2"></div></li> -->
+
    						</ul>
    						<!-- 投标中 模版 -->
    						<script id="biding_list" type="text/html">
@@ -390,7 +279,7 @@
    							<li class="page"><div id="pager2"></div></li>
    						</script>
    						<ul class="bidMissedUl" id="bidMissedUl">
-   							<li>
+   							<li id="bidMisseTop">
    								<div class="myInvestmentMTitle">
 					   				<div class="productNum">项目编号</div>
 					   				<div class="productName">项目名称</div>
@@ -402,52 +291,7 @@
 					   				<div class="bidMissedTime" id="bidMissed_bidMissedTime">流标时间<em class="iconDown"></em></div>
 		   						</div>
    							</li>
-   							
-   							<!-- <li>
-   								<div class="productNum divOutside">
-		   							<div class="divIntside">
-		   								<div> XMBH-<br>00000001</div>
-		   							</div>
-		   						</div>
-		   						<div class="productName divOutside">
-		   							<div class="divIntside">
-		   								<div>借款信用贷</div>
-		   								<div>买房急需钱</div>
-		   							</div>
-		   						</div>
-		   						<div class="lender divOutside">
-		   							<div class="divIntside">
-		   								<div>刘***5</div>
-		   							</div>
-		   						</div>
-		   						<div class="investNum divOutside">
-		   							<div class="divIntside">
-		   								<div class="moneyFormat">1000</div>
-		   							</div>
-		   						</div>
-		   						<div class="annualInterestRate divOutside">
-		   							<div class="divIntside">
-		   								<div>8.00%</div>
-		   							</div>
-		   						</div>
-		   						<div class="bidTerm divOutside">
-		   							<div class="divIntside">
-		   							<div>2个月</div>
-		   							</div>
-		   						</div>
-		   						<div class="biddingTime divOutside">
-		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
-		   							</div>
-		   						</div>
-		   						<div class="bidMissedTime divOutside">
-		   							<div class="divIntside">
-		   								<div>2016-04-07<br>12:12:00</div>
-		   							</div>
-		   						</div>
-   							</li>
-   							
-   							<li class="page"><div id="pager3"></div></li> -->
+   						
    						</ul>
    						<!-- 已流标 模版 -->
    						<script id="bidMissed_list" type="text/html">
@@ -506,7 +350,7 @@
    							<li class="page"><div id="pager3"></div></li>
    						</script>
    						<ul class="bidEndUl" id="bidEndUl">
-   							<li>
+   							<li id="bidEndTop">
    								<div class="myInvestmentMTitle">
 					   				<div class="productNum">项目编号</div>
 					   				<div class="productName">项目名称</div>

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
+import cn.membermng.model.BlackLimitEntity;
+import cn.membermng.model.BlackRecordEntity;
 import cn.membermng.model.BorrowingStatistics;
 import cn.membermng.model.InvitationMembers;
 import cn.membermng.model.MemberAll;
@@ -13,8 +15,10 @@ import cn.membermng.model.MemberDetaileInfo;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberInfoEntity;
 import cn.membermng.model.MemberInvestmentInfo;
+import cn.membermng.model.MemberResetPwdEntity;
 import cn.membermng.model.MemberThirdInfo;
 import cn.membermng.model.MemberTradingRecordsEntity;
+import cn.membermng.model.MyRecommand;
 import cn.membermng.model.TradingTypeEntity;
 import cn.membermng.model.VIPMemberInfos;
 
@@ -244,5 +248,76 @@ public interface IMemberManagerReadDao {
 	* @date 2016-3-22 下午5:49:18
 	*/
 	public List<MemberInfo> blackList(PageEntity entity);
+
+	
+	/**
+	 * 会员黑名单移除记录列表
+	 * TODO
+	 * 创建日期：2016-5-5下午8:48:20
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<BlackRecordEntity>
+	 */
+	public List<BlackRecordEntity>  blackRecord(PageEntity entity);
+	
+	/**
+	 * 会员重置密码记录
+	 * TODO
+	 * 创建日期：2016-5-5下午3:47:18
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return void
+	 */
+	public List<MemberResetPwdEntity> memberResetPwdList(PageEntity entity);
+
+	
+	/**
+	 * 我的邀请人
+	 * TODO
+	 * 创建日期：2016-5-5下午8:34:10
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return MyRecommand
+	 */
+	public MyRecommand  MyRecommandMan(Map<String,Object> map);
+	
+	
+	/**
+	 * 邀请人列表
+	 * TODO
+	 * 创建日期：2016-5-5下午8:35:31
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return void
+	 */
+	public  List<MyRecommand> ExceptMyRecommandMan(PageEntity entity);
+	
+	
+	/**
+	 * 黑名单受限
+	 * TODO
+	 * 创建日期：2016-5-10上午10:40:12
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<BlackLimitEntity>
+	 */
+	public List<BlackLimitEntity> blackLimtList();
+	
+	/**
+	 * 黑名单限制数量
+	 * TODO
+	 * 创建日期：2016-5-10上午11:29:31
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	public int countLimit();
+	
 	
 }

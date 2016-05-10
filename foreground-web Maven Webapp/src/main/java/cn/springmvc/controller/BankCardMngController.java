@@ -131,7 +131,7 @@ public class BankCardMngController {
 			if(bankNo==null || bankId==0 || cardProvince ==0 || cardCity==0 || branch==null || branchAddress==null||bankPhone==null){
 				//参数错误
 				message.put("code", 404);
-				message.put("message", "参数错误1");
+				message.put("message", "参数错误");
 				return JSONObject.toJSONString(message);
 			}
 			
@@ -145,7 +145,7 @@ public class BankCardMngController {
 		} catch (NullPointerException e) {
 			//参数错误
 			message.put("code", 404);
-			message.put("message", "参数错误2");
+			message.put("message", "参数错误");
 			return JSONObject.toJSONString(message);
 		}
 		
@@ -200,7 +200,7 @@ public class BankCardMngController {
 	* @date 2016-5-4 上午9:26:53
 	* @throws
 	 */
-	@RequestMapping(value="/selectMemberBankCardByID",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/selectMemberBankCardByID",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String selectMemberBankCardByID(HttpServletRequest request){
 		Long bankCardId = Long.parseLong(request.getParameter("bankCardId"));

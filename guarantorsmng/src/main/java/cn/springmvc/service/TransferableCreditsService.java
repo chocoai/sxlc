@@ -48,7 +48,7 @@ public interface TransferableCreditsService {
 	* @date 2016-3-31 上午11:32:16
 	* @throws 
 	*/
-	public Map<String, Object> creditorTransApp(Map<String, Object> map);
+	public int creditorTransApp(Map<String, Object> map);
 }
 
 

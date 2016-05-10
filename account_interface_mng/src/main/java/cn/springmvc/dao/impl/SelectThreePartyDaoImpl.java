@@ -2,6 +2,7 @@
 package cn.springmvc.dao.impl; 
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -318,6 +319,22 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("ThreePartyXML.RecommendedTalentAward",map);
+	}
+	@Override
+	public long findYearMoney() {
+		
+		// TODO Auto-generated method stub return 0;
+		return getSqlSession().selectOne("ThreePartyXML.findYearMoney");
+	}
+	@Override
+	public int EndTimeComparison(long memberId,String startTime) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberId", memberId);
+		map.put("startTime", startTime);
+		// TODO Auto-generated method stub return null;
+		getSqlSession().selectOne("ThreePartyXML.EndTimeComparison",map);
+		int result = IntegerAndString.StringToInt(map.get("result").toString(),0);
+		return result;
 	}
 }
 

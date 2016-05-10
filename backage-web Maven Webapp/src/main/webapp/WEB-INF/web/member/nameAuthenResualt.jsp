@@ -53,8 +53,10 @@ int content = IntegerAndString.StringToInt(request.getParameter("content"),0);
 								</div>
 								<div class="introduce">
 									<span><samp>籍贯：</samp><label  id="native"></label></span>
-									<span><samp>有效期：</samp><label  id="validTime"></label></span>
 									<span><samp>身份证号：</samp><label id="idcard"></label></span>
+								</div>
+								<div class="introduce">
+									<samp>有效期：</samp><input readonly="readonly" id="sEndDate" class="Wdate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
 								</div>
 								<div><samp class="appendix">认证附件：</samp><img id="right_idcard" alt="身份证正面" width="220" height="110"><img id="left_idcard" alt="身份证反面"  width="220" height="110"></div>
 								<div><samp>审核意见：</samp><select class="verifySelect" id="statu"><option value="2">同意</option><option value="3">打回</option></select></div>

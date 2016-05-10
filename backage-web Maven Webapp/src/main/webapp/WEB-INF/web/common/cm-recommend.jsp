@@ -7,6 +7,12 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
+			<script type="text/javascript">
+				_index.m2 = '<%=request.getParameter("_index_m2")%>';
+				_index.m3 = '<%=request.getParameter("_index_m3")%>';
+				//console.log(_index.m2+";"+_index.m3);
+			</script>
+
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                 	<div class="navbar nav_title">
@@ -20,7 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <ul class="nav side-menu">
-                                <li id="admin" class="li_level_one active" data-id="901">
+                                <li id="admin" class="li_level_one" data-id="901">
                                 	<a href="web/recommend/guarantee-manage.jsp"><i class="fa fa-edit"></i>担保机构管理</a>
                                  </li>
                                 <li id="admin" class="li_level_one" data-id="902">
@@ -29,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 <li id="admin" class="li_level_one" data-id="903">
                                 	<a href="web/recommend/account-center.jsp"><i class="fa fa-edit"></i>账户中心</a>
                                  </li>
-                                <li id="admin" class="li_level_one" data-id="9011">
+                                <li id="admin" class="li_level_one" data-id="911">
                                 	<a href="web/recommend/guarantee-record-query.jsp"><i class="fa fa-edit"></i>担保记录查询</a>
                                  </li>
                                 <li id="admin" class="li_level_one" data-id="904">

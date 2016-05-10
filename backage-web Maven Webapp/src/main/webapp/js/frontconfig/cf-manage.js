@@ -2,11 +2,6 @@
  * 版块：前台界面配置-管理团队
  * 内容介绍：
  */
-
-//加密设置
-var encrypt = new JSEncrypt();
-encrypt.setPublicKey(publicKey_common);
-
 $(function() {
 	validform5(".layui-layer-btn0","dataForm",false,3);
 	$('#teamTb').DataTable(
@@ -22,7 +17,13 @@ $(function() {
 						d.startTime = addDate;  
 					}  
 				},
-				columns: [  
+				columns: [ 
+				          {title:'',sWidth:"3%", 
+				        	  "mRender": function (data, type, full) {
+				        		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
+				        		  return sReturn;
+				        	  }
+				          },
 				          { title:"teamId","data": "id"},  
 				          { title:"头像","data": "portraitUrl"},  
 				          { title:"添加时间","data": "createTime"},  
@@ -56,28 +57,33 @@ $(function() {
 
 				          ],
 	          aoColumnDefs : [
-	                          {"bVisible": false, "aTargets": [ 0,1]}, //控制列的隐藏显示
+	                          {"bVisible": false, "aTargets": [ 1,2]}, //控制列的隐藏显示
 	                          {
 	                        	  "orderable" : false,
-	                        	  "aTargets" : [0,1,3,4,5,6,7,8,9]
+	                        	  "aTargets" : [0,1,2,4,5,6,7,8,9,10]
 	                          } // 制定列不参与排序
 	                          ],
               pagingType: "simple_numbers",//设置分页控件的模式  
               processing: true, //打开数据加载时的等待效果  
               serverSide: true,//打开后台分页  
-//              info:false,
+              scrollCollapse: true,
+	          scrollX : "100%",
+			  scrollXInner : "100%",
               rowCallback:function(row,data){//添加单击事件，改变行的样式      
               }
 	 
 	});//表格初始化完毕
 	 
-	//表格单选效果
+	//表格单选效果(有复选框)
 	 $('#teamTb tbody').on( 'click', 'tr', function () {
 		    var $this = $(this);
+		    var $checkBox = $this.find("input:checkbox");
 	        if ( $this.hasClass('selected') ) {
+	        	 $checkBox.prop("checked",false);
 	        	$this.removeClass('selected');
-	        }
-	        else {
+	        } else {
+	        	$(".tr-checkbox").prop("checked",false);
+	        	$checkBox.prop("checked",true);
 	        	$('#teamTb tr.selected').removeClass('selected');
 	        	$this.addClass('selected');
 	        }

@@ -1,3 +1,38 @@
+/**
+ * 会员vip记录
+ */
+function  showVipRecord(memberId){
+	$.ajax( {  
+		 url:appPath+"/member/getVipBuyList.do",
+			data:{
+				memberId:memberId
+			},
+			type:'get',  
+			cache:false,  
+			dataType:'json',   
+			success:function(result) { 
+				
+				if(result!=null){
+					var data = result.results;
+					if(data.length>0){
+						var type="购买";
+						$.each(data,function(i,obj){
+							if(obj.VipType==1){
+								type="升级";
+							}
+							$("#vipRecord").append("<tr><td>"+obj.statrTime+"</td><td>"+obj.endTime+"</td><td>"+type+"</td><td>"+obj.amount+"</td></tr>");
+						});
+					}
+				}
+			},  
+			error : function() {  
+				layer.alert("服务器异常",{icon:2});  
+			}  
+		});
+}
+
+
+
 /*  对会员详情进行显示控制         */
 /**
  * 会员基本信息

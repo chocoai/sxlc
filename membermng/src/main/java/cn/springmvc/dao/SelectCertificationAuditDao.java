@@ -5,6 +5,7 @@ import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.AutomaticBidSettingEntity;
+import cn.membermng.model.EnterpriseAttestEntity;
 import cn.membermng.model.EnterpriseLicenseAttestEntity;
 import cn.membermng.model.ExistingFinancialAdvisorEntity;
 import cn.membermng.model.FinancialAdvisorEntity;
@@ -274,5 +275,19 @@ public interface SelectCertificationAuditDao {
 	*/
 	public  List<ExistingFinancialAdvisorEntity> ChangeHistory(
 			PageEntity page);
+	
+	
+	/** 
+	* sEnterpriseLicenseAttestByID 根据认证类型查询认证详情
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: sEnterpriseLicenseAttestByID 
+	* @Description: TODO 
+	* @param @return 设定文件 
+	* @return EnterpriseAttestEntity 返回类型 
+	* @date 2016-5-10 下午8:38:15
+	* @throws 
+	*/
+	public EnterpriseAttestEntity sEnterpriseLicenseAttestByID(Map<String, Object> map);
 }
 

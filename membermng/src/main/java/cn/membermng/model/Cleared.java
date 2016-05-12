@@ -1,6 +1,9 @@
 package cn.membermng.model;
 
+import java.sql.Timestamp;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 
 
@@ -114,7 +117,8 @@ public class Cleared {
 
 	public void setAmount(long amount) {
 		this.amount = amount;
-		this.sAmount = IntegerAndString.LongToString(amount);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sAmount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(amount))) ;      
 	}
 
 
@@ -135,7 +139,8 @@ public class Cleared {
 
 	public void setSjAmount(long sjAmount) {
 		this.sjAmount = sjAmount;
-		this.sSjinAmount = IntegerAndString.LongToString(sjAmount);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sSjinAmount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(sjAmount))) ;     
 	}
 
 
@@ -156,7 +161,8 @@ public class Cleared {
 
 	public void setYearRate(int yearRate) {
 		this.yearRate = yearRate;
-		this.sYearRate = IntegerAndString.IntToString(yearRate);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sYearRate =  myformat.format(Double.valueOf(IntegerAndString.LongToString(yearRate))) ;     
 	}
 
 
@@ -176,7 +182,7 @@ public class Cleared {
 
 
 	public void setHoldDate(String holdDate) {
-		this.holdDate = holdDate;
+		this.holdDate = TimestampAndString.TimestampToString2(Timestamp.valueOf(holdDate));
 	}
 
 
@@ -186,7 +192,7 @@ public class Cleared {
 
 
 	public void setSettleDate(String settleDate) {
-		this.settleDate = settleDate;
+		this.settleDate = TimestampAndString.TimestampToString2(Timestamp.valueOf(settleDate));
 	}
 
 
@@ -197,8 +203,9 @@ public class Cleared {
 
 	public void setRepayPrincipal(long repayPrincipal) {
 		this.repayPrincipal = repayPrincipal;
-		this.sRepayPrincipal = IntegerAndString.LongToString(repayPrincipal);
-	}
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepayPrincipal =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repayPrincipal))) ;    
+	 }
 
 
 	public String getsRepayPrincipal() {
@@ -218,7 +225,8 @@ public class Cleared {
 
 	public void setRepayInterest(long repayInterest) {
 		this.repayInterest = repayInterest;
-		this.sRepayInterest = IntegerAndString.LongToString(repayInterest);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepayInterest =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repayInterest))) ;    
 	}
 
 
@@ -239,7 +247,8 @@ public class Cleared {
 
 	public void setRepayOverdueInterest(long repayOverdueInterest) {
 		this.repayOverdueInterest = repayOverdueInterest;
-		this.sRepayOverdueInterest = IntegerAndString.LongToString(repayOverdueInterest);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepayOverdueInterest =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repayOverdueInterest))) ;   
 	}
 
 
@@ -260,7 +269,8 @@ public class Cleared {
 
 	public void setRepayOverdue(long repayOverdue) {
 		this.repayOverdue = repayOverdue;
-		this.sRepayOverdue = IntegerAndString.LongToString(repayOverdue);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepayOverdue =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repayOverdue))) ;    
 	}
 
 
@@ -281,7 +291,9 @@ public class Cleared {
 
 	public void setRepayPenalty(long repayPenalty) {
 		this.repayPenalty = repayPenalty;
-		this.sRepayPenalty = IntegerAndString.LongToString(repayPenalty);
+
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepayPenalty =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repayPenalty))) ;   
 	}
 
 

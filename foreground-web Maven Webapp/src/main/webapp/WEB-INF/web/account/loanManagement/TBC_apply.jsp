@@ -12,7 +12,7 @@
     <title>待确认借款申请</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
-	<link rel="stylesheet" href="plugs/laypage/skin/laypage.css" type="text/css">
+	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/loanManagement/myLoan.css">
 </head>
 <body> 
@@ -296,7 +296,7 @@
    		</div>
    	</div>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script>
+	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/myLoan.js"></script>
 	<script type="text/javascript">
 		getApply();

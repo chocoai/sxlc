@@ -22,6 +22,7 @@ import cn.springmvc.model.MemberAttestTypeEntity;
 import cn.springmvc.model.ProjectAppProcessEntity; 
 import cn.springmvc.model.ProjectAppRecordEntity; 
 import cn.springmvc.model.ProjectCheckAttachEntity;
+import cn.springmvc.model.ProjectDetailTYEntity;
 
 /** 
  * @author 刘利 
@@ -132,5 +133,16 @@ public interface projectDetailService {
      * @date 2016-4-13 上午10:59:30
      */
     public  ProjectAppRecordEntity  selectInvestAvailableaAmount(long applyID); 
+    
+    /**
+     * 后台显示项目详情
+     * @author 刘利   
+     * @Description: TODO 
+     * @param @param applyId
+     * @param @return 设定文件 
+     * @return ProjectDetailTYEntity 返回类型 
+     * @date 2016-5-11 下午3:59:37
+     */
+    public ProjectDetailTYEntity selectProjectdetailByIDbc(long applyId);
 }
 

@@ -49,8 +49,17 @@ public class RewardsMngController {
 		long[] lMemberInfo = new long[2] ;
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
-		MyRedPackage entity=memberService.myRedpackage((int)lMemberInfo[0], lMemberInfo[1]);
-		
+		MyRedPackage entity=memberService.myRedpackage((int)lMemberInfo[1], lMemberInfo[0]);
+		if(entity.getsRedPackageSum()==null){
+			entity.setsRedPackageSum("0");
+		}
+		if(entity.getsExpiredSum()==null){
+			entity.setsExpiredSum("0");
+		}
+		if(entity.getsUseRedPackageSum()==null){
+			entity.setsUseRedPackageSum("0");
+		}
+		entity.setCanUseRedPackageSum(entity.getRedPackageSum()-entity.getExpiredSum()-entity.getUseRedPackageSum());
 		Map<String, Object> message = new HashMap<String, Object>();
 		
 		message.put("status", 0);
@@ -88,7 +97,7 @@ public class RewardsMngController {
 		
 		PageEntity entity = new PageEntity();
 		entity.setMap(param);
-		entity.setPageNum(start/length+1);
+		entity.setPageNum(start);
 		entity.setPageSize(length);
 		
 		 List<RadPackage> list =  memberService.redPackages(entity);

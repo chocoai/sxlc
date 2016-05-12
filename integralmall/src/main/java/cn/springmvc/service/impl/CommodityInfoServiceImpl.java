@@ -124,10 +124,10 @@ public class CommodityInfoServiceImpl implements CommodityInfoService {
 		
 	}
 	@Override
-	public List<InventoryRecordsEntity> selectInventoryrecordsIn(
-			PageEntity pageEntity) {
-		
-		return commodityInfoListDao.selectInventoryrecordsIn(pageEntity);
+	public List<InventoryRecordsEntity> selectInventoryrecordsIn(PageEntity pageEntity) {
+		List<InventoryRecordsEntity> list = commodityInfoListDao.selectInventoryrecordsIn(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 		
 	}
 	@Override

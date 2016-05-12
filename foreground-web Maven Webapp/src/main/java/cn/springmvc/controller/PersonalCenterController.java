@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.StringUtil.StringUtils;
+import product_p2p.kit.Upload.FtpClientUtil;
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
@@ -30,6 +31,7 @@ import cn.invitemastermng.model.InviteMasterAwardRecordEntity;
 import cn.membermng.model.BorrowingType;
 import cn.membermng.model.CurrencyAuth;
 import cn.membermng.model.ExchangeRecords;
+import cn.membermng.model.Friends;
 import cn.membermng.model.IntegralGETRecord;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.MemberMessageConfig;
@@ -44,6 +46,7 @@ import cn.springmvc.service.EmailBindingService;
 import cn.springmvc.service.FinancialAdvisorService;
 import cn.springmvc.service.IBorrowingCertificationServer;
 import cn.springmvc.service.IMemberService;
+import cn.springmvc.service.InviteMasterApplyService;
 import cn.springmvc.service.ManagedInterfaceServerTestI;
 import cn.springmvc.service.MemberMsgSetService;
 import cn.springmvc.service.MobilePhoneBindingService;
@@ -97,7 +100,8 @@ public class PersonalCenterController{
 	
 	@Autowired
 	private FinancialAdvisorService financialAdvisorService;
-
+	@Autowired
+	private InviteMasterApplyService inviteMasterApplyService;
 	/****
 	 * 会员基本信息
 	 * 
@@ -676,7 +680,46 @@ public class PersonalCenterController{
 			break;	
 			case 12:
 				pagePath = "account/personalCenter/LC_company_BL";
-			break;			
+			break;
+			case 13:
+				pagePath = "account/personalCenter/LC_company_ICL";
+			break;
+			case 14:
+				pagePath = "account/personalCenter/LC_company_OC";
+			break;
+			case 15:
+				pagePath = "account/personalCenter/LC_company_AL";
+			break;
+			case 16:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;
+			case 17:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;
+			case 18:
+				pagePath = "account/personalCenter/LC_company_TR";
+			break;	
+			case 19:
+				pagePath = "account/personalCenter/LC_company_approval";
+			break;
+			case 20:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;
+			case 21:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;
+			case 22:
+				pagePath = "account/personalCenter/LC_personal_freehold";
+			break;
+			case 23:
+				pagePath = "account/personalCenter/LC_personal_voiture";
+			break;	
+			case 24:
+				pagePath = "account/personalCenter/LC_personal_scene";
+			break;
+			case 25:
+				pagePath = "account/personalCenter/LC_company_corporation";
+			break;				
 		}
 
 		request.setAttribute("type",typeId);
@@ -766,7 +809,7 @@ public class PersonalCenterController{
 	* @date 2016-5-3 下午2:09:49
 	* @throws
 	 */
-	@RequestMapping(value="/loadCurrencyAuth",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@RequestMapping(value="/loadCurrencyAuth",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String loadCurrencyAuth(HttpServletRequest request){
 		int type = IntegerAndString.StringToInt(request.getParameter("type"), -1);
@@ -784,6 +827,7 @@ public class PersonalCenterController{
 		CurrencyAuth data = borrowingCertificationServer.showCurrencyAuth(lMemberInfo[0], (int)lMemberInfo[1], type);
 
 		if(data!=null){
+			data.setAttachPrefix(FtpClientUtil.getFtpFilePath());
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
@@ -1328,6 +1372,100 @@ public class PersonalCenterController{
  //=================================================================================================================
 //企业认证
 //=================================================================================================================
+	/**
+	 * 查询企业营业执照
+	* loadBusinessLicense
+	* @author 邱陈东  
+	* * @Title: loadBusinessLicense 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-11 上午9:11:41
+	* @throws
+	 */
+	@RequestMapping(value="/loadBusinessLicense",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadBusinessLicense(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String, Object> data = borrowingCertificationServer.showBusinessLicense(lMemberInfo[0]);
+		
+		if( data!=null){
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+			message.put("attachPrefix", FtpClientUtil.getFtpFilePath());
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 新增/修改企业营业执照认证
+	* commercialLicense
+	* @author 邱陈东  
+	* * @Title: commercialLicense 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-11 上午9:11:41
+	* @throws
+	 */
+	@RequestMapping(value="/businessLicense",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String businessLicense(HttpServletRequest request){
+		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
+		
+		String businessLicenseNumber = request.getParameter("businessLicenseNumber");//营业执照号码
+		String regAddress = request.getParameter("regAddress");//注册地址
+		String regPerson = request.getParameter("regPerson");//注册法人
+		String regCapital = request.getParameter("regCapital");//注册资金
+		String businessScope = request.getParameter("businessScope");//经营范围
+		String CompanyType = request.getParameter("CompanyType");//公司类型
+		String regDate = request.getParameter("regDate");//注册时间
+		
+		String endTime=request.getParameter("endTime");//登记日期
+		String annex = request.getParameter("annex"); //附件
+		
+		Long cid = Long.parseLong( request.getParameter("cid"),10);//修改时 使用 要修改的认证资料ID
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		String[] annexArray = annex.split(",");
+		if (annexArray.length == 0) {
+			message.put("status", "-1");
+			message.put("message", "请上传认证资料");
+			return JSONObject.toJSONString(message);
+		}
+		
+		//获取登录人信息
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = -1;
+		if(editType==0){
+			result = borrowingCertificationServer.businessLicense(lMemberInfo[0], businessLicenseNumber, regAddress, regPerson, regCapital, businessScope, CompanyType, regDate, endTime, annex);
+		}else{
+			result = borrowingCertificationServer.editBusinessLicense(lMemberInfo[0], businessLicenseNumber, regAddress, regPerson, regCapital, businessScope, CompanyType, regDate, endTime, annex);
+		}
+		
+		if(result == -1){
+			message.put("status", "-1");
+			message.put("message", "已存在记录");
+		}else{
+			message.put("status", "0");
+			message.put("message", "保存成功");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	
 	//工商执照认证
 	/**
 	 * 查询企业工商执照认证
@@ -1355,6 +1493,7 @@ public class PersonalCenterController{
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
+			message.put("attachPrefix", FtpClientUtil.getFtpFilePath());
 		}else{
 			message.put("status", -1);
 			message.put("message", "没有数据");
@@ -1444,10 +1583,11 @@ public class PersonalCenterController{
 		
 		Map<String, Object> data = borrowingCertificationServer.showAuthApproval(lMemberInfo[0]);
 		
-		if(data.size()>0){
+		if(data!=null){
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
+			message.put("attachPrefix", FtpClientUtil.getFtpFilePath());
 		}else{
 			message.put("status", -1);
 			message.put("message", "没有数据");
@@ -1535,6 +1675,7 @@ public class PersonalCenterController{
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
+			message.put("attachPrefix",FtpClientUtil.getFtpFilePath());
 		}else{
 			message.put("status", -1);
 			message.put("message", "没有数据");
@@ -1620,6 +1761,7 @@ public class PersonalCenterController{
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
+			message.put("attachPrefix", FtpClientUtil.getFtpFilePath());
 		}else{
 			message.put("status", -1);
 			message.put("message", "没有数据");
@@ -1668,7 +1810,7 @@ public class PersonalCenterController{
 		if(editType==0){
 			result = borrowingCertificationServer.accountOpening(lMemberInfo[0], accountOpeningCode, opBank, bankAccount, annex, endTime);
 		}else{
-			result = borrowingCertificationServer.accountOpening(lMemberInfo[0], accountOpeningCode, opBank, bankAccount, annex, endTime);
+			result = borrowingCertificationServer.editAccountOpening(lMemberInfo[0], accountOpeningCode, opBank, bankAccount, annex, endTime);
 		}
 		
 		if(result == -1){
@@ -1706,6 +1848,7 @@ public class PersonalCenterController{
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
+			message.put("attachPrefix", FtpClientUtil.getFtpFilePath());
 		}else{
 			message.put("status", -1);
 			message.put("message", "没有数据");
@@ -1753,7 +1896,7 @@ public class PersonalCenterController{
 		if(editType==0){
 			result = borrowingCertificationServer.taxRegistration(lMemberInfo[0], credentialsNO, issueOrgan, annex, endTime);
 		}else{
-			result = borrowingCertificationServer.taxRegistration(lMemberInfo[0], credentialsNO, issueOrgan, annex, endTime);
+			result = borrowingCertificationServer.editTaxRegistration(lMemberInfo[0], credentialsNO, issueOrgan, annex, endTime);
 		}
 		if(result == -1){
 			message.put("status", "-1");
@@ -1785,6 +1928,8 @@ public class PersonalCenterController{
 	* @date 2016-5-5 上午9:39:10
 	* @throws
 	 */
+	@RequestMapping(value="loadFriendInviteList",produces = "text/html;charset=UTF-8")
+	@ResponseBody
 	public String loadFriendInviteList(HttpServletRequest request){
 		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
 		int length = IntegerAndString.StringToInt(request.getParameter("length"),10) ; 
@@ -1793,7 +1938,7 @@ public class PersonalCenterController{
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
 		Map<String,Object> param=new HashMap<String,Object>();
-		param.put("memberID",lMemberInfo[0]);
+		param.put("memberId",lMemberInfo[0]);
 		param.put("memberType",lMemberInfo[1]);
 		
 		PageEntity entity = new PageEntity();
@@ -1807,6 +1952,40 @@ public class PersonalCenterController{
 		return JSONObject.toJSONString(entity);
 	}
 	
+	/**
+	 * 获取站内好友列表
+	* loadFriendList
+	* @author 邱陈东  
+	* * @Title: loadFriendList 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-11 下午2:50:15
+	* @throws
+	 */
+	@RequestMapping(value="loadFriendList",produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadFriendList(HttpServletRequest request){
+		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
+		int length = IntegerAndString.StringToInt(request.getParameter("length"),10) ; 
+		
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("memberId",lMemberInfo[0]);
+		param.put("memberType",lMemberInfo[1]);
+		
+		PageEntity entity = new PageEntity();
+		entity.setMap(param);
+		entity.setPageNum(start/length+1);
+		entity.setPageSize(length);
+		
+		List<Friends> list = memberService.friendList(entity);
+		PageUtil.ObjectToPage(entity, list);
+		
+		return JSONObject.toJSONString(entity);
+	}
 	
 
 	/**
@@ -1820,7 +1999,7 @@ public class PersonalCenterController{
 	* @date 2016-5-6 下午1:44:24
 	* @throws
 	 */
-	@RequestMapping(value="selectConfirmFriendList",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@RequestMapping(value="selectConfirmFriendList", produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String selectConfirmFriendList(HttpServletRequest request){
 		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
@@ -1837,9 +2016,9 @@ public class PersonalCenterController{
 		entity.setPageNum(start/length+1);
 		entity.setPageSize(length);
 		
-		//List<Friends> list = memberService.selectConfirmFriendList(entity);
+		List<Friends> list = memberService.selectConfirmFriendList(entity);
 		entity.getMap().remove("skey");
-		//PageUtil.ObjectToPage(entity, list);
+		PageUtil.ObjectToPage(entity, list);
 		
 		return JSONObject.toJSONString(entity);
 	}
@@ -1855,7 +2034,7 @@ public class PersonalCenterController{
 	* @date 2016-5-6 下午1:59:50
 	* @throws
 	 */
-	@RequestMapping(value="serachMemberByParam",method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@RequestMapping(value="serachMemberByParam", produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String serachMemberByParam(HttpServletRequest request){
 		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
@@ -1921,6 +2100,17 @@ public class PersonalCenterController{
 		return JSONObject.toJSONString(message);
 	}
 	
+	/**
+	 * 同意好友请求
+	* agreeAapplyForFriend
+	* @author 邱陈东  
+	* * @Title: agreeAapplyForFriend 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-11 下午2:45:52
+	* @throws
+	 */
 	@RequestMapping(value="agreeAapplyForFriend",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String agreeAapplyForFriend(HttpServletRequest request){
@@ -1930,7 +2120,7 @@ public class PersonalCenterController{
 		long[] lMemberInfo = new long[2] ;
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
-		int result =  0;//memberService.agreeAapplyForFriend(lMemberInfo[0],newFriendId);
+		int result =  memberService.agreeAapplyForFriend(lMemberInfo[0],newFriendId);
 		
 		Map<String,Object> message = new HashMap<String, Object>();
 		if(result==0){
@@ -1939,7 +2129,7 @@ public class PersonalCenterController{
 			message.put("data",result);
 		}else if(result==-1){
 			message.put("statu", 1);
-			message.put("message", "以经是好友了");
+			message.put("message", "已经是好友了");
 			message.put("data",result);
 		}else if(result==-2){
 			message.put("statu", 1);
@@ -2304,10 +2494,13 @@ public class PersonalCenterController{
 	@RequestMapping(value="openThirdAccountCallbackPage")
 	public String openThirdAccountCallback(HttpServletRequest request,HttpServletResponse response){
 		String result = interfaceServerTestI.testLoanRegisterBindReturn(request, response);
+		request.setAttribute("title", "第三方开户");
+		request.setAttribute("detail", "第三方开户");
 		if(result == "SUCCESS"){
+			return "account/personalCenter/optionSuccess";
 		}else{
+			return "account/personalCenter/optionFall";
 		}
-		return result;
 	}
 	
 	
@@ -2425,14 +2618,14 @@ public class PersonalCenterController{
 	@RequestMapping(value="authorizedCallBackPage")
 	public String authorizedCallBackPage(HttpServletRequest request,HttpServletResponse response){
 		String result = interfaceServerTestI.testLoanAuthorizeReturn(request, response);
-		if(result.equals("SUCCESS")){
-		
-		}else if(result.equals("FAIL")){
-			 
+		request.setAttribute("title", "授权");
+		if(result == "SUCCESS"){
+			request.setAttribute("detail", "授权成功");
+			return "account/personalCenter/optionSuccess";
 		}else{
-			
+			request.setAttribute("detail", "授权失败");
+			return "account/personalCenter/optionFall";
 		}
-		return "result";
 	}
 	
 	
@@ -2445,7 +2638,8 @@ public class PersonalCenterController{
 	* @param request
 	* @param response
 	* @date 2016-4-29 下午12:46:19
-	 */
+	*/
+	@RequestMapping(value="authorizedCallBack")
 	public void authorizedCallBack(HttpServletRequest request,HttpServletResponse response){
 		interfaceServerTestI.testLoanAuthorizeNotify(request,response);
 	}
@@ -2926,8 +3120,12 @@ public class PersonalCenterController{
 	
 	
 	
-	@RequestMapping({ "/recommendedTalent" })
-	public String recommendedTalent() {
+	@RequestMapping(value="/recommendedTalent") 
+	public String recommendedTalent(HttpServletRequest request) { 	
+		long[] lMemberInfo = new long[2] ;		
+	    MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo);  
+		InviteMasterAwardRecordEntity entity = inviteMasterApplyService.selectInviteMasterStatistic(lMemberInfo[0]);
+		request.setAttribute("entityAward", entity);
 		return "account/personalCenter/recommendedTalent";
 	}
 

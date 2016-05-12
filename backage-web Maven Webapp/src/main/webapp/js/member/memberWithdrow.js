@@ -24,7 +24,7 @@ $(function(){
 /**
  * 显示会员提现列表
  */
-function showMemberwithdrowList(memberId){
+function showMemberwithdrowList(memberId,memberType){
 	$('#table_id').DataTable(
 			{	autoWidth : false,
 				scrollY : 500,
@@ -65,7 +65,8 @@ function showMemberwithdrowList(memberId){
 		            	endDate1 = encrypt.encrypt(endDate1);
 		            	threeNum = encrypt.encrypt(threeNum);
 		            	tradeNum = encrypt.encrypt(tradeNum);
-		            	
+		            	d.memberType= memberType;
+		            	d.memberId = memberId;
 		            	d.startDate=startDate;
 		            	d.endDate=endDate;
 		            	d.startDate1=startDate1;

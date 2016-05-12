@@ -26,6 +26,8 @@ import cn.springmvc.dao.InvestIncomeListDao;
 import cn.springmvc.dao.impl.HandleThreePartyDaoImpl;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.dao.impl.SelectThreePartyDaoImpl;
+import cn.springmvc.dao.impl.sms.SMScontent;
+import cn.springmvc.dao.impl.sms.SendSmsUtil;
 import cn.springmvc.model.InvestIncomeEntity;
 import cn.springmvc.model.LoanRepayEntitys;
 import cn.springmvc.service.ManagedInterfaceServerTestI;
@@ -47,6 +49,7 @@ import cn.sxlc.account.manager.model.LoanReturnInfoBean;
 import cn.sxlc.account.manager.model.LoanTransactionEntity;
 import cn.sxlc.account.manager.model.LoanTransferEntity;
 import cn.sxlc.account.manager.model.LoanTransferReturnEntity;
+import cn.sxlc.account.manager.model.ProjectEntity;
 import cn.sxlc.account.manager.model.RechargeEntity;
 import cn.sxlc.account.manager.model.RechargeReturnEntity;
 import cn.sxlc.account.manager.model.RepalyUtitls;
@@ -84,6 +87,10 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	
 	@Resource(name="creditorTransInvestServiceImpl")
 	private CreditorTransInvestServiceImpl creditorTransInvestServiceImpl;
+	@Resource
+	private SendSmsUtil sendSmsUtil;
+	@Resource(name="sMScontent")
+	private SMScontent sMScontent;
 	/* *  *  * @param memberEntity
 	 * 双乾开户接口信息处理
 	 */
@@ -232,81 +239,132 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	 * *  * @param accountInterfaceEntity * @see cn.springmvc.service.ManagedInterfaceServerTestI#testLoanRegisterBindNotify(cn.sxlc.account.manager.model.AccountInterfaceReturnEntity) */
 	@Override
 	public void testLoanRegisterBindNotify(HttpServletRequest request,HttpServletResponse response) {
-		AccountInterfaceReturnEntity 
-		accountInterfaceReturnEntity2=new AccountInterfaceReturnEntity();
-	try {
-		//获取第三方返回开户信息
-		request.setCharacterEncoding("UTF-8");
-		AccountInterfaceReturnEntity accountInterfaceReturnEntity=new AccountInterfaceReturnEntity();
-		accountInterfaceReturnEntity.setResultCode(request.getParameter("ResultCode"));
-		accountInterfaceReturnEntity.setMessage(request.getParameter("Message"));//开户状态信息
-		//String ReturnTimes = request.getParameter("ReturnTimes");//返回次数
-		//开户成功
-		if(request.getParameter("ResultCode")!=null 
-				&& request.getParameter("ResultCode").equals("88") || request.getParameter("ResultCode").equals("16")){
-			accountInterfaceReturnEntity.setStatu(1);
-			accountInterfaceReturnEntity.setLoanPlatformAccount(request.getParameter("LoanPlatformAccount"));
-			
-			accountInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
-			accountInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
-			accountInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
-			String accountType = request.getParameter("AccountType");// 开户类型
-			if (accountType.equals("")) {
-				accountInterfaceReturnEntity.setAccountType("1");// 个人
-			} else if (accountType.equals("1")) {
-				accountInterfaceReturnEntity.setAccountType("0");// 企业
+			AccountInterfaceReturnEntity 
+			accountInterfaceReturnEntity2=new AccountInterfaceReturnEntity();
+		try {
+			//获取第三方返回开户信息
+			request.setCharacterEncoding("UTF-8");
+			AccountInterfaceReturnEntity accountInterfaceReturnEntity=new AccountInterfaceReturnEntity();
+			accountInterfaceReturnEntity.setResultCode(request.getParameter("ResultCode"));
+			accountInterfaceReturnEntity.setMessage(request.getParameter("Message"));//开户状态信息
+			//String ReturnTimes = request.getParameter("ReturnTimes");//返回次数
+			//开户成功
+			if(request.getParameter("ResultCode")!=null 
+					&& request.getParameter("ResultCode").equals("88") || request.getParameter("ResultCode").equals("16")){
+				accountInterfaceReturnEntity.setStatu(1);
+				accountInterfaceReturnEntity.setLoanPlatformAccount(request.getParameter("LoanPlatformAccount"));
+				
+				accountInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
+				accountInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
+				accountInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
+				String accountType = request.getParameter("AccountType");// 开户类型
+				if (accountType.equals("")) {
+					accountInterfaceReturnEntity.setAccountType("1");// 个人
+				} else if (accountType.equals("1")) {
+					accountInterfaceReturnEntity.setAccountType("0");// 企业
+				}
+				accountInterfaceReturnEntity
+					.setAccountNumber(request.getParameter("AccountNumber"));//乾多多数字账号
+				accountInterfaceReturnEntity
+					.setMoneymoremoreId(request.getParameter("MoneymoremoreId"));//用户的乾多多标识
+				accountInterfaceReturnEntity
+					.setAuthFee(request.getParameter("AuthFee"));//姓名匹配手续费
+				accountInterfaceReturnEntity
+					.setAuthState(request.getParameter("AuthState"));//实名认证状态1.未实名认证2.快捷支付认证3.其他认证
+				accountInterfaceReturnEntity.setSignInfo(request.getParameter("SignInfo"));//签名信息
+				accountInterfaceReturnEntity.setMobile(request.getParameter("Mobile"));
+			}else {//开户失败
+				accountInterfaceReturnEntity.setStatu(2);
 			}
-			accountInterfaceReturnEntity
-				.setAccountNumber(request.getParameter("AccountNumber"));//乾多多数字账号
-			accountInterfaceReturnEntity
-				.setMoneymoremoreId(request.getParameter("MoneymoremoreId"));//用户的乾多多标识
-			accountInterfaceReturnEntity
-				.setAuthFee(request.getParameter("AuthFee"));//姓名匹配手续费
-			accountInterfaceReturnEntity
-				.setAuthState(request.getParameter("AuthState"));//实名认证状态1.未实名认证2.快捷支付认证3.其他认证
-			accountInterfaceReturnEntity.setSignInfo(request.getParameter("SignInfo"));//签名信息
-		
-		}else {//开户失败
-			accountInterfaceReturnEntity.setStatu(2);
-		}
-		accountInterfaceReturnEntity2 = accountInterfaceReturnEntity;
-		//将获取的第三方返回的开户信息进行业务逻辑处理
-		if(accountInterfaceReturnEntity2.getStatu()==1){//开户成功
-			String remark=accountInterfaceReturnEntity2.getRemark1();//得到拼接的会员id
-			long id=0;//会员id
-			if (remark != null && remark != "" && !remark.equals("自定义备注1")) {
-				id = Long.parseLong(remark);
+			accountInterfaceReturnEntity2 = accountInterfaceReturnEntity;
+			//将获取的第三方返回的开户信息进行业务逻辑处理
+			if(accountInterfaceReturnEntity2.getStatu()==1){//开户成功
+				String remark=accountInterfaceReturnEntity2.getRemark1();//得到拼接的会员id
+				long id=0;//会员id
+				if (remark != null && remark != "" && !remark.equals("自定义备注1")) {
+					id = Long.parseLong(remark);
+				}
+				String sMerBillNo = accountInterfaceReturnEntity2.getRemark2();
+				String[] typStrings = sMerBillNo.split("n");
+				sMerBillNo = typStrings[0];//订单编号
+				String typeS = typStrings[1];// 开户类型
+				Map<String, Object> map = new HashMap<String, Object>();
+				long iId=generatorUtil.GetId();
+				long tradeIDtow=generatorUtil.GetId();
+				map.put("tid", iId);//第三方账户信息id
+				map.put("merbillno", sMerBillNo);
+				map.put("backDetailEncrypt", accountInterfaceReturnEntity2.getSignInfo());
+				map.put("backDetail", accountInterfaceReturnEntity2.toString());
+				map.put("type", typeS);
+				map.put("memberid", id);
+				map.put("account", accountInterfaceReturnEntity2.getAccountNumber());
+				map.put("thirdPartymark", accountInterfaceReturnEntity2.getMoneymoremoreId());
+				map.put("openType", 1);//开户成功
+				map.put("authFee", IntegerAndString.StringToLong(accountInterfaceReturnEntity2.getAuthFee()));//实名认证手续费
+				map.put("skey", DbKeyUtil.GetDbCodeKey());
+				map.put("tradeIDtow", tradeIDtow);
+				int relust=handleThreePartyDaoImpl.openAccountBack(map);
+				if (relust==1 || relust==2) {
+					//开户成功发送开户成功短信
+					Map<String,Object> infos = new HashMap<String,Object>();
+					String smscoun=sMScontent.ContentSMS2(id);
+					if (smscoun!=null && !infos.equals("")) {
+						infos.put("phone", accountInterfaceReturnEntity2.getMobile());
+						infos.put("content", smscoun);
+						sendSmsUtil.SendSms(infos, 1, 0, null);
+					}
+					if(relust==1){
+						generatorUtil.SetIdUsed(iId);
+						generatorUtil.SetIdUsedFail(tradeIDtow);
+					}
+					if(relust==2){
+						generatorUtil.SetIdUsed(iId);
+						generatorUtil.SetIdUsed(tradeIDtow);
+					}
+				}else {
+					generatorUtil.SetIdUsedFail(iId);
+					generatorUtil.SetIdUsedFail(tradeIDtow);
+				}
+			}else {
+				String remark=accountInterfaceReturnEntity2.getRemark1();//得到拼接的会员id
+				long id=0;//会员id
+				if (remark != null && remark != "" && !remark.equals("自定义备注1")) {
+					id = Long.parseLong(remark);
+				}
+				String sMerBillNo = accountInterfaceReturnEntity2.getRemark2();
+				String[] typStrings = sMerBillNo.split("n");
+				sMerBillNo = typStrings[0];//订单编号
+				String typeS = typStrings[1];// 开户类型
+				Map<String, Object> map = new HashMap<String, Object>();
+				long iId=0;
+				long tradeIDtow=generatorUtil.GetId();
+				map.put("tid", iId);//第三方账户信息id
+				map.put("merbillno", sMerBillNo);
+				map.put("backDetailEncrypt", accountInterfaceReturnEntity2.getSignInfo());
+				map.put("backDetail", accountInterfaceReturnEntity2.toString());
+				map.put("type", typeS);
+				map.put("memberid", id);
+				map.put("account", accountInterfaceReturnEntity2.getAccountNumber());
+				map.put("thirdPartymark", accountInterfaceReturnEntity2.getMoneymoremoreId());
+				map.put("openType", 0);//开户成功
+				map.put("authFee", 1);//实名认证手续费
+				map.put("skey", DbKeyUtil.GetDbCodeKey());
+				map.put("tradeIDtow", tradeIDtow);
+				int relust=handleThreePartyDaoImpl.openAccountBack(map);
+				if(relust==2){
+					generatorUtil.SetIdUsed(tradeIDtow);
+				}else {
+					generatorUtil.SetIdUsedFail(tradeIDtow);
+				}
 			}
-			String sMerBillNo = accountInterfaceReturnEntity2.getRemark2();
-			String[] typStrings = sMerBillNo.split("n");
-			sMerBillNo = typStrings[0];//订单编号
-			String typeS = typStrings[1];// 开户类型
-			Map<String, Object> map = new HashMap<String, Object>();
-			long iId=generatorUtil.GetId();
-			map.put("tid", iId);//第三方账户信息id
-			map.put("merbillno", sMerBillNo);
-			map.put("backDetailEncrypt", accountInterfaceReturnEntity2.getSignInfo());
-			map.put("backDetail", accountInterfaceReturnEntity2.toString());
-			map.put("type", typeS);
-			map.put("memberid", id);
-			map.put("account", accountInterfaceReturnEntity2.getAccountNumber());
-			map.put("thirdPartymark", accountInterfaceReturnEntity2.getMoneymoremoreId());
-			handleThreePartyDaoImpl.openAccountBack(map);
-			generatorUtil.SetIdUsed(iId);
+			response.setContentType("text/plain;charset=utf-8");
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write("SUCCESS");
+			response.getWriter().flush();
+			response.getWriter().close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block e.printStackTrace();
 		}
-		//接收第三方返回信息处理完成，通知第三方已成功接收处理
-//		HttpServletResponse response 
-//			= ((ServletWebRequest)RequestContextHolder
-//					.getRequestAttributes()).getResponse();
-		response.setContentType("text/plain;charset=utf-8");
-		response.setCharacterEncoding("utf-8");
-		response.getWriter().write("SUCCESS");
-		response.getWriter().flush();
-		response.getWriter().close();
-	} catch (Exception e) {
-		// TODO Auto-generated catch block e.printStackTrace();
-	}
-		// TODO Auto-generated method stub 
 		
 	}
 
@@ -565,11 +623,17 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 					generatorUtil.SetIdUsed(tid);
 					generatorUtil.SetIdUsed(iid);
 					generatorUtil.SetIdUsed(rid);
-					
 					//充值成功发送短信
-//					memberType;
-//					memberId;
-					
+					Map<String,Object> infos = new HashMap<String,Object>();
+					String smscoun=sMScontent.ContentSMS3(memberId,recharge.getAmount());
+					if (smscoun!=null && !infos.equals("")) {
+						String phone=selectThreePartyDaoImpl.selectPhone(memberId);
+						if (phone!=null && !phone.equals("")) {
+							infos.put("phone", phone);
+							infos.put("content", smscoun);
+							sendSmsUtil.SendSms(infos, 1, 0, null);
+						}
+					}
 				}else {
 					generatorUtil.SetIdUsedFail(reid);
 					generatorUtil.SetIdUsedFail(did);
@@ -609,6 +673,12 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	public WithdrawsInterdaceEntity testLoanWithdraws(WithdrawsInterdaceEntity withdrawsEntity) {
 		String privatekey = Common.privateKeyPKCS8;
 		String publickey = Common.publicKey;
+		int sta=selectThreePartyDaoImpl.BlackMemberJudgmentOne(withdrawsEntity.getMemberId(), 2);
+		if (sta==-1) {
+			withdrawsEntity.setStatu(-1);//黑名单会员禁止提现
+			return withdrawsEntity;
+		}
+		
 		//生成提现订单号
 		String orderNoString=handleThreePartyDaoImpl.generateorderNo("SQ");
 		withdrawsEntity.setOrderNo(orderNoString);
@@ -870,10 +940,22 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				map.put("sMngFee", "");
 				map.put("sThirdMng", "");
 				map.put("PlatformFee", "");
-				
-				
-				
-				handleThreePartyDaoImpl.MemberWithdrawalBack_Qianduoduo(map);
+				int result=handleThreePartyDaoImpl.MemberWithdrawalBack_Qianduoduo(map);
+				if (result==1) {
+					//提现成功发送短信
+					Map<String,Object> infos = new HashMap<String,Object>();
+					String smscoun=sMScontent
+							.ContentSMS4(IntegerAndString.StringToLong(ids[0], 0)
+									,withdrawsInterdaceReturnEntity.getAmount());
+					if (smscoun!=null && !infos.equals("")) {
+						String phone=selectThreePartyDaoImpl.selectPhone(IntegerAndString.StringToLong(ids[0], 0));
+						if (phone!=null && !phone.equals("")) {
+							infos.put("phone", phone);
+							infos.put("content", smscoun);
+							sendSmsUtil.SendSms(infos, 1, 0, null);
+						}
+					}
+				}
 			}else if (withdrawsInterdaceReturnEntity.getStatu()==2) {
 				
 			}else {
@@ -885,7 +967,22 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				map.put("backDetailEncrypt", withdrawsInterdaceReturnEntity.getSignInfo());//返回加密数据
 				map.put("backDetail", 1);//
 				map.put("skey", DbKeyUtil.GetDbCodeKey());//秘钥
-				handleThreePartyDaoImpl.WithdraBack(map);
+				int result = handleThreePartyDaoImpl.WithdraBack(map);
+				if (result>0) {
+					//提现失败发送短信
+					Map<String,Object> infos = new HashMap<String,Object>();
+					String smscoun=sMScontent
+							.ContentSMS24(result
+									,withdrawsInterdaceReturnEntity.getAmount());
+					if (smscoun!=null && !infos.equals("")) {
+						String phone=selectThreePartyDaoImpl.selectPhone(result);
+						if (phone!=null && !phone.equals("")) {
+							infos.put("phone", phone);
+							infos.put("content", smscoun);
+							sendSmsUtil.SendSms(infos, 1, 0, null);
+						}
+					}
+				}
 			}
 //			HttpServletResponse response 
 //			= ((ServletWebRequest)RequestContextHolder
@@ -1093,96 +1190,9 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	/* *  *  * @return * @see cn.springmvc.service.ManagedInterfaceServerTestI#testLoanTransferAudit(cn.sxlc.account.manager.model.AuditEntity) */
 	@Override
 	public AuditEntity testLoanTransferAudit(AuditEntity auditEntity) {
-		//获取平台乾多多标识
-		String pmark="";
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("accountTypeID", 1);//平台账号类型
-		pmark=selectThreePartyDaoImpl.findThirdPartyMark(map);
-		String loanNoStr="";
-		if (auditEntity.getStype()==1) {//项目
-			//根据项目id查询需要操作流水号
-			map.put("applyId", auditEntity.getPid());
-			List<LoanTransactionEntity> list=new ArrayList<LoanTransactionEntity>();
-			list=selectThreePartyDaoImpl.GetInvestListByProId(map);
-			if (list != null && list.size() > 0) {
-				for (int i = 0; i < list.size(); i++) {
-					if (i == list.size() - 1) {
-						loanNoStr = loanNoStr + list.get(i).getBillNo();
-						if (list.get(i).getGiftBillNo()!=null && !list.get(i).getGiftBillNo().equals("")) {
-							loanNoStr=loanNoStr+","+list.get(i).getGiftBillNo();
-						}
-					} else {
-						loanNoStr = loanNoStr + list.get(i).getBillNo() + ",";
-						if (list.get(i).getGiftBillNo()!=null && !list.get(i).getGiftBillNo().equals("")) {
-							loanNoStr=loanNoStr+list.get(i).getGiftBillNo()+",";
-						}
-					}
-				}
-			}
-		}
-		if (auditEntity.getStype()==2) {//债权
-			//根据债权转让申请id
-			map.put("ctaId", auditEntity.getPid());
-			List<LoanTransactionEntity> list=new ArrayList<LoanTransactionEntity>();
-			list=selectThreePartyDaoImpl.GetCreditorTransId(map);
-			int cou=0;
-			if (list != null && list.size() > 0) {
-				int length=list.size()-1;
-				for(int i=0;i<length;i++){
-					LoanTransactionEntity entity=list.get(i);
-					loanNoStr+=entity.getBillNo();
-					if(++cou==200) break;
-					String giftBillNo=entity.getGiftBillNo();
-					if(giftBillNo!=null&&!giftBillNo.equals("")){
-						loanNoStr+=","+entity.getGiftBillNo();
-						if(++cou==200) break;
-					}
-					
-					loanNoStr+=(i==length?"":",");
-				}
-//				for (int i = 0; i < list.size(); i++) {
-//					if (i == list.size() - 1) {
-//						loanNoStr = loanNoStr + list.get(i).getBillNo();
-//						cou++;
-//						if (cou>=200) {
-//							break;
-//						}
-//						if (list.get(i).getGiftBillNo()!=null && !list.get(i).getGiftBillNo().equals("")) {
-//							loanNoStr=loanNoStr+","+list.get(i).getGiftBillNo();
-//							cou++;
-//							if (cou>=200) {
-//								break;
-//							}
-//						}
-//					} else {
-//						loanNoStr = loanNoStr + list.get(i).getBillNo() + ",";
-//						cou++;
-//						if (cou>=200) {
-//							loanNoStr=loanNoStr.substring(0, loanNoStr.length()-1);
-//							break;
-//						}
-//						if (list.get(i).getGiftBillNo()!=null && !list.get(i).getGiftBillNo().equals("")) {
-//							loanNoStr=loanNoStr+list.get(i).getGiftBillNo()+",";
-//							cou++;
-//							if (cou>=200) {
-//								loanNoStr=loanNoStr.substring(0, loanNoStr.length()-1);
-//								break;
-//							}
-//						}
-//					}
-//				}
-			}
-		}
-		if (auditEntity.getStype()==3) {//提现
-			map.put("withdrawalID", auditEntity.getPid());
-			loanNoStr=selectThreePartyDaoImpl.findWithdrawalRecharge(map);
-		}
-		auditEntity.setLoanNoList(loanNoStr);
 		//获取操作订单号
 		String OrderNumber=handleThreePartyDaoImpl.generateorderNo("SQ");
 		auditEntity.setSubmitURL("http://218.4.234.150:88/main/loan/toloantransferaudit.action");
-		auditEntity.setReturnURL("http://182.150.179.116:14000/");
-		auditEntity.setNotifyURL("http://182.150.179.116:14000/");
 		auditEntity.setRemark1(auditEntity.getPid()+"n"+auditEntity.getStype());
 		auditEntity.setRemark2(OrderNumber);
 		
@@ -1216,11 +1226,11 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	 * 双乾第三方放款、提现审核接口 页面返回
 	 *  *  * @return * @see cn.springmvc.service.ManagedInterfaceServerTestI#testLoanTransferAuditReturn() */
 	@Override
-	public String testLoanTransferAuditReturn() {
+	public String testLoanTransferAuditReturn(HttpServletRequest request,HttpServletResponse response) {
 		String retur="SUCCESS";
 		try {
-			ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-			HttpServletRequest request = attributes.getRequest();
+//			ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+//			HttpServletRequest request = attributes.getRequest();
 			request.setCharacterEncoding("UTF-8");
 			AuditReturnEntity auditReturnEntity=new AuditReturnEntity();
 			auditReturnEntity.setResultCode(request.getParameter("ResultCode"));
@@ -1263,10 +1273,10 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	 * 双乾第三方放款、提现审核接口 服务器返回
 	 *  *  * @see cn.springmvc.service.ManagedInterfaceServerTestI#testLoanTransferAuditNotify() */
 	@Override
-	public void testLoanTransferAuditNotify() {
+	public void testLoanTransferAuditNotify(HttpServletRequest request,HttpServletResponse response) {
 		try {
-			ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-			HttpServletRequest request = attributes.getRequest();
+//			ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+//			HttpServletRequest request = attributes.getRequest();
 			request.setCharacterEncoding("UTF-8");
 			AuditReturnEntity auditReturnEntity=new AuditReturnEntity();
 			auditReturnEntity.setResultCode(request.getParameter("ResultCode"));
@@ -1297,7 +1307,8 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				if(auditReturnEntity.getAuditType().equals("1")){//放款
 					if (strings[1].equals("2")) {//债权转让放款成功
 						Map<String, Object> map = new HashMap<String, Object>();
-						map.put("lId", generatorUtil.GetId());//订单号
+						long id = generatorUtil.GetId();
+						map.put("lId", id);//订单号
 						map.put("applyId", IntegerAndString.StringToInt(strings[0],0));
 						map.put("sMerBillNo", auditReturnEntity.getRemark2());
 						map.put("sOrderNos", auditReturnEntity.getLoanNoList());
@@ -1308,6 +1319,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 						
 						int ruelt=handleThreePartyDaoImpl.CreditorTransfer(map);
 						if (ruelt==1) {//放款已全部处理成功
+							generatorUtil.SetIdUsed(id);
 							//查询出所有的债权转让投资记录
 							map.put("ctaId", IntegerAndString.StringToInt(strings[0],0));
 							List<InvestRecordEntity> list=selectThreePartyDaoImpl.GetTransInvestList(map);
@@ -1424,6 +1436,35 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 								map2.put("ctaId", IntegerAndString.StringToInt(strings[0],0));
 								result = handleThreePartyDaoImpl.updateProjrctTransStatu(map2);
 							}
+							if (result>0) {
+								//发送债权转让放款成功短信
+								InvestRecordEntity iEntity2 = new InvestRecordEntity();
+								long memberid=0;
+								String amount = "0.00";
+//								String projectTitle="";
+//								ProjectEntity pro=selectThreePartyDaoImpl.findProjectTNByid(applyID);
+//								if (pro!=null) {
+//									projectTitle = pro.getProjectTitle();
+//								}
+								for (int i = 0; i < list.size(); i++) {
+									iEntity2 = list.get(i);
+									memberid=iEntity2.getMemberID();
+									amount = IntegerAndString.LongToString(iEntity2.getInvestAmountValid());
+									Map<String,Object> infos = new HashMap<String,Object>();
+									String smscoun=sMScontent
+											.ContentSMS5(memberid
+													,amount,applyID);
+									if (smscoun!=null && !infos.equals("")) {
+										String phone=selectThreePartyDaoImpl.selectPhone(result);
+										if (phone!=null && !phone.equals("")) {
+											infos.put("phone", phone);
+											infos.put("content", smscoun);
+											sendSmsUtil.SendSms(infos, 1, 0, null);
+										}
+									}
+								}
+							}
+							
 						}
 					}
 				}else if (auditReturnEntity.getAuditType().equals("2")) {//流标
@@ -1431,15 +1472,40 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 						Map<String, Object> map = new HashMap<String, Object>();
 						long apid=0;
 						apid=Long.parseLong(strings[0]);//项目id
+						long tid = generatorUtil.GetId();
 						map.put("applyId", apid);
-						map.put("tid", generatorUtil.GetId());
+						map.put("tid", tid);
 						map.put("traId", IntegerAndString.StringToInt(strings[0],0));
 						map.put("merbillno", auditReturnEntity.getRemark2());//订单号
 						map.put("backDetailEncrypt", auditReturnEntity.getSignInfo());
 						map.put("backDetail", auditReturnEntity.toString());
 						map.put("sInvest", auditReturnEntity.getLoanNoList());
 						map.put("skey",DbKeyUtil.GetDbCodeKey());//秘钥
-						handleThreePartyDaoImpl.TransFail(map);
+						int result=handleThreePartyDaoImpl.TransFail(map);
+						map.put("ctaId", IntegerAndString.StringToInt(strings[0],0));
+						List<InvestRecordEntity> list=selectThreePartyDaoImpl.GetTransInvestList(map);
+						if (result>0) {
+							generatorUtil.SetIdUsed(tid);
+							//发送债权转让流标短信
+							InvestRecordEntity iEntity2 = new InvestRecordEntity();
+							long memberid=0;
+							for (int i = 0; i < list.size(); i++) {
+								iEntity2 = list.get(i);
+								memberid=iEntity2.getMemberID();
+								Map<String,Object> infos = new HashMap<String,Object>();
+								String smscoun=sMScontent
+										.ContentSMS6(memberid,IntegerAndString.LongToString2(iEntity2.getInvestAmountValid()),apid);
+								if (smscoun!=null && !infos.equals("")) {
+									String phone=selectThreePartyDaoImpl.selectPhone(result);
+									if (phone!=null && !phone.equals("")) {
+										infos.put("phone", phone);
+										infos.put("content", smscoun);
+										sendSmsUtil.SendSms(infos, 1, 0, null);
+									}
+								}
+							}
+						}
+						
 					}else {
 						Map<String, Object> map = new HashMap<String, Object>();
 						long apid=0;
@@ -1448,13 +1514,16 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 						List<LoanTransactionEntity> list=selectThreePartyDaoImpl.GetInvestListByProId(map);
 						String idsString="";
 						long id=0;//交易记录id
+						String ivid="";
 						if (list.size()>0) {
 							for (int i = 0; i < list.size(); i++) {
 								id=generatorUtil.GetId();//获取生成交易记录id
 								if (!idsString.equals("")) {
 									idsString+=";"+list.get(i).getInversId()+","+id;
+									ivid +=","+id;
 								}else {
 									idsString+=list.get(i).getInversId()+","+id;
+									ivid +=id+",";
 								}
 							}//
 						}
@@ -1463,36 +1532,97 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 						map.put("backDetail", auditReturnEntity.toString());
 						map.put("sInvest", idsString);
 						map.put("skey",DbKeyUtil.GetDbCodeKey());//秘钥
-						handleThreePartyDaoImpl.ProjectFail(map);
+						int result = handleThreePartyDaoImpl.ProjectFail(map);
+						if (result>0) {
+							//发送债权转让流标短信
+							LoanTransactionEntity iEntity2 = new LoanTransactionEntity();
+							long memberid=0;
+							for (int i = 0; i < list.size(); i++) {
+								iEntity2 = list.get(i);
+								memberid=iEntity2.getMemberId();
+								Map<String,Object> infos = new HashMap<String,Object>();
+								String smscoun=sMScontent
+										.ContentSMS6(memberid,IntegerAndString.LongToString2(iEntity2.getAmount()),apid);
+								if (smscoun!=null && !infos.equals("")) {
+							 		String phone=selectThreePartyDaoImpl.selectPhone(result);
+									if (phone!=null && !phone.equals("")) {
+										infos.put("phone", phone);
+										infos.put("content", smscoun);
+										sendSmsUtil.SendSms(infos, 1, 0, null);
+									}
+								}
+							}
+						}
+						
 					}
 					
 				}else if (auditReturnEntity.getAuditType().equals("5")) {//提现通过
 					Map<String, Object> map=new HashMap<String, Object>();
-					map.put("tradeID", generatorUtil.GetId());//交易记录id
+					long id = generatorUtil.GetId();
+					map.put("tradeID",id );//交易记录id
 					map.put("merbillno", auditReturnEntity.getRemark2());//平台订单号
 					map.put("thirdBillNo", auditReturnEntity.getLoanNoList());//第三方交易流水号
 					map.put("retType", 3);//提现银行退回
 					map.put("backDetailEncrypt", auditReturnEntity.getSignInfo());//返回加密数据
 					map.put("backDetail", 1);//
 					map.put("skey", DbKeyUtil.GetDbCodeKey());//秘钥
-					handleThreePartyDaoImpl.WithdraBack(map);
+					int result=handleThreePartyDaoImpl.WithdraBack(map);
+					if (result>0) {
+						generatorUtil.SetIdUsed(id);
+						long amount = selectThreePartyDaoImpl.QueryCashWithdrawal(auditReturnEntity.getLoanNoList());
+						//提现通过发送短信
+						Map<String,Object> infos = new HashMap<String,Object>();
+						String smscoun=sMScontent
+								.ContentSMS4(result
+										,IntegerAndString.LongToString(amount));
+						if (smscoun!=null && !infos.equals("")) {
+							String phone=selectThreePartyDaoImpl.selectPhone(result);
+							if (phone!=null && !phone.equals("")) {
+								infos.put("phone", phone);
+								infos.put("content", smscoun);
+								sendSmsUtil.SendSms(infos, 1, 0, null);
+							}
+						}
+					}else {
+						generatorUtil.SetIdUsedFail(id);
+					}
 				}else if (auditReturnEntity.getAuditType().equals("6")) {//提现退回
+					long id = generatorUtil.GetId();
 					Map<String, Object> map=new HashMap<String, Object>();
-					map.put("tradeID", generatorUtil.GetId());//交易记录id
+					map.put("tradeID", id);//交易记录id
 					map.put("merbillno", auditReturnEntity.getRemark2());//平台订单号
 					map.put("thirdBillNo", auditReturnEntity.getLoanNoList());//第三方交易流水号
 					map.put("retType", 2);//提现银行退回
 					map.put("backDetailEncrypt", auditReturnEntity.getSignInfo());//返回加密数据
 					map.put("backDetail", "");//
 					map.put("skey", DbKeyUtil.GetDbCodeKey());//秘钥
-					handleThreePartyDaoImpl.WithdraBack(map);
+					int result=handleThreePartyDaoImpl.WithdraBack(map);
+					if (result>0) {
+						generatorUtil.SetIdUsed(id);
+						//提现退回发送短信
+						long amount = selectThreePartyDaoImpl.QueryCashWithdrawal(auditReturnEntity.getLoanNoList());
+						Map<String,Object> infos = new HashMap<String,Object>();
+						String smscoun=sMScontent
+								.ContentSMS24(result
+										,IntegerAndString.LongToString(amount));
+						if (smscoun!=null && !infos.equals("")) {
+							String phone=selectThreePartyDaoImpl.selectPhone(result);
+							if (phone!=null && !phone.equals("")) {
+								infos.put("phone", phone);
+								infos.put("content", smscoun);
+								sendSmsUtil.SendSms(infos, 1, 0, null);
+							}
+						}
+					}else {
+						generatorUtil.SetIdUsedFail(id);
+					}
 				}
 			}else{//审核操作失败
 				
 			}
-			HttpServletResponse response 
-			= ((ServletWebRequest)RequestContextHolder
-					.getRequestAttributes()).getResponse();
+//			HttpServletResponse response 
+//			= ((ServletWebRequest)RequestContextHolder
+//					.getRequestAttributes()).getResponse();
 			response.setContentType("text/plain;charset=utf-8");
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().write("SUCCESS");
@@ -1508,7 +1638,6 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	@Override
 	public LoanTransferEntity testLoanTransfer(
 			LoanTransferEntity loanTransferEntity) {
-		
 		String privatekey = Common.privateKeyPKCS8;
 		String dataStr = loanTransferEntity.getLoanJsonList()
 				+ loanTransferEntity.getPlatformMoneymoremore()
@@ -1707,8 +1836,27 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 					}
 					loanTransferReturnEntity.setLoaninfolist(loaninfolist);
 					//处理获取的数据
-//					int rul=
+					int rul=
 							projectInvestService.ProjectInvestBackDeal(loanTransferReturnEntity);
+					if (rul==1) {//投资成功发送短信
+						String[] sR1 = loanTransferReturnEntity.getRemark1().split("A");
+						long memberId = IntegerAndString.StringToLong(sR1[1]);//投资会员id
+						long applyId = IntegerAndString.StringToLong(sR1[0]);//项目id
+						long amount = IntegerAndString.StringToLong(sR1[2])+
+						IntegerAndString.StringToLong(sR1[3])+
+						IntegerAndString.StringToLong(sR1[5]);//投资总金额
+						Map<String,Object> infos = new HashMap<String,Object>();
+						String smscoun=sMScontent.ContentSMS21(memberId, IntegerAndString.LongToString2(amount), applyId);
+						if (smscoun!=null && !infos.equals("")) {
+							String phone=selectThreePartyDaoImpl.selectPhone(memberId);
+							if (phone!=null && !phone.equals("")) {
+								infos.put("phone", phone);
+								infos.put("content", smscoun);
+								sendSmsUtil.SendSms(infos, 1, 0, null);
+							}
+						}
+						
+					}
 					
 				}
 				
@@ -2919,15 +3067,18 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 			loanTransferEntity.setLoanJsonList(LoanJsonList);
 			//添加开户第三方交互记录
 			Map<String, Object> smaps = new HashMap<String, Object>();
-			smaps.put("id", generatorUtil.GetId());//第三方交互记录id
+			long id=generatorUtil.GetId();
+			smaps.put("id", id);//第三方交互记录id
 			smaps.put("merbillNo", ordernumber);//当前操作订单号
 			smaps.put("type", "03");//操作类型
 			smaps.put("interfaceType", 1);//第三方接口提供商
 			smaps.put("detail", dataStr);//加密前数据
 			smaps.put("detailEncrypt", SignInfo);//加密后数据
 			smaps.put("remark", "");//备注
-			handleThreePartyDaoImpl.insertThirdInterfaceRecord(maps);
-			
+			int result=handleThreePartyDaoImpl.insertThirdInterfaceRecord(maps);
+			if (result>0) {
+				generatorUtil.SetIdUsed(id);
+			}
 			return loanTransferEntity;
 		}else {
 			
@@ -3104,7 +3255,8 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 			loanTransferEntity.setLoanJsonList(LoanJsonList);
 			//添加开户第三方交互记录
 			Map<String, Object> smaps = new HashMap<String, Object>();
-			smaps.put("id", generatorUtil.GetId());//第三方交互记录id
+			long id = generatorUtil.GetId();
+			smaps.put("id", id);//第三方交互记录id
 			smaps.put("merbillNo", order);//当前操作订单号
 			smaps.put("type", "03");//操作类型
 			smaps.put("interfaceType", 1);//第三方接口提供商
@@ -3115,8 +3267,10 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 			//标记当前批次需要发惊喜红包的记录
 			Map<String, Object> str = new HashMap<String, Object>();
 			str.put("subTem", dealString);
-			handleThreePartyDaoImpl.DataTagBySurpriseRed(str);
-			
+			int result = handleThreePartyDaoImpl.DataTagBySurpriseRed(str);
+			if (result>0) {
+				generatorUtil.SetIdUsed(id);
+			}
 			return loanTransferEntity;
 		}else {
 			
@@ -3336,13 +3490,11 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	
 	/* * 会员转账服务器返回处理 *  * @return * @see cn.springmvc.service.ManagedInterfaceServerTestI#MemberTransferBack() */
 	@Override
-	public int MemberTransferBack() {
+	public int MemberTransferBack(HttpServletRequest request,HttpServletResponse response) {
 		int rulet=0;
 		try {
 			LoanTransferReturnEntity 
 					loanTransferReturnEntity=new LoanTransferReturnEntity();
-			ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-			HttpServletRequest request = attributes.getRequest();
 			request.setCharacterEncoding("UTF-8");
 			loanTransferReturnEntity.
 				setResultCode(request.getParameter("ResultCode"));
@@ -3398,7 +3550,37 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 					mapo.put("backDetailEncrypt", loanTransferReturnEntity.getSignInfo());
 					mapo.put("backDetail", loanTransferReturnEntity.toString());
 					mapo.put("skey", DbKeyUtil.GetDbCodeKey());
-					handleThreePartyDaoImpl.MemberTransferBack(mapo);
+					int result=handleThreePartyDaoImpl.MemberTransferBack(mapo);
+					if (result>0) {
+						generatorUtil.SetIdUsed(iIdtow);
+						generatorUtil.SetIdUsed(iId);
+						//转账成功 转账人发送短信
+						Map<String,Object> infos = new HashMap<String,Object>();
+						String smscoun=sMScontent.ContentSMS22(inmemberId,outmemberId,IntegerAndString.LongToString2(amount));
+						if (smscoun!=null && !infos.equals("")) {
+							String phone=selectThreePartyDaoImpl.selectPhone(inmemberId);
+							if (phone!=null && !phone.equals("")) {
+								infos.put("phone", phone);
+								infos.put("content", smscoun);
+								sendSmsUtil.SendSms(infos, 1, 0, null);
+							}
+						}
+						//转账成功 到账人发送短信
+						Map<String,Object> infos1 = new HashMap<String,Object>();
+						smscoun=sMScontent.ContentSMS23(outmemberId,inmemberId,IntegerAndString.LongToString2(amount));
+						if (smscoun!=null && !infos.equals("")) {
+							String phone=selectThreePartyDaoImpl.selectPhone(inmemberId);
+							if (phone!=null && !phone.equals("")) {
+								infos1.put("phone", phone);
+								infos1.put("content", smscoun);
+								sendSmsUtil.SendSms(infos1, 1, 0, null);
+							}
+						}
+						
+					}else {
+						generatorUtil.SetIdUsedFail(iIdtow);
+						generatorUtil.SetIdUsedFail(iId);
+					}
 					
 				}
 				
@@ -3419,9 +3601,6 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				handleThreePartyDaoImpl.MemberTransferBack(mapo);
 			}
 			
-			HttpServletResponse response 
-			= ((ServletWebRequest)RequestContextHolder
-					.getRequestAttributes()).getResponse();
 			response.setContentType("text/plain;charset=utf-8");
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().write("SUCCESS");
@@ -3743,13 +3922,11 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 	
 	/* * 好友转账返回处理  页面返回 *  * @return * @see cn.springmvc.service.ManagedInterfaceServerTestI#MemberTransferReturn() */
 	@Override
-	public String MemberTransferReturn() {
+	public String MemberTransferReturn(HttpServletRequest request,HttpServletResponse response) {
 		String retur="SUCCESS";
 		try {
 			LoanTransferReturnEntity 
 					loanTransferReturnEntity=new LoanTransferReturnEntity();
-			ServletRequestAttributes attributes= (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-			HttpServletRequest request = attributes.getRequest();
 			request.setCharacterEncoding("UTF-8");
 			loanTransferReturnEntity.
 				setResultCode(request.getParameter("ResultCode"));
@@ -4164,6 +4341,13 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
             long lVouchers, String sDirectPwd ,short sClient) {
 		String sKey = DbKeyUtil.GetDbCodeKey();
 		LoanTransferEntity loanTransferEntity = new LoanTransferEntity();
+		int sta=selectThreePartyDaoImpl.BlackMemberJudgmentOne(lMemberId, 1);
+		if (sta==-1) {
+			loanTransferEntity.setStatu(-1);//投资金额大于当前会员最大可投金额
+			loanTransferEntity.setMassage("该会员已被拉黑，限制投资");
+			return loanTransferEntity;
+		}
+		
 //		//项目的当前最大可投金额
 		long caumll=projectInvestService.GetMaxInvestAmount(lProjectId, lMemberId, sKey, sIsAuto);
 		if (caumll<lAmount) {
@@ -4221,70 +4405,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		loanTransferEntity.setReturnURL(tra.getReturnURL()) ;
 		loanTransferEntity.setNotifyURL(tra.getNotifyURL());
 		// TODO Auto-generated method stub return null;
-		String privatekey = Common.privateKeyPKCS8;
-		String dataStr = loanTransferEntity.getLoanJsonList()
-				+ loanTransferEntity.getPlatformMoneymoremore()
-				+ loanTransferEntity.getTransferAction() + loanTransferEntity.getAction()
-				+ loanTransferEntity.getTransferType() + loanTransferEntity.getNeedAudit()
-				+ loanTransferEntity.getRandomTimeStamp() + loanTransferEntity.getRemark1()
-				+ loanTransferEntity.getRemark2() + loanTransferEntity.getRemark3()
-				+ loanTransferEntity.getReturnURL() + loanTransferEntity.getNotifyURL();
-		// 签名
-		RsaHelper rsa = RsaHelper.getInstance();
-		String SignInfo = rsa.signData(dataStr, privatekey);
-		loanTransferEntity.setSignInfo(SignInfo);
-//		//添加开户第三方交互记录
-//		long iId=generatorUtil.GetId();
-//		Map<String, Object> maps = new HashMap<String, Object>();
-//		maps.put("id", iId);//第三方交互记录id
-//		maps.put("merbillNo", ordernumber);//当前操作订单号
-//		maps.put("type", 1);//操作类型
-//		maps.put("interfaceType", 1);//第三方接口提供商
-//		maps.put("detail", dataStr);//加密前数据
-//		maps.put("detailEncrypt", SignInfo);//加密后数据
-//		maps.put("remark", "");//备注
-//		handleThreePartyDaoImpl.insertThirdInterfaceRecord(maps);
-//		generatorUtil.SetIdUsed(iId);
-		
-		String LoanJsonList = Common.UrlEncoder(loanTransferEntity.getLoanJsonList(),
-				"utf-8");
-		loanTransferEntity.setLoanJsonList(LoanJsonList);
-		
-		if(loanTransferEntity.getAction().equals("2")){//自动投标转账
-			HTTPClientUtilsbak httpClientUtilsbak = new HTTPClientUtilsbak();
-			List<NameValuePair> nvps = new ArrayList<NameValuePair>(1);
-			nvps.add(new BasicNameValuePair("LoanJsonList", loanTransferEntity.getLoanJsonList()));
-			nvps.add(new BasicNameValuePair("PlatformMoneymoremore",
-					loanTransferEntity.getPlatformMoneymoremore()));
-			nvps.add(new BasicNameValuePair("TransferAction", loanTransferEntity
-					.getTransferAction()));
-			nvps.add(new BasicNameValuePair("Action", loanTransferEntity.getAction()));
-			nvps.add(new BasicNameValuePair("TransferType", loanTransferEntity
-					.getTransferType()));
-			nvps.add(new BasicNameValuePair("NeedAudit", loanTransferEntity
-					.getNeedAudit()));
-			nvps.add(new BasicNameValuePair("RandomTimeStamp", loanTransferEntity
-					.getRandomTimeStamp()));
-			nvps.add(new BasicNameValuePair("Remark1", loanTransferEntity.getRemark1()));
-			nvps.add(new BasicNameValuePair("Remark2", loanTransferEntity.getRemark2()));
-			nvps.add(new BasicNameValuePair("Remark3", loanTransferEntity.getRemark3()));
-			nvps.add(new BasicNameValuePair("ReturnURL", loanTransferEntity
-					.getReturnURL()));
-			nvps.add(new BasicNameValuePair("NotifyURL", loanTransferEntity
-					.getNotifyURL()));
-			nvps.add(new BasicNameValuePair("SignInfo", SignInfo));
-			try {
-				String ruelt = httpClientUtilsbak.httpPost(nvps,
-						loanTransferEntity.getSubmitURL());
-				loanTransferEntity.setStatu(0);//提交信息处理成功
-			} catch (Exception e) {
-				loanTransferEntity.setStatu(1);//提交信息处理失败
-				loanTransferEntity.setMassage("提交信息处理失败");
-				// TODO Auto-generated catch block e.printStackTrace();
-			}
-		}else{
-			loanTransferEntity.setStatu(0);//提交信息处理成功
-		}
+		loanTransferEntity=testLoanTransfer(loanTransferEntity);
 		// TODO Auto-generated method stub return null;
 		return loanTransferEntity;
 	}
@@ -4388,6 +4509,12 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		if (!ru.equals("success")) {
 			loanTransferEntity.setStatu(-3);//验证失败
 			loanTransferEntity.setMassage(ru);
+			return loanTransferEntity;
+		}
+		int sta=selectThreePartyDaoImpl.BlackMemberJudgmentOne(lMemberId, 1);
+		if (sta==-1) {
+			loanTransferEntity.setStatu(-1);//投资金额大于当前会员最大可投金额
+			loanTransferEntity.setMassage("该会员已被拉黑，限制投资");
 			return loanTransferEntity;
 		}
 		long lRedpacketss = lRedpackets[0];
@@ -4571,6 +4698,74 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		}
 		// TODO Auto-generated method stub 
 		
+	}
+	
+	@Override
+	public AuditEntity ProjectSubmitDataProcessing(int stype, long pid,
+			String auditType, String returnURL, String notifyURL) {
+		AuditEntity auditEntity = new AuditEntity();
+		auditEntity.setAuditType(auditType);
+		auditEntity.setStype(stype);
+		auditEntity.setPid(pid);
+		auditEntity.setReturnURL(returnURL);
+		auditEntity.setNotifyURL(notifyURL);
+		//获取平台乾多多标识
+		String pmark="";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("accountTypeID", 1);//平台账号类型
+		pmark=selectThreePartyDaoImpl.findThirdPartyMark(map);
+		String loanNoStr="";
+		if (auditEntity.getStype()==1) {//项目
+			//根据项目id查询需要操作流水号
+			map.put("applyId", auditEntity.getPid());
+			List<LoanTransactionEntity> list=new ArrayList<LoanTransactionEntity>();
+			list=selectThreePartyDaoImpl.GetInvestListByProId(map);
+			if (list != null && list.size() > 0) {
+				for (int i = 0; i < list.size(); i++) {
+					if (i == list.size() - 1) {
+						loanNoStr = loanNoStr + list.get(i).getBillNo();
+						if (list.get(i).getGiftBillNo()!=null && !list.get(i).getGiftBillNo().equals("")) {
+							loanNoStr=loanNoStr+","+list.get(i).getGiftBillNo();
+						}
+					} else {
+						loanNoStr = loanNoStr + list.get(i).getBillNo() + ",";
+						if (list.get(i).getGiftBillNo()!=null && !list.get(i).getGiftBillNo().equals("")) {
+							loanNoStr=loanNoStr+list.get(i).getGiftBillNo()+",";
+						}
+					}
+				}
+			}
+		}
+		if (auditEntity.getStype()==2) {//债权
+			//根据债权转让申请id
+			map.put("ctaId", auditEntity.getPid());
+			List<LoanTransactionEntity> list=new ArrayList<LoanTransactionEntity>();
+			list=selectThreePartyDaoImpl.GetCreditorTransId(map);
+			int cou=0;
+			if (list != null && list.size() > 0) {
+				int length=list.size()-1;
+				for(int i=0;i<length;i++){
+					LoanTransactionEntity entity=list.get(i);
+					loanNoStr+=entity.getBillNo();
+					if(++cou==200) break;
+					String giftBillNo=entity.getGiftBillNo();
+					if(giftBillNo!=null&&!giftBillNo.equals("")){
+						loanNoStr+=","+entity.getGiftBillNo();
+						if(++cou==200) break;
+					}
+					
+					loanNoStr+=(i==length?"":",");
+				}
+			}
+		}
+		if (auditEntity.getStype()==3) {//提现
+			map.put("withdrawalID", auditEntity.getPid());
+			loanNoStr=selectThreePartyDaoImpl.findWithdrawalRecharge(map);
+		}
+		auditEntity.setLoanNoList(loanNoStr);
+		
+		auditEntity=testLoanTransferAudit(auditEntity);
+		return auditEntity;
 	}
 }
 

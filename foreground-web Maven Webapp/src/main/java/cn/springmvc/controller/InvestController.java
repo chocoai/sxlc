@@ -259,7 +259,7 @@ public class InvestController {
 				//预热中
 				request.setAttribute("investmentStatus", "1");
 				request.setAttribute("endTime", sdf.format(startTime));
-			}else if(appRecordEntity.getInvestStatu() == 0 && startTime.after(cTime) && appRecordEntity.getInvestRate() < 1000000){
+			}else if(appRecordEntity.getInvestStatu() == 0 && startTime.before(cTime) && appRecordEntity.getInvestRate() < 1000000){
 				//投标中(融资中)
 				request.setAttribute("investmentStatus", "2");
 				request.setAttribute("endTime", sdf.format(endTime));

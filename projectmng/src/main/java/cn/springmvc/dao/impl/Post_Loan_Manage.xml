@@ -53,8 +53,10 @@
 				p.Release_Date,
 				p.Real_End_Date,
 				p.Hold_Date,
-				p.Settle_Date
+				p.Settle_Date,
+				p.Apply_Id
 		FROM (SELECT
+			pa.Apply_Id,
 			  pa.Project_No,
 			  prbi.Project_Title,
 			  mi.Logname,
@@ -534,17 +536,17 @@
 	<select id="getBillingDetails" parameterType="Map" resultMap="projectInfoMap.BillingDetails">
 		 SELECT pa.Apply_Id,lr.Repay_ID,pa.Project_No,prbi.Project_Title,
 		  CASE
-			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)
-			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)
+			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
+			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
 		  END memberName,	
-		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{map.skey})) AS SIGNED),0)+
-		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{map.skey})) AS SIGNED),0) Amount,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
 		  lr.Indexs, 
           case 
              when lr.Statu !=3 then 0 <!-- 计算逾期费 -->
              when lr.Statu =3  then 
-             (select  IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{map.skey})) AS SIGNED)),0)
-                     + IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{map.skey})) AS SIGNED)),0)
+             (select  IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{skey})) AS SIGNED)),0)
+                     + IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{skey})) AS SIGNED)),0)
              from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID  )
              end  Overdue_Amount,
            

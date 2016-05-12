@@ -15,6 +15,7 @@
 		<result property = "personalPhone"  	column = "Personal_Phone" />
 		<result property = "totalInvite" 	    column = "Total_Invite" /> 
 		<result property = "checkStatu" 	    column = "Check_Statu" /> 
+		<result property = "imApplyID" 	         column = "Im_Apply_ID" /> 
     </resultMap> 
 	<!-- 推荐达人申请记录查询:
 		Member_ID,会员ID
@@ -33,6 +34,7 @@
 	-->
 	<select id="getIM_apply" parameterType="Map" resultMap="IM_apply">
 		SELECT 
+		  ia.Im_Apply_ID,
 		  mi.Member_ID,
 		  mi.Member_No,
 		  mi.Logname,
@@ -263,11 +265,6 @@
     <select id="selectFIInvestRedSetList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultType="cn.invitemastermng.model.FirstInvestRedpacketsSetEntity"> 
 	     select FI_RP_ID as firpID,Invest_Amount as investAmount,RP_Rate as rpRate 
 	     from  Member_FirstInvest_Redpackets_Set 
-         <where>
-           <if test="map.statu == -1">
-              Statu = #{map.statu}
-           </if>
-         </where> 
 	</select>
 	<!--  cps推荐配置-->  
     <select id="selectCpsInviteSet"  resultType="cn.invitemastermng.model.CpsInviteSetEntity"> 

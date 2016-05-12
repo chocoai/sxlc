@@ -11,7 +11,8 @@ public class LoanTransactionEntity {
     private long inversId;//投资记录id
     private String billNo;//第三方投资流水号
     private String giftBillNo;//使用赠送金额流水号
-
+    private long memberId;//会员id
+    private long amount;//投资金额
     public String getBillNo() {
         return billNo;
     }
@@ -35,6 +36,22 @@ public class LoanTransactionEntity {
     public void setInversId(long inversId) {
         this.inversId = inversId;
     }
+
+	public long getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(long memberId) {
+		this.memberId = memberId;
+	}
+
+	public long getAmount() {
+		return amount;
+	}
+
+	public void setAmount(long amount) {
+		this.amount = amount;
+	}
 
 }
 

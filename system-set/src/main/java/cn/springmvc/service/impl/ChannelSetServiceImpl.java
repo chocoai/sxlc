@@ -196,19 +196,23 @@ ChannelSetService {
 	public List<MailHistoryEntity> MailHistory(PageEntity pageEntity) {
 		
 		// TODO Auto-generated method stub return null;
-		return selectChannelSetDaoImpl.MailHistory(pageEntity);
+		 List<MailHistoryEntity> list =  selectChannelSetDaoImpl.MailHistory(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 	@Override
 	public List<SendHistoryEntity> SendHistory(PageEntity pageEntity) {
-		
-		// TODO Auto-generated method stub return null;
-		return selectChannelSetDaoImpl.SendHistory(pageEntity);
+		List<SendHistoryEntity> list = selectChannelSetDaoImpl.SendHistory(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 	@Override
 	public List<SMSHistoryEntity> SMSHistory(PageEntity pageEntity) {
 		
 		// TODO Auto-generated method stub return null;
-		return selectChannelSetDaoImpl.SMSHistory(pageEntity);
+		List<SMSHistoryEntity> list =  selectChannelSetDaoImpl.SMSHistory(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 	@Override
 	public int SetEnableDisable(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {

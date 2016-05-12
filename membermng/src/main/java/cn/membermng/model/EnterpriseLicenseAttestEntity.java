@@ -1,5 +1,9 @@
 package cn.membermng.model; 
 
+import java.util.Date;
+
+import product_p2p.kit.datatrans.TimestampAndString;
+
 /** 
  * 企业会员营业执照认证信息
 * @author 朱祖轶 
@@ -11,7 +15,8 @@ public class EnterpriseLicenseAttestEntity {
 	private String memberNo;//会员编号
 	private long memberID;//会员id
 	private String logname;//会员登录名
-	private String recordDate;//提交申请时间
+	private String sRecordDate;//提交申请时间
+	private Date   recordDate;
 	private String company;//企业名称
 	private int status;//认证状态0	未提交1审核中2已认证3已打回4已过期
 	private long attestTypeID;//会员认证ID
@@ -24,11 +29,13 @@ public class EnterpriseLicenseAttestEntity {
 	private String regCapital;//注册资金
 	private String regBusiness;//经营范围
 	private String firmType;//公司类型
-	private String regDate;//注册时间\颁发时间
+	private String sRegDate;//注册时间\颁发时间
+	private Date    regDate ;
 	
 	private String residence;//住所
 	private String realCapital;//实收资本
-	private String setUpDate;//成立日期
+	private String sSetUpDate;//成立日期
+	private Date   setUpDate;
 	
 	private String firmOC;//组织机构代码
 	
@@ -36,6 +43,13 @@ public class EnterpriseLicenseAttestEntity {
 	private String permitsBank;//开户银行
 	private String bankNo;//银行账号
 	
+	
+	private Date    endDate;	//有效期
+	private String sEndDate;	//有效期
+	
+	/**税务登记证*/
+	private String credentialsNO;//证件编号
+	private String issueOrgan;//颁发机关
 	public long getCertificationID() {
 		return certificationID;
 	}
@@ -78,12 +92,6 @@ public class EnterpriseLicenseAttestEntity {
 	public void setFirmType(String firmType) {
 		this.firmType = firmType;
 	}
-	public String getRegDate() {
-		return regDate;
-	}
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
 	public String getMemberNo() {
 		return memberNo;
 	}
@@ -101,12 +109,6 @@ public class EnterpriseLicenseAttestEntity {
 	}
 	public void setLogname(String logname) {
 		this.logname = logname;
-	}
-	public String getRecordDate() {
-		return recordDate;
-	}
-	public void setRecordDate(String recordDate) {
-		this.recordDate = recordDate;
 	}
 	public int getStatus() {
 		return status;
@@ -174,11 +176,69 @@ public class EnterpriseLicenseAttestEntity {
 	public void setRealCapital(String realCapital) {
 		this.realCapital = realCapital;
 	}
-	public String getSetUpDate() {
+	public String getsRecordDate() {
+		return sRecordDate;
+	}
+	public Date getRecordDate() {
+		return recordDate;
+	}
+	public void setRecordDate(Date recordDate) {
+		this.recordDate = recordDate;
+		this.sRecordDate = TimestampAndString.DateToString2(recordDate);
+	}
+	public String getsRegDate() {
+		return sRegDate;
+	}
+	public Date getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(Date regDate) {
+		this.regDate = regDate;
+		this.sRegDate =TimestampAndString.DateToString2(regDate);
+	}
+	public String getsSetUpDate() {
+		return sSetUpDate;
+	}
+	public Date getSetUpDate() {
 		return setUpDate;
 	}
-	public void setSetUpDate(String setUpDate) {
+	public void setSetUpDate(Date setUpDate) {
 		this.setUpDate = setUpDate;
+		this.sSetUpDate =TimestampAndString.DateToString2(setUpDate);
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+		this.sEndDate = TimestampAndString.DateToString2(endDate);;
+	}
+	public String getsEndDate() {
+		return sEndDate;
+	}
+	public String getCredentialsNO() {
+		return credentialsNO;
+	}
+	public void setCredentialsNO(String credentialsNO) {
+		this.credentialsNO = credentialsNO;
+	}
+	public String getIssueOrgan() {
+		return issueOrgan;
+	}
+	public void setIssueOrgan(String issueOrgan) {
+		this.issueOrgan = issueOrgan;
+	}
+	public void setsRecordDate(String sRecordDate) {
+		this.sRecordDate = sRecordDate;
+	}
+	public void setsRegDate(String sRegDate) {
+		this.sRegDate = sRegDate;
+	}
+	public void setsSetUpDate(String sSetUpDate) {
+		this.sSetUpDate = sSetUpDate;
+	}
+	public void setsEndDate(String sEndDate) {
+		this.sEndDate = sEndDate;
 	}
 	
 }

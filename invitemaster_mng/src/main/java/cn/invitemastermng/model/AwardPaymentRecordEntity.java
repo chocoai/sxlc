@@ -29,12 +29,12 @@ public class AwardPaymentRecordEntity {
 	private String personalIDCard;//身份证号
 	private String startDate;//统计开始时间
 	private String endDate;//统计结束时间
-	private long   borrowAward;//推荐借款提奖
-	private long   investAward;//推荐投资提奖
-	private long   vipAward;//推荐购买VIP提奖
-	private long   repayAward;//推荐还本提奖
-	private long   awardAmount;//推荐提奖总额
-	private long   realAmount;//实际发放金额
+	private long borrowAward;//推荐借款提奖
+	private long investAward;//推荐投资提奖
+	private long vipAward;//推荐购买VIP提奖
+	private long repayAward;//推荐还本提奖
+	private long awardAmount;//推荐提奖总额
+	private long realAmount;//实际发放金额
 	private String payDate;//佣金发放时间
 	private String borrowAwards;//推荐借款提奖
 	private String investAwards;//推荐投资提奖

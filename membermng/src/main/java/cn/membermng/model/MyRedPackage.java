@@ -14,13 +14,13 @@ import product_p2p.kit.datatrans.IntegerAndString;
 public class MyRedPackage {
 
 	
-	private long 		redPackageSum;							//红包总额
+	private long 		redPackageSum = 0;							//红包总额
 	private String 		sRedPackageSum;							
-	private long		expiredSum;								//已过期红包
+	private long		expiredSum = 0;								//已过期红包
 	private String		sExpiredSum;							
-	private long		useRedPackageSum;						//已使用
+	private long		useRedPackageSum = 0;						//已使用
 	private String		sUseRedPackageSum;						
-	private long		canUseRedPackageSum;					//可使用红包总额
+	private long		canUseRedPackageSum = 0;					//可使用红包总额
 	private String		sCanUseRedPackageSum;
 	
 	
@@ -69,6 +69,7 @@ public class MyRedPackage {
 		return canUseRedPackageSum;
 	}
 	public void setCanUseRedPackageSum(long canUseRedPackageSum) {
+		this.sCanUseRedPackageSum = IntegerAndString.LongToString(canUseRedPackageSum);
 		this.canUseRedPackageSum = canUseRedPackageSum;
 	}
 	public String getsCanUseRedPackageSum() {

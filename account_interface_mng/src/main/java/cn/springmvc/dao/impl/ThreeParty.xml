@@ -54,6 +54,10 @@
 				#{memberid,	 mode=IN,	jdbcType=BIGINT},
 				#{account ,	 mode=IN,	jdbcType=VARCHAR},
 				#{thirdPartymark ,	 mode=IN,	jdbcType=VARCHAR},
+				#{authFee,	 mode=IN,	jdbcType=BIGINT},
+				#{openType,	 mode=IN,	jdbcType=INTEGER},
+				#{skey,	 mode=IN,	jdbcType=VARCHAR},
+				#{tradeIDtow,	 mode=IN,	jdbcType=BIGINT},
 				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
@@ -115,10 +119,14 @@
     <result column="Invest_Id" property="inversId"/>
     <result column="Bill_No" property="billNo"/>
     <result column="GiftBill_No" property="giftBillNo"/>
+    <result column="Member_ID" property="memberId"/>
+    <result column="Invest_Amount" property="amount"/>
   </resultMap>
   <!-- 根据项目id查询所有放款或流标操作流水号 -->
   <select id="GetInvestListByProId" resultMap="sLoanTransaction" parameterType="Map">
-  	select Invest_Id,Bill_No,GiftBill_No from Invest_Record where Apply_Id=#{applyId} and IsValid=0
+  	select Invest_Id,Bill_No,GiftBill_No,Member_ID,
+  	CAST(((AES_DECRYPT(UNHEX(Invest_Amount),#{skey}))) as signed)  Invest_Amount
+  	from Invest_Record where Apply_Id=#{applyId} and IsValid=0
   </select>
   
   <!-- 流标返回处理 -->
@@ -742,4 +750,33 @@
   
   </select>
   
+  <!-- 根据会员id查询手机号-->  
+	<select id="selectPhone" parameterType="Map"  resultType="String">
+	   select CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{sKey})) using utf8)  as Personal_Phone  
+		from Member_Info mi
+		left join Personal_Base_Info pbi on mi.Personal_ID = pbi.Personal_Id 
+		where mi.member_id = #{memberId}  
+    </select> 
+   <!-- 根据第三方交易号查询提现申请金额 -->
+   <select id="QueryCashWithdrawal" parameterType="Map"  resultType="long">
+   		SELECT CAST(((AES_DECRYPT(UNHEX(Withdrawal_Money),#{sKey}))) as signed) money
+			FROM Member_Withdrawal_Recharge WHERE Third_Mer_Billno=#{thirdBillNo};
+   </select>
+   <!-- 根据项目申请id查询项目名称和类型名称 -->
+   <select id="findProjectTNByid" parameterType="Map"  resultType="cn.sxlc.account.manager.model.ProjectEntity">
+   		select pbi.Project_Title projectTitle,pb.Project_Name projectTypeName from Project_App_Record par 
+   			left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+   			 left join ProjectBaseInfo pb on pb.Project_ID = par.Project_ID
+   				where par.Apply_Id = #{applyId} limit 1
+   </select>
+   
+   <select id="BlackMemberJudgmentOne" resultType="Map" statementType="CALLABLE">
+    	<!--result ：1:可执行 ；-1; 不可继续执行-->
+    	<![CDATA[{call BlackMemberJudgment(
+				#{memberId,	 mode=IN,	jdbcType=BIGINT},
+				#{mType,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
 </mapper>

@@ -32,8 +32,8 @@
 	   					</div>		
 	   				</div>
 	   				<div class="my-loan-group clearfix">
-		   				<ul class="my-loan-table">
-		   					<li>
+		   				<ul id="loanRepayendUl" class="my-loan-table">
+		   					<li id="loanRepayendTop">
 		   						<div class="contentOut2">
 									<div class="c-content">
 										期数
@@ -90,7 +90,7 @@
 									</div>
 								</div>
 		   					</li>
-		   					<% for(int j = 0; j<2;j++){ %>
+		   					<%-- <% for(int j = 0; j<2;j++){ %>
 		   					<li>
 		   						<div class="contentOut2">
 									<div class="c-content">
@@ -149,9 +149,71 @@
 									</div>
 								</div>
 		   					</li>
-		   					<%} %>		   					
+		   					<%} %> --%>		   					
 		   				</ul>
-		   				<div id="pager1"></div>						   				
+		   				<script id="loanRepayendList" type="text/html">
+		   					{{each results as infos index}}
+		   						<li>
+			   						<div class="contentOut2">
+										<div class="c-content">
+											1
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											1,000.00
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											100.00
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											2016-04-07<br>
+											12:12:00
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											1,000.00
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											100.00
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											1,000.00
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											100.00
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											100.00
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											100.00
+										</div>
+									</div>
+									<div class="contentOut2">
+										<div class="c-content">
+											正常结清
+										</div>
+									</div>
+			   					</li>
+		   					{{/each}}
+		   					<div id="pager" class="pager-box"></div>						   				
+		   				</script>
 	   				</div>   				
    				</div>
    			</div>
@@ -161,5 +223,9 @@
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/myLoan.js"></script>
+	<script type="text/javascript">
+		//根据id查询还款记录
+		getRepayRecord();
+	</script>
 </body>
 </html>

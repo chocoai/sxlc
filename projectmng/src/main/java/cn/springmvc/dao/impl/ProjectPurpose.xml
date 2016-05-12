@@ -61,4 +61,13 @@
 	 where  Member_ID =#{memberID} and Member_Type =#{memberType}
 	 and ThirdParty_Account is not null
     </select>      
+     <select id="BlackMemberJudgment" resultType="Map" statementType="CALLABLE">
+    	<!--result ：1:可执行 ；-1; 不可继续执行-->
+    	<![CDATA[{call BlackMemberJudgment(
+				#{memberId,	 mode=IN,	jdbcType=BIGINT},
+				#{mType,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
 </mapper>   

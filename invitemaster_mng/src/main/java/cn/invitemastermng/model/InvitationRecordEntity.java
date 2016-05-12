@@ -12,6 +12,10 @@
  
 package cn.invitemastermng.model; 
 
+import java.sql.Timestamp;
+
+import product_p2p.kit.datatrans.TimestampAndString;
+
 /** 
  * @author 刘利 
  * @Description: 邀请明细
@@ -40,7 +44,7 @@ public class InvitationRecordEntity {
 		return regDate;
 	}
 	public void setRegDate(String regDate) {
-		this.regDate = regDate;
+		this.regDate = TimestampAndString.TimestampToString(Timestamp.valueOf(regDate));
 	}
 	public String getIsopenThird() {
 		return isopenThird;

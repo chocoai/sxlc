@@ -45,7 +45,7 @@ public class AdvanceEntity {
 	
 	private long   replayTotal;//应还款总额
 	private String replayTotals;//应还款总额
-	
+	private long    applyId;//项目申请ID
 	public long getRepayPrincipal() {
 		return repayPrincipal;
 	}
@@ -151,6 +151,12 @@ public class AdvanceEntity {
 	}
 	public void setReplayTotals(String replayTotals) {
 		this.replayTotals = replayTotals;
+	}
+	public long getApplyId() {
+		return applyId;
+	}
+	public void setApplyId(long applyId) {
+		this.applyId = applyId;
 	}
  
 }

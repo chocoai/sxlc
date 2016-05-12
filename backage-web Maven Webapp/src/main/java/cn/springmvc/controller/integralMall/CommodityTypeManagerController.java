@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.Upload.FtpClientUtil;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.integralmall.model.CommodityTypeEntity;
@@ -28,7 +29,7 @@ import cn.springmvc.service.CommodityTypeService;
 *
 */
 @Controller
-@RequestMapping("commodityTypeManager")
+@RequestMapping("/commodityTypeManager")
 public class CommodityTypeManagerController {
 
 	
@@ -42,7 +43,7 @@ public class CommodityTypeManagerController {
 	* @return
 	* @date 2016-5-10 上午10:47:40
 	*/
-	@RequestMapping(value="release",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
+	@RequestMapping("/release")
 	@ResponseBody
 	public Object release(HttpServletRequest request){
 		String	goodTypeName	= request.getParameter("typeName");				//商品类型名称
@@ -81,20 +82,25 @@ public class CommodityTypeManagerController {
 	* @return
 	* @date 2016-5-10 上午10:40:10
 	 */
-	@RequestMapping(value="loadList",produces="text/html;charset=UTF-8")
+	@RequestMapping("/loadList")
 	@ResponseBody
 	public Object serach(HttpServletRequest request){
 		int	goodType	=	IntegerAndString.StringToInt(request.getParameter("goodType"), -1);
 		int start		=	IntegerAndString.StringToInt(request.getParameter("start"), 1);
 		int length		=	IntegerAndString.StringToInt(request.getParameter("length"), 1);
-		
+		String	mngName = 	request.getParameter("mngName");			//
+		int	status		=	IntegerAndString.StringToInt(request.getParameter("statu"), -1);
 		PageEntity entity = new PageEntity();
 		entity.setPageSize(length);
 		entity.setPageNum(start/length+1);
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("goodType", goodType);
+		param.put("status", status);
+		param.put("Commodity_Classify", mngName);
 		entity.setMap(param);
-		
+		String hostPath = FtpClientUtil.getFtpFilePath();
+		hostPath = hostPath.substring(0, hostPath.length()-1);
+		entity.getMap().put("picBasePath", hostPath);
 		commodityTypeService.selectCommodityTypeListPage(entity);
 		return entity;
 	}
@@ -106,7 +112,7 @@ public class CommodityTypeManagerController {
 	* @return
 	* @date 2016-5-10 上午10:47:40
 	*/
-	@RequestMapping(value="edit",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	@ResponseBody
 	public Object edit(HttpServletRequest request){
 		long	goodId			= IntegerAndString.StringToLong(request.getParameter("tId"),-1);		//自身编号
@@ -149,7 +155,7 @@ public class CommodityTypeManagerController {
 	* @return
 	* @date 2016-5-10 上午10:52:55
 	*/
-	@RequestMapping(value="off",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/off",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> off(HttpServletRequest request){
 		long 	goodId				=	IntegerAndString.StringToLong(request.getParameter("tId"),-1);
@@ -180,16 +186,13 @@ public class CommodityTypeManagerController {
 	* @date 2016-5-10 下午2:10:54
 	*
 	*/
-	@RequestMapping(value="serachByType",produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/serachByType")
 	@ResponseBody
 	public Object serachByType(HttpServletRequest request){
 		int upId		=	IntegerAndString.StringToInt(request.getParameter("upId"), 0);
 		List<CommodityTypeEntity> result = commodityTypeService.selectCommodityTypeByID(upId);
 		return result;
 	}
-	
-	
-	
 	
 	
 }

@@ -231,8 +231,32 @@
 		  <if test="map.dateStart != null and map.dateStart ==4">
 		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(iar.Award_Date)
 		  </if>
-		) as repayAward
-		
+		) as repayAward,
+		(select ifnull(sum(iar.Award_Amount),0) from FinancialAdvisor_Award_Record iar 
+		 where  iar.Member_ID = bmi.Member_ID and  iar.Pay_Statu =2
+		 <if test="map.startTime != null and map.startTime !=''">
+		    and iar.Award_Date > #{map.startTime}
+		 </if>
+		 <if test="map.endTime != null and map.endTime !=''">
+		    and iar.Award_Date &lt; #{map.endTime}
+		 </if>
+          <!-- 		    今天 -->
+		  <if test="map.dateStart != null and  map.dateStart ==1">
+		    and  to_days(iar.Award_Date) = to_days(now())
+		  </if>
+		  <!-- 	近一周 -->
+		  <if test="map.dateStart != null and map.dateStart ==2">
+		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近一月 -->
+		  <if test="map.dateStart != null and map.dateStart ==3">
+		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		  <!-- 	近六月 -->
+		  <if test="map.dateStart != null and map.dateStart ==4">
+		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(iar.Award_Date)
+		  </if>
+		) as awardTotal
 		from  Financial_Advisor im 
 		join Member_Financial_Advisor mfp on im.FA_ID = mfp.FA_ID
 	    join member_info bmi on bmi.Member_ID = mfp.Member_ID
@@ -576,7 +600,7 @@
 	 	 and mfp.Record_Date &lt;pap.Record_Date and (pap.Record_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
 	    ) as loanTotalAmount,
 		
-		(select ifnull(sum(ir.Invest_Amount_Valid),0) from invest_record ir 
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey})) as signed)),0) from invest_record ir 
 		 where ir.Member_ID= bmi.Member_ID and ir.IsValid = 0
 		 and mfp.Record_Date &lt;ir.Invest_Date and (ir.Invest_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
 	    ) as investTotalAmountValid,

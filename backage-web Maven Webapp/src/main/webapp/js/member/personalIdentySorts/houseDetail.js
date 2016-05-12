@@ -49,8 +49,8 @@ function IdentyDetails(typeId){
 					if(data.attachPath!=null && data.attachPath!=""){
 						var arrPath = data.attachPath.split(",");
 						var arrName = data.attachName.split(",");
-						$.each(data,function(i,list){
-							if((i%2)==0){
+						$.each(arrPath,function(i,list){
+							if((i%3)==0){
 								$("#addImg").append("<tr><td style='height:220px;width:270px'>"
 			                    +"  		<div class='img-polaroid' style='width: 250px;height: 200px;' align='center'>"
 			                    +"      	 	<div style='border:1px solid #cccccc; class='thumb' >"

@@ -1,6 +1,8 @@
 package cn.springmvc.dao.impl; 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -8,6 +10,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.integralmall.model.CommodityInfo;
@@ -61,7 +64,17 @@ public class IntegrallServiceReadDaoImpl extends SqlSessionDaoSupport implements
 	}
 	
 	
-	
+	@Override
+	public int BlackMemberJudgmentTre(long memberId, int mType) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("memberId", memberId);
+		map.put("mType", mType);
+		// TODO Auto-generated method stub return 0;
+		getSqlSession().selectOne("IntegrallServiceReadDaoImpl.BlackMemberJudgmentTre",map);
+		int result = IntegerAndString.StringToInt(map.get("result").toString(), 0);
+		return result;
+		
+	}
 	@Autowired
 	@Override
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {

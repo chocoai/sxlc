@@ -22,9 +22,6 @@ import cn.sxlc.account.manager.model.WithdrawsInterdaceEntity;
 * @date 2016-3-7 下午2:17:23  */
 @WebService
 public interface ManagedInterfaceServerTestI {
-	
-	
-	
 	/** 
 	* testAccountInterfaceQDD 乾多多开户提交数据处理
 	* TODO(这里描述这个方法适用条件 – 可选) 
@@ -231,6 +228,24 @@ public interface ManagedInterfaceServerTestI {
 	
 	
 	/** 
+	* ProjectSubmitDataProcessing 放款 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: ProjectSubmitDataProcessing 
+	* @Description: TODO 
+	* @param  stype 1:项目 2：债权 3：提现
+	* @param  pid 项目id、债权转让id、提现申请id
+	* @param  auditType：//审核类型 1：放款 2：流标  5：提现通过 6：提现退回
+	* @param  returnURL:第三方回调 页面返回地址
+	* @param  notifyURL：第三方回调 服务器返回地址
+	* @param @return 设定文件 
+	* @return AuditEntity 返回类型 
+	* @date 2016-5-12 下午1:57:28
+	* @throws 
+	*/
+	public AuditEntity ProjectSubmitDataProcessing(int stype,long pid,String auditType,String returnURL,String notifyURL);
+	
+	/** 
 	* testLoanTransferAuditReturn 双乾第三方放款、提现审核 页面返回 
 	* TODO(这里描述这个方法适用条件 – 可选) 
 	* TODO(这里描述这个方法的执行流程 – 可选) 
@@ -242,7 +257,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return String 返回类型 
 	* @throws 
 	*/
-	public String testLoanTransferAuditReturn();
+	public String testLoanTransferAuditReturn(HttpServletRequest request,HttpServletResponse response);
 	
 	/** 
 	* testLoanTransferAuditNotify 双乾第三方放款、提现审核 服务器返回  
@@ -256,7 +271,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return void 返回类型 
 	* @throws 
 	*/
-	public void testLoanTransferAuditNotify();
+	public void testLoanTransferAuditNotify(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	/** 
@@ -531,7 +546,7 @@ public interface ManagedInterfaceServerTestI {
 	* @date 2016-4-19 下午2:58:06
 	* @throws 
 	*/
-	public int MemberTransferBack();
+	public int MemberTransferBack(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	/** 
@@ -545,7 +560,7 @@ public interface ManagedInterfaceServerTestI {
 	* @date 2016-4-20 下午2:36:33
 	* @throws 
 	*/
-	public String MemberTransferReturn();
+	public String MemberTransferReturn(HttpServletRequest request,HttpServletResponse response);
 	
 	
 	/** 

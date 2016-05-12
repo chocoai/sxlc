@@ -12,6 +12,8 @@
  
 package cn.springmvc.model; 
 
+import java.util.List;
+
 /** 
  * @author 刘利 
  * @Description: 项目贷后信息记录实体
@@ -40,6 +42,18 @@ public class ProjectAfterLoanInfoEntity {
 	 * 详情描述
 	 */
 	private String  detail;
+	/**
+	 * 附件信息
+	 * @author TGF 用于贷后管理贷后信息查询
+	 */
+	private List<ProjectAfterLoanAttachmentEntity> attaches;
+	
+	public List<ProjectAfterLoanAttachmentEntity> getAttaches() {
+		return attaches;
+	}
+	public void setAttaches(List<ProjectAfterLoanAttachmentEntity> attaches) {
+		this.attaches = attaches;
+	}
 	public String getRecordDate() {
 		return recordDate;
 	}

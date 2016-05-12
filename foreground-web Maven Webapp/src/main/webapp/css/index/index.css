@@ -1,10 +1,10 @@
 /* CSS Document   */
 @charset "UTF-8";
-/* 閿熸枻鎷烽敓鐭鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷峰紡   */
+/* 闁跨喐鏋婚幏鐑芥晸閻偉顔愰幏鐑芥晸閺傘倖瀚归柨鐔告灮閹风兘鏁撻弬銈嗗闁跨喐鏋婚幏宄扮础   */
 .mainPageTop .mainPageTop1{
 	color:#72c0f3;
 }
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熻璇ф嫹鍥鹃敓鏂ゆ嫹寮� start 閿熸枻鎷烽敓鏂ゆ嫹 20160327  */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔活敎鐠囇勫閸ラ箖鏁撻弬銈嗗瀵拷 start 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚�20160327  */
 .banner {
 	overflow: auto; 
 	max-width:100%;
@@ -74,8 +74,8 @@
 	background: #fff;
 	opacity: 1;
 }
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熻璇ф嫹鍥鹃敓鏂ゆ嫹寮� end  */
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓锟介敓鏂ゆ嫹濮� */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔活敎鐠囇勫閸ラ箖鏁撻弬銈嗗瀵拷 end  */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔告灮閹风兘鏁撻敓浠嬫晸閺傘倖瀚规慨锟�*/
 .carousel_float{
 	width:290px;
 	height:325px;
@@ -156,8 +156,8 @@
 	border-right:1px solid #ffffff;
 	float:left;
 }
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓锟介敓鏂ゆ嫹閿熸枻鎷� */
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷锋寶閿熺粸锟� */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔告灮閹风兘鏁撻敓浠嬫晸閺傘倖瀚归柨鐔告灮閹凤拷 */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔告灮閹风兘鏁撻弬銈嗗闁跨喐鏋婚幏閿嬪闁跨喓绮搁敓锟�*/
 .contFoot{
 	width:100%;
 	background-color:#fff;
@@ -225,8 +225,8 @@
 	margin:0px 30px;
 	color:#656565;
 }
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷风焊閿熸枻鎷烽敓锟� */
-/* 骞冲彴閿熸枻鎷疯壊閿熸枻鎷峰閿熸枻鎷烽敓鏂ゆ嫹   */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔告灮閹风兘鏁撻弬銈嗗闁跨喐鏋婚幏椋庣剨闁跨喐鏋婚幏鐑芥晸閿燂拷 */
+/* 楠炲啿褰撮柨鐔告灮閹风柉澹婇柨鐔告灮閹峰嘲顬婇柨鐔告灮閹风兘鏁撻弬銈嗗   */
 .featureImg{
 	width:78px;
 	height:89px;
@@ -306,8 +306,8 @@
 	float:left;
 	margin:0px 10px 5px 0;
 }
-/* 骞冲彴閿熸枻鎷疯壊閿熸枻鎷烽敓琛楁枻鎷烽敓鏂ゆ嫹   */
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓浠嬮儴閿熻鍖℃嫹濮�  */
+/* 楠炲啿褰撮柨鐔告灮閹风柉澹婇柨鐔告灮閹风兘鏁撶悰妤佹灮閹风兘鏁撻弬銈嗗   */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔告灮閹风兘鏁撴禒瀣劥闁跨喕顢滈崠鈩冨婵拷  */
 .newMember{
 	width:1200px;
 	margin-top:30px;
@@ -400,8 +400,8 @@
 	font-weight:normal !important;
 	margin:23px 0;
 }
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓浠嬮儴閿熻鏂ゆ嫹閿熸枻鎷�  */
-/* 鎶曢敓鏂ゆ嫹涓撻敓鏂ゆ嫹濮嬮敓鏂ゆ嫹閿熸枻鎷�  */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔告灮閹风兘鏁撴禒瀣劥闁跨喕顢滈弬銈嗗闁跨喐鏋婚幏锟� */
+/* 閹舵洟鏁撻弬銈嗗娑撴捇鏁撻弬銈嗗婵鏁撻弬銈嗗闁跨喐鏋婚幏锟� */
 .invest{
 	width:1200px;
 	margin: 30px auto;
@@ -470,7 +470,7 @@
 .rowContent {
     width: 100%;
 }
-/*閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷烽敓缁烇拷 */ 
+/*闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔告灮閹风兘鏁撶紒鐑囨嫹 */ 
 .progressbar_1 {
     background-color: #eee;
     height: 8px;
@@ -695,6 +695,26 @@
 	background:url(../../resource/img/index/hkz.png) no-repeat;
 	background-position:center;
 }
+.money_over{
+	width:137px;
+	height:134px;
+	background:url(../../resource/img/invest/yiwancheng1.png) no-repeat;
+	background-position:center;
+	position:absolute;
+	bottom:49px;
+	right:33px;
+	width:137px;	
+}
+.money_end{
+	width:137px;
+	height:134px;
+	background:url(../../resource/img/invest/yijieqing.png) no-repeat;
+	background-position:center;
+	position:absolute;
+	bottom:49px;
+	right:33px;
+	width:137px;	
+}
 .progress{
 	width:64%;
 	float:left;
@@ -729,7 +749,6 @@
     background: #fff;
     color: #c3c3c3;
     margin-left:4px;
-    margin-top:34px;
     font-size:20px;
     border-radius: 2px;
 }
@@ -771,7 +790,7 @@
 .rowContent .aftInvest .investBtn,
 .rowContent .aftInvest .openBidTime,
 .rowContent .aftInvest .progress_div{
-	display:none;
+	/* display:none; */
 }
 .investH .indexConHMore,
 .debtH .indexConHMore{
@@ -787,10 +806,10 @@
 .investContMiddle .reward,
 .investContLast .invest_span,
 .investContLast .reward{
-	display:none;
+	/* display:none; */
 }
-/* 鎶曢敓鏂ゆ嫹涓撻敓鏂ゆ嫹閿燂拷閿熸枻鎷烽敓鏂ゆ嫹  */
-/* 鍊烘潈杞敓鐭鎷烽敓琛楀尅鎷峰   */
+/* 閹舵洟鏁撻弬銈嗗娑撴捇鏁撻弬銈嗗闁跨噦鎷烽柨鐔告灮閹风兘鏁撻弬銈嗗  */
+/* 閸婄儤娼堟潪顒勬晸閻偉顕滈幏鐑芥晸鐞涙灏呴幏宄邦瀶   */
 .debt{
 	display: inline-block;
 	color:#4e4e4e;
@@ -929,8 +948,8 @@
 	color:#373737;
 	margin: 10px auto;
 }
-/* 鍊烘潈杞敓鐭鎷烽敓琛楁枻鎷烽敓鏂ゆ嫹   */
-/* 閿熷彨璇ф嫹banner閿熸枻鎷烽敓琛楀尅鎷峰   */
+/* 閸婄儤娼堟潪顒勬晸閻偉顕滈幏鐑芥晸鐞涙鏋婚幏鐑芥晸閺傘倖瀚�  */
+/* 闁跨喎褰ㄧ拠褎瀚筨anner闁跨喐鏋婚幏鐑芥晸鐞涙灏呴幏宄邦瀶   */
 .ad{
 	width:100%;
 	padding:0 15px;
@@ -946,8 +965,8 @@
 	background:url("../../resource/img/index/ad_03.jpg") no-repeat;
 	background-position:center;
 }
-/* 閿熷彨璇ф嫹banner閿熸枻鎷烽敓琛楁枻鎷烽敓鏂ゆ嫹   */
-/* 閿熸枻鎷烽敓鑴氱櫢鎷烽敓鏂ゆ嫹閿熸枻鎷风摙閿熺粸锟�*/
+/* 闁跨喎褰ㄧ拠褎瀚筨anner闁跨喐鏋婚幏鐑芥晸鐞涙鏋婚幏鐑芥晸閺傘倖瀚�  */
+/* 闁跨喐鏋婚幏鐑芥晸閼存氨娅㈤幏鐑芥晸閺傘倖瀚归柨鐔告灮閹烽鎽欓柨鐔虹哺閿燂拷*/
 .secBottomH{
     display: inline-block;
     width: 100%;
@@ -956,6 +975,7 @@
 	display:inline-block;
 	margin-top: 18px;
 	margin-left:5px;
+	width: 100%
 }
 .secBottomZero .noRuleCircle{
 	margin-right:6px;
@@ -1102,6 +1122,7 @@
     width: 100%;
     line-height: 25px;
     padding-left:0;
+    text-align: left;
 }
 .artical_content .artical_main ul li:hover a,
 .artical_content .artical_main ul li:hover span{
@@ -1128,7 +1149,6 @@
     float: right;
     color: #707070;
     line-height: 22px;
-	width:44%;
 }
 .indexContFooter{
 	width:100%;
@@ -1221,8 +1241,8 @@
 .webSite .artical_main ul{
 	padding-top:8px;
 }
-/* 閿熸枻鎷烽敓鑴氱櫢鎷烽敓鏂ゆ嫹閿熸枻鎷风摙閿熸枻鎷烽敓鏂ゆ嫹  */
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷锋ご鍖℃嫹鎸氶敓缁烇拷  */
+/* 闁跨喐鏋婚幏鐑芥晸閼存氨娅㈤幏鐑芥晸閺傘倖瀚归柨鐔告灮閹烽鎽欓柨鐔告灮閹风兘鏁撻弬銈嗗  */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔告灮閹烽攱銇旈崠鈩冨閹告岸鏁撶紒鐑囨嫹  */
 .partner{
 	position:relative;
 }
@@ -1358,8 +1378,8 @@
 .indexConH .sec_b_title{
 	margin-bottom:0 !important;
 }
-/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷锋ご鍖℃嫹绾搁敓鏂ゆ嫹閿燂拷  */
-/* 閿熸枻鎷烽敓绔鎷烽敓琛楀尅鎷峰    */
+/* 闁跨喐鏋婚幏鐑芥晸閺傘倖瀚归柨鐔告灮閹烽攱銇旈崠鈩冨缁炬悂鏁撻弬銈嗗闁跨噦鎷� */
+/* 闁跨喐鏋婚幏鐑芥晸缁旑叀顕滈幏鐑芥晸鐞涙灏呴幏宄邦瀶    */
 .asideLeft{
 	position:fixed;
 	top:30%;
@@ -1474,4 +1494,19 @@
 .apply-bottom input:hover{
 	background-color: #38aaf4;
 	cursor: pointer;
+}
+
+.artical_content_u{
+	text-align: left;
+}
+.investPro{
+	text-align: left;
+}
+.invest_progress_1{
+	width: 100%
+}
+.banner_div{
+	height:360px;
+	width:100%;
+	position: relative;
 }

@@ -12,5 +12,16 @@
 	width:200px;
 }
 .con-item .dateInput{
-	width:89px;
+	width:92px;
+}
+/* ÉóºËµ¯³ö²ã2016-05-11 */
+.layerExam{
+	padding:10px;
+}
+.layerExam tr{
+	margin:4px 0;
+}
+.glyphicon-search{
+	background-color: #509DDF;
+    color: #fff;
 }

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="backgroundData">   
+    <!-- 后台首页数据统计 -->  
+	<select id="selectProjectStatistic"   resultType="cn.springmvc.model.OperationItemStatisticsEntity">
+	select 
+	(select count(Purpose_ID) from Project_Purpose where Deal_Statu =0) as notDeal,
+	(select count(Apply_Id) from  Project_App_Record where Check_Statu = 0 ) as checking,
+	(select count(Apply_Id) from  Project_App_Record where Invest_Statu = 0 ) as investing,
+	(select count(Apply_Id) from  Project_App_Record where Invest_Statu = 3 ) as replaying,
+	(select count(Apply_Id) from  Project_App_Record where 
+	Invest_Statu = 2 or (Check_Statu=1 and Publish_Statu=2 and Invest_Statu = 0 and Invest_Rate>=1000000) 
+	or (Check_Statu=1 and Publish_Statu=2 and Invest_Statu = 0 and Project_App_Process.End_Date&lt;=now())  
+       ) as willhold,
+	(select count(par.Apply_Id) from  Project_App_Record  par where par.Invest_Statu = 3 and EXISTS
+	(select lr.Apply_Id from Loan_Repay lr  where lr.Repay_MaxTime > now() and  lr.Statu=0 and lr.Apply_Id = par.Apply_Id )
+	 ) as overReplay,
+	(select count(Apply_Id) from  Project_App_Record where Invest_Statu = 4 ) as Settled
+    </select>       
+   
+     <!-- 审核中的借款审核 -->  
+	<select id="selectProjectCheck"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultType="cn.springmvc.model.OperationItemStatisticsEntity">
+	  select par.Apply_Id as applyId,par.Project_No as projectNo,mi.Logname as logname,mi.Member_No as memberNo,
+	   pbi.Project_Title as projectTitle,
+	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.keys})) using utf8)  
+          when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
+          as memberName
+	   from  Project_App_Record par  
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID  
+	   left join Member_Info mi on mi.Member_ID = par.Member_ID  
+	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id and mi.Member_Type=0
+	   left join Company_Info  ci  on ci.Company_ID=mi.Company_ID and mi.Member_Type=1
+       where par.Check_Statu = 0
+    </select>   
+     
+     
+    <!-- 待放款借款 -->  
+	<select id="selectProjectLoan"    parameterType="product_p2p.kit.pageselect.PageEntity"  resultType="cn.springmvc.model.OperationItemStatisticsEntity">
+	   select par.Apply_Id as applyId,par.Project_No as projectNo,mi.Logname as logname,mi.Member_No as memberNo,
+	   pbi.Project_Title as projectTitle,pbi.Amount as amount,pap.Real_End_Date as realEndDate,pbi.real_amount as realAmount,
+	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{keys})) using utf8)  
+          when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end 
+          as memberName
+	   from  Project_App_Record par 
+       left join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id   
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID  
+	   left join Member_Info mi on mi.Member_ID = par.Member_ID  
+	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id and mi.Member_Type=0
+	   left join Company_Info  ci  on ci.Company_ID=mi.Company_ID and mi.Member_Type=1
+       where par.Check_Statu = 2
+    </select>   
+  
+  
+  
+    <!-- 平台收益统计-->  
+	<select id="selectPlatformRevenue" parameterType = "map"  resultType="cn.springmvc.model.PlatformRevenueStatisticsEntity">
+	  select  
+		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		from Own_Trading_Records  otr 
+		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		where tts.Trade_Type_Id = 801) as rMngFeeAmount,<!-- 收取管理费总额 -->
+		
+		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED))
+		from Own_Trading_Records  otr 
+		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		where tts.Trade_Type_Id = 1002)  as rRiskMarginFee,<!-- 收取风险保证金总额-->
+		
+		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		from Own_Trading_Records  otr 
+		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		where tts.Trade_Type_Id = 1003) as oRiskMarginFee, <!-- 退还风险保证金总额-->
+		 
+		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		from Own_Trading_Records  otr 
+		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		where tts.Trade_Type_Id = 102) as rechargeFee,<!-- 会员支付充值费用总额-->
+		
+		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		from Own_Trading_Records  otr 
+		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		where tts.Trade_Type_Id = 202) as withdrawalFee, <!-- 会员支付提现手续费总额-->
+		 
+		 (select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED)) 
+		 from Member_Withdrawal_Recharge where Deal_Type = 0 ) as pRechargeFee,<!-- 平台代付充值费用总额 -->
+		
+		 (select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED))
+		 from Member_Withdrawal_Recharge where Deal_Type = 1 and Statu = 1)  as pwidthdrawFee, <!-- 平台代付提现费用总额 -->
+		
+		 (select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee),#{keys})) AS SIGNED)) 
+		 from Member_Withdrawal_Recharge where Deal_Type = 1 and Statu = 1) as pgetwidthdrawFee, <!-- 平台收取提现手续费 -->
+		 
+		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 from Own_Trading_Records  otr 
+		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		 where tts.Trade_Type_Id = 502) as rTransFeeAmount,<!-- 平台收取债权转让手续费总额-->
+		 
+		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 from Own_Trading_Records  otr 
+		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		 where tts.Trade_Type_Id = 409) as roverFeeAmount,<!-- 收取逾期罚金总额-->
+		 
+		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 from Own_Trading_Records  otr 
+		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		 where tts.Trade_Type_Id = 601) as rcompenRepayAmount,<!-- 平台代偿回款总金额-->
+		 
+		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 from Own_Trading_Records  otr 
+		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		 where tts.Trade_Type_Id = 602) as rcompenAmount,<!-- 平台代偿总金额-->
+		 
+		 (select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
+         from InviteMaster_Award_PayRecord where Pay_Statu = 2) as inviteMasterAward, <!-- 推荐达人提奖总额 -->
+         
+         (select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
+         from FinancialAdvisor_Award_PayRecord  where Pay_Statu = 2 ) as financialAdvisorAward <!-- 理财顾问提奖总额-->
+    </select>
+    <!--       财务相关   -->
+    <select id="selectFinancialRelated"  parameterType = "map"  resultType="cn.springmvc.model.FinancialRelatedEntity">
+    select 
+       (select ifnull(sum(Gift_Amount),0)  from Member_Redpackets ) as totalRedpackets ,<!-- 红包发放总额 -->
+       (select ifnull(sum(Gift_Amount),0)  from Member_Redpackets where Receive_Date !=null) as getTotalRedpackets ,<!-- 红包领取总额 -->
+       (select ifnull(sum(Affair_Account),0) from Redpackets_Affair  ) as affairAccount ,<!-- 活动红包总额-->
+      
+       (select ifnull(sum(Gift_Amount),0) from Member_Redpackets_UseRecord  where Invest_Type = 0 and Statu = 1)  as useRedpackets,<!-- 红包使用总额 -->
+    
+       ((select sum(Gift_Amount)  from Member_Redpackets ) -
+       (select ifnull(sum(Gift_Amount),0) from Member_Redpackets_UseRecord  where Invest_Type = 0 and Statu = 1)) as notuseRedpackets,<!-- 红包未使用总额 -->
+      
+       (select 
+        ifnull(sum(mr.Gift_Amount-
+	    (select mru.Gift_Amount from  Member_Redpackets_UseRecord mru where 
+	    mru.Member_RP_ID=mr.Member_RP_ID and mru.Statu!=-1) ),0)
+	    from  Member_Redpackets   mr    
+        where     mr.Statu !=2 and mr.End_Date &lt; now() )  as overRedpackets, <!-- 过期红包总额-->
+        
+        (select ifnull(sum(Gift_Amount),0) from Member_Vouchers 
+        ) as totalVouchers,<!-- 代金券兑换总额 -->
+        
+        ( select ifnull(sum(Gift_Amount),0) from Member_Vouchers_UseRecord
+         where Invest_Type = 0 and Statu = 1  
+         ) as useVouchers,<!-- 代金券使用总额 -->
+         
+        (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 from Own_Trading_Records  otr 
+		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		 where tts.Trade_Type_Id = 311 
+		 ) as payWithdrawal, <!-- 累计返现总额-->
+		
+		(select count(Apply_Id) from Project_App_Record where Reward_Rate !=0) as totalRewardproject,<!-- 奖励标总数-->
+        
+        (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		from Own_Trading_Records  otr 
+		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		where tts.Trade_Type_Id = 1102 
+		) as payAward, <!-- 累计奖励总额-->
+        
+        (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 from Own_Trading_Records  otr 
+		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		 where tts.Trade_Type_Id = 601 
+		 ) as rcompenRepayAmount,<!-- 平台代偿回款总金额-->
+		 
+		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 from Own_Trading_Records  otr 
+		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		 where tts.Trade_Type_Id = 602 
+		 ) as rcompenAmount,<!-- 平台代偿总金额-->
+		 
+		 (select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
+         from InviteMaster_Award_PayRecord where Pay_Statu = 2 
+         ) as inviteMasterAward, <!-- 推荐达人提奖总额 -->
+         
+         (select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
+         from FinancialAdvisor_Award_PayRecord  where Pay_Statu = 2  
+         ) as financialAdvisorAward, <!-- 理财顾问提奖总额-->
+         
+         (select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) 
+		 from Member_Withdrawal_Recharge where Deal_Type = 0  
+		 ) as pRechargeFee,<!-- 充值统计 -->
+		
+		 (select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED))
+		 from Member_Withdrawal_Recharge 
+		 where Deal_Type = 1 and Statu = 1 
+		 )  as pwidthdrawFee <!-- 提现统计 -->
+		 
+    </select> 
+    
+    
+     <!-- 充值统计 （最近30天充值统计 走势图）-->  
+	<select id="selectRechargethree" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+		select DATE_FORMAT(Receive_Date,'%Y%m%d') day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pRechargeFee
+		from Member_Withdrawal_Recharge 
+		where Deal_Type = 0 and  DATEDIFF(now(),Receive_Date)&lt;30
+		group by DATE_FORMAT(Receive_Date,'%Y%m%d') 	
+	</select> 
+	 <!-- 提现统计 （最近30天充值统计 走势图）-->  
+	<select id="selectWithdrawalthree" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+		select DATE_FORMAT(Receive_Date,'%Y%m%d') day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pwidthdrawFee
+		from Member_Withdrawal_Recharge 
+		where Deal_Type = 1 and  DATEDIFF(now(),Receive_Date)&lt;30
+		group by DATE_FORMAT(Receive_Date,'%Y%m%d') 	
+	</select>  
+         
+     <!-- 累计注册会员个数（最近30天注册会员个数走势图）-->  
+	<select id="selectMember" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+		select DATE_FORMAT(Reg_Date,'%Y%m%d') day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as countMember
+		from member_info 
+		where DATEDIFF(now(),Reg_Date)&lt;30
+		group by DATE_FORMAT(Reg_Date,'%Y%m%d') 	
+	</select>  
+	
+	
+	<!-- 根据时间段筛选项目统计  
+	 cumulative   累计成交总额（元）（时间段、截至当前）
+     successLoan  累计成功借款项目数（时间段、截至当前）
+     successRepay 累计成功还款（结清）
+     -->  
+   <!--  累计待还本金、待还总额（元）（待还本金+待还利息）（还款中项目） -->
+	<select id="StaticsProjectTime" parameterType = "map"  resultType="cn.springmvc.model.OperationItemStatisticsEntity">
+	   select 
+		( select SUM(Invest_Amount_Valid) investAmount 
+		  from Invest_Record where 1=1 
+		 ) as cumulative, 
+		 
+		(select count(par.Apply_ID) 
+		 from Project_App_Record par 
+		 join Project_App_Process pap on par.Apply_ID = pap.Apply_ID
+		 where par.Invest_Statu = 3 
+		) as successLoan,
+		
+		(select count(par.Apply_ID) 
+		from Project_App_Record par 
+		join Project_App_Process pap on par.Apply_ID = pap.Apply_ID
+		where par.Invest_Statu = 4 
+		) as successRepay,
+	
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{keys})) as signed)),0) -
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{keys})) as signed)),0) 
+		from     Loan_Real_Repay lrr  where lrr.Repay_Id = lr.Repay_Id)
+		from Loan_Repay lr where   lr.Statu in(0,2) and  lr.IsValid = 0  )  as notRepayPrincipal,
+		
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{keys})) as signed)),0)  
+	    + ifnull(sum(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{keys})) as signed)),0) -
+	
+	   (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{keys})) as signed)),0) 
+	   + ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{keys})) as signed)),0) 
+	   from     Loan_Real_Repay lrr  where lrr.Repay_Id = lr.Repay_Id)
+	    from Loan_Repay lr where   lr.Statu in(0,2) and  lr.IsValid = 0  )  as notRepayTotal,
+	    
+	   (
+	    select  sum(ir.Invest_Amount_Valid) 
+        from invest_record ir 
+        where   ir.Invest_Date BETWEEN STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y%m%d')) ,'%Y%m%d %H%i%s') AND STR_TO_DATE(DATE_FORMAT(DATE_ADD(now(),INTERVAL 1 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s')
+	    ) as sumInvestD,
+	    
+	    (
+	    select sum(ir.Invest_Amount_Valid)
+        from invest_record ir 
+        where  ir.Invest_Date BETWEEN STR_TO_DATE(DATE_FORMAT(DATE_ADD(now(),INTERVAL -7 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y%m%d')) ,'%Y%m%d %H%i%s')
+        )  as sumInvestW ,
+        
+        (
+         select sum(ir.Invest_Amount_Valid) as sumInvest 
+         from invest_record ir 
+         where  ir.Invest_Date BETWEEN STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y%m'),'01') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y%m')+'01',01) ,'%Y%m%d %H%i%s')
+        )  as  sumInvestM
+	    
+	</select>
+	
+	
+	<!-- 累计待还本金、待还总额（元）（待还本金+待还利息）（还款中项目） -->  
+	<select id="StaticsProjectoney" parameterType = "map"  resultType="cn.springmvc.model.OperationItemStatisticsEntity">
+    select  
+	(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{keys})) as signed)),0) -
+	(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{keys})) as signed)),0) 
+	from     Loan_Real_Repay lrr  where lrr.Repay_Id = lr.Repay_Id)
+	from Loan_Repay lr where   lr.Statu in(0,2) and  lr.IsValid = 0  )  as notRepayPrincipal,
+	
+	(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{keys})) as signed)),0)  
+	+ ifnull(sum(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{keys})) as signed)),0) -
+	
+	(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{keys})) as signed)),0) 
+	+ ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{keys})) as signed)),0) 
+	 from     Loan_Real_Repay lrr  where lrr.Repay_Id = lr.Repay_Id)
+	 from Loan_Repay lr where   lr.Statu in(0,2) and  lr.IsValid = 0  )  as notRepayTotal
+	</select>
+	
+	<!-- 今日前台访问量（次）（最近30天前台访问量走势图） -->  
+	<select id="StaticsFrontAccess" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+	    select DATE_FORMAT(Record_Date,'%Y%m%d') day,count(Session_Id) as countFrontAccess
+	    from Front_Access_Record 
+	    where DATEDIFF(now(),Record_Date)&lt;30
+	    group by DATE_FORMAT(Record_Date,'%Y%m%d') 
+	</select> 
+</mapper>   

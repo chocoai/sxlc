@@ -12,6 +12,7 @@
     <title>招贤纳士</title>
     <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/aboutUs/recruitmentInformation.css">
+	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css"></link>
 </head>
 <body>
     <jsp:include page="../common/top.jsp"></jsp:include>
@@ -32,10 +33,12 @@
 	   	   		<p><span class="job_circle"></span>完善的培训体系和更多的晋升机会</p>
 	   	   	</div>
 	   	    <div class="jobOfferWay"><p>请发送您的简历至hr@sxlc.com，标题请注明所申请职位。</p></div>
-	   	   <div class="job_content_middle jobContentFirst">
+	   	    <div class="job_content_middle jobContentFirst">
 	   	    	<h4 class="recruitmentPost">招聘职位</h4>
-	   	    </div> 
-	   	    <%for(int i = 0;i<4;i++){ %>
+	   	    </div>
+	   	    
+	   	    <div id="recruitment-box"></div>
+	   	    <%-- <%for(int i = 0;i<4;i++){ %>
 	   	   		<div class="job_content_middle">
 	   	   			<div class="contentMiddleH">
 		   	   			<h4>web前端开发工程师</h4>
@@ -65,7 +68,39 @@
 		   	    		</div>
 		   	   		</div>
 	   	   		</div>
-	   	   		<%} %>
+	   	   		<%} %> --%>
+	   	   		
+	   	   		<script id="recruitmentList" type="text/html">
+				{{each results as infos index}}
+					<div class="data-item">
+						<div class="job_content_middle">
+							<div class="contentMiddleH">
+								<h4>{{infos.name}}</h4>
+							</div>
+							<div class="job_middle_main">
+								<div class="job_duty">
+									<p>岗位职责</p>
+								</div>
+								<div class="jobDutyCont">
+									<p>{{#infos.jobResponsibilities}}</p>
+								</div>
+								<div class="job_require">
+									<p>任职要求</p>
+								</div>
+								<div>
+									<p>{{#infos.jobRequirements}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				{{/each}}
+				<div id="pager" class="pager-box"></div>
+				</script>
+	   	   		
+	   	   		
+	   	   		
+	   	   		
+	   	   		
 	   	    <!-- <div class="job_content_bottom">
 	   	    	<div class="job_bottom">
 	   	    		<p>WEB前端开发工程师</p>
@@ -84,6 +119,8 @@
    	 </div>
     
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
+   	<script type="text/javascript" src="plugs/pager/pager.js"></script>
+   	<script type="text/javascript" src="js/common/template.js"></script>
 	<script type="text/javascript" src="js/aboutUs/recruitmentInformation.js"></script>
 </body>
 </html>

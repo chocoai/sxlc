@@ -45,10 +45,10 @@ public class ReplayDetailEntity {
 	private String			paidSOberdueFine;		    //实还逾期罚金
 	private long            paisdReplayTotal;            //实还总额
 	private String          paisdReplayTotals;           //实还总额
-	private long            userBalance;                 //实还总额
-	private String          userBalances;                //实还总额
+	private long            userBalance;                 //用户可用余额
+	private String          userBalances;                //用户可用余额
 	private int             overDay ;                    //逾期天数
-	 
+	private long            applyID;                     //项目申请ID
 
 	public long getLid() {
 		return lid;
@@ -308,6 +308,16 @@ public class ReplayDetailEntity {
 
 	public void setUserBalances(String userBalances) {
 		this.userBalances = userBalances;
+	}
+
+
+	public long getApplyID() {
+		return applyID;
+	}
+
+
+	public void setApplyID(long applyID) {
+		this.applyID = applyID;
 	}
 	
 }

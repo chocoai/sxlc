@@ -6,6 +6,7 @@ import java.util.Map;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.AdvanceEntity;
 import cn.membermng.model.Cleared;
+import cn.membermng.model.ComfirLoanInfo;
 import cn.membermng.model.ConfirmationLoan;
 import cn.membermng.model.Financing;
 import cn.membermng.model.FlowLabel;
@@ -18,6 +19,7 @@ import cn.membermng.model.RepaymentOfBorrowings;
 import cn.membermng.model.RepaymentOfBorrowingsRM;
 import cn.membermng.model.ReplayDetailEntity;
 import cn.membermng.model.StayStillPlan;
+import cn.membermng.model.SuccessRepayDetail;
 
 
 /****
@@ -103,8 +105,6 @@ public interface IMyLoanService {
 	 */
 	public List<LoanRepay> loanRepay(PageEntity entity);
 
-
-
 	
 	/***
 	* 查看会员当前已流标的借款信息
@@ -133,8 +133,6 @@ public interface IMyLoanService {
 	 */
 	public List<Cleared> cleared(PageEntity entity);
 
-
-
 	
 	/***
 	* 查看当前会员的借款申请记录
@@ -149,7 +147,6 @@ public interface IMyLoanService {
 	public List<LoanApplyRecord> loanApplyRecord(PageEntity entity);
 
 
-
 	/***
 	* 查看当前会员的待还计划信息
 	* 
@@ -161,7 +158,6 @@ public interface IMyLoanService {
 	* @date 2016-4-5 下午5:33:32
 	 */
 	public List<StayStillPlan> stayStillPlans(PageEntity entity);
-
 
 	
 	/***
@@ -176,6 +172,33 @@ public interface IMyLoanService {
 	 */
 	public List<ConfirmationLoan> confirmationLoans(PageEntity entity);
 	
+	
+	/***
+	* 获取确认借款信息
+	* 
+	* @author 李杰
+	* @param memberId				当前登录会员编号
+	* @param applyId				借款申请编号
+	* @return
+	* @date 2016-5-12 上午9:18:36
+	 */
+	public ComfirLoanInfo confirmationLoanInfo(long memberId,long applyId);
+	
+	
+	
+	
+	/***
+	* 确认借款
+	* 
+	* @author 李杰
+	* @param memberId				当前登录会员编号
+	* @param applyId				借款申请编号
+	* @param optionvalue			操作  -1取消  2确认
+	* @param sysId					0前台确认  1短信确认
+	* @return
+	* @date 2016-5-12 上午9:20:17
+	 */
+	public int confirmationLoan(long memberId,long applyId,int optionvalue,int sysId);
 	
 	
 	
@@ -255,6 +278,15 @@ public interface IMyLoanService {
 	* @date 2016-5-2 下午3:29:18
 	 */
 	public List<RepaymentOfBorrowingsRM> loanRepayback(PageEntity entity);
+	
+	/**
+	 * 成交项目管理-还款详情
+	 * @author 刘利   
+	 * @Description: TODO   applyId
+	 * @return List<LoanRepay> 返回类型 
+	 * @date 2016-5-12 下午3:54:00
+	 */
+	 public List<SuccessRepayDetail> loanRepayDetail(PageEntity entity);
 	
 }
 

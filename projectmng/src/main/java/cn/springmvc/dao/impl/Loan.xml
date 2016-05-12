@@ -15,4 +15,89 @@
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)} 
 	</select>
+	
+	<!-- 查询放款列表-->  
+	<select id="selectLoanList"  parameterType="long" resultType="cn.springmvc.model.ProjectDetailTYEntity" >
+	   select 
+	   pap.Real_End_Date       as  realEndDate,
+	   par.Project_No          as  projectNo,
+	   pty.Project_Name        as  projectName,
+	   pbi.Project_Title       as  projectTitle,
+	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.keys})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
+       as memberName,
+       mi.Logname              as logname, 
+	   pbi.Amount              as amount,
+	   pbi.Real_Amount         as realAmount,
+	   par.Invest_Rate         as investRate,
+	   pam.RiskMargin_Fee      as riskMarginFee,
+	   (pam.RiskMargin_Fee + pam.Guarantee_Fee + MngFee_Amount ) as platformDirect,
+	   
+	   pam.MngFee_Amount       as  mngFeeAmount,
+	   (pbi.Real_Amount -  pam.RiskMargin_Fee - pam.Guarantee_Fee - pam.MngFee_Amount )  as realLoanmoney,
+	   pap.Hold_Date           as holdDate,
+	   par.Invest_Statu        as investStatu
+	   from   Project_App_Record par  
+	   left join Project_App_Process pap on  pap.Apply_Id=par.Apply_Id
+	   left join Project_Base_Info pbi   on  par.Project_Base_ID=pbi.Project_Base_ID
+	   left join ProjectBaseInfo pty     on  par.Project_ID=pty.Project_ID   
+	   left join Project_App_MngFee pam  on pam.Apply_Id = par.Apply_Id
+	   join Member_Info mi               on mi.Member_ID = par.Member_ID  
+	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id and mi.Member_Type=0
+	   left join Company_Info  ci        on ci.Company_ID=mi.Company_ID and mi.Member_Type=1
+	   where   par.Publish_Statu = 2 and par.Check_Statu = 1 (par.Invest_Statu = 2 or (par.Invest_Statu = 0 and par.Invest_Rate>=1000000) or 
+	          (par.Invest_Statu = 0 and pap.End_Date&lt;=now()) or par.Invest_Statu >=3)
+	   <!-- 项目编号--> 
+       <if test = "map.projectNo != null and map.projectNo != ''">  
+         and   par.Project_No  like '%${map.projectinfo}%'  
+       </if> 
+          <!--                      会员用户名 -->
+        <if test = "map.Logname !=  null and map.Logname !=  ''"> 
+	      and  mi.Logname like '%${map.Logname}%'
+	     </if>
+           <!-- 	           会员名称 -->
+	     <if test = "map.name !=  null and map.name !=  ''"> 
+	       and  
+	       (ci.Compang_Name like '%${map.name}%' 
+	         or pbiper.Personal_Name like  '%${map.name}%' 
+	       )
+	     </if> 
+	      <!--  项目发布时间   -->
+	     <if test = "map.startTime !=  null and map.startTime !=  ''"> 
+	       and pap.Release_Date > #{map.startTime} 
+	     </if>
+	     <if test = "map.endTime !=  null and map.endTime !=  ''"> 
+	       and  pap.Release_Date &lt; #{map.endTime} 
+	     </if>  
+          <!-- 	        借款期限 -->
+	     <if test = "map.dealine !=  null and map.dealine !=  '' and map.dealine !=  -1"> 
+	       and  pbi.Deadline = #{map.dealine}  and 
+	     </if>  
+	      <!-- 	        借款期限类型 -->
+	     <if test = "map.deadlineType !=  null and map.deadlineType !=  '' and map.deadlineType !=  -1"> 
+	       and  pbi.Deadline_Type = #{map.deadlineType}  and 
+	     </if>  
+	      <!-- 	       最小借款金额-->
+	     <if test = "map.minAmount !=  null and map.minAmount !=  ''"> 
+	       and  pbi.Amount > #{map.minAmount} 
+	     </if>  
+	       <!-- 	       最小借款金额-->
+	     <if test = "map.maxAmount !=  null and map.maxAmount !=  ''"> 
+	       and  pbi.Amount &lt; #{map.maxAmount} 
+	     </if> 
+            <!-- 	                  已流标  -->
+	      <if test = "map.statu !=  null and map.statu == 1"> 
+	       and  par.Invest_Statu = 1
+	      </if>
+	       <!-- 	                  未放款  -->
+	      <if test = "map.statu !=  null and map.statu == 2"> 
+	       and ( par.Invest_Statu = 0 or  par.Invest_Statu = 2 )
+	     </if>   
+	     <!-- 	                 已放款 -->
+	      <if test = "map.statu !=  null and map.statu == 3"> 
+	       and  par.Invest_Statu > 3
+	     </if>    
+	     order by pap.Hold_Date  desc
+    </select>
+    
 </mapper>

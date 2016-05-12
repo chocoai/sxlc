@@ -31,11 +31,11 @@
 	   						<a href="loanManagement/repayManagement.html">还款中的借款</a>——还款计划
 	   					</div>		
 	   				</div>
-	   				<input type="button" class="btn early-repay" value="提前还款">
+	   				<input type="button" class="btn early-repay" value="提前还款" onclick="getEarlyRepayInfo()">
 	   				<div class="remind">剩余未还本金+剩余本金产生的利息+提前还款违约金</div>
 	   				<div class="my-loan-group myLoan clearfix"><!--myLoan便于单独设置样式 -->
-		   				<ul class="my-loan-table">
-		   					<li>
+		   				<ul id="repayPlanUl" class="my-loan-table">
+		   					<li id="repayPlanTop">
 		   						<div class="contentOut2">
 									<div class="c-content">
 										期数
@@ -92,7 +92,7 @@
 									</div>
 								</div>
 		   					</li>
-		   					<% for(int j = 0; j<2;j++){ %>
+		   					<%-- <% for(int j = 0; j<2;j++){ %>
 		   					<li>
 		   						<div class="contentOut2">
 									<div class="c-content">
@@ -211,8 +211,8 @@
 									</div>
 								</div>
 		   					</li>
-		   					<%} %>
-		   					<% for(int j = 0; j<2;j++){ %>
+		   					<%} %> --%>
+		   					<%-- <% for(int j = 0; j<2;j++){ %>
 		   					<li>
 		   						<div class="contentOut2">
 									<div class="c-content">
@@ -268,13 +268,67 @@
 								</div>
 								<div class="contentOut2">
 									<div class="c-content">
-										<div class="repay">还款</div>
+										<div class="repay" data-repalyId="5">还款</div>
 									</div>
 								</div>
 		   					</li>
-		   					<%} %>		   					
+		   					<%} %> --%>		   					
 		   				</ul>
-		   				<div id="pager1"></div>				   				
+		   				<script id="repayPlanList" type="text/html">
+		   					{{each results as infos index}}
+	   						<li>
+		   						<div class="contentOut2">
+									<div class="c-content">{{infos.indexs}}</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">{{infos.sLoanAmount}}</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">{{infos.sLoanInterest}}</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">{{infos.loanTime}}</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">{{infos.statuName}}</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">
+										{{if infos.isYuQi == 1}}是{{/if}}
+										{{if infos.isYuQi == 0}}否{{/if}}
+									</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">
+										{{if infos.isDaiChang == 1}}是{{/if}}
+										{{if infos.isDaiChang == 0}}否{{/if}}
+									</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">
+										{{infos.sYuQiFeiYong}}
+									</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">
+										{{infos.sShiJiHuanKuan}}
+									</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">
+										{{infos.shiJiHuanKuanRi}}
+									</div>
+								</div>
+								<div class="contentOut2">
+									<div class="c-content">
+										<div class="repay" data-repalyId="{{infos.lid}}">还款</div>
+									</div>
+								</div>
+		   					</li>
+		   					{{/each}}
+		   					<div id="pager" class="pager-box"></div>				   				
+		   				</script>
+		   				
 	   				</div>   				
    				</div>
    			</div>
@@ -285,82 +339,90 @@
    		<div class="repay-top clearfix">
    			<div class="info">
    				<div class="leftTitle">应还本金:</div>
-   				<label>100.00元</label>
+   				<label id="sLoanAmount"><!-- 100.00元 --></label>
    			</div>
    			<div class="info">
    				<div class="leftTitle">应还利息:</div>
-   				<label>10.00元</label>
+   				<label id="sLoanInterest"><!-- 10.00元 --></label>
    			</div>
    			<div class="info">
    				<div class="leftTitle">应还逾期罚金:</div>
-   				<label>0.00元</label>
+   				<label id="sOverdueInterest"><!-- 0.00元 --></label>
    			</div>
    			<div class="info">
    				<div class="leftTitle">应还逾期利息:</div>
-   				<label>0.00元</label>
+   				<label id="sOberdueFine"><!-- 0.00元 --></label>
    			</div>
    			<div class="info">
    				<div class="leftTitle">应还总额:</div>
-   				<label>110.00元</label>
+   				<label id="sdReplayTotals"><!-- 110.00元 --></label>
    			</div>
    		</div>
    		<div class="repay-bottom">
    			<div class="info">
    				<div class="leftTitle">账户可用余额:</div>
-   				<div class="money">10.000元</div>
+   				<div id="userBalances" class="money"><!-- 10.000元 --></div>
    			</div>
    			<div class="info">
    				<div class="leftTitle">实还本金:</div>
-   				<input type="text" lang="请输入实还本金">
+   				<input id="sPaidAmount" class="format" type="text" lang="请输入实还本金" maxlength="10">
 				<span>元</span>
    			</div>
    			<div class="info">
    				<div class="leftTitle">实还利息:</div>
-   				<input type="text" lang="请输入实还利息">
+   				<input id="sPaidInterest" class="format" type="text" lang="请输入实还利息" maxlength="10">
 				<span>元</span>
    			</div>
    			<div class="info">
    				<div class="leftTitle">实还逾期罚金:</div>
-   				<input type="text" lang="请输入实还逾期罚金">
+   				<input id="paidSOberdueFine" class="format" type="text" lang="请输入实还逾期罚金" maxlength="10">
 				<span>元</span>
    			</div>
    			<div class="info">
    				<div class="leftTitle">实还逾期利息:</div>
-   				<input type="text" lang="请输入实还逾期利息">
+   				<input id="paidSOverdueInterest" class="format" type="text" lang="请输入实还逾期利息" maxlength="10">
 				<span>元</span>
    			</div>
    			<div class="info clearfix">
    				<div class="leftTitle">实还总额:</div>
-   				<div class="money">110.00元</div>
+   				<div id="paisdReplayTotals" class="money"><!-- 110.00元 --></div>
    			</div>
    		</div>	
    		<div class="input-btn">
-   			<input type="button" class="repay-confirm btn" value="确定" onclick="layer.closeAll()">
+   			<input type="button" class="repay-confirm btn" value="确定" onclick=""><!-- layer.closeAll() -->
    		</div>
    	</div>
    	<div class="early-repay-content">
    		<ul>
    			<li>
    				<div class="left">提前还款本金</div>
-   				<div class="right">10,000.00元</div>
+   				<div id="repayPrincipals" class="right"><!-- 10,000.00元 --></div>
    			</li>
    			<li>
    				<div class="left">提前还款利息</div>
-   				<div class="right">100.00元</div>
+   				<div id="repayInterests" class="right"><!-- 100.00元 --></div>
    			</li>
    			<li>
    				<div class="left">提前还款违约金</div>
-   				<div class="right">0.00元</div>
+   				<div id="penaltyTotals" class="right"><!-- 0.00元 --></div>
    			</li>
    			<li>
    				<div class="left">提前还款总款</div>
-   				<div class="right orange">10,100.00元</div>
+   				<div id="replayTotals" class="right orange"><!-- 10,100.00元 --></div>
    			</li>
    		</ul>
-   		<input type="button" class="early-repay-confirm btn" value="确定" onclick="layer.closeAll()">
+   		<input type="button" class="early-repay-confirm btn" value="确定" onclick=""><!-- layer.closeAll() -->
    	</div>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
+	<script type="text/javascript" src="js/common/template.js"></script>
+	<script type="text/javascript" src="plugs/pager/pager.js"></script>
+	<script type="text/javascript">
+		var publickey = '<%=session.getAttribute("publicKey")%>';
+	</script>
 	<script type="text/javascript" src="js/account/loanManagement/repayManagement.js"></script>
+	<script type="text/javascript">
+		//getRepayInfo();
+		getRepayPlan();
+	</script>
 </body>
 </html>

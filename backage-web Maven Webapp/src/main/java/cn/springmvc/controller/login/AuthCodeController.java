@@ -33,11 +33,12 @@ public class AuthCodeController {
     //设置干扰线条数
     private static final int DISTURB_LINE_SIZE = 15;  
     //设置字体及字号
-    private final Font font = new Font("黑体", Font.BOLD, 18);  
+    private final Font font = new Font("宋体", Font.BOLD, 18);  
     private Random random = new Random(); 
     private int xyresult;  //运算结果 
     private String randomString;//验证码字符串
-    private static final String CVCNUMBERS = "零一二三四五六七八九十乘除加减";//大写的数字
+//    private static final String CVCNUMBERS = "零一二三四五六七八九十乘除加减";//大写的数字
+    private static final String[] CVCNUMBERSS = {"零","一","二","三","四","五","六","七","八","九","十","乘","除","加","减"};
     private static final Map<String, Integer> OPMap = new HashMap<String, Integer>();  
     static{  
         OPMap.put("*", 11);  
@@ -58,6 +59,9 @@ public class AuthCodeController {
 	public void authImage(HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
+			
+			
+			
 	        BufferedImage image = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, BufferedImage.TYPE_INT_RGB);  
 	        //画笔
 	        Graphics g = image.getGraphics();  
@@ -83,7 +87,8 @@ public class AuthCodeController {
 		          }else{  
 		              chid = Integer.parseInt(String.valueOf(randomString.charAt(j)));  
 		          }  
-		          String ch = String.valueOf(CVCNUMBERS.charAt(chid));  
+//		          String ch = String.valueOf(CVCNUMBERS.charAt(chid)); 
+		          String ch = CVCNUMBERSS[chid];
 		          logsu.append(ch);  
 		          drawRandomString((Graphics2D)g,ch, j);  
 	        }  
@@ -91,6 +96,7 @@ public class AuthCodeController {
 	        drawRandomString((Graphics2D)g,"等于？", 3);  
 	        logsu.append("等于 ？");  
 	        randomString = logsu.toString();  
+	        System.out.println("验证码:" + randomString + " 值：" + xyresult);
 	        
 	        HttpSession session = request.getSession(true);
 			session.removeAttribute("AUTH_IMG_CODE_IN_SESSION");

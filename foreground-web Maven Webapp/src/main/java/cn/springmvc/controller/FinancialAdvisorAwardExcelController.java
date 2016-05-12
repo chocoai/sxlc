@@ -57,7 +57,7 @@ public class FinancialAdvisorAwardExcelController implements OutExcel{
 	 * @return String 返回类型 
 	 * @date 2016-5-3 上午10:17:44
 	 */
-	@RequestMapping(value="financialAwardRecordexcel",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="financialAwardRecordexcel",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public void financialAwardRecordexcel(HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException{
 	    String startTime = request.getParameter("startTime");

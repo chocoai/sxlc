@@ -154,7 +154,7 @@ $(function(){
 
 /*  修改审核附件      */
 function alertAudit(){
-	var data = $('#table_id').DataTable().rows('.selected').data();
+	 var data = $('#table_id').DataTable().rows('.selected').data();
 	 if(data.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;
@@ -164,6 +164,7 @@ function alertAudit(){
 	 $("#deleteaffix").val("");
 	 $("#fileName").val("");
 	 $("#fileList").html("");
+	 $(".fileList").html("");
 	 
 	 var projectID =data[0].applyId;
 	 $.ajax( {  
@@ -215,7 +216,7 @@ function alertAudit(){
 	,yes: function(index, layero){ //或者使用btn1
 		//确定的回调
 		var updateData = {};
-		updateData.ProjectAppId=encrypt.encrypt(projectID);
+		updateData.ProjectAppId=encrypt.encrypt(projectID+"");
 		var affix = $("#affix").val();
 		updateData.affix=encrypt.encrypt(affix);
 		var deleteaffix = $("#deleteaffix").val();

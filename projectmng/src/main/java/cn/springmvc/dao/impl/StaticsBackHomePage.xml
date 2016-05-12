@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+<mapper namespace="backHompageData">
+    <!-- 按天统计 新增会员个个数-->  
+	<select id="StaticsByDay" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+          select (  
+          select 
+          count(distinct  ir.Member_ID)
+		  from invest_record ir
+		  where 
+		  ir.Invest_Date BETWEEN STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s') AND  STR_TO_DATE(DATE_FORMAT(DATE_ADD(#{DateStr},INTERVAL 1 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s')  
+		  and ir.Member_ID not in 
+		  (select  Member_ID from invest_record  
+		   where Invest_Date &lt; STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s') ) ) as countInvestMember ,
+		  
+		
+		  (select   count(Member_ID) 
+		  from member_info 
+	      where Reg_Date BETWEEN STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s') AND STR_TO_DATE(DATE_FORMAT(DATE_ADD(#{DateStr},INTERVAL 1 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s') ) as countMember ,
+		 
+		
+		  (select  count(distinct  pp.Member_ID) 
+		  from Project_Purpose pp
+		  where  pp.Record_Date BETWEEN STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s') AND STR_TO_DATE(DATE_FORMAT(DATE_ADD(#{DateStr},INTERVAL 1 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s')
+		  and pp.Member_ID not in 
+		  (select  Member_ID from Project_Purpose  
+		  where Record_Date &lt; STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s') ) ) as countLoanMember 
+
+	</select>   
+	 <!-- 按周统计 新增会员个个数-->  
+	<select id="StaticsByWeek" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+          select (  
+          select 
+          count(distinct  ir.Member_ID)
+		  from invest_record ir
+		  where 
+		  ir.Invest_Date BETWEEN STR_TO_DATE(DATE_FORMAT(DATE_ADD(#{DateStr},INTERVAL -7 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s') AND  STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s')
+		  and ir.Member_ID not in 
+		  (select  Member_ID from invest_record  
+		   where Invest_Date &lt; STR_TO_DATE(DATE_FORMAT(DATE_ADD(#{DateStr},INTERVAL -7 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s')) ) as countInvestMember ,
+		  
+		
+		  (select   count(Member_ID) 
+		  from member_info 
+	      where Reg_Date BETWEEN STR_TO_DATE(DATE_FORMAT(DATE_ADD(#{DateStr},INTERVAL -7 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s') ) as countMember ,
+		 
+		
+		  (select  count(distinct  pp.Member_ID) 
+		  from Project_Purpose pp
+		  where  pp.Record_Date BETWEEN STR_TO_DATE(DATE_FORMAT(DATE_ADD(#{DateStr},INTERVAL -7 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s')
+		  and pp.Member_ID not in 
+		  (select  Member_ID from Project_Purpose  
+		  where Record_Date &lt; STR_TO_DATE(DATE_FORMAT(DATE_ADD(#{DateStr},INTERVAL -7 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s') ) ) as countLoanMember 
+	</select>   
+	 <!-- 按月统计 新增会员个个数-->  
+	<select id="StaticsByMonth" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+          select (  
+          select 
+          count(distinct  ir.Member_ID)
+		  from invest_record ir
+		  where 
+		  ir.Invest_Date BETWEEN STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s') AND DATE_ADD(STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s'),INTERVAL 1 MONTH)    
+		  and ir.Member_ID not in 
+		  (select  Member_ID from invest_record  
+		   where Invest_Date &lt; STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s') ) ) as countInvestMember ,
+		  
+		
+		  (select   count(Member_ID) 
+		  from member_info 
+	      where Reg_Date BETWEEN STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s') AND DATE_ADD(STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s'),INTERVAL 1 MONTH) ) as countMember ,
+		 
+		
+		  (select  count(distinct  pp.Member_ID) 
+		  from Project_Purpose pp
+		  where  pp.Record_Date BETWEEN STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s') AND DATE_ADD(STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s'),INTERVAL 1 MONTH) 
+		  and pp.Member_ID not in 
+		  (select  Member_ID from Project_Purpose  
+		  where Record_Date &lt; STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s') ) ) as countLoanMember 
+	</select>  
+	<!-- 按日统计新增投资 -->  
+	<select id="StaticsDayInvest" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+        select  sum(ir.Invest_Amount_Valid) as sumInvest 
+        from invest_record ir 
+        where   ir.Invest_Date BETWEEN STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(#{DateStr}+'01') ,'%Y%m%d %H%i%s')
+	    group by DATE_FORMAT(ir.Invest_Date,'%Y%m%d')   
+	</select>
+	
+	<!-- 按周统计新增投资 -->  
+	<select id="StaticsWeekInvest" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+        select DATE_FORMAT(ir.Invest_Date,'%u') as week ,sum(ir.Invest_Amount_Valid) as sumInvest 
+        from invest_record ir 
+        where  ir.Invest_Date BETWEEN STR_TO_DATE(CONCAT(#{DateStr}-'07') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(#{DateStr}) ,'%Y%m%d %H%i%s')
+        group by DATE_FORMAT(ir.Invest_Date,'%u')   
+	</select>
+	
+	<!-- 按月统计新增投资 -->  
+	<select id="StaticsMonthInvest" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
+        select DATE_FORMAT(ir.Invest_Date,'%Y%m%d') as month ,sum(ir.Invest_Amount_Valid) as sumInvest 
+        from invest_record ir 
+        where  ir.Invest_Date BETWEEN STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s') AND DATE_ADD(STR_TO_DATE(CONCAT(#{DateStr},'01') ,'%Y%m%d %H%i%s'),INTERVAL 1 MONTH) 
+        group by DATE_FORMAT(ir.Invest_Date,'%Y%m%d')   
+	</select> 
+</mapper>

@@ -9,6 +9,7 @@ import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 import cn.sxlc.account.manager.model.AwardEntity;
 import cn.sxlc.account.manager.model.InvestRecordEntity;
 import cn.sxlc.account.manager.model.LoanTransactionEntity;
+import cn.sxlc.account.manager.model.ProjectEntity;
 import cn.sxlc.account.manager.model.RepayDetailEntity;
 import cn.sxlc.account.manager.model.SurpriseRedEntity;
 import cn.sxlc.account.manager.model.WithdrawalsFeeEntity;
@@ -707,5 +708,66 @@ public interface SelectThreePartyDao {
 	* @throws 
 	*/
 	public int EndTimeComparison(long memberId,String startTime);
+	
+	
+	/** 
+	* selectPhone 根据会员id查询手机号
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: selectPhone 
+	* @Description: TODO 
+	* @param memberId 会员id
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-10 下午12:03:20
+	* @throws 
+	*/
+	public String selectPhone(long memberId);
+	
+	
+	/** 
+	* QueryCashWithdrawal 根据第三方交易号查询提现申请金额 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: QueryCashWithdrawal 
+	* @Description: TODO 
+	* @param  thirdBillNo
+	* @param @return 设定文件 
+	* @return long 返回类型 
+	* @date 2016-5-10 下午2:00:49
+	* @throws 
+	*/
+	public long QueryCashWithdrawal(String thirdBillNo);
+	
+	
+	/** 
+	* findProjectTNByid 根据项目申请id查询项目名称和类型名称
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findProjectTNByid 
+	* @Description: TODO 
+	* @param applyId
+	* @return 设定文件 
+	* @return ProjectEntity 返回类型 
+	* @date 2016-5-10 下午2:50:31
+	* @throws 
+	*/
+	public ProjectEntity findProjectTNByid(int applyId);
+	
+	
+	/** 
+	* BlackMemberJudgmentOne  判断是否是黑名单 且能否执行下一步 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: BlackMemberJudgmentOne 
+	* @Description: TODO 
+	* @param @param memberId
+	* @param @param mType
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-11 下午3:26:56
+	* @throws 
+	*/
+	public int BlackMemberJudgmentOne(long memberId, int mType);
 }
 

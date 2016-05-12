@@ -35,7 +35,9 @@ $(function(){
 	//只要日期，不要时间
 	template.helper("$timeFixed",function(content){
 		var index = content.indexOf(" ");
-		return content.substring(0,index);
+		if(content != null && index != -1){
+			return content.substring(0,index);
+		}
 	});
 	//金额取小数点后2位
 	template.helper("$toFixed",function(content){
@@ -553,10 +555,26 @@ $(function(){
 		var startTime = $("#startDate").val() == "请选择" ? "" : $("#startDate").val();
 		var endTime   = $("#endDate").val() == "请选择" ? "" : $("#endDate").val(); 
 		var dateStarts = $(".chooseTime span.active").attr("data-time");
-		var startTime = encrypt.encrypt(startDate+"");
-		var endTime   = encrypt.encrypt(endDate+"");
-		var dateStart = encrypt.encrypt(dateStarts+""); 
-		window.location.href="financialAdvisorAward/financialAwardRecordexcel.html?startTime="+startTime+"&endTime="+endTime+"&dateStart="+dateStart;
+		var startTime2 = encrypt.encrypt(startDate+"");
+		var endTime2   = encrypt.encrypt(endDate+"");
+		var dateStart2 = encrypt.encrypt(dateStarts+""); 
+		 $("#startTimeatz").val(startTime2);
+	     $("#endTimeatz").val(endTime2);
+	     $("#dateStartatz").val(dateStart2);  
+	     document.financialAwardexcel.submit(); 
+	 	});
+	
+	$("#financialAwardHisExcel").on("click",function(){ 
+		var month    =  $("#monthAward").val();   
+		var startTime = $("#startTimehis").val() == "请选择" ? "" : $("#startTimehis").val(); 
+		var endTime   = $("#endTimehis").val() == "请选择" ? "" : $("#endTimehis").val();  
+		var startTime2 = encrypt.encrypt(startTime+"");
+		var endTime2   = encrypt.encrypt(startTime+"");
+		var month2 = encrypt.encrypt(month+""); 
+		$("#startTimeatzh").val(startTime2);
+	    $("#endTimeatzh").val(endTime2);
+	    $("#monthtzh").val(month2); 
+	     document.financialHistory.submit(); 
 	});
 	//=======数据导出e=======
 	

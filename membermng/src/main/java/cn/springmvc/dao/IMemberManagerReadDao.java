@@ -7,6 +7,7 @@ import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.BlackLimitEntity;
 import cn.membermng.model.BlackRecordEntity;
 import cn.membermng.model.BorrowingStatistics;
+import cn.membermng.model.ComplanyInfoEntity;
 import cn.membermng.model.InvitationMembers;
 import cn.membermng.model.MemberAll;
 import cn.membermng.model.MemberAttestInfo;
@@ -318,6 +319,20 @@ public interface IMemberManagerReadDao {
 	 * return int
 	 */
 	public int countLimit();
+
+
+
+	/***
+	* 查询企业会员信息
+	* 
+	* @author 李杰
+	* @param param
+	* memberId			会员编号
+	* skey				钥
+	* @return
+	* @date 2016-5-11 上午11:01:49
+	 */
+	public ComplanyInfoEntity companyInfo(Map<String, Object> param);
 	
 	
 }

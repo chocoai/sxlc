@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		<span class="problem_title">常见问题</span>
     	</div>
 	   	<div class="problem_content">
-	   	   		<%for(int i = 0;i<8;i++){ %>
+	   	   		<%-- <%for(int i = 0;i<8;i++){ %>
 	   	   		<div class="problem_plat">
 	   	   			<h5><em class="problem_platT">四象金融平台优势</em><span class="problem_plat_btn"></span></h5>
 		   	   		<div class="problem_plat_cont">
@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   	   			</p>
 		   	   		</div>
 	   	   		</div>
-	   	   		<%} %>
+	   	   		<%} %> --%>
    	   	</div>
    	</div>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>

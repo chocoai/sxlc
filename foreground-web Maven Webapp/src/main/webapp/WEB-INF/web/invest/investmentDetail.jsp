@@ -243,13 +243,14 @@
 	<!--弹出层  -->
 	<div class="red-packets">
 		<div class="red-packets-top clearfix" id="red-packets-top">
-			<c:if test="${appRecordEntity.isDirect == 1 }">
+			
+		</div>
+		<c:if test="${appRecordEntity.isDirect == 1 }">
 				<div class="info clearfix" id="codeContent">
 					<div class="leftTitle">定向标密码:</div>
 					<input type="text" id="directionalCode" class="inputDJJ1">
 				</div>
-			</c:if>
-		</div>
+		</c:if>
 		<div class="red-packets-bottom clearfix">
 			<div class="label">本次投资总金额：<label  id="nowInvestNum">1,000.00</label>元</div>
 			<div class="label">使用代金券：<label  id="nowVoucher">100.00</label>元</div>

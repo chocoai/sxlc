@@ -25,20 +25,30 @@
     		<span class="plaform_content_title">网站公告</span>
     	</div>
    	   	<div class="website_notice_content">
-   	   		<ul>
-   	   			<%for(int i = 0;i<7;i++){ %>
+   	   		<ul id="webBoardUl">
+   	   			<%-- <%for(int i = 0;i<7;i++){ %>
    	   			<li onclick="window.location='aboutUs/webBoardDetail.html';">
    	   				<span class="circle"></span>
    	   				<span class="noticeContainer">关于农业银行暂时关闭P2P充值接口的公告</span>
    	   				<span class="notice_date"><i>08</i>2016-03</span>
    	   			</li>
-   	   			<%} %>
+   	   			<%} %> --%>
    	   		</ul>
-   	   		<div id="pager"></div>
+   	   		<script id="webBoardList" type="text/html">
+			{{each results as infos index}}
+				<li onclick="window.location='aboutUs/webBoardDetail.html';">
+   	   				<span class="circle"></span>
+   	   				<span class="noticeContainer">{{infos.title}}</span>
+   	   				<span class="notice_date"><i>{{$toGetDate infos.createTime}}</i>{{$toGetMonth infos.createTime}}</span>
+   	   			</li>
+			{{/each}}
+   	   		<div id="pager" class="pager-box"></div>
+			</script>
    	   	</div>
    	 </div>
-   	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
+   	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
+   	<script type="text/javascript" src="js/common/template.js"></script>
 	<script type="text/javascript" src="js/aboutUs/webBoard.js"></script>
 </body>
 </html>

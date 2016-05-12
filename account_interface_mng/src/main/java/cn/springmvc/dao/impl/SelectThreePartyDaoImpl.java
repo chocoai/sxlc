@@ -14,6 +14,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.SelectThreePartyDao;
@@ -21,6 +22,7 @@ import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 import cn.sxlc.account.manager.model.AwardEntity;
 import cn.sxlc.account.manager.model.InvestRecordEntity;
 import cn.sxlc.account.manager.model.LoanTransactionEntity;
+import cn.sxlc.account.manager.model.ProjectEntity;
 import cn.sxlc.account.manager.model.RepayDetailEntity;
 import cn.sxlc.account.manager.model.SurpriseRedEntity;
 import cn.sxlc.account.manager.model.WithdrawalsFeeEntity;
@@ -70,7 +72,7 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 	@Override
 	public List<LoanTransactionEntity> GetInvestListByProId(
 			Map<String, Object> map) {
-		
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("ThreePartyXML.GetInvestListByProId",map);
 	}
@@ -334,6 +336,42 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 		// TODO Auto-generated method stub return null;
 		getSqlSession().selectOne("ThreePartyXML.EndTimeComparison",map);
 		int result = IntegerAndString.StringToInt(map.get("result").toString(),0);
+		return result;
+	}
+	@Override
+	public String selectPhone(long memberId) {
+		// TODO Auto-generated method stub return null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberId", memberId);
+		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		return getSqlSession().selectOne("ThreePartyXML.selectPhone",map);
+	}
+	@Override
+	public long QueryCashWithdrawal(String thirdBillNo) {
+		
+		// TODO Auto-generated method stub return null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("thirdBillNo", thirdBillNo);
+		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		return getSqlSession().selectOne("ThreePartyXML.QueryCashWithdrawal",map);
+	}
+	@Override
+	public ProjectEntity findProjectTNByid(int applyId) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("applyId", applyId);
+//		map.put("sKey", DbKeyUtil.GetDbCodeKey());
+		return getSqlSession().selectOne("ThreePartyXML.findProjectTNByid",map);
+		
+	}
+	@Override
+	public int BlackMemberJudgmentOne(long memberId, int mType) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("memberId", memberId);
+		map.put("mType", mType);
+		// TODO Auto-generated method stub return 0;
+		getSqlSession().selectOne("ThreePartyXML.BlackMemberJudgmentOne",map);
+		int result = IntegerAndString.StringToInt(map.get("result").toString(), 0);
 		return result;
 	}
 }

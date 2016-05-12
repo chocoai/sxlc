@@ -97,7 +97,7 @@ public interface IIntegrallService {
 	* @param commodityId					商品编号
 	* @param quantity						兑换数量
 	* @param addressId						收件地址
-	* @return 1兑换成功、0兑换失败、-1商品不存在、-2该商品已兑换完、-3积分不足、-4商品数量不足、-5
+	* @return 1兑换成功、0兑换失败、-1商品不存在、-2该商品已兑换完、-3积分不足、-4商品数量不足、-5、-6会员黑名单限制不能兑换
 	* @Description: TODO
 	* @date 2016-4-11 下午3:57:40
 	 */

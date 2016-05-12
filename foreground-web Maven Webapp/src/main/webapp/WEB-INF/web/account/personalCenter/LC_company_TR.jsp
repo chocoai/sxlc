@@ -11,8 +11,13 @@
 	<base href="<%=basePath%>">
     <title>税务登记认证</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var appPath="<%=path%>";
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>        
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/loanCertification.css">
+	<link rel="stylesheet" type="text/css" href="plugs/webuploader/webuploader.css">
 </head>
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
@@ -30,30 +35,32 @@
 	   				</div>
    					<div class="authenContent">
 	   					<div class="authen">
-		   					<form id="trBox">
+		   					<form id="trBox" class="person_Renzheng" >
 				   				<ul class="inputArea">
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>证件编号：</span></div>
-				   						<input class="inputText numberReg" type="text" lang="请输入证件编号" maxlength="15"/>
+				   						<input class="inputText numberReg credentialsNO  " type="text" lang="请输入证件编号" maxlength="15"/>
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>颁发机关：</span></div>
-				   						<input class="inputText" type="text" datatype="enterAddress" lang="请输入颁发机关" maxlength="25"/>
+				   						<input class="inputText issueOrgan  " type="text"  lang="请输入颁发机关" maxlength="25"/>
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span>有效期：</span></div>
-				   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker()" type="text" lang="请选择有效期"/>
+				   						<input class="inputText dateSelect Wdate endTime " onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择有效期"/>
 				   					</li>
 				   					<li class="inputList">
 					   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
-					   					<div class="previewPicture">
+					   					<div class="previewPicture" id="file" style="float: none;" >
 					   						<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
-					   						<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput" onchange="preImg(this.id,'previewImg');" onblur="if(document.getElementById('previewImg').src=='null')document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" >
+											<input type='hidden' class='previewHide' id="0" >	
 					   					</div>
 					   					<!-- <span class="hint">（请上传附件图片）</span> -->
 					   				</li>
 				   					<li class="inputList">
-				   						<div class="btn">确认并保存</div>
+				   						<div class="btn saveSubmit "  id="${requestScope.type}" >确认并保存</div>
+				   						<input type="hidden" value="0" class="editType" />
+				   						<input type="hidden" value="0" class="cid" 				   						
 				   					</li>
 				   				</ul>
 			   				</form>
@@ -65,32 +72,13 @@
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
+	   	<script type="text/javascript" src="plugs/webuploader/webuploader.js" ></script>
+   	<script type="text/javascript" src="js/exp-upload.js" ></script>	
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
+	<script type="text/javascript" src="js/account/personalCenter/loanCertification_company_picText.js"></script>
 	<script type="text/javascript">
-	/***********验证***********/
-	$(function(){
-		$("#trBox").Validform({
-			tiptype:3,//提示信息类型
-			btnSubmit:".btn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
-			//btnReset:"#btnreset1",
-			datatype: extdatatype,//扩展验证类型
-			//showAllError:true,//提交前验证显示所有错误
-			ajaxPost:{//使用ajax提交时
-				url:"http://182.150.178.88:8031/GEB_P2P_Foreqround/selectmemberProvince.action",
-				datatype:"jsonp",
-				success:function(data,obj){
-		            //data是返回的json数据;
-		            //obj是当前表单的jquery对象;
-		        },
-		        error:function(data,obj){
-		            //data是{ status:**, statusText:**, readyState:**, responseText:** };
-		            //obj是当前表单的jquery对象;
-		            console.log(data.status);
-		        }
-			}
-		});
-	});
+		expUpload(1);
 	</script>
 </body>
 </html>

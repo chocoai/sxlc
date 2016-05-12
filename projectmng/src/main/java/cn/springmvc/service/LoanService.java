@@ -12,6 +12,11 @@
  
 package cn.springmvc.service; 
 
+import java.util.List;
+
+import product_p2p.kit.pageselect.PageEntity;
+import cn.springmvc.model.LoanProjectEntity;
+
 /** 
  * @author 刘利 
  * @Description: 项目放款
@@ -35,5 +40,17 @@ public interface LoanService {
 	 */
 	public int Loan(long lApplyId,String sMerBillNo,String sOrderNos,int iStatu,
 			String backInfoenc,String backinfo);
+	
+	/**
+	 * 放款管理列表查询
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param pageEntity{projectNo 项目编号,Logname会员用户名,name会员名称,startTime,endTime,
+	 * dealine借款期限,deadlineType借款期限类型,minAmount,maxAmount,statu(1已流标，2未放款，3已放款)}
+	 * @param @return 设定文件 
+	 * @return List<LoanProjectEntity> 返回类型 
+	 * @date 2016-5-12 下午2:23:04
+	 */
+	public List<LoanProjectEntity>  selectLoanList(PageEntity pageEntity);
 }
 

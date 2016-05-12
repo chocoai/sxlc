@@ -105,8 +105,8 @@ function nextSave(){
 		error : function() {  
 			layer.alert("服务器异常",{icon:2});
 			//暂时写
-			$(".modInfo").hide();
-			$(".nextField").show();
+//			$(".modInfo").hide();
+//			$(".nextField").show();
 			
 		}  
 	});

@@ -93,6 +93,9 @@ public class SendSmsUtil {
 	* @throws
 	 */
 	public String[] SendSms(Map<String, Object> info,int iType,long lAdminId,Timestamp ttLastDate){
+		
+		String a ="";
+		
 		SmsSetInfoEntity smsSet = smsReadDaoImpl.GetSmsInfo();
 		String[] sInfo = {"-100","发送短信失败"};
 		short sType = 0;		// 0:首次发送	1：再次发送
@@ -115,9 +118,20 @@ public class SendSmsUtil {
 			sMemberPhone = "-1,0,"+sPhone;
 			break;
 		}
+
+		case 1:{
+			if(info==null){
+				return sInfo;
+			}
+			sPhone = info.get("phone").toString();
+			sContent = info.get("content").toString();
+			sMemberPhone = "-1,0,"+sPhone;
+			break;
+		}
 		default:
 			break;
 		}
+		
 		
 //		sInfo = transmitStr(sPhone, sContent, smsSet.getsSn(), smsSet.getsPwd(), smsSet.getsInterface());
 //		sInfo = mdgxsend(sPhone, sContent, smsSet.getsSn(), smsSet.getsPwd(), smsSet.getsInterface());
@@ -131,8 +145,6 @@ public class SendSmsUtil {
 		
 		return sInfo;
 	}
-	
-	
 	/*
 	 * 方法名称：gxmt 功 能：漫道科技发送短信 参
 	 * 数：mobile,content,ext,stime,rrid(手机号，内容，扩展码，定时时间，唯一标识) 返 回

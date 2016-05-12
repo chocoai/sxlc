@@ -101,7 +101,8 @@
 		Is_Active						as	isActive			,
 		Active_Type						as	activeType			,
 		End_Date						as	endDate				,
-		Delete_Flag						as	deleteFlag			
+		Delete_Flag						as	deleteFlag		    ,
+		Quantity						as	quantity			
 		from Commodity_Info where Delete_Flag = 1 
 		<where>
 			<if test="minPoint != null">
@@ -194,4 +195,13 @@
 		)
 	</select>
 	
+	<select id="BlackMemberJudgmentTre" resultType="Map" statementType="CALLABLE">
+    	<!--result ：1:可执行 ；-1; 不可继续执行-->
+    	<![CDATA[{call BlackMemberJudgment(
+				#{memberId,	 mode=IN,	jdbcType=BIGINT},
+				#{mType,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
 </mapper>   

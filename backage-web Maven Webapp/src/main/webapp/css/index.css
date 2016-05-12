@@ -1,141 +1,48 @@
-*{
-	margin£º0;
-	padding£º0;
-	font-family:"microsoft yahei",Î¢ÈíÑÅºÚ,Arial,sans-serif;
-}
-.cont_hea,.cont_nav{
+.infoStatistics{
+	font-size:15px !important;
 	width:100%;
-	height:48px;
-	background:#202020;
-	display:inline-block;
-	color:#e5ffff;
-	line-height:48px;
 }
-.hea_title,.hea_user{
+#chartBox1{
+	width:100%;
+	height:300px;
 	float:left;
-}
-.hea_title{
-	font-weight£ºbold;
-	font-size:16px;	
-}
-.hea_user{
 	text-align:center;
 }
-.hea_user span{
-	padding:0 5px;
-}
-.hea_user span:nth-of-type(1){
-	border-right:1px solid #555555;
-}
-.hea_time{
-	float:right;
-}
-.cont_nav{
-	border-top:1px solid #555555;
-}
-.cont_nav .nav-tabs{
-	margin-top:6px;
-	padding-left:45px;
-}
-.cont_sec .container{
-	margin-left:10px!important;
-}
-.section_path{
-	margin-top:20px;
-}
-.section_path h5{
-	display:block;
-	width:70px !important;
+#chartBox2{
+	width:70%;
+	height:300px;
 	float:left;
+	text-align:center;
 }
-@media (max-width:564px) {
-	.hea_title{
-		width:65px !important;
-		padding:0;
-	} 
-	.hea_user{
-		width:260px !important;
-		padding:0;
-	}
-	.hea_user span{
-		padding:2px;
-	}
-	.hea_time{
-		width:120px !important;
-		padding:0;
-	}
-	 @media (max-width:445px) {
-	.hea_title{
-		width:95px !important;
-		padding:0;
-	}
-	.hea_user{
-		width:150px !important;
-		padding:0;
-	}
-	.hea_user span{
-		padding:2px;
-	}
-	.hea_time{
-		width:132px !important;
-		padding:0;
-	} 
+#chartBox3{
+	width:100%;
+	height:300px;
+	float:left;
+	text-align:center;
 }
- @media (max-width:377px) {
-	.hea_title{
-		width:80px !important;
-		padding:0;
-	}
-	.hea_user{
-		margin-left:10px;
-	}
-	.hea_user span{
-		padding:2px;
-	}
-	.hea_time{
-		width:110px !important;
-		padding:0;
-	} 
+#chartBox4{
+	width:100%;
+	height:300px;
+	float:left;
+	text-align:center;
 }
-@media (max-width:350px) {
-	.hea_title{
-		width:70px !important;
-		padding:0;
-	}
-	.hea_user span{
-		padding:2px;
-	}
-	.hea_time{
-		width:90px !important;
-		padding:0;
-	} 
+#chartBox5{
+	width:100%;
+	height:300px;
+	float:left;
+	text-align:center;
 }
-@media (max-width:320px) {
-	.hea_title{
-		width:65px !important;
-		padding:0;
-	}
-	.hea_user{
-		width:160px !important;
-		padding:0;
-	}
-	.hea_user span{
-		padding:2px;
-	}
-	.hea_time{
-		width:95px !important;
-		padding:0;
-	}
-	
+fieldset{
+	margin-bottom:10px;
+	padding:20px;
 }
-
-
-
-
-
-
-
-
-
-
-
+legend{
+	margin-bottom:0;
+}
+fieldset table{
+	width:80%;
+}
+.midTitle{
+	margin-bottom:15px;
+	font-size:15px;	
+}

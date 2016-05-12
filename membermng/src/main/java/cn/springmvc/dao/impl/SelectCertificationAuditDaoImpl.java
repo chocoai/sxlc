@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.AutomaticBidSettingEntity;
+import cn.membermng.model.EnterpriseAttestEntity;
 import cn.membermng.model.EnterpriseLicenseAttestEntity;
 import cn.membermng.model.ExistingFinancialAdvisorEntity;
 import cn.membermng.model.FinancialAdvisorEntity;
@@ -161,5 +162,11 @@ public class SelectCertificationAuditDaoImpl extends SqlSessionDaoSupport implem
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("EnterpriseCAXML.ChangeHistory",page,new RowBounds(page.getPageNum(),page.getPageSize()));
+	}
+	@Override
+	public EnterpriseAttestEntity sEnterpriseLicenseAttestByID(
+			Map<String, Object> map ) {
+		
+		return getSqlSession().selectOne("EnterpriseCAXML.sEnterpriseLicenseAttestByID",map);
 	}
 }

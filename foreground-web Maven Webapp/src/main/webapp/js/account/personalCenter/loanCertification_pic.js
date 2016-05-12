@@ -1,4 +1,8 @@
 
+/**
+ * 企业\个人通用认证---->附件+有效期  @author LHL
+ */
+
 $(function(){
 	insertCertification();
 	quryCertification();

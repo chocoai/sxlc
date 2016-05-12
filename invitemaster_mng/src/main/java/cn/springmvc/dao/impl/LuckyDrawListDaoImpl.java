@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.invitemastermng.model.LotteryActivityEntity;
+import cn.invitemastermng.model.LotteryManage;
 import cn.invitemastermng.model.LotteryRecordsEntity;
 import cn.invitemastermng.model.PrizeInformationEntity;
 import cn.springmvc.dao.LuckyDrawListDao;
@@ -78,6 +79,24 @@ public class LuckyDrawListDaoImpl extends SqlSessionDaoSupport implements
 		
 		return getSqlSession().selectList("LuckyDraw.selectPrizeByActID",page,
 				new RowBounds(page.getPageNum(),page.getPageSize()));
+		
+	}
+	@Override
+	public List<LotteryActivityEntity> selectperiod() {
+		
+		return getSqlSession().selectList("LuckyDraw.selectperiod");
+		
+	}
+	@Override
+	public List<LotteryManage> selectgrade() {
+		
+		return getSqlSession().selectList("LuckyDraw.selectgrade");
+		
+	}
+	@Override
+	public List<PrizeInformationEntity> selectPrizeTypes() {
+		
+		return getSqlSession().selectList("LuckyDraw.selectPrizeTypes");
 		
 	}
 

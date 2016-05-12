@@ -22,7 +22,6 @@ import cn.springmvc.httpRequest.DecryptHttpServletRequest;
 *
  */
 public class CheckParamFilter implements Filter{
-	
 	private Logger logger = Logger.getLogger(CheckParamFilter.class);
 
 	@Override
@@ -35,15 +34,13 @@ public class CheckParamFilter implements Filter{
 		logger.info("ChechkParam_doFilter");
 		response.setCharacterEncoding("utf-8");
 		HttpServletRequest 	servletRequest 		= (HttpServletRequest) request;
-		String 				requestPath	 		= servletRequest.getRequestURI().replace("/IAndF/", "");
+		String 				requestPath	 		= servletRequest.getRequestURI().replace("/backage-web/", "");
 		
 		if (requestPath.equals("applyRequest") || requestPath.equals("login")) {		//过滤不拦截的请求
 			chain.doFilter(request, response);
-			return;
 		}else{
 			request = new DecryptHttpServletRequest(servletRequest);
 			chain.doFilter(request, response);
-			return;
 		}
 	}
 	

@@ -32,6 +32,7 @@ public class PrizeInformationEntity {
 	private int     grade;//获奖等级
 	private long    gradeOdds;//等级基数
 	private long    winningOdds;//中奖概率基数
+	private String  prizeTypes;//奖品类型下拉时用
 	public int getGrade() {
 		return grade;
 	}
@@ -98,6 +99,12 @@ public class PrizeInformationEntity {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public String getPrizeTypes() {
+		return prizeTypes;
+	}
+	public void setPrizeTypes(String prizeTypes) {
+		this.prizeTypes = prizeTypes;
 	}
  
 }

@@ -21,7 +21,7 @@
     <!-- 在这里加入页面内容 -->
     <div class="newbieGuide">
     	<div class="guideContent">
-    		<div class="principle">
+    		<!-- <div class="principle">
     			<div class="guideContentT">
     				<img src="resource/img/aboutUs/line_03.jpg">
     				四象金融借款原理
@@ -126,7 +126,7 @@
     					<img src="resource/img/aboutUs/touziliucheng_icon.jpg">
     				</div>
     			</div>
-    		</div>
+    		</div> -->
     	</div>
     </div>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>

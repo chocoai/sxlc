@@ -209,6 +209,11 @@
     	<artifactId>invitemaster_mng</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+    	<groupId>product_p2p</groupId>
+    	<artifactId>integralmall</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>foreground-web</finalName>

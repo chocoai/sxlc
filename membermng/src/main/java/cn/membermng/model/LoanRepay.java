@@ -41,7 +41,8 @@ public class LoanRepay {
 	private String          sdReplayTotals;              //应还总额
 	private int             overDay ;                    //逾期天数
 	
-
+    //*************
+	private String         repayTime;//实际还款日期
 
 
 	public LoanRepay() {
@@ -332,6 +333,18 @@ public class LoanRepay {
 
 	public void setOverDay(int overDay) {
 		this.overDay = overDay;
+	}
+
+
+
+	public String getRepayTime() {
+		return repayTime;
+	}
+
+
+
+	public void setRepayTime(String repayTime) {
+		this.repayTime = repayTime;
 	}
 	
 }

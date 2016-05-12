@@ -32,6 +32,7 @@ import cn.springmvc.model.MemberInfoEntity;
 import cn.springmvc.model.ProjectAppProcessEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;  
 import cn.springmvc.model.ProjectCheckAttachEntity;
+import cn.springmvc.model.ProjectDetailTYEntity;
 import cn.springmvc.service.projectDetailService;
 
 /** 
@@ -150,6 +151,15 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 		map.put("applyID", applyID);
 		map.put("sKey", DbKeyUtil.GetDbCodeKey());
 		return projectDetailListDaoImpl.selectInvestAvailableaAmount(map);
+		
+	}
+
+
+
+	@Override
+	public ProjectDetailTYEntity selectProjectdetailByIDbc(long applyId) {
+		
+		return projectDetailListDaoImpl.selectProjectdetailByIDbc(applyId);
 		
 	}
   

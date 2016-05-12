@@ -21,7 +21,7 @@
 	font-size:13px;
 	color:#a3a3a3;
 	line-height:35px;
-	min-height: 1313px;
+	/* min-height: 1313px; */
 }
 .mCoverHeader{
 	width:100%;
@@ -66,11 +66,11 @@
 	color:#72c0f3;
 	cursor:pointer;
 }
-.mCoverCont a{
+.mCoverCont .mCoverContMain a{
 	color:#f7a743;
 	float:right;
 }
-.mCoverCont a:hover{
+.mCoverCont .mCoverContMain a:hover{
 	text-decoration:none;
 }
 .mCoverContP{
@@ -79,4 +79,5 @@
 .mCoverContP:after{
 	
 }
+.ContMainImg{width: 237px;height: 167px;}
 /* 主体部分结束 王延君 2016-03-29 */

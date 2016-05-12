@@ -13,6 +13,7 @@
 package cn.springmvc.service.impl; 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -20,9 +21,12 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
+import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.LoanDao;
+import cn.springmvc.dao.LoanDaoList;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.model.LoanProjectEntity;
 import cn.springmvc.service.LoanService;
 
 /** 
@@ -34,6 +38,9 @@ import cn.springmvc.service.LoanService;
 public class LoanServiceImpl implements LoanService {
 	@Resource(name="loanDaoImpl")
     private LoanDao loanDao;
+	
+	@Resource(name="loanDaoListImpl")
+	private LoanDaoList loanDaoList;
 	
 	@Override
 	public int Loan(long lApplyId, String sMerBillNo, String sOrderNos,
@@ -58,6 +65,13 @@ public class LoanServiceImpl implements LoanService {
 			generatorUtil.SetIdUsedFail(id);
 		} 
         return result;
+	}
+
+	@Override
+	public List<LoanProjectEntity> selectLoanList(PageEntity pageEntity) {
+		
+		return loanDaoList.selectLoanList(pageEntity);
+		
 	}
 
 }

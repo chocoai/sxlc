@@ -37,11 +37,12 @@ public class HandleThreePartyDaoImpl extends SqlSessionDaoSupport implements Han
 	}
 
 	@Override
-	public Map<String, Object> openAccountBack(Map<String, Object> map) {
+	public int openAccountBack(Map<String, Object> map) {
 			
 		// TODO Auto-generated method stub return null;
 		getSqlSession().selectOne("ThreePartyXML.openAccountBack",map);
-		return map;
+		int rule=IntegerAndString.StringToInt(map.get("result").toString(), 0);
+		return rule;
 	}
 
 	@Override
@@ -59,28 +60,31 @@ public class HandleThreePartyDaoImpl extends SqlSessionDaoSupport implements Han
 		return map;
 	}
 	@Override
-	public Map<String, Object> ProjectFail(Map<String, Object> map) {
+	public int ProjectFail(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
 		getSqlSession().selectOne("ThreePartyXML.ProjectFail",map);
-		return map;
+		int rule=IntegerAndString.StringToInt(map.get("result").toString(), 0);
+		return rule;
 	}
 
 	@Override
-	public Map<String, Object> MemberWithdrawalBack_Qianduoduo(
+	public int MemberWithdrawalBack_Qianduoduo(
 			Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
 		getSqlSession().selectOne("ThreePartyXML.MemberWithdrawalBack_Qianduoduo",map);
-		return map;
+		int rule=IntegerAndString.StringToInt(map.get("result").toString(), 0);
+		return rule;
 	}
 
 	@Override
-	public Map<String, Object> WithdraBack(Map<String, Object> map) {
+	public int WithdraBack(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
 		getSqlSession().selectOne("ThreePartyXML.WithdraBack",map);
-		return map;
+		int rule=IntegerAndString.StringToInt(map.get("result").toString(), 0);
+		return rule;
 	}
 	@Override
 	public String generateorderNo(String prefix) {
@@ -115,11 +119,12 @@ public class HandleThreePartyDaoImpl extends SqlSessionDaoSupport implements Han
 		return getSqlSession().update("ThreePartyXML.updateProjrctTransStatu", map);
 	}
 	@Override
-	public Map<String, Object> TransFail(Map<String, Object> map) {
+	public int TransFail(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
 		getSqlSession().selectOne("ThreePartyXML.TransFail", map);
-		return map;
+		int rule=IntegerAndString.StringToInt(map.get("result").toString(), 0);
+		return rule;
 	}
 	@Override
 	public Map<String, Object> ReturnOfDeposit(Map<String, Object> map) {

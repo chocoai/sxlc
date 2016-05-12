@@ -74,6 +74,8 @@
  .job_content_middle>h4{
  	cursor:pointer;
  }
+ 
+ .contentMiddleH>h4.active,
  .contentMiddleH>h4:hover{
  	color:#72c0f3 !important;
  }

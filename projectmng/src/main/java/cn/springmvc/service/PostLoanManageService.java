@@ -241,5 +241,20 @@ public interface PostLoanManageService {
 	 * @date 2016-4-15 下午5:53:40
 	 */
 	public void getRepaySettled(PageEntity pageEntity);
+	
+	/**
+	 * 根据还款计划ID获取项目催收账单
+	* getProjectBill
+	* TODO(描述)
+	* @author 张友  
+	* * @Title: getProjectBill 
+	* @Description: TODO 
+	* @param  lRepayId			还款计划ID
+	* @param @return			返回催收账单
+	* @return String 			催收账单	
+	* @date 2016-5-11 下午1:38:24
+	* @throws	null
+	 */
+	String getProjectBill(long lRepayId);
 }
 

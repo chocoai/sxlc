@@ -802,9 +802,19 @@
    			<input type="button" class="btn" value="确定" onclick="layer.closeAll()">
    		</div>
    	</div>
+    <form action="inviteAwardRecordexcel/inviteAwardRecordexcel.html" method="post" id="inviteAwardexcel" name="inviteAwardexcel" style="display: none">
+		<input  name="startTime" id="startTimeatz" type="hidden">
+		<input  name="endTime" id="endTimeatz" type="hidden" >
+		<input value="" name="dateStart" id="dateStartatz" type="hidden" > 
+	</form>
+    <form action="inviteHistoryBackExcel/inviteHistoryBackexcel.html" method="post" id="inviteHistory" name="inviteHistory" style="display: none">
+		<input  value="" name="startTime" id="startTimeatzh" type="hidden">
+		<input  value="" name="endTime" id="endTimeatzh" type="hidden">
+		<input value="" name="month" id="monthtzh" type="hidden"> 
+	</form>
     <script type="text/javascript" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/recommendedTalent.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
-  </body>
+ </body>
 </html>

@@ -12,9 +12,11 @@
  
 package cn.springmvc.service; 
   
+import java.util.List;
 import java.util.Map;
 
 import cn.invitemastermng.model.LotteryActivityEntity;
+import cn.invitemastermng.model.LotteryManage;
 import cn.invitemastermng.model.PrizeInformationEntity;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
@@ -153,5 +155,38 @@ public interface LuckyDrawService {
 	 * @date 2016-4-19 下午8:49:46
 	 */
 	public void selectPrizeByActID(PageEntity page);
+	
+	/**
+	 * 获奖期数下拉
+	 * TODO(描述)
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @return 设定文件 
+	 * @return List<Integer> 返回类型 
+	 * @date 2016-5-12 上午10:34:27
+	 */
+	public List<LotteryActivityEntity>  selectperiod();
+	
+	/**
+	 * 获奖等级下拉
+	 * TODO(描述)
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @return 设定文件 
+	 * @return List<Integer> 返回类型 
+	 * @date 2016-5-12 上午10:34:27
+	 */
+	public List<LotteryManage>  selectgrade();
+	
+	/**
+	 * 获奖等级下拉
+	 * TODO(描述)
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @return 设定文件 
+	 * @return List<Integer> 返回类型 
+	 * @date 2016-5-12 上午10:34:27
+	 */
+	public List<PrizeInformationEntity>  selectPrizeTypes();
 }
 

@@ -26,7 +26,12 @@ public class MemberVouchers {
 	private String			sGiftAmount;			//
 	private Long			projectId;				//获取事件编号
 	
-	private int				statu;					//状态
+	private int				statu;					//状态DICT_TZSYZT   -1失败  0处理中  1成功
+	
+	private String 			useDate;				//使用时间
+	
+	private int				Invest_Type;			//使用类型  0	实际投资记录 1	临时投资记录  
+	
 	
 	
 	public MemberVouchers() {}
@@ -119,6 +124,34 @@ public class MemberVouchers {
 
 	public void setStatu(int statu) {
 		this.statu = statu;
+	}
+
+
+
+
+	public String getUseDate() {
+		return useDate;
+	}
+
+
+
+
+	public void setUseDate(String useDate) {
+		this.useDate = useDate;
+	}
+
+
+
+
+	public int getInvest_Type() {
+		return Invest_Type;
+	}
+
+
+
+
+	public void setInvest_Type(int invest_Type) {
+		Invest_Type = invest_Type;
 	}
 	
 	

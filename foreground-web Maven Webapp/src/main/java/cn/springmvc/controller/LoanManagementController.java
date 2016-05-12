@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.datatrans.IntegerAndString;
@@ -23,6 +24,7 @@ import product_p2p.kit.pageselect.PageUtil;
 
 import cn.membermng.model.AdvanceEntity;
 import cn.membermng.model.Cleared;
+import cn.membermng.model.ComfirLoanInfo;
 import cn.membermng.model.ConfirmationLoan;
 import cn.membermng.model.Financing;
 import cn.membermng.model.FlowLabel;
@@ -387,7 +389,7 @@ public class LoanManagementController {
 		pageEntity.setMap(param);
 		List<RepaymentOfBorrowings> list = imyLoanService.RepaymentOfBorrowings(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list); 
-		return JSONObject.toJSONString(pageEntity); 
+		return JSONObject.toJSONString(pageEntity,SerializerFeature.WriteMapNullValue); 
 	}
 	
 	
@@ -399,7 +401,7 @@ public class LoanManagementController {
 	 * @return String 返回类型 
 	 * @date 2016-4-29 下午5:51:34
 	 */
-	@RequestMapping(value="/RMrepayPlan",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/RMrepayPlan",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String RMrepayPlan(HttpServletRequest request){
 		
@@ -595,7 +597,7 @@ public class LoanManagementController {
 	 * @return String 返回类型 
 	 * @date 2016-5-3 下午5:49:59
 	 */
-	@RequestMapping(value="/RepaymentPost",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/RepaymentPost",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String RepaymentPost(HttpServletRequest request){
 		
@@ -709,7 +711,62 @@ public class LoanManagementController {
 		
 	}
 	 
+	/**
+	 * 正常还款详情
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param request
+	 * @param @return 设定文件 
+	 * @return String 返回类型 
+	 * @date 2016-5-3 下午2:54:42
+	 */
+	@RequestMapping(value="/ReplayDetail_{applyIds:[0-9]+}")
+	@ResponseBody
+	public String  confirmationLoanInfo(HttpServletRequest request,@PathVariable String applyIds) { 
+
+		long applyId = 0;//项目申请ID
+		try {
+			applyId = Long.parseLong(applyIds);
+		} catch (Exception e) {
+			return null;
+		}    
+		long[] lMemberInfo = new long[2] ;	 
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		ComfirLoanInfo LoanInfo =  imyLoanService.confirmationLoanInfo(lMemberInfo[0],applyId); 
+		return JSONObject.toJSONString(LoanInfo);
+		
+	}
 	
+	/**
+	 * 借款人确认
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param request
+	 * @param @return 设定文件 
+	 * @return String 返回类型 
+	 * @date 2016-5-12 下午6:00:42
+	 */
+	@RequestMapping(value="confirmationLoan",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public String confirmationLoan(HttpServletRequest request) { 
+		
+		long applyId	    =  IntegerAndString.StringToLong(request.getParameter("applyId"), 0);//自动投标状态 
+		int optionvalue	    =  IntegerAndString.StringToInt(request.getParameter("optionvalue"), 0);//操作  -1取消  2确认
+		int sysId	        =  IntegerAndString.StringToInt(request.getParameter("sysId"), 0);//0前台确认  1短信确认
+		long[] lMemberInfo = new long[2] ;	 
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		int  info= imyLoanService.confirmationLoan(lMemberInfo[0],applyId,optionvalue,sysId);  
+		Map<String,Object> message =  new HashMap<String, Object>();
+		if(info == 1) {
+			message.put("result",     info);
+			message.put("message",   "成功");
+		}else if(info == 0) {
+			message.put("result",     info);
+			message.put("message",   "失败");
+		} 
+		return JSONObject.toJSONString(message);
+	} 
 	@RequestMapping("/LR_financing")
 	public String LR_financing() {
 		return "account/loanManagement/LR_financing";

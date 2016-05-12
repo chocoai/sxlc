@@ -49,7 +49,15 @@ $(function(){
 				          },  
 				          { title:"借款用途","data": "uses"},  
 				          { title:"还款来源","data": "repaySource"},  
-				          { title:"借款描述","data": "projectDescript"},  
+				          { title:"借款描述","data": "projectDescript", 
+				        	  "mRender": function (data, type, full) {
+				        		  	if(data.length>8){//当内容长度大于8时隐藏详细信息
+				        	    		return ' <a href="javascript:;" onclick="showText(this)" title="借款描述">'+data.substring(0,7)+'...</a>';
+				        	    	}else {
+				        	    		return data;
+				        	    	} 
+				        	  }
+				          },  
 				          { title:"期限类型","data": "deadlineType", 
 				        	  "mRender": function (data, type, full) {
 				        		  if(data==0){
@@ -217,12 +225,11 @@ function addInfo(){
 function view_detail(){
 	var data = $('#table_id').DataTable().rows('.selected').data(); 
 	if(data.length<1){
-			layer.alert("请选择要操作的数据！",{icon:0});
+			layer.alert("请选择项目！",{icon:0});
 			return;
 	}
-	var id = data[0].id;
-	var applyid = data[0].applyid;
-	$(".right_col").load("project/toBorrowDetail",{"id":encrypt.encrypt(id+""),"applyid":encrypt.encrypt(applyid+"")});
+	var applyId = data[0].applyid;//Project_App_Record 表Apply_Id
+	window.location.href=appPath+"/project/toProjectdetailPg?content="+applyId;
 }
 /******分配理财顾问*******/
 function allocation(){
@@ -242,3 +249,19 @@ function allocation(){
 }
 
 
+/**
+ * 简介弹出框显示
+ */
+function showText(btn){
+	var data = $('#table_id').DataTable().row($(btn).parents('tr')).data();
+	layer.open({
+	    type: 1,
+	    area: ['400px', '300px'], //高宽
+	    title: "借款描述",
+	    content: data.projectDescript,//DOM或内容
+	    btn:['关闭']
+		  ,cancel: function(index){
+		  	//取消的回调
+		  }
+	});
+};

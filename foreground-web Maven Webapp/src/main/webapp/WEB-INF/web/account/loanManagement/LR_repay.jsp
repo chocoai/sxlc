@@ -12,7 +12,8 @@
     <title>我的借款-还款中</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
-	<link rel="stylesheet" href="plugs/laypage/skin/laypage.css" type="text/css">
+	<!-- <link rel="stylesheet" href="plugs/laypage/skin/laypage.css" type="text/css"> -->
+	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/loanManagement/myLoan.css">
 </head>
 <body> 
@@ -155,7 +156,7 @@
 									</div>
 									<div class="contentOut1">
 										<div class="c-content">
-											<a href="loanManagement/repayPlan.html">还款计划</a><br>
+											<a href="loanManagement/repayPlan.html?a=1">还款计划</a><br>
 											<a href="" class="loan-agreement">借款协议</a><!--跳转未知  -->
 										</div>
 									</div>
@@ -170,7 +171,8 @@
    		</div>
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
-   	<script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script>
+   	<!-- <script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script> -->
+   	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/myLoan.js"></script>
 	<script type="text/javascript">

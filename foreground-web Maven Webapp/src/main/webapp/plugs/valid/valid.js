@@ -520,6 +520,16 @@ var cartNumber = function (gets,obj,curform,datatype) {
 	return true;
 };
 
+var businessNum=function(gets,obj,curform,datatype){
+	var value = obj.attr("lang");
+	if(!gets || gets == value){
+		return "请输入营业执照号";
+	}	
+	if(!RE.businessNum.test(gets)){  
+	    return "格式不正确";  
+	}	
+	return true;
+};
 
 /**
  * 扩展验证规则
@@ -552,7 +562,8 @@ var extdatatype = {
 	"z2_20":z2_20,
 	"legal":legal,
 	"accountOpen":accountOpen,
-	"cartNumber":cartNumber
+	"cartNumber":cartNumber,
+	"businessNum":businessNum
 }
 
 

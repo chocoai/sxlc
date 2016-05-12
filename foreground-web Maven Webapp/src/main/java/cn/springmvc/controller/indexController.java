@@ -148,7 +148,7 @@ public class IndexController {
 	* @date 2016-5-5 上午11:02:30
 	* @throws
 	 */
-	@RequestMapping(value="selectInvestRecordIndex",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="selectInvestRecordIndex",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String selectInvestRecordIndex(HttpServletRequest request){
 		int type = IntegerAndString.StringToInt(request.getParameter("type"),0);//1本月，2本周，其他查询全部
@@ -461,7 +461,7 @@ public class IndexController {
 	* @date 2016-5-10 下午5:52:14
 	* @throws
 	 */
-	@RequestMapping(value="selectSafetyCertificationSetIndex",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="selectNewbieExperienceSetIndex",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String selectNewbieExperienceSetIndex(HttpServletRequest request){
 

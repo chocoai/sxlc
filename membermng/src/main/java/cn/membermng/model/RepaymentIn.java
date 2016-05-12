@@ -1,6 +1,9 @@
 package cn.membermng.model;
 
+import java.sql.Timestamp;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 /***
  * 还款中
@@ -82,7 +85,8 @@ public class RepaymentIn {
 
 	public void setNextTeturnedRrincipal(long nextTeturnedRrincipal) {
 		this.nextTeturnedRrincipal = nextTeturnedRrincipal;
-		this.sNextTeturnedRrincipal = IntegerAndString.LongToString(nextTeturnedRrincipal);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sNextTeturnedRrincipal =  myformat.format(Double.valueOf(IntegerAndString.LongToString(nextTeturnedRrincipal))) ;    
 	}
 
 	public String getsNextTeturnedRrincipal() {
@@ -99,7 +103,8 @@ public class RepaymentIn {
 
 	public void setNextInterestPaid(long nextInterestPaid) {
 		this.nextInterestPaid = nextInterestPaid;
-		this.sNextInterestPaid = IntegerAndString.LongToString(nextInterestPaid);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sNextInterestPaid =  myformat.format(Double.valueOf(IntegerAndString.LongToString(nextInterestPaid))) ;  
 	}
 
 	public String getsNextInterestPaid() {
@@ -140,7 +145,8 @@ public class RepaymentIn {
 
 	public void setAmount(long amount) {
 		this.amount = amount;
-		this.sAmount = IntegerAndString.LongToString(amount);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sAmount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(amount))) ;   
 	}
 
 	public String getsAmount() {
@@ -157,7 +163,8 @@ public class RepaymentIn {
 
 	public void setYearRate(int yearRate) {
 		this.yearRate = yearRate;
-		this.sYearRate = IntegerAndString.IntToString(yearRate);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sYearRate =  myformat.format(Double.valueOf(IntegerAndString.IntToString(yearRate))) ; 
 	}
 
 	public String getsYearRate() {
@@ -173,7 +180,7 @@ public class RepaymentIn {
 	}
 
 	public void setReleaseTime(String releaseTime) {
-		this.releaseTime = releaseTime;
+		this.releaseTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(releaseTime));
 	}
 
 	public String getStartTime() {
@@ -181,7 +188,7 @@ public class RepaymentIn {
 	}
 
 	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+		this.startTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(startTime));
 	}
 
 	public String getEndTime() {
@@ -189,7 +196,7 @@ public class RepaymentIn {
 	}
 
 	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+		this.endTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(endTime));
 	}
 
 	public long getReturnedRrincipal() {
@@ -217,7 +224,8 @@ public class RepaymentIn {
 
 	public void setSjAmount(long sjAmount) {
 		this.sjAmount = sjAmount;
-		this.sSjAmount = IntegerAndString.LongToString(sjAmount);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sSjAmount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(sjAmount))) ;   
 	}
 
 	public String getsSjAmount() {

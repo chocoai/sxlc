@@ -31,16 +31,16 @@ public class CheckParamFilter implements Filter{
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		logger.info("ChechkParam_init");
 		exitRout.add("login");										//登录不拦截
 		exitRout.add("openThirdAccountCallbackPage");				//开户回调1
 		exitRout.add("openThirdAccountCallback");					//开户回调2
 		exitRout.add("fundList");									//我要投资-获取投资列表
 		exitRout.add("authorizedCallBack");							//二次分配授权
 		exitRout.add("authorizedCallBackPage");						//二次分配授权
-		exitRout.add("loanRechargeReturn");	
-		exitRout.add("loanRechargeNotify");
+		exitRout.add("loanRechargeReturn");							//绑定银行卡返回页面
+		exitRout.add("loanRechargeNotify");							//绑定银行卡回调
 		exitRout.add("loanList");									//我要投资-获取债权投资列表
+		exitRout.add("selectInvestRecordIndex");					//首页网站公告
 		exitRout.add("debtInvestmentBack");							//债权投资回调
 	}
 

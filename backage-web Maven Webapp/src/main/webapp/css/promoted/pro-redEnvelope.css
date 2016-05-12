@@ -70,10 +70,16 @@
 }
 .btnAdd{
 	text-align:right;
+	position:fixed;
+	bottom:0;
+	right:0;
 }
 a{
 	cursor:pointer;
 }
 .t1{
 	margin-right:4px;
+}
+.notActive,.notActive2{
+	display: none;
 }

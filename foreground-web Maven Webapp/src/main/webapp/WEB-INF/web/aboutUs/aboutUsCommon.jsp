@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<%
+<%-- <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
@@ -10,9 +10,9 @@
 <head>
 	<base href="<%=basePath%>">
     <jsp:include page="../common/top_meta.jsp"></jsp:include>
-	<link rel="stylesheet" type="text/css" href="css/aboutUs/aboutUs.css">
 </head>
-<body>
+<body> --%>
+	<link rel="stylesheet" type="text/css" href="css/aboutUs/aboutUs.css">
    	<div class="aboutUsAdvert">
 	   	<img src="resource/img/aboutUs/gywm_banner.jpg">
    	</div>
@@ -65,5 +65,5 @@
 	   	</div>
    	</div>
 	<script type="text/javascript" src="js/aboutUs/aboutUs.js"></script>
-</body>
-</html>
+<!-- </body>
+</html> -->

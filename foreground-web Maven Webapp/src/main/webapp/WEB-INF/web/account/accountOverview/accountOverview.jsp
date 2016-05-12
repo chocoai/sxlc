@@ -13,7 +13,7 @@
     <title>账户总览</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
     <script type="text/javascript">
-    	var publickey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCWB/Rc81rhJIXj301mK7NZrhu8MM34BVOz4Ib1dhLvOwdu3LL1k6A5xgRR8Oxsgy4QJzktqqw71pVKjQF4qTrwmcWI9KpI2z8bxqYra7sHrD/bAF5/VqyfUzaGpu8pD+ar7q2WONBkWWjbQohBGus5H/s3x6TucTJKSvxCG7CEYQIDAQAB';
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
     </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/accountOverview/accountOverview.css">

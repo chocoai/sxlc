@@ -37,7 +37,8 @@ function transactionRecord(){
 		return;
 	}
 	var content=rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/transactionRecord.jsp?content="+content);
+	var memberType = $("#memberType").val();
+	$(".right_col").load("web/member/allMembers/transactionRecord.jsp?content="+content+"&start="+memberType);
 }
 /*   查看邀请会员列表          */
 function inviteView(){
@@ -81,16 +82,16 @@ function inviteVip(){
 }
 
 /*   发送     */
-function messageSendPer(){
+/*function messageSendPer(){
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
 	if(rowdata.length<1){
 		layer.alert("请选择要处理的事务！",{icon:0});
 		return;
 	}
 	var content = rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/per-messageSend.jsp");
+	$(".right_col").load("web/member/allMembers/per-messageSend.jsp?content="+content);
 }
-
+*/
 /*   提现记录查询          */
 function recordQuery(){
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
@@ -99,7 +100,8 @@ function recordQuery(){
 		return;
 	}
 	var content = rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/member-recordQuery.jsp?content="+content);
+	var memberType = $("#memberType").val();
+	$(".right_col").load("web/member/allMembers/member-recordQuery.jsp?content="+content+"&start="+memberType);
 }
 /*   充值记录查询          */
 function rechargeRecord(){
@@ -109,8 +111,8 @@ function rechargeRecord(){
 		return;
 	}
 	var content = rowdata[0].memberId;
-	
-	$(".right_col").load("web/member/allMembers/member-rechargeRecord.jsp?content="+content);
+	var memberType = $("#memberType").val();
+	$(".right_col").load("web/member/allMembers/member-rechargeRecord.jsp?content="+content+"&start="+memberType);
 }
 /*   黑名单查询          */
 function memeberBlackRecord(){
@@ -128,7 +130,13 @@ function perSubmitAuthentication(){
 }
 /*   债权转让记录         */
 function bondTransforRecord(){
-	$(".right_col").load("web/member/allMembers/bondTransforRecord.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content = rowdata[0].memberId;
+	$(".right_col").load("web/member/allMembers/bondTransforRecord.jsp?content="+content);
 }
 /*   分配理财顾问         */
 function financialAdvisor(){
@@ -140,14 +148,20 @@ function changeFinancialAdvisor(){
 }
 /*   查询历史理财顾问         */
 function inquiryFinancialAdvisor(){
-	$(".right_col").load("web/member/allMembers/per-inquiryFinancialAdvisor.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content = rowdata[0].memberID;
+	$(".right_col").load("web/member/allMembers/per-inquiryFinancialAdvisor.jsp?content="+content);
 }
 
 /**
  * 拉黑会员
  */
 $(function () {
-	var appPath = getRootPath();//项目根路径
+	 appPath = getRootPath();//项目根路径
 	//拉黑
 	$(".defriend").on("click touchstart",function(){
 		//获得选取的对象
@@ -156,6 +170,7 @@ $(function () {
 			layer.alert("请选择要处理的事务！",{icon:0});
 			return;
 		}
+		var remark = $("#cancelBlack").val();
 		var memberId=rowdata[0].memberId;
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publicKey_common);
@@ -167,10 +182,10 @@ $(function () {
 		    //确定的回调
 		  	//判断执行不同方法
 			  $.ajax({
-				  	type : 'get',
+				  	type : 'post',
 				  	url : appPath + "/member/pullBlackMember.do",
 				  	data : {
-				  		memberId : memberId
+				  		memberId : memberId,
 					},
 					dataType:"text",
 				  	success : function (data) {
@@ -196,7 +211,17 @@ $(function () {
 
 /* 取消拉黑会员*/
 function cancelBlackList(){
-	
+	//获得选取的对象
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var memberId=rowdata[0].memberId;
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publicKey_common);
+	//result 为加密后参数
+	memberId = encrypt.encrypt(memberId+"");
 	layer.open({
 		type: 1,
 		area: ['400px', '200px'], //高宽
@@ -204,9 +229,31 @@ function cancelBlackList(){
 		maxmin: true,
 		content: $("#cancelBlackList"),//DOM或内容
 		btn:['确定', '取消']
-	,yes: function(index, layero){ //或者使用btn1
+		,yes: function(index, layero){ //或者使用btn1
 		//确定的回调
 		//判断执行不同方法
+		var remark =$("#cancelBlack").val();
+		  $.ajax({
+			  	type : 'post',
+			  	url : appPath + "/member/removeBlack.do",
+			  	data : {
+			  		memberId : memberId,
+			  		content:remark
+				},
+				dataType:"text",
+			  	success : function (data) {
+			  		if(data ==0 ){
+			  			layer.alert("取消拉黑成功!",{icon:1});
+			  			layer.close(index);  
+			  			setTimeout('location.reload()',500);
+			  		}else{
+			  			layer.alert("取消拉黑失败!",{icon:2});
+			  		}
+			  	},
+			  	error : function() {  
+			          layer.alert("操作失败!",{icon:2});  
+			    }
+			  });
 		
 	},cancel: function(index){//或者使用btn2（concel）
 		//取消的回调
@@ -222,7 +269,13 @@ function cancelBlackList(){
 function messageSendPer(title,page,type){
 	//参数判断，自己写全
 	//console.log(title+","+page+","+type);
-	
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content=rowdata[0].memberId;
+	page= page+"?content="+content;
 	if(title == "" || page == "" || type == "" ){
 		console.log("参数异常,请检查参数");
 		return;
@@ -237,7 +290,55 @@ function messageSendPer(title,page,type){
 			,yes: function(index, layero){ //或者使用btn1
 				//确定的回调
 				//判断执行不同方法
+				var body = layer.getChildFrame('body', index);
+				var type = body.find(":radio:checked").val();
 				
+				var remark = body.find("textarea").val();
+				var phone =body.find("span[id='memberPhone']").text();
+				var email = body.find("span[id='memberEmail']").text();
+				if(type == 1 && (phone==null || phone=="")){
+					layer.alert("该会员无手机号，无法发送！",{icon:1});
+					return ;
+				}
+				if(type == 2 && (email=="" ||  email==null)){
+					layer.alert("该会员无邮箱，无法发送！",{icon:1});
+					return ;
+				}
+				var encrypt = new JSEncrypt();
+				encrypt.setPublicKey(publicKey_common);
+				//result 为加密后参数
+				type = encrypt.encrypt(type+"");
+				phone = encrypt.encrypt(phone);
+				email = encrypt.encrypt(email);
+				memberId = encrypt.encrypt(content+"");
+				memberType = encrypt.encrypt(memberType+"");
+				remark = encrypt.encrypt(remark+"");
+				
+				  $.ajax({
+					  	type : 'post',
+					  	url : appPath + "/member/sendMessage.do",
+					  	data : {
+					  		memberId : memberId,
+					  		memberType:memberType,
+					  		type:type,
+					  		phone:phone,
+					  		email:email,
+					  		remark:remark
+						},
+						dataType:"text",
+					  	success : function (data) {
+					  		if(data ==0 ){
+					  			layer.alert("发送成功!",{icon:1});
+					  			layer.close(index);  
+					  			setTimeout('location.reload()',500);
+					  		}else{
+					  			layer.alert("发送失败!",{icon:2});
+					  		}
+					  	},
+					  	error : function() {  
+					          layer.alert("操作失败!",{icon:2});  
+					    }
+					  });
 			},cancel: function(index){//或者使用btn2（concel）
 				//取消的回调
 			}
@@ -245,19 +346,69 @@ function messageSendPer(title,page,type){
 };
 
 
-/* 取消拉黑会员*/
+/* 黑名单受限设置*/
 function prohibitedItem(){
+	/**
+	 * 先查询黑名单受限
+	 */
+	 $.ajax({
+		  	type : 'post',
+		  	url : appPath + "/blackstint/BlackLimitList.do",
+		  	data : {
+			},
+			dataType:"json",
+		  	success : function (data) {
+		  		if(data.length>0){
+		  			$.each(data,function(index,obj){
+		  				 $(".checkList").each(function(){
+		  					 if(obj.optType == $(this).val() ){
+		  						$(this).prop("checked",true);
+		  					 }
+		  				 });
+		  			});
+		  			
+		  		}
+		  	},
+		  	error : function() {  
+		          layer.alert("操作失败!",{icon:2});  
+		    }
+		  });
 	layer.open({
 		type: 1,
 		area: ['400px', '200px'], //高宽
-		title: "取消拉黑会员",
+		title: "黑名单受限设置",
 		maxmin: true,
 		content: $("#prohibitedItem"),//DOM或内容
 		btn:['确定', '取消']
 	,yes: function(index, layero){ //或者使用btn1
 		//确定的回调
 		//判断执行不同方法
-		
+		var  limit ="";
+		$(".checkList").each(function(){
+			if($(this).prop("checked")){
+				limit+=$(this).val()+",";
+			}
+		});
+		 $.ajax({
+			  	type : 'post',
+			  	url : appPath + "/blackstint/AddLimitList.do",
+			  	data : {
+			  		content : limit
+				},
+				dataType:"text",
+			  	success : function (data) {
+			  		if(data >0 ){
+			  			layer.alert("保存成功!",{icon:1});
+			  			layer.close(index);  
+			  			setTimeout('location.reload()',500);
+			  		}else{
+			  			layer.alert("保存失败!",{icon:2});
+			  		}
+			  	},
+			  	error : function() {  
+			          layer.alert("操作失败!",{icon:2});  
+			    }
+			  });
 	},cancel: function(index){//或者使用btn2（concel）
 		//取消的回调
 	}

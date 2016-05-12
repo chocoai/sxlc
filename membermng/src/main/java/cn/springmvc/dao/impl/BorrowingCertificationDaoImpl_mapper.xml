@@ -432,13 +432,13 @@
 	
 	<!-- 查看企业会员营业执照认证 -->
 	<select id="showBusinessLicense" parameterType="Map" resultType="Map">
-		select status,mai.End_Date as End_Date,
+		select status, DATE_FORMAT(mai.End_Date,'%Y-%m-%d') as End_Date,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_BLN),#{skey}) using utf8) as Firm_BLN,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_Address),#{skey}) using utf8) as Firm_Address,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_Legal),#{skey}) using utf8) as Firm_Legal,Reg_Capital,
 		CONVERT(AES_DECRYPT(UNHEX(Reg_Business),#{skey}) using utf8) as Reg_Business,
 		Firm_Type,
-		Reg_Date,
+		DATE_FORMAT(Reg_Date,'%Y-%m-%d') as Reg_Date  ,
 		group_concat(paa.Attach_Name) as Attach_Name,
 		group_concat(paa.Attach_Path) as Attach_Path
 		from Member_Attest_Info mai
@@ -490,10 +490,10 @@
 	
 	<!-- 查看企业会员工商执照认证 -->
 	<select id="showCommercialLicense" parameterType="Map" resultType="Map">
-		select mai.End_Date as End_Date,Residence,
+		select DATE_FORMAT(mai.End_Date,'%Y-%m-%d') as End_Date,Residence,
 		CONVERT(AES_DECRYPT(UNHEX(Firm_Legal),#{skey}) using utf8) as Firm_Legal,
 		Reg_Capital,Firm_Type,Real_Capital,
-		CONVERT(AES_DECRYPT(UNHEX(Reg_Business),#{skey}) using utf8) as Reg_Business,SetUp_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		CONVERT(AES_DECRYPT(UNHEX(Reg_Business),#{skey}) using utf8) as Reg_Business,DATE_FORMAT(SetUp_Date,'%Y-%m-%d') as SetUp_Date ,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
 		from member_attest_info mai
 		left join Enterprise_BsnLicense_Attest mba on mba.Certification_ID = mai.Certification_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
@@ -536,7 +536,7 @@
 	
 	<!-- 查看组织机构认证 -->
 	<select id="showOrganizational" parameterType="Map" resultType="Map">
-		select status,CONVERT(AES_DECRYPT(UNHEX(eoa.Firm_OC),#{skey}) using utf8) as Firm_OC,eoa.Reg_Date,mai.End_Date as End_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
+		select status,CONVERT(AES_DECRYPT(UNHEX(eoa.Firm_OC),#{skey}) using utf8) as Firm_OC,DATE_FORMAT(eoa.Reg_Date,'%Y-%m-%d') as Reg_Date,DATE_FORMAT(mai.End_Date,'%Y-%m-%d') as End_Date,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
 		from member_attest_info mai
 		left join Enterprise_OrgCode_Attest eoa on eoa.Certification_ID = mai.Certification_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
@@ -577,13 +577,13 @@
 	
 	<!-- 查看开户许可认证 -->
 	<select id="showAccountOpening" parameterType="Map" resultType="Map">
-		select mai.End_Date as End_Date,mai.status,CONVERT(AES_DECRYPT(UNHEX(eaa.Permits_Code),#{skey}) using utf8) as Permits_Code,
+		select DATE_FORMAT(mai.End_Date,'%Y-%m-%d') as End_Date,mai.status,CONVERT(AES_DECRYPT(UNHEX(eaa.Permits_Code),#{skey}) using utf8) as Permits_Code,
 		CONVERT(AES_DECRYPT(UNHEX(eaa.Permits_Bank),#{skey}) using utf8) as Permits_Bank,
 		CONVERT(AES_DECRYPT(UNHEX(eaa.Bank_No),#{skey}) using utf8) as Bank_No,group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
 		from member_attest_info mai
 		left join Enterprise_AccountPermits_Attest eaa on eaa.Certification_ID = mai.Certification_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
-		where mai.Member_ID = 1 and mai.Member_Type = 1 and mai.Attest_Type_ID = 15 order by Record_Date desc limit 0,1 
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 1 and mai.Attest_Type_ID = 15 order by Record_Date desc limit 0,1 
 	</select>
 	
 	<!-- 修改开户许可认证 -->
@@ -618,13 +618,13 @@
 	
 	<!-- 查看税务登记认证 -->
 	<select id="showTaxRegistration" parameterType="Map" resultType="Map">
-		select mai.End_Date as End_Date,mai.status,Issue_Organ,
+		select DATE_FORMAT(mai.End_Date,'%Y-%m-%d') as End_Date,mai.status,Issue_Organ,
 		CONVERT(AES_DECRYPT(UNHEX(eta.Credentials_NO),#{skey}) using utf8) as Credentials_NO,
 		group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
 		from member_attest_info mai
 		left join Enterprise_Taxation_Attest eta on eta.Certification_ID = mai.Certification_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
-		where mai.Member_ID = 1 and mai.Member_Type = 1 and mai.Attest_Type_ID = 18 order by Record_Date desc limit 0,1 
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 1 and mai.Attest_Type_ID = 18 order by Record_Date desc limit 0,1 
 	</select>
 	
 	<!-- 修改税务登记认证 -->
@@ -660,12 +660,12 @@
 	
 	<!-- 批文认证 -->
 	<select id="showAuthApproval" parameterType="Map" resultType="Map">
-		select mai.End_Date as End_Date,mai.status,Issue_Organ,File_Summary,Issue_Organ,Issue_Date,
+		select DATE_FORMAT(mai.End_Date,'%Y-%m-%d') as End_Date,mai.status,Issue_Organ,File_Summary,Issue_Organ,DATE_FORMAT(Issue_Date,'%Y-%m-%d') as Issue_Date ,
 		group_concat(paa.Attach_Name) as Attach_Name,group_concat(paa.Attach_Path) as Attach_Path
 		from member_attest_info mai
 		left join Enterprise_RedHead_Attest era on era.Certification_ID = mai.Certification_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
-		where mai.Member_ID = 1 and mai.Member_Type = 1 and mai.Attest_Type_ID = 19 order by Record_Date desc limit 0,1 
+		where mai.Member_ID = #{memberId} and mai.Member_Type = 1 and mai.Attest_Type_ID = 19 order by Record_Date desc limit 0,1 
 	</select>
 	
 	<!-- 批文认证 -->

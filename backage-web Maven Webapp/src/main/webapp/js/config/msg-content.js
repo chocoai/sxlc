@@ -57,7 +57,6 @@ $(function(){
 					  scrollXInner : "100%",
 			          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 			          }
-			 
 			});//表格初始化完毕
 			 
 			//表格单选效果(有复选框)

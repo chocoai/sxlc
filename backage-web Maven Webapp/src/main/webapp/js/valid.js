@@ -118,6 +118,22 @@ var imgcode = function(gets,obj,curform,datatype) {
 					alert("随机验证码失效，请重新获取");
 				}*/
 			};
+var img = function(gets,obj,curform,datatype) {
+				var code="";   //模拟图形验证码 
+				if(!gets){
+					return "图片不能为空";
+				}
+				else if(gets!=code){  
+				    return "请上传图片";  
+				}
+				else {
+					return true;
+				}
+	//			时间验证
+				/*else if(){
+					alert("随机验证码失效，请重新获取");
+				}*/
+};
 var zPhone = function (gets,obj,curform,datatype) {
 				//var phone = '12345678901';
 				if(!gets){
@@ -437,7 +453,13 @@ var roleNameb = function(gets,obj,curform,datatype) {
 		return true;
 	}
 };
-
+var time = function(gets,obj,curform,datatype) {
+	if(!gets){
+		return "不可为空";
+	}else {
+		return true;
+	}
+};
 var rolemarkC = function(gets,obj,curform,datatype) {
 	if(!gets){
 		return "不可为空";
@@ -595,8 +617,9 @@ function validform5(btn,formId,postonce,tipsType) {
 			"enterNameR":enterNR ,
 			"describeC":describeC ,
 			"roleNameb":roleNameb ,
-			"numOf":numOf     //两百以下
-
+			"numOf":numOf,    //两百以下
+			"img":img,
+			"time":time
 		},
 		beforeSubmit:function(curform){//提交借款申请时添加家庭成员和家庭成员信息拼接
 				        //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。  

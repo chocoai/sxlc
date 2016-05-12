@@ -20,6 +20,8 @@
    	<script type="text/javascript" src="js/common/template.js"></script>
    	<script type="text/javascript">
     	var publickey = '<%=session.getAttribute("publicKey")%>';
+    	var ctId	  = '${creditorTransferListEntity.ctaId}';
+    	var applyId   = '${creditorTransferListEntity.applyId}';
     </script>
     <!-- 此处加入代码 -->
     <!--伍成然2016-3-30  -->
@@ -103,7 +105,6 @@
 					<c:if test="${investmentStatus == 0 }">
 						<div class="info-label">
 							<div class="left-title">剩余时间：</div>
-							<div class="time-ico">${creditorTransferListEntity.endDate }</div>
 								<div 	class="J_CountDown time-ico" 
 										data-config="{'startTime':'${sysTime }','endTime':'${endTime }'}"></div>
 						</div>
@@ -144,17 +145,18 @@
 				<c:if test="${loginUser != null }">
 					<form id="loginedBox">
 					<div class="inv-deal-box logined">
-						<div class="inv-available">本次可投金额<div class="right"><span>1600</span>元</div></div>
+						<div class="inv-available">本次可投金额<div class="right"><span>${sSumAount }</span>元</div></div>
 						<div class="amount-available">可用余额<div class="right"><span>${userBalances }</span>元</div></div>
 						<div class="input-group" style="height:50px;">
-						    <input type="text" class="charge-input" datatype="acountM" value="50元起投且金额为整数" 
+						    <input type="text" class="charge-input" datatype="acountM" maxlength="10" value="50元起投且金额为整数" 
+						   	id="investMoney"
 							onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
 						    <div class="charge-addon">元</div>
 						    <input class="charge-btn" type="button" value="充值">
 						</div><!-- /input-group -->
-						<div class="expected-return">预期收益：<span>0.00</span>元</div>
+						<div class="expected-return">预期收益：<span id="pageProfit">0.00</span>元</div>
 						<input type="button" class="inv-now" id="inv-now" value="立即投资">
 						<div class="remain-vouchers">剩余代金券&nbsp;${sVouchers }元<div class="right">剩余红包&nbsp;${redPackCount }个</div></div>
 					</div>
@@ -234,13 +236,14 @@
 	<!--弹出层  -->
 	<div class="red-packets">
 		<div class="red-packets-top clearfix" id="red-packets-top">
-			<c:if test="${appRecordEntity.isDirect == 1 }">
-				<div class="info clearfix" id="codeContent">
-					<div class="leftTitle">定向标密码:</div>
-					<input type="text" id="directionalCode" class="inputDJJ1">
-				</div>
-			</c:if>
+			
 		</div>
+		<c:if test="${appRecordEntity.isDirect == 1 }">
+			<div class="info clearfix" id="codeContent">
+				<div class="leftTitle">定向标密码:</div>
+				<input type="text" id="directionalCode" class="inputDJJ1">
+			</div>
+		</c:if>
 		<div class="red-packets-bottom clearfix">
 			<div class="label">本次投资总金额：<label  id="nowInvestNum">1,000.00</label>元</div>
 			<div class="label">使用代金券：<label  id="nowVoucher">100.00</label>元</div>
@@ -248,7 +251,7 @@
 			<div class="label">使用账户余额：<label  id="nowAccountBalance">8880.00</label>元</div>
 		</div>
 		<div class="btn-group" >
-			<form action="invest/memberInvestment.html" id="form1" method="post" name="form1">
+			<form action="invest/debtInvestment.html" id="form1" method="post" name="form1">
 			 	<input type="hidden" name="projectId" value="">
 			 	<input type="hidden" name="slVouchers" value="">
 			 	<input type="hidden" name="lAmount" value="">

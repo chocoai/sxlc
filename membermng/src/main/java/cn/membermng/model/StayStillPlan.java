@@ -1,6 +1,9 @@
 package cn.membermng.model; 
 
+import java.sql.Timestamp;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 
 /***
@@ -10,15 +13,8 @@ import product_p2p.kit.datatrans.IntegerAndString;
 * @since 
 * @date 2016-4-5 下午4:12:10 
 *
- */
-
-/** 
-* @author 李杰
-* @Description: TODO 
-* @since 
-* @date 2016-4-5 下午7:27:16 
-*  
 */
+
 public class StayStillPlan {
 
 	
@@ -117,7 +113,8 @@ public class StayStillPlan {
 
 	public void setSdRepayPrincipal(long sdRepayPrincipal) {
 		this.sdRepayPrincipal = sdRepayPrincipal;
-		this.sSDRepayPrincipal = IntegerAndString.LongToString(sdRepayPrincipal);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sSDRepayPrincipal =  myformat.format(Double.valueOf(IntegerAndString.LongToString(sdRepayPrincipal)));   
 	}
 
 
@@ -138,7 +135,8 @@ public class StayStillPlan {
 
 	public void setSdRepayInterest(long sdRepayInterest) {
 		this.sdRepayInterest = sdRepayInterest;
-		this.sSDRepayInterest = IntegerAndString.LongToString(sdRepayInterest);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sSDRepayInterest =  myformat.format(Double.valueOf(IntegerAndString.LongToString(sdRepayInterest)));  
 	}
 
 
@@ -158,7 +156,7 @@ public class StayStillPlan {
 
 
 	public void setRepayMaxTime(String repayMaxTime) {
-		this.repayMaxTime = repayMaxTime;
+		this.repayMaxTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(repayMaxTime));
 	}
 
 
@@ -179,7 +177,9 @@ public class StayStillPlan {
 
 	public void setRepayOverdueInterest(long repayOverdueInterest) {
 		this.repayOverdueInterest = repayOverdueInterest;
-		this.sRepayOverdueInterest = IntegerAndString.LongToString(repayOverdueInterest);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepayOverdueInterest =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repayOverdueInterest)));  
+ 
 	}
 
 
@@ -200,7 +200,9 @@ public class StayStillPlan {
 
 	public void setRepayOverdue(long repayOverdue) {
 		this.repayOverdue = repayOverdue;
-		this.sRepayOverdue = IntegerAndString.LongToString(repayOverdue);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepayOverdue =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repayOverdue)));  
+  
 	}
 
 
@@ -231,7 +233,9 @@ public class StayStillPlan {
 
 	public void setRepayPrincipal(long repayPrincipal) {
 		this.repayPrincipal = repayPrincipal;
-		this.sRepayPrincipal = IntegerAndString.LongToString(repayPrincipal);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepayPrincipal =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repayPrincipal)));   
+ 
 	}
 
 
@@ -252,7 +256,8 @@ public class StayStillPlan {
 
 	public void setRepayInterest(long repayInterest) {
 		this.repayInterest = repayInterest;
-		this.sRepayInterest = IntegerAndString.LongToString(repayInterest);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepayInterest =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repayInterest)));    
 	}
 
 
@@ -273,7 +278,9 @@ public class StayStillPlan {
 
 	public void setYiHuanYuQiLiXi(long yiHuanYuQiLiXi) {
 		this.yiHuanYuQiLiXi = yiHuanYuQiLiXi;
-		this.sYiHuanYuQiLiXi = IntegerAndString.LongToString(yiHuanYuQiLiXi);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sYiHuanYuQiLiXi =  myformat.format(Double.valueOf(IntegerAndString.LongToString(yiHuanYuQiLiXi)));    
+ 
 	}
 
 
@@ -294,7 +301,9 @@ public class StayStillPlan {
 
 	public void setYiHuanYuQiFaJin(long yiHuanYuQiFaJin) {
 		this.yiHuanYuQiFaJin = yiHuanYuQiFaJin;
-		this.sYiHuanYuQiFaJin = IntegerAndString.LongToString(yiHuanYuQiFaJin);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sYiHuanYuQiFaJin =  myformat.format(Double.valueOf(IntegerAndString.LongToString(yiHuanYuQiFaJin)));    
+  
 	}
 
 

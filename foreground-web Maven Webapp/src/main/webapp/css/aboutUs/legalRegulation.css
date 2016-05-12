@@ -33,6 +33,7 @@
 	margin:0 auto;
 	line-height:30px;
 	position:relative;
+	min-height: 200px;
 }
 .lawy_content>p{
 	padding:0 2em;
@@ -90,6 +91,7 @@
 }
 .s_manage_img{
 	width:121px;
+	height: 163px;
 }
 .s_manage_main p{
 	line-height:20px;

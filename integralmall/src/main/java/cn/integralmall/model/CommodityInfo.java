@@ -33,7 +33,7 @@ public class CommodityInfo {
 	private String					backAmount							;//返现券面额
 	private String					endDate								;//结束日期
 	private String					deleteFlag							;//是否删除1有效 0已删除
-	
+	private int                     quantity                            ;//商品数量 
 	
 	public CommodityInfo() {	}
 
@@ -302,6 +302,16 @@ public class CommodityInfo {
 
 	public void setDeleteFlag(String deleteFlag) {
 		this.deleteFlag = deleteFlag;
+	}
+
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
 	

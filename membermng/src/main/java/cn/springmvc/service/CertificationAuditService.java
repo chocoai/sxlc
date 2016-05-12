@@ -6,6 +6,7 @@ import java.util.Map;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.AutomaticBidSettingEntity;
+import cn.membermng.model.EnterpriseAttestEntity;
 import cn.membermng.model.EnterpriseLicenseAttestEntity;
 import cn.membermng.model.ExistingFinancialAdvisorEntity;
 import cn.membermng.model.FinancialAdvisorEntity;
@@ -395,4 +396,15 @@ public interface CertificationAuditService {
 	* @throws 
 	*/
 	public List<ExistingFinancialAdvisorEntity> ChangeHistory(PageEntity page,long memberID);
+
+	/**
+	 * 查询企业会员认证详情
+	 * TODO
+	 * 创建日期：2016-5-11上午11:24:56
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return EnterpriseAttestEntity
+	 */
+	public EnterpriseAttestEntity sEnterpriseLicenseAttestByID(Map<String, Object> map);
 }

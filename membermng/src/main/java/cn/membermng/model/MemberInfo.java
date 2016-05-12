@@ -35,6 +35,7 @@ public class MemberInfo {
 	private Long		companyId;				//企业信息编号
 	private CompanyInfo	companyInfo;
 	private Long		personalId;				//个人信息编号
+	private PersonalBaseInfo personalBaseInfo;
 	
 	private String      personalName;			//会员姓名+
 	private String		personalIdCard;			//会员身份证  +
@@ -673,5 +674,12 @@ public class MemberInfo {
 	public String getsLastBlack() {
 		return sLastBlack;
 	}
-
+	
+	public void setPersonalBaseInfo(PersonalBaseInfo personalBaseInfo) {
+		this.personalBaseInfo = personalBaseInfo;
+	}
+	
+	public PersonalBaseInfo getPersonalBaseInfo() {
+		return personalBaseInfo;
+	}
 }

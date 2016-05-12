@@ -1,10 +1,10 @@
 /* CSS Document */
 @charset "UTF-8";
-/* ÉèÖÃ¶¥²¿Á´½ÓÑùÊ½ */
+/* ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .intergralMallCommon .mainPageTop1{
 	color:#72c0f3;
 }
-/* ÉèÖÃÂÖ²¥Í¼ÑùÊ½  start »ÆöÎ 20160327*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½Í¼ï¿½ï¿½Ê½  start ï¿½ï¿½ï¿½ï¿½ 20160327*/
 .bannerArea{
 	width:1200px;
 	min-width:1200px;
@@ -74,12 +74,12 @@
 	background: #fff;
 	opacity: 1;
 }
-/* ÉèÖÃÂÖ²¥Í¼ÑùÊ½  end*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½Í¼ï¿½ï¿½Ê½  end*/
 .main{
 	width:1200px;
 	margin:20px auto;
 }
-/* ÄÚÈÝ²¿·Ö£º»ý·ÖÉÌ³ÇÍ¾¾¶ start*/
+/* ï¿½ï¿½ï¿½Ý²ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½Ì³ï¿½Í¾ï¿½ï¿½ start*/
 .integralArea{
 	width:238px;
 	height:163px;
@@ -160,8 +160,8 @@
 .investGo{
 	background:url(../../resource/img/integralMall/jfsc_23.png) no-repeat;
 }
-/* ÄÚÈÝ²¿·Ö£º»ý·ÖÉÌ³ÇÍ¾¾¶ end*/
-/* ¿É¶Ò»»ÉÌÆ·»ý·ÖÏÔÊ¾ */
+/* ï¿½ï¿½ï¿½Ý²ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½Ì³ï¿½Í¾ï¿½ï¿½ end*/
+/* ï¿½É¶Ò»ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ */
 .productIntegral{
 	margin-top:30px;
 }
@@ -368,7 +368,7 @@
 	background:url(../../resource/img/integralMall/jfsc_21.png) no-repeat;
 	background-position:left center;
 }
-/* ¹Ì¶¨µÄÁ¬½Ó */
+/* ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .link{
 	display:block;
 	width:117px;
@@ -379,3 +379,5 @@
 	z-index:1;
 	background:url(../../resource/img/integralMall/jfsc_3.png) no-repeat;
 }
+
+.typeImg{width: 244px;height: 341px;}

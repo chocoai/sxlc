@@ -12,6 +12,8 @@
  
 package cn.springmvc.model; 
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /** 
  * @author 刘利 
  * @Description: 统计
@@ -27,6 +29,12 @@ public class CoutEntity {
 	private int    countLoanMember;//新增借款会员
 	private long   sumInvest;//新增投资
 	private long   countFrontAccess;//前台访问记录
+	
+	public long    pRechargeFee;//充值统计
+	public String  spRechargeFee;//充值统计
+	public long    pwidthdrawFee;//提现统计
+	public String  spwidthdrawFee;//提现统计
+ 
 	public String getDay() {
 		return day;
 	}
@@ -75,6 +83,31 @@ public class CoutEntity {
 	public void setCountFrontAccess(long countFrontAccess) {
 		this.countFrontAccess = countFrontAccess;
 	}
-	 
+	public long getpRechargeFee() {
+		return pRechargeFee;
+	}
+	public void setpRechargeFee(long pRechargeFee) {
+		this.pRechargeFee = pRechargeFee;
+		this.spRechargeFee = IntegerAndString.LongToString(pRechargeFee);
+	}
+	public String getSpRechargeFee() {
+		return spRechargeFee;
+	}
+	public void setSpRechargeFee(String spRechargeFee) {
+		this.spRechargeFee = spRechargeFee;
+	}
+	public long getPwidthdrawFee() {
+		return pwidthdrawFee;
+	}
+	public void setPwidthdrawFee(long pwidthdrawFee) {
+		this.pwidthdrawFee = pwidthdrawFee;
+		this.spwidthdrawFee = IntegerAndString.LongToString(pwidthdrawFee);
+	}
+	public String getSpwidthdrawFee() {
+		return spwidthdrawFee;
+	}
+	public void setSpwidthdrawFee(String spwidthdrawFee) {
+		this.spwidthdrawFee = spwidthdrawFee;
+	}
 }
 

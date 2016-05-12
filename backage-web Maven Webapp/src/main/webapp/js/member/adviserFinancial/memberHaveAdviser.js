@@ -4,9 +4,13 @@
  * 理财顾问会员
  * pr
  */
+
+
+var STAFF_NUM = 0;  //记录点击添加次数
+
 $(function(){
 	//单选
-	$('#table_id tbody').on( 'click', 'tr', function () {
+	$('#table_id,#table_planer tbody').on( 'click', 'tr', function () {
 		var $this = $(this);
 		var $checkBox = $this.find("input:checkbox");
 		 if ( $(this).hasClass('selected') ) {
@@ -37,7 +41,7 @@ $(function(){
 	});
 		
 	//==============理财顾问列表
-	$(".examine").on("click touchstart",function(){
+	$(".examineChange").on("click touchstart",function(){
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();
 		var staffId =0;
 		if(rowdata.length<1){ //判断是否选择
@@ -50,30 +54,43 @@ $(function(){
 		if(rowdata[0].personalName!=null){
 			$("#memberName").text(rowdata[0].personalName);
 		}
-		
-		showPlanerList();//显示理财师顾问列表
+		if(rowdata[0].fAName!=null){
+			$("#planer").text(rowdata[0].fAName);
+		}
+		if(STAFF_NUM ==0){
+			showPlanerList();//显示理财师顾问列表
+			STAFF_NUM++;
+		}
+		var memberId = rowdata[0].memberID;
+		var oldplanerId = rowdata[0].faid;
 		layer.open({
 		    type: 1,
 		    area: ['950px', '600px'], //高宽
-		    title: "理财顾问",
+		    title: "分配理财顾问",
 		    content: $(".planer-poster"),//DOM或内容
 		    btn:['确定', '取消']
 			  ,yes: function(index, layero){ //或者使用btn1
 				//获得选取的对象
-					var rowdata = $('#table_planer').DataTable().rows('.selected').data();
+				  var rowdata = $('#table_planer').DataTable().rows('.selected').data();
 					var staffId =0;
 					if(rowdata.length<1){
 						layer.alert("请选择要处理的事务！",{icon:0});  
 						return;
 					}
+					var planerId = rowdata[0].fAID;
 					var encrypt = new JSEncrypt();
 			    	encrypt.setPublicKey(publicKey_common);
 			    	//result 为加密后参数
-			    	staffId = encrypt.encrypt(staffId);
+			    	memberId = encrypt.encrypt(memberId+"");
+			    	planerId = encrypt.encrypt(planerId+"");
+			    	oldplanerId = encrypt.encrypt(oldplanerId+"");
 				  $.ajax({
-						url : appPath+"/savaPlannerAdvise.do",
+						url : appPath+"/adviserPlaner/savaPlannerAdvise.do",
 							data:{
-								staffId:staffId,
+								planerId:planerId,
+								memberId:memberId,
+								oldplanerId:oldplanerId,
+								content:2 //类型
 							},
 							type : "post",
 							dataType:"text",
@@ -85,15 +102,14 @@ $(function(){
 							//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
 							if(data == 0){
 								//执行完关闭
-								layer.alert("添加成功",{icon:1});  
+								layer.alert("变更成功",{icon:1});  
 							  	layer.close(index);
 							  	setTimeout('location.reload()',500);
-							}else if(data == -1){
-								layer.alert("添加失败， 该员工未注册前台会员！",{icon:0});  
+							}else if(data == -2){
+								layer.alert("没有原始理财顾问，不能变更！",{icon:0});  
 							}
 						 }
 					});  
-				  
 			    //确定的回调
 			  },cancel: function(index){//或者使用btn2（concel）
 			  	//取消的回调

@@ -38,11 +38,25 @@ public class CreditorTransferCheckEntity {
 	 private String transDiscounts;//转让折扣 	 
 	 private String transferPrices;//转让价格、
 	 private String ctaInvestRate;//	融资进度	 
-	 private String transMaxTime	;//	  投标结束时间
-	 private String tatu;//	    转让状态
+	 private String transMaxTime	;//	  投标结束时间 
      private int    surplusTime;//剩余期限
-	 private int    surplusTimeType;//剩余期限类型
-	 public long getTransPrincipal() {
+	 private int    surplusTimeType;//剩余期限类型 
+	 private int    checkStatu;//审核 -1打回，0为审核，1通过
+	 private int    statu;//转让状态
+	 public int getCheckStatu() {
+		return checkStatu;
+	}
+	public void setCheckStatu(int checkStatu) {
+		this.checkStatu = checkStatu;
+	}
+	public int getStatu() {
+		return statu;
+	}
+	public void setStatu(int statu) {
+		this.statu = statu;
+	}
+ 
+	public long getTransPrincipal() {
 		return transPrincipal;
 	}
 	public void setTransPrincipal(long transPrincipal) {
@@ -127,12 +141,6 @@ public class CreditorTransferCheckEntity {
 		this.ctaInvestRate = ctaInvestRate;
 	}
  
-	public String getTatu() {
-		return tatu;
-	}
-	public void setTatu(String tatu) {
-		this.tatu = tatu;
-	}
 	public int getSurplusTime() {
 		return surplusTime;
 	}
@@ -168,6 +176,6 @@ public class CreditorTransferCheckEntity {
 	}
 	public void setTranLogname(String tranLogname) {
 		this.tranLogname = tranLogname;
-	}
+	} 
 }
 

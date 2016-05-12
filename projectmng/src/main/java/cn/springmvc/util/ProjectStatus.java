@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import cn.springmvc.model.CreditorTransferListEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;
 
 /**
@@ -44,7 +45,7 @@ public class ProjectStatus {
 			if(entity.getInvestStatu() == 0 && startTime.after(cTime)){
 				//预热中
 				iResult = 1;
-			}else if(entity.getInvestStatu() == 0 && startTime.after(cTime) && entity.getInvestRate() < 1000000){
+			}else if(entity.getInvestStatu() == 0 && startTime.before(cTime) && entity.getInvestRate() < 1000000){
 				//投标中(融资中)
 				iResult = 2;
 			}else if(entity.getInvestStatu() == 2 || (entity.getInvestStatu() == 0 && entity.getInvestRate() >= 1000000)
@@ -71,4 +72,53 @@ public class ProjectStatus {
 		
 		return iResult;
 	}
+	
+	/**
+	 * 	债权判断项目状态
+	* GetProjectStatus			判断项目状态
+	* TODO(描述)
+	* @author 张友  
+	* * @Title: GetProjectStatus 
+	* @Description: TODO 
+	* @param entity				项目对象
+	* @param @return 			项目状态 
+	* @return int				0：投标中(融资中) 	1：流标		2：投标完成		3：还款中        4：结清
+	* @date 2016-5-9 下午7:46:13
+	* @throws
+	 */
+	public static int GetCreditorTransferStatus(CreditorTransferListEntity entity){
+		
+		int iResult=-1;
+		
+		if(entity==null){
+			return iResult;
+		}
+		
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			Date maxTime 	= sdf.parse(entity.getEndDate());						//债权到期时间
+			Date now 		= new Date();
+			//重新定义债权状态
+			if(entity.getTransStatu() == 0){
+				//投标中
+				iResult=0;
+			}else if(entity.getTransStatu() == 1 || entity.getTransStatu() == -1){
+				//流标
+				iResult=1;
+			}else if(entity.getTransStatu() == 2 || 
+						(entity.getTransStatu() == 0 && (entity.getCtaInvestRate() >= 1000000 || (maxTime.after(now) || maxTime.equals(now))))){
+				//投标完成
+				iResult=2;
+			}else if(entity.getTransStatu() == 3 || entity.getTransStatu() == 4){
+				//还款中  Or 已结清
+				iResult=entity.getTransStatu();
+			}else{
+				iResult=entity.getTransStatu();
+			}
+		} catch (Exception e) {
+			log.debug("GetCreditorTransferStatus:"+e.getStackTrace());
+		}		
+		return iResult;
+	}
+	
 }

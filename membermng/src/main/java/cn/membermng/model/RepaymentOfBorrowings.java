@@ -1,6 +1,9 @@
 package cn.membermng.model; 
 
+import java.sql.Timestamp;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 
 
@@ -58,14 +61,15 @@ public class RepaymentOfBorrowings {
 		return lendingTime;
 	}
 	public void setLendingTime(String lendingTime) {
-		this.lendingTime = lendingTime;
+		this.lendingTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(nextRepaymentTime));
 	}
 	public long getPrincipal() {
 		return principal;
 	}
 	public void setPrincipal(long principal) {
 		this.principal = principal;
-		this.sPrincipal = IntegerAndString.LongToString(principal);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sPrincipal =  myformat.format(Double.valueOf(IntegerAndString.LongToString(principal)));    
 	}
 	public String getsPrincipal() {
 		return sPrincipal;
@@ -78,6 +82,8 @@ public class RepaymentOfBorrowings {
 	}
 	public void setInterestRates(int interestRates) {
 		this.interestRates = interestRates;
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sInterestRates =  myformat.format(Double.valueOf(IntegerAndString.LongToString(interestRates))) ;   
 	}
 	public String getsInterestRates() {
 		return sInterestRates;
@@ -114,7 +120,8 @@ public class RepaymentOfBorrowings {
 	}
 	public void setAlsoHasInterest(long alsoHasInterest) {
 		this.alsoHasInterest = alsoHasInterest;
-		this.sAlsoHasInterest = IntegerAndString.LongToString(alsoHasInterest);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sAlsoHasInterest =  myformat.format(Double.valueOf(IntegerAndString.LongToString(alsoHasInterest)));   
 	}
 	public String getsAlsoHasInterest() {
 		return sAlsoHasInterest;
@@ -127,7 +134,8 @@ public class RepaymentOfBorrowings {
 	}
 	public void setNoHasInterest(long noHasInterest) {
 		this.noHasInterest = noHasInterest;
-		this.sNoHasInterest = IntegerAndString.LongToString(noHasInterest);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sNoHasInterest =  myformat.format(Double.valueOf(IntegerAndString.LongToString(noHasInterest))) ;    
 	}
 	public String getsNoHasInterest() {
 		return sNoHasInterest;
@@ -139,14 +147,15 @@ public class RepaymentOfBorrowings {
 		return nextRepaymentTime;
 	}
 	public void setNextRepaymentTime(String nextRepaymentTime) {
-		this.nextRepaymentTime = nextRepaymentTime;
+		this.nextRepaymentTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(nextRepaymentTime));
 	}
 	public long getRepaymentAount() {
 		return repaymentAount;
 	}
 	public void setRepaymentAount(long repaymentAount) {
-		this.repaymentAount = repaymentAount;
-		this.sRepaymentAount = IntegerAndString.LongToString(repaymentAount);
+		this.repaymentAount = repaymentAount; 
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sRepaymentAount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(repaymentAount))) ; 
 	}
 	public String getsRepaymentAount() {
 		return sRepaymentAount;

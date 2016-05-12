@@ -85,7 +85,7 @@
 	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id and mi.Member_Type=0
 	   left join Company_Info  ci  on ci.Company_ID=mi.Company_ID and mi.Member_Type=1
 	   left join Management_Info mana on mana.Management_ID = par.Management_ID
-	   left join Guarantee_Info gua on gua.Guarantee_ID = gua.Guarantee_ID
+	   left join Guarantee_Info gua on gua.Guarantee_ID = par.Guarantee_ID
 	    <where> 
          <!--  par.Apply_Id=#{map.ID} --> 
 	       (
@@ -109,10 +109,10 @@
 		        ) = 0
 		    )    
 	        
-	     <if test = "map.ProjectTitle !=  null"> 
+	     <if test = "map.ProjectTitle !=  null and map.ProjectTitle !=  ''"> 
 	      and  pbi.Project_Title like '%${map.ProjectTitle}%'
 	     </if>
-	     <if test = "map.Logname !=  null"> 
+	     <if test = "map.Logname !=  null and map.Logname !=  ''"> 
 	      and  mi.Logname like '%${map.Logname}%'
 	     </if>
          <!-- 	     已审核 -->
@@ -135,16 +135,16 @@
 	        where  ap.Process_ID in  (select Process_ID from Process_Project where Indexs =#{map.sIndexs}) 
 	        and  pck.Check_Statu !=2
 	        ) 
-	     </if>
-	     <if test = "map.name !=  null"> 
-	       and ( mi.Company_ID in ( select Company_ID from Company_Info where Compang_Name like '%${map.name}%') 
-	       or mi.Personal_ID in (select Personal_Id from Personal_Base_Info where Personal_Name like  '%${map.name}%' )
+	     </if> 
+	     <if test = "map.name !=  null and map.name !=  ''"> 
+	      (ci.Compang_Name like '%${map.name}%' 
+	       or pbiper.Personal_Name like  '%${map.name}%' 
 	       )
 	     </if>
-	     <if test = "map.startTime !=  null"> 
+	     <if test = "map.startTime !=  null and map.startTime !=  ''"> 
 	       and pap.Record_Date > #{map.startTime} 
 	     </if>
-	     <if test = "map.endTime !=  null"> 
+	     <if test = "map.endTime !=  null and map.endTime !=  ''"> 
 	       and  #{map.endTime} > pap.Record_Date 
 	     </if>
 	    </where>

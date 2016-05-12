@@ -2,7 +2,9 @@ package cn.springmvc.interceptor;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import cn.membermng.model.MemberInfo;
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 
 public class SessionCheckInterceptor implements HandlerInterceptor{
+
 	
 	/**
 	 * 记录日志
@@ -62,11 +65,9 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 			int result = optRecordWriteDaoImpl.MemberSessionCheck(session.getId(), memberInfo.getId(), (short)1, session.getMaxInactiveInterval(), ip, sIpinfo);
 			optRecordWriteDaoImpl.InsertForgroundLog(session.getId(), memberInfo.getId(), entity, sIpinfo);
 			if(result == 1){
-				if(checkParam(arg0)){
+				if(checkParam(arg0))
 					return true;//继续执行
-				}else{
-					return false;
-				}
+				return false;
 			}else{
 				/*String det = "";
 				if(result == -1){
@@ -94,6 +95,10 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 	}
 	
 	
+	
+	
+	
+	
 	/***
 	* 参数校验
 	* <br>
@@ -116,8 +121,12 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 		}
 		String sign = newMap.get("sign");
 		newMap.remove("sign");
-		if(sign == null){//没有sign或者sign多个  验证失败
-			return true;
+		if(sign == null){									//没有签名
+			if(newMap.keySet().size() == 0){				//没有参数
+				return true;
+			}else{
+				return true;								//请改为false再使用 如果出现有参数但是没有签名的情况 直接失败当前请求
+			}
 		}else{
 			String paramCheckCode = "";
 			Map<String, String> sortMap = new TreeMap<String, String>(new Comparator<String>() {@Override public int compare(String o1, String o2) {return o1.compareTo(o2);}});

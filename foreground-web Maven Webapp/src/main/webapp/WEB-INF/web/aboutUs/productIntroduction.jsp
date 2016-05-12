@@ -23,7 +23,8 @@
     	<div class="productionContentH">
     		<span class="production_content_title">产品介绍</span>
     	</div>
-   	   	<div class="production_main">
+    	
+   	   	<!-- <div class="production_main">
    	   		<img class="product_03" src="resource/img/aboutUs/product_03.jpg"></img>
    	   		<div class="production_word">
    	   			<span class="production_word_title">信用贷</span>
@@ -79,10 +80,11 @@
 				</div>
    	 		</div>
    	 		<button type="button" class="btn btn-primary" onclick="window.location='loan/loan.html';">申请借款</button>
-   	 	</div>
+   	 	</div> -->
    	 </div>
     
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
+   	<script type="text/javascript" src="js/common/template.js"></script>
 	<script type="text/javascript" src="js/aboutUs/productIntroduction.js"></script>
 </body>
 </html>

@@ -39,7 +39,7 @@ public interface HandleThreePartyDao {
 	* @date 2016-3-28 下午3:17:19
 	* @throws 
 	*/
-	public Map<String, Object> openAccountBack(Map<String, Object> map);
+	public int openAccountBack(Map<String, Object> map);
 	
 	
 	/** 
@@ -84,7 +84,7 @@ public interface HandleThreePartyDao {
 	* @date 2016-3-30 下午2:12:48
 	* @throws 
 	*/
-	public Map<String, Object> ProjectFail(Map<String, Object> map);
+	public int ProjectFail(Map<String, Object> map);
 	
 	
 	/** 
@@ -99,7 +99,7 @@ public interface HandleThreePartyDao {
 	* @date 2016-3-31 下午7:43:09
 	* @throws 
 	*/
-	public  Map<String, Object> MemberWithdrawalBack_Qianduoduo(Map<String, Object> map);
+	public  int MemberWithdrawalBack_Qianduoduo(Map<String, Object> map);
 	
 	
 	/** 
@@ -114,7 +114,7 @@ public interface HandleThreePartyDao {
 	* @date 2016-3-31 下午7:44:01
 	* @throws 
 	*/
-	public  Map<String, Object> WithdraBack(Map<String, Object> map);
+	public  int WithdraBack(Map<String, Object> map);
 	
 	
 	/** 
@@ -199,13 +199,13 @@ public interface HandleThreePartyDao {
 	* @author 朱祖轶  
 	* * @Title: TransFail 
 	* @Description: TODO 
-	* @param @param map
+	* @param map
 	* @param @return 设定文件 
 	* @return Map<String,Object> 返回类型 
 	* @date 2016-4-14 下午8:35:33
 	* @throws 
 	*/
-	public Map<String, Object> TransFail(Map<String, Object> map);
+	public int TransFail(Map<String, Object> map);
 	
 	
 	/** 

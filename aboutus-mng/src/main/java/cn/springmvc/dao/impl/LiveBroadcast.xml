@@ -3,7 +3,7 @@
 <mapper namespace="LiveBroadcast"> 
      <!--      实时播报 -->
 	<select id="selectLiveBroadcast" resultType="cn.springmvc.model.LiveBroadcastEntity">
-	  select Content as content,Record_Date as recordDate  from  Live_Broadcast
+	  select Content as content,DATE_FORMAT(Record_Date,'%Y-%m-%d %H:%i') as recordDate  from  Live_Broadcast
 	</select>
 	 <insert id="insertLiveBroadcast" parameterType="String">
 	 insert into Live_Broadcast(Content)

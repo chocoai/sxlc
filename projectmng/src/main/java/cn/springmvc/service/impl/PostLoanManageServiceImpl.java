@@ -190,6 +190,12 @@ public class PostLoanManageServiceImpl implements PostLoanManageService {
 		PageUtil.ObjectToPage(pageEntity, list);
 		
 	}
+	@Override
+	public String getProjectBill(long lRepayId) {
+		String sResult = "";
+		
+		return sResult;
+	}
 
 }
 

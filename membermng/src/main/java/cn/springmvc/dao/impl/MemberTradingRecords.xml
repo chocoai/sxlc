@@ -33,10 +33,10 @@
 	   <if test="map.tradeTypeId != -1"> 
 	      and mtr.Trade_Type_Id =  #{map.tradeTypeId}
 	   </if>
-	   <if test="map.startrecordDate != null"> 
+	   <if test="map.startrecordDate != null and map.startrecordDate != ''"> 
 	      and mtr.Record_Date >=  #{map.startrecordDate}
 	   </if>
-	   <if test="map.endrecordDate != null"> 
+	   <if test="map.endrecordDate != null and map.endrecordDate != ''"> 
 	      and #{map.endrecordDate} >= mtr.Record_Date  
 	   </if>
 	   <if test="map.recorddays != -1"> 
@@ -149,15 +149,16 @@
 		CAST((AES_DECRYPT(UNHEX(mwr.Third_Mng_Fee),#{map.sKey})) as signed)     Third_Mng_Fee,
 		CAST((AES_DECRYPT(UNHEX(mwr.Mng_Fee_Repay),#{map.sKey})) as signed)     Mng_Fee_Repay,
 		CAST((AES_DECRYPT(UNHEX(mwr.Real_Money),#{map.sKey})) as signed)        Real_Money,
-		mwr.Receive_Date,mwr.Third_Mer_Billno,Recharge_Type,mwr.Statu
-		from  Member_Withdrawal_Recharge mwr
+		mwr.Receive_Date,mwr.Third_Mer_Billno,mwr.Recharge_Type,mwr.Statu,rtype.name1 as rechargeTypes
+		from  Member_Withdrawal_Recharge mwr 
+		left join DICT rtype on   rtype.code1 = mwr.Recharge_Type  and rtype.tcode = 'DICT_CZFS' 
 		<where>  
 		     mwr.Member_ID =#{map.memberID} and mwr.Deal_Type=0   and mwr.Member_Type =#{map.memberType}   
-		    <if test="map.threeNum != ''">
+		    <if test="map.threeNum != '' and map.threeNum != null">
 		      and mwr.Third_Mer_Billno like '%${map.threeNum}%'
 		    </if>
-		    <if test="map.startDate != '' and map.endDate != '' ">
-		      and mwr.Receive_Date between #{map.startDate} and  and #{map.endDate} 
+		    <if test="map.startDate != '' and map.endDate != '' and map.startDate != null and map.endDate != null">
+		      and mwr.Receive_Date between #{map.startDate}  and #{map.endDate} 
 		    </if>
 		     <if test="map.startTime != null and map.startTime != ''">
 		      and mwr.Receive_Date >= #{map.startTime}
@@ -232,11 +233,11 @@
 		<where>  
 		     mwr.Member_ID =#{map.memberID}  and mwr.Deal_Type=1   and mwr.Member_Type =#{map.memberType}  
 		   <!-- 申请时间  + -->
-		    <if test="map.startDate != '' and map.endDate!='' ">
+		    <if test="map.startDate != '' and map.endDate!='' and map.startDate != null and map.endDate!=null">
 		      and  mwa.Receive_Date between #{map.startDate} and  #{map.endDate}
 		    </if>
 		     <!-- 到账时间  + -->
-		     <if test="map.startDate1 != '' and map.endDate1!='' ">
+		     <if test="map.startDate1 != '' and map.endDate1!='' and map.startDate1 != null and map.endDate1!=null ">
 		      and  mwr.Receive_Date between #{map.startDate1} and  #{map.endDate1}
 		    </if>
 		     <if test="map.startTime != null and map.startTime != ''">
@@ -246,11 +247,11 @@
 		      and  mwr.Receive_Date &lt;=#{map.endtimeTime}  
 		    </if> 
 		     <!-- 平台交易流水号 + -->
-		     <if test="map.tradeNum != ''">
+		     <if test="map.tradeNum != '' and map.tradeNum != null">
 		      and  mwr.Mer_Billno like  '%${map.tradeNum}%'
 		    </if>
 		    <!-- 第三方交易账号 + -->
-		     <if test="map.threeNum != ''">
+		     <if test="map.threeNum != '' and map.threeNum != null">
 		      and  mwr.Third_Mer_Billno like '%${map.threeNum}%'
 		    </if>
 		 </where>

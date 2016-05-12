@@ -39,9 +39,12 @@
 				</div>
 				<div class="inputImgCheck clearfix">
 					<div class="left-title">图形验证码:</div>
-					<div class="registerCode">
-	    				<input type="text" class="img-check" datatype="imgcode" maxlength="6">
-						<img src="resource/img/loginRegister/7.png">
+					<div class="forgetPWDCode">
+	    				<input type="text" class="img-check" datatype="imgcode" value="请输入图形验证码"  maxlength="6" 
+								onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
+								onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
+								style="color:#bfbfbf">
+						<img src="authImage.html">
 					</div>
 				</div>
 				<div class="inputTelCheck clearfix">

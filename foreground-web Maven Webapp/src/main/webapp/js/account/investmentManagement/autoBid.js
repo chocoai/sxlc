@@ -60,7 +60,7 @@ $(function(){
 		}
 	});
 	
-	//验证
+	//自动投标
 	$("#touBao").Validform({
 		tiptype:3,//提示信息类型
 		btnSubmit:".autoBtn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
@@ -144,13 +144,6 @@ $(function(){
 				data.dayMax = encrypt.encrypt("");
 			}
 			
-			
-			
-			
-					
-				
-				
-				
 			data.reservedMoney = encrypt.encrypt($("#reservedMoney").val()+"");	
 			var url = "investmentManagement/autoBidConfig.html";
 			NetUtil.ajax(
@@ -172,6 +165,26 @@ $(function(){
 			return false;
 		}
 	});
+
+	// 取消自动投标
+	$("#deleAutoBid").on("click",function(){
+		$.ajax({
+			type:"GET",
+			url:"investmentManagement/removeAutoBidConf.html",
+			datatype:"json",
+			success:function(r){
+				if (r.status=="1") {
+					layer.alert("操作成功",function(){
+						window.location.reload()
+					})
+				}else{
+					layer.alert(r.message,function(index){
+						layer.close(index);
+					})
+				}
+			}
+		})
+	})
 });
 
 

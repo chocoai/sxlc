@@ -51,7 +51,7 @@ public class FinancialHistoryBackExcelController implements OutExcel{
 	 * @return String 返回类型 
 	 * @date 2016-5-3 上午10:17:44
 	 */
-	@RequestMapping(value="/financialHistoryBackExcel",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/financialHistoryBackExcel",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public void financialHistoryBackExcel(HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException{
 		 
@@ -88,7 +88,7 @@ public class FinancialHistoryBackExcelController implements OutExcel{
 				entity.getPersonalName(),entity.getBorrowAmounts(),
 				entity.getBorrowAwards(),entity.getInvestAmounts(),entity.getInvestAwards(),
 				 entity.getRepayAmounts(),entity.getRepayAwards(),entity.getVipAmounts(),
-				entity.getVipAwards(),entity.getAwardAmounts(),entity.getRealAmounts(),entity.getPayStatus()};
+				entity.getVipAwards(),entity.getAwardAmounts(),entity.getRealAmounts(),entity.getPayDate(),entity.getPayStatus()};
 	}
 
 	@Override

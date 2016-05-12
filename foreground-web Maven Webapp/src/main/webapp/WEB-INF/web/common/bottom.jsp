@@ -54,17 +54,13 @@
 			</div>
 		</div>
 		<div class="bottomBottom">
-			<div class="bottomBottomLine1">
-				<span>友情链接：</span>
-				<a href="">网贷天下</a>
-				<a href="">网贷联盟网</a>
-				<a href="">网贷之家</a>
-				<a href="">财急送投资顾问</a>
-				<a href="">P2P网贷</a>
-				<a href="">中金网</a>
-				<a href="">好投顾</a>
-				<a href="">京东金融</a>
-				<a href="">成都华律网</a>
+			<div class="bottomBottomLine1" id="ship">
+				<script id="shipList" type="text/html">
+					<span>友情链接：</span>
+					{{each data as value index}}
+						<a href="{{value.url}}" target="_blank">{{value.name}}</a>
+					{{/each}}
+				</script>
 			</div>
 			<div class="bottomBottomLine1">
 				<span>Copyright(c)蜀ICP备10201230号-1 成都四象联创科技有限公司 .All rights reserved.</span>
@@ -87,3 +83,5 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="js/common/template.js"></script>
+<script type="text/javascript" src="js/common/footer.js" ></script>

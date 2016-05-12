@@ -10,7 +10,7 @@
      <result property = "realEndDate"       column = "Real_End_Date" />
      <result property = "holdDate"       	column = "Hold_Date" />
      <result property = "proEndDate"       	column = "ProEnd_Date" />
-      <result property = "settleDate"       column = "Settle_Date" />
+     <result property = "settleDate"       column = "Settle_Date" />
      <association property="projectAppRecordEntity" 	resultMap="resultProjectDetail"/>
  </resultMap>
  <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetail">
@@ -133,4 +133,51 @@
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
 	   where  par.apply_ID=#{applyID}
 	</select>
+	<!-- 根据项目申请ID查询项目详细信息-->  
+	<select id="selectProjectdetailByIDbc"  parameterType="long" resultType="cn.springmvc.model.ProjectDetailTYEntity" >
+	   select  
+	   (select Auto_Invest_Max  from Project_App_Auto_Set where Apply_Id=#{applyId}) as  autoInvestMax, 
+	   (select Auto_Start  from Project_App_Auto_Set where Apply_Id=#{applyId}) as  autoStart,
+	   case when pp.Deal_Statu = 1 then 
+              pbi.Amount
+         else  pp.Amount  end  amount, 
+       case when pp.Deal_Statu = 1 then 
+               pbi.Deadline
+         else  pp.Deadline  end  deadline, 
+      case when pp.Deal_Statu = 1 then 
+               pbi.Deadline_Type
+         else  pp.Deadline_Type  end  deadlineType, 
+       case when pp.Deal_Statu = 1 then 
+               pbi.Deadline_Type
+         else  pp.Deadline_Type end  deadlineType, 
+      case when pp.Deal_Statu = 1 then 
+               pbi.Repay_Source
+         else  pp.Repay_Source  end  repaySource, 
+     case when pp.Deal_Statu = 1 then 
+               pbi.Uses
+         else  pp.Uses  end  uses,  
+	   par.Repay_Guarantee     as repayGuarantee,
+	   pty.Project_Name        as projectName,
+	     
+	   par.Guaranty_Describe   as guarantyDescribe,  
+	   par.Reward_Rate         as rewardRate,
+	   par.Rate_Add_Rate	   as rateAddRate,
+	   par.Is_Direct           as isDirect, 
+	   gua.Guarantee_Name      as guaranteeName,
+	   mana.Management_Name    as managementName,
+	   par.Invest_Count_Max    as investCountMax ,
+	   pam.RiskMargin_Fee      as riskMarginFee,
+	   pam.RiskMargin_Rate     as riskMarginRate,
+	   pam.RiskMargin_Type     as riskMarginType,
+	   pam.MngFee_Amount       as mngFeeAmount
+	   from  Project_Purpose pp
+	   left join Project_App_Record par  on  par.Purpose_ID = pp.Purpose_ID
+	   left join Project_App_Process pap on  pap.Apply_Id=par.Apply_Id
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
+	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID  
+	   left join Management_Info mana on mana.Management_ID = par.Management_ID
+	   left join Guarantee_Info gua on gua.Guarantee_ID = par.Guarantee_ID
+	   left join Project_App_MngFee pam on pam.Apply_Id = par.Apply_Id
+	   where  par.Apply_Id=#{applyId}
+    </select>
 </mapper>

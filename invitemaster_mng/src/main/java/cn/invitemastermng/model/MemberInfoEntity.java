@@ -38,6 +38,7 @@ public class MemberInfoEntity {
 	private String repayAmounts;//累计成功借款
 	private String imNo;//推荐达人编号
 	private String inviteLogname;//推荐达人
+	private long   imApplyID;//推荐达人申请ID
 	
 	public long getMemberID() {
 		return memberID;
@@ -144,6 +145,12 @@ public class MemberInfoEntity {
 	}
 	public void setTotalInvite(int totalInvite) {
 		this.totalInvite = totalInvite;
+	}
+	public long getImApplyID() {
+		return imApplyID;
+	}
+	public void setImApplyID(long imApplyID) {
+		this.imApplyID = imApplyID;
 	}
 }
 

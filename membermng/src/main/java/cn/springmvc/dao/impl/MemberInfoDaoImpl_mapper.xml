@@ -63,11 +63,26 @@
 	</select>
 	
 	
-	<!-- 获取会员编号会员类型 -->
-	<select id="findMemberInfoByParam" parameterType="Map" resultType="cn.membermng.model.MemberInfo">
-		select Member_Id as id,Member_Type as memberType,pbi.Personal_ID as personalId
+	<resultMap type="cn.membermng.model.MemberInfo" id="loginMemberInfo">
+		<id		column="id"				property="id"/>
+		<result	column="memberType"		property="memberType"/>
+		<result	column="personalId"		property="personalId"/>
+		<result	column="Personal_Name"	property="personalBaseInfo.personalName"/>
+		<result	column="Personal_Phone"	property="personalBaseInfo.personalPhone"/>
+		<result column="Compang_Name"	property="companyInfo.compangName"/>
+	</resultMap>
+	<!-- 获取会员信息 -->
+	<select id="findMemberInfoByParam" parameterType="Map" resultMap="loginMemberInfo">
+		select 
+		Member_Id as id,
+		Member_Type as memberType,
+		pbi.Personal_ID as personalId,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as Personal_Name,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey}) using utf8) as Compang_Name,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) as Personal_Phone
 		from member_info mi 
-		left join Personal_Base_Info pbi on pbi.Personal_ID = mi.Personal_ID 
+		left join Personal_Base_Info pbi on pbi.Personal_ID = mi.Personal_ID
+		left join company_info ci on ci.Company_ID = mi.Company_ID
 		where mi.Member_Pwd = #{memberPwd} 
 		and (pbi.Personal_Phone = HEX(AES_ENCRYPT(#{logName} ,#{skey})) or Logname = #{logName})
 		and member_Type = #{memberType}
@@ -236,7 +251,7 @@
 	
 	<!-- 会员邀请列表 -->
 	<select id="friendInvitation" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="friendInvitation">
-		select Logname,Personal_Phone,Reg_Date,mti.Record_Date
+		select Logname,CONVERT(AES_DECRYPT(UNHEX(Personal_Phone),#{map.skey}) USING utf8) AS Personal_Phone,Reg_Date,mti.Record_Date
 		from member_info mi
 		left join personal_base_info pbi on pbi.Personal_Id = mi.Personal_ID
 		left join Member_Third_Info mti on mti.Member_ID = mi.Member_ID and mti.Member_Type = mi.Member_Type
@@ -246,8 +261,7 @@
 	
 	<!-- 好友列表 -->
 	<select id="friendList" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.Friends">
-		
-		SELECT  CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) USING utf8) AS username,f.friendId,f.addTime FROM Member_Info mi INNER JOIN (
+		SELECT  mi.Logname AS username ,f.friendId, DATE_FORMAT(f.addTime,'%Y-%m-%d %H:%i') as addTime  FROM Member_Info mi INNER JOIN (
 			SELECT Member_ID_Receive AS friendId,Check_Date AS addTime FROM Member_FriendShip_Record WHERE Member_ID_Apply=#{map.memberId} AND Statu=1 AND Relieve_Statu=0
 			UNION ALL SELECT Member_ID_Apply,Check_Date FROM Member_FriendShip_Record WHERE Member_ID_Receive=#{map.memberId} AND Statu=1 AND Relieve_Statu=0
 		) AS f ON mi.Member_ID = f.friendId
@@ -257,16 +271,16 @@
 	<!-- 待确认好友列表 -->
 	<select id="selectConfirmFriendList" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.Friends">
 		
-		SELECT  CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) USING utf8) AS username,
+		SELECT   mi.Logname AS username,
 		f.friendId,f.addTime,f.statu,f.type FROM Member_Info mi INNER JOIN
 		 (
 		 	<!-- 我想加的 -->
-			SELECT Member_ID_Receive AS friendId,Check_Date AS addTime,statu as statu ,1 as type 
+			SELECT Member_ID_Receive AS friendId, DATE_FORMAT(Record_Date,'%Y-%m-%d %H:%i') AS addTime,statu as statu ,1 as type 
 			FROM Member_FriendShip_Record 
 			WHERE Member_ID_Apply=#{map.memberId} AND statu in (-1,0) 
 			
 			<!-- 想加我的 -->
-			UNION ALL SELECT Member_ID_Apply,Check_Date,statu,0 
+			UNION ALL SELECT Member_ID_Apply,Record_Date,statu,0 
 			FROM Member_FriendShip_Record 
 			WHERE Member_ID_Receive=#{map.memberId} AND statu=0 
 		) AS f ON mi.Member_ID = f.friendId
@@ -368,11 +382,12 @@
 	
 	<!-- 获取我的代金券使用记录 -->
 	<select id="addMyVouchers" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.MemberVouchers">
-		select Gift_Amount as sgiftAmount,
+		select 
+		Gift_Amount as sgiftAmount,
 		Invest_Typeas giftType,
-		(select Invest_Date from Invest_Record ir where ir.Invest_Id = mvu.Invest_Id and ir.memberId = #{memberId}) as receiveDate ,
+		(select Invest_Date from Invest_Record ir where ir.Invest_Id = mvu.Invest_Id and ir.memberId = #{map.memberId}) as receiveDate ,
 		statu 
-		from Member_Vouchers_UseRecord mvu  
+		from Member_Vouchers_UseRecord mvu 
 	</select>
 	
 	
@@ -390,12 +405,12 @@
 	
 	<!-- 查询陌生人 -->
 	<select id="serachMemberByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.MemberInfo">
-		select mi.member_id,mi.Logname,pbi.Personal_Name,pbi.Personal_Phone
+		select mi.member_id as memberId,mi.Path,mi.Logname,pbi.Personal_Name, CONCAT(SUBSTRING(CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.sKey}) using utf8),1,3),'****',SUBSTRING(CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.sKey}) using utf8),10,11)) as personalPhone
 		from member_info mi 
 		left join personal_base_info pbi on pbi.Personal_Id = mi.Personal_ID
-		where 	CONVERT(AES_DECRYPT(UNHEX(mi.Logname),#{sKey}) using utf8) 			like '#{memberName}' 
-		or	 	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{sKey}) using utf8) 	like '#{memberName}'
-		or	 	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{sKey}) using utf8) 	like '#{memberName}'	
+		where 	mi.Logname	like '${map.memberName}%' 
+		or	 	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey}) using utf8) 	like '${map.memberName}%'
+		or	 	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.sKey}) using utf8) 	like '${map.memberName}%'	
 	</select>
 	
 	<!--  忘记密码-查询登录名与手机号是否匹配 -->

@@ -140,11 +140,6 @@
 	   select Prize_ID as prizeID,Prize_Type as prizeType,Prize_Name as prizeName,
 	   Prize_Worth as prizeWorth,Prize_Quantity as prizeQuantity,Prize_Url as prizeUrl,Status as status
 	   from  Prize_Information 
-	   <where>
-	      <if test="map.statu != -1">
-	          Status = #{map.statu}
-	      </if>
-	   </where>  
 	</select>
 	
 	 <!-- 	根据ID查询抽奖活动 信息-->
@@ -174,5 +169,20 @@
 	   from Lottery_Manage  lm 
 	   left join Prize_Information  pif on  lm.Prize_ID = pif.Prize_ID
 	   where Prize_ID = #{map.prizeID}
+	</select>
+   
+    <!-- 	期数下拉 -->
+	<select id="selectperiod" resultType='cn.invitemastermng.model.LotteryActivityEntity'>
+	   select distinct Period  as period from Lottery_Activity
+	</select>
+	
+	 <!-- 	获奖等级下拉 -->
+	<select id="selectgrade" resultType='cn.invitemastermng.model.LotteryManage'>
+	   select distinct Grade  as grade from Lottery_Manage
+	</select>
+	
+	 <!-- 	奖品类型下拉-->
+	<select id="selectPrizeTypes" resultType='cn.invitemastermng.model.PrizeInformationEntity'>
+	   select name1 as  prizeTypes,code1 as prizeType from DICT  where tcode='DICT_JPLX'
 	</select>
 </mapper>

@@ -20,7 +20,7 @@
     <!-- 商城首页界面      胥福星     2016-03-28 -->
     <div class="bannerArea">
 	    <div class="banner">
-			<ul>
+			<ul id="bannerUl">
 				<li>
 					<img src="resource/img/integralMall/banner1.png">
 				</li>
@@ -31,8 +31,16 @@
 					<img src="resource/img/integralMall/banner3.png">
 				</li>
 			</ul>
+			<script id="bannerList" type="text/html">
+				{{each data as infos index}}
+					<li data-href="{{infos.links}}" title="{{infos.bannerTitle}}">
+						<img src="{{infos.url}}">
+					</li>
+				{{/each}}
+			</script>
 		</div>
 	    <div class="main">
+	    	<!--获取积分途径s -->
 	    	<div class="integralApproach">
 	    		<div class="integralArea"></div>
 	    		<div class="integralLi">
@@ -60,8 +68,10 @@
 	    			<div class="flowImg3"></div>
 	    		</div>
 	    	</div>
-	    	<div class="productIntegral">
+	    	<!-- 获取积分途径e -->
+	    	<!-- <div class="productIntegral">
 	    		<div class="productHeader">
+	    			liftTitle、foodTitle、cardTitle、processTitle
 	    			<span class="liftTitle">趣味生活</span>
 	    			<a href="integralMall/itemList.html">更多></a>
 	    		</div>
@@ -88,7 +98,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -110,7 +120,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -132,7 +142,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -154,7 +164,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -162,8 +172,57 @@
 		    			</div>
 	    			</li>
 	    		</ul>
-	    	</div>
-	    	<div class="productIntegral">
+	    	</div> -->
+	    	
+	    	<!-- 循环输出数据 -->
+	    	<script id="goodsList" type="text/html">
+	    		{{each results as goodsList index}}
+	    			<div class="productIntegral">
+			    		<div class="productHeader">
+			    			<!--liftTitle、foodTitle、cardTitle、processTitle -->
+			    			<span class="foodTitle">{{goodsList.commodityClassify}}</span>
+			    			<a href="integralMall/itemList.html">更多></a>
+			    		</div>
+			    		<ul class="productList clearfix">
+			    			<li class="productLi includeFlow">
+			    				<img class="typeImg" src="{{goodsList.commodityClassifyPic}}" />
+			    				<div class="flowToImg">
+			    					<p class="titleFlow">{{goodsList.commodityClassify}}</p>
+			    					<p class="sloginFlow">{{goodsList.commodityClassifyDes}}</p>
+			    				</div>
+			    			</li>
+							
+							{{each goodsList.goods as item index}}
+			    			<li class="productDetail">
+				    			<div class="productImg">
+				    				<img onclick="window.location.href='integralMall/itemDetail.html?goodsId={{item.commodityId}}'" src="{{item.commoditySmallIcon}}" />
+				    			</div>
+				    			<div class="detailProduct">
+				   					<p onclick="window.location.href='integralMall/itemDetail.html'">{{item.commodityName}}</p>
+				    				<span><samp>所需积分：</samp><em>{{item.needPoint}}</em></span>
+				    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
+				    			</div>
+				    			<div class="flowTop">
+				   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">{{item.commodityName}}</p>
+				    				<p><samp>所需积分：</samp><span>{{item.needPoint}}</span></p>
+				    				<p><samp>市场价格：</samp><span>{{item.marketPrice}}</span></p>
+				    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
+				    			</div>
+				    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+				    			<div class="sellOutArea sellOutHide">
+					    			<div class="sellOut">
+				    				</div>
+				    				<div class="sellOutImg"></div>
+				    			</div>
+			    			</li>
+							{{/each}}
+
+			    		</ul>
+			    	</div>
+    			{{/each}}
+	    	</script>
+	    	
+	    	<!-- <div class="productIntegral">
 	    		<div class="productHeader">
 	    			<span class="foodTitle">精品零食</span>
 	    			<a href="integralMall/itemList.html">更多></a>
@@ -191,7 +250,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -213,7 +272,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -235,7 +294,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -257,7 +316,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 		    			<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -294,7 +353,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		   					<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 	    				<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -316,7 +375,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 	    				<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -338,7 +397,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-		    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+		    			兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 	    				<div class="sellOutArea sellOutHide">
 			    			<div class="sellOut">
 		    				</div>
@@ -360,7 +419,7 @@
 		    				<p><samp>市场价格：</samp><span>1，500.00</span></p>
 		    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
 		    			</div>
-	    				<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
+	    				兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide 
 	    				<div class="sellOutArea">
 			    			<div class="sellOut">
 		    				</div>
@@ -368,7 +427,7 @@
 		    			</div>
 	    			</li>
 	    		</ul>
-	    	</div>
+	    	</div> -->
 	    	<div class="productIntegral">
 	    		<div class="productHeader">
 	    			<span class="processTitle">兑换流程</span>
@@ -392,6 +451,7 @@
 	    <a class="link" href="integralMall/bigWheel.html"></a>
     </div>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
+   	<script type="text/javascript" src="js/common/template.js"></script>
 	<script type="text/javascript" src="js/integralMall/mallIndex.js"></script>
 </body>
 </html>

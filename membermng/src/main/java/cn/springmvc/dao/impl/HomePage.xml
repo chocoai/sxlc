@@ -29,7 +29,7 @@
 		  ifnull(SUM(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{skey})) AS SIGNED)),0)+ifnull(sum(CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{skey})) AS SIGNED)),0) SDRecv_Amount
 		  FROM Invest_Income ii
 		WHERE ii.Member_ID = #{Member_ID} AND ii.IsValid = 0
-		  AND ii.SDRecv_MaxTime BETWEEN STR_TO_DATE(CONCAT(#{Month_Min},'01') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(#{Month_Max}+'01','01') ,'%Y%m%d %H%i%s')
+		  AND ii.SDRecv_MaxTime BETWEEN STR_TO_DATE(CONCAT(#{Month_Min},'01') ,'%Y%m%d %H%i%s') AND DATE_ADD(STR_TO_DATE(CONCAT(#{Month_Max},'01') ,'%Y%m%d %H%i%s'),INTERVAL 1 MONTH)
 		GROUP BY DATE_FORMAT(ii.SDRecv_MaxTime,'%Y%m')
 		ORDER BY Month
 	</select>
@@ -52,7 +52,7 @@
 		  CAST((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{skey})) AS SIGNED) SDRecv_Interest
 		 FROM Invest_Income ii
 		WHERE ii.Member_ID = #{Member_ID} AND ii.IsValid = 0
-		  AND ii.SDRecv_MaxTime BETWEEN STR_TO_DATE(CONCAT(#{Month},'01') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(#{Month}+'01','01') ,'%Y%m%d %H%i%s')
+		  AND ii.SDRecv_MaxTime BETWEEN STR_TO_DATE(CONCAT(#{Month},'01') ,'%Y%m%d %H%i%s') AND DATE_ADD(STR_TO_DATE(CONCAT(#{Month},'01') ,'%Y%m%d %H%i%s'),INTERVAL 1 MONTH)
 		ORDER BY Day
 	</select>
 	
@@ -73,7 +73,7 @@
 		 FROM Loan_Repay lr 
 		 JOIN Project_App_Record pa ON lr.Apply_Id = pa.Apply_Id
 		WHERE pa.Member_ID = #{Member_ID} AND lr.IsValid = 0
-		  AND lr.Repay_MaxTime BETWEEN STR_TO_DATE(CONCAT(#{Month_Min},'01') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(#{Month_Max}+'01','01') ,'%Y%m%d %H%i%s')
+		  AND lr.Repay_MaxTime BETWEEN STR_TO_DATE(CONCAT(#{Month_Min},'01') ,'%Y%m%d %H%i%s') AND DATE_ADD(STR_TO_DATE(CONCAT(#{Month_Max},'01') ,'%Y%m%d %H%i%s'),INTERVAL 1 MONTH)  
 		GROUP BY DATE_FORMAT(lr.Repay_MaxTime,'%Y%m')
 		ORDER BY Month
 	</select>
@@ -97,7 +97,7 @@
 		  FROM Loan_Repay lr 
 		  JOIN Project_App_Record pa ON lr.Apply_Id = pa.Apply_Id
 		  WHERE pa.Member_ID = #{Member_ID} AND lr.IsValid = 0
-		  AND lr.Repay_MaxTime BETWEEN STR_TO_DATE(CONCAT(#{Month},'01') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(#{Month}+'01','01') ,'%Y%m%d %H%i%s')
+		  AND lr.Repay_MaxTime BETWEEN STR_TO_DATE(CONCAT(#{Month},'01') ,'%Y%m%d %H%i%s') AND DATE_ADD(STR_TO_DATE(CONCAT(#{Month},'01') ,'%Y%m%d %H%i%s'),INTERVAL 1 MONTH)  
 		  ORDER BY Day
 	</select>
 	

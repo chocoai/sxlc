@@ -149,5 +149,23 @@ public interface SelectProjectAppRecordDao {
 	 * @date 2016-5-5 下午3:19:05
 	 */
 	public Integer getIsopen(Map<String,Object> map);
+	
+	
+	
+	
+	/** 
+	* BlackMemberJudgment 判断是否是黑名单 且能否执行下一步 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: BlackMemberJudgment 
+	* @Description: TODO 
+	* @param memberId
+	* @param mType
+	* @param 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-11 下午3:02:07
+	* @throws 
+	*/
+	public int BlackMemberJudgment(long memberId,int mType);
 }
 

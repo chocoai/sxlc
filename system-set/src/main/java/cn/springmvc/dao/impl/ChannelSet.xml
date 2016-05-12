@@ -194,18 +194,16 @@ LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
 		WHERE er.Member_Type=0
 UNION ALL
 SELECT gi.Guarantee_Name logname,pbi.Personal_Email,pbi.Personal_Name,Msg_Detail,Record_Type,Record_Date,a.adminName 
-  	,mi.Guarantee_NO Member_No,pbi.Personal_Phone
+  	,gi.Guarantee_NO Member_No,pbi.Personal_Phone
 	FROM Email_Record er 
 	LEFT JOIN Guarantee_Info gi ON gi.Guarantee_ID = er.Member_ID 
 		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_ID=gi.Personal_ID
 			LEFT JOIN Admin a ON a.Admin_ID = er.Admin_ID
 		WHERE er.Member_Type=1
-		<where>
-			<if test="#{map.MemberNo}!=null">Member_No like '%#{map.MemberNo}%'</if>
-			<if test="#{map.personalPhone}!=null">Personal_Phone like '%#{map.personalPhone}%'</if>
-			<if test="#{map.personalName}!=null">Personal_Name like '%#{map.personalName}%'</if>
-			<if test="#{map.logname}!=null">logname like '%#{map.logname}%'</if>
-		</where>
+		<if test="map.MemberNo!=null and map.MemberNo !='' ">and Member_No like '%#{map.MemberNo}%'</if>
+		<if test="map.personalPhone !=null and map.personalPhone !='' ">and Personal_Phone like '%#{map.personalPhone}%'</if>
+		<if test="map.personalName != null and map.personalName!='' ">and Personal_Name like '%#{map.personalName}%'</if>
+		<if test="map.logname!=null and map.logname!='' ">and logname like '%#{map.logname}%'</if>
   </select>
   
   <resultMap id="SMSHistoryEntity" type="cn.springmvc.model.SMSHistoryEntity" >
@@ -227,18 +225,16 @@ SELECT gi.Guarantee_Name logname,pbi.Personal_Email,pbi.Personal_Name,Msg_Detail
 		WHERE er.Member_Type=0
 UNION ALL
 SELECT gi.Guarantee_Name logname,Short_Phone,pbi.Personal_Name,Msg_Detail,Record_Type,Record_Date,a.adminName 
-  	,mi.Guarantee_NO Member_No,pbi.Personal_Phone
+  	,gi.Guarantee_NO Member_No,pbi.Personal_Phone
 	FROM SMS_Record er 
 	LEFT JOIN Guarantee_Info gi ON gi.Guarantee_ID = er.Member_ID 
 		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_ID=gi.Personal_ID
 			LEFT JOIN Admin a ON a.Admin_ID = er.Admin_ID
 		WHERE er.Member_Type=1
-		<where>
-			<if test="#{map.MemberNo}!=null">Member_No like '%#{map.MemberNo}%'</if>
-			<if test="#{map.personalPhone}!=null">Short_Phone like '%#{map.personalPhone}%'</if>
-			<if test="#{map.personalName}!=null">Personal_Name like '%#{map.personalName}%'</if>
-			<if test="#{map.logname}!=null">logname like '%#{map.logname}%'</if>
-		</where>
+		<if test="map.MemberNo!=null and map.MemberNo !='' ">and Member_No like '%#{map.MemberNo}%'</if>
+		<if test="map.personalPhone !=null and map.personalPhone !='' ">and Personal_Phone like '%#{map.personalPhone}%'</if>
+		<if test="map.personalName != null and map.personalName!='' ">and Personal_Name like '%#{map.personalName}%'</if>
+		<if test="map.logname!=null and map.logname!='' ">and logname like '%#{map.logname}%'</if>
   </select>
   
   
@@ -261,18 +257,16 @@ SELECT gi.Guarantee_Name logname,Short_Phone,pbi.Personal_Name,Msg_Detail,Record
 		WHERE er.Member_Type=0
 UNION ALL
 SELECT gi.Guarantee_Name logname,pbi.Personal_Name,Msg_Detail,Record_Type,Record_Date,a.adminName 
-  	,mi.Guarantee_NO Member_No,pbi.Personal_Phone
+  	,gi.Guarantee_NO Member_No,pbi.Personal_Phone
 	FROM Letter_Record er 
 	LEFT JOIN Guarantee_Info gi ON gi.Guarantee_ID = er.Member_ID 
 		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_ID=gi.Personal_ID
 			LEFT JOIN Admin a ON a.Admin_ID = er.Admin_ID
 		WHERE er.Member_Type=1
-		<where>
-			<if test="#{map.MemberNo}!=null">Member_No like '%#{map.MemberNo}%'</if>
-			<if test="#{map.personalPhone}!=null">Personal_Phone like '%#{map.personalPhone}%'</if>
-			<if test="#{map.personalName}!=null">Personal_Name like '%#{map.personalName}%'</if>
-			<if test="#{map.logname}!=null">logname like '%#{map.logname}%'</if>
-		</where>
+		<if test="map.MemberNo!=null and map.MemberNo !='' ">and Member_No like '%#{map.MemberNo}%'</if>
+		<if test="map.personalPhone !=null and map.personalPhone !='' ">and Personal_Phone like '%#{map.personalPhone}%'</if>
+		<if test="map.personalName != null and map.personalName!='' ">and Personal_Name like '%#{map.personalName}%'</if>
+		<if test="map.logname!=null and map.logname!='' ">and logname like '%#{map.logname}%'</if>
   </select>
   
   <!-- 设置启用停用消息类型 -->

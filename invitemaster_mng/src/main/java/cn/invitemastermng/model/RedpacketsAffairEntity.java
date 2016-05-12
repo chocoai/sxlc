@@ -12,6 +12,8 @@
  
 package cn.invitemastermng.model; 
 
+import java.util.List;
+
 /** 
  * @author 刘利 
  * @Description: 红包活动记录实体 
@@ -35,6 +37,7 @@ public class RedpacketsAffairEntity {
 	private long   remainingAffair;//剩余活动红包总金额
 	private String receiveAffairs;//已领取活动红包总金额	
 	private String remainingAffairs;//剩余活动红包总金额
+	private List<RedpacketsDetailRecordEntity> RedpacketsDetail;//红包活动明细
 	public long getAffairID() {
 		return affairID;
 	}
@@ -130,6 +133,12 @@ public class RedpacketsAffairEntity {
 	}
 	public void setRemainingAffairs(String remainingAffairs) {
 		this.remainingAffairs = remainingAffairs;
+	}
+	public List<RedpacketsDetailRecordEntity> getRedpacketsDetail() {
+		return RedpacketsDetail;
+	}
+	public void setRedpacketsDetail(List<RedpacketsDetailRecordEntity> redpacketsDetail) {
+		RedpacketsDetail = redpacketsDetail;
 	}
 	 
 }

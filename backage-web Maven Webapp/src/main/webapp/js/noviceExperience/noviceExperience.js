@@ -1,3 +1,7 @@
+var encrypt = new JSEncrypt();
+encrypt.setPublicKey(publicKey_common);
+var uploadUrl = "";//服务器图片保存路径,全局变量
+var ftp = "";
 $(function(){
 	$(".openNew").change(function(){
 		if($(this).val().match("是")){
@@ -6,13 +10,119 @@ $(function(){
 	});
 });
 
+$(function () {
+	$.ajax({
+		type : 'post',
+		url : appPath + "/noviceExperience/getFtp.do",
+		success : function(msg) {
+			ftp = msg;
+		}
+	});
+});
+/**
+ * 修改新手体验标
+ */
+$(function () {
+	$("#mod").bind('click', function () {
+		$("#formInput").submit();
+	});
+	
+	$.ajax({
+		type : 'post',
+		url : appPath + "/noviceExperience/query.do",
+		success : function (msg) {
+			if (msg != null) {
+				$("#statu").find("option[value='"+msg.statu+"']").attr("selected",true);
+				$("#productType").find("option[value='"+msg.projectID+"']").attr("selected",true);
+				$("#repayWay").find("option[value='"+msg.repayWay+"']").attr("selected",true);
+				$("#deadlineType").find("option[value='"+msg.deadlineType+"']").attr("selected",true);
+				$("#experienceDescribe").val(msg.experienceDescribe);
+				$("#experienceName").val(msg.experienceName);
+				$("#yearRates").val(msg.yearRates);
+				$("#deadline").val(msg.deadline);
+				$("#vouchersAmounts").val(msg.vouchersAmounts);
+				var str = "<div id=\"WU_FILE_5\" class=\"file-item thumbnail upload-state-done\">"+
+								"<img src=\""+ ftp + msg.experienceUrl+"\">"+
+								"<div class=\"file-panel\"><span class=\"cancel\">删除</span></div>"+
+							"</div>";
+				$(".con1").html(str);
+			}
+		}
+	});
+});
 
+function modNew() {
+	
+	var statu = $("#statu").val();
+	var experienceDescribe = $("#experienceDescribe").val();
+	var experienceName = $("#experienceName").val();
+	var productType = $("#productType").val();
+	var repayWay = $("#repayWay").val();
+	var yearRates = $("#yearRates").val();
+	var deadline = $("#deadline").val();
+	var deadlineType = $("#deadlineType").val();
+	var vouchersAmounts = $("#vouchersAmounts").val();
+	var experienceUrl = uploadUrl;
+	
+	//加密
+	statu = encrypt.encrypt((statu + ""));
+	experienceDescribe = encrypt.encrypt((experienceDescribe + ""));
+	experienceName = encrypt.encrypt((experienceName + ""));
+	productType = encrypt.encrypt((productType + ""));
+	repayWay = encrypt.encrypt((repayWay + ""));
+	yearRates = encrypt.encrypt((yearRates + ""));
+	deadline = encrypt.encrypt((deadline + ""));
+	deadlineType = encrypt.encrypt((deadlineType + ""));
+	vouchersAmounts = encrypt.encrypt((vouchersAmounts + ""));
+	experienceUrl = encrypt.encrypt((experienceUrl + ""));
+	
+	$.ajax({
+		type : 'post',
+		url : appPath + "/noviceExperience/modNew.do",
+		data : {
+			statu : statu,
+			experienceDescribe : experienceDescribe,
+			experienceName : experienceName,
+			productType : productType,
+			repayWay : repayWay,
+			yearRates : yearRates,
+			deadline : deadline,
+			deadlineType : deadlineType,
+			vouchersAmounts : vouchersAmounts,
+			experienceUrl : experienceUrl
+		},
+		success : function (msg) {
+			if (msg == 1) {
+				layer.alert("添加成功",{icon:1});  
+				document.getElementById("formInput").reset();
+				setTimeout('location.reload()',2000);
+			}else {
+				layer.alert("服务器异常",{icon:2});
+				document.getElementById("formInput").reset();
+			}
+		}
+	});
+}
+
+$(function () {
+	$.ajax({
+		type : 'post',
+		url : appPath + "/noviceExperience/queryType.do",
+		success : function (msg) {
+			var str = "";
+			$.each(msg, function (i, item) {
+				str += "<option value=\""+item.id+"\">"+item.projectName+"</option>";
+			})
+			$("#productType").html(str);
+		}
+	});
+});
 $(function(){
 	//上传初始化
 	var uploader = WebUploader.create({
 		auto: true,														//选完文件后，是否自动上传。
 	    swf: 'plugs/webuploader/0.1.5/Uploader.swf',					//swf文件路径
-	    server: '',	//文件接收服务端。
+	    server: appPath+'/UpdateBsnLicense',	//文件接收服务端。
 	    // 选择文件的按钮。可选。
 	    pick: '#filePicker',											//个数限制
 	    fileNumLimit: 1,												//个数限制
@@ -99,8 +209,10 @@ $(function(){
 	});
 	
 	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
-	uploader.on( 'uploadSuccess', function( file ) {
+	uploader.on( 'uploadSuccess', function( file, imgUrl ) {
 	    $( '#'+file.id ).addClass('upload-state-done');
+	    var result = imgUrl._raw;
+		uploadUrl=result.split(",")[1];
 	});
 	
 	// 文件上传失败，显示上传出错。

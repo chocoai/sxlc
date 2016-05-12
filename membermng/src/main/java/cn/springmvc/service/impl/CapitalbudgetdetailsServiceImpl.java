@@ -42,7 +42,7 @@ public class CapitalbudgetdetailsServiceImpl implements CapitalbudgetdetailsServ
 	public List<MemberTradingRecordsEntity> selectMemberTradingRecords(
 			PageEntity pageEntity) {
 		List<MemberTradingRecordsEntity> list = capitalbudgetdetailsListDao.selectMemberTradingRecords(pageEntity);
-		PageUtil.ObjectToPage(pageEntity, list);
+		//PageUtil.ObjectToPage(pageEntity, list);
 		return list;
 	}
 

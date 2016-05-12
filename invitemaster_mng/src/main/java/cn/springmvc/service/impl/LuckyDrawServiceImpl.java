@@ -26,6 +26,7 @@ import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
 
 import cn.invitemastermng.model.LotteryActivityEntity;
+import cn.invitemastermng.model.LotteryManage;
 import cn.invitemastermng.model.LotteryRecordsEntity;
 import cn.invitemastermng.model.PrizeInformationEntity;
 import cn.springmvc.dao.LuckyDrawDao;
@@ -221,6 +222,27 @@ public class LuckyDrawServiceImpl implements LuckyDrawService {
 		
 		List<PrizeInformationEntity> list = luckyDrawListDao.selectPrizeByActID(page);
 		PageUtil.ObjectToPage(page, list);
+		
+	}
+
+	@Override
+	public List<LotteryActivityEntity> selectperiod() {
+		
+		return luckyDrawListDao.selectperiod();
+		
+	}
+
+	@Override
+	public List<LotteryManage> selectgrade() {
+		
+		return luckyDrawListDao.selectgrade();
+		
+	}
+
+	@Override
+	public List<PrizeInformationEntity> selectPrizeTypes() {
+		
+		return luckyDrawListDao.selectPrizeTypes();
 		
 	}
 

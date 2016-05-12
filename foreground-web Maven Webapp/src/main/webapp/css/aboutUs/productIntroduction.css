@@ -9,6 +9,7 @@
 	width:1200px;
 	margin-bottom:8%;
 	background-color:#fff;
+	min-height: 200px;
 }
 .productionContentH{
 	width:100%;
@@ -106,5 +107,5 @@
 .production_main .btn-primary:onClick{
 	border:0;
 }
-
+.pro-img{width: 410px;height: 270px;}
 /* 主体部分结束 王延君 2016-03-29 */

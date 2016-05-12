@@ -1,5 +1,31 @@
+var encrypt = new JSEncrypt();
+encrypt.setPublicKey(publicKey_common);
+var uploadUrl = "";//服务器图片保存路径,全局变量
 /*  添加抽奖设置      */
 function addLuckyDraw(){
+	$.ajax({
+		type : 'post',
+		url : appPath + "/lottery/selectGrade.do",
+		success : function (msg) {
+			var str = "";
+			$.each(msg, function(i, item) {
+				str += "<option value=\""+item.grade+"\">"+item.grade+"</option>";
+			});
+			$("#grade").html(str);
+		}
+	});
+	
+	$.ajax({
+		type : 'post',
+		url : appPath + "/lottery/selectPrizeTypes.do",
+		success : function (msg) {
+			var str = "";
+			$.each(msg, function(i, item) {
+				str += "<option value=\""+item.prizeType+"\">"+item.prizeType+"</option>";
+			});
+			$("#prizeType").html(str);
+		}
+	});
 	layer.open({
 		type: 1,
 		area: ['550px', '420px'], //高宽
@@ -9,13 +35,18 @@ function addLuckyDraw(){
 	});
 }
 
-
+$("#add").bind('click', function () {
+	$("#addluckyInfo").submit();
+});
+function addDraw() {
+	
+}
 $(function(){
 	//上传初始化
 	var uploader = WebUploader.create({
 		auto: true,														//选完文件后，是否自动上传。
 	    swf: 'plugs/webuploader/0.1.5/Uploader.swf',					//swf文件路径
-	    server: '',	//文件接收服务端。
+	    server: appPath+'/UpdateBsnLicense',	//文件接收服务端。
 	    // 选择文件的按钮。可选。
 	    pick: '#filePicker',											//个数限制
 	    fileNumLimit: 1,												//个数限制
@@ -102,8 +133,10 @@ $(function(){
 	});
 	
 	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
-	uploader.on( 'uploadSuccess', function( file ) {
+	uploader.on( 'uploadSuccess', function( file,imgUrl ) {
 	    $( '#'+file.id ).addClass('upload-state-done');
+	    var result = imgUrl._raw;
+		uploadUrl=result.split(",")[1];
 	});
 	
 	// 文件上传失败，显示上传出错。
@@ -131,4 +164,99 @@ $(function(){
 	$(".cancelBtn").bind("click",function(){
 		layer.closeAll();
 	});
+});
+
+/**
+ * 删除奖品
+ */
+
+$(function () {
+	var appPath = getRootPath();//项目根路径
+	//删除部门
+	$(".obtn-dept-del").on("click touchstart",function(){
+		//获得选取的对象
+		
+		layer.confirm('确定删除该奖品？', {
+		  btn: ['确定', '取消']
+		}, function(index, layero){
+		  //确定的回调
+		  var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+		  //加密操作
+		  var result = encrypt.encrypt(rowdata[0].prizeID + "");
+		  $.ajax({
+		  	type : 'post',
+		  	url : appPath + "/role/delete.do",
+		  	data : {deptId : result},
+		  	success : function (msg) {
+		  		if (msg == 1) {
+		  			layer.alert("删除成功!",{icon:1});
+		  			setTimeout('location.reload()',2000);
+		  		}
+		  	},
+		  	error : function() {  
+		           layer.alert("操作失败!",{icon:2});  
+		    } 
+		  });
+			
+			layer.close(index);
+		}, function(index){
+		  //按钮【按钮二】的回调
+		});
+	});
+});
+
+//表格初始化
+$(function() {
+	var appPath = getRootPath();//项目根路径
+	$('#applicationAudit').DataTable(
+	{
+		autoWidth : false,
+		scrollY : 500,
+		pagingType: "simple_numbers",//设置分页控件的模式  
+		lengthMenu:[[5,10,25,50,-1],[5,10,25,50,"全部"]],
+		colReorder : false,
+		scrollX : true,
+		sScrollX : "100%",
+		sScrollXInner : "100%",
+		bScrollCollapse : true,  
+		processing: true, //打开数据加载时的等待效果  
+        serverSide: true,//打开后台分页  
+        ajax: {  
+            "url": appPath + "/lottery/luckyDrawList.do",   
+            "dataSrc": "results", 
+            "data": function ( d ) {
+            } 
+        },
+        columns: [  
+                  {title:'<input type="checkbox" class="table-checkbox"  value="1" />',
+                	  "mRender": function (data, type, full) {
+                		  sReturn = '<input type="checkbox" value="1" />';
+                		  return sReturn;
+                	  }
+                  },
+                  { title:"奖品ID","data": "prizeID" },
+                  { title:"奖品等级","data": "grade" }, 
+                  { title:"奖品类型","data": "prizeType" },
+                  { title:"奖品名称","data": "prizeName" },
+                  { title:"奖品价值(元)","data": "prizeWorths" },
+                  { title:"奖品剩余数量","data": "prizeQuantity" },
+                  { title:"中奖概率基数","data": "winningOdds" },
+                  { title:"奖品图片","data": "prizeUrl" }
+                  
+        ],
+        aoColumnDefs : [
+        				{
+        					sDefaultContent: '',
+        					orderable : false,
+        					aTargets: [ '_all' ]
+        				}
+        				],
+        rowCallback:function(row,data){//添加单击事件，改变行的样式      
+        }
+});
+ var table = $('#applicationAudit').DataTable();
+//设置选中change颜色
+ $('#applicationAudit tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+  });
 });

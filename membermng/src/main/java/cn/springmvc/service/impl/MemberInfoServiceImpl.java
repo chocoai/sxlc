@@ -176,7 +176,7 @@ public class MemberInfoServiceImpl implements IMemberService{
 	
 	@Override
 	public List<MemberInfo> friendInvitation(PageEntity entity) {
-		
+		entity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
 		return memberDao.friendInvitation(entity);
 	}
 	
@@ -246,7 +246,7 @@ public class MemberInfoServiceImpl implements IMemberService{
 	
 	@Override
 	public List<MemberVouchers> useVouchers(PageEntity entity) {
-		List<MemberVouchers> list = useVouchers(entity);
+		List<MemberVouchers> list = memberDao.useVochers(entity);
 		PageUtil.ObjectToPage(entity, list);
 		return list;
 	}
@@ -304,7 +304,7 @@ public class MemberInfoServiceImpl implements IMemberService{
 	
 	@Override
 	public List<MemberInfo> serachMemberByParam(PageEntity entity) {
-		entity.getMap().put("sKey", DbKeyUtil.GetDbCodeKey());
+		entity.getMap().put("sKey",DbKeyUtil.GetDbCodeKey());
 		return memberDao.serachMemberByParam(entity);
 	}
 	

@@ -1,3 +1,4 @@
+//积分商城-商品详情
 $(function(){
 	$(".subBtn").click(function(){
 		var value = $(this).siblings("input").val();
@@ -14,3 +15,8 @@ $(function(){
 		$(this).siblings("input").val(value);
 	});
 });
+
+//function
+function getGoodsInfo(){
+
+}

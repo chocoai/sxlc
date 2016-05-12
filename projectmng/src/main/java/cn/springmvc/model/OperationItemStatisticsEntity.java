@@ -33,6 +33,53 @@ public class OperationItemStatisticsEntity {
 	private long notRepayTotal; //待还本金+利息
 	private String notRepayPrincipals;//待还本金
 	private String notRepayTotals; //待还本金+利息
+	private int  checking;//审核中
+	private int  willhold;//待放款
+    private long   sumInvestD;//新增投资今天
+    private long   sumInvestW;//新增投资本周
+    private long   sumInvestM;//新增投资本月
+    private String   sumInvestDs;//新增投资今天
+    private String   sumInvestWs;//新增投资本周
+    private String   sumInvestMs;//新增投资本月
+	public long getSumInvestD() {
+		return sumInvestD;
+	}
+	public void setSumInvestD(long sumInvestD) {
+		this.sumInvestD = sumInvestD;
+		this.sumInvestDs= (IntegerAndString.LongToString(sumInvestD));
+	}
+	public long getSumInvestW() {
+		return sumInvestW;
+	}
+	public void setSumInvestW(long sumInvestW) {
+		this.sumInvestW = sumInvestW;
+		this.sumInvestWs= (IntegerAndString.LongToString(sumInvestW));
+	}
+	public long getSumInvestM() {
+		return sumInvestM;
+	}
+	public void setSumInvestM(long sumInvestM) {
+		this.sumInvestM = sumInvestM;
+		this.sumInvestMs= (IntegerAndString.LongToString(sumInvestM));
+	}
+	public String getSumInvestDs() {
+		return sumInvestDs;
+	}
+	public void setSumInvestDs(String sumInvestDs) {
+		this.sumInvestDs = sumInvestDs;
+	}
+	public String getSumInvestWs() {
+		return sumInvestWs;
+	}
+	public void setSumInvestWs(String sumInvestWs) {
+		this.sumInvestWs = sumInvestWs;
+	}
+	public String getSumInvestMs() {
+		return sumInvestMs;
+	}
+	public void setSumInvestMs(String sumInvestMs) {
+		this.sumInvestMs = sumInvestMs;
+	}
 	public int getSuccessLoan() {
 		return successLoan;
 	}
@@ -106,6 +153,18 @@ public class OperationItemStatisticsEntity {
 	}
 	public void setNotRepayTotals(String notRepayTotals) {
 		this.notRepayTotals = notRepayTotals;
+	}
+	public int getChecking() {
+		return checking;
+	}
+	public void setChecking(int checking) {
+		this.checking = checking;
+	}
+	public int getWillhold() {
+		return willhold;
+	}
+	public void setWillhold(int willhold) {
+		this.willhold = willhold;
 	}
 }
 

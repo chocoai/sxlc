@@ -132,8 +132,9 @@ i {margin:0 5px;}
 .clearfix{*zoom: 1;}.clearfix:before,.clearfix:after{display:table;line-height:0;content:"";}.clearfix:after{clear: both;}
 
 .pager-box{text-align: center!important;width: 100%!important;}
-.noData{font-size: 20px;text-align: center;line-height: 100px;color: #575757;}
+.noData{font-size: 20px;text-align: center;line-height: 100px;color: #575757;display: inline-block;width: 100%;}
 .my-loan-table .noData:hover,
 .my-loan-table li.noData:hover{
 	background-color:#fff;
 }
+.w109{width: 109px!important;}

@@ -13,6 +13,7 @@ import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.AdvanceEntity;
 import cn.membermng.model.Cleared;
+import cn.membermng.model.ComfirLoanInfo;
 import cn.membermng.model.ConfirmationLoan;
 import cn.membermng.model.Financing;
 import cn.membermng.model.FlowLabel;
@@ -25,6 +26,7 @@ import cn.membermng.model.RepaymentOfBorrowings;
 import cn.membermng.model.RepaymentOfBorrowingsRM;
 import cn.membermng.model.ReplayDetailEntity;
 import cn.membermng.model.StayStillPlan;
+import cn.membermng.model.SuccessRepayDetail;
 import cn.springmvc.dao.IMyLoanWriteDao;
 import cn.springmvc.dao.impl.IMyLoanReadDao;
 import cn.springmvc.service.IMyLoanService;
@@ -107,7 +109,6 @@ public class MyLoanServiceImpl implements IMyLoanService {
 	
 	@Override
 	public List<StayStillPlan> stayStillPlans(PageEntity entity) {
-	
 		entity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
 		return myLoanReadDao.stayStillPlans(entity);
 	}
@@ -119,6 +120,36 @@ public class MyLoanServiceImpl implements IMyLoanService {
 		return myLoanReadDao.confirmationLoans(entity);
 	}
 
+	
+	
+	@Override
+	public ComfirLoanInfo confirmationLoanInfo(long memberId, long applyId) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		param.put("memberId", memberId);
+		param.put("applyId", applyId);
+		
+		return myLoanReadDao.confirmationLoanInfo(param);
+	}
+	
+	
+	
+	@Override
+	public int confirmationLoan(long memberId, long applyId,int optionvalue,int sysId) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		param.put("memberId", memberId);
+		param.put("applyId", applyId);
+		param.put("optionvalue", optionvalue);
+		param.put("sysId", sysId);
+		
+		return iMyLoanWriteDao.confirmationLoan(param);
+	}
+	
+
+	
+	
+	
 
 	@Override
 	public List<RepaymentOfBorrowings> RepaymentOfBorrowings(PageEntity entity) {
@@ -156,6 +187,10 @@ public class MyLoanServiceImpl implements IMyLoanService {
 			return null;
 		}
 		Long userBalance = entity.getUserBalance();//账户可用余额 
+		entity.setPaidAmount(0);
+		entity.setPaidInterest(0);
+		entity.setPaidOberdueFine(0);
+		entity.setPaisdReplayTotal(0);
 		//是否满足先还本金
 		if(entity.getLoanAmount() <=  entity.getUserBalance()) {
 			entity.setPaidAmount(entity.getLoanAmount());
@@ -227,6 +262,16 @@ public class MyLoanServiceImpl implements IMyLoanService {
 		
 		entity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
 		return myLoanReadDao.loanRepayback(entity);
+	}
+
+
+
+	@Override
+	public List<SuccessRepayDetail> loanRepayDetail(PageEntity entity) {
+		
+		entity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
+		return myLoanReadDao.loanRepayDetail(entity);
+		
 	}
 
 

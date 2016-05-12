@@ -42,5 +42,12 @@ public class MyLoanWriteDaoImpl extends SqlSessionDaoSupport implements IMyLoanW
 		
 	}
 	
+	
+	@Override
+	public int confirmationLoan(Map<String, Object> param) {
+		
+		return getSqlSession().selectOne("myLoanReadDaoImpl.confirmationLoan",param);
+	}
+	
 }
 

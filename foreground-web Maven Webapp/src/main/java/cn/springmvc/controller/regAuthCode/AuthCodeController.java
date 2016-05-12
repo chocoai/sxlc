@@ -35,7 +35,7 @@ public class AuthCodeController {
     //设置干扰线条数
     private static final int DISTURB_LINE_SIZE = 1;  
     //设置字体及字号
-    private final Font font = new Font("黑体", Font.BOLD, 18);  
+    private final Font font = new Font("宋体", Font.BOLD, 18);  
     private Random random = new Random(); 
     private int xyresult;  //运算结果 
     private String randomString;//验证码字符串
@@ -94,6 +94,7 @@ public class AuthCodeController {
 	        drawRandomString((Graphics2D)g,"\u7B49\u4E8E\uFF1F", 3);  
 	        logsu.append("\u7B49\u4E8E \uFF1F");  
 	        randomString = logsu.toString();  
+	        System.out.println("验证码:" + randomString + " 值：" + xyresult);
 	        
 	        HttpSession session = request.getSession(true);
 	        if(type==0){

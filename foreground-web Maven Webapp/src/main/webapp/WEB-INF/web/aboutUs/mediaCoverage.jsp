@@ -11,6 +11,7 @@
 	<base href="<%=basePath%>">
     <title>媒体报道</title>
     <jsp:include page="../common/top_meta.jsp"></jsp:include>
+    <link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css"></link>
 	<link rel="stylesheet" type="text/css" href="css/aboutUs/mediaCoverage.css">
 </head>
 <body>
@@ -24,7 +25,8 @@
     		<div class="mCoverHeader">
     			<span class="mCoverContT">媒体报道</span>
     		</div>
-			<%for(int i = 0;i<5;i++){ %>
+    		<div id="mediaReports-box"></div>
+			<%-- <%for(int i = 0;i<5;i++){ %>
 			<div class="mCoverContMain">
 				<span><img class="ContMainImg" src="resource/img/aboutUs/coverage_03.jpg"></span>
 				<div class="mCoverContWord">
@@ -37,10 +39,29 @@
 					</div>
 				</div>
 			</div>
-			<%} %>
+			<%} %> --%>
+			<script id="mediaReportsList" type="text/html">
+			{{each results as infos index}}
+			<div class="mCoverContMain">
+				<span><img class="ContMainImg" src="{{infos.logo}}"></span>
+				<div class="mCoverContWord">
+					<div class="mCoverContH">
+						<h4 onclick="window.location='aboutUs/mediaCoverageDetail.html';">{{infos.title}}</h4>
+						<span>{{$toDelete infos.createTime}}</span>
+					</div>
+					<div class="mCoverContP">
+					<p>{{#infos.content}}<a href="aboutUs/mediaCoverageDetail.html">查看详情&gt;&gt;</a></p>
+					</div>
+				</div>
+			</div>	
+			{{/each}}
+			<div id="pager" class="pager-box"></div>
+			</script>
     	</div>	
    	 </div>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
+   	<script type="text/javascript" src="plugs/pager/pager.js"></script>
+   	<script type="text/javascript" src="js/common/template.js"></script>
 	<script type="text/javascript" src="js/aboutUs/mediaCoverage.js"></script>
 </body>
 </html>

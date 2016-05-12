@@ -21,6 +21,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.invitemastermng.model.NewbieExperienceRecordsEntity;
@@ -49,14 +50,14 @@ public class NewbieExperienceListDaoImpl extends SqlSessionDaoSupport implements
 	}
 	@Override
 	public NewbieExperienceSetEntity getNewbieExperienceSet() {
-		
-		return getSqlSession().selectOne("Newbie_Experience.getNewbieExperienceSet");
+		String skey =  DbKeyUtil.GetDbCodeKey();
+		return getSqlSession().selectOne("Newbie_Experience.getNewbieExperienceSet",skey);
 		
 	}
 	@Override
 	public NewbieExperienceSetEntity getNewbieExperienceSetIndex() {
-		
-		return getSqlSession().selectOne("Newbie_Experience.getNewbieExperienceSetIndex");
+		String skey =  DbKeyUtil.GetDbCodeKey();
+		return getSqlSession().selectOne("Newbie_Experience.getNewbieExperienceSetIndex",skey);
 		
 	}
 

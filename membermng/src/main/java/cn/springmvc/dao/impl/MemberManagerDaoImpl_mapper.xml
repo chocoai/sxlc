@@ -235,7 +235,45 @@
 		left join County_Dictionary 	cod on cod.County_Id = mi.County_Id
 		left join Town_Dictionary 		td 	on td.Town_id = mi.Town_id
 		left join Member_Third_Info 	mti on mti.Member_ID = mi.Member_id and mti.Member_Type = mi.Member_Type
-		where mi.member_id = #{memberId} and mi.member_Type=0
+		where mi.member_id = #{memberId} and mi.member_Type = 0
+	</select>
+	
+	<!-- 企业会员基本信息 -->
+	<select id="complanyInfo" parameterType="Map" resultType="cn.membermng.model.ComplanyInfoEntity">
+	select 
+		mi.Member_ID															as memberId,
+		mi.Member_No															as memberNo,
+		mi.Logname																as memberName,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),		#{skey}) using utf8) 	as complanyName,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Companye_BLN),		#{skey}) using utf8) 	as yyzzh,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Company_Address),	#{skey}) using utf8)	as complanyAdd,
+		CONVERT(AES_DECRYPT(UNHEX(pbi2.Personal_Name),	#{skey}) using utf8) 	as legalPersonName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi2.Personal_IDCard),#{skey}) using utf8) 	as legalIdCard,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Company_OC),		#{skey}) using utf8) 	as zzjgdm,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Tax_RegNo),		#{skey}) using utf8) 	as swdjh,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Company_Business),	#{skey}) using utf8) 	as businessScope,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Establishments),	#{skey}) using utf8) 	as premises,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Company_Profile),	#{skey}) using utf8) 	as complanyDetall,
+		ci.Company_Capital 														as regAomunt,
+		ci.Company_Source				 			 							as regAomuntSource,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),	#{skey}) using utf8) 	as contactName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),	#{skey}) using utf8) 	as contactEmail,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),	#{skey}) using utf8) 	as contactPhone,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.QQ),				#{skey}) using utf8) 	as contactQq,
+		pd.Province_Name														as priveName,
+		cd.City_Name															as cityName,
+		cod.County_Name															as countyName,
+		td.Town_Name															as townName,
+		mi.Reg_Date																as regTime
+	from member_info mi 
+	left join company_info 			ci 		on ci.Company_ID	 	= mi.Company_ID
+	left join personal_base_info 	pbi 	on pbi.Personal_Id 		= mi.Personal_ID
+	left join personal_base_info 	pbi2 	on pbi2.Personal_Id 	= ci.Legal_ID
+	left join Province_Dictionary 	pd 		on mi.Province_Id 		= pd.province_Id
+	left join City_Dictionary 		cd 		on cd.City_id 			= mi.City_id
+	left join County_Dictionary 	cod 	on cod.County_Id 		= mi.County_Id
+	left join Town_Dictionary 		td 		on td.Town_id 			= mi.Town_id
+	where mi.member_Id = #{memberId} and mi.member_Type = 1
 	</select>
 	
 	

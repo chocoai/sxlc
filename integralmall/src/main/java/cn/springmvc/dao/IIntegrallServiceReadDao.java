@@ -87,6 +87,20 @@ public interface IIntegrallServiceReadDao {
 	
 	
 	
+	/** 
+	* BlackMemberJudgmentTre 会员黑名单限制
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: BlackMemberJudgmentTre 
+	* @Description: TODO 
+	* @param  memberId
+	* @param  mType
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-11 下午4:22:19
+	* @throws 
+	*/
+	int BlackMemberJudgmentTre(long memberId, int mType);
 	
 }
 

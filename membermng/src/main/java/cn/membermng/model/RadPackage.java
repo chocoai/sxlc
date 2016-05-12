@@ -19,11 +19,26 @@ public class RadPackage {
 	private Long		memberId;					//会员编号
 	private	String		receiveDate;				//领取时间
 	private String		endDate;					//过期时间
+	private String		useDate;					//红包使用时间
 	private Integer		giftType;					//红包类型
 	private Long		giftAmount;					//红包金额
 	private String		sgiftAmount;				
 	private Long		projectId;					//赠送事件编号
 	private Integer		statu;						//状态
+	private String		remark;						//红包描述
+	
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	public String getUseDate() {
+		return useDate;
+	}
+	public void setUseDate(String useDate) {
+		this.useDate = useDate;
+	}
 	public Long getMemberRpId() {
 		return memberRpId;
 	}

@@ -108,7 +108,8 @@ public class ProjectTypeController {
 	@ResponseBody
 	public List<MemberAttestTypeEntity> getAuthentication(HttpServletRequest req){
 		Long id = Long.parseLong(req.getParameter("id"));//项目类型id
-		List<MemberAttestTypeEntity> authentication = projectBaseInfoService.selectMemberAttestByprojectType(id);
+		List<MemberAttestTypeEntity> authentication = new ArrayList<MemberAttestTypeEntity>();
+		authentication = projectBaseInfoService.selectMemberAttestByprojectType(id);
 		return authentication;
 	}
 	

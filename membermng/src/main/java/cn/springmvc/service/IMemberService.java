@@ -261,7 +261,6 @@ public interface IMemberService {
 	public MemberVouchers myVouchers(long memberId, int memberType);
 
 	
-	
 	/***
 	* 我的代金券列表
 	* vouchers(这里用一句话描述这个方法的作用)

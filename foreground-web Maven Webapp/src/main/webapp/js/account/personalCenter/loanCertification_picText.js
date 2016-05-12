@@ -1,4 +1,6 @@
-
+/**
+ * 个人认证--->文字+附件  @author LHL
+ */
 /* 验证     */
 $(function(){
 	checkCAR();
@@ -25,6 +27,12 @@ $(function(){
 						case "10":
 							marriageAddOrUpdate();
 						break;
+						case "22":
+							freeholdAddOrUpdate();
+						break;	
+						case "23":
+							voitureAddOrUpdate();
+						break;						
 					}
 					
 					return false;
@@ -196,20 +204,26 @@ $(function(){
 	}
 	
 	/**
-	 * 查询房屋信息
+	 * 查询认证信息信息
 	 */
 	function quryAddress(){
 		var type=$(".saveSubmit").attr("id");
 		var str_url;
 		switch(type){
 			case "7":
-				str_url="personalCenter/loadAuthHousing.html"; //房产认证
+				str_url="personalCenter/loadAuthHousing.html"; //房产认证--个人
 			break;
 			case "8":
-				str_url="personalCenter/loadAuthProduction.html";//车产认证
+				str_url="personalCenter/loadAuthProduction.html";//车产认证--个人
 			break;
 			case "10":
 				str_url="personalCenter/loadAuthMarriage.html";//婚姻认证
+			break;
+			case "22":
+				str_url="personalCenter/loadAuthHousing.html";//房产认证--企业
+			break;			
+			case "23":
+				str_url="personalCenter/loadAuthProduction.html";//车产认证--企业
 			break;			
 		}
 		$.ajax({
@@ -229,6 +243,12 @@ $(function(){
 					break;	
 					case "10":
 						dealMarriage(data,object.attachPrefix);
+					break;	
+					case "22":
+						dealFreehold(data,object.attachPrefix);
+					break;
+					case "23":
+						dealVoiture(data,object.attachPrefix);
 					break;					
 				}
 				}

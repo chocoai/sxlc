@@ -12,7 +12,7 @@
     <title>还款管理</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
-	<link rel="stylesheet" href="plugs/laypage/skin/laypage.css" type="text/css">
+	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/loanManagement/repayManagement.css">
 </head>
 <body> 
@@ -214,7 +214,7 @@
 		   					</li>
 		   					<%} %> --%>
 		   				</ul>
-		   				<div id="pager-stayStillPlans" class="pager-box"></div>   				
+		   				<div id="pager" class="pager-box"></div>   				
 	   				</div>
 	   				<!--待还计划结束-->
 	   				
@@ -345,14 +345,14 @@
 								</div>
 								<div class="contentOut1">
 									<div class="c-content">
-										<a href="loanManagement/RM_repayPlan.html">还款计划</a><br>
+										<a href="loanManagement/RM_repayPlan.html?a=1">还款计划</a><br>
 										<a href="" class="loan-agreement">协议</a><!--跳转未知  -->
 									</div>
 								</div>
 		   					</li>
 		   					<%} %> --%>
 		   				</ul>
-		   				<div id="pager-repayManagementin" class="pager-box"></div>	   				
+		   				<div id="pager1" class="pager-box"></div>	   				
 	   				</div>
 	   				<!--还款中的借款结束-->	   				
 	   				</div>
@@ -365,64 +365,67 @@
    		<div class="repay-top clearfix">
    			<div class="info">
    				<div class="leftTitle">应还本金:</div>
-   				<label>100.00元</label>
+   				<label id="sLoanAmount"><!-- 100.00元 --></label>
    			</div>
    			<div class="info">
    				<div class="leftTitle">应还利息:</div>
-   				<label>10.00元</label>
+   				<label id="sLoanInterest"><!-- 10.00元 --></label>
    			</div>
    			<div class="info">
    				<div class="leftTitle">应还逾期罚金:</div>
-   				<label>0.00元</label>
+   				<label id="sOverdueInterest"><!-- 0.00元 --></label>
    			</div>
    			<div class="info">
    				<div class="leftTitle">应还逾期利息:</div>
-   				<label>0.00元</label>
+   				<label id="sOberdueFine"><!-- 0.00元 --></label>
    			</div>
    			<div class="info">
    				<div class="leftTitle">应还总额:</div>
-   				<label>110.00元</label>
+   				<label id="sdReplayTotals"><!-- 110.00元 --></label>
    			</div>
    		</div>
    		<div class="repay-bottom">
    			<div class="info">
    				<div class="leftTitle">账户可用余额:</div>
-   				<div class="money">10.000元</div>
+   				<div id="userBalances" class="money"><!-- 10.000元 --></div>
    			</div>
    			<div class="info">
    				<div class="leftTitle">实还本金:</div>
-   				<input class="format" type="text" lang="请输入实还本金" maxlength="10">
+   				<input id="sPaidAmount" class="format" type="text" lang="请输入实还本金" maxlength="10">
 				<span>元</span>
    			</div>
    			<div class="info">
    				<div class="leftTitle">实还利息:</div>
-   				<input class="format" type="text" lang="请输入实还利息" maxlength="10">
+   				<input id="sPaidInterest" class="format" type="text" lang="请输入实还利息" maxlength="10">
 				<span>元</span>
    			</div>
    			<div class="info">
    				<div class="leftTitle">实还逾期罚金:</div>
-   				<input class="format" type="text" lang="请输入实还逾期罚金" maxlength="10">
+   				<input id="paidSOberdueFine" class="format" type="text" lang="请输入实还逾期罚金" maxlength="10">
 				<span>元</span>
    			</div>
    			<div class="info">
    				<div class="leftTitle">实还逾期利息:</div>
-   				<input class="format" type="text" lang="请输入实还逾期利息" maxlength="10">
+   				<input id="paidSOverdueInterest" class="format" type="text" lang="请输入实还逾期利息" maxlength="10">
 				<span>元</span>
    			</div>
    			<div class="info clearfix">
    				<div class="leftTitle">实还总额:</div>
-   				<div class="money">110.00元</div>
+   				<div id="paisdReplayTotals" class="money"><!-- 110.00元 --></div>
    			</div>
    		</div>	
    		<div class="input-btn">
-   			<input type="button" class="repay-confirm btn" value="确定" onclick="layer.closeAll()">
+   			<input type="button" class="repay-confirm btn" value="确定" onclick=""><!-- layer.closeAll() -->
    		</div>
    	</div>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script>
+	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
+	<script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<script type="text/javascript" src="js/account/loanManagement/repayManagement.js"></script>
 	<script type="text/javascript">
-		getStayStillPlans();
+		getStayStillPlans();//还款管理-待还计划
 	</script>
 </body>
 </html>

@@ -57,6 +57,17 @@ public class CommodityInfoEntity {
 	private int     isPush;//是否推送到商城主页：1是0否 
 	private String  commodityIntroduction;//商品的简短介绍 
 	private int      result;//商品的简短介绍
+	
+	
+	
+	private String picBasePath;		//FTP文件服务器地址
+	
+	public String getPicBasePath() {
+		return picBasePath;
+	}
+	public void setPicBasePath(String picBasePath) {
+		this.picBasePath = picBasePath;
+	}
 	public long getSuperID() {
 		return superID;
 	}

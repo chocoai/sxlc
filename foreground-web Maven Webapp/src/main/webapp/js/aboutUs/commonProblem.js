@@ -26,4 +26,29 @@ $(function(){
 /*  20160410  胥福星    */
 $(function(){
 	$(".aboutUsNav input").val($(".choose9").html());
+	
+	getCommonProblem();
 });
+
+
+//function
+//获取常见问题
+function getCommonProblem(){
+	$.ajax({
+    	url:"aboutUs/frequentlyAskedQuestion.html",
+    	type:"get",
+    	timeout:10000,
+    	dataType:"json",
+    	success:function(data){
+    		if(data.content){
+	    		$(".problem_content").append(data.content);
+    		}else{
+    			var noData = '<div class="noData">暂无数据</div>';
+	    		$(".problem_content").append(noData);
+    		}
+    	},
+    	error:function(XMLHttpRequest, textStatus, errorThrown){
+        	layer.alert("请求异常，请稍后再试",{icon:2});
+		}
+    });
+}

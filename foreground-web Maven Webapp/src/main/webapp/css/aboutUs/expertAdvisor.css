@@ -81,6 +81,7 @@
 }
 .partner{
 	position:relative;
+	width:1100px;
 }
 .partner_content{
 	float:left;
@@ -94,23 +95,26 @@
 }
 .divMain-divWindow {
     clear:both;
-	margin:0 2%;
+	margin:0 25px;
 	overflow:hidden;
 }
 .divMain-divWindow div{
-	width:105%;
 }
 .divMain-divWindow ul{
 	display:inline-block;
+	height:236px;
 }
 .divMain-divWindow ul li{
+	width:154px;
+	height:236px;
 	list-style:none;
-	display:inline-block;
 	margin: 2px 10px 0 10px;
 	padding:13px;
 	border:1px solid #ebeaea;
 	border-radius:2px;
 	cursor: pointer;
+	float: left;
+	display: inline;
 }
 .divMain-divWindow ul li img{
 	width:126px;
@@ -129,7 +133,7 @@
 .divMain-divWindow ul{
 	padding:0 !important;
 	position:relative;
-	width: 1114px;
+	/* width: 1114px; */
 }
 .indexContFooter{
 	position:relative;
@@ -144,26 +148,31 @@
 .divMain-divWindow ul li.clicked{
 	border:2px solid #459ce5;
 }
-.expertBtn {
-    cursor: pointer;
-    width: 1150px;
-    position: absolute;
-    top: 30%;
-    margin-left: -15px;
-}
 .expertLeftBtn{
+	cursor: pointer;
+    width: 42px;
+    height:42px;
+    position: absolute;
+    top: 40%;
+    left:0;
+    margin-left: -15px;
 	padding:21px;
 	background:url("../../resource/img/aboutUs/fanye_icon.jpg") no-repeat;
 	background-position:center;
 	display:inline-block;
-	float:left;
 }
 .expertRightBtn{
+	cursor: pointer;
+    width: 42px;
+    height:42px;
+    position: absolute;
+    top: 40%;
+    right:0;
+    margin-left: -15px;
 	padding:19px;
 	background:url("../../resource/img/aboutUs/btn_03.png") no-repeat;
 	background-position:center;
 	display:inline-block;
-	float:right;
 }
 .indexConHMore img{
 	margin-left:5px;

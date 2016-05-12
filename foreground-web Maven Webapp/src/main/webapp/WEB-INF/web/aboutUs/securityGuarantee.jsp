@@ -21,7 +21,7 @@
     <!-- 在这里加入页面内容 -->
      <div class="safety">
      	<div class="safeContent">
-     		<div class="s_plat">
+     		<!-- <div class="s_plat">
 				<h4>平台安全</h4>
 				<div class="s_plat_main">
 					<div class="sPlatMainCont">
@@ -91,7 +91,7 @@
 				<div class="col-lg-12">客户尽量不要使用公共场合电脑进行有关操作，并牢记本台官方安全网址（http://www.cdsxlc.com/）。不要通过点击来历不明的链接进入四象金融平台进行交易，谨防钓鱼和欺诈网站，并对自用电脑要经常进行病毒预防和漏洞补丁修补。因个人电脑原因带来的不良后果用户自负。</div>
 				<h6>2.用户时刻注意保护个人隐私安全</h6>
 				<div class="col-lg-12"> 用户在四象金融平台进行密码设置时，请最好使用字符和数字混合，不要使用纯数字或简单的字母组合，密码长度最好达到平台的最高要求。</div>
-			</div>
+			</div> -->
      	</div>
 	</div>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>

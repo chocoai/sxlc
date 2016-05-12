@@ -140,7 +140,8 @@ $(function(){
 	$("#loginBtn").click(function(){
 		login();
 	});
-		keyLogin();
+	
+	keyLogin();
 });
 
 /**

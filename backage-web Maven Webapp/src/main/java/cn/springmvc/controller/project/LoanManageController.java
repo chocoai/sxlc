@@ -20,13 +20,11 @@ import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.model.Admin;
-import cn.springmvc.model.LoanRepayUrgedRecordEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
 import cn.springmvc.service.BorrowingManagementService;
 import cn.springmvc.service.IMyLoanService;
 import cn.springmvc.service.ProjectAuitService;
 import cn.springmvc.service.projectDetailService;
-import cn.springmvc.util.HttpSessionUtil;
 import cn.springmvc.util.LoadUrlUtil;
 
 /** 
@@ -355,7 +353,8 @@ public class LoanManageController {
 	@ResponseBody
 	public  List<ProjectCheckAttachEntity>  getChkAttachData(HttpServletRequest req){
 		Long projectID = Long.parseLong(req.getParameter("projectID"));
-		List<ProjectCheckAttachEntity> result = projectAuitService.selectProjectAttachTotal(projectID);
+		List<ProjectCheckAttachEntity> result = new ArrayList<ProjectCheckAttachEntity>();
+		result = projectAuitService.selectProjectAttachTotal(projectID);
 		return result;
 	}
 	
@@ -371,7 +370,7 @@ public class LoanManageController {
 	@ResponseBody
 	public int updateAffix(HttpServletRequest req){
 		//操作日志参数
-		HttpSession session = HttpSessionUtil.getSession(req);
+		HttpSession session = req.getSession();
 		Admin admin = (Admin)session.getAttribute("LoginPerson");
 		//moduleID=103(员工管理)
 		//optID=10301(添加) 10302(修改)
@@ -379,6 +378,8 @@ public class LoanManageController {
 		String [] sIpInfo = new String[8];
 		logEntity.setiAdminId(admin.getId());
 		logEntity.setlModuleId(103);
+		logEntity.setlOptId(10302);
+		logEntity.setsDetail("");
 		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
 		logEntity.setsMac(null);
 		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));

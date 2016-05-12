@@ -24,8 +24,8 @@
     		<span class="lawy_title">法律法规</span>
     	</div>
    	   	<div class="lawy_content">
-   	   		<p><label class="top_icon"></label><!-- <img class="top_icon" src="resource/img/aboutUs/lawy_03.jpg"></img> -->四象金融聘用了华律律师事务所作为公司的常年法律顾问。四象金融所有业务活动以及相关合同和协议均咨询法仕事务所，确保其符合相关法律法规， 团贷网合法守信经营，让四象金融的用户权益受国家法律保护。<label class="bottom_icon"></label></p>
-   	   		<!-- <img class="bottom_icon" src="resource/img/aboutUs/lawy_07.jpg"></img> -->
+   	   		<%-- <p><label class="top_icon"></label><img class="top_icon" src="resource/img/aboutUs/lawy_03.jpg"></img>四象金融聘用了华律律师事务所作为公司的常年法律顾问。四象金融所有业务活动以及相关合同和协议均咨询法仕事务所，确保其符合相关法律法规， 团贷网合法守信经营，让四象金融的用户权益受国家法律保护。<label class="bottom_icon"></label></p>
+   	   		<img class="bottom_icon" src="resource/img/aboutUs/lawy_07.jpg"></img>
    	   		<ul>
    	   			<%for(int i = 0;i<4;i++){ %>
    	   			<li>
@@ -33,7 +33,7 @@
    	   				<p>根据《合同法》第196条规定“借款合同是借款人向贷款人借款，到期返还借款并支付利息的合同”，《合同法》允许自然人等普通民事主体之 间发生借贷关系，并允许出借方到期可以收回本金和符合法律规定的利息。</p>
    	   			</li>
    	   			<%} %>
-   	   		</ul>
+   	   		</ul> --%>
    	   	</div>
    	 </div>
     

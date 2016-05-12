@@ -218,23 +218,31 @@
 	   								<div class="monthCount">
 	   									<label>提奖统计月份:</label>
 	   									<div class="selectArea">
-	   										<input class="selectValue" value="1" >
+	   										<input class="selectValue" type="hidden" id="monthAward" value="-1" >
 										    <input class="selectInput" type="text" lang="" readOnly="true"/>
 										    <ul class="select" onselectstart="return false">
-										        <li class="selectOption" value="1">2月<li>
-										        <li class="selectOption" value="2">3月<li>
-										        <li class="selectOption" value="3">4月<li>
-										        <li class="selectOption" value="4">5月<li>
+										        <li class="selectOption" value="01">1月<li>
+										        <li class="selectOption" value="02">2月<li>
+										        <li class="selectOption" value="03">3月<li>
+										        <li class="selectOption" value="04">4月<li>
+										        <li class="selectOption" value="05">5月<li>
+										        <li class="selectOption" value="06">6月<li>
+										        <li class="selectOption" value="07">7月<li>
+										        <li class="selectOption" value="08">8月<li>
+										        <li class="selectOption" value="09">9月<li>
+										        <li class="selectOption"value="10">10月<li>
+										        <li class="selectOption" value="11">11月<li>
+										        <li class="selectOption" value="12">12月<li>
 										    </ul>
 										</div>
 	   								</div>
 	   								<div class="choose">
-	   									<label>时间范围:</label><input class="Wdate" id="" onfocus="WdatePicker()" type="text" lang="请选择">-<input class="Wdate" onfocus="WdatePicker()" type="text" lang="请选择">
+	   									<label>时间范围:</label><input class="Wdate" id="startTimehis" onfocus="WdatePicker()" type="text" lang="请选择">-<input class="Wdate" id="endTimehis" onfocus="WdatePicker()" type="text" lang="请选择">
 	   								</div>
 	   								<div class="searchBtn">
 	   									<div class="btn btnSearch" id="searchAwardhis" onselectstart="return false">搜索</div>
 	   								</div>
-	   								<div class="btn btnExport" id="" onselectstart="return false"><label></label>导出</div>
+	   								<div class="btn btnExport" id="financialAwardHisExcel" onselectstart="return false"><label></label>导出</div>
 	   							</div>
    							</div>
    							<div class="recommendedTalentMCont">
@@ -434,7 +442,7 @@
 	   								<div class="monthCount">
 	   									<label>开户状态:</label>
 	   									<div class="selectArea">
-	   										<input class="selectValue" id="isopenThird" value="-1" >
+	   										<input class="selectValue" type="hidden" id="isopenThird" value="-1" >
 										    <input class="selectInput" type="text" lang="" readOnly="true"/>
 										    <ul class="select" onselectstart="return false">
 										        <li class="selectOption" value="1">已开户<li>
@@ -1038,7 +1046,6 @@
 	   										</div>
 	   									</li>
 	   									<%}%> --%>
-	   									<li class="page"><div id="pager6"></div></li>
 	   								</ul>
 	   								
 	   								<script id="financialVipPayList" type="text/html">
@@ -1087,6 +1094,16 @@
    			</div>
    		</div>
    	</div>
+   	  <form action="financialAdvisorAward/financialAwardRecordexcel.html" method="post" id="financialAwardexcel" name="financialAwardexcel" style="display: none">
+		<input  name="startTime" id="startTimeatz" type="hidden">
+		<input  name="endTime" id="endTimeatz" type="hidden" >
+		<input value="" name="dateStart" id="dateStartatz" type="hidden" > 
+	</form>
+    <form action="financialHistoryBack/financialHistoryBackExcel.html" method="post" id="financialHistory" name="financialHistory" style="display: none">
+		<input  value="" name="startTime" id="startTimeatzh" type="hidden">
+		<input  value="" name="endTime" id="endTimeatzh" type="hidden">
+		<input value="" name="month" id="monthtzh" type="hidden"> 
+	</form>
    	<script type="text/javascript" src="plugs/pager/pager.js"></script>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>

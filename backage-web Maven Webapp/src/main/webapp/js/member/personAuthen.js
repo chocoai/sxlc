@@ -92,19 +92,19 @@ function IdentyList(attestTypeId){
 	}
 	var  arr =[];//控制需要隐藏的列
 	if(attestTypeId==1||attestTypeId==0){//实名认证
-		arr =[7,8,9,10,11];
+		arr =[7,8,9,10,11,12,13,14,15];
 	}else if(attestTypeId==2||attestTypeId==3||attestTypeId==5||attestTypeId==6||attestTypeId==9){//其他一般认证
-		arr =[3,4,5,6,7,8,9,10,11];
+		arr =[3,4,5,6,7,8,9,10,11,12,13,14,15];
 	}else if(attestTypeId==4){//住址认证
-		arr =[3,4,5,6,8,9,10,11];
+		arr =[3,4,5,6,8,9,10,11,12,13,14,15];
 	}else if(attestTypeId==7){//房产认证
-		arr =[3,4,5,6,7,9,10,11];
+		arr =[3,4,5,6,7,10,11,12,14,15];
 	}else if(attestTypeId==8){//车产认证
-		arr =[3,4,5,6,7,8,10,11];
+		arr =[3,4,5,6,7,8,9,14,15];
 	}else if(attestTypeId==10){//婚姻认证
-		arr =[3,4,5,6,7,8,9,11];
+		arr =[3,4,5,6,7,8,9,10,11,12,13,15];
 	}else if(attestTypeId==11){//学历认证
-		arr =[3,4,5,6,7,8,9,10];
+		arr =[3,4,5,6,7,8,9,10,11,12,13,14];
 	}
 	$('#table_id').DataTable(
 			{	autoWidth : false,
@@ -176,11 +176,15 @@ function IdentyList(attestTypeId){
 		                  { title:"民族","data": "nationName"},   
 		                  { title:"身份证号","data": "personalIDCard" },  
 		                  { title:"籍贯","data": "homeTown" },
-		                  { title:"住址","data": "homeTown" },
-		                  { title:"房产信息","data": "homeTown" },
-		                  { title:"车辆信息","data": "homeTown" },
-		                  { title:"婚姻状况","data": "homeTown" },
-		                  { title:"最高学历","data": "homeTown" },
+		                  { title:"住址","data": "address" },//7
+		                  { title:"房产位置","data": "houseAddress" },//8
+		                  { title:"房产面积","data": "area" },
+		                  { title:"车辆品牌","data": "brand" },//10
+		                  { title:"车辆型号","data": "model" },
+		                  { title:"车牌号","data": "licensePlate" },
+		                  { title:"价值（元）","data": "value" },//13
+		                  { title:"婚姻状况","data": "homeTown" },//14
+		                  { title:"最高学历","data": "homeTown" },//15
 		                  { title:"申请时间","data": "sRecordDate" },
 		                  { title:"有效期","mRender":function(data, type, full){
 		                	  var sReturn ="";

@@ -7,13 +7,11 @@
 		<result property = "applyDate"    	    column = "Apply_Date" />
 		<result property = "checkStatu"  	    column = "Check_Statu" />
 		<result property = "checkDate" 	        column = "Check_Date" /> 
-    </resultMap>
-     <!--          添加推荐达人申请  -->
+    </resultMap> 
     <insert id="insertInviteMasterApply" parameterType="Map">
       insert InviteMaster_Apply (Im_Apply_ID , Member_ID)
                          values (#{imApplyID},#{memberID})
     </insert>
-    <!--              查看该会员是否存在推荐达人申请 -->
     <select id="selectInviteMasterApplyIsExist" parameterType="long" resultType="int">
        select count(Im_Apply_ID) from  InviteMaster_Apply where  Member_ID = #{memberID} and Check_Statu !=-1
     </select>
@@ -221,10 +219,8 @@
 		  </if>
 		) as vipAward,
 		
-		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar
-		left join Loan_Real_Repay  lrr  on lrr.Real_Repay_ID = iar.Project_Id
-		left join Project_App_Record par  on par.Apply_ID = lrr.Apply_ID
-		where  par.Member_ID = bmi.Member_ID and iar.Award_Type = 2 and iar.Pay_Statu =2
+		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar 
+		 where  iar.Member_ID = bmi.Member_ID and iar.Award_Type = 2 and iar.Pay_Statu =2
 		 <if test="map.startTime != null and map.startTime !=''">
 		    and iar.Award_Date > #{map.startTime}
 		 </if>

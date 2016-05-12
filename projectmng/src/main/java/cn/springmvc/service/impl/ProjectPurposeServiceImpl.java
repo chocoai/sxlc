@@ -49,6 +49,12 @@ public class ProjectPurposeServiceImpl implements ProjectPurposeService {
 		if(isopen == 0) {
 			return -2;//该会员未授权二次分配授权
 		}
+		//判断会员是否为黑名单会员
+		int sta=selectProjectAppRecordDao.BlackMemberJudgment(entity.getMemberID(), 0);
+		if (sta==-1) {
+			return -3;//黑名单会员禁止借款
+		}
+		
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
 		entity.setId(id);
@@ -80,6 +86,12 @@ public class ProjectPurposeServiceImpl implements ProjectPurposeService {
 		if(isopen == 0) {
 			return -2;//该会员未授权二次分配授权
 		}
+		//判断会员是否为黑名单会员
+		int sta=selectProjectAppRecordDao.BlackMemberJudgment(entity.getMemberID(), 0);
+		if (sta==-1) {
+			return -3;//黑名单会员禁止借款
+		}
+		
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
 		entity.setId(id);

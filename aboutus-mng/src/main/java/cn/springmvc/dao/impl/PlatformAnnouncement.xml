@@ -74,7 +74,7 @@
     </select>  
     <!-- 首页显示平台公告 -->  
 	<select id="selectPlatformListIndex"  resultMap="resultListPlatformAnnouncement" >
-	    select pa.Platform_ID,   pa.Title,   pa.Content,   pa.Statu,   pa.CreateTime, 
+	    select pa.Platform_ID,   pa.Title,   pa.Content,   pa.Statu,  pa.CreateTime as CreateTime , 
 	    pa.Opt_Date, pa.Admin_ID
 	    from  Platform_Announcement pa  
 	    where pa.Statu = 1 

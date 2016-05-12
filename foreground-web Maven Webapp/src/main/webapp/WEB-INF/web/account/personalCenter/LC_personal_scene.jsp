@@ -56,14 +56,29 @@
 	   						</c:if>	
 	   					    <c:if test="${t==1136091}">
 	   							学位认证
-	   						</c:if>		   							   							   							   							   						 	   							   						
+	   						</c:if>	
+	   					    <c:if test="${t==16}">
+	   							银行流水认证
+	   						</c:if>
+	   					    <c:if test="${t==17}">
+	   							实地考察认证
+	   						</c:if>
+	   					    <c:if test="${t==20}">
+	   							财务资料认证
+	   						</c:if>
+	   					    <c:if test="${t==21}">
+	   							监管单位认证
+	   						</c:if>
+	   					    <c:if test="${t==24}">
+	   							担保考察认证
+	   						</c:if>	 	   							   								   							   							   							   							   							   							   							   						 	   							   						
 	   					</span>
 	   					<a class="back" href="javascript:history.back();">返回</a>
 	   				</div>
 	   				<div class="authenContent">
 		   				<div class="authen clearfix">
 		   				    <div class="previewPictureDiv">
-		   				    <div class="wdateSelect" <c:if test="${t==3 || t==4 || t==5 || t==6 || t==9 }"> style="display:block" </c:if> >
+		   				    <div class="wdateSelect" <c:if test="${t==3 || t==4 || t==5 || t==6 || t==9 || t==16 || t==17 || t==20 || t==21 || t==24 }"> style="display:block" </c:if> >
 	   							<span>有效期：</span>
 	   							<input class="inputText dateSelect Wdate" onfocus="WdatePicker({readOnly:true})" type="text"  lang="请选择有效期"/>
 		   					</div>

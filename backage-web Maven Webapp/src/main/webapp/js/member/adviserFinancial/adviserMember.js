@@ -4,9 +4,13 @@
  * 理财顾问会员
  * pr
  */
+
+
+var STAFF_NUM = 0;  //记录点击添加次数
+
 $(function(){
 	//单选
-	$('#table_id tbody').on( 'click', 'tr', function () {
+	$('#table_id,#table_planer tbody').on( 'click', 'tr', function () {
 		var $this = $(this);
 		var $checkBox = $this.find("input:checkbox");
 		 if ( $(this).hasClass('selected') ) {
@@ -51,7 +55,12 @@ $(function(){
 			$("#memberName").text(rowdata[0].personalName);
 		}
 		
-		showPlanerList();//显示理财师顾问列表
+		var memberId= rowdata[0].memberID;
+		if(STAFF_NUM ==0){
+			showPlanerList();//显示理财师顾问列表
+			STAFF_NUM++;
+		}
+		
 		layer.open({
 		    type: 1,
 		    area: ['950px', '600px'], //高宽
@@ -66,14 +75,21 @@ $(function(){
 						layer.alert("请选择要处理的事务！",{icon:0});  
 						return;
 					}
+					var planerId = rowdata[0].fAID;
+					var oldplanerId=0;
 					var encrypt = new JSEncrypt();
 			    	encrypt.setPublicKey(publicKey_common);
 			    	//result 为加密后参数
-			    	staffId = encrypt.encrypt(staffId);
+			    	memberId = encrypt.encrypt(memberId+"");
+			    	planerId = encrypt.encrypt(planerId+"");
+			    	oldplanerId = encrypt.encrypt(oldplanerId+"");
 				  $.ajax({
-						url : appPath+"/savaPlannerAdvise.do",
+						url : appPath+"/adviserPlaner/savaPlannerAdvise.do",
 							data:{
-								staffId:staffId,
+								planerId:planerId,
+								memberId:memberId,
+								oldplanerId:oldplanerId,
+								content:1 //类型
 							},
 							type : "post",
 							dataType:"text",
@@ -85,7 +101,7 @@ $(function(){
 							//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
 							if(data == 0){
 								//执行完关闭
-								layer.alert("添加成功",{icon:1});  
+								layer.alert("分配成功",{icon:1});  
 							  	layer.close(index);
 							  	setTimeout('location.reload()',500);
 							}else if(data == -1){

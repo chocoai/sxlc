@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.model.Admin;
 import cn.springmvc.service.CertificationAuditService;
 import cn.springmvc.service.IBorrowingCertificationServer;
+import cn.springmvc.util.HttpSessionUtil;
 import cn.springmvc.util.LoadUrlUtil;
 
 /**
@@ -69,10 +71,9 @@ public class MemRitributeController {
 		int pageSize = IntegerAndString.StringToInt(req.getParameter("length"), 10) ;//每页显示行数
 		int page = IntegerAndString.StringToInt(req.getParameter("start"), 1) ;
 		page = page/pageSize + 1;	//当前页数
-		PageEntity pageEntity = new PageEntity();
-		pageEntity.setPageNum(page);
-		pageEntity.setPageSize(pageSize);
-		pageEntity.setMap(map);
+		pager.setPageNum(page);
+		pager.setPageSize(pageSize);
+		pager.setMap(map);
 		pager.setMap(map);
 		certificationAuditService.ExistingFinancialAdvisor(pager);
 		return pager;
@@ -111,10 +112,9 @@ public class MemRitributeController {
 		int pageSize = IntegerAndString.StringToInt(req.getParameter("length"), 10) ;//每页显示行数
 		int page = IntegerAndString.StringToInt(req.getParameter("start"), 1) ;
 		page = page/pageSize + 1;	//当前页数
-		PageEntity pageEntity = new PageEntity();
-		pageEntity.setPageNum(page);
-		pageEntity.setPageSize(pageSize);
-		pageEntity.setMap(map);
+		pager.setPageNum(page);
+		pager.setPageSize(pageSize);
+		pager.setMap(map);
 		pager.setMap(map);
 		certificationAuditService.HasFinancialAdvisor(pager);
 		return pager;
@@ -145,13 +145,71 @@ public class MemRitributeController {
 		int pageSize = IntegerAndString.StringToInt(req.getParameter("length"), 10) ;//每页显示行数
 		int page = IntegerAndString.StringToInt(req.getParameter("start"), 1) ;
 		page = page/pageSize + 1;	//当前页数
-		PageEntity pageEntity = new PageEntity();
-		pageEntity.setPageNum(page);
-		pageEntity.setPageSize(pageSize);
-		pageEntity.setMap(map);
+		pager.setPageNum(page);
+		pager.setPageSize(pageSize);
+		pager.setMap(map);
 		pager.setMap(map);
 		certificationAuditService.findFinancialAdvisor(pager);
 		return pager;
-	}	
+	}
+	
+	/**
+	 * 分配理财师顾问
+	 * TODO
+	 * 创建日期：2016-5-9下午8:06:47
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	@RequestMapping(value ="/savaPlannerAdvise", method = RequestMethod.POST)
+	@ResponseBody
+	public int savaPlannerAdvise(HttpServletRequest request){
+		int type = IntegerAndString.StringToInt(request.getParameter("content"), 0);
+		long memberId = IntegerAndString.StringToLong(request.getParameter("memberId"), 0);
+		long planerId = IntegerAndString.StringToLong(request.getParameter("planerId"), 0);
+		long oldplanerId = IntegerAndString.StringToLong(request.getParameter("oldplanerId"), 0);
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String [] sIpInfo = new String[5];
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		if (userInfo != null && userInfo.getId()>0) {
+			entity.setiAdminId(userInfo.getId());
+			map.put("adminId", userInfo.getId());
+		}
+		entity.setlOptId(105);
+		entity.setlModuleId(10501);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		int iResult = certificationAuditService.DistributionFinancialAdvisor(memberId, planerId, oldplanerId, type, entity, sIpInfo);
+		return iResult;
+	}
+	/**
+	 * 历史理财顾问 列表
+	 * TODO
+	 * 创建日期：2016-5-10下午2:07:49
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return PageEntity
+	 */
+	@RequestMapping(value ="/HistoryPlanerList", method = RequestMethod.GET)
+	@ResponseBody
+	public PageEntity HistoryPlanerList(HttpServletRequest request){
+		//查询条件
+		long memberId = IntegerAndString.StringToLong(request.getParameter("memberId"), 0);
+		int pageSize = IntegerAndString.StringToInt(request.getParameter("length"), 10) ;//每页显示行数
+		int page = IntegerAndString.StringToInt(request.getParameter("start"), 1) ;
+		page = page/pageSize + 1;	//当前页数
+		PageEntity pageEntity = new PageEntity();
+		pageEntity.setPageNum(page);
+		pageEntity.setPageSize(pageSize);
+		certificationAuditService.ChangeHistory(pageEntity, memberId);
+		return pageEntity;
+	}
 }
 

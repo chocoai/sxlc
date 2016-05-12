@@ -69,5 +69,6 @@
 		<result column="totalfee" 			 property="totalfee" />  
 		<result column="bankName" 			 property="bankName" /> 
 		<result column="checkstatu" 	     property="checkstatu" /> 
+		<result column="rechargeTypes" 	     property="rechargeTypes" /> 
     </resultMap>  
 </mapper>   

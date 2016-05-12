@@ -274,7 +274,22 @@ function AgreementList(){
 		                	  }
 //		                	  "sClass": "table-checkbox"
 		                  },
-		                  { title:"协议名称","data": "agreementTitle" },  
+		                  { title:"协议名称","mRender": function(data,type,full){
+		                	  var sReturn ="";
+		                	  if(full.agreementType==0){
+		                		  	sReturn= "注册协议";
+			            		}else if(full.agreementType==1){
+			            			sReturn= "借款协议";
+			            		}else if(full.agreementType==2){
+			            			sReturn = "投资协议";
+			            		}else if(full.agreementType==3){
+			            			sReturn = "债权转让协议";
+			            		}else if(full.agreementType==4){
+			            			sReturn = "债权转让投资";
+			            		}
+		                	  return sReturn;
+			                  }
+		                  },  
 		                  { title:"协议内容","data": "agreementDetail", 
 				        	  "mRender": function (data, type, full) {
 				        		  return '<a href="javascript:void(0);" class="btn-det" onclick="showDetail(this)">查看详情</a>';

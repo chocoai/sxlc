@@ -15,6 +15,7 @@ import product_p2p.kit.pageselect.PageUtil;
 import cn.membermng.model.BlackLimitEntity;
 import cn.membermng.model.BlackRecordEntity;
 import cn.membermng.model.BorrowingStatistics;
+import cn.membermng.model.ComplanyInfoEntity;
 import cn.membermng.model.InvitationMembers;
 import cn.membermng.model.MemberAll;
 import cn.membermng.model.MemberAttestInfo;
@@ -65,6 +66,16 @@ public class MemberManagerServiceImpl implements IMemberManangerService{
 		return memberManagerDao.memberInfoById(param);
 	}
 
+	
+	@Override
+	public ComplanyInfoEntity companyInfo(Long memberId) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("memberId", memberId);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		return memberManagerDao.companyInfo(param);
+	}
+	
+	
 	@Override
 	public int pullBlack(Map<String,Object> param ,InsertAdminLogEntity entity,String[] sIpInfo) {
 

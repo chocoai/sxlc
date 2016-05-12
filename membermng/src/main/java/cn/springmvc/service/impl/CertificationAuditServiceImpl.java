@@ -13,6 +13,7 @@ import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
 import cn.membermng.model.AutomaticBidSettingEntity;
+import cn.membermng.model.EnterpriseAttestEntity;
 import cn.membermng.model.EnterpriseLicenseAttestEntity;
 import cn.membermng.model.ExistingFinancialAdvisorEntity;
 import cn.membermng.model.FinancialAdvisorEntity;
@@ -233,5 +234,10 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 		List<ExistingFinancialAdvisorEntity> list =  selectCertificationAuditDaoImpl.ChangeHistory(page);
 		PageUtil.ObjectToPage(page, list);
 		return list;
+	}
+	@Override
+	public EnterpriseAttestEntity sEnterpriseLicenseAttestByID(
+			Map<String, Object> map) {
+		return selectCertificationAuditDaoImpl.sEnterpriseLicenseAttestByID(map);
 	}
 }

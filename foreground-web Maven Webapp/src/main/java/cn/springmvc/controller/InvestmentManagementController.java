@@ -339,6 +339,33 @@ public class InvestmentManagementController {
 	
 	
 	/***
+	* 删除自动投标设置
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-10 上午9:54:38
+	 */
+	@RequestMapping(value="removeAutoBidConf",produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String removeAutoBidConf(HttpServletRequest request){
+		Map<String,Object> param = new HashMap<String, Object>();
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		param.put("memberID", memberInfo.getId());
+		int result = auditService.delAutomaticBidSetting(param);
+		Map<String,Object> message = new HashMap<String, Object>();
+		if(result == 1){
+			message.put("status", "1");
+			message.put("message", "删除设置成功");
+		}else{
+			message.put("status", "1");
+			message.put("message", "删除设置失败");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
+	
+	
+	/***
 	* 投资管理-债权转让
 	* 
 	* @author 李杰

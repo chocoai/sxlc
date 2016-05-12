@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
+
+<mapper namespace="redPackageDao">     
+	
+	
+	
+	<!-- 获取红包领取记录 -->
+	<select id="redRecord" parameterType="Map" resultType="cn.invitemastermng.model.RedRecord">
+		select 
+		mi.logName				as userName,
+		mr.Gift_Amount			as amount,
+		mr.Receive_Date			as recordDate
+		from Member_Redpackets mr
+		left join member_info mi on mi.member_id = mr.Member_id
+		order by mr.Receive_Date desc		
+	</select>
+	
+	<!-- 抢红包 -->
+	<select id="grabRedPackage" statementType="CALLABLE" parameterType="Map" >
+		call grabRedPackage(
+			#{mrId,					mode=IN,				jdbcType=BIGINT},
+			#{memberId,				mode=IN,				jdbcType=BIGINT},
+			#{affairId,				mode=IN,				jdbcType=BIGINT},
+			#{rdId,					mode=IN,				jdbcType=BIGINT},
+			#{result,				mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	
+	<!-- 查询红包类型 -->
+	<select id="redPackageType" parameterType="Map" resultType="cn.invitemastermng.model.RedpacketsDetailRecord">
+		select 
+		RP_Detail_ID	as rPDetailId,
+		Affair_ID		as affairId,
+		Gift_Amount		as giftAmount,
+		Quantity		as quantity,
+		Remain_Quantity as remainQuantity
+		from Redpackets_Detail_Record 
+		where Affair_ID = #{aid}
+	</select>
+		
+	<!-- 抽奖 奖品列表 -->
+	<select id="prizeInformations" resultType="cn.invitemastermng.model.PrizeInformation">
+		select 
+		Prize_ID			as prizeId,
+		Prize_Type			as prizeType,
+		Prize_Name			as prizeName,
+		Prize_Worth			as prizeWorth,
+		Prize_Quantity		as prizeQuantity,
+		Prize_Url			as prizeUrl,
+		Status 				as status
+		from Prize_Information
+		where Status = 1
+	</select>
+	
+	<!-- 抽奖奖品列表 -->
+	<select id="winners" parameterType="Map" resultType="cn.invitemastermng.model.LotteryRecords">
+		select 
+		mi.Logname				as memberName,
+		pi.Prize_Name			as prizeName
+		from Lottery_Records lr
+		left join member_info mi on lr.Member_ID = mi.member_id
+		left join Prize_Information pi on pi.Prize_ID = lr.Prize_ID
+		order by Lottery_Time desc
+	</select>
+	
+	<!-- 抽奖设置信息 -->
+	<select id="lotteryConfig" parameterType="long" resultType="cn.invitemastermng.model.LotteryManage">
+		select Lottery_ID 	as lotteryId,
+		Prize_ID 		  	as prizeId,
+		Grade				as grade,
+		Grade_Odds			as gradeOdds,
+		Winning_Odds		as winningOdds
+		from Lottery_Manage
+		where Lottery_ID = #{lid}
+	</select>
+	
+	<!-- 记录抽奖信息 -->
+	<select id="lotteryEnd" statementType="CALLABLE" parameterType="Map">
+		call(
+			#{lrid,					mode=IN,					jdbcType=BIGINT},
+			#{lid,					mode=IN,					jdbcType=BIGINT},
+			#{pid,					mode=IN,					jdbcType=BIGINT},
+			#{mid,					mode=IN,					jdbcType=BIGINT},
+			#{result,				mode=OUT,					jdbcType=INTEGER}
+		)
+	</select>
+	<!-- 黑名单判断 -->
+	 <select id="BlackMemberJudgmentTow" resultType="Map" statementType="CALLABLE">
+    	<!--result ：1:可执行 ；-1; 不可继续执行-->
+    	<![CDATA[{call BlackMemberJudgment(
+				#{memberId,	 mode=IN,	jdbcType=BIGINT},
+				#{mType,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+    </select>
+	
+	
+	
+	
+	
+	
+	
+	
+
+</mapper>

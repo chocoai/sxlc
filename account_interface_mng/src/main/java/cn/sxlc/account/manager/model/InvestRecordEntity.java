@@ -14,7 +14,7 @@ public class InvestRecordEntity{
 	private long investId;					//投资记录id
 	private long applyId;			//项目ID 相关id
 	private int memberType=0;			//会员类型 0：会员
-	private int memberID;			//会员ID
+	private long memberID;			//会员ID
 	private long investAmountValid;		//投资总金额
 	private String sInvestAmount;	//投资总金额
 	
@@ -36,10 +36,10 @@ public class InvestRecordEntity{
 	public void setMemberType(int memberType) {
 		this.memberType = memberType;
 	}
-	public int getMemberID() {
+	public long getMemberID() {
 		return memberID;
 	}
-	public void setMemberID(int memberID) {
+	public void setMemberID(long memberID) {
 		this.memberID = memberID;
 	}
 	public long getInvestAmountValid() {

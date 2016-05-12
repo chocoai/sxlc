@@ -41,7 +41,7 @@
 	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID  
 	   left join Project_Image pim on pim.Apply_Id =  par.Apply_Id
            <where>  
-                par.Invest_Statu >=0  and par.Check_Statu = 1 and par.Publish_Statu = 2 
+                 par.Check_Statu = 1 and par.Publish_Statu = 2 
                  <!-- 项目编号或名称--> 
 	            <if test = "map.projectinfo != null and map.projectinfo != ''">  
 	              and ( pbi.Project_Title   like '%${map.projectinfo}%' or par.Project_No  like '%${map.projectinfo}%' ) 

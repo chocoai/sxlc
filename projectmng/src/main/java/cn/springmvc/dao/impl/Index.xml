@@ -28,7 +28,7 @@
     <resultMap type = "cn.springmvc.model.CreditorTransferListEntity" id = "resultCreditorTransfer">
         <id property = "ctaId"						column = "CTA_Id" />
 		<result property = "projectTitle"       	column = "Project_Title" />
-		<result property = "ProjectNo"    	        column = "Project_No" />
+		<result property = "projectNo"    	        column = "Project_No" />
 		<result property = "transPrincipal"  	    column = "Trans_Principal" />
 		<result property = "surplusTime"  	        column = "Surplus_Time" />
 		<result property = "surplusTimeType" 	    column = "Surplus_Time_Type" />

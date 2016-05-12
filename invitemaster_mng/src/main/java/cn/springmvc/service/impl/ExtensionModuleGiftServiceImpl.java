@@ -88,7 +88,7 @@ public class ExtensionModuleGiftServiceImpl implements ExtensionModuleGiftServic
 				generatorUtil.SetIdUsed(id);
 				StringBuffer detail = new StringBuffer("新增首次投资红包赠送配置:");
 				detail.append("投资金额:"+IntegerAndString.LongToString(Long.valueOf(map.get("invest_Amount").toString())));
-				detail.append("赠送比例:"+IntegerAndString.IntToString(Integer.valueOf(map.get("rp_Rate").toString()+"%")));
+				detail.append("赠送比例:"+IntegerAndString.IntToString(Integer.valueOf(map.get("rp_Rate").toString()))+"%");
 				logentity.setsDetail(detail.toString());
 				optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		   }else{
@@ -101,7 +101,7 @@ public class ExtensionModuleGiftServiceImpl implements ExtensionModuleGiftServic
            if(result == 1) { 
         	    StringBuffer detail = new StringBuffer("修改首次投资红包赠送配置:");
 				detail.append("投资金额:"+IntegerAndString.LongToString(Long.valueOf(map.get("invest_Amount").toString())));
-				detail.append("赠送比例:"+IntegerAndString.IntToString(Integer.valueOf(map.get("rp_Rate").toString()+"%")));
+				detail.append("赠送比例:"+IntegerAndString.IntToString(Integer.valueOf(map.get("rp_Rate").toString()))+"%");
 				logentity.setsDetail(detail.toString());
 				optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo); 
 		   }
@@ -221,7 +221,13 @@ public class ExtensionModuleGiftServiceImpl implements ExtensionModuleGiftServic
 	@Override
 	public RedpacketsAffairEntity selectRedpacketsAffairbyID(long affairID) {
 		
-		return  extensionModuleGiftListDao.selectRedpacketsAffairbyID(affairID);
+		RedpacketsAffairEntity entity =  extensionModuleGiftListDao.selectRedpacketsAffairbyID(affairID);
+		if (entity != null) {
+			List<RedpacketsDetailRecordEntity> RedpacketsDetaillist = extensionModuleGiftListDao.
+					selectRedpacketsDetailbyaffairID(affairID);
+			entity.setRedpacketsDetail(RedpacketsDetaillist);
+		}
+	    return entity;
 		
 	}
 	@Override

@@ -82,9 +82,9 @@
     <!-- 首页显示媒体报道-->  
 	<select id="selectMediaReportsListIndex"  resultMap="resultListMediaReports" >
 	   select mr.Report_ID,   mr.Title,   mr.Logo,   mr.Source,  
-	   mr.Content,   mr.Statu,  mr.CreateTime,  mr.Opt_Date
+	   mr.Content,   mr.Statu,  DATE_FORMAT(mr.CreateTime,'%Y-%m-%d') as CreateTime ,  mr.Opt_Date
 	   from  Media_Reports mr 
 	   where  Statu =1
-       order by mr.CreateTime desc  limit 3
+       order by mr.CreateTime desc  limit 2
     </select>    
 </mapper>

@@ -121,7 +121,8 @@ public class LoanApplyRecord {
 
 	public void setAmount(long amount) {
 		this.amount = amount;
-		this.sAmount = IntegerAndString.LongToString(amount);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sAmount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(amount))) ;   
 	}
 
 
@@ -142,7 +143,8 @@ public class LoanApplyRecord {
 
 	public void setMinAmount(long minAmount) {
 		this.minAmount = minAmount;
-		this.sMinAmount	= IntegerAndString.LongToString(minAmount);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sMinAmount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(minAmount))) ;  
 	}
 
 
@@ -163,6 +165,8 @@ public class LoanApplyRecord {
 
 	public void setYearRate(int yearRate) {
 		this.yearRate = yearRate;
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sYearRate =  myformat.format(Double.valueOf(IntegerAndString.IntToString(yearRate))) ;  
 	}
 
 
@@ -183,6 +187,16 @@ public class LoanApplyRecord {
 
 	public void setStatu(int statu) {
 		this.statu = statu;
+	}
+
+
+	public String getStatuName() {
+		return statuName;
+	}
+
+
+	public void setStatuName(String statuName) {
+		this.statuName = statuName;
 	}
 	
 	

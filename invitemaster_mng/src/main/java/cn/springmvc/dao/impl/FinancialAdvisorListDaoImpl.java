@@ -131,7 +131,7 @@ public class FinancialAdvisorListDaoImpl extends SqlSessionDaoSupport implements
 	public List<AwardPaymentRecordEntity> getFinancialHistoryBackExcel(
 			Map<String, Object> map) {
 		
-		 return  getSqlSession().selectOne("FinancialAdvisorExcel.getFinancialHistoryBackExcel",map);
+		 return  getSqlSession().selectList("FinancialAdvisorExcel.getFinancialHistoryBackExcel",map);
 		
 	} 
 }

@@ -14,6 +14,8 @@ package cn.springmvc.dao;
 
 import java.util.Map;
 
+import cn.membermng.model.ComfirLoanInfo;
+
 /** 自动还款设置
  * @author 刘利 
  * @Description: TODO 
@@ -31,5 +33,18 @@ public interface IMyLoanWriteDao {
 	 * @date 2016-5-3 下午7:58:18
 	 */
 	public int updateAutoPay(Map<String,Object> map);
+
+	
+	
+	 /***
+	 * 确认借款申请
+	 * 
+	 * @author 李杰
+	 * @param param
+	 * @return
+	 * @date 2016-5-12 下午2:33:15
+	  */
+	 public int confirmationLoan(Map<String, Object> param);
+	 
 }
 

@@ -49,7 +49,7 @@ public class TimestampAndString {
   	 */
   	public static String DateToString(Date date){
   		String sResult = "";
-  		if(date == null){
+  		if(date == null && !"".equals(date)){
   			return sResult;
   		}
   		SimpleDateFormat datafFormat = new SimpleDateFormat("yyyy-MM-dd");

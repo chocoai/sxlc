@@ -26,12 +26,12 @@ import cn.springmvc.model.InvestEntity;
 import cn.springmvc.model.LoanMemberInfoEntity;
 import cn.springmvc.model.LoanRealRepayEntity;
 import cn.springmvc.model.LoanRepayEntity;
-import cn.springmvc.model.MemberAttestTypeEntity;
-import cn.springmvc.model.MemberInfoEntity;
+import cn.springmvc.model.MemberAttestTypeEntity; 
 import cn.springmvc.model.PersonalBaseInfoEntity; 
 import cn.springmvc.model.ProjectAppProcessEntity;
 import cn.springmvc.model.ProjectAppRecordEntity; 
 import cn.springmvc.model.ProjectCheckAttachEntity;
+import cn.springmvc.model.ProjectDetailTYEntity;
 
 /** 
  * @author 刘利 
@@ -162,6 +162,13 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
 		
 		return getSqlSession().selectOne("projectDetail.selectInvestAvailableaAmount",map);
 	  
+	}
+
+	@Override
+	public ProjectDetailTYEntity selectProjectdetailByIDbc(long applyId) {
+		
+		return getSqlSession().selectOne("projectDetail.selectProjectdetailByIDbc",applyId);
+		
 	}
 
 }

@@ -47,7 +47,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest arg0, HttpServletResponse arg1,Object arg2) throws Exception {
 		arg1.setContentType("text/html;charset=UTF-8");
-		HttpSession session = arg0.getSession();
+ 		HttpSession session = arg0.getSession();
 		optRecordWriteDaoImpl = (OptRecordWriteDaoImpl) SpringUtil.getBean(OptRecordWriteDaoImpl.class);
 		
 		//判断用户登录过没有
@@ -119,8 +119,13 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 		}
 		String sign = newMap.get("sign");
 		newMap.remove("sign");
-		if(sign == null){//没有sign或者sign多个  验证失败
-			return true;
+		if(sign == null){									//没有签名
+			if(newMap.keySet().size() == 0){				//没有参数
+				return true;
+			}else{
+//				return false;								
+				return true;	//加了签名后请删除
+			}
 		}else{
 			String paramCheckCode = "";
 			Map<String, String> sortMap = new TreeMap<String, String>(new Comparator<String>() {@Override public int compare(String o1, String o2) {return o1.compareTo(o2);}});

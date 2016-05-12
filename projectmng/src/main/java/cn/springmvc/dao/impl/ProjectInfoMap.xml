@@ -3,7 +3,7 @@
 <mapper namespace="projectInfoMap"> 
  <!-- 成交项目列表:放款后所有项目 -->
  <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectInfo">
-        <id property = "ID"						column = "Apply_Id" /> 
+        <id property = "applyId"						column = "Apply_Id" /> 
         <result property = "projectNo" 			column = "Project_No" /> 
         <result property = "logname" 		    column = "Logname" />  
         <result property = "memberName" 		column = "Personal_Name" />

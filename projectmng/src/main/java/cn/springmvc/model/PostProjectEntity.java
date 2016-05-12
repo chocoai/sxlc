@@ -21,16 +21,16 @@ import product_p2p.kit.datatrans.IntegerAndString;
  * @date 2016-4-15 下午5:14:45  */
 
 public class PostProjectEntity {
-	private long   repayID;//账单金额 
+	private long   repayID;//还款计划ID
 	private long   applyId;//借款项目申请ID
-	private String projectNo;//账单金额 
-	private String projectTitle; //账单金额
-    private String memberName; //账单金额
+	private String projectNo;//项目编号
+	private String projectTitle; //项目标题
+    private String memberName; //借款会员名称
     private long   amount;//账单金额 
     private String amounts;//账单金额 
-    private int    indexs;//账单金额 
+    private int    indexs;//账单期数
     private String repayMaxTime;//应还款时间
-    private int    overDay;//账单金额
+    private int    overDay;//逾期天数
     private long   overdueAmount;//逾期费用
     private String overdueAmounts;//逾期费用
     private String repayTime;//实际还款时间

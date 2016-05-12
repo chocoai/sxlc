@@ -15,6 +15,7 @@ import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.AdvanceEntity;
 import cn.membermng.model.Cleared;
+import cn.membermng.model.ComfirLoanInfo;
 import cn.membermng.model.ConfirmationLoan;
 import cn.membermng.model.Financing;
 import cn.membermng.model.FlowLabel;
@@ -27,6 +28,7 @@ import cn.membermng.model.RepaymentOfBorrowings;
 import cn.membermng.model.RepaymentOfBorrowingsRM;
 import cn.membermng.model.ReplayDetailEntity;
 import cn.membermng.model.StayStillPlan;
+import cn.membermng.model.SuccessRepayDetail;
 
 /***
 * 我的借款查询实现
@@ -101,8 +103,16 @@ public class MyLoanReadDaoImpl extends SqlSessionDaoSupport implements IMyLoanRe
 	
 	@Override
 	public List<StayStillPlan> stayStillPlans(PageEntity entity) {
-
-		return getSqlSession().selectList("myLoanReadDaoImpl.stayStillPlans", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
+		List<StayStillPlan> list = getSqlSession().selectList("myLoanReadDaoImpl.stayStillPlans", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
+		Map<String,Object> param = new HashMap<String,Object>();
+		for (int i = 0; i < list.size(); i++) {
+			param.put("lId", list.get(i).getLrId());
+			param.put("sKey", DbKeyUtil.GetDbCodeKey());
+			getSqlSession().selectOne("myLoanReadDaoImpl.GetLoanRepayOverdueInfo",param);
+			list.get(i).setRepayOverdue(Long.parseLong(param.get("lOverdue").toString()));
+			list.get(i).setRepayOverdueInterest(Long.parseLong(param.get("lOverdueInterest").toString()));
+		}
+		return list;
 	}
 	
 	
@@ -171,6 +181,10 @@ public class MyLoanReadDaoImpl extends SqlSessionDaoSupport implements IMyLoanRe
 		if(loanRepay != null) {
 			//应还总额
 			loanRepay.setSdReplayTotal(loanRepay.getLoanAmount()+loanRepay.getLoanInterest());
+			//逾期利息
+			loanRepay.setOverdueInterest(0);
+			//逾期罚金
+			loanRepay.setOberdueFine(0);
 			if(loanRepay.getOverDay() > 0) {
 				 getSqlSession().selectOne("myLoanReadDaoImpl.GetLoanRepayOverdueInfo",param); 
 				//逾期利息
@@ -201,7 +215,8 @@ public class MyLoanReadDaoImpl extends SqlSessionDaoSupport implements IMyLoanRe
 	@Override
 	public List<RepaymentOfBorrowingsRM> loanRepayback(PageEntity entity) {
 		
-		List<RepaymentOfBorrowingsRM> list = getSqlSession().selectList("myLoanReadDaoImpl.loanRepayback",entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
+		List<RepaymentOfBorrowingsRM> list = getSqlSession().selectList("myLoanReadDaoImpl.loanRepayback",entity,
+				new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		Map<String,Object> param = new HashMap<String,Object>();
 		for (int i = 0; i < list.size(); i++) {
 			param.put("lId", list.get(i).getLid());
@@ -212,13 +227,46 @@ public class MyLoanReadDaoImpl extends SqlSessionDaoSupport implements IMyLoanRe
 			getSqlSession().selectOne("myLoanReadDaoImpl.GetLoanRepayOverdueInfo",param);
 			list.get(i).setYuQiFeiYong(Long.parseLong(param.get("lOverdueInterest").toString())+Long.parseLong(param.get("lOverdue").toString()));
 			list.get(i).setOberdueFine(Long.parseLong(param.get("lOverdue").toString()));
-			list.get(i).setOberdueFine(Long.parseLong(param.get("lOverdueInterest").toString()));
+			list.get(i).setOverdueInterest(Long.parseLong(param.get("lOverdueInterest").toString()));
 			list.get(i).setSdReplayTotal(list.get(i).getSdReplayTotal()+
 					Long.parseLong(param.get("lOverdue").toString())+Long.parseLong(param.get("lOverdueInterest").toString()));
 		}
 		return list;
 		
 	}
+	
+	@Override
+	public ComfirLoanInfo confirmationLoanInfo(Map<String, Object> param) {
+		
+		return getSqlSession().selectOne("myLoanReadDaoImpl.confirmationLoanInfo",param);
+	}
+	
+
+
+
+	@Override
+	public List<SuccessRepayDetail> loanRepayDetail(PageEntity entity) {
+		
+		List<SuccessRepayDetail> loanRepaylist = getSqlSession().selectList("myLoanReadDaoImpl.loanRepayDetail",entity,
+				new RowBounds(entity.getPageNum(), entity.getPageSize()));
+		
+		Map<String,Object> param = new HashMap<String,Object>();
+		for (int i = 0; i < loanRepaylist.size(); i++) {
+			param.put("lId", loanRepaylist.get(i).getLid());
+			param.put("sKey", DbKeyUtil.GetDbCodeKey());
+			if(loanRepaylist.get(i).getOverDay() <= 0){//未逾期不计算
+				continue;
+			}
+			getSqlSession().selectOne("myLoanReadDaoImpl.GetLoanRepayOverdueInfo",param);
+			loanRepaylist.get(i).setNotpaidOverdueInterest(Long.parseLong(param.get("lOverdueInterest").toString())+
+					Long.parseLong(param.get("lOverdue").toString()));
+		}
+		return loanRepaylist;
+		
+	}
+	
+	
+	
 
 
 	

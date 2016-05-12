@@ -4,9 +4,12 @@ import cn.integralmall.model.OrderRecordsEntity;
 import cn.integralmall.model.ShippingAddress; 
 import cn.springmvc.dao.OrderManagementDao;
 import cn.springmvc.dao.OrderManagementListDao; 
+import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.service.OrderManagerService;
 
 import org.springframework.stereotype.Service;
+
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
 
@@ -27,6 +30,8 @@ public class OrderManagerServiceImpl implements OrderManagerService {
     private OrderManagementListDao orderManagementListDao;
     @Resource(name = "orderManagementDaoImpl")
     private OrderManagementDao orderManagementDao;
+	@Resource(name="optRecordWriteDaoImpl")
+	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
   
 	@Override
 	public void selectalldOrder(PageEntity pageEntity) {
@@ -37,17 +42,27 @@ public class OrderManagerServiceImpl implements OrderManagerService {
 	}
 
 	@Override
-	public int deliverGoods(Map<String, Object> map) {
+	public int deliverGoods(Map<String, Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
 		
-		return orderManagementDao.deliverGoods(map);
-		
+		int result = orderManagementDao.deliverGoods(map);
+		if(result == 1) {
+			logentity.setsDetail("商品发货");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
+		return result;
 	}
 
 	@Override
-	public int CancelOrder(Map<String, Object> map) {
-		
-		return orderManagementDao.CancelOrder(map);
-		
+	public int CancelOrder(Map<String, Object> map,InsertAdminLogEntity 
+			logentity,String[] sIpInfo) {
+		 
+		int result = orderManagementDao.CancelOrder(map);
+		if(result == 1) {
+			logentity.setsDetail("撤销订单");
+			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
+		}
+		return result;
 	}
 
 	@Override

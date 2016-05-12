@@ -13,6 +13,7 @@ import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.BlackLimitEntity;
 import cn.membermng.model.BlackRecordEntity;
 import cn.membermng.model.BorrowingStatistics;
+import cn.membermng.model.ComplanyInfoEntity;
 import cn.membermng.model.InvitationMembers;
 import cn.membermng.model.MemberAll;
 import cn.membermng.model.MemberAttestInfo;
@@ -67,6 +68,14 @@ public class MemberManagerReadDaoImpl extends SqlSessionDaoSupport implements IM
 		return getSqlSession().selectOne("memberManagerDao.memberInfoById", param);
 	}
 
+	
+	@Override
+	public ComplanyInfoEntity companyInfo(Map<String, Object> param) {
+		
+		return getSqlSession().selectOne("memberManagerDao.complanyInfo", param);
+	}
+	
+	
 
 	@Override
 	public MemberThirdInfo memberThirdInfo(Map<String, Object> param) {

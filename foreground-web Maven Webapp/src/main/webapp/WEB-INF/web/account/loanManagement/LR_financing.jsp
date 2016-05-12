@@ -12,7 +12,8 @@
     <title>借款记录-融资中</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
-	<link rel="stylesheet" href="plugs/laypage/skin/laypage.css" type="text/css">
+	<!-- <link rel="stylesheet" href="plugs/laypage/skin/laypage.css" type="text/css"> -->
+	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/loanManagement/myLoan.css">
 	
 </head>
@@ -143,9 +144,7 @@
 			   					</li>
 			   					<%} %> --%>
 			   				</ul>
-			   				
-			   				<div class="cc"></div>
-			   				<div id="pager-financing" class="pager-box"></div>
+			   				<div id="pager" class="pager-box"></div>
 		   				</div>		   				
 	   				</div>
    				</div>
@@ -155,8 +154,8 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<!--弹出层  -->
    	<div class="inv-record">
-		<ul class="inv-record-info">
-			<li>
+		<ul id="investRecordUl" class="inv-record-info">
+			<li id="investRecordTop">
 				<div class="contentOut5">
 					<div class="c-content">
 						投资完成时间
@@ -178,7 +177,7 @@
 					</div>
 				</div>		
 			</li>
-			<% for(int j = 0; j<2;j++){ %>
+			<%-- <% for(int j = 0; j<2;j++){ %>
 			<li>
 				<div class="contentOut5">
 					<div class="c-content">
@@ -202,10 +201,39 @@
 					</div>
 				</div>		
 			</li>
-			<%} %>
+			<%} %> --%>
 		</ul>
+		<script id="investRecordList" type="text/html">
+			{{each results as infos index}}
+				<li>
+					<div class="contentOut5">
+						<div class="c-content">
+							{{infos.investDate}}
+						</div>
+					</div>
+					<div class="contentOut5">
+						<div class="c-content">
+							{{infos.userName}}
+						</div>
+					</div>
+					<div class="contentOut5">
+						<div class="c-content">
+							{{infos.memberName}}
+						</div>
+					</div>
+					<div class="contentOut5">
+						<div class="c-content">
+							{{infos.sInvestmentAmount}}
+						</div>
+					</div>		
+				</li>
+			{{/each}}
+			<li><div id="pager1" class="pager-box"></div></li>
+		</script>
    	</div>
-   	<script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script>
+   	<script type="text/javascript" src="js/common/template.js"></script>
+   	<!-- <script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script> -->
+   	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/myLoan.js"></script>
 	<script type="text/javascript">

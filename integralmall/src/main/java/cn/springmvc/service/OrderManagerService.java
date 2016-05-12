@@ -4,6 +4,7 @@ import java.util.Map;
 
 import cn.integralmall.model.ShippingAddress;
 
+import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity; 
  
 /**
@@ -38,17 +39,19 @@ public interface OrderManagerService {
 	 * @return int 返回类型 1成功 0失败 -1 该商品已发货或者已撤销
 	 * @date 2016-4-23 下午7:52:59
 	 */
-	 public int deliverGoods(Map<String,Object> map);
+	 public int deliverGoods(Map<String,Object> map,InsertAdminLogEntity 
+				logentity,String[] sIpInfo);
     /**
 	 * 撤销订单
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param map {OrderID订单ID,adminID管理员ID,revocationReason撤销原因}
 	 * @param @return 设定文件 
-	 * @return int 返回类型 1成功 0失败 -1该商品已发货或者已撤销
+	 * @return int 返回类型 1成功 0失败 -1该商品已收货或者已撤销
 	 * @date 2016-4-23 下午7:52:59
 	 */
-	 public int CancelOrder(Map<String,Object> map);
+	 public int CancelOrder(Map<String,Object> map,InsertAdminLogEntity 
+				logentity,String[] sIpInfo);
 	/**
   	 * 根据订单ID查询收货地址 
 	 * @author 刘利   

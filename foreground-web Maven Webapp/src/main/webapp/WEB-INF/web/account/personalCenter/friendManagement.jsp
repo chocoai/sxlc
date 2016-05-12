@@ -1,9 +1,10 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" import="java.util.*,product_p2p.kit.Upload.FtpClientUtil" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	String attachPrefix=FtpClientUtil.getFtpFilePath();		
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
@@ -11,10 +12,14 @@
 	<base href="<%=basePath%>">
     <title>好友管理</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/friendManagement.css">
 	<script type="text/javascript" src="http://img3.job1001.com/js/ZeroClipboard/jquery.zclip.min.js"></script> 
+	<script type="text/javascript" src="js/common/template.js"></script>	
 </head>
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
@@ -54,8 +59,9 @@
 								</div>
 							</div>
 							<div class="list-name">列表信息</div>
-							<ul class="my-integral-table">
-			   					<li>
+							<ul class="my-integral-table" id="friend">
+			   					<script id="friendList" type="text/html">
+			   						<li>
 			   						<div class="contentOut1">
 										<div class="content1">
 											用户名
@@ -76,31 +82,32 @@
 											开通第三方时间
 										</div>
 									</div>
-			   					</li>
-			   					<% for(int j = 0; j<2;j++){ %>
-			   					<li>
-			   						<div class="contentOut1">
-										<div class="content1">
-											抵124
+			   						</li>
+									{{each results as value index}}
+				   					<li>
+				   						<div class="contentOut1">
+											<div class="content1">
+												{{value.logname}}
+											</div>
 										</div>
-									</div>
-									<div class="contentOut1">
-										<div class="content1">
-											180****1234
+										<div class="contentOut1">
+											<div class="content1">
+												{{value.baseInfo.personalPhone.substring(0,3)+"****"+value.baseInfo.personalPhone.substring(value.baseInfo.personalPhone.length-4,value.baseInfo.personalPhone.length)}}
+											</div>
 										</div>
-									</div>
-									<div class="contentOut1">
-										<div class="content1">
-											2016-09-07&nbsp;14:12:06
+										<div class="contentOut1">
+											<div class="content1">
+												{{value.sRegDate}}
+											</div>
 										</div>
-									</div>
-									<div class="contentOut1">
-										<div class="content1">
-											2016-09-07&nbsp;14:12:06
-										</div>
-									</div>					
-			   					</li>
-			   					<%} %>
+										<div class="contentOut1">
+											<div class="content1">
+												{{value.sRcordDate}}
+											</div>
+										</div>					
+				   					</li>
+									{{/each}}
+				   				</script>
 		   					</ul>
 		   					<div id="pager"></div>
 						</div>
@@ -114,7 +121,8 @@
 								<input type="text" lang="输入好友用户名/姓名/手机号" class="serch-input" maxlength="20">
 								<input type="button" value="查询" class="search-btn btn">	
 							</div>										
-							<ul class="my-integral-table">
+							<ul class="my-integral-table" id="frindLine" >
+							<script id="frindLineList" type="text/html">
 			   					<li>
 			   						<div class="contentOut2">
 										<div class="content1">
@@ -132,16 +140,16 @@
 										</div>
 									</div>												
 			   					</li>
-			   					<% for(int j = 0; j<2;j++){ %>
+			   					{{each results as value index}}
 			   					<li>
 			   						<div class="contentOut2">
 										<div class="content1">
-											抵2581
+											{{value.userName}}
 										</div>
 									</div>
 									<div class="contentOut3">
 										<div class="content1">
-											2016-12-12&nbsp;12:12:00
+											{{value.addTime}}
 										</div>
 									</div>
 									<div class="contentOut2">
@@ -150,7 +158,8 @@
 										</div>
 									</div>																				
 			   					</li>
-			   					<%} %>
+								{{/each}}
+			   					</script>
 		   					</ul>
 		   					<div id="pager1"></div>
 						</div>
@@ -162,7 +171,8 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<!-- 弹出层 -->
    	<div class="undeal">
-   		<ul class="undeal-info">
+   		<ul class="undeal-info" id="undeal" >
+   			<script id="undealList" type="text/html">
 			<li>
 				<div class="contentOut5">
 					<div class="content1">
@@ -180,16 +190,17 @@
 					</div>
 				</div>				
 			</li>
-			<% for(int j = 0; j<2;j++){ %>
+			{{each results as value index}}
+			{{if value.type==1}}
 			<li>
 				<div class="contentOut5">
 					<div class="content1">
-						蛤蛤
+						{{value.userName}}
 					</div>
 				</div>
 				<div class="contentOut5">
 					<div class="content1">
-						20116-04-07&nbsp;12:12:00
+						{{value.addTime}}
 					</div>
 				</div>
 				<div class="contentOut5">
@@ -198,26 +209,28 @@
 					</div>
 				</div>				
 			</li>
-			<%} %>
-			<% for(int j = 0; j<2;j++){ %>
+			{{/if}}
+			{{if value.type==0}}
 			<li>
 				<div class="contentOut5">
 					<div class="content1">
-						爱尼8妹
+						{{value.userName}}
 					</div>
 				</div>
 				<div class="contentOut5">
 					<div class="content1">
-						20116-04-05&nbsp;12:24:00
+						{{value.addTime}}
 					</div>
 				</div>
 				<div class="contentOut5">
 					<div class="content1">
-						<div class="agree">同意加为好友</div>
+						<div class="agree" id="{{value.friendId}}" >同意加为好友</div>
 					</div>
 				</div>				
 			</li>
-			<%} %>
+			{{/if}}
+			{{/each}}
+			</script>
 		</ul>
 		<div class="pageTab">
 			<div class="pageBefore"></div>
@@ -232,35 +245,43 @@
 			style="color:#bfbfbf">
 			<div class="search">查找</div>
    		</div>
-   		<ul>
-   			<% for(int j = 0; j<4;j++){ %>
+   		<ul id="strange">
+   		<script id="strangeList" type="text/html">	
+			{{each results as value index}}
    			<li>
    				<div class="contentOut6">
    				<div class="content2">
    					<div class="photo">
-   						<img src="resource/img/account/personalCenter/touxiang.png">
+						{{if value.path==null}}
+   							<img src="resource/img/account/personalCenter/touxiang.png">
+						{{/if}}
+						{{if value.path!=null}}
+   							<img src="<%=attachPrefix%>{{value.path}}">
+						{{/if}}
    					</div>
    				</div>			
    				</div>
    				<div class="contentOut7">
 	   				<div class="content3 info">
-	   					是的哈o<br>
-	   					12578077809
+	   					{{value.logname}}<br>
+	   					{{value.personalPhone}}
 	   				</div>
    				</div>
    				<div class="contentOut8">
    					<div class="content2">
-	   					<div class="add">
+	   					<div class="add" id="{{value.memberId}}" >
 	   						加为好友
 	   					</div>
    					</div>
    				</div>
    			</li>
-   		<%} %>
+			{{/each}}
+		</script>	
    		</ul>
    	</div>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/friendManagement.js"></script>
+	<script type="text/javascript" src="js/account/personalCenter/friendManagement_data.js"></script>
 </body>
 </html>

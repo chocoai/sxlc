@@ -132,6 +132,7 @@ public class MemberWithdrawalRechargeEntity {
 	 * 提现审核状态
 	 */
 	private String checkstatu;
+	private String rechargeTypes;//充值方式
 	public long getRechargeID() {
 		return rechargeID;
 	}
@@ -178,6 +179,7 @@ public class MemberWithdrawalRechargeEntity {
 		return withdrawalMoney;
 	}
 	public void setWithdrawalMoney(long withdrawalMoney) {
+		this.withdrawalMoneys= IntegerAndString.LongToString(withdrawalMoney); 
 		this.withdrawalMoney = withdrawalMoney;
 	}
 	public int getMngFee() {
@@ -307,6 +309,12 @@ public class MemberWithdrawalRechargeEntity {
 	}
 	public void setCheckstatu(String checkstatu) {
 		this.checkstatu = checkstatu;
+	}
+	public String getRechargeTypes() {
+		return rechargeTypes;
+	}
+	public void setRechargeTypes(String rechargeTypes) {
+		this.rechargeTypes = rechargeTypes;
 	}
 }
 

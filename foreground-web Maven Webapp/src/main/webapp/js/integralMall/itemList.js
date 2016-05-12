@@ -1,3 +1,4 @@
+//积分商城-商品列表
 $(function(){
 	$(".filterLi li").click(function(){
 		$(this).children("span").addClass("selected");
@@ -15,3 +16,9 @@ $(function(){
 		});
 	});
 });
+
+
+//function
+function test(){
+	
+}

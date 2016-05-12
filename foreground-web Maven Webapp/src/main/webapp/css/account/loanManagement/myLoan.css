@@ -135,6 +135,8 @@
 	vertical-align:middle;   
 	display:table-cell; 
 	text-align:center;
+    word-break: break-all;
+    line-height: 20px;
 }
 .my-loan-table li:first-child .contentOut0{
 	height:40px;

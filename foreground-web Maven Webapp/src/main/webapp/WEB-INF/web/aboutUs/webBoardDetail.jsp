@@ -42,7 +42,7 @@
    	   	<div class="notice_Detail_foot">
    	   		<a href="javascript:" onclick="history.back();">上一篇</a>
 	   	    <a href="aboutUs/webBoard.html#">下一篇</a>
-	   	    <a href="aboutUs/webBoard.html" class="back_list">返回公告列表>></a>
+	   	    <a href="aboutUs/webBoard.html" class="back_list">返回公告列表&gt;&gt;</a>
    	   	</div>
    	 </div>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>

@@ -22,14 +22,14 @@
         from commodity_type ct
         LEFT JOIN Admin a on a.Admin_ID=ct.Admin_ID
         <where>
-            <if test="map.Commodity_Classify != null">
-                ct.Commodity_Classify like '%{map.Commodity_Classify}%'
+            <if test="map.Commodity_Classify != null and map.Commodity_Classify != ''">
+              and  ct.Commodity_Classify like '%#{map.Commodity_Classify}%'
             </if>
-            <if test="map.status != -1">
-                and ct.Status=#{map.status}
+            <if test="map.status != null and map.status != -1">
+               and ct.Status=#{map.status}
             </if>
-            <if test="goodType != -1">
-            	ct.Commodity_Type = #{map.goodType}
+            <if test="map.goodType != -1">
+          	  and	ct.Commodity_Type = #{map.goodType}
             </if>
         </where>
         order by ct.Add_Time desc
@@ -68,7 +68,7 @@
                 Status=#{status},
             </if>
         </set>
-        where Commodity_Type_ID=#{commodityTypeID}
+        where Commodity_Type=#{commodityTypeID}
     </update>
     <!-- 删除商品分类类型信息 -->
     <delete id="deleteCommodityTypeByID" parameterType="int">
@@ -80,9 +80,16 @@
     </update>
     <!-- 根据ID查询商品分类类型 -->
     <select id="selectCommodityTypeByID" parameterType="int" resultMap="resultListCommodityType">
-	    select ct.Commodity_Type_ID,ct.Commodity_Type,ct.Commodity_Classify,ct.Commodity_Classify_Des,ct.Commodity_Classify_Pic,ct.Status,ct.Delete_Flag
-	    ct.Super_ID,ct.Add_Time
-	    from  commodity_type ct  where  ct.Commodity_Type_ID=#{commodityTypeID}
+	    select ct.Commodity_Type_ID,
+	    ct.Commodity_Type,
+	    ct.Commodity_Classify,
+	    ct.Commodity_Classify_Des,
+	    ct.Commodity_Classify_Pic,
+	    ct.Status,
+	    ct.Delete_Flag,
+	    ct.Super_ID,
+	    ct.Add_Time
+	    from  commodity_type ct  where  ct.Commodity_Type = #{commodityTypeID}
     </select>
     <!-- 前台查询商品分类类型列表 -->
     <select id="selectCommodityTypeFront" resultMap="resultListCommodityType">

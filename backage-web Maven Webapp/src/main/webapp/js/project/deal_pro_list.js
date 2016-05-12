@@ -40,6 +40,7 @@ $(function() {
 				        		  return sReturn;
 				        	  }
 				          },
+				          { title:"id","data": "applyId"},  
 				          { title:"项目编号","data": "projectNo"},  
 				          { title:"项目名称","data": "projectBaseInfoentity.projectTitle"},  
 				          { title:"借款人用户名","data": "logname"},  
@@ -158,25 +159,34 @@ $(function() {
 $(document).ready(function() {
     /*** *************项目详情״̬********* ***/
     $('#deal_list_pro_detail').on('click', function(){
-    	$(".right_col").load('web/project/pro-add/loan_pro_detail.jsp');
-//    	$(".right_col").load("project/toBorrowDetail",{"id":encrypt.encrypt(id+""),"applyid":encrypt.encrypt(applyid+"")});//id为Purpose_ID
+    	var data = $('#table_id').DataTable().rows('.selected').data(); 
+		if(data.length<1){
+				layer.alert("请选择项目！",{icon:0});
+				return;
+		}
+		var applyId = data[0].applyId;//Project_App_Record 表Apply_Id
+		window.location.href=appPath+"/project/toProjectdetailPg?content="+applyId;
     });
     
     
     /******************还款详情**********************/
     $('#deal_list_pay_detail').on('click', function(){
-    	layer.open({
-    		type: 2,
-    		title: '还款详情',
-    		maxmin: true,
-    		shadeClose: true, //点击遮罩关闭层
-    		area : ['800px' , '520px'],
-    		content: 'web/project/deal_list_pay_detail.jsp'
-    	});
+    	var data = $('#table_id').DataTable().rows('.selected').data(); 
+		if(data.length<1){
+				layer.alert("请选择项目！",{icon:0});
+				return;
+		}
+		var applyId = data[0].applyId;//Project_App_Record 表Apply_Id
+		window.location.href=appPath+"/project/toDealListPayDetailPg?content="+applyId;
     });
-    
     /** *************贷后监管************** **/
     $('#deal_list_suppervision').on('click', function(){
-    	$(".right_col").load('web/project/deal_list_supervice_list.jsp');
+    	var data = $('#table_id').DataTable().rows('.selected').data(); 
+		if(data.length<1){
+				layer.alert("请选择项目！",{icon:0});
+				return;
+		}
+    	var projectID = data[0].applyId;
+    	window.location.href=appPath+"/project/toDealListSupervicePg?content="+projectID;
     });
 });

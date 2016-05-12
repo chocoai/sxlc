@@ -546,11 +546,15 @@ $(function(){
 	 var endTime   = $("#endDate").val(); 
 	 var dateStarts = $(".chooseTime span.active").attr("data-time");
 	 var encrypt = new JSEncrypt();
-	 encrypt.setPublicKey(publickey); 
-	 var startTime = encrypt.encrypt(startDate+"");
-	 var endTime   = encrypt.encrypt(endDate+"");
-	 var dateStart = encrypt.encrypt(dateStarts+""); 
-	 window.location.href="inviteAwardRecordexcel/inviteAwardRecordexcel.html?startTime="+startTime+"&endTime="+endTime+"&dateStart="+dateStart;
+	 encrypt.setPublicKey(publickey);  
+	 var startTime2 = encrypt.encrypt(startTime+"");
+	 var endTime2   = encrypt.encrypt(endTime+"");
+	 var dateStart2 = encrypt.encrypt(dateStarts+""); 
+	 $("#startTimeatz").val(startTime2);
+	 $("#endTimeatz").val(endTime2);
+	 $("#dateStartatz").val(dateStart2);  
+	 document.inviteAwardexcel.submit(); 
+	// window.location.href="inviteAwardRecordexcel/inviteAwardRecordexcel.html?startTime="+startTime+"&endTime="+endTime+"&dateStart="+dateStart;
 	}); 
 	//历史返现导出excel
 	$("#inviteAwardHisExcel").on("click",function(){ 
@@ -559,10 +563,14 @@ $(function(){
      var endTime   = $("#endTimehis").val() == "请选择" ? "" : $("#endTimehis").val();  
 	 var encrypt = new JSEncrypt();
 	 encrypt.setPublicKey(publickey); 
-	 var startTime = encrypt.encrypt(startTime+"");
-	 var endTime   = encrypt.encrypt(startTime+"");
-	 var month = encrypt.encrypt(month+""); 
-	 window.location.href="inviteHistoryBackExcel/inviteHistoryBackexcel.html?startTime="+startTime+"&endTime="+endTime+"&month="+month;
+	 var startTime2 = encrypt.encrypt(startTime+"");
+	 var endTime2   = encrypt.encrypt(endTime+"");
+	 var month2 = encrypt.encrypt(month+"");
+	 $("#startTimeatzh").val(startTime2);
+	 $("#endTimeatzh").val(endTime2);
+	 $("#monthtzh").val(month2); 
+	 document.inviteHistory.submit(); 
+	// window.location.href="inviteHistoryBackExcel/inviteHistoryBackexcel.html?startTime="+startTime+"&endTime="+endTime+"&month="+month;
 	}); 
 	//邀请记录-注册时间-升序-降序
 	$("#registerRecord em").on("click",function(){

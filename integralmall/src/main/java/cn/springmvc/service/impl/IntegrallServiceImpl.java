@@ -83,6 +83,10 @@ public class IntegrallServiceImpl implements IIntegrallService {
 		Map<String,Object> param = new HashMap<String, Object>();
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId();
+		int sta=integrallServiceReadDao.BlackMemberJudgmentTre(memberId, 3);
+		if (sta==-1) {
+			return -6;
+		}
 		param.put("orderId", id);
 		param.put("mid", memberId);
 		param.put("commodityId", commodityId);

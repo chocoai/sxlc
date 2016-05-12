@@ -356,6 +356,57 @@ public class MsgSetController {
 	}
 	
 	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 消息发送历史页面 
+	 * @param req
+	 * @return String  
+	 * @date 2016-5-11 下午6:25:03
+	 * @throws 
+	 */
+	@RequestMapping("/toMsgPostPg")
+	public String toMsgPostPg(HttpServletRequest req){
+		return "config/msg-post";
+	}
+	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 获取消息发送历史分页数据
+	 * @param req
+	 * @return PageEntity  
+	 * @date 2016-5-11 下午6:32:05
+	 * @throws 
+	 */
+	@RequestMapping("/getMsgSendHistoryData")
+	@ResponseBody
+	public PageEntity getMsgSendHistoryData(HttpServletRequest req){
+		//获取加密参数
+		int start = Integer.parseInt(req.getParameter("start"));
+		int length = Integer.parseInt(req.getParameter("length"));
+		String MemberNo = req.getParameter("MemberNo");
+		String personalPhone = req.getParameter("personalPhone");
+		String personalName = req.getParameter("personalName");
+		String logname = req.getParameter("logname");
+		//设置参数
+		PageEntity pager = new PageEntity();
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("MemberNo", MemberNo);
+		param.put("personalPhone", personalPhone);
+		param.put("personalName", personalName);
+		param.put("logname", logname);
+		pager.setMap(param);
+		pager.setPageNum(start/length+1);
+		pager.setPageSize(length);
+		Integer pgType = Integer.parseInt(req.getParameter("pgType"));//标签页类型
+		if(pgType == 1 ){//站内信
+			channelSetService.SendHistory(pager);
+		}else if(pgType == 2){//短信
+			channelSetService.SMSHistory(pager);
+		}else if(pgType == 3){//邮件
+			channelSetService.MailHistory(pager);
+		}
+		return pager;
+	}
 	
 }
 

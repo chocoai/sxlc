@@ -50,7 +50,7 @@ function TradeType(){
 /**
  * 显示会员交易记录
  */
-function showMemberTradingList(memberId){
+function showMemberTradingList(memberId,memberType){
 	$('#table_id').DataTable(
 			{	autoWidth : false,
 				scrollY : 500,
@@ -86,6 +86,7 @@ function showMemberTradingList(memberId){
 		            	startDate = encrypt.encrypt(startDate);
 		            	endDate = encrypt.encrypt(endDate);
 		            	d.memberId=memberId;
+		            	d.memberType=memberType;
 		            	d.t_type=t_type;
 		            	d.startDate=startDate;
 		            	d.endDate=endDate;

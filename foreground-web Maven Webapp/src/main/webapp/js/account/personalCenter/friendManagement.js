@@ -24,6 +24,11 @@ $(function(){
 			$(".tab-head li").removeClass("tab-ing");
 			$(".tab-content .c-content").eq(index).addClass("content-active");
 			liNode.addClass("tab-ing");
+			
+			//查询站内好友
+			if(index==1){
+				quryFriendList();//friendManagement_data.js 里面
+			}
 		});
 	});
 	/*弹出层伍成然2016-4-6*/
@@ -36,6 +41,10 @@ $(function(){
 	        shadeClose: true, //点击遮罩关闭
 	        content: $('.undeal')//内容，里边是包含内容的div的class
 	    });
+		
+		//获取待确认好友列表
+		quryConfirmFriend();  //friendManagement_data.js 里面
+		
 	});
 	$(".add-friends").click(function(){
 		layer.open({
@@ -47,6 +56,12 @@ $(function(){
 	        content: $('.addFriends')//内容，里边是包含内容的div的class
 	    });
 	});
+	
+	$(".search").click(function(){
+		serachMemberByParam();//查找陌生人
+		
+	});
+	
 });
 $(function(){
 	/* 弹出层翻页 */

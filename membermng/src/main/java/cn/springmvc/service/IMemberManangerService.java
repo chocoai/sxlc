@@ -6,8 +6,8 @@ import java.util.Map;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.BlackLimitEntity;
-import cn.membermng.model.BlackRecordEntity;
 import cn.membermng.model.BorrowingStatistics;
+import cn.membermng.model.ComplanyInfoEntity;
 import cn.membermng.model.InvitationMembers;
 import cn.membermng.model.MemberAll;
 import cn.membermng.model.MemberAttestInfo;
@@ -55,6 +55,16 @@ public interface IMemberManangerService {
 	public MemberDetaileInfo memberInfoById(Long memberId);
 
 
+	/***
+	* 根据编号获取企业会员信息
+	* 
+	* @author 李杰
+	* @param memberId
+	* @return
+	* @date 2016-5-11 上午10:58:51
+	 */
+	public ComplanyInfoEntity companyInfo(Long memberId);
+	
 	
 	/***
 	* 拉黑某个会员

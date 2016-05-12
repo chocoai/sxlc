@@ -19,15 +19,17 @@ package cn.integralmall.model;
  * @date 2016-4-11 下午5:07:16  */
 
 public class InventoryRecordsEntity { 
-	private long    commodityID;//	商品ID 
-	private String 	operationTime;//	操作时间 
-	private int	    operationDirection;//	标志位：1入库-1出库	 
-	private int	    quantitys;//	入库/出库数量 
-	private int	    deleteFlag;//	标记为1有效0删除 
-	private long	adminID;//	管理员ID	 
-	private String	adminName;//	管理员ID	 
-	private int     totalQuantity;//记录库存总量 
-	private int     result;//记录库存总量 
+	private long    commodityID;			//	商品ID 
+	private String 	operationTime;			//	操作时间 
+	private int	    operationDirection;		//	标志位：1入库-1出库	 
+	private int	    quantitys;				//	入库/出库数量 
+	private int	    deleteFlag;				//	标记为1有效0删除 
+	private long	adminID;				//	管理员ID	 
+	private String	adminName;				//	管理员ID	 
+	private int     totalQuantity;			//	记录库存总量 
+	private int     result;					//	记录库存总量 
+	
+	
 	public long getCommodityID() {
 		return commodityID;
 	}

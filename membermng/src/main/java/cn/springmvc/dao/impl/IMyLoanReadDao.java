@@ -6,6 +6,7 @@ import java.util.Map;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.AdvanceEntity;
 import cn.membermng.model.Cleared;
+import cn.membermng.model.ComfirLoanInfo;
 import cn.membermng.model.ConfirmationLoan;
 import cn.membermng.model.Financing;
 import cn.membermng.model.FlowLabel;
@@ -18,6 +19,7 @@ import cn.membermng.model.RepaymentOfBorrowings;
 import cn.membermng.model.RepaymentOfBorrowingsRM;
 import cn.membermng.model.ReplayDetailEntity;
 import cn.membermng.model.StayStillPlan;
+import cn.membermng.model.SuccessRepayDetail;
 
 
 /***
@@ -30,10 +32,6 @@ import cn.membermng.model.StayStillPlan;
 *
  */
 public interface IMyLoanReadDao {
-
-	
-	
-	
 	
 	
 	
@@ -232,5 +230,29 @@ public interface IMyLoanReadDao {
 	  * @date 2016-5-10 上午11:47:58
 	  */
 	 public List<RepaymentOfBorrowingsRM> loanRepayback(PageEntity entity);
+
+	 /***
+	 * 获取确认借款信息
+	 * 
+	 * @author 李杰
+	 * @param param
+	 * @return
+	 * @date 2016-5-12 下午2:32:40
+	  */
+	 public ComfirLoanInfo confirmationLoanInfo(Map<String, Object> param);
+
+	 
+	/**
+	 * 成交项目管理-还款详情
+	 * @author 刘利   
+	 * @Description: TODO   
+	 * @return List<LoanRepay> 返回类型 
+	 * @date 2016-5-12 下午3:54:00
+	 */
+	 public List<SuccessRepayDetail> loanRepayDetail(PageEntity entity);
+	
+	 
+	 
+	 
 }
 

@@ -34,6 +34,7 @@ public class WithdrawsInterdaceEntity {
 	private String ReturnURL;//页面返回网址
 	private String NotifyURL;//后台通知网址
 	private String SignInfo;//签名信息
+	private int statu=0;//0:成功 1：拉黑会员禁止提现
 	public String getWithdrawMoneymoremore() {
 		return WithdrawMoneymoremore;
 	}
@@ -189,6 +190,12 @@ public class WithdrawsInterdaceEntity {
 	}
 	public void setSubmitURL(String submitURL) {
 		this.submitURL = submitURL;
+	}
+	public int getStatu() {
+		return statu;
+	}
+	public void setStatu(int statu) {
+		this.statu = statu;
 	}
 	
 }

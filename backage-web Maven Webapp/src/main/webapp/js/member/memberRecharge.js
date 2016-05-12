@@ -24,7 +24,7 @@ $(function(){
 /**
  * 显示会员充值项目
  */
-function showMemberRechargeList(memberId){
+function showMemberRechargeList(memberId,memberType){
 	$('#table_id').DataTable(
 			{	autoWidth : false,
 				scrollY : 500,
@@ -61,7 +61,12 @@ function showMemberRechargeList(memberId){
 		            	threeNum = encrypt.encrypt(threeNum);
 		            	startDate = encrypt.encrypt(startDate);
 		            	endDate = encrypt.encrypt(endDate);
+		            	d.statu = statu;
+		            	d.threeNum =threeNum;
+		            	d.startDate = startDate;
+		            	d.endDate =endDate;
 		            	d.memberId=memberId;
+		            	d.memberType=memberType;
 		            } 
 		        },
 		        columns: [  

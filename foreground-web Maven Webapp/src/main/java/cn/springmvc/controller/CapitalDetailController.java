@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.datatrans.IntegerAndString;
@@ -71,7 +72,7 @@ public class CapitalDetailController {
 		 //  10总金额 降序,-10 总金额 升序)
 		
 		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
-		int length = IntegerAndString.StringToInt(request.getParameter("length"),10) ; 
+		int length = IntegerAndString.StringToInt(request.getParameter("length"),6) ; 
 		
 		long[] lMemberInfo = new long[2] ;
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
@@ -101,13 +102,42 @@ public class CapitalDetailController {
 		
 		PageEntity entity = new PageEntity();
 		entity.setMap(param);
-		entity.setPageNum(start/length+1);
+		entity.setPageNum(start);
 		entity.setPageSize(length);
 		
 		List<MemberTradingRecordsEntity> list = capitalbudgetdetailsService.selectMemberTradingRecords(entity);
+		//TODO 测试假数据
+		/*for (int i = 0; i < 6; i++) {
+			MemberTradingRecordsEntity entity2 = new MemberTradingRecordsEntity();
+			entity2.setTradeID(i*100+1);
+			entity2.setTradeTypeId(i+1);
+			entity2.setGetPay(i%2);
+			entity2.setTradeType("充值");
+			entity2.setAmount(500000*(i+1));
+			entity2.setRecordNo(i*15656+545+"");
+			entity2.setStatisticsAmount(i*16355);
+			entity2.setTotalAmount(i*i*i*i*i+56415614);
+			entity2.setStatisticsFrozenAmount(i+i*5456);
+			entity2.setTradeObjectType((i+1)%3);
+			entity2.setWillRecPrincipal(156);
+			entity2.setWillRecInterest(13514);
+			entity2.setUserBalance(62352345);
+			entity2.setWillPayPrincipal((i+1)%3);
+			entity2.setWillPayInterest(8325);
+			entity2.setWillPayOverdueInterest(625452);
+			entity2.setWillPayOverdue(100000);
+			entity2.setRecordDate("2016-05-11");
+
+			list.add(entity2);
+		}
+		entity.setResults(list);*/
+		
 		PageUtil.ObjectToPage(entity, list);
 		entity.getMap().remove("sKey");
 		
+		/*entity.setTotalPage(2);
+		entity.setRecordsTotal(12);
+		entity.setRecordsFiltered(6);*/
 		return JSONObject.toJSONString(entity);
 		
 	}
@@ -156,11 +186,11 @@ public class CapitalDetailController {
 	@ResponseBody
 	public String selectRechargeList(HttpServletRequest request){
 		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
-		int length = IntegerAndString.StringToInt(request.getParameter("length"),10) ; 
+		int length = IntegerAndString.StringToInt(request.getParameter("length"),4) ; 
 		
 		//筛选条件
-		String startDate = request.getParameter("startDate");
-		String endDate = request.getParameter("endDate");
+		String startDate = request.getParameter("startTime");
+		String endDate = request.getParameter("endTime");
 		String statu = request.getParameter("statu");//-1所有 0：失败 1：成功 	
 		String order = request.getParameter("order");//排序  1充值金额 降序,-1充值金额 升序，2 交易时间 降序，-2 交易时间 升序， 3实际到账金额 降序，-3 实际到账金额 升序
 		String thirdMerBillno = request.getParameter("thirdMerBillno");//第三方交易流水号
@@ -190,7 +220,7 @@ public class CapitalDetailController {
 		}
 		PageEntity pager = new PageEntity();
 		pager.setMap(param);
-		pager.setPageNum(start/length+1);
+		pager.setPageNum(start);
 		pager.setPageSize(length);
 		
 		
@@ -217,12 +247,12 @@ public class CapitalDetailController {
 	@ResponseBody
 	public String selectWithdrawalList(HttpServletRequest request){
 		int start = IntegerAndString.StringToInt(request.getParameter("start"),1) ;
-		int length = IntegerAndString.StringToInt(request.getParameter("length"),10) ; 
+		int length = IntegerAndString.StringToInt(request.getParameter("length"),6) ; 
 		
 		//筛选条件
 		//申请时间
-		String startDate = request.getParameter("startDate");
-		String endDate = request.getParameter("endDate");
+		String startDate = request.getParameter("startTime");
+		String endDate = request.getParameter("endTime");
 		
 		String statu = request.getParameter("statu");//-1所有 
 		String order = request.getParameter("order");//排序  1充值金额 降序,-1充值金额 升序，2 交易时间 降序，-2 交易时间 升序， 3实际到账金额 降序，-3 实际到账金额 升序
@@ -254,7 +284,7 @@ public class CapitalDetailController {
 		}
 		PageEntity pager = new PageEntity();
 		pager.setMap(param);
-		pager.setPageNum(start/length+1);
+		pager.setPageNum(start);
 		pager.setPageSize(length);
 		
 		
@@ -298,6 +328,6 @@ public class CapitalDetailController {
 		
 		return JSONObject.toJSONString(data);
 	}
-	
+
 }
 

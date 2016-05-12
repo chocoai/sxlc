@@ -104,9 +104,9 @@ public class IdentyMemController {
 		}else if(attestTypeID==4){//住址认证
 			xmlSql="EnterpriseCAXML.AddressAuthentication";
 		}else if(attestTypeID==7){//房产
-			xmlSql="EnterpriseCAXML.selectMemberAttestByType";
+			xmlSql="EnterpriseCAXML.HouseCentification";
 		}else if(attestTypeID==8){//车产
-			xmlSql="EnterpriseCAXML.selectMemberAttestByType";
+			xmlSql="EnterpriseCAXML.CarCentification";
 		}else if(attestTypeID==10){//婚姻认证
 			xmlSql="EnterpriseCAXML.marriageCertification";
 		}else if(attestTypeID==11){//学历认证
@@ -156,6 +156,8 @@ public class IdentyMemController {
 		String endDate = request.getParameter("sEndDate");
 		if(endDate!=null && !endDate.equals("")){
 			endDate +=" 11:59:59";
+		}else{
+			endDate = null;
 		}
 		map.put("certificationID", attestId);
 		map.put("memberID", memberId);
@@ -373,7 +375,6 @@ public class IdentyMemController {
 	@ResponseBody
 	public CurrencyAuth marryIdenty(HttpServletRequest req){
 		long   memberId = IntegerAndString.StringToLong(req.getParameter("memberId"), 0);
-		
 		CurrencyAuth auth=  borrowingCertificationServer.showAuthMarriage(memberId);
 		return auth;
 	}

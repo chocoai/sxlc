@@ -1,14 +1,5 @@
 $(function() {
-	var slidey = $('.banner').unslider({
-		speed: 500,			   
-		delay: 3000,			
-		complete: function() {}, 
-		keys: true,			 
-		dots: true,			  
-		fluid: true
-	});
-	data = slidey.data('unslider'); 
-	data.move(2, function() {});
+
 	/* 平台特色部分开始 */
 	$(".feature li div").mouseover(function(){
 		$(this).find(".featureTitle").css("color","#72c0f3");
@@ -22,7 +13,7 @@ $(function() {
 	$(".iLtContent").eq(2).hide();
 	$(".ranking_list span").click(function(){
 		var index=$(this).index();
-		$(".iLtContent").eq(index).show().siblings(".iLtContent").hide();
+		//$(".iLtContent").eq(index).show().siblings(".iLtContent").hide();
 	});
 	$(".ranking_list .rankingWeekly").addClass("rlSpanHover").siblings().removeClass("rlSpanHover");
 	$(".ranking_list span").click(function(){
@@ -162,7 +153,7 @@ $(function() {
 });
 	/* 王延君 2016-03-27 公告滚动部分开始 */
 
-window.onload = function(){
+broadcastScroll= function(){
 			var send = 30;
 			var data;
 			var demo = document.getElementById("demo");

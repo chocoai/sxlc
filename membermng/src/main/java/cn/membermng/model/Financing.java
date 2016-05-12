@@ -130,7 +130,8 @@ public class Financing {
 
 	public void setAmount(long amount) {
 		this.amount = amount;
-		this.sAmount = IntegerAndString.LongToString(amount);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sAmount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(amount))) ; 
 	}
 
 	public String getsAmount() {
@@ -147,7 +148,9 @@ public class Financing {
 
 	public void setYearRate(int yearRate) {
 		this.yearRate = yearRate;
-		this.sYearRate = IntegerAndString.IntToString(yearRate);
+		String yearRatess = IntegerAndString.IntToString(yearRate);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sYearRate =  myformat.format(Double.valueOf(yearRatess));
 	}
 
 	public String getsYearRate() {
@@ -196,7 +199,8 @@ public class Financing {
 
 	public void setInvestRate(int investRate) {
 		this.investRate = investRate;
-		this.setsInvestRate(IntegerAndString.IntToString(investRate));
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sInvestRate =  myformat.format(Double.valueOf(IntegerAndString.IntToString(investRate))) ;
 	}
 
 	public String getsInvestRate() {

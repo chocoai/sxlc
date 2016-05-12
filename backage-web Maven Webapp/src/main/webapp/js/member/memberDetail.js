@@ -35,7 +35,7 @@ function  showVipRecord(memberId){
 
 /*  对会员详情进行显示控制         */
 /**
- * 会员基本信息
+ * 个人会员基本信息
  */
 function  showMemberDetail(memberId){
 	var  url= appPath+"/member/getMemDetail.do";
@@ -117,6 +117,111 @@ function  showMemberDetail(memberId){
 						$("#sMonthlyIncome").text(data.sMonthlyIncome);
 					}
 					$("#area").text(str); //地区
+				}
+			},  
+			error : function() {  
+				layer.alert("服务器异常",{icon:2});  
+			}  
+		});
+	
+}
+
+/*  对会员详情进行显示控制         */
+/**
+ * 企业会员基本信息
+ */
+function  showCompanyDetail(memberId){
+	var  url= appPath+"/member/getCompanyDetail.do";
+	$.ajax( {  
+		 url:url,
+			data:{
+				memberId:memberId
+			},
+			type:'post',  
+			cache:false,  
+			dataType:'json',   
+			success:function(data) { 
+				if(data!=null){
+					var str="";  //地区
+					//console.log(JSON.stringify(data));
+            		 if(data.provinceName!=null &&data.provinceName!=""){
+            			str = data.provinceName;
+            		 }
+            		if(data.cityName!=null &&data.cityName!=""){
+            			str +=" "+data.cityName;
+            		 }
+            		if(data.countyName!=null &&data.countyName!=""){
+            			str +=" "+ data.countyName;
+            		 }
+            		if(data.townName!=null &&data.townName!=""){
+            			str +=" "+ data.townName;
+            		 }
+					if(data.memberNo!=null){//编号
+						$("#memberNo").text(data.memberNo);
+					}
+					if(data.memberName!=null){//登录名的
+						$("#memberName").text(data.memberName);
+					}
+					if(data.complanyName!=null){//企业名称
+						$("#complanyName").text(data.complanyName);
+					}
+					if(data.yyzzh!=null){//营业执照号
+						$("#yyzzh").text(data.yyzzh);
+					}
+					if(data.complanyAdd!=null){//企业地址
+						$("#complanyAdd").text(data.complanyAdd);
+					}
+					if(data.legalPersonName!=null){//法人代表
+						$("#legalPersonName").text(data.legalPersonName);
+					}
+					if(data.legalIdCard!=null){//法人身份证
+						$("#legalIdCard").text(data.legalIdCard);
+					}
+					if(data.zzjgdm!=null){//组织机构代码
+						$("#zzjgdm").text(data.zzjgdm);
+					}
+					if(data.swdjh!=null){//税务登记号
+						$("#swdjh").text(data.swdjh);
+					}
+					if(data.businessScope!=null){//经营范围
+						$("#businessScope").text(data.businessScope);
+					}
+					if(data.premises!=null){//经营场所
+						$("#premises").text(data.premises);
+					}
+					if(data.complanyDetall!=null){//公司简介 
+						$("#complanyDetall").text(data.complanyDetall);
+					}
+					if(data.regAomunt!=null){//注册资本
+						$("#regAomunt").text(data.regAomunt);
+					}
+					if(data.regAomuntSource!=null){//注册资本来源
+						$("#regAomuntSource").text(data.regAomuntSource);
+					}
+					if(data.contactName!=null){//联系人
+						$("#contactName").text(data.contactName);
+					}
+					if(data.contactEmail!=null){//联系人邮箱
+						$("#contactEmail").text(data.contactEmail);
+					}
+					if(data.contactPhone!=null){//联系人电话
+						$("#contactPhone").text(data.contactPhone);
+					}
+					if(data.contactQq!=null){//联系人qq
+						$("#contactQq").text(data.contactQq);
+					}
+					if(data.contactPhone!=null){//联系人电话
+						$("#contactPhone").text(data.contactPhone);
+					}
+					if(data.contactPhone!=null){//联系人电话
+						$("#contactPhone").text(data.contactPhone);
+					}
+					$("#area").text(str); //地区
+					if(data.regTime!=null){//注册时间
+						var str= data.regTime;
+						var a = str.substring(0,(str.length-2));
+						$("#regTime").text(a);
+					}
 				}
 			},  
 			error : function() {  

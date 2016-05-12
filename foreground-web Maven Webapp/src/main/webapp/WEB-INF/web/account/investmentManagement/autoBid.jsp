@@ -103,7 +103,7 @@
 				   					</div>
 				   					<div class="actualPaymentDate divOutside">
 				   						<div class="divIntside">
-				   							<div class="highLight"><a class="highLight">删除</a></div>
+				   							<div class="highLight" id="deleAutoBid"><a class="highLight">删除</a></div>
 				   						</div>
 				   					</div>
 		   						</li>

@@ -1,6 +1,9 @@
 package cn.membermng.model; 
 
+import java.sql.Timestamp;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 
 /***
@@ -132,7 +135,8 @@ public class FlowLabel {
 
 	public void setAmount(long amount) {
 		this.amount = amount;
-		this.sAmount = IntegerAndString.LongToString(amount);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sAmount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(amount))) ;     
 	}
 
 	public String getsAmount() {
@@ -149,7 +153,8 @@ public class FlowLabel {
 
 	public void setMinAmount(long minAmount) {
 		this.minAmount = minAmount;
-		this.sMinAmount = IntegerAndString.LongToString(minAmount);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sMinAmount =  myformat.format(Double.valueOf(IntegerAndString.LongToString(minAmount))) ;   
 	}
 
 	public String getsMinAmount() {
@@ -166,7 +171,8 @@ public class FlowLabel {
 
 	public void setYearRate(int yearRate) {
 		this.yearRate = yearRate;
-		this.sYearRate = IntegerAndString.IntToString(yearRate);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sYearRate =  myformat.format(Double.valueOf(IntegerAndString.LongToString(yearRate))) ;  
 	}
 
 	public String getsYearRate() {
@@ -182,7 +188,7 @@ public class FlowLabel {
 	}
 
 	public void setReleaseTime(String releaseTime) {
-		this.releaseTime = releaseTime;
+		this.releaseTime =  TimestampAndString.TimestampToString2(Timestamp.valueOf(releaseTime));
 	}
 
 	public String getStartTime() {
@@ -190,7 +196,7 @@ public class FlowLabel {
 	}
 
 	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+		this.startTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(startTime));
 	}
 
 	public String getEndTime() {
@@ -198,7 +204,7 @@ public class FlowLabel {
 	}
 
 	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+		this.endTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(endTime));
 	}
 
 	public String getRealEndDate() {
@@ -206,7 +212,7 @@ public class FlowLabel {
 	}
 
 	public void setRealEndDate(String realEndDate) {
-		this.realEndDate = realEndDate;
+		this.realEndDate = TimestampAndString.TimestampToString2(Timestamp.valueOf(realEndDate));
 	}
 
 	public long getInvestRate() {
@@ -215,7 +221,8 @@ public class FlowLabel {
 
 	public void setInvestRate(int investRate) {
 		this.investRate = investRate;
-		this.sInvestRate = IntegerAndString.IntToString(investRate);
+		java.text.DecimalFormat myformat=new java.text.DecimalFormat("#0.00"); 
+		this.sInvestRate =  myformat.format(Double.valueOf(IntegerAndString.LongToString(investRate))) ;   
 	}
 
 	public String getsInvestRate() {
@@ -227,7 +234,7 @@ public class FlowLabel {
 	}
 	
 	public void setHoldDate(String holdDate) {
-		this.holdDate = holdDate;
+		this.holdDate =  TimestampAndString.TimestampToString2(Timestamp.valueOf(holdDate));
 	}
 	
 	public String getHoldDate() {

@@ -601,7 +601,7 @@
 			LEFT JOIN Enterprise_Car_Check ela ON ela.Certification_ID=mai.Certification_ID
 			where mi.Member_Type=1 and mai.Certification_ID=#{certificationID};
 	    </if>
-	    <if test="certificationType == 16 or certificationType == 17 or certificationType == 20 or certificationType ==21 or certificationType>23 "><!-- 根据认证记录id查看车辆认证认证信息 -->
+	    <if test="certificationType == 16 or certificationType == 17 or certificationType == 20 or certificationType ==21 or certificationType>23 "><!-- 根据认证记录id查看其他认证信息 -->
 	    	select mi.Member_No memberNo,mi.Member_ID memberID,mi.Logname logname,mai.End_Date endDate
 		    ,mai.Certification_ID certificationID,mai.Record_Date recordDate,mai.Status status,mai.Attest_Type_ID attestTypeID,
 			mat.Attest_TypeName attestTypeName,(SELECT name1 from DICT where tcode='DICT_HYRZZT' and code1=mai.Status LIMIT 1) AS statuname,
@@ -901,7 +901,7 @@
 						WHERE mi.Member_ID=mfa.Member_ID LIMIT 1) faid
 		from Member_Info mi  
 		LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id = mi.Personal_Id 
-		left join Company_Info ci on ci.Company_ID = mi.Company_ID
+		left join Company_Info ci on ci.Company_ID = mi.Company_ID where
 		mi.Member_Type = #{map.memberType} and (SELECT count(*) FROM Member_Financial_Advisor mfa WHERE mfa.Member_ID = mi.Member_ID )>0
 		) newTab
 		<where>

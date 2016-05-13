@@ -28,7 +28,18 @@ public class ProcessProjectEntity {
 	/**
 	 * 审批活动点名称
 	 */
-	private String apName; 
+	private String apName;
+	/**
+	 * 审批最后一步（发布）的审核序号
+	 */
+	private int pushIndex;
+	
+	/**
+	 * 审核第一步的审核序号
+	 */
+	private int firstIndex;
+	
+	private int result;
 	public int getApID() {
 		return apID;
 	}
@@ -64,6 +75,24 @@ public class ProcessProjectEntity {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getPushIndex() {
+		return pushIndex;
+	}
+	public void setPushIndex(int pushIndex) {
+		this.pushIndex = pushIndex;
+	}
+	public int getResult() {
+		return result;
+	}
+	public void setResult(int result) {
+		this.result = result;
+	}
+	public int getFirstIndex() {
+		return firstIndex;
+	}
+	public void setFirstIndex(int firstIndex) {
+		this.firstIndex = firstIndex;
 	} 
 
 }

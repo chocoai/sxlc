@@ -44,7 +44,7 @@ function insertCertification(){
 				str_url,
 				{editType:editType,type:type,endTime:endTime,annex:annex},
 				function(r){
-					console.log(r);
+					//console.log(r);
 					var r = JSON.parse(r);
 					if (r.status == 0){
 						layer.alert("操作成功",function(){
@@ -75,7 +75,7 @@ function quryCertification(){
 				var r = JSON.parse(r);
 				if (r.status == 0){
 					var data=r.data;
-					console.log(data);
+					//console.log(data);
 					if(data!=null && data!=""){
 						$(".editType").val("1");
 						var attachPrefix=data.attachPrefix;

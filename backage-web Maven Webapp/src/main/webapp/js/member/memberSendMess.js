@@ -20,7 +20,6 @@ function  showMemberDetail(memberId){
 				if(data!=null){
 					if(data.memberPhone!=null){
 						$("#memberPhone").text(data.memberPhone);
-						
 					}
 					if(data.memberEmail!=null){
 						$("#memberEmail").text(data.memberEmail);

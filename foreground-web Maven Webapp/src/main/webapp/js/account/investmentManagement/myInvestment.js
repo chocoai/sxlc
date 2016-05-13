@@ -65,7 +65,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							console.log(data)
+							//console.log(data)
 							if (data.tol>0){
 								var html = template("recy_list",data);
 								$("#recyTop").siblings().remove();
@@ -167,7 +167,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-//							console.log(data);
+//							//console.log(data);
 							if (data.tol>0){
 								var html = template("biding_list",data);
 								$("#bidingTop").siblings().remove();
@@ -216,7 +216,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-//							console.log(data);
+//							//console.log(data);
 							if (data.tol>0){
 								var html = template("bidMissed_list",data);
 								$("#bidMisseTop").siblings().remove();
@@ -265,7 +265,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-//							console.log(data);
+//							//console.log(data);
 							if (data.tol>0){
 								var html = template("bidEnd_list",data);
 								$("#bidEndTop").siblings().remove();

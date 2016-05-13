@@ -223,6 +223,7 @@ public class ProjectAppRecordEntity {
 	 * 项目类型小图标
 	 */
 	private String picIcon;
+	private int    pushIndex;//发布是的审批序号
 	private long   investTotal;//已投资总额
 	private String investTotals;//已投资总额
 	private String projectName;//借款类型名称

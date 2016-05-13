@@ -334,5 +334,16 @@ public interface IMemberManagerReadDao {
 	 */
 	public ComplanyInfoEntity companyInfo(Map<String, Object> param);
 	
+	/**
+	 * 根据手机号获取登录人管理员id
+	 * TODO
+	 * 创建日期：2016-5-12下午2:00:26
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	public int getAdminIdByPhone(Map<String, Object> param);
+
 	
 }

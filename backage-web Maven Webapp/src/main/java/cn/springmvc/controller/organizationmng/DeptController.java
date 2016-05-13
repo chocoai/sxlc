@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sun.corba.se.impl.util.Utility;
 
 import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
@@ -84,7 +85,7 @@ public class DeptController {
 		String principalPhone = request.getParameter("principalPhone");
 		int start = Integer.valueOf(request.getParameter("start"));
 		int length = Integer.valueOf(request.getParameter("length"));
-		
+		long spreDeptId = IntegerAndString.StringToLong(request.getParameter("spreDeptId"),0);
 		if(deptNo != null && deptNo != "") {
 			req.put("deptNo", deptNo);
 		}
@@ -97,8 +98,8 @@ public class DeptController {
 		if (principalPhone != null && principalPhone != "") {
 			req.put("principalPhone", principalPhone);
 		}
-			req.put("deptStatu", -1);
-		
+		req.put("deptStatu", -1);
+		req.put("spreDeptId", spreDeptId);
 		pager.setPageNum(start / length + 1);
 		pager.setPageSize(length);
 		pager.setMap(req);

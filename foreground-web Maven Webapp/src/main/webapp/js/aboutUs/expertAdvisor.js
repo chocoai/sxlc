@@ -20,7 +20,6 @@ function bindSlider(){
 		if(dec <= 0 - num * width + 1050){
 		}else{
 			dec -= width;
-			console.log(dec);
 			$(".divMain-divWindow ul").animate({
 				left:dec
 			},200);

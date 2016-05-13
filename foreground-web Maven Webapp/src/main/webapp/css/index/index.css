@@ -147,6 +147,7 @@
 	width: 55%;
 	display: inline;
 	padding-bottom:3px;
+	margin-left: 80px
 }
 .floatTSpan1 i{
 	color:#e9fbff;
@@ -1041,6 +1042,8 @@
 }
 .newsImg{
 	margin-top:4px;
+	width:100%;
+	height:155px
 }
 .secBottom .secBottomFirst div{
 	color:#000;
@@ -1509,4 +1512,8 @@
 	height:360px;
 	width:100%;
 	position: relative;
+}
+
+.float_u{
+	float: none;
 }

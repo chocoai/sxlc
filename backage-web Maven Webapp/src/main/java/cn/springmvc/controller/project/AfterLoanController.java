@@ -19,6 +19,8 @@ import product_p2p.kit.Upload.FtpClientUtil;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
+import cn.membermng.model.SuccessRepayDetail;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.LoanRepayUrgedRecordEntity;
 import cn.springmvc.model.PostProjectEntity;
@@ -695,7 +697,8 @@ public class AfterLoanController {
 		pager.setMap(param);
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
-		iMyLoanService.loanRepayDetail(pager);
+		List<SuccessRepayDetail> list = iMyLoanService.loanRepayDetail(pager);
+		PageUtil.ObjectToPage(pager, list); 
 		return pager;
 	}
 }

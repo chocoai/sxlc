@@ -8,6 +8,8 @@
 		<result column="Indexs"       property="indexs" />
 		<result column="Statu"        property="statu" />
 		<result column="AP_Name"      property="apName" /> 
+		<result column="pushIndex"    property="pushIndex" /> 
+		<result column="firstIndex"    property="firstIndex" /> 
     </resultMap>  
 	<!-- 分页查询的项目审批流程-->  
 	<select id="selectProcessProjectListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProcessProject" >
@@ -15,12 +17,15 @@
 	   from  Process_Project  pp
 	   LEFT JOIN Activities_Project ap   on ap.Process_ID=pp.Process_ID  
     </select> 
-     <!-- 新增项目审批流程 -->  
-	<insert id="insertProcessProject"  parameterType="cn.springmvc.model.ProcessProjectEntity" >    
-		insert into 
-		Process_Project( PP_ID,  Process_ID,   Batch,   Indexs) 
-		    values     (#{id},       #{apID}, #{batch},#{indexs})    
-	</insert>   
+     <!-- 新增项目审批流程 -->    
+ 	 <select id="insertProcessProject"  statementType="CALLABLE" parameterType="cn.springmvc.model.ProcessProjectEntity"> 
+	     {call insertProcess(
+				#{id,	         mode=IN,	jdbcType=BIGINT},
+				#{apID,	         mode=IN,	jdbcType=VARCHAR}, 
+				#{batch,	     mode=IN,	jdbcType=INTEGER}, 
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)} 
+	</select>  
     <!-- 删除项目审批流程 -->  
 	<delete id="deleteProcessProjectByID"  parameterType="int">
 	   delete from  Process_Project where PP_ID=#{id}   
@@ -56,9 +61,12 @@
     
     	<!--列表查询的项目审批流程-->  
 	<select id="selectProcessProjectList"    resultMap="resultListProcessProject" >
-	   select pp.PP_ID, pp.Process_ID,pp.Batch,pp.Indexs,pp.Statu,ap.AP_Name
+	   select 
+	   (select max(Indexs) from Process_Project where  statu =1 ) as pushIndex,
+	   (select min(Indexs) from Process_Project where  statu =1 ) as firstIndex,
+	   pp.PP_ID, pp.Process_ID,pp.Batch,pp.Indexs,pp.Statu,ap.AP_Name
 	   from  Process_Project  pp
 	   LEFT JOIN Activities_Project ap   on ap.Process_ID=pp.Process_ID  
-	   where ap.Statu = 1
+	   where ap.Statu = 1  order by pp.Indexs asc
     </select> 
 </mapper>

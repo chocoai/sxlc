@@ -87,6 +87,7 @@ public interface ProjectPublishService {
 	 */
 	public int updateEndtime(ProjectAppProcessEntity projectAppProcessEntity,InsertAdminLogEntity 
 			logentity,String[] sIpInfo);
+	
 	/**
 	 *  查询借款结束日期
 	 *  @param projectID  项目申请ID
@@ -96,6 +97,17 @@ public interface ProjectPublishService {
 	 *  @date 2016-3-21 下午12:50:30
 	 */
 	public  ProjectAppProcessEntity selectProjectEndtime(long projectID);
-
+    
+	
+	/**
+	 * 拒绝
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return int 返回类型 
+	 * @date 2016-5-13 下午5:15:57
+	 */
+	public int Refuse(long applyId);
 }
 

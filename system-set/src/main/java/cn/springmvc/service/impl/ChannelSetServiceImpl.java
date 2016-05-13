@@ -165,23 +165,26 @@ ChannelSetService {
 	}
 
 	@Override
-	public List<ThreeInterfaceEntity> selectThreeInterface() {
+	public List<ThreeInterfaceEntity> selectThreeInterface(PageEntity pageEntity) {
 		
-		// TODO Auto-generated method stub return null;
-		return selectChannelSetDaoImpl.selectThreeInterface();
+		List<ThreeInterfaceEntity> list =  selectChannelSetDaoImpl.selectThreeInterface(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	@Override
-	public int updateThreeInterface(Map<String, Object> map) {
+	public int updateThreeInterface(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
 		
-		// TODO Auto-generated method stub return 0;
+		entity.setsDetail("修改第三方接口:"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		return handleChannelSetDaoImpl.updateThreeInterface(map);
 	}
 
 	@Override
-	public int insertThreeInterface(Map<String, Object> map) {
+	public int insertThreeInterface(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
 		
-		// TODO Auto-generated method stub return 0;
+		entity.setsDetail("添加第三方接口:"+map.toString());
+		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		return handleChannelSetDaoImpl.insertThreeInterface(map);
 	}
 

@@ -21,8 +21,8 @@
     <div class="nowPosition">
     	<div class="nowPositionContent">您当前位置 > <a href="integralMall/mallIndex.html">积分商城</a> > <span>商品详情</span></div>
     </div>
-    <div class="productListArea">
-    	<div class="main">
+    <div id="productListArea" class="productListArea">
+    	<!-- <div class="main i-b2">
     		<div class="itemDetail clearfix">
     			<img src="resource/img/integralMall/sp_15_03.png" />
     			<div class="detail">
@@ -54,9 +54,46 @@
     				<img class="detailImg" src="resource/img/integralMall/detail2.png" />
     			</div>
     		</div>
-    	</div>
+    	</div> -->
+    	
+    	<script id="goodsDet" type="text/html">
+    			<div class="main">
+		    		<div class="itemDetail clearfix">
+		    			<img class="goodsImg" src="{{commoditySmallIcon}}" />
+		    			<div class="detail">
+		    				<p class="head">{{commodityName}}</p>
+		    				<p class="productIntroduce">{{commodityDescribe}}</p>
+		    				<div class="integral">
+		    					<p>兑换积分：<samp>{{needPoint}}</samp></p>
+		    					<p>市场价格：<span class="moneyFormat">{{marketPrice}}</span>元</p>
+		    				</div>
+		    				<div class="number">
+		    					<span class="subBtn" >-</span>
+		    					<input value="1"/>
+		    					<span class="addBtn" >+</span>
+		    				</div>
+		    				<a class="buy" href="integralMall/exchangeDetail.html">立即兑换</a>
+		    			</div>
+		    		</div>
+		    		<div class="description">
+		    			<div class="descripHead">
+		    				<span>商品详情</span>
+		    			</div>
+		    			<div class="detailEmf">
+		    				<div class="detailEmfli">
+		    					<p class="titleEmf">详细参数</p>
+		    					<p><span><samp>产品名称</samp>{{commodityName}}</span><span class="rightSpan"><samp>厂家名称</samp>{{manufacturer}}</span></p>
+		    					<p><span><samp>产品品牌</samp>{{brand}}</span><span class="rightSpan"><samp>产品规格</samp>28*278*8cm</span></p>
+		    				</div>
+		    				<img class="detailImg" src="{{commodityLargeIcon}}" />
+		    			</div>
+		    		</div>
+		    	</div>
+    	</script>
+    	
     </div>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
+   	<script type="text/javascript" src="js/common/template.js"></script>
 	<script type="text/javascript" src="js/integralMall/itemDetail.js"></script>
 </body>
 </html>

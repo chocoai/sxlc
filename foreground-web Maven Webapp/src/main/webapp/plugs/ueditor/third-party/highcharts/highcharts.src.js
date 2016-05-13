@@ -951,7 +951,7 @@ function error(code, stop) {
 	if (stop) {
 		throw msg;
 	} else if (win.console) {
-		console.log(msg);
+		//console.log(msg);
 	}
 }
 

@@ -9,6 +9,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.BlackLimitEntity;
 import cn.membermng.model.BlackRecordEntity;
@@ -238,6 +239,12 @@ public class MemberManagerReadDaoImpl extends SqlSessionDaoSupport implements IM
 	@Override
 	public int countLimit() {
 		return getSqlSession().selectOne("memberManagerDao.countblackLimt");
+	}
+
+	@Override
+	public int getAdminIdByPhone(Map<String, Object> param) {
+		 getSqlSession().selectOne("memberManagerDao.getAdminIdByPhone",param);
+		 return IntegerAndString.StringToInt(param.get("result").toString(), -1);
 	}
 	
 }

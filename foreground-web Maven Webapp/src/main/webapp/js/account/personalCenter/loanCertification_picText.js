@@ -317,7 +317,7 @@ $(function(){
 	 * @param attachPrefix
 	 */
 	function dealMarriage(data,attachPrefix){
-		console.log(data);
+		//console.log(data);
 		if(data!=null){
 			var marriageType=data.isMarried;//婚姻状况
 			var sEndDate=data.sEndDate;//登记时间

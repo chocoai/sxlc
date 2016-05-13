@@ -39,7 +39,7 @@ $(function(){
 			dataType:"json",
 			timeout:10000,
 			success:function(data){
-				//console.log(data);
+				////console.log(data);
 				if(data){
 					if(autoStatus == 0){
 						$("#toOpen").addClass("active");

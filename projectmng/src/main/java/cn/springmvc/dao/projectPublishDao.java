@@ -53,6 +53,16 @@ public interface projectPublishDao {
 	 * @date 2016-3-23 下午6:34:20
 	 */
 	public int updateEndtime(ProjectAppProcessEntity projectAppProcessEntity);
+	/**
+	 * 拒绝
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return int 返回类型 
+	 * @date 2016-5-13 下午5:15:57
+	 */
+	public int Refuse(long applyId);
 	 
 }
 

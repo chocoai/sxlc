@@ -43,7 +43,7 @@ public class ActivitiesProjectListDaoImpl extends SqlSessionDaoSupport implement
 		return result;
 	}
 	@Override
-	public ActivitiesProjectEntity selectActivitiesProjectByID(int id) {
+	public ActivitiesProjectEntity selectActivitiesProjectByID(long id) {
 		ActivitiesProjectEntity activitiesProjectEntity=null;
 		activitiesProjectEntity = (ActivitiesProjectEntity) getSqlSession()
 				.selectOne("activitiesProject.selectActivitiesProjectByID",id);

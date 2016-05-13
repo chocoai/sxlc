@@ -8,9 +8,9 @@
 	(select count(Apply_Id) from  Project_App_Record where Check_Statu = 0 ) as checking,
 	(select count(Apply_Id) from  Project_App_Record where Invest_Statu = 0 ) as investing,
 	(select count(Apply_Id) from  Project_App_Record where Invest_Statu = 3 ) as replaying,
-	(select count(Apply_Id) from  Project_App_Record where 
+	(select count(par.Apply_Id) from  Project_App_Record  par join  Project_App_Process  pap on pap.Apply_Id = par.Apply_Id where 
 	Invest_Statu = 2 or (Check_Statu=1 and Publish_Statu=2 and Invest_Statu = 0 and Invest_Rate>=1000000) 
-	or (Check_Statu=1 and Publish_Statu=2 and Invest_Statu = 0 and Project_App_Process.End_Date&lt;=now())  
+	or (Check_Statu=1 and Publish_Statu=2 and Invest_Statu = 0 and pap.End_Date&lt;=now())  
        ) as willhold,
 	(select count(par.Apply_Id) from  Project_App_Record  par where par.Invest_Statu = 3 and EXISTS
 	(select lr.Apply_Id from Loan_Repay lr  where lr.Repay_MaxTime > now() and  lr.Statu=0 and lr.Apply_Id = par.Apply_Id )
@@ -55,62 +55,68 @@
     <!-- 平台收益统计-->  
 	<select id="selectPlatformRevenue" parameterType = "map"  resultType="cn.springmvc.model.PlatformRevenueStatisticsEntity">
 	  select  
-		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		where tts.Trade_Type_Id = 801) as rMngFeeAmount,<!-- 收取管理费总额 -->
+		where tts.Trade_Type_Id = 801) as rMngFeeAmount,<!-- 收取借款管理费总额 -->
 		
-		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED))
-		from Own_Trading_Records  otr 
-		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		where tts.Trade_Type_Id = 1002)  as rRiskMarginFee,<!-- 收取风险保证金总额-->
 		
-		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		where tts.Trade_Type_Id = 1003) as oRiskMarginFee, <!-- 退还风险保证金总额-->
+		where tts.Trade_Type_Id = 801) as investMngFeeAmount,<!-- 收取投资管理费总额 -->
+		
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0)
+		from Own_Trading_Records  otr 
+		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		where tts.Trade_Type_Id = 806)  as rRiskMarginFee,<!-- 收取风险保证金总额-->
+		
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
+		from Own_Trading_Records  otr 
+		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		where tts.Trade_Type_Id = 807) as oRiskMarginFee, <!-- 退还风险保证金总额-->
 		 
-		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
 		where tts.Trade_Type_Id = 102) as rechargeFee,<!-- 会员支付充值费用总额-->
 		
-		(select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
 		where tts.Trade_Type_Id = 202) as withdrawalFee, <!-- 会员支付提现手续费总额-->
 		 
-		 (select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED)) 
+		 (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED)),0) 
 		 from Member_Withdrawal_Recharge where Deal_Type = 0 ) as pRechargeFee,<!-- 平台代付充值费用总额 -->
 		
-		 (select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED))
+		 (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED)),0)
 		 from Member_Withdrawal_Recharge where Deal_Type = 1 and Statu = 1)  as pwidthdrawFee, <!-- 平台代付提现费用总额 -->
 		
-		 (select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee),#{keys})) AS SIGNED)) 
+		 (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee),#{keys})) AS SIGNED)),0) 
 		 from Member_Withdrawal_Recharge where Deal_Type = 1 and Statu = 1) as pgetwidthdrawFee, <!-- 平台收取提现手续费 -->
 		 
-		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
 		 from Own_Trading_Records  otr 
 		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
 		 where tts.Trade_Type_Id = 502) as rTransFeeAmount,<!-- 平台收取债权转让手续费总额-->
 		 
-		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		 from Own_Trading_Records  otr 
 		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		 where tts.Trade_Type_Id = 409) as roverFeeAmount,<!-- 收取逾期罚金总额-->
+		 where tts.Trade_Type_Id = 409),0) as roverFeeAmount,<!-- 收取逾期罚金总额-->
 		 
-		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		ifnull( (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED))
 		 from Own_Trading_Records  otr 
 		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		 where tts.Trade_Type_Id = 601) as rcompenRepayAmount,<!-- 平台代偿回款总金额-->
+		 where tts.Trade_Type_Id = 601),0)  as rcompenRepayAmount,<!-- 平台代偿回款总金额-->
 		 
-		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		 from Own_Trading_Records  otr 
 		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		 where tts.Trade_Type_Id = 602) as rcompenAmount,<!-- 平台代偿总金额-->
+		 where tts.Trade_Type_Id = 602),0) as rcompenAmount,<!-- 平台代偿总金额-->
 		 
-		 (select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
-         from InviteMaster_Award_PayRecord where Pay_Statu = 2) as inviteMasterAward, <!-- 推荐达人提奖总额 -->
+		 ifnull((select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
+         from InviteMaster_Award_PayRecord where Pay_Statu = 2),0) as inviteMasterAward, <!-- 推荐达人提奖总额 -->
          
          (select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
          from FinancialAdvisor_Award_PayRecord  where Pay_Statu = 2 ) as financialAdvisorAward <!-- 理财顾问提奖总额-->
@@ -189,14 +195,14 @@
     
      <!-- 充值统计 （最近30天充值统计 走势图）-->  
 	<select id="selectRechargethree" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
-		select DATE_FORMAT(Receive_Date,'%Y%m%d') day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pRechargeFee
+		select Receive_Date day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pRechargeFee
 		from Member_Withdrawal_Recharge 
 		where Deal_Type = 0 and  DATEDIFF(now(),Receive_Date)&lt;30
 		group by DATE_FORMAT(Receive_Date,'%Y%m%d') 	
 	</select> 
 	 <!-- 提现统计 （最近30天充值统计 走势图）-->  
 	<select id="selectWithdrawalthree" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
-		select DATE_FORMAT(Receive_Date,'%Y%m%d') day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pwidthdrawFee
+		select Receive_Date day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pwidthdrawFee
 		from Member_Withdrawal_Recharge 
 		where Deal_Type = 1 and  DATEDIFF(now(),Receive_Date)&lt;30
 		group by DATE_FORMAT(Receive_Date,'%Y%m%d') 	
@@ -204,7 +210,7 @@
          
      <!-- 累计注册会员个数（最近30天注册会员个数走势图）-->  
 	<select id="selectMember" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
-		select DATE_FORMAT(Reg_Date,'%Y%m%d') day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as countMember
+		select Reg_Date day,count(member_ID) as countMember
 		from member_info 
 		where DATEDIFF(now(),Reg_Date)&lt;30
 		group by DATE_FORMAT(Reg_Date,'%Y%m%d') 	
@@ -288,7 +294,7 @@
 	
 	<!-- 今日前台访问量（次）（最近30天前台访问量走势图） -->  
 	<select id="StaticsFrontAccess" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
-	    select DATE_FORMAT(Record_Date,'%Y%m%d') day,count(Session_Id) as countFrontAccess
+	    select Record_Date day,count(Session_Id) as countFrontAccess
 	    from Front_Access_Record 
 	    where DATEDIFF(now(),Record_Date)&lt;30
 	    group by DATE_FORMAT(Record_Date,'%Y%m%d') 

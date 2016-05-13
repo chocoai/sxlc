@@ -26,6 +26,16 @@ public class MemberVouchers {
 	private String			sGiftAmount;			//
 	private Long			projectId;				//获取事件编号
 	
+	private String			pStatus;				//投资项目状态
+	private String			ctaStatus;				//债权转让投资状态
+	private String 			statuName;				//状态名称
+	private String			loanTypeName;			//投资名称  债权投资 | 实际投资
+	
+	
+	
+	
+	
+	
 	private int				statu;					//状态DICT_TZSYZT   -1失败  0处理中  1成功
 	
 	private String 			useDate;				//使用时间
@@ -52,6 +62,34 @@ public class MemberVouchers {
 		this.sGiftAmount = sGiftAmount;
 		this.projectId = projectId;
 	}
+
+	public String getLoanTypeName() {
+		return loanTypeName;
+	}
+
+
+
+
+	public void setLoanTypeName(String loanTypeName) {
+		this.loanTypeName = loanTypeName;
+	}
+
+
+
+
+	public String getStatuName() {
+		return statuName;
+	}
+
+
+
+
+	public void setStatuName(String statuName) {
+		this.statuName = statuName;
+	}
+
+
+
 
 	public Long getMemberRpId() {
 		return memberRpId;
@@ -153,8 +191,37 @@ public class MemberVouchers {
 	public void setInvest_Type(int invest_Type) {
 		Invest_Type = invest_Type;
 	}
-	
-	
+
+
+
+
+	public String getpStatus() {
+		return pStatus;
+	}
+
+
+
+
+	public void setpStatus(String pStatus) {
+		this.pStatus = pStatus;
+	}
+
+
+
+
+	public String getCtaStatus() {
+		return ctaStatus;
+	}
+
+
+
+
+	public void setCtaStatus(String ctaStatus) {
+		this.ctaStatus = ctaStatus;
+	}
+
+
+		
 	
 }
 

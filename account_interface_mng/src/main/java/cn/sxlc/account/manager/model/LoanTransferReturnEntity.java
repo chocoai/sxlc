@@ -174,5 +174,17 @@ public class LoanTransferReturnEntity {
         this.statu = statu;
     }
 
+	@Override
+	public String toString() {
+		return "LoanTransferReturnEntity [LoanJsonList=" + LoanJsonList
+				+ ", PlatformMoneymoremore=" + PlatformMoneymoremore
+				+ ", Action=" + Action + ", RandomTimeStamp=" + RandomTimeStamp
+				+ ", Remark1=" + Remark1 + ", Remark2=" + Remark2
+				+ ", Remark3=" + Remark3 + ", ResultCode=" + ResultCode
+				+ ", Message=" + Message + ", ReturnTimes=" + ReturnTimes
+				+ ", SignInfo=" + SignInfo + ", loaninfolist=" + loaninfolist
+				+ ", loaninfolists=" + loaninfolists + ", statu=" + statu + "]";
+	}
+
 }
 

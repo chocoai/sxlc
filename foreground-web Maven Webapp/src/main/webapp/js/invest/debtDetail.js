@@ -187,7 +187,7 @@ jQuery.fn.layoutClick = function(str){
 					url:url,
 					dataType:"json",
 					success:function(r){
-						console.log(r)
+						//console.log(r)
 						if (num<parseInt(r.userBalances)&&num<=parseInt(r.sSumAount)){
 							var hei = 423 + Math.ceil(r.redPackList.length /3)*40;
 							layer.open({
@@ -213,7 +213,7 @@ jQuery.fn.layoutClick = function(str){
 										r.num = num;
 										r.profit = profit;
 										r.maxRedNum = parseInt(r.num)*r.proportion;
-										console.log(r)
+										//console.log(r)
 										var html = template("confirmInfo",r)
 										
 										$("#red-packets-top").html(html);
@@ -248,7 +248,7 @@ jQuery.fn.layoutClick = function(str){
 												detail.calculation();
 												if (detail.getRedBags()>=r.maxRedNum-inputVal){
 													$(".input1").each(function(){
-														console.log(1)
+														//console.log(1)
 														if (!($(this).hasClass("active"))){
 															
 															$(this).addClass("disabled");
@@ -262,7 +262,7 @@ jQuery.fn.layoutClick = function(str){
 											var re = /^[0-9]*[1-9][0-9]*$/; //正整数
 											var str = detail.getRedBags();
 											var thisVal = $(this).val()||"0";
-											console.log(num-str);
+											//console.log(num-str);
 											if (thisVal>num-str){
 												layer.alert("超出本次投资总金额",function(index){
 													layer.close(index);

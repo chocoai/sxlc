@@ -83,11 +83,11 @@
    		<div class="bankcard-top">
    			<div class="input-group">
    				<div class="left-title">用户名:</div>
-   				<div class="input-info">1234</div>
+   				<div class="input-info">${loginUser.logname}</div>
    			</div>
    			<div class="input-group">
    				<div class="left-title">真实姓名:</div>
-   				<div class="input-info">刘达</div>
+   				<div class="input-info">${loginUser.personalBaseInfo.personalName}</div>
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户银行:</div>
@@ -164,11 +164,11 @@
    		<div class="bankcard-top">
    			<div class="input-group">
    				<div class="left-title">用户名:</div>
-   				<div class="input-info">1234</div>
+   				<div class="input-info">${loginUser.logname}</div>
    			</div>
    			<div class="input-group">
    				<div class="left-title">真实姓名:</div>
-   				<div class="input-info">刘达</div>
+   				<div class="input-info">${loginUser.personalBaseInfo.personalName}</div>
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户银行:</div>

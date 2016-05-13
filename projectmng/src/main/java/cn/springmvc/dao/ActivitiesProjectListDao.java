@@ -37,6 +37,6 @@ public interface ActivitiesProjectListDao {
 	 * @param entity 项目审批活动点实体
 	 * @return  PartnersEntity  null不存在
 	 */
-	public  ActivitiesProjectEntity  selectActivitiesProjectByID(int id); 
+	public  ActivitiesProjectEntity  selectActivitiesProjectByID(long id); 
 	
 }

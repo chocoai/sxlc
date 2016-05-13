@@ -2189,7 +2189,7 @@ public class PersonalCenterController{
 		param.put("code", code);
 		int iresult = Core.putEditBindPhoneCode(phone, code);
 		if (iresult == 1) {
-			String[] result = { "0", "" };
+			String[] result = sendSmsUtil.SendSms(param,0,0,null);
 			if (result[0].equals("0")) {
 				this.logger
 						.debug("用户修改手机绑定手机短信验证码发送成功：" + phone + " : " + code);
@@ -2601,7 +2601,7 @@ public class PersonalCenterController{
 		MemberInfo memberInfo = (MemberInfo)request.getSession().getAttribute(Constant.LOGINUSER);
 		entity.setMemberId(memberInfo.getId());
 		entity.setMemberType(memberInfo.getMemberType());
-		entity.setAuthorizeTypeOpen("3");
+		entity.setAuthorizeTypeOpen("1");
 		interfaceServerTestI.testLoanAuthorize(entity);
 		request.setAttribute("accountInterfaceEntity", entity);
 		return "dryLot/loanauthorizetest";

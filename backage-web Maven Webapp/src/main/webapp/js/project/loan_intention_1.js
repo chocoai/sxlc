@@ -28,9 +28,25 @@ $(function(){
 				          },
 				          { title:"会员编号","data": "memberNo"},  
 				          { title:"会员用户名","data": "logname"},  
-				          { title:"会员名称","data": "personalName"},  
-				          { title:"会员联系号码","data": "personalPhone"},  
-				          { title:"借款金额","data": "amountStr"},  
+				          { title:"会员名称","data": "PersonalName", 
+				        	  "mRender": function (data, type, full) {
+				        		  	if(data !=null && data !=''){
+				        	    		return data;
+				        	    	}else{
+				        	    		return "无数据";
+				        	    	}  
+				        	  }
+				          },  
+				          { title:"会员联系号码","data": "PersonalPhone", 
+				        	  "mRender": function (data, type, full) {
+				        		  if(data !=null && data !=''){
+				        	    		return data;
+				        	    	}else{
+				        	    		return "无数据";
+				        	    	}  
+				        	  }
+				          },  
+				          { title:"借款金额","data": "amount"},  
 				          { title:"借款期限","data": "deadline"},  
 				          { title:"还款方式","data": "repayWay", 
 				        	  "mRender": function (data, type, full) {
@@ -219,7 +235,8 @@ function addInfo(){
 	}
 	var id = data[0].id;
 	var applyid = data[0].applyid;
-	$(".right_col").load("project/toAddInformationPg",{"id":encrypt.encrypt(id+""),"applyid":encrypt.encrypt(applyid+"")});
+//	$(".right_col").load("project/toAddInformationPg",{"id":encrypt.encrypt(id+""),"applyid":encrypt.encrypt(applyid+"")});
+	window.location.href=appPath+"/project/toAddInformationPg?content="+id+"&start="+applyid;
 }
 /******查看借款项目详情*******/
 function view_detail(){
@@ -245,7 +262,8 @@ function allocation(){
 		var Logname = data[0].Logname;
 		var PersonalName = data[0].PersonalName;
 		var memberID = data[0].memberID;
-		$(".right_col").load("project/toDistributionPg",{"memberID":encrypt.encrypt(memberID),"Logname": encrypt.encrypt(Logname),"PersonalName":encrypt.encrypt(PersonalName)});
+//		$(".right_col").load("project/toDistributionPg",{"memberID":encrypt.encrypt(memberID),"Logname": encrypt.encrypt(Logname),"PersonalName":encrypt.encrypt(PersonalName)});
+		window.location.href=appPath+"/project/toDistributionPg?content="+memberID+"&start="+Logname+"&length="+PersonalName;
 }
 
 

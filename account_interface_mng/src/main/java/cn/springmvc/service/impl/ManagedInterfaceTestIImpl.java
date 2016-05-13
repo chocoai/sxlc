@@ -49,7 +49,6 @@ import cn.sxlc.account.manager.model.LoanReturnInfoBean;
 import cn.sxlc.account.manager.model.LoanTransactionEntity;
 import cn.sxlc.account.manager.model.LoanTransferEntity;
 import cn.sxlc.account.manager.model.LoanTransferReturnEntity;
-import cn.sxlc.account.manager.model.ProjectEntity;
 import cn.sxlc.account.manager.model.RechargeEntity;
 import cn.sxlc.account.manager.model.RechargeReturnEntity;
 import cn.sxlc.account.manager.model.RepalyUtitls;
@@ -106,6 +105,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		//根据会员id获取会员基本信息数据
 		if (memberEntity.getMemberType()==0) {//个人
 			map.put("memberId", memberid);
+			map.put("skey", DbKeyUtil.GetDbCodeKey());
 			memberEntity=selectThreePartyDaoImpl.selectpAccountById(map);
 			memberEntity.setAccountType("");
 		}else if (memberEntity.getMemberType()==1) {//企业
@@ -139,6 +139,12 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 //		memberEntity.setPhone("18328593409");
 //		memberEntity.setEmail("1277809056@qq.com");
 //		memberEntity.setName("李杰");
+		if (memberEntity.getName()==null || !memberEntity.getName().equals("")) {
+			//还未提交认证
+			memberEntity.setStatu(-1);
+			memberEntity.setMessage("还未添加实名认证信息");
+		}
+		
 		String dataStr = memberEntity.getRegisterType() + memberEntity.getAccountType()
 		+ memberEntity.getPhone() + memberEntity.getEmail() + memberEntity.getName()
 		+ memberEntity.getIdcard() +  memberEntity.getLogName()
@@ -1080,14 +1086,16 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				if(authorizeInterfaceReturnEntity.getResultCode().equals("88")){
 					if(!request.getParameter("AuthorizeTypeOpen").equals("")){
 						authorizeInterfaceReturnEntity.setAuthorizeStatu(1);//开启
+						authorizeInterfaceReturnEntity
+						.setAuthorizeType(request.getParameter("AuthorizeTypeOpen"));//当前操作的授权类型
 					}else {
 						authorizeInterfaceReturnEntity.setAuthorizeStatu(2);//关闭
+						authorizeInterfaceReturnEntity
+						.setAuthorizeType(request.getParameter("AuthorizeTypeClose"));//当前操作的授权类型
 					}
 					authorizeInterfaceReturnEntity.setRemark1(request.getParameter("Remark1"));
 					authorizeInterfaceReturnEntity.setRemark2(request.getParameter("Remark2"));
 					authorizeInterfaceReturnEntity.setRemark3(request.getParameter("Remark3"));
-					authorizeInterfaceReturnEntity
-						.setAuthorizeType(request.getParameter("AuthorizeType"));//当前操作的授权类型
 					authorizeInterfaceReturnEntity.setStatu(0);
 				}else{
 					authorizeInterfaceReturnEntity.setStatu(1);

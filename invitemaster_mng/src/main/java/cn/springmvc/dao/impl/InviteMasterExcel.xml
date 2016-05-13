@@ -234,10 +234,8 @@
 		  </if>
 		) as repayAward,
 		
-		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar
-		left join Loan_Real_Repay  lrr  on lrr.Real_Repay_ID = iar.Project_Id
-		left join Project_App_Record par  on par.Apply_ID = lrr.Apply_ID
-		where  par.Member_ID = bmi.Member_ID and iar.Pay_Statu =2
+		(select ifnull(sum(iar.Award_Amount),0) from InviteMaster_Award_Record iar  
+		where  iar.Member_ID = bmi.Member_ID and iar.Pay_Statu =2
 		 <if test="startTime != null and startTime !=''">
 		    and iar.Award_Date > #{startTime}
 		 </if>

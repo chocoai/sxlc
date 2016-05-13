@@ -38,17 +38,6 @@ public class SystemAgreementSetEntity {
 	}
 	public void setAgreementType(int agreementType) {
 		this.agreementType = agreementType;
-		if(agreementType==0){
-			this.agreementTitle = "注册协议";
-		}else if(agreementType==1){
-			this.agreementTitle = "借款协议";
-		}else if(agreementType==2){
-			this.agreementTitle = "投资协议";
-		}else if(agreementType==3){
-			this.agreementTitle = "债权转让协议";
-		}else if(agreementType==4){
-			this.agreementTitle = "债权转让投资";
-		}
 	}
 	public String getAgreementTitle() {
 		return agreementTitle;

@@ -58,8 +58,21 @@ public class CommodityInfoEntity {
 	private String  commodityIntroduction;//商品的简短介绍 
 	private int      result;//商品的简短介绍
 	
+	private String  	discounts;//	折扣 
+	private String  	vipDiscounts;//	VIP折扣	 
 	
-	
+	public String getDiscounts() {
+		return discounts;
+	}
+	public void setDiscounts(String discounts) {
+		this.discounts = discounts;
+	}
+	public String getVipDiscounts() {
+		return vipDiscounts;
+	}
+	public void setVipDiscounts(String vipDiscounts) {
+		this.vipDiscounts = vipDiscounts;
+	}
 	private String picBasePath;		//FTP文件服务器地址
 	
 	public String getPicBasePath() {
@@ -181,12 +194,14 @@ public class CommodityInfoEntity {
 	}
 	public void setDiscount(int discount) {
 		this.discount = discount;
+		this.discounts = IntegerAndString.IntToString(discount);
 	}
 	public int getVipDiscount() {
 		return vipDiscount;
 	}
 	public void setVipDiscount(int vipDiscount) {
 		this.vipDiscount = vipDiscount;
+		this.vipDiscounts = IntegerAndString.IntToString(vipDiscount);
 	}
 	public String getCommoditylargeIcon() {
 		return commoditylargeIcon;

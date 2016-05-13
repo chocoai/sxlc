@@ -12,7 +12,7 @@ $(function(){
 				str_Url, 
 				json_Data, 
 				function(r){
-					console.log(r);
+					//console.log(r);
 					var json = JSON.parse(r);
 					if(json.status == 1){
 						$(".codeBtn").html("已发送").addClass("disabled");

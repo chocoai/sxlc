@@ -59,7 +59,7 @@ $(function() {
 			return false;
 		}else{
 			dec -= width;
-			console.log(dec);
+			//console.log(dec);
 			$(".divMain-divWindow ul").animate({
 				left:dec
 			},200);

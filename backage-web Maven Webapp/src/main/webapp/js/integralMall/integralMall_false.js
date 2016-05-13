@@ -89,7 +89,7 @@ $(function() {
 		//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 		{
 			"orderable" : false,
-			"aTargets" : [ 2,3,4,5,6,10,12,13]
+			"aTargets" : [ 2,3,4,5,6,10,12]
 		} // 制定列不参与排序
 				],
         rowCallback:function(row,data){//添加单击事件，改变行的样式      

@@ -236,7 +236,7 @@ $(function(){
 				data:{memberType:imemberType,memberName:userName,password:userpassword,checkCode:imgCheck,rememberMe:irememberMe},
 				success:function(json){
 					isExit = false;
-					console.log(json);
+					//console.log(json);
 					if(json.statu == 1){
 						window.location.href="accountOverview/accountOverview.html";
 					}else if(json.statu == -3){

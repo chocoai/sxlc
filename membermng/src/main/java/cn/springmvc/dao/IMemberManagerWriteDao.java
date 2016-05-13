@@ -81,5 +81,14 @@ public interface IMemberManagerWriteDao {
 	 * return int
 	 */
 	public int deleteLimitList();
-	
+	/**
+	 * 修改管理员密码
+	 * TODO
+	 * 创建日期：2016-5-12下午2:57:48
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	public int updateAdminPwd(Map<String, Object> param);
 }

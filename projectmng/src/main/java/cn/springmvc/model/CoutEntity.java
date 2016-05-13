@@ -12,6 +12,10 @@
  
 package cn.springmvc.model; 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import product_p2p.kit.datatrans.IntegerAndString;
 
 /** 
@@ -34,12 +38,20 @@ public class CoutEntity {
 	public String  spRechargeFee;//充值统计
 	public long    pwidthdrawFee;//提现统计
 	public String  spwidthdrawFee;//提现统计
- 
+    private long    timeStempD;//时间戳
 	public String getDay() {
 		return day;
 	}
 	public void setDay(String day) {
 		this.day = day;
+		 SimpleDateFormat simpleDateFormat =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	     Date date = null;
+		try {
+			date = simpleDateFormat .parse(day);
+		} catch (ParseException e) {
+			 
+		}
+		timeStempD = date.getTime();
 	}
 	public String getMonth() {
 		return month;
@@ -109,5 +121,12 @@ public class CoutEntity {
 	public void setSpwidthdrawFee(String spwidthdrawFee) {
 		this.spwidthdrawFee = spwidthdrawFee;
 	}
+	public long getTimeStempD() {
+		return timeStempD;
+	}
+	public void setTimeStempD(long timeStempD) {
+		this.timeStempD = timeStempD;
+	}
+	 
 }
 

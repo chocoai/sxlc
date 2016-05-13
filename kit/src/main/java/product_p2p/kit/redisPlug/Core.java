@@ -10,7 +10,7 @@ public class Core {
 	private static JedisPool pool = null;  
 	
 	static{
-		jedis = new Jedis("localhost");
+		jedis = new Jedis("192.168.2.8");
 		if (pool == null) {
 			// 建立连接池配置参数
             JedisPoolConfig config = new JedisPoolConfig();

@@ -49,7 +49,9 @@
         <result property = "endDate"       	    column = "End_Date" /> 
         <result property = "holdDate"       	column = "Hold_Date" /> 
         <result property = "managementName"     column = "Management_Name" /> 
-         <result property = "guaranteeName"     column = "Guarantee_Name" /> 
+        <result property = "guaranteeName"     column = "Guarantee_Name" /> 
+        <result property = "releaseDate"       column = "Release_Date" />
+        <result property = "pushIndex"          column = "pushIndex" />
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"></association>
     </resultMap> 
      <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
@@ -67,7 +69,9 @@
      </resultMap>
     <!-- 根据项目申请ID查询审核项目列表 -->  
 	<select id="selectProjectAuitList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectDetail" >
-	   select gua.Guarantee_Name,mana.Management_Name,par.Apply_Id,pap.Record_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,
+	   select 
+	   (select max(Indexs) from Process_Project where  statu =1 ) as pushIndex,
+	   gua.Guarantee_Name,mana.Management_Name,par.Apply_Id,pap.Record_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,
 	   mi.Company_ID,mi.Personal_ID,pbi.Project_Title,par.Project_ID,
 	   pty.Project_Name,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,pbi.Repay_Way,par.Invest_Statu,
 	   pbi.Amount, par.Project_Base_ID, replayway.name1,par.Check_Statu,
@@ -100,10 +104,8 @@
 				       and statu =1 order by Indexs desc limit 1) 
 				  
 			        and pck.Check_Statu = 1
-		       ) 
-	       
-		       or 
-		       
+		       )  
+		       or  
 		       (select count(Process_ID) from Process_Project where Indexs &lt;#{map.sIndexs} 
 		        and statu =1 order by Indexs desc limit 1
 		        ) = 0

@@ -21,8 +21,8 @@ public class ActivitiesProjectDaoImpl extends SqlSessionDaoSupport  implements A
 		if(entity == null){
 			return iResult;
 		}
-		iResult = getSqlSession().insert("activitiesProject.insertActivitiesProject", entity);
-		return iResult;
+		getSqlSession().insert("activitiesProject.insertActivitiesProject", entity);
+		return entity.getResult();
 	}
 
 	@Override

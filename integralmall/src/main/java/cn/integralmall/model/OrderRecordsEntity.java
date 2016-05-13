@@ -34,6 +34,7 @@ public class OrderRecordsEntity {
 	private String revocationReason;	//订单撤销原因
 	private String adminName;		//撤销操作员
 	private int    orderType;       //订单状态
+	private long   orderID;         //订单ID
 	public String getExchangeTime() {
 		return exchangeTime;
 	}
@@ -124,6 +125,12 @@ public class OrderRecordsEntity {
 	}
 	public void setRevocationReason(String revocationReason) {
 		this.revocationReason = revocationReason;
+	}
+	public long getOrderID() {
+		return orderID;
+	}
+	public void setOrderID(long orderID) {
+		this.orderID = orderID;
 	}
 }
 

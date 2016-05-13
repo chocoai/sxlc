@@ -12,11 +12,17 @@
   </resultMap>
   <!-- 查询个人会员开户所需基本信息 -->
   <select id="selectpAccountById" resultMap="sAccountInterface" parameterType="Map" >
-   	select mi.Logname,pbi.Personal_Name AS pname,pbi.Personal_IDCard AS pidcard,
-   	pbi.Personal_Phone AS pphone,pbi.Personal_Email AS pemail
-   	 from Member_Info mi left join Personal_Base_Info pbi on pbi.Personal_Id=mi.Personal_Id
+   	select mi.Logname,
+	CONVERT(AES_DECRYPT(UNHEX(prc.Real_Name),#{skey}) using utf8) AS pname,
+	CONVERT(AES_DECRYPT(UNHEX(prc.Personal_IDCard),#{skey}) using utf8) AS pidcard,
+   	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) AS pphone,
+   	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) AS pemail
+   	 from Member_Info mi 
+   	 left join Personal_Base_Info pbi on pbi.Personal_Id=mi.Personal_Id
+   	 left join Member_Attest_Info mai on mai.Member_ID = mi.Member_ID and mai.Member_Type=0
+	 left join Personal_RealName_Check prc on prc.Certification_ID = mai.Certification_ID
    		<where>
-   			mi.Member_ID=#{memberId} and mi.Member_Type=0
+   			mi.Member_ID=#{memberId} and mi.Member_Type=0 and Attest_Type_ID = 1
    		</where>
   </select>
   <!-- 查询企业会员开户所需基本信息 -->
@@ -24,10 +30,12 @@
    	select mi.Logname,
    	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) AS pphone,
    	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) AS pemail,
-   	ci.Compang_Name AS pname,ci.Companye_BLN AS pidcard
+   CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey}) using utf8) AS pname,ci.Companye_BLN AS pidcard
    	 from Member_Info mi 
    	 left join Company_Info ci on ci.Company_ID=mi.Company_ID
    	 left join Personal_Base_Info pbi on pbi.Personal_Id=mi.Personal_Id
+<!--    	 left join Member_Attest_Info mai on mai.Member_ID = mi.Member_ID and mai.Member_Type=1 -->
+<!-- 	 left join Enterprise_License_Attest ela on ela.Certification_ID = mai.Certification_ID -->
    		<where>
    			mi.Member_ID=#{memberId} and mi.Member_Type=1
    		</where>

@@ -13,35 +13,78 @@ function getRootPath(){
 			return(localhostPath);
 		}
 }
+//判断
+function changeDefine(value){
+	if (value == undefined){
+		return "";
+	}else{
+		return value;
+	}
+}
 //弹出框
-function enableOrDisable(statu){
+function enableOrDisable(statu,orderId){
 	if (statu == "1"){
-		var str = "确定发货？";
-		layer.confirm(str, {
-			  btn: ['确定', '取消']
-			},function(){
+//		var str = "确定发货？";
+		layer.open({
+		    type: 1,
+		    area: ['500px', '250px'], 
+		    title: "填写发货信息",
+		    maxmin: true,
+		    content: $("#into_dd"),
+		    btn:['确定', '取消']
+			  ,yes: function(){
+				var into_dd11=$("#into_dd1").val();
+				var into_dd22=$("#into_dd2").val();
+				var into_dd33=$("#into_dd3").val();
+				if (into_dd11==undefined||into_dd11==""){
+					  layer.alert("请填写物流公司名称",function(index){
+						  layer.close(index);
+					  });
+					  return
+				  }
+				if (into_dd22==undefined||into_dd22==""){
+					  layer.alert("请填写物流单号",function(index){
+						  layer.close(index);
+					  });
+					  return
+				  }
+				if (into_dd33==undefined||into_dd33==""){
+					  layer.alert("请填写通知信息内容",function(index){
+						  layer.close(index);
+					  });
+					  return
+				  }
+				into_D1 = encrypt.encrypt( changeDefine(into_dd11) + "");
+				into_D2 = encrypt.encrypt( changeDefine(into_dd22) + "");
+				into_D3 = encrypt.encrypt( changeDefine(into_dd33) + "");
 				var url = "orderManager/delivery.do";
-				var data= {"orderId":orderId};
+				var data= {"orderId":orderId,"logisticsCompany":into_D1,"logisticsNO":into_D2,"InformationIN":into_D3};
+				alert(orderId)
 				NetUtil.ajax(
 						url,
 						data,
-						function(r){
-							var data = JSON.parse(r);
+						function(data){
+							alert(data.status)
 							if (data.status=="1"){
 								layer.alert(data.message,function(index){
-									layer.close(index);
+									layer.closeAll();
 									$('#applicationAudit').DataTable().ajax.reload();
 								});
 							}else if(data.status=="0"){
 								layer.alert(data.message,function(index){
-									layer.close(index);
+									layer.closeAll();
+								})
+							}else if(data.status=="-1"){
+								layer.alert(data.message,function(index){
+									layer.closeAll();
 								})
 							}
 						}
 				);
-			},function(index){
+			},no:function(index){
 				layer.close(index);
-			});
+			}
+		})
 	}else if(statu == "0"){
 		var str = "确定撤销订单？";
 		layer.confirm(str, {
@@ -69,15 +112,8 @@ function enableOrDisable(statu){
 			});
 	}
 }
-//判断
-function changeDefine(value){
-	if (value == undefined){
-		return "";
-	}else{
-		return value;
-	}
-}
-$("#false_search").on("click",function(){
+
+$(".glyphicon-search").on("click",function(){
 	$('#applicationAudit').DataTable().ajax.reload();
 });
 //表格初始化
@@ -145,15 +181,17 @@ $(function() {
 		        			  return "已下单";
 		        		  }else if(data==2){
 		        			  return "<font color='blue'>已发货</font>";
+		        		  }else if(data==3){
+		        			  return "已完成";
 		        		  }
 		        	  }
                   },
                   { title:"操作","data": "orderType",
                 	  "mRender": function (data, type, full) {
-                		  if(full.status==0){
-		        			  return "<a onclick=\"enableOrDisable(1);\" href=\"javascript:void(0);\">发货</a>" ;
-		        		  }else if(full.status==1){
-		        			  return "<a onclick=\"enableOrDisable(0);\" href=\"javascript:void(0);\">撤销订单</a>";
+                		  if(data==0){
+		        			  return "<a onclick=\"enableOrDisable(1,'"+full.orderID+"');\" href=\"javascript:void(0);\">发货</a>" ;
+		        		  }else if(data==1){
+		        			  return "<a onclick=\"enableOrDisable(0,'"+full.orderID+"');\" href=\"javascript:void(0);\">撤销订单</a>";
 		        		  }else{
 		        			  return "";
 		        		  }

@@ -63,15 +63,15 @@ $(function(){
 				repayment:repayment,deadlineType:deadlineType,
 				deadlinemin:deadlinemin,deadlinemax:deadlinemax,page:page};
 			
-			console.log(data);
+			//console.log(data);
 
 			NetUtil.ajax(
 				url,
 				data,
 				function(r){
-//					console.log(r);
+//					//console.log(r);
 					var data = JSON.parse(r);
-					console.log(data);
+					//console.log(data);
 					
 						var html = template("investList",data);
 						document.getElementById("invest-list").innerHTML = html;
@@ -100,7 +100,7 @@ $(function(){
 //		判断期限
 		determinePeriod :function(){
 			var arr = [];//index(0):借款期限 index(1):最小期限 index(2):最大期限
-//			console.log($("input:radio[name='investDay']:checked").val())
+//			//console.log($("input:radio[name='investDay']:checked").val())
 			if ($("input:radio[name='investDay']:checked").val()!='-1'){
 				arr[0] = "0";
 				arr[1] = $("input:radio[name='investDay']:checked").val().split(",")[0];
@@ -194,7 +194,7 @@ $(function(){
 		var loanType =  $("input:radio[name='loanType']:checked").val();
 		var annualInterest = $("input:radio[name='annualInterest']:checked").val();
 		var repayment = $("input:radio[name='repayment']:checked").val();
-//		console.log(investmentZone.determinePeriod());
+//		//console.log(investmentZone.determinePeriod());
 		var deadlineType = investmentZone.determinePeriod()[0];
 		var deadlinemin = investmentZone.determinePeriod()[1];
 		var deadlinemax = investmentZone.determinePeriod()[2];
@@ -214,7 +214,7 @@ $(function(){
 		var loanType =  $("input:radio[name='loanType']:checked").val();
 		var annualInterest = $("input:radio[name='annualInterest']:checked").val();
 		var repayment = $("input:radio[name='repayment']:checked").val();
-//		console.log(investmentZone.determinePeriod());
+//		//console.log(investmentZone.determinePeriod());
 		var deadlineType = investmentZone.determinePeriod()[0];
 		var deadlinemin = investmentZone.determinePeriod()[1];
 		var deadlinemax = investmentZone.determinePeriod()[2];

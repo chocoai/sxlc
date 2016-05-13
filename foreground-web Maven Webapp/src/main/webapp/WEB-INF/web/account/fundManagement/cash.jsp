@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -11,6 +13,9 @@
 	<base href="<%=basePath%>">
     <title>我要提现</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>    
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/fundManagement/cash.css">
 </head>
@@ -29,38 +34,42 @@
    					<div class="cashHead">
    						<span class="cashHeadFont">我要提现</span>
    					</div>
-   					<form id="tiXian">
    					<div class="cashContent">
 	  					<div class="cashContentCunt">
 							<div class="cashDivDistance">
+								<c:set value="${loginUser.personalBaseInfo.personalName}" scope="session" var="name"></c:set>
 								<label class="cashLabel">联系人姓名：</label>
-								<span class="cashAllFont">刘***</span>
+								<span class="cashAllFont">${fn:substring(name,0,1)}**</span>
 							</div>
 							<div class="cashDivDistance">
+								<c:set value="${loginUser.personalBaseInfo.personalPhone}" scope="session" var="phone"></c:set>
 								<label class="cashLabel">联系人手机：</label>
-								<span class="cashAllFont">135********</span>
+								<span class="cashAllFont">${fn:substring(phone,0,3)}*******</span>
 							</div>
 							<div class="cashBank clearfix">
 								<label class="cashLabel i-fl">提现至银行卡：</label>
-								<ul class="clearfix">
-								<%for(int i = 1;i<9;i++){ %>
-									<li class="">
-										<input type="radio" name="cashBankLi" id="cashBankLi<%=i %>" class="cashInputRadio">
-										<label for="cashBankLi<%=i %>" onselectstart="return false" value="<%=i %>" class="cashBankLiOne">
+								<ul class="clearfix" id="withdrawBank" >
+								<script id="withdrawBankList" type="text/html" >
+									{{each bankCardList as value index}}	
+									<li>
+										<input type="radio" name="cashBankLi" {{if index==0}} checked="checked" {{/if}}  value="{{value.bankCardId}}" id="cashBankLi{{index+1}}" class="cashInputRadio">
+										<label for="cashBankLi{{index+1}}" onselectstart="return false" value="{{index+1}}" class="cashBankLiOne">
 											<img class="cashImgSign" alt="这是图片" src="resource/img/account/fundManagement/zjgl_9.png">
-											<span>中国银行(523)</span>
+											<span>{{value.bankName}}({{value.bankCardInfoEntity.bankNo.substring(value.bankCardInfoEntity.bankNo.length-3,value.bankCardInfoEntity.bankNo.length)}})</span>
 										</label>
 									</li>
-								<%} %>
+									{{/each}}
+								</script>	
 									<li class="addBank cashBankLiSolid">
 										<img class="cashImgSign" alt="这是图片" src="resource/img/account/fundManagement/zjgl_plus_03.png">
 										<span><a href="personalCenter/bankCard.html">添加银行卡</a></span>
 									</li>
 								</ul>
 							</div>
+							<form id="tiXian" action="loanWithdraw/loanWithdraw.html" method="post"  >
 							<div class="cashDivDistance cashClear">
 								<label class="cashLabel">可提现金额：</label>
-	  							<span class="cashSpan cashAllFont moneyFormat">100000000</span>
+	  							<span class="cashSpan cashAllFont moneyFormat userBalance ">0</span>
 	  							<span>元</span>
 							</div>
 							<div class="cashDivDistance">
@@ -74,7 +83,7 @@
 							</div>
 							<div class="cashDivDistance cashFontStyle">
 								<label class="cashLabel">实际到账金额：</label>
-								<span class="cashAllFont moneyFormat moneyZhang">00</span>
+								<span class="cashAllFont moneyFormat moneyZhang">0</span>
 	  							<span >元</span>
 							</div>
 							<div class="cashDivDistance">
@@ -88,10 +97,16 @@
 	 								<span class="codeGet">获取验证码</span>
 	 							</div>
 							</div>
-	  						<div class="btn cashBtn" onselectstart="return false"><span>提现</span></div>
+	  						<input type="submit" class="btn cashBtn" onselectstart="return false" value="提现">
+		   					<input type="hidden" name="amount" />
+		   					<input type="hidden" name="remark" />
+		   					<input type="hidden" name="bankCardId" />
+		   					<input type="hidden" value="${sessionScope.loginUser.personalBaseInfo.personalPhone}" name="phone" />
+		   					<input type="hidden" name="code" />
+		   					<input type="hidden" name="sign" />	  						
+	  						</form>
 	  					</div>
    					</div>
-   					</form>
    				</div>
    			</div>
    		</div>
@@ -99,5 +114,6 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/fundManagement/cash.js"></script>
+	<script type="text/javascript" src="js/account/fundManagement/cash_data.js"></script>
 </body>
 </html>

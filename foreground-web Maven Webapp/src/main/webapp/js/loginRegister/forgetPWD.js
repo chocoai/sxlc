@@ -50,7 +50,7 @@ $(function(){
 	        error:function(data,obj){
 	            //data是{ status:**, statusText:**, readyState:**, responseText:** };
 	            //obj是当前表单的jquery对象;
-	            console.log(data.status);
+	            //console.log(data.status);
 	        }
 		}
 	});
@@ -88,7 +88,7 @@ $(function(){
 	        error:function(data,obj){
 	            //data是{ status:**, statusText:**, readyState:**, responseText:** };
 	            //obj是当前表单的jquery对象;
-	            console.log(data.status);
+	            //console.log(data.status);
 	        }
 		}
 	});

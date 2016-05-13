@@ -83,5 +83,5 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="js/common/template.js"></script>
+
 <script type="text/javascript" src="js/common/footer.js" ></script>

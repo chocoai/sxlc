@@ -26,6 +26,8 @@ public class ActivitiesProjectEntity {
 	 * 关联操作名称
 	 */
 	private String optName; 
+	private int roleType ;
+	private int result;
 	public String getApName() {
 		return apName;
 	}
@@ -61,6 +63,18 @@ public class ActivitiesProjectEntity {
 		return "ActivitiesProjectEntity [id=" + id + ", apName=" + apName
 				+ ", roleID=" + roleID + ", Statu=" + Statu + ", optName="
 				+ optName + "]";
+	}
+	public int getRoleType() {
+		return roleType;
+	}
+	public void setRoleType(int roleType) {
+		this.roleType = roleType;
+	}
+	public int getResult() {
+		return result;
+	}
+	public void setResult(int result) {
+		this.result = result;
 	}
 
 }

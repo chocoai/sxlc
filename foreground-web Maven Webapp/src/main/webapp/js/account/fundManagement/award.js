@@ -52,7 +52,6 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							//console.log(data);
 							if (data.totalPage>0){
 								var html = template("redList",data);
 								$("#redList_top").siblings().remove();
@@ -116,7 +115,6 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							//console.log(data);
 							if (data.totalPage>0){
 								var html = template("vouchersList",data);
 								$("#useVouchersList_top").siblings().remove();
@@ -167,7 +165,6 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							//console.log(data);
 							if (data.totalPage>0){
 								var html = template("useVouchersList",data);
 								$("#useVouchersList_top").siblings().remove();
@@ -229,7 +226,6 @@ function loadMyRedpackage(){
 		data,
 		function(message){
 			var r = JSON.parse(message).data;
-			console.log(r);
 			$("#sRedPackageSum").html(r.sRedPackageSum);
 			$("#sExpiredSum").html(r.sExpiredSum);
 			$("#sUseRedPackageSum").html(r.sUseRedPackageSum);

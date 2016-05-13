@@ -114,7 +114,7 @@ public class IntegralMallController {
 	
 	
 	/**
-	 * 查看商品信息详情 --不用这个
+	 * 根据商品id查看商品信息详情
 	 * commodityInfo(这里用一句话描述这个方法的作用) 
 	 * TODO(描述)
 	 * @author 刘利   
@@ -124,14 +124,10 @@ public class IntegralMallController {
 	 * @return String 返回类型 
 	 * @date 2016-5-11 上午10:43:22
 	 */
-	@RequestMapping(value="commodityInfo",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="commodityInfo_{commodityId:[0-9]+}",produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public String commodityInfo(HttpServletRequest request) { 
-		long  commodityId              = IntegerAndString.StringToLong(request.getParameter("commodityId"),0) ; 
-		CommodityInfo  info= iIntegrallService.commodityInfo(commodityId); 
-		long[] lMemberInfo = new long[2] ;		
-	    MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo);  
-		List<ShippingAddress>  Address =  iIntegrallService.ShippingAddressList(lMemberInfo[0]);
+	public String commodityInfo(HttpServletRequest request,@PathVariable long commodityId) {   
+		CommodityInfo  info= iIntegrallService.commodityInfo(commodityId);  
 		return JSONObject.toJSONString(info);
 	}
 	
@@ -209,9 +205,9 @@ public class IntegralMallController {
 	@ResponseBody
 	public String pointxchange(HttpServletRequest request) { 
 		
-		long  commodityId	 =  IntegerAndString.StringToLong(request.getParameter("commodityId"),0)  ;
-		int   quantity	     =  IntegerAndString.StringToInt(request.getParameter("comquantitymodityId"),0);
-		long  addressId	     =  IntegerAndString.StringToLong(request.getParameter("addressId"),0)  ;
+		long  commodityId	 =  IntegerAndString.StringToLong(request.getParameter("commodityId"),0)  ;//商品id
+		int   quantity	     =  IntegerAndString.StringToInt(request.getParameter("quantity"),0);//数量
+		long  addressId	     =  IntegerAndString.StringToLong(request.getParameter("addressId"),0)  ;//地址
 		long[] lMemberInfo = new long[2] ;		
 	    MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo);  
 		int  info= iIntegrallService.pointxchange(lMemberInfo[0], commodityId, quantity, addressId);   
@@ -240,7 +236,7 @@ public class IntegralMallController {
 	}
 	
 	/**
-	 * 查看商品详情
+	 * 到兑换商品页面
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param @param request

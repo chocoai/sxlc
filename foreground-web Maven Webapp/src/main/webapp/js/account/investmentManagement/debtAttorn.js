@@ -95,7 +95,7 @@ $(function(){
 						function(r){
 							
 							var data = JSON.parse(r);
-							console.log(data)
+							//console.log(data)
 							if (data.tol>0){
 								var html = template("transferAbleList",data);
 								$("#topTransferAble").siblings().remove();
@@ -125,7 +125,7 @@ $(function(){
 								        shadeClose: true, //点击遮罩关闭
 								        content: $('.layerWindow')//内容，里边是包含内容的div的class
 								    });
-									console.log($(this).index());
+									//console.log($(this).index());
 									$("#transferableMoney").html(data.infos[$(this).index()].sMoney);
 									$("#inputInvestId").val(data.infos[$(this).index()].investId);
 									
@@ -157,7 +157,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							console.log(data)
+							//console.log(data)
 							if (data.tol>0){
 								var html = template("transferOutedList",data);
 								$("#topTransferOut").siblings().remove();
@@ -200,7 +200,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							console.log(data);
+							//console.log(data);
 							if (data.tol>0){
 								var html = template("transferInedList",data);
 								$("#topTransferIned").siblings().remove();
@@ -243,7 +243,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							console.log(data);
+							//console.log(data);
 							if (data.tol>0){
 								var html = template("SettledList",data);
 								$("#topSettledUl").siblings().remove();
@@ -295,7 +295,7 @@ $(function(){
 	
 	$("#getSaleNum").on("keyup",function(){
 		var num = $("#getSaleNum").val()*$("#getTransNum").val()*0.01;
-		console.log($("#getSaleNum").val()*$("#getTransNum").val()*0.01);
+		//console.log($("#getSaleNum").val()*$("#getTransNum").val()*0.01);
 		$("#shouyi").html(num);
 	});
 	
@@ -308,13 +308,13 @@ $(function(){
 		data.discount = encrypt.encrypt($("#getSaleNum").val()+"");
 		data.extras = encrypt.encrypt($("#getTransNum").val()+"");
 		var url = "investmentManagement/turnOutDebts.html";
-		console.log(data);
+		//console.log(data);
 		NetUtil.ajax(
 				url,
 				data,
 				function(r){
 					var data = JSON.parse(r);
-					console.log(data)
+					//console.log(data)
 					if (data.status == 0){
 						layer.alert("转让成功",function(){
 							layer.close()

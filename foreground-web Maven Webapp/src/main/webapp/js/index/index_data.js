@@ -40,9 +40,16 @@ function quryIndexStatic(){
 		success:function(r){
 			var object=JSON.parse(r);
 			if(object.code == 200){
-			   
+				var data=object.data;
+				var countmember=data.countmember;//会员个数
+				var totalLoanAmounts=data.totalLoanAmounts;//已撮合金额
+				var incomeTotals=data.incomeTotals;//为投资人赚取
+				var riskReserveFunds=data.riskReserveFunds;//风险备用金
+				$(".countmember").text(countmember);
+				$(".totalLoanAmounts").text(totalLoanAmounts);
+				$(".incomeTotals").text(incomeTotals);
+				$(".riskReserveFunds").text(riskReserveFunds);
 			}else{
-				
 			}
 		}
 	});	
@@ -262,7 +269,6 @@ function quryNewbieExperience(){
 		success:function(r){
 			var object=JSON.parse(r);
 			if(object.code == 200){
-				console.log(object);
 				var html = template('newMemberList',object);
 		        document.getElementById('newMemberL').innerHTML=html;
 			}else{

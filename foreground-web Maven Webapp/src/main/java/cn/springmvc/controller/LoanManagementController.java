@@ -543,14 +543,13 @@ public class LoanManagementController {
 		if(results[0] == 0){
 		    request.setAttribute("loanTransferEntity", loanEntity);
 		}else if(results[0] == -1) {
-			request.setAttribute("message", "该项目已结清");
-			return "account/loanManagement/advanceFalse";
+			request.setAttribute("detail", "该项目已结清");
+			return "account/loanManagement/optionFall";
 		}else if(results[0] == -2) {
-			request.setAttribute("message", "存在逾期未还的项目");
-			return "account/loanManagement/advanceFalse";
+			request.setAttribute("detail", "存在逾期未还的项目");
+			return "account/loanManagement/optionFall";
 		}
-	    return "dryLot/loantransfertest";
-		
+	    return "dryLot/loantransfertest"; 
 	}
 	
 	
@@ -567,8 +566,14 @@ public class LoanManagementController {
 	@RequestMapping(value="ReplayCallBackReturn")
 	public String ReplayCallBackReturn(HttpServletRequest request,HttpServletResponse response) {
 		String results = interfaceServerTestI.testRepaymentReturn();
-		//返回页面
-		return results;
+		request.setAttribute("title", "还款");
+		if(results == "SUCCESS"){
+			request.setAttribute("detail", "还款成功"); 
+			return "account/loanManagement/optionSuccess";
+		}else{
+			request.setAttribute("detail", "还款失败");
+			return "account/loanManagement/optionFall";
+		} 
 	}
 	
 	
@@ -712,7 +717,7 @@ public class LoanManagementController {
 	}
 	 
 	/**
-	 * 正常还款详情
+	 * 借款人确认详情
 	 * @author 刘利   
 	 * @Description: TODO 
 	 * @param @param request
@@ -751,7 +756,7 @@ public class LoanManagementController {
 	@ResponseBody
 	public String confirmationLoan(HttpServletRequest request) { 
 		
-		long applyId	    =  IntegerAndString.StringToLong(request.getParameter("applyId"), 0);//自动投标状态 
+		long applyId	    =  IntegerAndString.StringToLong(request.getParameter("applyId"), 0);//项目申请ID
 		int optionvalue	    =  IntegerAndString.StringToInt(request.getParameter("optionvalue"), 0);//操作  -1取消  2确认
 		int sysId	        =  IntegerAndString.StringToInt(request.getParameter("sysId"), 0);//0前台确认  1短信确认
 		long[] lMemberInfo = new long[2] ;	 

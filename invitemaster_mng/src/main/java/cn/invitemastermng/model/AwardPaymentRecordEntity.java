@@ -12,7 +12,10 @@
  
 package cn.invitemastermng.model; 
 
+import java.sql.Timestamp;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 /** 
  * @author 刘利 
@@ -188,7 +191,7 @@ public class AwardPaymentRecordEntity {
 		return payDate;
 	}
 	public void setPayDate(String payDate) {
-		this.payDate = payDate;
+		this.payDate = TimestampAndString.TimestampToString(Timestamp.valueOf(payDate));
 	}
 	public String getBorrowAwards() {
 		return borrowAwards;

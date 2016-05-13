@@ -267,7 +267,7 @@ public class LoginRegisterController {
 			param.put("code", code);
 			int iresult = Core.putRegisterPhoneCode(codePhone, code);
 			if(iresult == 1){
-				String[] result = {"0",""};//sendSmsUtil.SendSms(param,0,0,null);
+				String[] result = sendSmsUtil.SendSms(param,0,0,null);//{"0",""};
 				if(result[0].equals("0")){
 					logger.debug("用户注册手机短信验证码发送成功："+codePhone+" : "+code);
 					message.put("statu", 1);

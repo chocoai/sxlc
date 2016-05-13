@@ -128,7 +128,7 @@ public interface SelectChannelSetDao {
 	* @return List<ThreeInterfaceEntity> 返回类型 
 	* @throws 
 	*/
-	public List<ThreeInterfaceEntity> selectThreeInterface();
+	public List<ThreeInterfaceEntity> selectThreeInterface(PageEntity pageEntity);
 	
 	
 	/** 

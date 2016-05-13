@@ -244,7 +244,6 @@ function quryBankById(bankId){
 			if(object.code == 200){
 				var data = object.data;
 				if(data!=null){
-					console.log(data);
 					$(".zbank_u").val(data.branch);
 					$(".passID_card_u").val(data.bankNo);
 					$(".zPhone_u").val(data.bankPhone);

@@ -34,7 +34,7 @@ $(function(){
 	var wd = null;
 	var projectStatu = $("input:radio[name='projectStatu']:checked").val();
 	var loanType =  $("input:radio[name='loanType']:checked").val();
-	console.log(loanType);
+	//console.log(loanType);
 	var annualInterest = $("input:radio[name='annualInterest']:checked").val();
 	var repayment = $("input:radio[name='repayment']:checked").val();
 	var deadlineType = "-1";
@@ -54,7 +54,7 @@ $(function(){
 			//判断期限
 			determinePeriod :function(){
 				var arr = [];//index(0):借款期限 index(1):最小期限 index(2):最大期限
-//				console.log($("input:radio[name='investDay']:checked").val())
+//				//console.log($("input:radio[name='investDay']:checked").val())
 				if ($("input:radio[name='investDay']:checked").val()!='-1'){
 					arr[0] = "0";
 					arr[1] = $("input:radio[name='investDay']:checked").val().split(",")[0];
@@ -65,7 +65,7 @@ $(function(){
 					arr[1] = $("input:radio[name='investMonth']:checked").val().split(",")[0];
 					arr[2] = $("input:radio[name='investMonth']:checked").val().split(",")[1];
 				}else if($("input:radio[name='investYear']:checked").val()!='-1'){
-					console.log($("input:radio[name='investYear']:checked").val());
+					//console.log($("input:radio[name='investYear']:checked").val());
 					arr[0] = "2";
 					arr[1] = $("input:radio[name='investMonth']:checked").val().split(",")[0];
 					arr[2] = $("input:radio[name='investMonth']:checked").val().split(",")[1];
@@ -94,13 +94,13 @@ $(function(){
 		loanType:loanType,annualInterest:annualInterest,
 		repayment:repayment,deadlineType:deadlineType,
 		deadlinemin:deadlinemin,deadlinemax:deadlinemax,page:page};
-		console.log(data);
+		//console.log(data);
 		NetUtil.ajax(
 			url,
 			data,
 			function(r){
 					var data = JSON.parse(r);
-					console.log(data)
+					//console.log(data)
 					var html = template("debt_list",data);
 					document.getElementById("debtList").innerHTML = html;
 				

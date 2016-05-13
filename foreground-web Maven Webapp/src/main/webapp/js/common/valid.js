@@ -38,7 +38,7 @@ var roleMark= /^[\u4E00-\u9FA5]{0,125}$/;  //角色描述 ，125字以下
 //var orgcodefmt = /^([0-9A-Z]){8}-[0-9|X]$/;//组织机构代码格式
 var logname = function(gets,obj,curform,datatype) {
 				var name="chen";    //模拟已存在的用户名 
-				console.log("chulai");
+				//console.log("chulai");
 				if(!gets){
 					return "用户名不可为空";
 				}

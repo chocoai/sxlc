@@ -170,7 +170,7 @@ $(function(){
 						}
 					},
 					error:function(data,obj){
-						console.log(data.status);
+						//console.log(data.status);
 					}
 				}
 			});
@@ -283,7 +283,7 @@ $(function(){
 			
 			
 			var vsign = sendBef(sendDate);
-			console.log(vsign);
+			//console.log(vsign);
 			$.ajax({
 				url:"register.html",
 				type:"post",
@@ -332,7 +332,7 @@ function sendBef(params){
             code += params[key];
         }
         var md5_value = hex_md5(code).toUpperCase();
-        console.log("string to sign:" + code);
+        //console.log("string to sign:" + code);
         return md5_value;
     }
     return null;

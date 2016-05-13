@@ -13,7 +13,7 @@
      <association property="projectAppRecordEntity" 	resultMap="resultProjectDetail"/>
  </resultMap>
  <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetail">
-        <id property = "ID"						column = "Apply_Id" />
+        <id property = "applyId"						column = "Apply_Id" />
 		<result property = "memberID"       	column = "Member_ID" />
 		<result property = "projectType"    	column = "Project_Type" />
 		<result property = "projectBaseID"  	column = "Project_Base_ID" />
@@ -46,11 +46,12 @@
         <result property = "memberName" 		column = "memberName" />  
         <result property = "projectName" 		column = "Project_Name" /> 
         <result property = "recordDate"       	column = "Record_Date" /> 
+        <result property = "pushIndex"          column = "pushIndex" />
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	    </association>
     </resultMap> 
     <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
-            <id property = "ID" 				 column = "Project_Base_ID" />
+            <id property = "id" 				 column = "Project_Base_ID" />
 			<result property = "projectTitle"    column = "Project_Title" /> 
 			<result property = "uses"            column = "Uses" />
 			<result property = "repaySource"     column = "Repay_Source" />
@@ -62,9 +63,11 @@
 			<result property = "yearRate"        column = "Year_Rate" /> 
 			<result property = "replayWays" 	 column = "name1" />      
      </resultMap>
-    <!-- 根据项目申请ID查询发布项目列表 -->  
+    <!-- 根据查询发布项目列表 -->  
 	<select id="selectProjectPublishList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectDetail" >
-	   select pbi.Project_Title,pap.Release_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,pap.Record_Date,par.Project_ID,
+	select 
+	   (select max(Indexs) from Process_Project where  statu =1 ) as pushIndex,
+	    pbi.Project_Title,pap.Release_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,pap.Record_Date,par.Project_ID,
 	   pty.Project_Name,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,pbi.Repay_Way,par.Invest_Statu,
 	   pbi.Amount, par.Project_Base_ID, replayway.name1,par.Check_Statu,par.Invest_Max,
 	   par.MinStart,par.Increase_Range,mi.Company_ID,mi.Personal_ID,
@@ -82,31 +85,52 @@
 	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id 
 	   left join Company_Info  ci  on ci.Company_ID=mi.Company_ID
 	    <where>  
-          and par.Publish_Statu=1
-	     <if test = "map.ProjectTitle !=  null"> 
+          par.Publish_Statu=2  
+          and  (
+		      par.Apply_Id in
+		      (
+			       select Apply_Id  
+			       from  Project_Check_Record pck
+			       left join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
+			       where  
+			        ap.Process_ID =  
+				    (select Process_ID from Process_Project where Indexs &lt;#{map.sIndexs} 
+				       and statu =1 order by Indexs desc limit 1) 
+				  
+			        and pck.Check_Statu = 1
+		       )   
+		    )    
+	     <if test = "map.ProjectTitle !=  null and map.ProjectTitle != '' "> 
 	       and pbi.Project_Title like '%${map.ProjectTitle}%'
 	     </if>
-	     <if test = "map.Logname !=  null"> 
+	       <if test = "map.projectNO !=  null and map.projectNO !='' "> 
+	       and par.Project_No like '%${map.projectNO}%'
+	     </if>
+	     <if test = "map.Logname !=  null and map.Logname !=  '' "> 
 	        and mi.Logname like '%${map.Logname}%'
 	     </if>
-         <if test = "map.startTime !=  null"> 
+         <if test = "map.startTime !=  null and map.startTime !='' "> 
 	       and pap.Record_Date > #{map.startTime} 
 	     </if>
-	     <if test = "map.endTime !=  null"> 
+	     <if test = "map.endTime !=  null and map.endTime != '' "> 
 	       and  #{map.endTime} > pap.Record_Date 
 	     </if>
-	      <if test = "map.pushstartTime !=  null"> 
+	      <if test = "map.pushstartTime !=  null and map.pushstartTime != '' "> 
 	       and pap.Release_Date > #{map.pushstartTime} 
 	     </if>
-	     <if test = "map.pushendTime !=  null"> 
+	     <if test = "map.pushendTime !=  null and map.pushendTime != '' "> 
 	       and  #{map.pushendTime} > pap.Release_Date 
 	     </if>
-	     <if test = "map.name !=  null"> 
+	     <if test = "map.name !=  null and map.name != '' "> 
 	       and ( ci.Compang_Name like '%${map.name}%'
 	       or pbiper.Personal_Name like  '%${map.name}%' ) 
 	     </if> 
-	     <if test = "map.investStatu !=  -1"> 
-	       and par.Invest_Statu = #{map.investStatu}
+	     <if test = "map.investStatu !=  -1 and map.investStatu !='' "> 
+	       and par.Check_Statu = #{map.investStatu}
+	     </if>
+	          <!-- 	               会员编号 -->
+	      <if test = "map.memberNo !=  null and map.memberNo !=  ''"> 
+	      and  mi.Member_NO like '%${map.memberNo}%'
 	     </if>
 	    </where> 
 	      <if test = "map.order ==  1"> 
@@ -179,4 +203,7 @@
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)} 
 	</select>
+		<update id="Refuse" parameterType = "long">
+	  UPDATE Project_App_Record SET Check_Statu=-1 where Apply_Id=#{applyId} ;
+	</update>
 </mapper>

@@ -6,7 +6,6 @@ function serachByType(){
 			url,
 			data,
 			function(r){
-				console.log(r); 
 				var str = "";
 				for (var a = 0;a<r.length;a++){
 					str += "<option value='"+r[a].commodityTypeID+"'>"+r[a].commodityClassify+"</option>";
@@ -16,9 +15,9 @@ function serachByType(){
 	)
 }
 $(function(){
-	//��ʼ��
-	UploadImg("filePicker",$("#fileList"),1,$("#urlBigImg"),361,333);
-	UploadImg("filePicker1",$("#fileList1"),1,$("#urlSmaillImg"),361,333);
+	
+	UploadImg("filePicker",$("#fileList"),1,$("#maxPic"),361,333);
+	UploadImg("filePicker1",$("#fileList1"),1,$("#minPic"),361,333);
 	
 	$("#getType").on("change",function(){
 		serachByType();
@@ -40,6 +39,8 @@ $(function(){
 					layer.alert("请上传前台展示小图标");
 					return
 				}
+				console.log($("#maxPic").val());
+				console.log($("#minPic").val());
 				var data = {};
 				data.typeId = encrypt.encrypt($("#getLei").val()+"");
 				data.goodName = encrypt.encrypt($("#goodName").val()+"");
@@ -52,8 +53,12 @@ $(function(){
 				data.isActivity = encrypt.encrypt($("#isActivity").val()+"");
 				data.denominationVouchers = encrypt.encrypt($("#denominationVouchers").val()+"");
 				data.marketValue = encrypt.encrypt($("#marketValue").val()+"");
-				data.maxPicPath = encrypt.encrypt($("#urlBigImg").val()+"");
-				data.minPicPath = encrypt.encrypt($("#urlSmallImg").val()+"");
+				
+//				大小图
+				data.maxPicPath = encrypt.encrypt($("#maxPic").val()+"");
+				data.minPicPath = encrypt.encrypt($("#minPic").val()+"");
+				
+
 				data.commodDetail = encrypt.encrypt(ue.getContent()+"");
 				
 				var url = "commodityManager/release.do";
@@ -64,7 +69,7 @@ $(function(){
 							var data = r;
 							if (data.status=="1"){
 								layer.alert("添加成功",function(){
-									window.tory.go(-1);
+									window.history.go(-1);
 								});
 							}else{
 								layer.alert("添加失败",function(index){

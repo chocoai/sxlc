@@ -35,7 +35,21 @@ public class AccountInterfaceEntity {
 	private String NotifyURL = "";// 后台通知网址
 	private String signInfo = "";//加密抛送字符串
 	private String isApp = "";//客户端（0：pc   1:app 2:微信）
+	private int statu=0;//处理状态 0：成功 不等于0失败
+	private String message;//处理信息
 	
+	public int getStatu() {
+		return statu;
+	}
+	public void setStatu(int statu) {
+		this.statu = statu;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	public long getId() {
 		return id;
 	}

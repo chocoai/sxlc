@@ -25,7 +25,6 @@ function getRecruitment(start,length){
     	data,
     	function(r){
     		var data = JSON.parse(r);
-    		console.log(data);
     		$("#recruitment-box").html("");//除标题外的内容移除
     		if(data.recordsTotal > 0) {
     			var html = template("recruitmentList",data);//模板生成 

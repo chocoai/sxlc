@@ -12,7 +12,7 @@ function changeState(projectId,typeId,option){
 			data,
 			function(r){
 				var data = JSON.parse(r);
-				console.log(data)
+				//console.log(data)
 				if (data.status == "1"){
 					layer.alert("修改成功",function(){
 						window.location.reload();

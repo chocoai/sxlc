@@ -28,7 +28,7 @@
 				var newPassword = hex_md5($(".newPassword").val());
 				var confirmPwd = hex_md5($(".okPassword").val());
 				var imgCheckCode = $(".imgCode").val();
-				console.log([oldPassword,newPassword,confirmPwd,imgCheckCode]);
+				//console.log([oldPassword,newPassword,confirmPwd,imgCheckCode]);
 				var str_Url = "personalCenter/resetPassword.html";
 				var data = {oldPassword:addSecret(oldPassword),newPassword:addSecret(newPassword),
 						confirmPwd:addSecret(confirmPwd),imgCheckCode:addSecret(imgCheckCode)};

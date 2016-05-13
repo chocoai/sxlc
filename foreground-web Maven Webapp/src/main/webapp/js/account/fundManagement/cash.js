@@ -35,8 +35,12 @@ $(function(){
 		if($(this).parent().parent().find(".dynamicVerificationSpan").length > 0){
 			return false;
 		}else{
-			$(this).parent().layoutCode("已发送，3分钟后可重新获取");
-			$(this).parent().parent().find(".tipError").remove();
+			
+			var flag=getPhoneCode();
+			if(flag){
+				$(this).parent().layoutCode("已发送，3分钟后可重新获取");
+				$(this).parent().parent().find(".tipError").remove();				
+			}
 		}
 		setTimeout(function(){
 			$(".codeGet").parent().parent().find(".dynamicVerificationSpan").remove();
@@ -67,21 +71,29 @@ $(function(){
 	});
 	$('.cashInput1').blur(function(){
 		cashInput2=$('.cashInput1').val();//提现金额
+		if(Number(cashInput2)>=0){
 		var cashInput3=$('.cashInput1').attr("lang");//lang
 		if(this.value == cashInput3)return;
 		if(parseFloat((cashInput2 + '').replace(/\,/g, '')) > cashSpan1){
 			this.value = parseFloat(cashSpan1).toFixed(2);
-			this.value = $('.cashInput1').format(this.value);			
+			this.value = $('.cashInput1').format(this.value);	
+			cashInput2=cashSpan1;
 		}
 		if(parseFloat((cashInput2 + '').replace(/\,/g, '')) < minMoney){
 			this.value = parseFloat(minMoney).toFixed(2);
 			this.value = $('.cashInput1').format(this.value);			
-		}		
-		/*...实际到账金额...*/
-		var moneyFormat2=$('.moneyFormat1').text();//手续费
-		//实际到账
-		var moneyZhang1=$('.moneyZhang').text((cashInput2 + '').replace(/\,/g, '')-moneyFormat2);
-		
+		}
+		if(Number(cashInput2)>=2){
+			/*...实际到账金额...*/
+			var moneyFormat2=$('.moneyFormat1').text();//手续费
+			//实际到账
+			var moneyZhang1=$('.moneyZhang').text((cashInput2 + '').replace(/\,/g, '')-moneyFormat2);			
+		}else{
+			$('.moneyZhang').text("0");
+		}
+		}else{
+			$('.moneyZhang').text("0");
+		}
 	});
 	/*....银行卡...*/
 	var  chooseCard=1;
@@ -96,21 +108,6 @@ $(function(){
 	$('.beiZhu').blur(function(){
 		$('.beiZhu').changeRemarks($('.beiZhu').val());
 	});
-	$("#tiXian").Validform({
-		tiptype:3,//提示信息类型
-		btnSubmit:".cashBtn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
-		datatype:extdatatype,//扩展验证类型
-		ajaxPost:{//使用ajax提交时
-			url:"",
-			datatype:"json",
-			success:function(data,obj){
-	        },
-	        error:function(data,obj){
-	            console.log(data.status);
-	        }
-		}
-	});
-	
-	
+
 });
 

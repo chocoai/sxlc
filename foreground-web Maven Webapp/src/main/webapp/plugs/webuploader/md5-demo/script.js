@@ -18,12 +18,12 @@
 
                 // 可以用来监听进度
                 .progress(function(percentage) {
-                    // console.log('Percentage:', percentage);
+                    // //console.log('Percentage:', percentage);
                 })
 
                 // 处理完成后触发
                 .then(function(ret) {
-                    // console.log('md5:', ret);
+                    // //console.log('md5:', ret);
                     
                     var end = +new Date();
                     log('HTML5: md5 ' + file.name + ' cost ' + (end - start) + 'ms get value: ' + ret);
@@ -42,12 +42,12 @@
 
                 // 可以用来监听进度
                 .progress(function(percentage) {
-                    // console.log('Percentage:', percentage);
+                    // //console.log('Percentage:', percentage);
                 })
 
                 // 处理完成后触发
                 .then(function(ret) {
-                    // console.log('md5:', ret);
+                    // //console.log('md5:', ret);
                     
                     var end = +new Date();
                     log('Flash: md5 ' + file.name + ' cost ' + (end - start) + 'ms get value: ' + ret);

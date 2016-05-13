@@ -114,7 +114,6 @@ $(function () {
  * 修改部门方法
  */
 function updateDept() {
-	var appPath = getRootPath();//项目根路径
 	var deptId = $("#dId").val();
 	var deptName = $("#dName").val();
 	var principalName = $("#dpName").val();
@@ -197,7 +196,6 @@ $(function () {
  */
 //启用部门
 function openDept () {
-	var appPath = getRootPath();//项目根路径
 	//获取选取对象
 	layer.confirm('确定启用？', {
 	  btn: ['确定', '取消']
@@ -271,30 +269,80 @@ function ofDept () {
  * datatables
  */
 $(function() {
-	var appPath = getRootPath();//项目根路径
+	//单选
+	$('#table_id tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
+});
+
+/**
+ * 显示职务列表或者刷新
+ */
+var flag = true;
+function showListOfDataTable(dePtId){
+	$("#spreDeptId").val(dePtId);
+	/*	$("#deptId").attr("value",dePtId);
+	$("#deptId").val(dePtId);
+	$("#deptId").get(0).value = dePtId;
+	$("#deptId").prop("disabled",true);
+*/	if(flag){
+		showDept(dePtId);
+	}else{
+		$('#table_id').DataTable().ajax.reload();
+	}
+	flag = false;
+}
+
+
+/**
+ * 显示列表
+ */	
+function showDept(dePtId){
 	$('#table_id').DataTable(
-	{
-		autoWidth : false,
-		scrollY : 500,
-		pagingType: "simple_numbers",//设置分页控件的模式  
-		lengthMenu:[[5,10,25,50,-1],[5,10,25,50,"全部"]],
-		colReorder : false,
-		scrollX : true,
-		sScrollX : "100%",
-		sScrollXInner : "100%",
-		bScrollCollapse : true,  
-		processing: true, //打开数据加载时的等待效果  
-        serverSide: true,//打开后台分页  
+		{
+			autoWidth : false,
+			scrollY : 500,
+			serverSide:true,
+			pagingType: "simple_numbers",//设置分页控件的模式  
+			paging : true,//分页
+			searching : true,
+	/*			processing:true,
+			displayStart:0,*/
+			info : true,// 左下角信息
+//			ordering: false,//排序
+			lengthMenu:[10,25,50,100],
+//			aaSorting : [ [ 16, "desc" ] ],// 默认第几个排序
+			colReorder : false,
+			scrollX : true,
+			sScrollX : "100%",
+			sScrollXInner : "100%",
+			bScrollCollapse : true,  
+			processing: true, //打开数据加载时的等待效果  
+	        serverSide: true,//打开后台分页  
         ajax: {  
             "url": appPath + "/role/role-dept.do",   
             "dataSrc": "results", 
-            "data": function ( d ) {  
+            "data": function ( d ) { 
+            	var spreDeptId = dePtId;
                 var deptNo = $("#deptNo").val();
                 var deptName = $('#deptName').val(); 
                 var principalName = $('#deptPerson').val(); 
                 var principalPhone = $('#deptPhone').val();
                 var encrypt = new JSEncrypt();
                 encrypt.setPublicKey(publicKey_common);
+                spreDeptId = encrypt.encrypt(spreDeptId+"");
                 if (deptNo != null && deptNo != "") {
                 	var result1 = encrypt.encrypt((deptNo));
                 }
@@ -311,6 +359,7 @@ $(function() {
                 	d.deptName = result2;
                 	d.principalName = result3;
                 	d.principalPhone = result4;
+                	d.spreDeptId = spreDeptId;
             } 
         },
         columns: [  
@@ -332,16 +381,20 @@ $(function() {
                   { title:"部门等级","data": "deptLevel" },    
                   { title:"状态","data": "deptStatu", 
                 	  "mRender": function (data, type, full) {
-                		 if (data == 0) {
+                		 if (full.deptStatu ==0) {
                 			 return "<font color='red'>无效</font>";
-                		 }else if (data == 1){
+                		 }else if (full.deptStatu ==1){
                 			 return "有效";
                 		 }
                 	  } 
                   }, 
                   { title:"操作","data": "deptStatu",
                   	"mRender": function (data, type, full) {
-                		  return "<a onclick=\"openDept();\" href=\"javascript:void(0);\">启用</a>" + "<a onclick=\"ofDept();\" href=\"javascript:void(0);\">停用</a>";
+                  		  if(full.deptStatu ==1){
+                  			 return "<a onclick=\"ofDept();\" href=\"javascript:void(0);\">停用</a>";
+                  		  }else{
+                  			  return "<a onclick=\"openDept();\" href=\"javascript:void(0);\">启用</a>" ;
+                  		  }
                 	  } 
                   }
         ],
@@ -358,18 +411,11 @@ $(function() {
                         }
         				],
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
-//        	if($.inArray(data.DT_RowId,selected)!==-1){
-//        		$(row).addClass('selected'); 
-//        	}
         }
 });
- var table = $('#table_id').DataTable();
-//设置选中change颜色
- $('#table_id tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
-});
-
+	
+	
+}	
 /**
  * 查询按钮
  */

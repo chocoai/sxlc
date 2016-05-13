@@ -77,10 +77,10 @@ public class SelectChannelSetDaoImpl extends SqlSessionDaoSupport implements Sel
 	}
 	
 	@Override
-	public List<ThreeInterfaceEntity> selectThreeInterface() {
+	public List<ThreeInterfaceEntity> selectThreeInterface(PageEntity pageEntity) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectList("ChannelSetXML.selectThreeInterface");
+		return getSqlSession().selectList("ChannelSetXML.selectThreeInterface", pageEntity, new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 	}
 
 	@Override

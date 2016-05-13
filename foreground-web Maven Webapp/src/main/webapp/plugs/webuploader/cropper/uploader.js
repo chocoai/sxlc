@@ -66,7 +66,7 @@ var Uploader = (function() {
 
                     deferred.resolve();
                 } catch ( e ) {
-                    console.log( e );
+                    //console.log( e );
                     // 出错了直接继续，让其上传原始图片
                     deferred.resolve();
                 }
@@ -162,7 +162,7 @@ var Croper = (function() {
         aspectRatio: 16 / 9,
         preview: ".img-preview",
         done: function(data) {
-            // console.log(data);
+            // //console.log(data);
         }
     });
 

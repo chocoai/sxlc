@@ -216,7 +216,8 @@ function viewPic(btn,type){
  */
 function showDetail(type){
 	if(type==1){
-		$(".right_col").load("project/toProTypeDetail");
+//		$(".right_col").load("project/toProTypeDetail");
+		window.location.href=appPath+"/project/toProTypeDetail";
 	}else if(type==2){
 		var data = $('#table_id').DataTable().rows('.selected').data(); 
 		if(data.length<1){
@@ -224,7 +225,8 @@ function showDetail(type){
 			return;
 		}
 		var id = data[0].id;
-		$(".right_col").load("project/toProTypeDetail",{"id": encrypt.encrypt(id+"")});
+//		$(".right_col").load("project/toProTypeDetail",{"id": encrypt.encrypt(id+"")});
+		window.location.href=appPath+"/project/toProTypeDetail?content="+id;
 	}
 }
 

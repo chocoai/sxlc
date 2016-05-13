@@ -495,7 +495,7 @@ $(function(){
 	 */
 	function dealCommercial(data,attachPrefix){
 		if(data!=null && data!="" ){
-			console.log(data);
+			//console.log(data);
 			var address=data.Residence;//住所
 			var regPserson=data.Firm_Legal;//注册法人
 			var regCapital=data.Reg_Capital;//注册资本
@@ -578,7 +578,7 @@ $(function(){
 	 */
 	function dealTax(data,attachPrefix){
 		if(data!=null && data!=""){
-			console.log(data);
+			//console.log(data);
 			var credentialsNO=data.Credentials_NO;//税务编号
 			var issueOrgan=data.Issue_Organ;//颁发机构
 			var endTime=data.End_Date;

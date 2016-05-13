@@ -70,6 +70,7 @@
 		<result	column="Personal_Name"	property="personalBaseInfo.personalName"/>
 		<result	column="Personal_Phone"	property="personalBaseInfo.personalPhone"/>
 		<result column="Compang_Name"	property="companyInfo.compangName"/>
+		<result column="Logname"	property="logname"/>
 	</resultMap>
 	<!-- 获取会员信息 -->
 	<select id="findMemberInfoByParam" parameterType="Map" resultMap="loginMemberInfo">
@@ -77,6 +78,7 @@
 		Member_Id as id,
 		Member_Type as memberType,
 		pbi.Personal_ID as personalId,
+		mi.Logname,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as Personal_Name,
 		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey}) using utf8) as Compang_Name,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) as Personal_Phone
@@ -280,7 +282,9 @@
 			WHERE Member_ID_Apply=#{map.memberId} AND statu in (-1,0) 
 			
 			<!-- 想加我的 -->
-			UNION ALL SELECT Member_ID_Apply,Record_Date,statu,0 
+			UNION ALL 
+			
+			SELECT Member_ID_Apply,Record_Date,statu,0 
 			FROM Member_FriendShip_Record 
 			WHERE Member_ID_Receive=#{map.memberId} AND statu=0 
 		) AS f ON mi.Member_ID = f.friendId
@@ -347,11 +351,26 @@
 		<id		column="Member_RP_ID"			property="memberRpId"/>
 		<result	column="Gift_Amount"			property="giftAmount"/>
 		<result	column="Gift_Type"				property="giftType"/>
+		<result	column="typeName"				property="gifTypeName"/>
 		<result	column="Receive_Date"			property="receiveDate"/>
 		<result	column="Statu"					property="statu"/>
+		<result column="statusName"				property="statuName"/>
+		<result	column="Invest_Date"			property="useDate"/>
 	</resultMap>
 	<select id="redPackages" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="redPackage">
-		select Gift_Amount,Gift_Type,Receive_Date,End_Date,Statu from Member_Redpackets mr where mr.Member_ID = #{map.member_id}		
+		select 
+		mr.Gift_Amount,
+		mr.Gift_Type,
+		(select name1 from dict where tcode = 'DICT_HBLX' and code1 = mr.Gift_Type) as typeName,
+		mr.Receive_Date,
+		mr.End_Date,
+		mr.Statu,
+		(select name1 from dict where tcode = 'DICT_HBSYZT' and code1 = mr.statu) as statusName,
+		ir.Invest_Date
+		from Member_Redpackets mr
+		left join Member_Redpackets_UseRecord mru on mru.Member_RP_ID = mr.Member_RP_ID
+		left join Invest_Record ir on ir.Invest_Id = mru.Invest_Id 
+		where mr.Member_ID = #{memberId}
 	</select>
 	
 	
@@ -382,12 +401,16 @@
 	
 	<!-- 获取我的代金券使用记录 -->
 	<select id="addMyVouchers" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.MemberVouchers">
-		select 
-		Gift_Amount as sgiftAmount,
-		Invest_Typeas giftType,
-		(select Invest_Date from Invest_Record ir where ir.Invest_Id = mvu.Invest_Id and ir.memberId = #{map.memberId}) as receiveDate ,
-		statu 
-		from Member_Vouchers_UseRecord mvu 
+		SELECT
+			Invest_Date	as useDate,
+			CAST(AES_DECRYPT(UNHEX(Invest_Vouchers_Amount),#{map.skey}) AS SIGNED) AS giftAmount,
+			par.Invest_Statu AS pStatus,
+			cta.Statu AS ctaStatus
+		FROM Invest_Record ir 
+		LEFT JOIN Project_App_Record par ON par.Apply_Id = ir .Apply_Id
+		LEFT JOIN Creditor_Trans ct ON ct.Invest_Id = ir.Invest_Id
+		LEFT JOIN Creditor_Trans_App cta ON cta.CTA_Id = ct.CTA_Id
+		where ir.member_id = #{map.memberId}
 	</select>
 	
 	

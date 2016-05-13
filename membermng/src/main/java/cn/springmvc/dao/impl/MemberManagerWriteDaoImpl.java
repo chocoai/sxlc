@@ -56,7 +56,11 @@ public class MemberManagerWriteDaoImpl extends SqlSessionDaoSupport implements I
 		return getSqlSession().update("memberManagerDao.deleteLimtList");
 	}
 
-	
+	@Override
+	public int updateAdminPwd(Map<String, Object> param) {
+		return getSqlSession().update("memberManagerDao.updateAdminPwd");
+	}
+
 	
 	@Autowired
 	@Override
@@ -65,6 +69,6 @@ public class MemberManagerWriteDaoImpl extends SqlSessionDaoSupport implements I
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
 
-	
+
 	
 }

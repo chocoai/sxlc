@@ -33,6 +33,7 @@
 	
 	<script src="${pageContext.request.contextPath}/js/common/md5.js"></script>
 	<script src="${pageContext.request.contextPath}/js/common/net_util.js"></script>
+	<script type="text/javascript" src="js/common/template.js"></script>
 	<script type="text/javascript" src="js/rsa/Barrett.js"></script>
 	<script type="text/javascript" src="js/rsa/BigInt.js"></script>
 	<script type="text/javascript" src="js/rsa/RSA.js"></script>

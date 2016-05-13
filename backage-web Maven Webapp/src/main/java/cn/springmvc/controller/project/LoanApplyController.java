@@ -231,9 +231,9 @@ public class LoanApplyController {
 	 */
 	@RequestMapping("/toDistributionPg")
 	public String toDistributionPg(HttpServletRequest req){
-		req.setAttribute("Logname", req.getParameter("Logname"));
-		req.setAttribute("PersonalName", req.getParameter("PersonalName"));
-		req.setAttribute("memberID", req.getParameter("memberID"));
+		req.setAttribute("Logname", req.getParameter("start"));
+		req.setAttribute("PersonalName", req.getParameter("length"));
+		req.setAttribute("memberID", req.getParameter("content"));
 		return "project/pro-add/loan_intention_allocation";
 	}
 	
@@ -452,12 +452,12 @@ public class LoanApplyController {
 	public String toAddInformationPg(HttpServletRequest req){
 		//查询借款信息
 		Map<String,Object> param=new HashMap<String,Object>();
-		String id = req.getParameter("id");
+		String id = req.getParameter("content");
 		param.put("id", id);
 		ProjectPurposeEntity proPurpose = projectAppRecordService.selectProjectPurposeById(param);
 		req.setAttribute("proPurpose", proPurpose);
 		//查询项目详情
-		Long applyid = Long.parseLong(req.getParameter("applyid"));
+		Long applyid = Long.parseLong(req.getParameter("start"));
 		ProjectAppRecordEntity proRecord = projectAuitService.selectProjectDetailByID(applyid);
 		req.setAttribute("proRecord", proRecord);
 		//FTP服务器地址

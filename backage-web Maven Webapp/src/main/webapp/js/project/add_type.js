@@ -114,6 +114,14 @@ $(function(){
 		}
 	});
 	
+	
+	/**
+	 * 返回按钮
+	 */
+	$(".goBack").on("click",function(){
+		window.location.href=appPath+'/project/toProTypePg';
+	});
+	
 });
 
 /**
@@ -206,6 +214,8 @@ function addOrModify(){
 	
 	
 }
+
+
 
 $(function(){
 	

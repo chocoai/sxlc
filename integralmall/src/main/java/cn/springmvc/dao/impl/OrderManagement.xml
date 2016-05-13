@@ -13,12 +13,13 @@
 		<result column="Quantity" 				property="quantity" />
 		<result column="Need_Point" 			property="needPoint" /> 
 		<result column="realPoint"   			property="realPoint" />   
-		<result column="Order_Type"   			property="orderType" />   
+		<result column="Order_Type"   			property="orderType" /> 
+		<result column="Order_ID"   			property="orderID" />   
     </resultMap> 
     
     <!-- 所有订单-->  
 	<select id="selectalldOrder" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultOrderManage">
-	    select orc.Exchange_Time,orc.Delivery_Time, mi.Logname,
+	    select orc.Order_ID,orc.Exchange_Time,orc.Delivery_Time, mi.Logname,
 			case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  
 			     when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) end 
 			as Personal_Name ,
@@ -35,7 +36,6 @@
 			join Commodity_Order cor on  cor.Order_ID = orc.Order_ID
 			left join Commodity_Info  comminfo on comminfo.Commodity_ID =  cor.Commodity_ID
          <where>  
-                orc.Order_Type = 3  
                 <!--            商品名称 -->
 	            <if test="map !=null and  map.commodityName != null and  map.commodityName != ''">  
 	                comminfo.Commodity_Name like  '%${map.commodityName}%'  

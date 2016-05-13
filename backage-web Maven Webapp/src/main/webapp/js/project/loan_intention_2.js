@@ -26,9 +26,25 @@ $(function() {
 				          },
 				          { title:"会员编号","data": "memberNo"},  
 				          { title:"会员用户名","data": "logname"},  
-				          { title:"会员名称","data": "personalName"},  
-				          { title:"会员联系号码","data": "personalPhone"},  
-				          { title:"借款金额","data": "amountStr"},  
+				          { title:"会员名称","data": "PersonalName", 
+				        	  "mRender": function (data, type, full) {
+				        		  if(data !=null && data !=''){
+				        	    		return data;
+				        	    	}else{
+				        	    		return "无数据";
+				        	    	}  
+				        	  }
+				          },  
+				          { title:"会员联系号码","data": "PersonalPhone", 
+				        	  "mRender": function (data, type, full) {
+				        		  if(data !=null && data !=''){
+				        	    		return data;
+				        	    	}else{
+				        	    		return "无数据";
+				        	    	}  
+				        	  }
+				          },  
+				          { title:"借款金额","data": "amount"},  
 				          { title:"借款期限","data": "deadline"},  
 				          { title:"还款方式","data": "repayWay", 
 				        	  "mRender": function (data, type, full) {

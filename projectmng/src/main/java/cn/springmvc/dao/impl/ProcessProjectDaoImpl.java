@@ -29,8 +29,8 @@ public class ProcessProjectDaoImpl extends SqlSessionDaoSupport implements Proce
 		if(entity == null){
 			return iResult; 
 		}  
-		iResult = getSqlSession().insert("processProject.insertProcessProject", entity);
-		return iResult;
+	    getSqlSession().insert("processProject.insertProcessProject", entity);
+		return entity.getResult();
 	} 
 	@Override
 	public int deleteProcessProjectByID(int id) {

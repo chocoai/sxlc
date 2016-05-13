@@ -23,10 +23,14 @@
            </where>  
     </select>       
 	<!-- 新增项目审批活动点 -->  
-	<insert id="insertActivitiesProject"  parameterType="cn.springmvc.model.ActivitiesProjectEntity">    
-		insert into Activities_Project(Process_ID,  AP_Name, Role_ID )
-		                       values(      #{id}, #{apName},#{roleID})    
-	</insert> 
+ 	 <select id="insertActivitiesProject"  statementType="CALLABLE" parameterType="cn.springmvc.model.ActivitiesProjectEntity"> 
+	     {call insertActivity(
+				#{id,	         mode=IN,	jdbcType=BIGINT},
+				#{apName,	     mode=IN,	jdbcType=VARCHAR}, 
+				#{roleType,	     mode=IN,	jdbcType=INTEGER}, 
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)} 
+	</select>
 	<!-- 查询项目审批活动点是否存在 -->  
 	<select id="selectActivitiesProjectIsExistByNAme"  parameterType="cn.springmvc.model.ActivitiesProjectEntity" resultMap="resultListActivitiesProject" >
 	   select Process_ID   from  Activities_Project where  AP_Name=#{apName}  and Process_ID !=#{id};  

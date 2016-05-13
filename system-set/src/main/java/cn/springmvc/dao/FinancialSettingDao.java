@@ -58,7 +58,7 @@ public interface FinancialSettingDao {
 	* @Description: TODO 
 	* @param @return 设定文件 
 	* @return int 返回类型 
-	* @throws 
+	* @throws null
 	*/
 	public int updateWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity);
 	

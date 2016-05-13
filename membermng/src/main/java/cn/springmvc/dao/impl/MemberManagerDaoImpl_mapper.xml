@@ -5,7 +5,7 @@
 
 	<!-- 第三方信息 -->
 	<resultMap type="cn.membermng.model.MemberThirdInfo" id="memberThirdInfo">
-		<result		column="id" 					property="id"/>
+		<result		column="id" 					property="certificationId"/>
 		<result		column="member_Type"			property="memberType"/>
 		<result		column="Member_ID"				property="memberId"/>
 		<result		column="ThirdParty_Account"		property="thirdPartyAccount"/>
@@ -212,16 +212,16 @@
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Home_Town),#{skey}) using utf8) 							as froms,
 		pbi.Nation_Id																			as nation,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Census),#{skey}) using utf8)								as permanentAddress,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.Home_Town),#{skey}) using utf8)							as memberPhone,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8)						as memberPhone,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8)						as memberEmail,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.qq),#{skey}) using utf8)									as memberQQ,
 		pbi.sexId																				as sexId,
 		pbi.Education																			as educationId,
 		ei.EducationName                                                                        as educationName,
 		pbi.Marital_Status																		as marriageStatu,
-		mari.MaritalName																		    as marriageStatuName ,
+		mari.MaritalName																		as marriageStatuName ,
 		(select Monthly_Income from Personal_Job_Info 
-		where Personal_Id = mi.Personal_ID order by Start_Date desc limit 0,1)			as sMonthlyIncome,
+		where Personal_Id = mi.Personal_ID order by Start_Date desc limit 0,1)					as sMonthlyIncome,
 		pd.Province_Name																		as provinceName,
 		cd.City_Name																			as cityName,
 		cod.County_Name																			as countyName,
@@ -1277,5 +1277,17 @@
     <foreach collection="array" item="item" index="index"  separator="," >  
         (#{item},1)  
     </foreach>  
-</insert>
+	</insert>
+	
+	 <!-- 1 手机号不存在  -2 改手机对应用户不是管理员 -3 改手机对应员工不是管理员    >0 管理员id-->
+	<select id="getAdminIdByPhone" resultType="Map" statementType="CALLABLE">
+		call getAdminIdByPhone(
+			#{phone,					mode=IN,				jdbcType=VARCHAR},
+			#{skey,				    	mode=IN,				jdbcType=VARCHAR},
+			#{result,					mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
+	<update id="updateAdminPwd" parameterType="Map" >
+		update Admin set adminPwd = #{newpwd} where Admin_ID = #{adminId} 
+	</update>
 </mapper>

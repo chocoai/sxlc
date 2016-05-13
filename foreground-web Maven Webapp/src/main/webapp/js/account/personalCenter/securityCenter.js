@@ -140,7 +140,7 @@ $(function(){
 			sendData.logname = userName;
 			
 			var vsign = sendBef(sendData);
-			console.log(vsign);
+			//console.log(vsign);
 			$.ajax({
 				url:"SC_realNameAuthentication_c.html",
 				type:"post",

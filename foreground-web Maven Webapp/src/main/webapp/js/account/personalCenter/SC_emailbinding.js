@@ -13,7 +13,7 @@ $(function(){
 				str_Url, 
 				json_Data, 
 				function(r){
-					console.log(r);
+					//console.log(r);
 					var json = JSON.parse(r);
 					if(json.status == 1){
 						$(".codeBtn").html("已发送").addClass("disabled");
@@ -54,14 +54,14 @@ $(function(){
 			var dynamicCode = $(".dynamicCode").val();
 			dynamicCode = encrypt.encrypt(dynamicCode+"");
 			
-			console.log(entryEmail);
-			console.log(e_imgCode)
+			//console.log(entryEmail);
+			//console.log(e_imgCode)
 			var str_Url = "personalCenter/bindEmail.html";
 			NetUtil.ajax(
 				str_Url,
 				{email:entryEmail,checkCode:e_imgCode,emailCheckCode:dynamicCode},
 				function(r){
-					console.log(r)
+					//console.log(r)
 					var r = JSON.parse(r);
 					if (r.status == "1"){
 						layer.alert("修改成功",function(){

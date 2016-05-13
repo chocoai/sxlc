@@ -71,12 +71,12 @@ public class ProjectPublishServiceImpl implements ProjectPublishService {
 	public int publishProject(Map<String,Object> map,InsertAdminLogEntity 
 			logentity,String[] sIpInfo) {
  		
-// 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
-//		long id = generatorUtil.GetId();
+  		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+ 		long id = generatorUtil.GetId();
 		map.put("checkid", 201);
  		int result = projectPublishDaoImpl.publishProject(map);
  		if(result == 1) {
-			//generatorUtil.SetIdUsed(id); 
+			generatorUtil.SetIdUsed(id); 
 			StringBuffer detail =new StringBuffer("发布项目");
 		    if(map.get("checkStatu").toString().equals("1")) {
 		    	detail.append("通过");
@@ -86,7 +86,7 @@ public class ProjectPublishServiceImpl implements ProjectPublishService {
 		    logentity.setsDetail(detail.toString());
 			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		}else{
-			//generatorUtil.SetIdUsedFail(id);
+			  generatorUtil.SetIdUsedFail(id);
 		} 
  		return result;
 	}
@@ -117,6 +117,14 @@ public class ProjectPublishServiceImpl implements ProjectPublishService {
 	public ProjectAppProcessEntity selectProjectEndtime(long projectID) {
 		
 		return  projectPublishListDaoImpl.selectProjectEndtime(projectID);
+		
+	}
+
+
+	@Override
+	public int Refuse(long applyId) {
+		
+		return  projectPublishDaoImpl.Refuse(applyId);
 		
 	}
 

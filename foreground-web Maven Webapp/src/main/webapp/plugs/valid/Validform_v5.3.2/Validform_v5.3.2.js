@@ -150,7 +150,7 @@
 			
 			$this.delegate(":text","keypress",function(event){
 				if(event.keyCode==13 && $this.find(":submit").length==0){
-					console.log("进入提交方法");
+					//console.log("进入提交方法");
 					$this.submit();
 				}
 			});
@@ -167,7 +167,7 @@
 			});
 						
 			$this.submit(function(){
-				//console.log(curform.tagName);
+				////console.log(curform.tagName);
 				//debugger;
 				var subflag=Validform.util.submitForm.call($this,curform.settings);
 				subflag === undef && (subflag=true);

@@ -64,6 +64,14 @@ public class ProjectPublishDaoImpl extends SqlSessionDaoSupport implements proje
 		
 	}
 
+	@Override
+	public int Refuse(long applyId) {
+		
+		int result = getSqlSession().update("projectPublish.Refuse",applyId);
+		return result;
+		
+	}
+
 	 
 }
 

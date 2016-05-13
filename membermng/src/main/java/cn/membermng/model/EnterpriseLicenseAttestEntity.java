@@ -32,6 +32,17 @@ public class EnterpriseLicenseAttestEntity {
 	private String sRegDate;//注册时间\颁发时间
 	private Date    regDate ;
 	
+	
+	/**房产认证*/
+	private String address;//房产位置
+	private int area;//面积(单位：平方米)
+	private String value;//价值
+	private int isMortgage;//是否已抵押 0：否  1：是
+	/**车产认证*/
+	private String brand;//品牌
+	private String model;//型号
+	private String licensePlate;//	车牌号
+	
 	private String residence;//住所
 	private String realCapital;//实收资本
 	private String sSetUpDate;//成立日期
@@ -239,6 +250,48 @@ public class EnterpriseLicenseAttestEntity {
 	}
 	public void setsEndDate(String sEndDate) {
 		this.sEndDate = sEndDate;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public int getArea() {
+		return area;
+	}
+	public void setArea(int area) {
+		this.area = area;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
+	public int getIsMortgage() {
+		return isMortgage;
+	}
+	public void setIsMortgage(int isMortgage) {
+		this.isMortgage = isMortgage;
+	}
+	public String getBrand() {
+		return brand;
+	}
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+	public String getModel() {
+		return model;
+	}
+	public void setModel(String model) {
+		this.model = model;
+	}
+	public String getLicensePlate() {
+		return licensePlate;
+	}
+	public void setLicensePlate(String licensePlate) {
+		this.licensePlate = licensePlate;
 	}
 	
 }

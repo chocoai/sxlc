@@ -144,7 +144,7 @@ $(function(){
 			success:function(data,obj){
 	        },
 	        error:function(data,obj){
-	            console.log(data.status);
+	            //console.log(data.status);
 	        }
 		}
 	});

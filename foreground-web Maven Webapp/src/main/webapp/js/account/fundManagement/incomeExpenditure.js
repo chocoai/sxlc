@@ -124,7 +124,6 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							//console.log(data);
 							if (data.totalPage>0){
 								var html = template("all_list",data);
 								$("#all_list_top").siblings().remove();
@@ -204,7 +203,6 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							//console.log(data);
 							if (data.totalPage>0){
 								var html = template("recharge_list",data);
 								$("#recharge_top").siblings().remove();
@@ -274,7 +272,6 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-							//console.log(data);
 							if (data.totalPage>0){
 								var html = template("recharge_list",data);
 								$("#withdraw_top").siblings().remove();

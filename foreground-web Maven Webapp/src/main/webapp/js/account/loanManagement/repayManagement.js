@@ -58,7 +58,7 @@ function getStayStillPlans(curr,length){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			$(".my-loan-table .data-item").remove();
 			if(data.results.length > 0){
 				creatStayStillPlans(data);//拼接数据
@@ -177,7 +177,7 @@ function getRepayManagementin(curr,length){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			$(".my-loan-table.repayManagementin .data-item").remove();
 			if(data.results.length > 0){
 				creatRepayManagementin(data);//拼接数据
@@ -315,7 +315,7 @@ function getRepayInfo(){
 			dataType:"json",
 			timeout:10000,
 			success:function(data){
-				//console.log(data);
+				////console.log(data);
 				var unit = "元";//单位
 				applyId = data.applyID;
 				$("#sLoanAmount").text(Number(data.sLoanAmount).toFixed(2)+unit);
@@ -374,7 +374,7 @@ function getRepayInfo(){
 				data,
 				function(r){ 
 					var rdb = JSON.parse(r);
-					console.log(rdb);
+					//console.log(rdb);
 					$(".repay-confirm").attr("disabled",false);
 					layer.alert(data.message,{icon:1});
 					layer.closeAll();
@@ -390,7 +390,7 @@ function getRepayInfo(){
 function getRepayPlan(curr,length){
 	var temp = window.location.href;
 	projectId = temp.split("projectId=")[1] || temp.split("a=")[1];
-	//console.log(projectId);
+	////console.log(projectId);
 	if(projectId == null || isNaN(projectId)){
 		return;
 	}
@@ -411,7 +411,7 @@ function getRepayPlan(curr,length){
 		data,
 		function(r) {
 			var data = JSON.parse(r);
-			//console.log(data);
+			////console.log(data);
 			//列表赋值
 			$("#repayPlanTop").siblings().remove();
 			if(data.results.length > 0){
@@ -448,7 +448,7 @@ function getRepayPlan(curr,length){
 function getEarlyRepayInfo(){
 	var temp = window.location.href;
 	projectId = temp.split("projectId=")[1] || temp.split("a=")[1];
-	//console.log(projectId);
+	////console.log(projectId);
 	if(projectId == null || isNaN(projectId)){
 		return;
 	}
@@ -463,7 +463,7 @@ function getEarlyRepayInfo(){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			var unit = "元";//单位
 			applyId = data.applyId;
 			$("#repayPrincipals").text(Number(data.repayPrincipals).toFixed(2)+unit);
@@ -509,7 +509,7 @@ function getEarlyRepayInfo(){
 			dataType:"json",
 			timeout:10000,
 			success:function(data){
-				//console.log(data);
+				////console.log(data);
 			},
 			error:function(){
 				layer.alert("请求异常，请稍后再试",{icon:2});

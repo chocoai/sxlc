@@ -33,9 +33,9 @@ $(function(){
 	
 	
 	//只要日期，不要时间
-	template.helper("$timeFixed",function(content){
-		var index = content.indexOf(" ");
-		if(content != null && index != -1){
+	template.helper("$timeFixed",function(content){ 
+		if(content != null && content != '' && index != -1){
+			var index = content.indexOf(" ");  
 			return content.substring(0,index);
 		}
 	});
@@ -86,8 +86,8 @@ $(function(){
 					data,
 					function(r){ 
 					    var data = JSON.parse(r);
-					    //console.log("测试返回：")
-					    //console.log(data);
+					    ////console.log("测试返回：")
+					    ////console.log(data);
 					    //*+Top
 					 	$("#financialAwardTop").siblings().remove();//除标题外的内容移除
 						if(data.recordsTotal > 0) {
@@ -140,7 +140,7 @@ $(function(){
 					function(r){ 
 					     var data = JSON.parse(r);
 					     $("#historyCashTop").siblings().remove();
-						if(data.recordsTotal < 0) {
+						if(data.recordsTotal > 0) {
 							var html = template("historyCashList",data); 
 							$("#historyCashBackUl").append(html);
 							var totalPage    = Math.ceil(data.recordsTotal/data.pageSize);
@@ -196,7 +196,7 @@ $(function(){
 					data,
 					function(r){ 
 					    var data = JSON.parse(r);
-					    console.log(data);
+					    //console.log(data);
 					    $("#financialInvitationTop").siblings().remove();
 						if(data.recordsTotal > 0) {
 							var html = template("financialInvitationList",data); 
@@ -515,7 +515,7 @@ $(function(){
 	 var endTime       = $("#endTimeBorrow").val() == "请选择" ? "" : $("#endTimeBorrow").val();  
 	 var name          = $("#memberNameBrow").val(); 
 	 var projectTitle  = $("#projectTitleBrow").val(); 
-	 financialAdvisor.financialBorrowing(startDate,endDate,name,projectTitle);
+	 financialAdvisor.financialBorrowing(startTime,endTime,name,projectTitle);
 	});
 	
 	//投资明细
@@ -524,7 +524,7 @@ $(function(){
 	 var endTime       = $("#endTimeInvest").val() == "请选择" ? "" : $("#endTimeInvest").val();  
 	 var name          = $("#memberNameInvest").val(); 
 	 var projectTitle  = $("#projectTitleInvest").val(); 
-	 financialAdvisor.financialInvest(startDate,endDate,name,projectTitle);
+	 financialAdvisor.financialInvest(startTime,endTime,name,projectTitle);
 	});
 	
 	//还本明细
@@ -534,7 +534,7 @@ $(function(){
 	 var name          = $("#memberNameReplay").val(); 
 	 var over          = $("#isover").val(); 
 	 var projectTitle  = $("#projectTitleReplay").val(); 
-	 financialAdvisor.repaymentfinancial(startDate,endDate,name,projectTitle,over);
+	 financialAdvisor.repaymentfinancial(startTime,endTime,name,projectTitle,over);
 	});
 	
 	//VIP购买明细
@@ -542,7 +542,7 @@ $(function(){
 	 var startTime     = $("#startTimeVIP").val() == "请选择" ? "" : $("#startTimeVIP").val();
 	 var endTime       = $("#endTimeVIP").val() == "请选择" ? "" : $("#endTimeVIP").val();  
 	 var name          = $("#memberNameVIP").val();  
-	 financialAdvisor.financialVipPay(startDate,endDate,name);
+	 financialAdvisor.financialVipPay(startTime,endTime,name);
 	});
 	
 	//=========条件查询e========
@@ -555,8 +555,8 @@ $(function(){
 		var startTime = $("#startDate").val() == "请选择" ? "" : $("#startDate").val();
 		var endTime   = $("#endDate").val() == "请选择" ? "" : $("#endDate").val(); 
 		var dateStarts = $(".chooseTime span.active").attr("data-time");
-		var startTime2 = encrypt.encrypt(startDate+"");
-		var endTime2   = encrypt.encrypt(endDate+"");
+		var startTime2 = encrypt.encrypt(startTime+"");
+		var endTime2   = encrypt.encrypt(endTime+"");
 		var dateStart2 = encrypt.encrypt(dateStarts+""); 
 		 $("#startTimeatz").val(startTime2);
 	     $("#endTimeatz").val(endTime2);

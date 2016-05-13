@@ -26,13 +26,11 @@ function getManagementTeam(start,length){
     	data,
     	function(r){
     		var data = JSON.parse(r);
-    		console.log(data);
     		$("#mngTeam-box").html("");//除标题外的内容移除
     		if(data.recordsTotal > 0) {
     			var html = template("mngTeamList",data);//模板生成 
 				$("#mngTeam-box").append(html);//页面赋值
 	    		var totalPage    = Math.ceil(data.recordsTotal/data.pageSize);
-	    		//console.log(data.recordsTotal+"=========="+data.pageSize);
 				var totalRecords = data.recordsTotal;
 				var pageNo       = data.pageNum;
 				pager.generPageHtml({//调用分页

@@ -53,7 +53,7 @@ function bindCity(pid){
 		type:"post",
 		data:{proId:spid},
 		success:function(json){
-			console.log(json);
+			//console.log(json);
 			$(".city li").remove();
 			for (var int = 0; int < json.length; int++) {
 				$(".city").append("<li class=\"selectOption\" value=\""+json[int].cId+"\">"+json[int].cName+"</li>");
@@ -81,7 +81,7 @@ function bindCounty(cid){
 		type:"post",
 		data:{cid:scid},
 		success:function(json){
-			console.log(json);
+			//console.log(json);
 			$(".county li").remove();
 			for (var int = 0; int < json.length; int++) {
 				$(".county").append("<li class=\"selectOption\" value=\""+json[int].xId+"\">"+json[int].xName+"</li>");
@@ -120,7 +120,7 @@ function submitEditPersonal(){
 		dataType:"json",
 		data:{memberQQ:smemberQQ,address:loction,hjdz:homeTown,provinceId:sprovinceId,cityId:scityId,countyId:scountyId},
 		success:function(json){
-			console.log(json);
+			//console.log(json);
 		}
 	});
 }

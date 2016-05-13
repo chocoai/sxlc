@@ -21,10 +21,12 @@ public class RadPackage {
 	private String		endDate;					//过期时间
 	private String		useDate;					//红包使用时间
 	private Integer		giftType;					//红包类型
+	private String		gifTypeName;				//
 	private Long		giftAmount;					//红包金额
 	private String		sgiftAmount;				
 	private Long		projectId;					//赠送事件编号
 	private Integer		statu;						//状态
+	private String		statuName;					//状态名称
 	private String		remark;						//红包描述
 	
 	public String getRemark() {
@@ -93,6 +95,18 @@ public class RadPackage {
 	}
 	public void setStatu(Integer statu) {
 		this.statu = statu;
+	}
+	public String getGifTypeName() {
+		return gifTypeName;
+	}
+	public void setGifTypeName(String gifTypeName) {
+		this.gifTypeName = gifTypeName;
+	}
+	public String getStatuName() {
+		return statuName;
+	}
+	public void setStatuName(String statuName) {
+		this.statuName = statuName;
 	}
 	
 	

@@ -91,7 +91,7 @@ public class CommodityManagerController {
  		entity.setMarketPrice(marketValue);
  		entity.setVouchersAmount(denominationVouchers);
  		entity.setCommodityIntroduction(commodDetail);
- 		
+ 		entity.setCommodityDescribe(commodDetail);
  		
  		Admin admin = (Admin) request.getSession().getAttribute("LoginPerson");
 		InsertAdminLogEntity logentity = new InsertAdminLogEntity();
@@ -129,7 +129,7 @@ public class CommodityManagerController {
 	public PageEntity loadList(HttpServletRequest request){
 		String	pName			=	request.getParameter("pName") ;												//商品名称
 		String	pNumber			=	request.getParameter("pNumber");											//商品编号
-		int		upId			=	IntegerAndString.StringToInt(request.getParameter("upId"), 0); 				//商品类型 代金券 | 实物
+		int		upId			=	IntegerAndString.StringToInt(request.getParameter("upId"), -1); 				//商品类型 代金券 | 实物
 		int		status			=	IntegerAndString.StringToInt(request.getParameter("status"),0);				//状态 兑换中|待上架 | 已下架
 		int		start			=	IntegerAndString.StringToInt(request.getParameter("start"), 1);				//(dataTable参数)
 		int 	length			=	IntegerAndString.StringToInt(request.getParameter("length"), 10);			//(dataTable参数)
@@ -137,7 +137,7 @@ public class CommodityManagerController {
 		
 		PageEntity entity = new PageEntity();
 		entity.setPageSize(length);
-		entity.setPageNum(start);
+		entity.setPageNum(start/length+1);
 		Map<String,Object> parma = new HashMap<String, Object>();
 		entity.setMap(parma);
 		parma.put("commodityName", pName);
@@ -216,6 +216,7 @@ public class CommodityManagerController {
  		entity.setMarketPrice(marketValue);
  		entity.setVouchersAmount(denominationVouchers);
  		entity.setCommodityIntroduction(commodDetail);
+ 		entity.setCommodityDescribe(commodDetail);
 		
  		Admin admin = (Admin) request.getSession().getAttribute("LoginPerson");
 		InsertAdminLogEntity logentity = new InsertAdminLogEntity();
@@ -284,6 +285,7 @@ public class CommodityManagerController {
 	* @date 2016-5-10 下午4:09:10
 	 */
 	@RequestMapping("/showPutK")
+	@ResponseBody
 	public PageEntity showPutK(HttpServletRequest request){
 		int start			=	IntegerAndString.StringToInt(request.getParameter("start"),1);
 		int pageSize		=	IntegerAndString.StringToInt(request.getParameter("length"), 10);
@@ -293,6 +295,7 @@ public class CommodityManagerController {
 		entity.setPageSize(pageSize);
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("commodityID", goodId);
+		entity.setMap(param);
 		List<InventoryRecordsEntity> entities = commodityInfoService.selectInventoryrecordsIn(entity);
 		return entity;
 	}
@@ -308,7 +311,7 @@ public class CommodityManagerController {
 	@ResponseBody
 	public Map<String,Object> putK(HttpServletRequest request){
 		long	goodId		= IntegerAndString.StringToLong(request.getParameter("goodId"), 0);
-		int		addNumber	= IntegerAndString.StringToInt(request.getParameter("addNumber"));
+		int		addNumber	= IntegerAndString.StringToInt(request.getParameter("addNumber"),0);
 		
 		Admin admin = (Admin) request.getSession().getAttribute("LoginPerson");
 		InsertAdminLogEntity logentity = new InsertAdminLogEntity();
@@ -439,7 +442,7 @@ public class CommodityManagerController {
 		logentity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
 		//1成功 0失败
-		int result = commodityInfoService.updateCommodityStatu(2, commodityId, admin.getId(), logentity, sIpInfo);
+		int result = commodityInfoService.updateCommodityStatu(1, commodityId, admin.getId(), logentity, sIpInfo);
 		Map<String,Object> message = new HashMap<String, Object>();
 		if(result == 1){
 			message.put("status", "1");

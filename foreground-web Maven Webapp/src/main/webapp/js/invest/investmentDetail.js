@@ -239,7 +239,7 @@ jQuery.fn.layoutClick = function(str){
 										r.num = num;
 										r.profit = profit;
 										r.maxRedNum = parseInt(r.num)*r.proportion;
-										console.log(r)
+										//console.log(r)
 										var html = template("confirmInfo",r)
 										
 										$("#red-packets-top").html(html);
@@ -274,7 +274,7 @@ jQuery.fn.layoutClick = function(str){
 												detail.calculation();
 												if (detail.getRedBags()>=r.maxRedNum-inputVal){
 													$(".input1").each(function(){
-														console.log(1)
+														//console.log(1)
 														if (!($(this).hasClass("active"))){
 															
 															$(this).addClass("disabled");
@@ -288,7 +288,7 @@ jQuery.fn.layoutClick = function(str){
 											var re = /^[0-9]*[1-9][0-9]*$/; //正整数
 											var str = detail.getRedBags();
 											var thisVal = $(this).val()||"0";
-											console.log(num-str);
+											//console.log(num-str);
 											if (thisVal>num-str){
 												layer.alert("超出本次投资总金额",function(index){
 													layer.close(index);
@@ -321,7 +321,7 @@ jQuery.fn.layoutClick = function(str){
 						url,
 						data,
 						function(r){
-							console.log(r)
+							//console.log(r)
 							$("#pageProfit").html(parseInt(r).toFixed(2));
 						}
 				)
@@ -411,7 +411,7 @@ $(function(){
 		if (num!="50元起投且金额为整数"&&num){
 			var re = /^[0-9]*[1-9][0-9]*$/ ; //正整数
 			if (re.test(num) && num>=50){
-				console.log(num)
+				//console.log(num)
 				detail.getInvestMoney(applyId,num)
 			}
 		}

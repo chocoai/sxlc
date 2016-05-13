@@ -238,7 +238,7 @@ public interface ChannelSetService {
 	* @return List<ThreeInterfaceEntity> 返回类型 
 	* @throws 
 	*/
-	public List<ThreeInterfaceEntity> selectThreeInterface();
+	public List<ThreeInterfaceEntity> selectThreeInterface(PageEntity pageEntity);
 	
 
 	/** 
@@ -254,7 +254,7 @@ public interface ChannelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int updateThreeInterface(Map<String, Object> map);
+	public int updateThreeInterface(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -270,7 +270,7 @@ public interface ChannelSetService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public int insertThreeInterface(Map<String, Object> map);
+	public int insertThreeInterface(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* MailHistory 分页查询邮件发送历史记录分页查询邮件发送历史记录 

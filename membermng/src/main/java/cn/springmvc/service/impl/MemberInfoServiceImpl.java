@@ -247,6 +247,32 @@ public class MemberInfoServiceImpl implements IMemberService{
 	@Override
 	public List<MemberVouchers> useVouchers(PageEntity entity) {
 		List<MemberVouchers> list = memberDao.useVochers(entity);
+		for (int i = 0; i < list.size(); i++) {
+			String ctaStatu = list.get(i).getCtaStatus();
+			String pStatu	= list.get(i).getpStatus();
+			if(ctaStatu != null && !ctaStatu.equals("")){//债权投资
+				if(ctaStatu.equals("-1") || ctaStatu.equals("0") || ctaStatu.equals("2")){
+					list.get(i).setStatuName("冻结中");
+				}else if(ctaStatu.equals("1")){
+					list.get(i).setStatuName("失败");
+				}else if(ctaStatu.equals("3") || ctaStatu.equals("4")){
+					list.get(i).setStatuName("成功");
+				}
+				list.get(i).setLoanTypeName("债权投资");
+			}else{//项目投资
+				if (pStatu.equals("0") || pStatu.equals("2")) {
+					list.get(i).setStatuName("冻结中");
+				}else if(pStatu.equals("1")){
+					list.get(i).setStatuName("流标");
+				}else if(pStatu.equals("3") || pStatu.equals("4")){
+					list.get(i).setStatuName("成功");
+				}
+				list.get(i).setLoanTypeName("项目投资");
+			}
+		}
+		
+		
+		
 		PageUtil.ObjectToPage(entity, list);
 		return list;
 	}

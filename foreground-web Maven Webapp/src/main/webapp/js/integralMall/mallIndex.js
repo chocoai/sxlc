@@ -47,7 +47,7 @@ function getBanner(){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			//console.log(data);
+			////console.log(data);
 			$("#bannerUl").html("");//置空
 			if(data.length > 0){
 				var html = template("bannerList", data);
@@ -75,7 +75,7 @@ function getMallIndexInfo(){
 		success:function(r){
 			var data = {};
 			data.results = r;
-			console.log(data);
+			//console.log(data);
 			if(data.results.length > 0){
 				var html = template("goodsList", data);
 				$(".integralApproach").after(html);		//填充数据

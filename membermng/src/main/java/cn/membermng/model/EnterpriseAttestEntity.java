@@ -2,6 +2,8 @@ package cn.membermng.model;
 
 import java.util.Date;
 
+import product_p2p.kit.datatrans.TimestampAndString;
+
 
 /** 
  * 企业会员认证详情
@@ -73,7 +75,7 @@ public class EnterpriseAttestEntity {
 	private String attachPath;//附件路径
 	
 	private Date endDate;//认证到期时间
-	private String sendDate;
+	private String sEndDate;
 	public long getCertificationID() {
 		return certificationID;
 	}
@@ -101,14 +103,12 @@ public class EnterpriseAttestEntity {
 	public String getsRecordDate() {
 		return sRecordDate;
 	}
-	public void setsRecordDate(String sRecordDate) {
-		this.sRecordDate = sRecordDate;
-	}
 	public Date getRecordDate() {
 		return recordDate;
 	}
 	public void setRecordDate(Date recordDate) {
 		this.recordDate = recordDate;
+		this.sRecordDate = TimestampAndString.DateToString2(recordDate);
 	}
 	public String getCompany() {
 		return company;
@@ -179,14 +179,12 @@ public class EnterpriseAttestEntity {
 	public String getsRegDate() {
 		return sRegDate;
 	}
-	public void setsRegDate(String sRegDate) {
-		this.sRegDate = sRegDate;
-	}
 	public Date getRegDate() {
 		return regDate;
 	}
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
+		this.sRegDate = TimestampAndString.DateToString2(regDate);
 	}
 	public String getResidence() {
 		return residence;
@@ -251,14 +249,12 @@ public class EnterpriseAttestEntity {
 	public String getSissueDate() {
 		return sissueDate;
 	}
-	public void setSissueDate(String sissueDate) {
-		this.sissueDate = sissueDate;
-	}
 	public Date getIssueDate() {
 		return issueDate;
 	}
 	public void setIssueDate(Date issueDate) {
 		this.issueDate = issueDate;
+		this.sissueDate = TimestampAndString.DateToString2(issueDate);
 	}
 	public String getAddress() {
 		return address;
@@ -319,12 +315,10 @@ public class EnterpriseAttestEntity {
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+		this.sEndDate = TimestampAndString.DateToString(endDate);
 	}
-	public String getSendDate() {
-		return sendDate;
-	}
-	public void setSendDate(String sendDate) {
-		this.sendDate = sendDate;
+	public String getsEndDate() {
+		return sEndDate;
 	}
 	
 	

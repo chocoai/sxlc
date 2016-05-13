@@ -32,6 +32,7 @@ import cn.membermng.model.VIPMemberInfos;
 import cn.springmvc.dao.IMemberManagerReadDao;
 import cn.springmvc.dao.IMemberManagerWriteDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.dao.impl.MemberManagerWriteDaoImpl;
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.service.IMemberManangerService;
 
@@ -276,6 +277,17 @@ public class MemberManagerServiceImpl implements IMemberManangerService{
 		}
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		return result ;
+	}
+
+	@Override
+	public int getAdminIdByPhone(Map<String, Object> param) {
+		return memberManagerDao.getAdminIdByPhone(param);
+	}
+
+
+	@Override
+	public int updateAdminPwd(Map<String, Object> param) {
+		return managerWriteDao.updateAdminPwd(param);
 	}
 
 }

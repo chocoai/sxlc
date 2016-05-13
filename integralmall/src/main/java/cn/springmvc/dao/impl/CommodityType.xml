@@ -23,7 +23,7 @@
         LEFT JOIN Admin a on a.Admin_ID=ct.Admin_ID
         <where>
             <if test="map.Commodity_Classify != null and map.Commodity_Classify != ''">
-              and  ct.Commodity_Classify like '%#{map.Commodity_Classify}%'
+              and  ct.Commodity_Classify like CONCAT('%',#{map.Commodity_Classify},'%')
             </if>
             <if test="map.status != null and map.status != -1">
                and ct.Status=#{map.status}
@@ -93,7 +93,7 @@
     </select>
     <!-- 前台查询商品分类类型列表 -->
     <select id="selectCommodityTypeFront" resultMap="resultListCommodityType">
-	   select ct.Commodity_Type_ID,ct.Commodity_Type,ct.Commodity_Classify,ct.Commodity_Classify_Des,ct.Commodity_Classify_Pic,ct.Status,ct.Delete_Flag
+	   select ct.Commodity_Type_ID,ct.Commodity_Type,ct.Commodity_Classify,ct.Commodity_Classify_Des,ct.Commodity_Classify_Pic,ct.Status,ct.Delete_Flag,
 	    ct.Super_ID,ct.Add_Time
 	    from  commodity_type ct 
 	    where ct.Status = 1 

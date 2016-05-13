@@ -13,7 +13,7 @@ $(function(){
 				str_Url, 
 				json_Data, 
 				function(r){
-					console.log(r);
+					//console.log(r);
 					var json = JSON.parse(r);
 					if(json.status == 1){
 						$(".codeBtn").html("已发送").addClass("disabled");
@@ -63,7 +63,7 @@ $(function(){
 				{oldPhone:soldPhone,newPhone:snewPhone,imgCheckCode:simgCheckCode,phoneCode:sphoneCode},
 				function(r){
 					var json = JSON.parse(r);
-					console.log(json)
+					//console.log(json)
 					if(json.status == "1"){
 						layer.alert("修改成功",function(){
 							window.location = "personalCenter/securityCenter.html";

@@ -29,10 +29,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<base href="<%=basePath%>">
 	<title>后台登陆界面</title>
 	<!-- 公用meta -->
-	<jsp:include page="WEB-INF/web/common/top-meta.jsp"></jsp:include>
+	<jsp:include page="web/common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
 	<!-- 公用css -->
-	<jsp:include page="WEB-INF/web/common/cm-css.jsp"></jsp:include>
+	<jsp:include page="web/common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" type="text/css" href="css/longinInterface.css">
 	<script type="text/javascript" src="js/md5.js"></script>
@@ -94,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	
 	<!-- 公用js -->
-	<jsp:include page="WEB-INF/web/common/cm-js.jsp"></jsp:include>
+	<jsp:include page="web/common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/loginInterface.js"></script>

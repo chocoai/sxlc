@@ -318,12 +318,12 @@ function showListOfDataTable(dePtId){
 	}
 	flag = false;
 }
+
+
 /**
  * 显示职务列表
  * @returns
  */
-
-
 
 function showPost(){
     $("#post_id").dataTable({ 

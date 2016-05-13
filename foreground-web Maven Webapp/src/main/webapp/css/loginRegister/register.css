@@ -109,6 +109,7 @@ input{
 	padding:0 20px;
 	border:1px solid #ddd;
 	font-size:14px;
+	vertical-align:top;
 }
 .get-tel-check{
 	width:100px;
@@ -289,4 +290,8 @@ input{
 .apply-bottom input:hover{
 	background-color: #38aaf4;
 	cursor: pointer;
+}
+.disabled{
+	pointer-events:none;
+	opacity:0.5;
 }

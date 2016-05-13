@@ -60,6 +60,8 @@ public class LoanWithdrawColltroller {
 	* @date 2016-5-9 上午11:00:07
 	* @throws
 	 */
+	@RequestMapping(value="loadWithdrawData",produces="text/html;charset=UTF-8")
+	@ResponseBody
 	public String loadWithdrawData(HttpServletRequest request){
 		
 		long[] lMemberInfo = new long[2] ;	 //[登录人ID,登录人类型]
@@ -80,20 +82,20 @@ public class LoanWithdrawColltroller {
 	}
 	
 	
-	@RequestMapping(value="sendWithdrawPhoneVarCode")
+	@RequestMapping(value="sendWithdrawPhoneVarCode",produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public Object sendWithdrawPhoneVarCode(HttpServletRequest request){
+	public String sendWithdrawPhoneVarCode(HttpServletRequest request){
 		Map<String,Object> message = new HashMap<String, Object>();
 		MemberInfo loginMember = (MemberInfo)request.getSession().getAttribute(Constant.LOGINUSER);
 		
-		String phone = request.getParameter("phone");
+		String phone = loginMember.getPersonalBaseInfo().getPersonalPhone();
 		
 		String code = StringUtils.varCode();
 		Core.putWithdrawPhoneCode(phone, code);
 		logger.debug("忘记密码发送手机验证码发送成功："+phone+" : "+code);
 		message.put("statu", 1);
 		message.put("message", "验证码发送成功，请注意查收");
-		return message;
+		return JSONObject.toJSONString(message);
 	}
 	/**
 	 * 双乾  提现通道
@@ -108,10 +110,15 @@ public class LoanWithdrawColltroller {
 	 */
 	@RequestMapping(value="/loanWithdraw",produces="text/html;charset=UTF-8")
 	public String loanWithdraw(HttpServletRequest request){
+		
+		MemberInfo loginMember = (MemberInfo)request.getSession().getAttribute(Constant.LOGINUSER);
+		
+		String phone=loginMember.getPersonalBaseInfo().getPersonalPhone();
+		
 		String amount =request.getParameter("amount");//提现金额
 		String remark = request.getParameter("remark");//备注
 		String bankCardId = request.getParameter("bankCardId");//银行卡信息id
-		String phone = request.getParameter("phone");
+		//String phone = request.getParameter("phone");
 		String code = request.getParameter("code");//图片验证码
 		
 		String s = Core.getWithdrawPhoneCode(phone);
@@ -140,12 +147,12 @@ public class LoanWithdrawColltroller {
 		
 		withdraw.setReturnURL("http://110.185.5.254:16000/foreground-web/loanWithdraw/loanWithdrawReturn.html");
 		
-		withdraw.setNotifyURL("http://110.185.5.254:16000/foreground-web/loanWithdraw/loanWithdrawReturn.html");
+		withdraw.setNotifyURL("http://110.185.5.254:16000/foreground-web/loanWithdraw/loanWithdrawNotify.html");
 		
 		withdraw =managedInterfaceServer.testLoanWithdraws(withdraw);
 	
-		request.setAttribute("withdraw", withdraw);
-		return "dryLot/loanrechargetest";
+		request.setAttribute("draws", withdraw);
+		return "dryLot/loanwithdrawstest";
 	}
 	
 	/**
@@ -181,7 +188,7 @@ public class LoanWithdrawColltroller {
 	* @date 2016-5-9 下午6:07:17
 	* @throws
 	 */
-	@RequestMapping(value="/loanWithdrawNotify。",produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/loanWithdrawNotify",produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public void loanWithdrawNotify(HttpServletRequest request,HttpServletResponse response){
 		managedInterfaceServer.testLoanWithdrawsNotify(request, response);

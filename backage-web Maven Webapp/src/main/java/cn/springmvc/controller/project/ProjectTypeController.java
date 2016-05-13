@@ -84,7 +84,7 @@ public class ProjectTypeController {
 		req.setAttribute("enterprise", authentication);//企业
 		
 		//如果是修改操作，获取要修改的项目类型id
-		String id = req.getParameter("id");
+		String id = req.getParameter("content");
 		if(id !=null && !"".equals(id)){
 			//项目类型所需认证项
 			authentication = projectBaseInfoService.selectMemberAttestByprojectType(Long.parseLong(id));

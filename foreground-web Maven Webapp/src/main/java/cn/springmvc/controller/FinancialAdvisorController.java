@@ -180,6 +180,7 @@ public class FinancialAdvisorController {
 		param.put("isopenThird", isopenThird);
 		param.put("name",               name);
 		param.put("order",              order);
+		param.put("skey",    DbKeyUtil.GetDbCodeKey());
 		pageEntity.setPageNum(start);
 		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);

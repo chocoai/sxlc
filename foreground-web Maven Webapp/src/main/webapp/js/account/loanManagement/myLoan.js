@@ -77,7 +77,7 @@ function getFinancing(curr,length){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			if(data.results.length > 0){
 				$(".my-loan-table .data-item").remove();
 				creatFinancing(data);
@@ -410,7 +410,7 @@ function getFailure(curr,length){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			$(".my-loan-table .data-item").remove();
 			if(data.results.length > 0){
 				creatFailure(data);//拼接数据
@@ -519,7 +519,7 @@ function getClearing(curr,length){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			$(".my-loan-table .data-item").remove();
 			if(data.results.length > 0){
 				creatClearing(data);//拼接数据
@@ -635,7 +635,7 @@ function getInvestRecord(curr,length){
 		//项目申请id
 		var loanId = $(this).attr("data-loanId");
 		if(loanId ==null || loanId == ""){
-			console.log("参数异常");
+			//console.log("参数异常");
 			return;
 		}
 		var data = {};
@@ -651,7 +651,7 @@ function getInvestRecord(curr,length){
 			dataType:"json",
 			timeout:10000,
 			success:function(data){
-				console.log(data);
+				//console.log(data);
 				$("#investRecordTop").siblings().remove();
 				if(data.results.length > 0){
 					var html = template("investRecordList", data);
@@ -701,7 +701,7 @@ function getApplyRecord(curr,length){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			$(".my-loan-table .data-item").remove();
 			if(data.results.length > 0){
 				creatApplyRecord(data);
@@ -808,7 +808,7 @@ function getApply(curr,length){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			if(data.results.length > 0){
 				creatApply(data);
 				/*creatApply(data);//拼接数据
@@ -916,11 +916,11 @@ function creatApply(data){
 function getTBCDet(){
 	$(".c-content.viewDetails").click(function(){
 		var projectId = $(this).attr("data-projectId");
-		console.log(projectId);
+		//console.log(projectId);
 		/*if(projectId ==null || projectId == ""){
 			return;
 		}*/
-		console.log("差查询");
+		//console.log("差查询");
     	/*var url1 = "loanManagement/AdvcancePost_"+applyId+".html";
     	$.ajax({
 			url:url1,
@@ -928,7 +928,7 @@ function getTBCDet(){
 			dataType:"json",
 			timeout:10000,
 			success:function(data){
-				//console.log(data);
+				////console.log(data);
 			},
 			error:function(){
 				layer.alert("请求异常，请稍后再试",{icon:2});
@@ -951,7 +951,7 @@ function getTBCDet(){
 function toTBCConfirm(){
 	$(".c-content.toConfirm").click(function(){
 		//
-		console.log("差查询");
+		//console.log("差查询");
 		layer.open({
 			title :'项目基本信息',//标题
 			skin: 'layer-ext-myskin',//皮肤
@@ -961,7 +961,7 @@ function toTBCConfirm(){
 	        content: $('.to-confirm')//内容，里边是包含内容的div的class
 	    });
 	    
-	    console.log("差执行");
+	    //console.log("差执行");
 	    
 	});
 }
@@ -971,9 +971,9 @@ function toTBCConfirm(){
 function getRepayRecord(curr,length){
 	var temp = window.location.href;
 	projectId = temp.split("projectId=")[1];
-	//console.log(projectId);
+	////console.log(projectId);
 	/*if(projectId == null || isNaN(projectId)){
-		console.log("参数异常");
+		//console.log("参数异常");
 		return;
 	}*/
 	
@@ -989,7 +989,7 @@ function getRepayRecord(curr,length){
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			$("#loanRepayendTop").siblings().remove();
 			if(data.results.length > 0){
 				var html = template("loanRepayendList", data);

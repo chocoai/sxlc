@@ -1,3 +1,19 @@
+$(function(){
+	//标签页初始化
+	$(".showUlLi").on("click",function(){
+		var $this = $(this);
+		var sIndexs = $this.attr("sIndexs");
+		var pushIndex = $("#pushIndex").val();
+		var initPg = $("#sIndexs").val();
+		if(sIndexs == pushIndex){//表明是审核发布节点
+			window.location.href=appPath+"/project/toPostListPg";
+		}else{//不是审核发布节点
+			window.location.href=appPath+"/project/toLoanChkList?content="+sIndexs;
+		}
+	});
+});
+
+
 $(document).ready(function() { 
     /** *************查看历史审批记录************** **/
     $('#history_exam_record').on('click', function(){

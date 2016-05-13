@@ -49,11 +49,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>借款项目编号</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>借款项目名称</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>借款人</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>还款时间范围</span><input type="text" id="startDate" class="notspecial Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>借款项目编号</span><input type="text" class="notspecial Project_No"/></span>
+									<span class="con-item"><span>借款项目名称</span><input type="text" class="notspecial Project_Title"/></span>
+									<span class="con-item"><span>借款人</span><input type="text" class="notspecial Personal_Name"/></span>
+									<span class="con-item"><span>还款时间范围</span><input type="text" id="startDate" class="notspecial Wdate Repay_MaxTime_Min" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate Repay_MaxTime_Max" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						</div>
@@ -68,35 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="panel-body">
-								<table id="table_soon_due_bill" class="display">
-									<thead>
-										<tr>
-											<th></th>
-											<th>借款项目编号</th>
-											<th>借款项目名称</th>
-											<th>借款人</th>
-											<th>账单金额</th>
-											<th>账单期数</th>
-											<th>还款时间</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for(int i=0;i<15;i++){
-										 %>
-										<tr>
-											<td><input type="checkbox"></td>
-											<td>0000001</td>
-											<td>交电费</td>
-											<td>jiuyang</td>
-											<td class="moneyFormat">10000</td>
-											<td>12</td>
-											<td>12-4</td>
-										</tr>
-										<%
-											}
-										 %>
-									</tbody>
+								<table id="table_id" class="display">
 								</table>
 							</div>
 						</div>
@@ -106,11 +78,66 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<tr>
 									<td class="tt"><label>短信内容：</label></td>
 									<td class="con">
-										<textarea rows="8" cols="100">自动生成内容</textarea>
+										<textarea id="msgcontent" rows="8" cols="100"></textarea>
 									</td>
 								</tr>
 							</table>
 						</div>
+						
+						<!-- 账单详情 -->
+						<div class="w-content bill_detail">
+							<table>
+								<tr class="col-md-6">
+									<td class="tt"><label>借款项目编号：</label></td>
+									<td class="con">
+										<span id="projectNo"></span>
+									</td>
+								</tr>
+								<tr class="col-md-6">	
+									<td class="tt"><label>账单编号：</label></td>
+									<td class="con">
+										<span id="merbillNo"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">
+									<td class="tt"><label>借款项目名称：</label></td>
+									<td class="con">
+										<span id="projectTitle"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>借款人：</label></td>
+									<td class="con">
+										<span id="memberName"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>账单金额：</label></td>
+									<td class="con">
+										<span  id="amounts"></span>元
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>账单期数：</label></td>
+									<td class="con">
+										<span  id="indexs"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>还款时间：</label></td>
+									<td class="con">
+										<span  id="repayMaxTime"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-12">	
+									<td class="tt"><label>账单展示：</label></td>
+									<td class="con">
+										<span  id=""></span>
+									</td>
+								</tr>
+							</table>
+						</div>
+						
 					</div>
 				</div>
 				<!-- 尾部 -->
@@ -121,49 +148,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/project/soon_due_bill.js"></script>
-	<script type="text/javascript">
-		// 这样初始化，排序将会打开
-		$(function() {
-			$('#table_soon_due_bill').DataTable({
-				"autoWidth" : true,
-				//"scrollY": 500,
-				//paging : false,//分页
-				
-				//"searching" : false,
-				"info" : false,//左下角信息
-				//"ordering": false,//排序
-				"aaSorting" : [[ 4, "desc"],[ 6, "desc"]],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [ 0, 1, 2, 3, 5]
-				} // 制定列不参与排序
-				],
-				colReorder : false,
-				"scrollX": true,
-				"sScrollX" : "100%",
-				"sScrollXInner" : "100%",
-				"bScrollCollapse" : true
-			});
-		});
-		/* 发送消息 */
-		$(".obtn-send-phonemsg").on('click',function(){
-			layer.open({
-			    type: 1,
-			    area: ['500px', '298px'], //宽高
-			    title: "催收",
-			    content: $(".send-phonemsg"),//DOM或内容
-			    btn:['确定', '取消']
-				  ,yes: function(index, layero){ //或者使用btn1
-				    //确定的回调
-				  	
-				  },cancel: function(index){//或者使用btn2（concel）
-				  	//取消的回调
-				  }
-			});
-		});
-	</script>
 </body>
 
 </html>

@@ -75,8 +75,8 @@ int typeId = IntegerAndString.StringToInt(request.getParameter("start"),1);
 									}
 								 %>
 								<div class="introduce">
-									<span><samp>姓名：</samp><label id="logName"></label></span>
-									<span><samp>会员登录名：</samp><label id="realName"></label></span>
+									<span><samp>姓名：</samp><label id="realName"></label></span>
+									<span><samp>会员登录名：</samp><label id="logName"></label></span>
 									<samp>有效期：</samp><input readonly="readonly" id="sEndDate" name="sEndDate" class="Wdate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
 								</div>
 								<div><samp class="appendix">认证附件：</samp>

@@ -31,15 +31,15 @@
 				<form id="addauthenform" role="form" class="addauthenform">
 					<table>
 						<tr>
-							<td><label>网站认证资料标题</label></td>
+							<td><label>网站认证资料标题：</label></td>
 							<td id="addauthentitle"><input type="text" value="" datatype="z2_8"/></td>
 						</tr>
 						<tr>
-							<td><label>网站认证资料链接</label></td>
+							<td><label>网站认证资料链接：</label></td>
 							<td id="addauthenlink"><input type="text" value="" datatype="strRegex"/></td>
 						</tr>
 						<tr>
-							<td class="tt"><label>网站认证资料图</label></td>
+							<td class="tt"><label>网站认证资料图：</label></td>
 							<td class="con">
 							   <!--  dom结构部分 -->
 								<div id="uploader">
@@ -65,21 +65,6 @@
 	<jsp:include page="../../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
-	<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
-	<script type="text/javascript" src="js/upload.js"></script>
-	<script>
-		$(function(){
-			validform5(".layui-layer-btn0","addauthentitle",false,"3");
-		});
-		$(function(){
-			validform5(".layui-layer-btn0","addauthenlink",false,"3");
-		});
-		 $(function(){
-			validform5(".layui-layer-btn0","modauthentitle",false,"3");
-		});
-		$(function(){
-			validform5(".layui-layer-btn0","modauthenlink",false,"3");
-		});
-	</script>
+	<script type="text/javascript" src="js/frontconfig/fc-webAuthentication.js"></script>
 </body>
 </html>

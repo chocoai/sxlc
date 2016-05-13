@@ -15,6 +15,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用meta -->
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
+	<link rel="stylesheet" href="css/common.css" type="text/css">
+	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
+	<link rel="stylesheet" href="css/upload.css" />
 	<!-- 私用css -->
 </head>
 <!-- 贷后管理---------成交项目列表 -->

@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html lang="zh-CN">
 <head>
 	<base href="<%=basePath%>">
-	<title>项目管理</title>
+	<title>项目管理——项目类型管理</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -96,12 +96,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<!-- 公用js -->
 		<jsp:include page="../common/cm-js.jsp"></jsp:include>
+		<!-- 私用js -->
 		<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
 		<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
-		<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>	
-		<script type="text/javascript" src="js/valid.js"></script>	
+		<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
 		<script type="text/javascript" src="plugs/My97DatePicker/WdatePicker.js"></script>
-		<!-- 私用js -->
 		<script type="text/javascript" src="js/project/pro_type.js"></script>
 </body>
 

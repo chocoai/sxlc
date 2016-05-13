@@ -16,7 +16,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
 	<link rel="stylesheet" href="css/frontconfig/fc-webAuthentication.css"/>
 	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
 	<link rel="stylesheet" href="css/upload.css" />
@@ -27,11 +26,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="5" name="top_menu_index"/>
+				<jsp:param value="5" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-frontconfig.jsp"></jsp:include>
+			<jsp:include page="../common/cm-frontconfig.jsp">
+				<jsp:param value="516" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -79,38 +81,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tbody>
 							</table>
 						</div>
-						
-						<!-- 修改部分开始 -->
-						<!-- <div class="w-content" id="webauthen-mod">
-							<form role="form" class="modauthenform">
-								<table>
-									<tr>
-										<td class="tt"><label>网站认证资料图</label></td>
-										<td class="con">
-										    dom结构部分
-												<div id="uploader">
-												    用来存放item
-												    <div id="filePicker">选择图片</div>
-												    <span class="rec-dimensions">建议尺寸：98*37</span>
-												</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="tt" valign="top"><label>图片预览：</label></td>
-										<td class="con" id="fileList"></td>
-									</tr>
-									<tr>
-										<td><label>网站认证资料标题</label></td>
-										<td id="addauthentitle"><input type="text" value="" datatype="z2_8"/></td>
-									</tr>
-									<tr>
-										<td><label>网站认证资料链接</label></td>
-										<td id="addauthenlink"><input type="text" value="" datatype="strRegex"/></td>
-									</tr>
-								</table>
-							</form>
-						</div> -->
-						<!-- 修改部分结束 -->
 					</div>
 				</div>
 			</div>
@@ -121,22 +91,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
-	<script type="text/javascript" src="js/upload.js"></script>
 	<script src="js/frontconfig/fc-webAuthentication.js"></script>
-	<script type="text/javascript">
-		$('#bottomnavtable').DataTable({
-			//"scrollY": 400,
-         	"scrollX": true,
-			"aaSorting" : [ ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1,2,3,4,5,6]
-			} // 制定列不参与排序
-			],
-		});
-	</script>
 	
 </body>
 

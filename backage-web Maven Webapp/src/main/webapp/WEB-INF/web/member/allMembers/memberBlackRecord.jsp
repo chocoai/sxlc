@@ -1,8 +1,10 @@
+<%@page import="product_p2p.kit.datatrans.IntegerAndString"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	long memberId =IntegerAndString.StringToLong(request.getParameter("content"), 0);
 %>
 <!DOCTYPE html>
 
@@ -20,14 +22,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="panel-body">
 								<table id="table_id" class="display">
 									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>拉黑时间</th>
-											<th>拉黑操作管理员</th>
-											<th>取消拉黑时间</th>
-											<th>取消拉黑操作管理员</th>
-											<th>取消拉黑原因</th>
-										</tr>
 									</thead>
 									<tbody>
 									</tbody>
@@ -46,6 +40,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/member/member.js"></script>
+	<script type="text/javascript" src="js/member/blankRecord.js"></script>
+		<script type="text/javascript">
+		var memberId = <%=memberId %>;
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publicKey_common);
+		//result 为加密后参数
+		memberId = encrypt.encrypt(memberId+"");
+		showMemberBlackRecord(memberId); //会员vip记录
+		
+	</script>
 	
 </div>

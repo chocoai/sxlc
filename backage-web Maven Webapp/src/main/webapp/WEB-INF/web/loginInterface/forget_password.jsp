@@ -35,6 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" type="text/css" href="css/longinInterface.css">
+	<link rel="stylesheet" type="text/css" href="css/forget.css">
 	<script type="text/javascript" src="js/md5.js"></script>
 	<script type="text/javascript" src="js/login.js"></script>
 	<script type="text/javascript" src="js/valid.js"></script>
@@ -61,32 +62,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 		<div class="longinContent">
-			<div class="administratorLoginCunt">
+			<div class="administratorLoginCunt forget">
 				<div class="loginW">
 					<div class="administratorLogin">忘记密码</div>
 					<form action="" id="forget_pass">
 						<div class="admUser">
 							<i class="loginIcon user"></i>
-							<input type="text" datatype="zPhone" placeholder="手机号" name="adminName" id="adminName" maxlength="11" value="<%=svalue %>" onkeyup='this.value=this.value.replace(/\D/gi,"")'>
+							<input type="text"  placeholder="手机号" name="adminPhone" id="adminPhone" maxlength="11" value="<%=svalue %>" onkeyup='this.value=this.value.replace(/\D/gi,"")'>
 						</div>
-						<div class="getYan">
-							<input type="button" value="获取验证码">
-							<span style="display:none">验证码已发送，下次发送需间隔3分钟</span>
+						<div class="admPhoneCode">
+							<i class="loginIcon phone"></i>
+							<input type="text"   name="code" id="Yancode"  maxlength="4" placeholder="验证码" ><!--onkeyup='this.value=this.value.replace(/\D/gi,"")'  -->
+							<img alt="点击刷新" id="vCodeImg" style="width: 90px;height:30px" class="img" title="点击刷新" src="authImage.do?tt=<%=System.currentTimeMillis()%>" onclick="refreshImg('vCodeImg');">
+							<b style="display:none;margin-top:68px" id="getYan" class="getYan">验证码已发送!</b>
 						</div>
 						<div class="admPasword">
 							<i class="loginIcon phone1"></i>
-							<input type="text" datatype="Z6" name="adminPwd" id="adminPwd" maxlength="6" placeholder="手机验证码" onkeyup='this.value=this.value.replace(/\D/gi,"")'>
+							<input type="text"  name="adminPwd" id="adminPwd" maxlength="6" placeholder="手机验证码" onkeyup='this.value=this.value.replace(/\D/gi,"")'>
+							<img alt="获取验证码" id="yanzheng" style="width: 110px;height:30px;top:248px" class="img"  src="" onclick="Yanzheng()">
 						</div>
 						<div class="admPhoneCode1">
 							<i class="loginIcon pwd"></i>
-							<input type="password" datatype="regpass" name="password1"  id="code"  maxlength="16" placeholder="新密码">
+							<input type="password"  name="password1"  id="Pwdcode"  maxlength="22" placeholder="新密码">
 						</div>
 						<div class="admPhoneCode1">
 							<i class="loginIcon pwd"></i>
-							<input type="password" datatype="" recheck="password1" name="code" id="code"  maxlength="16" placeholder="确认新密码">
+							<input type="password"  name="code" id="rePwdcode"  maxlength="22" placeholder="确认新密码">
 						</div>
 						<div class="tijiao_change">
-							<button type="button" id="Change-Btn" class="admRestL btn">提交修改</button>
+							<input type="hidden" id="adminId">
+							<button type="button" id="Change-Btn" class="admRestL btn">提交</button>
+							<button type="button" id="" class="admRestL btn" onclick="history.go(-1)">取消</button>
 						</div>
 					</form>
 				</div>
@@ -101,5 +107,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/forget_pwd.js"></script>
+	<script type="text/javascript"  charset="UTF-8" src="js/forget_pwd.js"></script>
 </body>

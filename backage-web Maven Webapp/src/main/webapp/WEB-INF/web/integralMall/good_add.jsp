@@ -42,57 +42,58 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				<!-- 主体部分 -->
+					<form id="good_add">
 					<table id="table_id">
 						<tr>
 							<td class="tt">商品类型</td>
-							<td class="con" id=""><select class="shi"><option value="">实物</option><option value="">电子礼券</option></select></td>
-							<td class="tt">商品种类</td>
-							<td class="con" id=""><select class="shi1"><option value="">宠物粮食</option><option value="">萨摩耶食粮</option></select>
-												  <select class="shi1"><option value="">实物</option><option value="">电子礼券</option></select>
+							<td class="con" id="">
+							<select class="shi" id="getType">
+								<option value="0">实物</option>
+								<option value="1">电子礼券</option>
+							</select></td>
+							<td class="tt ttt">商品种类</td>
+							<td class="con" id=""><select class="shi" id="getLei"></select>
 							</td>
 						</tr>
 						<tr>
 							<td class="tt">商品名称</td>
-							<td class="con" id=""><input type="text"  /></td>
-							<td class="tt">所需积分</td>
-							<td class="con" id=""><input type="text"  /></td>
+							<td class="con" id=""><input type="text" id="goodName"  datatype="enterAddress"/></td>
+							<td class="tt ttt">所需积分</td>
+							<td class="con" id=""><input type="text" id="point" datatype="acountM" /></td>
 						</tr>
 						<tr>
 							<td class="tt">结束日期</td>
-							<td class="con" id=""><input  onFocus="WdatePicker()" /></td>
-							<td class="tt">厂家</td>
-							<td class="con" id=""><input type="text"  /></td>
+							<td class="con" id=""><input class="Wdate" id="endTime" datatype="time" onFocus="WdatePicker()" /></td>
+							<td class="tt ttt">厂家</td>
+							<td class="con" id=""><input type="text" id="manufactor" datatype="enterAddress" /></td>
 						</tr>
 						<tr>
 						</tr>
 						<tr>
 							<td class="tt">规格型号</td>
-							<td class="con" id=""><input type="text"  /></td>
-							<td class="tt">总库存</td>
-							<td class="con" id=""><input type="text"  /></td>
+							<td class="con" id=""><input type="text" id="specifications" datatype="enterAddress" /></td>
+							<td class="tt ttt">总库存</td>
+							<td class="con" id=""><input type="text" id="stock"  datatype="acountM" /></td>
 						</tr>
 						<tr>
 							
 						</tr>
 						<tr>
 							<td class="tt">是否为VIP</td>
-							<td class="con" id=""><select class="shi"><option value="">是</option><option value="">否</option></select></td>
-							<td class="tt">是否为活动商品</td>
-							<td class="con" id=""><select class="shi"><option value="">是</option><option value="">否</option></select></td>
+							<td class="con" id=""><select class="shi" id="isVip"><option value="1">是</option><option value="0">否</option></select></td>
+							<td class="tt ttt">是否为活动商品</td>
+							<td class="con" id=""><select class="shi" id="isActivity"><option value="1">是</option><option value="0">否</option></select></td>
 						</tr>
 						<tr>
 							<td class="tt">代金券面额</td>
-							<td class="con" id=""><input type="text"  /></td>
-							<td class="tt">市场价</td>
-							<td class="con" id=""><input type="text"  /></td>
-						</tr>
-						<tr>
-							<td class="tt">活动商品使用有效期</td>
-							<td class="con" colspan="3" id=""><input type="text" id="startDate" class="dateInput Wdate data1" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate data1"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></td>
+							<td class="con" id=""><input type="text" id="denominationVouchers" datatype="acountM"  /></td>
+							<td class="tt ttt">市场价</td>
+							<td class="con" id=""><input type="text" id="marketValue" datatype="acountM" /></td>
 						</tr>
 						<tr>
 							<td class="tt">前台展示大图标</td>
 							<td class="con" colspan="3">
+							<input type="hidden" value="" id="maxPic">
 							<!--dom结构部分-->
 								<div id="uploader">
 							    <!--用来存放item-->
@@ -103,11 +104,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</tr>
 						<tr>
 							<td class="tt" valign="top">图片预览</td>
-							<td class="con" id="fileList" colspan="3"><div></div></td>
+							<td class="con" id="fileList" colspan="3"></td>
 						</tr>
 						<tr>
 							<td class="tt">前台展示小图标</td>
 							<td class="con" colspan="3">
+							<input type="hidden" value="" id="minPic">
 							<!--dom结构部分-->
 								<div id="uploader1">
 							    <!--用来存放item-->
@@ -118,7 +120,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</tr>
 						<tr>
 							<td class="tt" valign="top">图片预览</td>
-							<td class="con" id="fileList1" colspan="3"><div></div></td>
+							<td class="con" id="fileList1" colspan="3"></td>
 						</tr>
 						<tr>
 							<td class="tt">商品描述</td>
@@ -128,11 +130,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</tr>
 						<tr>
 							<td></td>
-							<td colspan="3" class="btn"><button class="btn" type="button">确定</button>
-								<button class="btn" type="button">取消</button>
+							<td colspan="3" class="btn"><button class="btn queding" type="button">确定</button>
+														<button class="btn" type="button">取消</button>
 							</td>
 						</tr>
 					</table>
+				</form>
 	
 			
 </div>
@@ -142,14 +145,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+
 	<script type="text/javascript" src="js/integralMall/integralMall_good.js"></script>
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 	<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
-	<script type="text/javascript" src="js/upload.js"></script>
+	<script type="text/javascript" src="js/config/upload.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
-	<script type="text/javascript" src="js/project/good_add.js"></script>
+	<script type="text/javascript" src="js/integralMall/good_add.js"></script>
 	<script>
 		ue =  UE.getEditor('applyguide');
 	</script>

@@ -65,7 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>  		
 						<div class="buttonCombination" style="display:inline-block">
 							<button class="" onclick="jump(<%=content %>,1,'web/member/perAddressResualt.jsp')">认证</button>
-							<button class="" onclick="jump(<%=content %>,1,'web/member/perAddressResualt.jsp')">查看</button>
+							<button class="" onclick="jump(<%=content %>,2,'web/member/perAddressResualt.jsp')">查看</button>
 						</div>
 						<div id="panel-body" class="panel-body">
 							<table id="table_id" class="display">

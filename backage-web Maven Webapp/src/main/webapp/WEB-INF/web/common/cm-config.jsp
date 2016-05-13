@@ -56,6 +56,14 @@
                                 <li data-id="610"><a href="web/config/agreement.jsp"><i class="fa fa-edit"></i>协议配置</a></li>       
                                 <li data-id="611"><a href="web/config/bill-collection.jsp"><i class="fa fa-edit"></i>账单催收</a> </li>
                                	<li data-id="612"><a href="web/config/loan-items.jsp"><i class="fa fa-edit"></i>借款认证项配置</a></li>
+                               	<li data-id="613" id="" class="li_level_one">
+                            		<a><i class="fa fa-edit"></i>积分规则设置<span class="fa fa-chevron-down"></span></a>
+                            		<ul class="nav child_menu ul_level_one" style="display: none">
+                            			<li data-id="61301"><a href="web/config/integral-rule.jsp">会员积分规则设置</a></li>
+                            			<li data-id="61302"><a href="web/config/talent-integral-rule.jsp">推荐达人积分规则设置</a></li>
+                            			<li data-id="61303"><a href="web/config/advisor-integral-rule.jsp">理财顾问积分规则设置</a></li>
+                            		</ul>
+                            	</li>
                             </ul>
                         </div>
                     </div>

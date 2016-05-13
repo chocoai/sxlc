@@ -68,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 								<div class="action_item">
-									<button class="obtn glyphicon examine" onclick="changeFinancialAdvisor();">变更理财顾问</button>
+									<button class="obtn glyphicon examineChange" >变更理财顾问</button>
 									<button class="obtn glyphicon examine" onclick="inquiryFinancialAdvisor();">查询历史理财顾问</button>
 								</div>
 							</div>
@@ -83,6 +83,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</table>
 							</div>
 							
+							<div class="w-content planer-poster">
+								<div class="data_display">
+									<div class="selectMember">
+										<span><samp>选择会员：</samp><label id="memberLogName"></label></span>
+										<span><samp>姓名：</samp><label id="memberName"></label></span>
+										<span><samp>原理财顾问姓名：</samp><label id="planer"></label></span>
+									</div>
+									<div class="search">
+										<div class="panel panel-success">
+											<div class="panel-heading">
+												<div class="i-fl search_title">条件查询</div>
+												<div class="i-fr action_item">
+											<ul class="list_item list-inline">
+												<li><a class="state">展开&nbsp;<span class="glyphicon glyphicon-chevron-down"></span> </a></li>
+											</ul>
+										</div>
+											</div>
+											<div class="panel-body">
+												<form id="" class="" action="">
+													<span class="con-item"><span>姓名</span><input type="text" class="notspecial"  id="realName"/></span>
+													<span class="con-item"><span>编号</span><input type="text" class="notspecial"  id="memberNop" /></span>
+													<span class="con-item"><span>手机号</span><input type="text" class="notspecial" id="phone" /></span>
+													<button class="obtn obtn-query glyphicon glyphicon-search1">查询</button>
+												</form>
+										  	</div>
+									 	</div>
+									 </div>
+									<div class="panel-body">
+										<input type="hidden" id="memberType" value="1">
+										<table id="table_planer" class="display">
+											<thead>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				

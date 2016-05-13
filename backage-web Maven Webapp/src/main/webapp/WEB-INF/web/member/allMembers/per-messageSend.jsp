@@ -1,3 +1,4 @@
+<%@page import="product_p2p.kit.datatrans.IntegerAndString"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"
 	contentType="text/html; charset=UTF-8"%>
 <%
@@ -6,6 +7,8 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	long memberId =IntegerAndString.StringToLong(request.getParameter("content"), 0);
+			
 %>
 <!DOCTYPE html>
 
@@ -26,14 +29,15 @@
 		<div class="main_container">
 			<div class="w-content ishow">
 				<div class="message">
-					<div class="linkMan"><label>手机号：</label><span>18855848784</span></div>
-					<div class="linkMan"><label>邮箱：</label><span>44845147@qq.com</span></div>
+					<div class="linkMan"><label>手机号：</label><span id="memberPhone"></span></div>
+					<div class="linkMan"><label>邮箱：</label><span id=memberEmail></span></div>
 					<div class="mode"><label>发送方式：</label>
-						<label for="transmitphone"><input name="transmit" id="transmitphone" type="radio" checked >手机</label>
-						<label for="transmitemail"><input name="transmit" id="transmitemail" type="radio" >邮箱</label>
-						<label for="transmitIemail"><input name="transmit" id="transmitIemail" type="radio" >站内信</label>
+						<label for="transmitphone"><input name="transmit" id="transmitphone" type="radio" checked="checked" value="1">手机</label>
+						<label for="transmitemail"><input name="transmit" id="transmitemail" type="radio" value="2">邮箱</label>
+						<label for="transmitIemail"><input name="transmit" id="transmitIemail" type="radio"  value="3">站内信</label>
 					</div>
-					<div><label>消息内容：</label><textarea class="sentContent"></textarea></div>
+					<input type="hidden" id="memberType" value="0">
+					<div><label>消息内容：</label><textarea class="sentContent" id="remark" name="remark"></textarea></div>
 				</div>
 				
 			</div>
@@ -45,6 +49,16 @@
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/member/member.js"></script>
+	<script type="text/javascript" src="js/member/memberSendMess.js"></script>
+	<script type="text/javascript">
+		var memberId = <%=memberId %>;
+		var encrypt = new JSEncrypt();
+		encrypt.setPublicKey(publicKey_common);
+		//result 为加密后参数
+		memberId = encrypt.encrypt(memberId+"");
+		showMemberDetail(memberId);//会员基本信息
+	</script>
+	
 </body>
 
 

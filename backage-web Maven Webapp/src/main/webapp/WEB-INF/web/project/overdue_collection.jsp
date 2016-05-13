@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>项目管理</title>
+	<title>项目管理-逾期催收</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -49,11 +49,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>借款项目编号</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>借款项目名称</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>借款人</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>还款时间</span><input type="text" class="Wdate" value=""  onFocus="WdatePicker()"/></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>借款项目编号</span><input type="text" class="notspecial Project_No"/></span>
+									<span class="con-item"><span>借款项目名称</span><input type="text" class="notspecial Project_Title"/></span>
+									<span class="con-item"><span>借款人</span><input type="text" class="notspecial Personal_Name"/></span>
+									<span class="con-item"><span>还款时间</span><input type="text" id="startDate" class="notspecial Wdate Repay_MaxTime_Min" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate Repay_MaxTime_Max" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						</div>
@@ -69,50 +69,93 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="panel-body">
-								<table id="table_overdue_collection" class="display">
-									<thead>
-										<tr>
-											<th></th>
-											<th>借款项目编号</th>
-											<th>借款项目名称</th>
-											<th>借款人</th>
-											<th>账单金额</th>
-											<th>账单期数</th>
-											<th>还款时间</th>
-											<th>逾期时长</th>
-											<th>逾期费用</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for(int i=0;i<15;i++){
-										 %>
-										<tr>
-											<td><input type="checkbox"></td>
-											<td>0000001</td>
-											<td>交电费</td>
-											<td>jiuyang</td>
-											<td class="moneyFormat">1000</td>
-											<td>12</td>
-											<td>12-01</td>
-											<td>12</td>
-											<td class="moneyFormat">20000</td>
-										</tr>
-										<%
-											}
-										 %>
-									</tbody>
+								<table id="table_id" class="display">
 								</table>
 							</div>
 						</div>
 						<!-- 电话回访 -->
+						<div class="w-content callback">
+							<table>
+								<tr>
+									<td class="tt"><label>回访内容：</label></td>
+									<td class="con">
+										<textarea rows="8" cols="100">自动生成内容</textarea>
+									</td>
+								</tr>
+							</table>
+						</div>
 						<!-- 生成账单-->
 						<div class="w-content generate_bill">
 							<table>
 								<tr>
 									<td class="tt"><label>账单内容：</label></td>
 									<td class="con">
-										<textarea rows="8" cols="100">自动生成内容</textarea>
+										<textarea  id="msgcontent" rows="8" cols="100"></textarea>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<!-- 账单详情 -->
+						<div class="w-content bill_detail">
+							<table>
+								<tr class="col-md-6">
+									<td class="tt"><label>借款项目编号：</label></td>
+									<td class="con">
+										<span id="projectNo"></span>
+									</td>
+								</tr>
+								<tr class="col-md-6">	
+									<td class="tt"><label>账单编号：</label></td>
+									<td class="con">
+										<span id="merbillNo"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">
+									<td class="tt"><label>借款项目名称：</label></td>
+									<td class="con">
+										<span id="projectTitle"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>借款人：</label></td>
+									<td class="con">
+										<span id="memberName"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>账单金额：</label></td>
+									<td class="con">
+										<span  id="amounts"></span>元
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>账单期数：</label></td>
+									<td class="con">
+										<span  id="indexs"></span>
+									</td>
+								</tr>
+								<tr class="col-md-6">	
+									<td class="tt"><label>实际还款时间：</label></td>
+									<td class="con">
+										<span id="repayTime"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>逾期时长：</label></td>
+									<td class="con">
+										<span id="overDay"></span>天
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>逾期费用：</label></td>
+									<td class="con">
+										<span  id="overdueAmounts"></span>元
+									</td>
+								</tr>		
+								<tr class="col-md-12">	
+									<td class="tt"><label>账单展示：</label></td>
+									<td class="con">
+										<span  id=""></span>
 									</td>
 								</tr>
 							</table>
@@ -127,33 +170,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/project/overdue_collection.js"></script>
-	<script type="text/javascript">
-		// 这样初始化，排序将会打开
-		$(function() {
-			$('#table_overdue_collection').DataTable({
-				"autoWidth" : true,
-				//"scrollY": 500,
-				//paging : false,//分页
-				
-				//"searching" : false,
-				"info" : false,//左下角信息
-				//"ordering": false,//排序
-				"aaSorting" : [[ 6, "desc"],[ 7, "desc"]],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [ 0, 1, 2, 3, 4, 5, 8]
-				} // 制定列不参与排序
-				],
-				colReorder : false,
-				"scrollX": true,
-				"sScrollX" : "100%",
-				"sScrollXInner" : "100%",
-				"bScrollCollapse" : true
-			});
-		});
-	</script>
 </body>
 
 </html>

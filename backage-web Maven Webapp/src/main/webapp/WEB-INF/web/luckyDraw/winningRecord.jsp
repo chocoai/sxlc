@@ -49,15 +49,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>抽奖期数</span><select><option>1期</option><option>2期</option><option>3期</option></select></span>
-									<span class="con-item"><span>获奖等级</span><select><option>一等</option><option>二等</option><option>三等</option><option>四等</option><option>五等</option><option>六等</option></select></span>
-									<span class="con-item"><span>奖品类型</span><select><option>红包</option><option>代金券</option><option>实物</option><option>积分</option></select></span>
-									<span class="con-item"><span>奖品名称</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>抽奖期数</span><select id="period"></select></span>
+									<span class="con-item"><span>获奖等级</span><select id="grade"></select></span>
+									<span class="con-item"><span>奖品类型</span><select id="prizeType"></select></span>
+									<span class="con-item"><span>奖品名称</span><input id="prizeName" type="text" class="notspecial" /></span>
 									<span class="con-item"><span>中奖时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
-									<span class="con-item"><span>中奖会员编号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>中奖会员用户名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>中奖会员手机号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>抽奖活动开始时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item"><span>中奖会员编号</span><input id="memberNo" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>中奖会员用户名</span><input id="logname" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>中奖会员手机号</span><input id="personalPhone" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>抽奖活动开始时间</span><input type="text" id="startDate1" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate1" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -73,44 +73,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							
 							<div class="panel-body">
 								<table id="applicationAudit" class="display">
-									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>抽奖期数</th>
-											<th>抽奖活动开始时间</th>
-											<th>消耗积分</th>
-											<th>获奖等级</th>
-											<th>奖品类型</th>
-											<th>奖品名称</th>
-											<th>奖品价值(元)</th>
-											<th>中奖时间</th>
-											<th>中奖会员编号</th>
-											<th>中奖会员用户名</th>
-											<th>中奖会员手机号</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>抽奖期数</td>
-											<td>抽奖活动开始时间</td>
-											<td>消耗积分</td>
-											<td>获奖等级</td>
-											<td>奖品类型</td>
-											<td>奖品名称</td>
-											<td class="moneyFormat">1000</td>
-											<td>中奖时间</td>
-											<td>中奖会员编号</td>
-											<td>中奖会员用户名</td>
-											<td>中奖会员手机号</td>
-										</tr>
-										<%
-											}
-										%>
-									</tbody>
 								</table>
 							</div>
 							
@@ -127,34 +89,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/luckyDraw/winningRecord.js"></script>
 	<script type="text/javascript">
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#applicationAudit').DataTable({
-						"autoWidth" : true,
-						"scrollX": true,
-						//"scrollY": true,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [[ 2,8, "desc"]],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 3, 4,5,6,7,9,10,11]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </body>
 
 </html>

@@ -52,12 +52,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>会员编号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>会员用户名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>会员名称</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>是否发放</span><select><option>是</option><option>否</option></select></span>
+									<span class="con-item"><span>会员编号</span><input id="memberNo" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>会员用户名</span><input id="logname" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>会员名称</span><input id="personalName" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>是否发放</span><select id="prizeWorth"><option>是</option><option>否</option></select></span>
 									<span class="con-item"><span>开户时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
-									<span class="con-item"><span>投资体验标时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item"><span>投资体验标时间</span><input type="text" id="startDate1" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate1" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -73,40 +73,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							
 							<div class="panel-body">
 								<table id="applicationAudit" class="display">
-									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>会员编号</th>
-											<th>会员用户名</th>
-											<th>会员名称</th>
-											<th>开户时间</th>
-											<th>投资体验标时间</th>
-											<th>代金券面值(元)</th>
-											<th>总收益金额(元)</th>
-											<th>是否成功发放</th>
-											<th>操作</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>会员编号</td>
-											<td>会员用户名</td>
-											<td>会员名称</td>
-											<td>开户时间</td>
-											<td>投资体验标时间</td>
-											<td class="moneyFormat">1000</td>
-											<td class="moneyFormat">1000</td>
-											<td>是否成功发放</td>
-											<td>操作</td>
-										</tr>
-										<%
-											}
-										%>
-									</tbody>
 								</table>
 							</div>
 							
@@ -123,35 +89,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/luckyDraw/luckyDraw.js"></script>
+	<script type="text/javascript" src="js/noviceExperience/VIPexperience.js"></script>
 	<script type="text/javascript">
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#applicationAudit').DataTable({
-						"autoWidth" : true,
-						"scrollX": true,
-						//"scrollY": true,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [[4,5,7,"desc"]],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3,6,8,9]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </body>
 
 </html>

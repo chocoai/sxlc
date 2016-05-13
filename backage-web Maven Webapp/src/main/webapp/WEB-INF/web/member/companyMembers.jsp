@@ -101,8 +101,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="plugs/My97DatePicker/WdatePicker.js"></script>
 	
 	<!-- 私用js -->
-	<!-- <script type="text/javascript" src="js/member/companyMembers.js"></script> -->
 	<script type="text/javascript" src="js/member/member.js"></script>
+    <script type="text/javascript" src="js/member/companyMembers.js"></script>
 	<script type="text/javascript" src="js/member/memberPwd.js"></script>
 	<script type="text/javascript" src="js/member/allmember.js"></script>
 </body>

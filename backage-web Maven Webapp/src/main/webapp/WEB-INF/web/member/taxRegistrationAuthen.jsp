@@ -11,7 +11,7 @@ int content = Integer.parseInt(request.getParameter("content"));
 
 <head>
 	<base href="<%=basePath%>">
-	<title>企业公用页面</title>
+	<title>税务登记认证</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -55,9 +55,9 @@ int content = Integer.parseInt(request.getParameter("content"));
 								</div>
 								<div class="panel-body">
 									<form id="" class="" action="">
-										<span class="con-item"><span>会员登录名</span><input type="text" class="notspecial" ></span>
-										<span class="con-item"><span>企业名称</span><input type="text" class="notspecial" ></span>
-										<span class="con-item"><span>状态</span><select class="auditState"><option>待审核</option><option>通过</option><option>驳回</option></select></span>
+										<span class="con-item"><span>会员登录名</span><input type="text" class="notspecial" id="logName" ></span>
+										<span class="con-item"><span>企业名称</span><input type="text" class="notspecial" id="companyName" ></span>
+										<span class="con-item"><span>状态</span><select class="auditState" id="statu"><option value="1">待审核</option ><option value="2">通过</option><option value="3">驳回</option></select></span>
 										<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 									</form>
 							  	</div>
@@ -70,33 +70,9 @@ int content = Integer.parseInt(request.getParameter("content"));
 						<div id="panel-body" class="panel-body">
 							<table id="table_id" class="display">
 								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>会员登录名</th>
-										<th>企业名称</th>
-										<th>证件编号</th>
-										<th>颁发机关</th>
-										<th>申请时间</th>
-										<th>有效期</th>
-									</tr>
 								</thead>
 								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>会员登录名</td>
-										<td>企业名称</td>
-										<td>证件编号</td>
-										<td>颁发机关</td>
-										<td>申请时间</td>
-										<td>有效期</td>
-									</tr>
-								<%
-									}
-								%>
-							</tbody>
+							    </tbody>
 						</table>
 					</div>
 				</div>
@@ -110,21 +86,9 @@ int content = Integer.parseInt(request.getParameter("content"));
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/member/companyMembers.js"></script>
-	<script type="text/javascript" src="js/member/personAuthen.js"></script>
+	<script type="text/javascript" src="js/member/companyIdentyList/taxRigisterList.js"></script>
 	<script type="text/javascript">
-		$(function(){
-			$('#table_id').DataTable({
-				"scrollX":true,
-				//"scrollY":true,
-				"aaSorting" : [  ],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [0,1,2,3,4,5,6]
-				} // 制定列不参与排序
-				],
-			});
-		});
+		  var attestTypeId= <%=content%>;
+		  IdentyList(attestTypeId);//认证列表
 	</script>
 </body>

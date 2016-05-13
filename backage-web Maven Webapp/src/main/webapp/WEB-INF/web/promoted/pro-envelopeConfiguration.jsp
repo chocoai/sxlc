@@ -41,12 +41,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="nav-tabs-con active">
 					<div class="data_display">
 						<div class="panel panel-success">
-							<form id="conForm">
+							<form id="conForm" action="javascript:firstOption()" type="post">
 								<div class="conInput">
-									<span class="conInputList"><label>注册开户：</label><input datatype="logName" type="text"></span>
-									<span class="conInputList"><label>首次充值：</label><input datatype="acountM" type="text"></span>
+									<span class="conInputList"><label>注册开户：</label><input id="openAcount" datatype="logName" type="text"></span>
+									<span class="conInputList"><label>首次充值：</label><input id="firstRecharge" datatype="acountM" type="text"></span>
 									<div class="btnSubmit">
-										<button class="okBtn">确定</button>
+										<button id="first" class="okBtn">确定</button>
 										<a class="cancelBtn">取消</a>
 									</div>
 								</div>
@@ -60,28 +60,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<table id="applicationAudit" class="display">
-									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>投资金额(元)</th>
-											<th>红包比例(%)</th>
-											<th>操作</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td class="moneyFormat">1000</td>
-											<td>10</td>
-											<td>删除</td>
-										</tr>
-										<%
-											}
-										%>
-									</tbody>
 								</table>
 							</div>
 							
@@ -90,17 +68,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 					<!-- 添加部分  -->
 					<div class="" id="addEnv">
-						<form id="addRedEForm">
+						<form id="addRedEForm" action="javascript:addRed()" type="post">
 							<div>
 								<span class="tt">投资金额：</span>
-								<span class="col"><input datatype="acountM">元</span>
+								<span class="col"><input id="invsit" datatype="acountM">元</span>
 							</div>
 							<div>
 								<span class="tt">红包比例：</span>
-								<span class="col"><input datatype="hundrednum"></span>
+								<span class="col"><input id="scale" datatype="hundredNum">%</span>
 							</div>
 							<div class="btnAdd">
-								<button class="addBtn">添加</button>
+								<button id="add" class="addBtn">添加</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>
@@ -109,17 +87,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 					<!-- 修改部分 -->
 					<div class="" id="alertEnv">
-						<form id="alertRedEForm">
+						<form id="alertRedEForm" action="javascript:modRed()" type="post">
 							<div>
 								<span class="tt">投资金额：</span>
-								<span class="col"><input datatype="acountM">元</span>
+								<span class="col"><input id="minvsit" datatype="acountM">元</span>
 							</div>
 							<div>
 								<span class="tt">红包比例：</span>
-								<span class="col"><input datatype="hundrednum"></span>
+								<span class="col"><input id="mscale" datatype="hundredNum"></span>
 							</div>
 							<div class="btnAdd">
-								<button class="alertBtn">修改</button>
+								<button id="mod" class="alertBtn">修改</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>
@@ -136,33 +114,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/promoted/pro-envelopeConfiguration.js"></script>
 	<script type="text/javascript">
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#applicationAudit').DataTable({
-						"autoWidth" : true,
-						"scrollX": true,
-						//"scrollY": true,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0,1,2,3]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </body>
 
 </html>

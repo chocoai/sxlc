@@ -4,7 +4,8 @@
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			long memberId =IntegerAndString.StringToLong(request.getParameter("content"), 0);
+	long memberId =IntegerAndString.StringToLong(request.getParameter("content"), 0);
+	int  memberType = IntegerAndString.StringToInt(request.getParameter("start"), 0);
 %>
 <!DOCTYPE html>
 
@@ -65,9 +66,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/member/memberWithdrow.js"></script>
 	<script type="text/javascript">
 		var memberId = <%=memberId %>;
+		var memberType= <%=memberType %>;
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publicKey_common);
 		//result 为加密后参数
 		memberId = encrypt.encrypt(memberId+"");
-		showMemberwithdrowList(memberId);
+		memberType = encrypt.encrypt(memberType+"");
+		showMemberwithdrowList(memberId,memberType);
 	</script>

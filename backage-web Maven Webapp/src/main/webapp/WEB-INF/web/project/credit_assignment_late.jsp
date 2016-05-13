@@ -49,11 +49,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>债权转让申请编号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>债权转让项目编号</span><input type="text" class="notspecial"  /></span>
-									<span class="con-item"><span>转让会员</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>转让金额</span><input type="text" class="notspecial" /></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<form id="" class="" action="">
+									<span class="con-item"><span>债权转让申请编号</span><input type="text" class="notspecial billNo" /></span>
+									<span class="con-item"><span>债权转让项目编号</span><input type="text" class="notspecial projectNo" /></span>
+									<span class="con-item"><span>转让会员</span><input type="text" class="notspecial name"  /></span>
+									<span class="con-item"><span>转让金额</span><input type="text" class="notspecial TransPrincipal" /></span>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 							</div>
 						</div>
@@ -66,43 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div> 		
 							</div>
 							<div class="panel-body">
-								<table id="table_credit_assignment_list" class="display">
-									<thead>
-										<tr>
-											<th></th>
-											<th>债权转让申请时间</th>
-											<th>债权转让项目编号</th>
-											<th>项目名称</th>
-											<th>借款会员</th>
-											<th>转让会员</th>
-											<th>转让金额</th>
-											<th>转让价格</th>
-											<th>转让折扣(%)</th>
-											<th>投标结束时间</th>
-											<th>转让状态</th>
-										</tr>
-									</thead>
-								<tbody>
-									<%
-										for(int i=0;i<15;i++){
-									 %>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>2016-05-11</td>
-										<td>100001</td>
-										<td>项目名称</td>
-										<td>借款会员</td>
-										<td>转让会员</td>
-										<td class="moneyFormat">10000</td>
-										<td class="moneyFormat">10000</td>
-										<td>19</td>
-										<td>2016-05-18</td>
-										<td>未审核</td><!-- 未审核，已拒绝，融资中，待放款，已完成 -->
-									</tr>
-									<%
-										}
-									 %>
-								</tbody>
+								<table id="table_id" class="display">
 							</table>
 						</div>
 					</div>
@@ -126,36 +91,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<jsp:include page="../common/cm-js.jsp"></jsp:include>
 		<script src="js/project/credit_assignment.js"></script>
 		<!-- 私用js -->
-		<script type="text/javascript">
-					//默认禁用搜索和排序
-					/* $.extend( $.fn.dataTable.defaults, {
-					    searching: true,
-					    ordering:  false
-					} ); */
-					// 这样初始化，排序将会打开
-					$(function() {
-						$('#table_credit_assignment_list').DataTable({
-							"autoWidth" : false,
-							scrollY : 500,
-							//paging : false,//分页
-							//"searching" : false,
-							"info" : false,//左下角信息
-							//"ordering": false,//排序
-							"aaSorting" : [ [ 1, "desc" ],[ 6, "desc" ],[ 7, "desc" ] ],//默认第几个排序
-							"aoColumnDefs" : [
-							//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-							{
-								"orderable" : false,
-								"aTargets" : [ 0, 2, 3, 4, 5, 8, 9, 10]
-							} // 制定列不参与排序
-							],
-							colReorder : false,
-							"sScrollX" : "100%",
-							"sScrollXInner" : "100%",
-							"bScrollCollapse" : true
-						});
-					});
-		</script>
 	</div>
 </div>
 </body>

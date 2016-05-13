@@ -52,6 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<span><label>开始结束时间范围：</label><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
 						
 						<span class="periodes"><label>抽奖期数：</label>2期</span>
+						<button  type ="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 					</div>
 					<div class="data_display">
 						<div class="panel panel-success">
@@ -65,36 +66,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							
 							<div class="panel-body">
 								<table id="applicationAudit" class="display">
-									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>奖品等级</th>
-											<th>奖品类型</th>
-											<th>奖品名称</th>
-											<th>奖品价值(元)</th>
-											<th>奖品剩余数量</th>
-											<th>中奖概率基数</th>
-											<th>奖品图片</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>奖品等级</td>
-											<td>奖品类型</td>
-											<td>奖品名称</td>
-											<td class="moneyFormat">1000</td>
-											<td>奖品剩余数量</td>
-											<td>中奖概率基数</td>
-											<td><img class="scaleImg" src="resources/img/loginUser.jpg"></td>
-										</tr>
-										<%
-											}
-										%>
-									</tbody>
 								</table>
 							</div>
 							
@@ -102,29 +73,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 					<!-- 添加部分  -->
 					<div class="" id="addluckyDraw">
-						<form id="addluckyInfo">
+						<form id="addluckyInfo" action="javascript:addDraw()" type="post">
 							<table>
 								<tr class="con-item">
 									<td class="tt">奖品等级：</td>
 									<td class="col">
-										<select>
-											<option>一等</option>
-											<option>二等</option>
-											<option>三等</option>
-											<option>四等</option>
-											<option>五等</option>
-											<option>六等</option>
+										<select id="grade">
+											
 										</select>				
 									</td>
 								</tr>
 								<tr class="con-item">
 									<td class="tt">奖品类型：</td>
 									<td class="col">
-										<select>
-											<option>红包</option>
-											<option>代金券</option>
-											<option>实物</option>
-											<option>积分</option>
+										<select id="prizeType">
+											
 										</select>	
 									</td>
 								</tr>
@@ -161,7 +124,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</table>
 							
 							<div class="btnAdd">
-								<button class="addBtn">添加</button>
+								<button id="add" class="addBtn">添加</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>
@@ -179,33 +142,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/luckyDraw/luckyDraw.js"></script>
 	<script type="text/javascript">
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#applicationAudit').DataTable({
-						"autoWidth" : true,
-						"scrollX": true,
-						//"scrollY": true,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3, 4,5,6,7]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </body>
 
 </html>

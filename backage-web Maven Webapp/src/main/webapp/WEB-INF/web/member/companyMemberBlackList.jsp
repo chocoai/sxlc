@@ -90,12 +90,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<label>取消拉黑原因</label><textarea class="cancelCause"></textarea>
 		</div>
 		<div class="w-content" id="prohibitedItem">
-			<span><input type="checkbox" ><label>禁止借款</label></span>
-			<span><input type="checkbox" ><label>禁止投资</label></span>
-			<span><input type="checkbox" ><label>禁止提现</label></span>
-			<span><input type="checkbox" ><label>禁止积分兑换</label></span>
-			<span><input type="checkbox" ><label>禁止抽奖</label></span>
-			<span><input type="checkbox" ><label>禁止抢红包</label></span>
+			<span><input type="checkbox"  class="checkList" value="0"><label>禁止借款</label></span>
+			<span><input type="checkbox"  class="checkList" value="1"><label>禁止投资</label></span>
+			<span><input type="checkbox"  class="checkList" value="2"><label>禁止提现</label></span>
+			<span><input type="checkbox"  class="checkList" value="3"><label>禁止积分兑换</label></span>
+			<span><input type="checkbox"  class="checkList" value="4"><label>禁止抽奖</label></span>
+			<span><input type="checkbox"  class="checkList" value="5"><label>禁止抢红包</label></span>
 		</div>
 	</div>
 	
@@ -103,6 +103,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/member/companyMembers.js"></script>
+	<script type="text/javascript" src="js/member/member.js"></script>
 	<script type="text/javascript" src="js/member/blankmember.js"></script>
 </body>

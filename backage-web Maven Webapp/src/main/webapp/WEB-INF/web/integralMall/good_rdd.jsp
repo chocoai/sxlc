@@ -9,59 +9,56 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>修改商品</title>
+	<title>积分商城</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
-	<link rel="stylesheet" href="css/upload.css" />
+	<link rel="stylesheet" href="css/promoted/promotedCom.css" type="text/css">
 </head>
 
 <body class="nav-md">
 	<div class="container body">
-		<div class="container body">
-			<div class="main_container">
+		<div class="main_container">
+			<!-- 头部 -->
+			<jsp:include page="../common/cm-top.jsp">
+				<jsp:param value="7" name="_index_m1"/>
+			</jsp:include>
 			
-				<div class="w-content ishow pic-add">
-					<table id="card_id">
-						<tr>
-							<td class="tt">入库时间</td>
-							<td class="con" id="">2016.05.10 12:00</td>
-						</tr>
-						<tr>
-							<td class="tt">操作管理员</td>
-							<td class="con" id="">蝎子王</td>
-						</tr>
-						<tr>
-							<td class="tt">入库数量</td>
-							<td class="con" id="">1000</td>
-						</tr>
-						<tr>
-							<td class="tt">当时入库后总数量</td>
-							<td class="con" id="">10000</td>
-						</tr>
-						
-					</table>
-				</div>
+			<!-- 左侧菜单 -->
+			<jsp:include page="../common/cm-integralMall.jsp">
+				<jsp:param value="702" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
+			<!-- 主要内容 -->
+			<div class="right_col" role="main">
+				<!-- 地址导航 -->
+				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
+				<!-- 主体部分 -->
+					<div class="nav-tabs-con active">
+					
+					<div class="data_display">
+						<div class="panel panel-success">
+							
+							<div class="panel-body" id="table_rdd">
+								<table id="table_id" class="display">
+									
+								</table>
+							</div>
+							
+						</div>
+					</div>
+				</div>				
 			</div>
+		
+			<!-- 尾部 -->
+			
 		</div>
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	
-	<!-- 私用js -->
-	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
-	<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
-	<script type="text/javascript" src="js/upload.js"></script>
-	<script>
-		$(".commonbtn1").click(function(){
-		var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-		parent.layer.close(index); //再执行关闭  
-	});
-	</script>
+	<script type="text/javascript" src="js/integralMall/good_rdd.js"></script>
 </body>
-
 </html>

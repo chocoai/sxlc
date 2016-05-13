@@ -74,19 +74,6 @@
 						<div class="panel-body">
 							<table id="table_id" class="display">
 								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>项目编号</th>
-										<th>项目名称</th>
-										<th>提交借款意向时间</th>
-										<th>审批通过时间</th>
-										<th>借款金额(元)</th>
-										<th>实际借款金额(元)</th>
-										<th>担保机构名称(元)</th>
-										<th>项目状态</th>
-										<th>放款时间</th>
-										<th>结清时间</th>
-									</tr>
 								</thead>
 								<tbody>
 								</tbody>

@@ -16,17 +16,17 @@
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <ul class="nav side-menu">
-                                <li id="pro_type"><a href="project/toProTypePg"><i class="fa fa-home"></i>项目类型管理</a></li>
+                                <li data-id="301"><a href="project/toProTypePg"><i class="fa fa-home"></i>项目类型管理</a></li>
                                 <li data-id="302"><a href="web/project/loan_intention_1.jsp"><i class="fa fa-edit"></i>借款申请管理</a></li>
-                                <li data-id="303"><a href="web/project/loan_exam.jsp"><i class="fa fa-edit"></i>借款审核</a></li>
-                                <li data-id="304"><a href="web/project/post_list.jsp"><i class="fa fa-edit"></i>项目发布</a></li>        
+                                <li data-id="303"><a href="project/toLoanChkList"><i class="fa fa-edit"></i>借款审核</a></li>
+<!--                                 <li data-id="304"><a href="web/project/post_list.jsp"><i class="fa fa-edit"></i>项目发布</a></li>         -->
                                 <li data-id="305">
                                 	<a><i class="fa fa-edit"></i>借款管理<span class="fa fa-chevron-down"></span></a>
                                 	<ul class="nav child_menu" style="display: none">
                                         <li data-id="30501"><a href="web/project/apply_failed.jsp">申请失败项目管理</a></li>
                                         <li data-id="30502"><a href="web/project/examing.jsp">审核中项目管理</a></li>
                                         <li data-id="30503"><a href="web/project/not_released.jsp">未发布项目管理</a></li>
-                                        <li data-id="30504"><a href="web/project/investing.jsp">投资中项目管理</a></li>
+                                        <li data-id="30504"><a href="project/toInvestingPg">投资中项目管理</a></li>
                                         <li data-id="30505"><a href="web/project/tobe_lending.jsp">待放款项目管理</a></li>
                                         <li data-id="30506"><a href="web/project/have_bids.jsp">已流标项目管理</a></li>
                                         <li data-id="30507"><a href="web/project/repayment.jsp">还款中项目管理</a></li>

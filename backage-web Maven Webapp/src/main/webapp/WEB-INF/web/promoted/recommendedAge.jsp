@@ -38,10 +38,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				<!-- 主要内容部分    -->
 				<div class="recomAge">
-					<form id="recomAgeForm">
+					<form id="recomAgeForm" action="javascript:addOrmod()" type="post">
 						<label>推荐关系年限:</label>
-						<input type="text" datatype="days" maxlength="2"><span>年</span>
-						<button class="alert">修改</button>
+						<input id="limit" type="text" datatype="days" maxlength="2"><span>年</span>
+						<button id="alter" class="alert">修改</button>
 					</form>
 				</div>
 			</div>
@@ -54,6 +54,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/promoted/recommendedAge.js"></script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </body>
 
 </html>

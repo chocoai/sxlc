@@ -20,7 +20,6 @@
 <!-- 私用css -->
 <link rel="stylesheet" href="css/role.css" />
 <link rel="stylesheet" href="plugs/zTree/v3/css/zTreeStyle/zTreeStyle.css" />
-<script type="text/javascript" src="<%=path %>/js/zTree/jquery.ztree.core-3.2.js"></script>
 </head>
 
 <body class="nav-md">
@@ -178,59 +177,44 @@
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script type="text/javascript" src="js/valid.js"></script>
-	<script type="text/javascript" src="js/role/role-dept.js"></script>
-	<script type="text/javascript" src="js/myZtree.js"></script>
+	<script type="text/javascript" src="plugs/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+	<script type="text/javascript" src="js/role/myZtree.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$(document).ajaxStart(onStart).ajaxSuccess(onStop);
-			loadMenu("dleft_tab1");
-		});
-	
-
-		function loadMenu(treeObj){
-				var depId = 1;
-				$.ajax({
-					type:"POST",
-					url : appPath + "/role/treeList.do",
-					dataType : "json",
-					success:function(data){
-					alert(data[0].resourceName);
-						// 如果返回数据不为空，加载"业务模块"目录
-						if(data != null){
-							// 将返回的数据赋给zTree
-							$.fn.zTree.init($("#"+treeObj), setting, data);
-							zTree = $.fn.zTree.getZTreeObj(treeObj);
-							//点击事件
-							
-							var node = zTree.getNodeByParam('parentID',0);//获取id为1的点   设置默认点击第几级
-				         	zTree.selectNode(node);//选择点  
-				        	zTree.setting.callback.onClick(null,zTree.setting.treeId,node);//调用事件  
-			                if( zTree ){
-								// 默认展开所有节点
-								zTree.expandAll(true);
+	<!-- 私用js -->
+	 <script type="text/javascript">
+		 var depId =1;
+			$(document).ready(function(){
+				$(document).ajaxStart(onStart).ajaxSuccess(onStop);
+				loadMenu("dleft_tab1");
+			});
+			function loadMenu(treeObj){
+					$.ajax({
+						type:"POST",
+						async : false,
+						cache:false,
+						url: "<%=basePath%>/PostController/finddapt.do",
+						dataType:"json",
+						success:function(data){
+							// 如果返回数据不为空，加载"业务模块"目录
+							if(data != null){
+								// 将返回的数据赋给zTree
+							 	$.fn.zTree.init($("#"+treeObj), setting, data);
+							 	zTree = $.fn.zTree.getZTreeObj(treeObj);
+								//点击事件
+								var node = zTree.getNodeByParam('parentID',0);//获取id为1的点   设置默认点击第几级
+						         zTree.selectNode(node);//选择点  
+						         zTree.setting.callback.onClick(null,zTree.setting.treeId,node);//调用事件  
+											
+				                if( zTree ){
+									// 默认展开所有节点
+									zTree.expandAll(true);
+								}
 							}
 						}
-					}
-				});
-			}
-		
-		//点击事件
-		function TheSelectedNode(id){
-		alert(id);
-			 var node = zTree.getNodeByParam('parentID',id);//获取id为1的点   设置默认点击第几级
-	         zTree.selectNode(node);//选择点  
-	         zTree.setting.callback.onClick(null,zTree.setting.treeId,node);//调用事件  
-		}	
-		
-		//刷新
-		function updateTable(prevId,moduleId){
-		}
-	</script>
-	<script type="text/javascript">
-		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
-	</script>
+					});
+				}
+		</script>
+	<script type="text/javascript" src="js/role/role-dept.js"></script>
 </body>
 
 </html>

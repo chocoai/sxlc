@@ -41,66 +41,65 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				<div class="nav-tabs-con active">
 					<div class="panel-heading">
-						<div class="action_item">
-							<button class="obtn glyphicon glyphicon-pencil obtn-dept-mod">修改</button>
-						</div>
 					</div>
 					<div class="drawSet">
 						<div class="uploadEnclosure" id="alertAudit">
-							<form id="formInput">
+							<form id="formInput" action="javascript:modNew()" type="post">
 								<table>
 									<tr>
 										<td class="tt">是否启用新手体验标：</td>
 										<td class="col">
-											<select class="openNew">
-												<option>否</option>
-												<option>是</option>
+											<select class="openNew" id="statu">
+												<option value="1">是</option>
+												<option value="0">否</option>
 											</select>
 										</td>
 									</tr>
 									<tr>
 										<td class="tt">体验标描述：</td>
-										<td class="col"><input class="notspecial" datatype="describeC"></td>
+										<td class="col"><input id="experienceDescribe" class="notspecial" datatype="describeC"></td>
 									</tr>
 									<tr>
 										<td class="tt">体验标标题：</td>
-										<td class="col"><input class="notspecial" datatype="roleNameb"></td>
+										<td class="col"><input id="experienceName" class="notspecial" datatype="roleNameb"></td>
 									</tr>
 									<tr>
 										<td class="tt">体验产品类型：</td>
 										<td class="col">
-											<select>
-												<option>产品1</option>
-												<option>产品2</option>
+											<select id="productType">
+												
 											</select>
 										</td>
 									</tr>
 									<tr>
 										<td class="tt">体验产品还款方式：</td>
 										<td class="col">
-											<select>
-												<option>方式1</option>
-												<option>方式2</option>
+											<select id="repayWay">
+												<option value="0">等额本息</option>
+												<option value="1">先息后本</option>
+												<option value="2">到期还本息</option>
+												<option value="3">等额本金</option>
 											</select>
 										</td>
 									</tr>
 									<tr>
 										<td class="tt">体验产品年化收益率：</td>
-										<td class="col"><input class="notspecial" datatype="hundredNum">%</td>
+										<td class="col"><input id="yearRates" class="notspecial" datatype="hundredNum">%</td>
 									</tr>
 									<tr>
 										<td class="tt">体验产品借款期限：</td>
 										<td class="col">
-											<input class="notspecial dayInput" datatype="days">
-											<select class="day">
-												<option>天</option>
-												<option>月</option>
+											<input id="deadline" class="notspecial dayInput" datatype="days">
+											<select id="deadlineType" class="day">
+												<option value="0">天标</option>
+												<option value="1">月标</option>
+												<option value="2">年标</option>
 											</select>
 										</td>
 									</tr>
 									<tr>
 										<td class="tt">投资即得代金券面值：</td>
-										<td class="col"><input class="notspecial" datatype="acountM">元</td>
+										<td class="col"><input id="vouchersAmounts" class="notspecial" datatype="acountM">元</td>
 									</tr>
 									<tr>
 										<td class="tt">体验标图片：</td>
@@ -114,12 +113,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</tr>
 									<tr>
 										<td class="tt" valign="top"></td>
-										<td class="con" id="fileList"></td>
+										<td class="con1" id="fileList"></td>
 									</tr>
 									<tr>
 										<td class="tt"></td>
 										<td>
-											<button class="addBtn">添加</button>
+											<button id="mod" class="addBtn">修改</button>
 											<a class="cancelBtn">取消</a>
 										</td>
 									</tr>
@@ -140,33 +139,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/noviceExperience/noviceExperience.js"></script>
 	<script type="text/javascript">
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#applicationAudit').DataTable({
-						"autoWidth" : true,
-						"scrollX": true,
-						//"scrollY": true,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3, 4,5,6,7]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </body>
 
 </html>

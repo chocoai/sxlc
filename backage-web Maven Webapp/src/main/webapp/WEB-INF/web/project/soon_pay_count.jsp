@@ -197,10 +197,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		/* 发送消息 */
 		$(".obtn-sendmsg").on('click',function(){
 			 var rdata = $('#table_id').DataTable().rows('.selected').data();
-			 if(rdata.length<1){
-					layer.alert("请选择项目！",{icon:0});
-					return;
-			 }
+// 			 if(rdata.length<1){
+// 					layer.alert("请选择项目！",{icon:0});
+// 					return;
+// 			 }
 			layer.open({
 			    type: 1,
 			    area: ['800px', '580px'], //高宽

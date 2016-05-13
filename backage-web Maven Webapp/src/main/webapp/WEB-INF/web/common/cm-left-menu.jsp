@@ -21,11 +21,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <div class="menu_section">
                             <ul class="nav side-menu">
                                 <li data-tag="role-0"><a href="web/role/role-dept.jsp"><i class="fa fa-home"></i>部门管理</a></li>
-                                <li data-tag="role-1"><a href="PostController/getDeptList.do"><i class="fa fa-edit"></i>职务管理</a></li>       
-                                <li data-tag="role-2"><a href="role/emp.do"><i class="fa fa-edit"></i>员工管理</a> </li>
+                                <li data-tag="role-1"><a href="<%=basePath %>PostController/getDeptList.do"><i class="fa fa-edit"></i>职务管理</a></li>       
+                                <li data-tag="role-2"><a href="<%=basePath %>role/emp.do"><i class="fa fa-edit"></i>员工管理</a> </li>
                                 <li data-tag="role-3"><a href="web/role/role-adviser.jsp"><i class="fa fa-edit"></i>理财顾问管理</a> </li>
-                                <li data-tag="role-4"><a href="getModuleAndOperation.do"><i class="fa fa-edit"></i>角色管理</a> </li>
-                                <li data-tag="role-5"><a href="getRoleListToReq.do"><i class="fa fa-edit"></i>管理员管理</a> </li>
+                                <li data-tag="role-4"><a href="<%=basePath %>getModuleAndOperation.do"><i class="fa fa-edit"></i>角色管理</a> </li>
+                                <li data-tag="role-5"><a href="<%=basePath %>getRoleListToReq.do"><i class="fa fa-edit"></i>管理员管理</a> </li>
                             </ul>
                         </div>
                     </div>

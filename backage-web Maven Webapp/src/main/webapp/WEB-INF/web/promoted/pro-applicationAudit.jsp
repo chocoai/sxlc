@@ -49,12 +49,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>会员编号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>会员用户名</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>会员编号</span><input id="memberNo" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>会员用户名</span><input id="logname" type="text" class="notspecial" /></span>
 									<span class="con-item"><span>注册时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
-									<span class="con-item"><span>姓名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>状态</span><select><option>已通过</option><option>已拒绝</option><option>已踢出</option><option>拒绝后重新申请</option></select></span>
-									<span class="con-item"><span>所在地</span><input type="text" class="notspecial" /></span>
+									<span class="con-item"><span>姓名</span><input id="personalName" type="text" class="notspecial" /></span>
+									<span class="con-item">
+										<span>状态</span>
+										<select id="checkStatu">
+											<option value="1">通过</option>
+											<option value="-1">打回</option>
+											<option value="0">审核中</option>
+										</select>
+									</span>
+									<span class="con-item"><span>所在地</span><input id="houseAddress" type="text" class="notspecial" /></span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -64,51 +71,54 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 								<div class="action_item">
-									<button id="" class="obtn glyphicon glyphicon-plus obtn-export">审核</button>
+									<button id="" class="obtn glyphicon glyphicon-plus obtn-exam">审核</button>
 								</div>
 							</div>
 							
 							<div class="panel-body">
 								<table id="applicationAudit" class="display">
-									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>会员编号</th>
-											<th>会员用户名</th>
-											<th>会员类型</th>
-											<th>姓名</th>
-											<th>注册时间</th>
-											<th>所在地</th>
-											<th>手机号</th>
-											<th>累计邀请人数</th>
-											<th>状态</th>
-											<th>操作</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>1</td>
-											<td>会员用户名</td>
-											<td>会员类型</td>
-											<td>姓名</td>
-											<td>注册时间</td>
-											<td>所在地</td>
-											<td>手机号</td>
-											<td>累计邀请人数</td>
-											<td>已通过</td>
-											<td>通过</td>
-										</tr>
-										<%
-											}
-										%>
-									</tbody>
 								</table>
 							</div>
-							
+							<!-- 审核弹出层2016-05-11伍成然 -->
+							<div class="layerExam">
+								<table>
+									<tr class="col-md-12">
+										<td class="tt"><label>会员编号：</label></td>
+										<td class="con">
+											<span>100001</span>
+										</td>
+									</tr>
+									<tr class="col-md-12">	
+										<td class="tt"><label>会员用户名：</label></td>
+										<td class="con">
+											<span>用户名</span>
+										</td>
+									</tr>	
+									<tr class="col-md-12">
+										<td class="tt"><label>姓名：</label></td>
+										<td class="con">
+											<span>姓名</span>
+										</td>
+									</tr>	
+									<tr class="col-md-12">	
+										<td class="tt"><label>手机号：</label></td>
+										<td class="con">
+											<span>18322224444</span>
+										</td>
+									</tr>	
+									<tr class="col-md-12">	
+										<td class="tt"><label>审核结果：</label></td>
+										<td class="con">
+											<select class="w3">
+												<option>请选择</option>
+												<option>通过</option>
+												<option>拒绝</option>
+												<option>踢出</option>
+											</select>
+										</td>
+									</tr>	
+								</table>
+							</div>
 						</div>
 					</div>
 				
@@ -122,35 +132,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/promoted/recommendedAge.js"></script>
+	<script type="text/javascript" src="js/promoted/pro-applicationAudit.js"></script>
 	<script type="text/javascript">
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#applicationAudit').DataTable({
-						"autoWidth" : true,
-						"scrollX": true,
-						//"scrollY": true,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [[ 5, "desc"]],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 1, 2, 3, 4, 6,7,8,9,10]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>
 </body>
 
 </html>

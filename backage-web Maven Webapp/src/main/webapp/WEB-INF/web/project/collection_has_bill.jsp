@@ -9,14 +9,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>项目管理</title>
+	<title>项目管理-催收已还账单</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="css/project/collection_has_bill.css" type="text/css">
 </head>
 <!-- 贷后管理-------项目催收-------催收已还账单 -->
 <body class="nav-md">
@@ -50,11 +49,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>借款项目编号</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>借款项目名称</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>借款人</span><input type="text" class="notspecial"/></span>
-									<span class="con-item"><span>账单编号</span><input type="text" class="notspecial"/></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<span class="con-item"><span>借款项目编号</span><input type="text" class="notspecial Project_No"/></span>
+									<span class="con-item"><span>借款项目名称</span><input type="text" class="notspecial Project_Title"/></span>
+									<span class="con-item"><span>借款人</span><input type="text" class="notspecial Personal_Name"/></span>
+									<span class="con-item"><span>账单编号</span><input type="text" class="notspecial Merbill_No"/></span>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									
 								</form>
 						  	</div>
 						</div>
@@ -68,41 +68,74 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="panel-body">
-								<table id="table_collection_has_bill" class="display">
-									<thead>
-										<tr>
-											<th></th>
-											<th>借款项目编号</th>
-											<th>借款项目名称</th>
-											<th>借款人</th>
-											<th>账单编号</th>
-											<th>账单金额</th>
-											<th>账单期数</th>
-											<th>还款时间</th>
-											<th>实际还款时间</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for(int i=0;i<15;i++){
-										 %>
-										<tr>
-											<td><input type="checkbox"></td>
-											<td>0000001</td>
-											<td>交电费</td>
-											<td>jiuyang</td>
-											<td>121212103</td>
-											<td>1234</td>
-											<td>20</td>
-											<td>12-01</td>
-											<td>12-01</td>
-										</tr>
-										<%
-											}
-										 %>
-									</tbody>
+								<table id="table_id" class="display">
 								</table>
 							</div>
+						</div>
+						<!-- 账单详情 -->
+						<div class="w-content bill_detail">
+							<table>
+								<tr class="col-md-6">
+									<td class="tt"><label>借款项目编号：</label></td>
+									<td class="con">
+										<span id="projectNo"></span>
+									</td>
+								</tr>
+								<tr class="col-md-6">	
+									<td class="tt"><label>账单编号：</label></td>
+									<td class="con">
+										<span id="merbillNo"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">
+									<td class="tt"><label>借款项目名称：</label></td>
+									<td class="con">
+										<span id="projectTitle"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>借款人：</label></td>
+									<td class="con">
+										<span id="memberName"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>账单金额：</label></td>
+									<td class="con">
+										<span  id="amounts"></span>元
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>账单期数：</label></td>
+									<td class="con">
+										<span  id="indexs"></span>
+									</td>
+								</tr>
+								<tr class="col-md-6">	
+									<td class="tt"><label>实际还款时间：</label></td>
+									<td class="con">
+										<span id="repayTime"></span>
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>逾期时长：</label></td>
+									<td class="con">
+										<span id="overDay"></span>天
+									</td>
+								</tr>	
+								<tr class="col-md-6">	
+									<td class="tt"><label>逾期费用：</label></td>
+									<td class="con">
+										<span  id="overdueAmounts"></span>元
+									</td>
+								</tr>		
+								<tr class="col-md-12">	
+									<td class="tt"><label>账单展示：</label></td>
+									<td class="con">
+										<span  id=""></span>
+									</td>
+								</tr>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -114,39 +147,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="js/project/collection_has_bill.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-		//默认禁用搜索和排序
-		/* $.extend( $.fn.dataTable.defaults, {
-		    searching: true,
-		    ordering:  false
-		} ); */
-		// 这样初始化，排序将会打开
-		$(function() {
-			$('#table_collection_has_bill').DataTable({
-				"autoWidth" : true,
-				//"scrollY": 500,
-				//paging : false,//分页
-				
-				//"searching" : false,
-				"info" : false,//左下角信息
-				//"ordering": false,//排序
-				"aaSorting" : [[ 5, "desc"],[ 7, "desc"],[ 8, "desc"]],//默认第几个排序
-				"aoColumnDefs" : [
-				//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-				{
-					"orderable" : false,
-					"aTargets" : [ 0, 1, 2, 3, 4, 6]
-				} // 制定列不参与排序
-				],
-				colReorder : false,
-				"scrollX": true,
-				"sScrollX" : "100%",
-				"sScrollXInner" : "100%",
-				"bScrollCollapse" : true
-			});
-		});
-		
-	</script>
 </body>
 
 </html>

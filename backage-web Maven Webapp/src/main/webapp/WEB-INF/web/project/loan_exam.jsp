@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
@@ -36,9 +38,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="javascript:;">一审</a></li>
-					<li role="presentation"><a href="web/project/loan_examTwo.jsp">二审</a></li>
-					<li role="presentation"><a href="web/project/loan_examThree.jsp">三审</a></li>
+						<input type="hidden" id="pushIndex" value="${pushIndex}" />
+						<input type="hidden" id="sIndexs" value="${sIndexs}" />
+						<c:if test="${fn:length(process) > 0}">
+							<c:forEach var="item" items="${process}">
+								<c:if test="${sIndexs == item.indexs}">
+									<li role="presentation" sIndexs="${item.indexs}" class="active showUlLi"><a>${item.apName}</a></li>
+								</c:if>
+								<c:if test="${sIndexs != item.indexs}">
+									<li role="presentation" sIndexs="${item.indexs}" class="showUlLi"><a>${item.apName}</a></li>
+								</c:if>
+							</c:forEach>
+						</c:if>		
+						<c:if test="${fn:length(process) == 0}">
+							<li role="presentation" class="active">无审批流程数据</li>
+						</c:if>		
 				</ul>
 				<div class="nav-tabs-con active">
 					<div class="search">

@@ -107,6 +107,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							 	</div>
 							 </div>
 							<div class="panel-body">
+							<input type="hidden" id="memberType" value="0">
 								<table id="table_planer" class="display">
 									<thead>
 									</thead>

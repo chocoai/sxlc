@@ -50,15 +50,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>兑换时间</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>发货时间</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>会员用户名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>会员姓名</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>联系电话</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>商品编号</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>商品名称</span><input type="text" class="notspecial" /></span>
-									<span class="con-item"><span>状态</span><select><option>已下单</option><option>已发货</option><option>订货失败</option></select></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<div>
+									<span class="con-item"><span>兑换时间</span><input type="text" id="startDate" class="dateInput Wdate data1 stime1" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate data1 stime2"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
+									<span class="con-item"><span>发货时间</span><input type="text" id="startDate" class="dateInput Wdate data1 etime1" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate data1 etime2"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
+									<span class="con-item"><span>会员用户名</span><input id="userId" type="text" class="notspecial" /></span>
+									</div>
+									<div>
+									<span class="con-item"><span>会员姓名</span><input id="userName" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>联系电话</span><input id="userPhone" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>商品编号</span><input id="proId" type="text" class="notspecial" /></span>
+									</div>
+									<div>
+									<span class="con-item"><span>商品名称</span><input id="proName" type="text" class="notspecial" /></span>
+									<span class="con-item"><span>状态</span>
+									<select id="proSelect">
+									<option value="-1">所有</option>
+									<option value="0">已下单</option>
+									<option value="2">已发货</option>
+									<option value="1">订货失败</option>
+									</select>
+									</span>
+									<input type="button" id="ding_search" class="obtn obtn-query glyphicon glyphicon-search" value="查询"></div>
 								</form>
 						  	</div>
 						 </div>
@@ -69,51 +81,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="panel-body">
 								<table id="applicationAudit" class="display">
 									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>兑换时间</th>
-											<th>发货时间</th>
-											<th>会员用户名</th>
-											<th>会员姓名</th>
-											<th>联系电话</th>
-											<th>商品编号</th>
-											<th>商品名称</th>
-											<th>兑换数量</th>
-											<th>应付积分</th>
-											<th>实际使用积分</th>
-											<th>状态</th>
-											<th>操作</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>2016.5.9 14：50</td>
-											<td>菲利普斯同款泳衣</td>
-											<td>流线型设计！</td>
-											<td>有效</td>
-											<td>泰迪熊2</td>
-											<td>泰迪熊2</td>
-											<td>泰迪熊2</td>
-											<td>泰迪熊2</td>
-											<td>泰迪熊2</td>
-											<td>泰迪熊2</td>
-											<td>泰迪熊2</td>
-											<td>
-												<input type="button" class="fahuo" value="发货"/>
-												<input type="button" class="chexiao" value="撤销订单"/>
-											</td>
-										</tr>
-										<%
-											}
-										%>
-									</tbody>
+										
 								</table>
 							</div>
-							
+							<div class="w-content ishow pic-add" id="into_dd"  style="display:none">
+								
+								<table id="card_id">
+									<tr>
+										<td class="tt">物流公司</td>
+										<td class="con"><input id="into_dd1" type="text" style="width:250px;"/></td>
+									</tr>
+									<tr>
+										<td class="tt">物流单号</td>
+										<td class="con"><input id="into_dd2" type="text"  style="width:250px;"/></td>
+									</tr>
+									<tr>
+										<td class="tt">通知信息内容</td>
+										<td class="con"><textarea id="into_dd3" type="text" style="height:60px;width:250px;"></textarea></td>
+									</tr>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>						
@@ -126,36 +113,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
-	<script type="text/javascript" src="js/integralMall/integralMall_good.js"></script>
-	<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
-	<script type="text/javascript">
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#applicationAudit').DataTable({
-						"autoWidth" : true,
-						"scrollX": true,
-						//"scrollY": true,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [[1,2,8,9,"desc"]],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 3, 4, 5 , 6,7,10,11,12]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+	<script type="text/javascript" src="js/integralMall/integralMall_ding.js"></script>
+
 </body>
 
 </html>

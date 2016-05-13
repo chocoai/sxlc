@@ -23,61 +23,61 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<tr class="col-md-6">
 			<td class="tt"><label>借款项目编号：</label></td>
 			<td class="con">
-				<span>100001</span>
+				<span>${details.projectNo}</span>
 			</td>
 		</tr>
 		<tr class="col-md-6">	
 			<td class="tt"><label>账单编号：</label></td>
 			<td class="con">
-				<span>200002</span>
+				<span>${details.merbillNo}</span>
 			</td>
 		</tr>	
 		<tr class="col-md-6">
 			<td class="tt"><label>借款项目名称：</label></td>
 			<td class="con">
-				<span>项目名称</span>
+				<span>${details.projectTitle}</span>
 			</td>
 		</tr>	
 		<tr class="col-md-6">	
 			<td class="tt"><label>借款人：</label></td>
 			<td class="con">
-				<span>借款人</span>
+				<span>${details.memberName}</span>
 			</td>
 		</tr>	
 		<tr class="col-md-6">	
 			<td class="tt"><label>账单金额：</label></td>
 			<td class="con">
-				<span class="moneyFormat">10000</span>元
+				<span class="moneyFormat">${details.amounts}</span>元
 			</td>
 		</tr>	
 		<tr class="col-md-6">	
 			<td class="tt"><label>账单期数：</label></td>
 			<td class="con">
-				<span>3</span>
+				<span>${details.indexs}</span>
 			</td>
 		</tr>	
 		<tr class="col-md-6">	
 			<td class="tt"><label>实际还款时间：</label></td>
 			<td class="con">
-				<span>2016-05-10</span>
+				<span>${details.repayTime}</span>
 			</td>
 		</tr>	
 		<tr class="col-md-6">	
 			<td class="tt"><label>逾期时长：</label></td>
 			<td class="con">
-				<span>5</span>天
+				<span>${details.overDay}</span>天
 			</td>
 		</tr>	
 		<tr class="col-md-6">	
 			<td class="tt"><label>逾期费用：</label></td>
 			<td class="con">
-				<span class="moneyFormat">100</span>元
+				<span class="moneyFormat">${details.overdueAmounts}</span>元
 			</td>
 		</tr>	
 		<tr class="col-md-6">	
 			<td class="tt"><label>账单展示：</label></td>
 			<td class="con">
-				<span>这里是一段话这里是一段话这里是一段话这里是一段话这里是一段话</span>
+				<span>${details.projectNo}</span>
 			</td>
 		</tr>
 	</table>

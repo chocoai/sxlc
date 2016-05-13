@@ -51,10 +51,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>注册时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
-									<span class="con-item"><span>注册时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
-									<span class="con-item"><span>注册时间</span><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
-									<span class="con-item"><span>状态</span><select><option>已通过</option><option>已拒绝</option><option>已踢出</option><option>拒绝后重新申请</option></select></span>
+									<span class="con-item"><span>添加时间</span><input type="text" id="startDate1" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate1" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item"><span>开始时间</span><input type="text" id="startDate2" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate2" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item"><span>结束时间</span><input type="text" id="startDate3" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate3" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+									<span class="con-item"><span>状态</span>
+										<select id="statu">
+											<option value="2">已结束</option>
+											<option value="1">领取中</option>
+											<option value="0">未发布</option>
+										</select>
+									</span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
@@ -67,46 +73,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<button class="obtn glyphicon glyphicon-plus obtn-dept-add" onclick="addRedE();">添加</button>
 									<button class="obtn glyphicon glyphicon-pencil obtn-dept-mod" onclick="alertRedE();">修改</button>
 									<button id="" class="obtn glyphicon glyphicon-plus obtn-export">发布</button>
-									<button id="" class="obtn glyphicon glyphicon-plus obtn-export" onclick="window.location.href='<%=path %>/web/promoted/pro-receiveDetail.jsp'">领取明细</button>
+									<button id="" class="obtn glyphicon glyphicon-plus obtn-export" onclick="getDetail()">领取明细</button>
 								</div>
 							</div>
 							
 							<div class="panel-body">
 								<table id="applicationAudit" class="display">
-									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>活动添加时间</th>
-											<th>活动开始时间</th>
-											<th>活动结束时间</th>
-											<th>活动名称</th>
-											<th>活动红包总个数</th>
-											<th>活动红包总金额(元)</th>
-											<th>已领取活动红包总金额(元)</th>
-											<th>剩余活动红包总金额(元)</th>
-											<th>状态</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>活动添加时间</td>
-											<td>活动开始时间</td>
-											<td>活动结束时间</td>
-											<td>活动名称</td>
-											<td>活动红包总个数</td>
-											<td class="moneyFormat">1000</td>
-											<td class="moneyFormat">10000</td>
-											<td class="moneyFormat">10000</td>
-											<td>状态</td>
-										</tr>
-										<%
-											}
-										%>
-									</tbody>
 								</table>
 							</div>
 							
@@ -115,27 +87,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 					<!-- 添加部分  -->
 					<div class="" id="addRedE">
-						<form id="addRedEForm">
+						<form id="addRedEForm" action="javascript:addRecord()" type="post">
 							<div>
 								<span class="tt">活动起止时间：</span>
 								<span class="col"><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
 							</div>
 							<div>
 								<span class="tt">活动名称：</span>
-								<span class="col"><input class="notspecial" datatype="describeC"></span>
+								<span class="col"><input id="affairName" class="notspecial" datatype="describeC"></span>
 							</div>
-							<div>
-								<div class="redEContent">
+							<div id="redMany">
+								<div class="redEContent isActive"  id = "RM0">
 									<span class="tt">红包金额：</span>
-									<span class="col"><input datatype="acountM" class="moneyInput">元<input datatype="nNum1" class="moneyInput">个<a class="redEAdd">增加</a></span>
+									<span class="col">
+										<input datatype="acountM" class="moneyInput money">元
+										<input datatype="nNum1" class="moneyInput num">个
+										<a class="redEAdd">增加</a>
+									</span>
 								</div>
+								<%for(int i = 1 ;i<20 ; i++){ %>
+								<div class='redEContent notActive' id = "RM<%=i %>">
+									<span class='tt'></span>
+									<span class='col'>
+										<input datatype='acountM' class='moneyInput money' >元
+										<input datatype='nNum1' class='moneyInput num' >个
+										<a class='redDelete'>删除</a>
+									</span>
+								</div>
+								<%} %>
 							</div>
 							<div>
 								<span class="tt">活动有效期：</span>
-								<span class="col"><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+								<span class="col"><input id="userendDate" type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
 							</div>
 							<div class="btnAdd">
-								<button class="addBtn">添加</button>
+								<button id="addRecord" class="addBtn">添加</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>
@@ -144,7 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 					<!-- 修改部分 -->
 					<div class="" id="alertRedE">
-						<form id="alertRedEForm">
+						<form id="alertRedEForm" action="javascript:modRed()">
 							<div>
 								<span class="tt">活动起止时间时间：</span>
 								<span class="col"><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
@@ -153,18 +139,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<span class="tt">活动名称：</span>
 								<span class="col"><input class="notspecial" datatype="describeC"></span>
 							</div>
-							<div>
-								<div class="redEContent">
+							<div id = "redChange">
+								<div class="redEContent isActive2"  id = "RMC0">
 									<span class="tt">红包金额：</span>
-									<span class="col"><input datatype="acountM" class="moneyInput">元<input datatype="nNum1" class="moneyInput">个<a class="redEAdd">增加</a></span>
+									<span class="col">
+										<input datatype="acountM" class="moneyInput money">元
+										<input datatype="nNum1" class="moneyInput num">个
+										<a class="redEAdd">增加</a>
+									</span>
 								</div>
+								<%for(int i = 1 ;i<20 ; i++){ %>
+								<div class='redEContent notActive2' id = "RMC<%=i %>">
+									<span class='tt'></span>
+									<span class='col'>
+										<input datatype='acountM' class='moneyInput money' >元
+										<input datatype='nNum1' class='moneyInput num' >个
+										<a class='redDelete'>删除</a>
+									</span>
+								</div>
+								<%} %>
 							</div>
 							<div>
 								<span class="tt">活动有效期：</span>
 								<span class="col"><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
 							</div>
 							<div class="btnAdd">
-								<button class="addBtn">添加</button>
+								<button id="modRed" class="addBtn">确认修改</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>
@@ -181,33 +181,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/promoted/pro-redEnvelope.js"></script>
 	<script type="text/javascript">
-				// 这样初始化，排序将会打开
-				$(function() {
-					$('#applicationAudit').DataTable({
-						"autoWidth" : true,
-						"scrollX": true,
-						//"scrollY": true,
-						//paging : false,//分页
-						
-						//"searching" : false,
-						"info" : false,//左下角信息
-						//"ordering": false,//排序
-						"aaSorting" : [[ 1,2,3, "desc"]],//默认第几个排序
-						"aoColumnDefs" : [
-						//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-						{
-							"orderable" : false,
-							"aTargets" : [ 0, 4, 5, 6,7,8,9]
-						} // 制定列不参与排序
-						],
-						colReorder : false,
-						"scrollX": true,
-						"sScrollX" : "100%",
-						"sScrollXInner" : "100%",
-						"bScrollCollapse" : true
-					});
-				});
-			</script>
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+		function getDetail() {
+			var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+			window.location.href='<%=path %>/web/promoted/pro-receiveDetail.jsp?content=' + rowdata[0].affairID;
+		}
+	</script>
 </body>
 
 </html>

@@ -53,7 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                         <li data-id="20206"><a href="web/member/companyInvestMember.jsp">投资会员</a></li>
                                         <li data-id="20207"><a href="web/member/companyCompositeMember.jsp">复合会员</a></li>
                                         <li data-id="20208"><a href="web/member/companyMemberBlackList.jsp">会员黑名单</a></li>
-                                        <li data-id="20209"><a href="web/member/businessLicenseAuthen.jsp?content=1">资料认证</a></li>
+                                        <li data-id="20209"><a href="web/member/businessLicenseAuthen.jsp?content=12">资料认证</a></li>
                                         <li data-id="20210"><a href="web/member/companyFinancialAdvisor.jsp">会员分配理财顾问</a></li>
                                         <li data-id="20211"><a href="web/member/companyChangeFinAdvisor.jsp">理财顾问变更</a></li>
                                     </ul>

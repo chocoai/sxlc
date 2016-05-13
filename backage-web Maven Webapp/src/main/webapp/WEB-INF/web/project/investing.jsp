@@ -89,13 +89,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" id="affix">
 								<td class="tt">前台展示附件：</td>
 								<td class="con fileList">									
-									<div class="file-item thumbnail upload-state-done imgDisplay">
-									    <img src="...">
-									    <div class="info">123</div>
-									    <div class="file-panel">
-									    	<span class="cancel">删除</span>
-									    </div>
-									</div>	
 								</td>
 							</tr>
 							<tr>

@@ -16,6 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
+	<link rel="stylesheet" href="css/promoted/promotedCom.css" type="text/css">
 </head>
 
 <body class="nav-md">
@@ -36,7 +37,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 地址导航 -->
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				<!-- 主体部分 -->
-				
+					<div class="nav-tabs-con active">
+					<div class="search">
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<div class="i-fl search_title">条件查询</div>
+								<div class="i-fr action_item">
+									<ul class="list_item list-inline">
+										<li><a class="state">展开&nbsp;<span class="glyphicon glyphicon-chevron-down"></span> </a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="panel-body">
+								<form id="" class="" action="">
+									<span class="con-item"><span>兑换时间</span><input type="text" id="startDate" class="dateInput Wdate data1 stime1" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate data1 stime2"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
+									<span class="con-item"><span>发货时间</span><input type="text" id="startDate" class="dateInput Wdate data1 etime1" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate data1 etime2"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
+									<span class="con-item"><span>会员用户名</span><input type="text" id="userId" class="notspecial" /></span>
+									<span class="con-item"><span>会员姓名</span><input type="text" id="userName" class="notspecial" /></span>
+									<span class="con-item"><span>联系电话</span><input type="text" id="userPhone" class="notspecial" /></span>
+									<span class="con-item"><span>商品编号</span><input type="text" id="proId" class="notspecial" /></span>
+									<span class="con-item"><span>商品名称</span><input type="text" id="proName" class="notspecial" /></span>
+									<input type="button" id="false_search" class="obtn obtn-query glyphicon glyphicon-search" value="查询">
+								</form>
+						  	</div>
+						 </div>
+					</div> 
+					<div class="data_display">
+						<div class="panel panel-success">
+							
+							<div class="panel-body">
+								<table id="applicationAudit2" class="display">
+								</table>
+							</div>
+							
+						</div>
+					</div>
+				</div>				
 			</div>
 		
 			<!-- 尾部 -->
@@ -46,6 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
+	<script type="text/javascript" src="js/integralMall/integralMall_false.js"></script>
 </body>
 
 </html>

@@ -27,8 +27,14 @@ public class LoginCheckFilter implements Filter{
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		
+		exitRouts.add("openThirdAccountCallbackPage");					//开户回调1
+		exitRouts.add("openThirdAccountCallback");						//开户回调2
+		exitRouts.add("authorizedCallBack");							//二次分配授权
+		exitRouts.add("authorizedCallBackPage");						//二次分配授权
+		exitRouts.add("loanRechargeNotify");							//绑定银行卡回调
+		exitRouts.add("debtInvestmentBack");							//债权投资回调
 	}
+	
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,FilterChain chain) throws IOException, ServletException {
@@ -52,6 +58,8 @@ public class LoginCheckFilter implements Filter{
 			}else{
 				chain.doFilter(request, response);
 			}
+		}else{
+			chain.doFilter(request, response);
 		}
 	}
 

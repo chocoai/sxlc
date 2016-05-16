@@ -63,7 +63,7 @@ String content = request.getParameter("content");
 							</div>
 							<div class="checkstatebtn">
 								<span class="">
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</span>
 							</div>
 						</form>

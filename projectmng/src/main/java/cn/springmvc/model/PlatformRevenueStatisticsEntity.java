@@ -51,6 +51,21 @@ public class PlatformRevenueStatisticsEntity {
 	private String inviteMasterAwards;//推荐达人提奖总额
 	private long   financialAdvisorAward;//理财顾问提奖总额
 	private String financialAdvisorAwards;//理财顾问提奖总额
+	private long   kcrRiskMarginFee;//扣除风险保证金
+	private String kcrRiskMarginFees;//扣除风险保证金
+	public long getKcrRiskMarginFee() {
+		return kcrRiskMarginFee;
+	}
+	public void setKcrRiskMarginFee(long kcrRiskMarginFee) {
+		this.kcrRiskMarginFee = kcrRiskMarginFee;
+		this.kcrRiskMarginFees= IntegerAndString.LongToString(kcrRiskMarginFee);
+	}
+	public String getKcrRiskMarginFees() {
+		return kcrRiskMarginFees;
+	}
+	public void setKcrRiskMarginFees(String kcrRiskMarginFees) {
+		this.kcrRiskMarginFees = kcrRiskMarginFees;
+	}
 	public long getrMngFeeAmount() {
 		return rMngFeeAmount;
 	}

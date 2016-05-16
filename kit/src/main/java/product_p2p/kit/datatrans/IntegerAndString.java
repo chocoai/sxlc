@@ -76,7 +76,7 @@ public class IntegerAndString {
      * @return
      */
     public static String LongToString2(long l){
-    	l = l /100;
+//    	l = l /100;
     	String sResult = "0.00";
     	String sPre = "";
     	if(l<0){
@@ -88,11 +88,12 @@ public class IntegerAndString {
     	lMod = l % 10000;
     	lDiv = l / 10000;
     	String sMod = String.valueOf(lMod);
-    	while(sMod.length()<2){
+    	while(sMod.length()<4){
     		sMod ="0" + sMod ;
     	}
     	String sDiv = String.valueOf(lDiv);
     	sResult = sPre + sDiv + "." + sMod;
+    	sResult = sResult.substring(0, sResult.length()-2);
     	return sResult;
     }
     

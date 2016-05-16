@@ -45,8 +45,18 @@ public class LoanMemberInfoEntity {
    	   private String  establishments;						//经营场所 
    	   private String  companyAddress;						//注册地址
    	   private int     workYear;							//工作年限
+   	   private String  memberNo;							//会员编号
+   	   private String  personalIdCard;						//身份证号
+   	   private String  companyeBLN;						    //营业执照号
+   	   private String  contactName;						        //联系人
 	
-   	public long getMemberID() {
+   	public String getMemberNo() {
+		return memberNo;
+	}
+	public void setMemberNo(String memberNo) {
+		this.memberNo = memberNo;
+	}
+	public long getMemberID() {
 		return memberID;
 	}
 	public void setMemberID(long memberID) {
@@ -201,6 +211,24 @@ public class LoanMemberInfoEntity {
 	}
 	public void setWorkYear(int workYear) {
 		this.workYear = workYear;
+	}
+	public String getPersonalIdCard() {
+		return personalIdCard;
+	}
+	public void setPersonalIdCard(String personalIdCard) {
+		this.personalIdCard = personalIdCard;
+	}
+	public String getCompanyeBLN() {
+		return companyeBLN;
+	}
+	public void setCompanyeBLN(String companyeBLN) {
+		this.companyeBLN = companyeBLN;
+	}
+	public String getContactName() {
+		return contactName;
+	}
+	public void setContactName(String contactName) {
+		this.contactName = contactName;
 	}
 
 }

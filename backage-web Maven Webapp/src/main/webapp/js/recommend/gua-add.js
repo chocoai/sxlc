@@ -24,7 +24,7 @@ function addguarant() {
 	
 	$.ajax({
 		type : 'post',
-		url :　appPath + "/guarant/save.do",
+		url : appPath + "/guarant/save.do",
 		data : {
 			guaranteeName : guaranteeName,
 			companyeBLN : companyeBLN,
@@ -45,10 +45,16 @@ function addguarant() {
 			types : types
 			},
 		success : function (data) {
-			if (data == 1) {
+			if (data == 0) {
 				layer.alert("添加成功",{icon:1});  
 				document.getElementById("manageAdd").reset();
 				setTimeout('location.reload()',2000);
+			}else if (data == -1) {
+				layer.alert("担保机构名称存在",{icon:2});
+				document.getElementById("manageAdd").reset();
+			}else if (data == -2) {
+				layer.alert("营业执照号已存在",{icon:2});
+				document.getElementById("manageAdd").reset();
 			}else {
 				layer.alert("服务器异常",{icon:2});
 				document.getElementById("manageAdd").reset();

@@ -76,7 +76,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span>当期合约还款时间</span><input type="text" id="cstartDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="cendDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
 								</span>
 								<span class="">
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</span>
 						</form>
 					</div>

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
 
+import cn.springmvc.model.AccountEscrowInterfaceEntity;
 import cn.springmvc.model.MailHistoryEntity;
 import cn.springmvc.model.MailSettingsEntity;
 import cn.springmvc.model.MessageTypeEntity;
@@ -173,5 +174,17 @@ public interface SelectChannelSetDao {
 	* @throws 
 	*/
 	public List<SendHistoryEntity> SendHistory(PageEntity pageEntity);
+	
+
+	/**
+	 *  查询托管平台接口类型表 
+	 * TODO
+	 * 创建日期：2016-5-13上午10:46:01
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return List<AccountEscrowInterfaceEntity>
+	 */
+	public List<AccountEscrowInterfaceEntity> TypeAccountInterface();
 }
 

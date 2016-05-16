@@ -23,10 +23,12 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import cn.springmvc.dao.GenerateRepayListDao;
 import cn.springmvc.dao.ReplayProjectDetailListDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.model.CreditorTransBaseEntity;
 import cn.springmvc.model.LoanRepayEntitys;
 import cn.springmvc.model.ProjectBaseInfoEntitys;
 import cn.springmvc.model.ProjectDetailEntity;
@@ -127,7 +129,67 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 		}
 		for(int i=0;i<iSize;i++){
 			repayEntity = planList.get(i);
+			lResult = lResult + IntegerAndString.StringToLong(repayEntity.getInterest());			// repayEntity.getsDRepayInterest();
+		}
+		
+		return lResult;
+		
+	}
+
+	@Override
+	public long CreditorTransForecastIncome(long lProId, long lInvestAmount) {
+		
+		long lResult = 0;
+		
+		CreditorTransBaseEntity entity = replayProjectDetailListDao.selectCreditorTransInfoById(lProId);
+		if(entity == null){
+			return lResult;
+		}
+		int iDealType = entity.getiSurplusType();
+		long[] iResult = {0,0};
+		Date dNow = new Date();
+		TimestampAndString.getDateSubMonthDay(dNow, entity.getTtEndDate(), iResult, iDealType);
+		
+		//3:年、2:月、1:日	 0：天标 1：月标 2：年标
+		int deadLineType = entity.getiSurplusType() + 1;	 
+		//借款金额
+		String amounts = IntegerAndString.LongToString2(lInvestAmount); //entity.getAmounts();
+		//年化利率
+		String yearrates = IntegerAndString.LongToString2(entity.getiYearRate());
+		//借款期限
+		int  deadline = (int)iResult[0];
+		//还款方式
+		int replayway = entity.getsRepayWay();
+		SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+		String presentDate3 = sdf3.format(new Date());//获取当前系统时间
+		List<LoanRepayEntitys> planList = RepalyUtitls.getIncomePlan2(deadLineType,amounts,yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
+		
+		int iSize = 0;
+		LoanRepayEntitys repayEntity = null;
+		if(planList!=null){
+			iSize = planList.size();
+		}
+		for(int i=0;i<iSize;i++){
+			repayEntity = planList.get(i);
 			lResult = lResult + repayEntity.getsDRepayInterest();
+		}
+		
+		if(iResult[1]>0){
+			//3:年、2:月、1:日	 0：天标 1：月标 2：年标
+			deadLineType = entity.getiSurplusType();	 
+			//借款期限
+			deadline = (int)iResult[1];
+			planList = RepalyUtitls.getIncomePlan2(deadLineType,amounts,yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
+					
+			iSize = 0;
+			repayEntity = null;
+			if(planList!=null){
+				iSize = planList.size();
+			}
+			for(int i=0;i<iSize;i++){
+				repayEntity = planList.get(i);
+				lResult = lResult + repayEntity.getsDRepayInterest();
+			}
 		}
 		
 		return lResult;

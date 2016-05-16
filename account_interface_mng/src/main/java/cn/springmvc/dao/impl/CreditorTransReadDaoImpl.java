@@ -1,5 +1,15 @@
 package cn.springmvc.dao.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import product_p2p.kit.datatrans.IntegerAndString;
 import cn.springmvc.dao.CreditorTransReadDao;
 import cn.sxlc.account.manager.model.InvestAccountFeeEntity;
 import cn.sxlc.account.manager.model.LoanInfoBeanSubmit;
@@ -7,16 +17,6 @@ import cn.sxlc.account.manager.model.LoanInfoSecondaryBean;
 import cn.sxlc.account.manager.model.TransferSubmitEntity;
 import cn.sxlc.account.manager.utils.InterfaceConstant;
 import cn.sxlc.account.manager.utils.InterfaceUtil;
-
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import product_p2p.kit.datatrans.IntegerAndString;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by yonghuang on 16/4/14.

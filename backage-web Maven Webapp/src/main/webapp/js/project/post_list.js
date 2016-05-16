@@ -116,18 +116,44 @@ $(function(){
 
 
 $(function(){
-	
 //	拒绝
 	$('#refuse').click(function(){
+		var rdata = $('#table_id').DataTable().rows('.selected').data();
+		if(rdata.length<1){
+			layer.alert("请选择项目！",{icon:0});
+			return;
+		}
 		layer.confirm('你确定要拒绝吗？', {
 			  btn: ['确定','取消'] //按钮
 			},function(){
-				layer.msg('你选择了拒绝');
+				var data={};
+				var applyId = rdata[0].applyId;//申请ID
+				data.applyId =  encrypt.encrypt(applyId);
+				
+				$.ajax( {  
+					url:appPath+"/project/refuseProBorrow",
+					data: data,  
+					type:'post',  
+					cache:false,  
+					dataType:'json',  
+					success:function(data) { 
+						if(data > 0){
+							layer.alert("操作成功!",{icon:1});  
+							var table = $('#table_id').DataTable();
+							table.ajax.reload();
+						}else if(data == 0){
+							layer.alert("未找到项目!",{icon:2});  
+						}
+					},  
+					error : function() {  
+						layer.alert("服务器异常!",{icon:2});  
+					}  
+				});
+				
 			});
 	});
 //	项目借款结束日期延长
 	$('#end_time_along').click(function(){
-		
 		var rdata = $('#table_id').DataTable().rows('.selected').data();
 		if(rdata.length<1){
 			layer.alert("请选择项目！",{icon:0});
@@ -135,20 +161,23 @@ $(function(){
 		}
 		layer.open({
 		    type: 1,
-		    area: ['400px', '230px'], //高宽
+		    area: ['500px', '240px'], //宽高
 		    title: "项目借款结束日期延长",
-		    content: $(".assignment_late"),//DOM或内容
-		    btn:['确定', '取消']
+		    content: $(".extendTime"),//DOM或内容
+		    btn:['确认延长', '取消']
 			  ,yes: function(index, layero){ //或者使用btn1
 			    //确定的回调
 				  var data={};
-				  var ctaId = rdata[0].ctaId;//债权转让申请ID
-				  var transMaxTime = $("#transMaxTime").val();//最迟转让时间
-				  data.transMaxTime = encrypt.encrypt(transMaxTime);
-				  data.ctaId =  encrypt.encrypt(ctaId);
-
+				  var applyId = rdata[0].applyId;//申请ID
+				  var endDate = $("#modify_endTime").val();
+				  if(endDate=="" || endDate == null){
+					  layer.alert("请选择日期！",{icon:0});  
+					  return;
+				  }
+				  data.endDate = encrypt.encrypt(endDate);
+				  data.applyId =  encrypt.encrypt(applyId);
 				  $.ajax( {  
-					  url:appPath+"/project/updateTransMaxTime",
+					  url:appPath+"/project/updateEndtime",
 					  data: data,  
 					  type:'post',  
 					  cache:false,  
@@ -156,8 +185,10 @@ $(function(){
 					  success:function(data) { 
 						  if(data > 0){
 							  layer.alert("操作成功!",{icon:1});  
+							  var table = $('#table_id').DataTable();
+							  table.ajax.reload();
 						  }else if(data == 0){
-							  layer.alert("未找到要延迟的项目!",{icon:2});  
+							  layer.alert("未找到项目!",{icon:2});  
 						  }
 					  },  
 					  error : function() {  
@@ -169,16 +200,6 @@ $(function(){
 			  }
 		});
 		
-	});
-		
-		
-//		layer.open({
-//			type: 1,
-//			title:'项目借款结束日期延长',
-//			skin: 'layui-layer-rim', //加上边框
-//			area: ['500px', '240px'], //宽高
-//    		content: $('.extendTime')
-//    	});
 	});
 });
 /******查看借款项目详情*******/
@@ -193,6 +214,12 @@ function view_detail(){
 }
 /******发布*******/
 function proPost(){
-	window.location.href=appPath+"/project/toLoanProPostPg";
+	var data = $('#table_id').DataTable().rows('.selected').data(); 
+	if(data.length<1){
+			layer.alert("请选择项目！",{icon:0});
+			return;
+	}
+	var applyId = data[0].applyId;//Project_App_Record 表Apply_Id
+	window.location.href=appPath+"/project/toLoanProPostPg?content="+applyId+"&start="+$("#pushIndex").val();
 }
 

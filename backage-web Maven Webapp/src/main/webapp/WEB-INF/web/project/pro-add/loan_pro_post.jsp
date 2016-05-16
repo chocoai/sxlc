@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
@@ -48,58 +50,94 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="infoDisplay">
 										<fieldset>
 											<legend>项目基本信息</legend>
+											<input type="hidden" id="applyId" value="${proRecord.applyId}">
+											<input type="hidden" id="Indexsnow" value="${Indexsnow}">
 											<table>
 												<tr class="col-md-4">
 													<td class="tt"><label>借款项目名称：</label></td>
-													<td class="con">借款项目名称</td>
+													<td class="con">${proRecord.projectBaseInfoentity.projectTitle}</td>
 												</tr>	
 												<tr class="col-md-4">
 													<td class="tt"><label>借款金额：</label></td>
-													<td class="con">借款金额</td>
+													<td class="con">${proRecord.projectBaseInfoentity.amount}</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>还款方式：</label></td>
-													<td class="con">还款方式</td>
+													<td class="con">
+														<c:if test="${proRecord.projectBaseInfoentity.repayWay == 0}">
+															  等额本息
+														</c:if>														
+														<c:if test="${proRecord.projectBaseInfoentity.repayWay == 1}">
+															  每月还息，到期还本
+														</c:if>														
+														<c:if test="${proRecord.projectBaseInfoentity.repayWay == 2}">
+															  到期还息本
+														</c:if>														
+														<c:if test="${proRecord.projectBaseInfoentity.repayWay == 3}">
+															  等额本金	
+														</c:if>														
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>还款保障：</label></td>
-													<td class="con">还款保障</td>
+													<td class="con">${proRecord.repayGuarantee}</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>借款用途：</label></td>
-													<td class="con">借款用途</td>
+													<td class="con">${proRecord.projectBaseInfoentity.uses}</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>还款来源：</label></td>
-													<td class="con">还款来源</td>
+													<td class="con">${proRecord.projectBaseInfoentity.repaySource}</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>借款期限：</label></td>
-													<td class="con">借款期限</td>
+													<td class="con">
+														<span>${proRecord.projectBaseInfoentity.deadline}</span>
+														<c:if test="${proRecord.projectBaseInfoentity.deadlineType == 0}">
+															 天
+														</c:if>		
+														<c:if test="${proRecord.projectBaseInfoentity.deadlineType == 1}">
+															 月
+														</c:if>		
+														<c:if test="${proRecord.projectBaseInfoentity.deadlineType == 2}">
+															 年
+														</c:if>		
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>最大投资比例：</label></td>
-													<td class="con">设置最大投资比例</td>
+													<td class="con">${proRecord.investMax}<span>%</span>
+													</td>
+													
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>年化利率：</label></td>
-													<td class="con">年化利率</td>
+													<td class="con">${proRecord.projectBaseInfoentity.yearRates}
+													<span>%</span>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>起投金额：</label></td>
-													<td class="con">起投金额</td>
+													<td class="con">${proRecord.minStart}
+														<span>元</span>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>加价幅度：</label></td>
-													<td class="con">加价幅度</td>
+													<td class="con">${proRecord.increaseRange}
+														<span>元</span>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>投资上限：</label></td>
-													<td class="con">投资上限</td>
+													<td class="con">${proRecord.investMax}
+														<span>%</span>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>项目描述：</label></td>
-													<td class="con">项目描述</td>
+													<td class="con">${proRecord.projectTypeentity.projectDescript}</td>
 												</tr>
 												<tr class="col-md-7 col-md-offset-5">	
 													<td class="tt">
@@ -112,59 +150,101 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<!-- 信息修改模块开始 -->
 									<div class="infoMod" style="display:none">
 										<fieldset>
-											<legend>项目基本信息修改</legend>
+										  <legend>项目基本信息修改</legend>
+										   <form id="modInfo" action="javascript:nextSave();" method="post">	
 											<table>
 												<tr class="col-md-4">
 													<td class="tt"><label>借款项目名称：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<input type="text" id="projectTitle" class="enterN-r"  value="${proRecord.projectBaseInfoentity.projectTitle}" datatype="enterNameR" maxlength="16">
+													</td>
 												</tr>	
 												<tr class="col-md-4">
 													<td class="tt"><label>借款金额：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<input type="text" id="amount" class="loanMoney numberReg" value="${proRecord.projectBaseInfoentity.amount}" datatype="amcountM" maxlength="8">
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>还款方式：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<select id="repayWay" class="repayWay" value="${proRecord.projectBaseInfoentity.repayWay}">
+															<option value="3" >等额本金</option>
+															<option value="0" >等额本息</option>
+															<option value="1" >每月还息，到期还本</option>
+															<option value="2" >到期还本息</option>
+														</select>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>还款保障：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<textarea cols="20" rows="3" name="" id="RepayGuarantee"  maxlength="125">${proRecord.repayGuarantee}</textarea>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>借款用途：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<textarea cols="20" rows="3" name=""  id="uses" maxlength="125">${proRecord.projectBaseInfoentity.uses}</textarea>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>还款来源：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<input type="text" id="repaySource" value="${proRecord.projectBaseInfoentity.repaySource}" >
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>借款期限：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+													<input type="text" id="deadline" class="con-term numberReg" value="${proRecord.projectBaseInfoentity.deadline}" datatype="nNum0" maxlength="6">
+													<select class="conT" id="deadlineType" value="${proRecord.projectBaseInfoentity.deadlineType}">
+														<option value="0">天</option>
+														<option value="1">月</option> 
+														<option value="2">年</option>
+													</select>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>最大投资比例：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+													<input type="text" id="investMax" class="con-PP numberReg" value="${proRecord.investMax}" datatype="hundredNum" maxlength="3">
+													<span>%</span>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>年化利率：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<input type="text"  id="yearRate" class="startTY numberReg" value="${proRecord.projectBaseInfoentity.yearRates}" datatype="hundredNum" maxlength="3">
+														<span>%</span>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>起投金额：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<input type="text" id="minStart" class="startingIA numberReg" value="${proRecord.minStart}" datatype="amcountM" maxlength="8">
+														<span>元</span>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>加价幅度：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<input type="text" id="increaseRange" class="conIncrease numberReg" value="${proRecord.increaseRange}" datatype="amcountM" maxlength="8">
+														<span>元</span>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>投资上限：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<input type="text" id="investMax" class="con-PP numberReg" value="${proRecord.investMax}" datatype="hundredNum" maxlength="3">
+														<span>%</span>
+													</td>
 												</tr>
 												<tr class="col-md-4">
 													<td class="tt"><label>项目描述：</label></td>
-													<td class="con"><input type="text"></td>
+													<td class="con">
+														<textarea cols="20" rows="3" name=""  id="projectDescript" maxlength="200">${proRecord.projectTypeentity.projectDescript}</textarea>
+													</td>
 												</tr>
 												<tr class="col-md-7 col-md-offset-5">
 													<td class="tt">
@@ -173,95 +253,100 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 													</td>
 												</tr>
 											</table>
+											</form>
 										</fieldset>
 									</div><!-- 信息修改模块结束 -->
 									<!-- 认证展示模块 -->
-									<fieldset class="person" style="display:block"><!-- 个人信息 -->
-										<legend>会员基本信息</legend>
-										<div class="w-content ishow">
-											<table>
-												<tr class="col-md-3">
-													<td class="tt"><label>会员编号：</label></td>
-													<td class="con">012304</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>会员用户名：</label></td>
-													<td class="con">会员用户名</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>真实姓名：</label></td>
-													<td class="con">真实姓名</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>身份证号：</label></td>
-													<td class="con">748590339285559401</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>手机号码：</label></td>
-													<td class="con">18454845847</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>最高学历：</label></td>
-													<td class="con">本科</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>婚姻状况：</label></td>
-													<td class="con">已婚</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>地区：</label></td>
-													<td class="con">北京</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>月均收入：</label></td>
-													<td class="con">10000<span>元</span></td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>注册时间：</label></td>
-													<td class="con">2016-4-20</td>
-												</tr>
-											</table>
-										</div>
-									</fieldset>
-									<fieldset class="enterprise" style="display:none"><!-- 企业信息 -->
-										<legend>会员基本信息</legend>
-										<div class="w-content ishow">
-											<table>
-												<tr class="col-md-3">
-													<td class="tt"><label>会员编号：</label></td>
-													<td class="con">0231322</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>会员用户名：</label></td>
-													<td class="con">会员用户名</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>企业名称：</label></td>
-													<td class="con">企业名称</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>营业执照号：</label></td>
-													<td class="con">0231322</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>联系人：</label></td>
-													<td class="con">哈哈</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>联系人手机号：</label></td>
-													<td class="con">18454845847</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>地区：</label></td>
-													<td class="con">北极</td>
-												</tr>
-												<tr class="col-md-3">
-													<td class="tt"><label>注册时间：</label></td>
-													<td class="con">2016-04-27</td>
-												</tr>
-											</table>
-										</div>
-									</fieldset><!-- 认证展示模块结束 -->
+									<c:if test="${memberInfo.memberType == 0}">
+										<fieldset class="person" style="display:block"><!-- 个人信息 -->
+											<legend>会员基本信息</legend>
+											<div class="w-content ishow">
+												<table>
+													<tr class="col-md-3">
+														<td class="tt"><label>会员编号：</label></td>
+														<td class="con">${memberInfo.memberNo}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>会员用户名：</label></td>
+														<td class="con">${memberInfo.logname}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>真实姓名：</label></td>
+														<td class="con">${memberInfo.personalName}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>身份证号：</label></td>
+														<td class="con">${memberInfo.personalIdCard}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>手机号码：</label></td>
+														<td class="con">${memberInfo.personalPhone}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>最高学历：</label></td>
+														<td class="con">${memberInfo.educationName}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>婚姻状况：</label></td>
+														<td class="con">${memberInfo.maritalName}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>地区：</label></td>
+														<td class="con">${memberInfo.provinceName}${memberInfo.cityName}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>月均收入：</label></td>
+														<td class="con">${memberInfo.monthlyIncome}<span>元</span></td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>注册时间：</label></td>
+														<td class="con">${memberInfo.regDate}</td>
+													</tr>
+												</table>
+											</div>
+										</fieldset>
+									</c:if>	
+									<c:if test="${memberInfo.memberType == 1}">
+										<fieldset class="enterprise" style="display:none"><!-- 企业信息 -->
+											<legend>会员基本信息</legend>
+											<div class="w-content ishow">
+												<table>
+													<tr class="col-md-3">
+														<td class="tt"><label>会员编号：</label></td>
+														<td class="con">${memberInfo.memberNo}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>会员用户名：</label></td>
+														<td class="con">${memberInfo.logname}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>企业名称：</label></td>
+														<td class="con">${memberInfo.personalName}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>营业执照号：</label></td>
+														<td class="con">${memberInfo.companyeBLN}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>联系人：</label></td>
+														<td class="con">${memberInfo.contactName}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>联系人手机号：</label></td>
+														<td class="con">${memberInfo.personalPhone}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>地区：</label></td>
+														<td class="con">${memberInfo.provinceName}${memberInfo.cityName}</td>
+													</tr>
+													<tr class="col-md-3">
+														<td class="tt"><label>注册时间：</label></td>
+														<td class="con">${memberInfo.regDate}</td>
+													</tr>
+												</table>
+											</div>
+										</fieldset><!-- 认证展示模块结束 -->
+									</c:if>	
 									<!-- 信用统计模块 -->
 									<fieldset>
 										<legend>借款信用统计</legend>
@@ -269,31 +354,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<table>
 												<tr class="col-md-3">
 													<td class="tt"><label>成功借款：</label></td>
-													<td class="con">10<span>笔</span></td>
+													<td class="con">${credit.successLoan}<span>笔</span></td>
 												</tr>
 												<tr class="col-md-3">
 													<td class="tt"><label>成功还款：</label></td>
-													<td class="con">10<span>笔</span></td>
+													<td class="con">${credit.successReplay}<span>笔</span></td>
 												</tr>
 												<tr class="col-md-3">
 													<td class="tt"><label>成功投资：</label></td>
-													<td class="con">10<span>笔</span></td>
+													<td class="con">${credit.successInvest}<span>笔</span></td>
 												</tr>
 												<tr class="col-md-3">
 													<td class="tt"><label>逾期还款：</label></td>
-													<td class="con">10<span>笔</span></td>
+													<td class="con">${credit.overReplay}<span>笔</span></td>
 												</tr>
 												<tr class="col-md-3">
 													<td class="tt"><label>严重逾期还款：</label></td>
-													<td class="con">10<span>笔</span></td>
+													<td class="con">${credit.overlimitReplay}<span>笔</span></td>
 												</tr>
 												<tr class="col-md-3">
 													<td class="tt"><label>逾期未还款：</label></td>
-													<td class="con">10<span>笔</span></td>
+													<td class="con">${credit.overnotreplay}<span>笔</span></td>
 												</tr>
 												<tr class="col-md-3">
 													<td class="tt"><label>提前还款：</label></td>
-													<td class="con">10<span>笔</span></td>
+													<td class="con">${credit.successAdvance}<span>笔</span></td>
 												</tr>
 											</table>
 										</div>
@@ -305,27 +390,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<table>
 												<tr class="col-md-3">
 													<td class="tt"><label>成功投资笔数：</label></td>
-													<td class="con">10<span>笔</span></td>
+													<td class="con">${invest.successInvest}<span>笔</span></td>
 												</tr>
 												<tr class="col-md-3">
-													<td class="tt"><label>成功投资笔数：</label></td>
-													<td class="con">100<span>元</span></td>
+													<td class="tt"><label>成功投资金额：</label></td>
+													<td class="con">${invest.successInvestAmount}<span>元</span></td>
 												</tr>
 												<tr class="col-md-3">
-													<td class="tt"><label>成功投资笔数：</label></td>
-													<td class="con">100<span>元</span></td>
+													<td class="tt"><label>累计已收本金：</label></td>
+													<td class="con">${invest.successRecvPrincipalTotal}<span>元</span></td>
 												</tr>
 												<tr class="col-md-3">
 													<td class="tt"><label>累计已收收益：</label></td>
-													<td class="con">100<span>元</span></td>
+													<td class="con">${invest.incomeTotal}<span>元</span></td>
 												</tr>
 												<tr class="col-md-3">
 													<td class="tt"><label>待收本金：</label></td>
-													<td class="con">100<span>元</span></td>
+													<td class="con">${invest.notSDRecvPrincipal}<span>元</span></td>
 												</tr>
 												<tr class="col-md-3">
 													<td class="tt"><label>待收收益：</label></td>
-													<td class="con">100<span>元</span></td>
+													<td class="con">${invest.notSDRecvInterest}<span>元</span></td>
 												</tr>
 											</table>
 										</div>
@@ -336,22 +421,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<div class="w-content ishow">
 											<table>
 												<tr>
-													<td class="tt"><a>实名认证</a></td>
-													<td class="tt"><a>手机认证</a></td>
-													<td class="tt"><a>征信认证</a></td>
-													<td class="tt"><a>住址认证</a></td>
-													<td class="tt"><a>婚姻认证</a></td>
-													<td class="tt"><a>工作认证</a></td>
-													<td class="tt"><a>学历认证</a></td>
-													<td class="tt"><a>股权认证</a></td>
-												</tr>
-												<tr>
-													<td class="tt"><a>职称认证</a></td>
-													<td class="tt"><a>社保认证</a></td>
-													<td class="tt"><a>房产认证</a></td>
-													<td class="tt"><a>车产认证</a></td>
-													<td class="tt"><a>银行流水认证</a></td>
-													<td class="tt"><a>其它</a></td>
+												<c:forEach var="item" items="${authentication}" varStatus="status">
+													  <c:if test="${status.count%9 != 0}"><!--一行展示8条 -->
+													  	<td class="tt"><a src="${item.attestTypeID}">${item.attestTypeName}</a></td>
+													  </c:if>
+													  <c:if test="${status.count%9 == 0}"><!--换行 -->
+														  </tr>
+														  <tr>
+														  <td class="tt"><a src="${item.attestTypeID}">${item.attestTypeName}</a></td>
+													  </c:if>
+												</c:forEach>
 												</tr>
 											</table>
 										</div>
@@ -387,8 +466,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<legend>项目申请附件信息</legend>
 											<table>
 												<tr>
-													<td class="applayImg"><div><img src="resources/img/business license.jpg"></div><span>附件图片</span></td>
-													<td class="applayImg"><div><img src="resources/img/scale.jpg.bmp"></div><span>附件压缩包</span></td>
+													<td class="applayImg">
+														<c:forEach var="item" items="${attaches}">
+															<div>
+																<img src="${hostPath}${item.attachUrl}">
+															</div>
+															<span>${item.attachTitle}</span>
+														</c:forEach>
+													</td>
 												</tr>
 											</table>
 										</fieldset>
@@ -400,9 +485,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<!-- tab切换 -->
 				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="javascript:;">历史审核记录</a></li>
-					<li role="presentation"><a href="javascript:;">历史审核附件</a></li>
-					<li role="presentation"><a href="javascript:;">附件删除记录</a></li>
+					<li role="presentation" class="active"><a href="javascript:void(0);">历史审核记录</a></li>
+					<li role="presentation"><a href="javascript:void(0);">历史审核附件</a></li>
+					<li role="presentation"><a href="javascript:void(0);">附件删除记录</a></li>
 				</ul>
 				<!-- 第一页基本信息结束 -->
 				<!-- 审核记录审核附件删除记录 -->
@@ -411,28 +496,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-body">
 								<table id="table_history_record" class="display">
-									<thead>
-										<tr>
-											<th></th>
-							                <th>审核管理员名称</th>
-							                <th>审核点</th>
-							                <th>审核时间</th>
-							                <th>审核状态</th>
-							                <th>审核意见</th>			                
-							            </tr>
-							        </thead>
-							        <tbody>
-							        <%for (int i = 0; i < 15; i++) {%>
-							        	<tr>
-							        		<td><input type="checkbox"></td>
-							        		<td>管理员名称</td>
-							                <td>审核点</td>
-							                <td>2016-04-26</td>
-							                <td>同意</td>
-							                <td>意见</td>
-							            </tr>
-									<%}%>
-							       	</tbody>
 							    </table>
 						    </div>
 						</div>
@@ -443,33 +506,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 						    <div class="panel-body">
 								<table id="table_history_enclosure" class="display">
-									<thead>
-										<tr>
-											<th></th>
-							                <th>附件名称</th>
-							                <th>上传审核点</th>
-							                <th>上传审核管理员名称</th>
-							                <th>上传时间</th>
-							                <th>备注</th>
-							                <th>操作</th>			                
-							            </tr>
-							        </thead>
-							        <tbody>
-							        <%for (int i = 0; i < 15; i++) {%>
-							        	<tr>
-							        		<td><input type="checkbox"></td>
-							        		<td>附件名称</td>
-							                <td>上传审核点</td>
-							                <td>管理员名称</td>
-							                <td>2016-04-26</td>
-							                <td>备注</td>
-							                <td>
-							                	<a href="javascript:;" class="btn-delete" onclick="del()">删除</a>
-							                	<a href="javascript:;" class="btn-delete" onclick="down()">下载</a>
-											</td>
-							            </tr>
-									<%}%>
-							       	</tbody>
 							    </table>
 						    </div>
 						</div>
@@ -480,38 +516,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-body">
 								<table id="table_history_del" class="display">
-									<thead>
-										<tr>
-											<th></th>
-							                <th>附件名称</th>
-							                <th>上传审核点</th>
-							                <th>操作删除管理员名称</th>
-							                <th>删除时间</th>
-							                <th>备注</th>
-							            </tr>
-							        </thead>
-							        <tbody>
-							        <%for (int i = 0; i < 15; i++) {%>
-							        	<tr>
-							        		<td><input type="checkbox"></td>
-							        		<td>附件名称</td>
-							                <td>上传审核点</td>
-							                <td>管理员名称</td>
-							                <td>2016-04-26</td>
-							                <td>备注</td>
-							            </tr>
-									<%}%>
-							       	</tbody>
 						    	</table>
 						    </div>
 						</div>
 					</div>
 				</div>
 				<!-- 审核记录审核附件删除记录结束 -->
-				<fieldset class="uploadEnclosure">
+				
+				<!--项目发布操作---开始  -->
+				<fieldset class="uploadEnclosure postDiv">
 					<legend>上传项目图片</legend>
 					<table>
 						<tr>
+							<input type="hidden" id="ImageUrl">
 							<td class="tt">上传项目形象图片：</td>
 							<td class="con">
 								<!--dom结构部分-->
@@ -526,7 +543,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td class="con" id="fileList"></td>
 						</tr>
 						<tr>
-							<td class="tt">上传项目前台显示图片：</td>
+							<input type="hidden" id="affix">
+							<td class="tt" valign="top">项目前台显示图片名称：</td>
+							<td class="con" >
+								<input type="text" id="fileName">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt"></td>
 							<td class="con">
 								<!--dom结构部分-->
 								<div >
@@ -545,17 +569,73 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</tr>
 					</table>
 					<div class="preserveBtn">
-						<button class="btn btn-success btnPreserve">发布</button>
-						<button class="btn btn-default btnCancel">取消</button>
+						<button class="btn btn-success postBtn">发布</button>
+						<button class="btn btn-default cancleAndReturn">取消</button>
 					</div>
 				</fieldset>
+				<!--项目发布操作---结束  -->
+				<!--项目审核操作---开始  -->
+				<fieldset class="uploadEnclosure chkDiv">
+					<legend>上传项目审核附件信息</legend>
+					<table>
+						<tr class="col-lg-6 col-md-6">
+							<td class="tt"><label>附件名称：</label></td>
+							<td class="con"><input type="text"></td>
+						</tr>	
+						<tr class="col-lg-6 col-md-6">
+							<td class="tt"><label>附件备注：</label></td>
+							<td class="con"><input type="text"></td>
+						</tr>
+						<tr class="col-lg-12 col-md-12">
+							<td class="tt">上传附件：</td>
+							<td class="con">
+								<!--dom结构部分-->
+								<div id="uploader">
+								    <!--用来存放item-->
+								    <div id="filePicker">图片选择</div>
+								</div>
+							</td>
+						</tr>
+						<tr class="col-lg-12 col-md-12">
+							<td class="tt" valign="top"></td>
+							<td class="con" id="fileList"></td>
+						</tr>
+						<tr class="col-lg-12 col-md-12 buttonS">
+							<td class="ts">
+								<button class="btn btn-success btnPreserve">提交</button>
+								<button class="btn btn-default btnCancel">重置</button>
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset class="uploadEnclosure chkDiv">
+					<table>
+						<tr class="col-md-12">
+							<td class="tt"><label>选择审核结果：</label></td>
+							<td class="con">
+								<select class="auditResult">
+									<option>同意</option>
+									<option>驳回</option>
+									<option>借款项目终止</option>
+								</select>
+							</td>
+						</tr>
+						<tr class="col-md-12">
+							<td class="tt"><label>填写审核意见：</label></td>
+							<td class="con">
+								<textarea rows="5" cols="80"></textarea>
+							</td>
+						</tr>
+					</table>		
+				</fieldset>	
+				<!--项目审核操作---结束  -->
 			</div>
 		</div>
 		<!-- 公用js -->
 		<jsp:include page="../../common/cm-js.jsp"></jsp:include>
 		<!-- 私用js -->
-		<script src="js/project/post_list.js"></script>
-		<script type="text/javascript" src="js/project/loan_pro_exam.js"></script>
+<!-- 		<script src="js/project/post_list.js"></script> -->
+<!-- 		<script type="text/javascript" src="js/project/loan_pro_exam.js"></script> -->
 		<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 		<script type="text/javascript" src="js/project/loan_pro_post.js"></script>
 	</div>

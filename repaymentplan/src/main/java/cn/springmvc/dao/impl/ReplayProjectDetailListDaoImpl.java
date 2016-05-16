@@ -22,6 +22,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
  
 import cn.springmvc.dao.ReplayProjectDetailListDao;  
+import cn.springmvc.model.CreditorTransBaseEntity;
 import cn.springmvc.model.ProjectBaseInfoEntitys;
 import cn.springmvc.model.ProjectDetailEntity;
 
@@ -54,6 +55,17 @@ public class ReplayProjectDetailListDaoImpl extends SqlSessionDaoSupport impleme
 		param.put("id", lId);
 		entity = getSqlSession().selectOne("GenerateRepay.selectProjectBaseInfo", param);
 		return entity;
+	}
+
+	@Override
+	public CreditorTransBaseEntity selectCreditorTransInfoById(long lId) {
+		
+		CreditorTransBaseEntity entity = null;
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("id", lId);
+		entity = getSqlSession().selectOne("GenerateRepay.selectCreditorTransBaseInfo", param);
+		return entity;
+		
 	}
 }
 

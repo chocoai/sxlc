@@ -151,13 +151,19 @@ $(function(){
 	validform5("layui-layer-btn0","saveNotice",true,"3");
 	//查看审批记录
 	$('#loan_exam_record').on('click', function(){
+		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		if(data.length<1){
+				layer.alert("请选择要查看的项目！",{icon:0});
+				return;
+		}
+		var applyid = data[0].applyid;
 	    layer.open({
 	        type: 2,
 	        title: '查看审批记录',
 	        maxmin: true,
 	        shadeClose: true, //点击遮罩关闭层
 	        area : ['800px' , '520px'],
-	        content: appPath+'/project/toCheckRecordPg'
+	        content: appPath+'/project/toCheckRecordPg?content='+applyid
 	    });
 	});
 	//拒绝借款

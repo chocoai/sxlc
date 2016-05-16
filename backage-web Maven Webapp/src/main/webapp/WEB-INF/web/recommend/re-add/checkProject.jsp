@@ -55,7 +55,7 @@ String content = request.getParameter("content");
 									</select>
 								</span>
 								<span class="statebtn">
-									<button class="obtn obtn-query glyphicon glyphicon-search inquiryBtn">查询</button>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search inquiryBtn">查询</button>
 								</span>
 							</div>
 						</form>

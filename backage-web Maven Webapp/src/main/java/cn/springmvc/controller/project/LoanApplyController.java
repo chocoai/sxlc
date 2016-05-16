@@ -313,6 +313,8 @@ public class LoanApplyController {
 	 */
 	@RequestMapping("/toCheckRecordPg")
 	public String toCheckRecordPg(HttpServletRequest req){
+		String applyId= req.getParameter("content");
+		req.setAttribute("applyId", applyId);
 		return "project/pro-add/loan_exam_record";
 	}
 	
@@ -330,9 +332,11 @@ public class LoanApplyController {
 		//获取解密后参数
 		int start = Integer.parseInt(req.getParameter("start"));
 		int length = Integer.parseInt(req.getParameter("length"));
+		String applyId = req.getParameter("content");
 		//设置查询参数
 		PageEntity pager = new PageEntity();
 		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("applyId", applyId);
 		pager.setMap(param);
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
@@ -387,20 +391,20 @@ public class LoanApplyController {
 	 * @date 2016-5-5 下午2:06:19
 	 * @throws 
 	 */
-	@RequestMapping("/toBorrowDetail")
-	public String toBorrowDetail(HttpServletRequest req){
-		//查询借款信息
-		Map<String,Object> param=new HashMap<String,Object>();
-		String id = req.getParameter("id");
-		param.put("id", id);
-		ProjectPurposeEntity proPurpose = projectAppRecordService.selectProjectPurposeById(param);
-		req.setAttribute("proPurpose", proPurpose);
-		//查询项目详情
-		Long applyid = Long.parseLong(req.getParameter("applyid"));
-		ProjectAppRecordEntity proRecord = projectAuitService.selectProjectDetailByID(applyid);
-		req.setAttribute("proRecord", proRecord);
-		return "project/pro-add/loan_pro_detail";
-	}
+//	@RequestMapping("/toBorrowDetail")
+//	public String toBorrowDetail(HttpServletRequest req){
+//		//查询借款信息
+//		Map<String,Object> param=new HashMap<String,Object>();
+//		String id = req.getParameter("id");
+//		param.put("id", id);
+//		ProjectPurposeEntity proPurpose = projectAppRecordService.selectProjectPurposeById(param);
+//		req.setAttribute("proPurpose", proPurpose);
+//		//查询项目详情
+//		Long applyid = Long.parseLong(req.getParameter("applyid"));
+//		ProjectAppRecordEntity proRecord = projectAuitService.selectProjectDetailByID(applyid);
+//		req.setAttribute("proRecord", proRecord);
+//		return "project/pro-add/loan_pro_detail";
+//	}
 	
 	
 	/** 

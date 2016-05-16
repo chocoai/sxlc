@@ -15,6 +15,15 @@ public class ThreeInterfaceEntity {
 	private String interfaceUrl;//接口请求URL
 	private String escrowName;//托管平台名称
 	private String interfaceName;//接口类型名称
+	
+	private int   statu;//状态   1有效 0 无效
+	
+	public int getStatu() {
+		return statu;
+	}
+	public void setStatu(int statu) {
+		this.statu = statu;
+	}
 	public String getPublicKey() {
 		return publicKey;
 	}

@@ -2,6 +2,7 @@
 
 package cn.springmvc.dao; 
 
+import cn.springmvc.model.CreditorTransBaseEntity;
 import cn.springmvc.model.ProjectBaseInfoEntitys;
 import cn.springmvc.model.ProjectDetailEntity;
 
@@ -45,9 +46,23 @@ public interface ReplayProjectDetailListDao {
 	* @param @return 				项目基本信息
 	* @return ProjectBaseInformationEntity 返回类型 
 	* @date 2016-5-3 下午3:13:15
-	* @throws
+	* @throws	null
 	 */
 	ProjectBaseInfoEntitys selectProjectBaseInfoById(long lId); 
 	
+	/**
+	 * 根据债券转让id获取债权基本信息  生成投资收益
+	* selectCreditorTransInfoById			根据债券转让id获取债权基本信息  生成投资收益
+	* TODO(描述)
+	* @author 张友  
+	* * @Title: selectCreditorTransInfoById 
+	* @Description: TODO 
+	* @param  lId							债权转让申请ID
+	* @param @return 设定文件 
+	* @return ProjectBaseInfoEntitys 返回类型 
+	* @date 2016-5-9 下午8:32:18
+	* @throws null
+	 */
+	CreditorTransBaseEntity selectCreditorTransInfoById(long lId);
 }
 

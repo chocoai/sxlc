@@ -143,6 +143,13 @@ LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
   		values(#{smtpservice},#{portNumber},#{emailAddress},#{emailPassword});
   </insert>
   
+ 
+  <!-- 查询托管平台接口类型表 -->
+  <select id="TypeAccountInterface" resultType="cn.springmvc.model.AccountEscrowInterfaceEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+  	select Interface_ID	 interfaceID,Interface_Name interfaceName,Type_Statu typeStatu	
+  	from Account_Escrow_Interface where Type_Statu = 1
+  	
+  </select>
   
   <!--三方接口设置 -->
   <resultMap id="ThreeInterface" type="cn.springmvc.model.ThreeInterfaceEntity" >
@@ -150,20 +157,27 @@ LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
     <result column="Private_Key" property="privateKey"/>
     <result column="Escrow_ID" property="escrowID"/>
     <result column="Interface_ID" property="interfaceID"/>
+    <result column="statu" 		property="statu"/>
     <result column="Interface_Url" property="interfaceUrl"/>
     <result column="Escrow_Name" property="escrowName"/>
     <result column="Interface_Name" property="interfaceName"/>
+    
   </resultMap>
   <sql id="ThreeInterface_Column_List">
   	Public_Key,Private_Key,Escrow_ID,Interface_ID,Interface_Url,Escrow_Name,Interface_Name	
   </sql>
   <!-- 查询三方接口设置 -->
   <select id="selectThreeInterface" resultMap="ThreeInterface" parameterType="product_p2p.kit.pageselect.PageEntity">
-  	select qds.Public_Key,qds.Private_Key,qs.Escrow_ID,qs.Interface_ID
+  	select qds.Public_Key,qds.Private_Key,qs.Escrow_ID,qs.Interface_ID,qs.Statu statu
   	,Interface_Url,Escrow_Name,Interface_Name from QianDuoDuo_Url_Set qs
   	left join Account_Escrow_Interface aei on qs.Interface_ID=aei.Interface_ID
   	left join Account_Escrow ae on qs.Escrow_ID=ae.Escrow_ID
-  	left join QianDuoDuo_Set qds on qs.Escrow_ID=qds.Escrow_ID where qs.Statu=1
+  	left join QianDuoDuo_Set qds on qs.Escrow_ID=qds.Escrow_ID 
+  	<where>
+  	 	<if test="interfaceType > 0 ">
+  	 		aei.Interface_ID  = #{interfaceType};
+  	 	</if>
+  	</where>
   </select>
   <!-- 修改第三方接口路径 -->
   <update id="updateThreeInterface" parameterType="Map">

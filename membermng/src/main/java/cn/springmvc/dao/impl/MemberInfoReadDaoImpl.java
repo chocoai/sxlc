@@ -162,14 +162,12 @@ public class MemberInfoReadDaoImpl extends SqlSessionDaoSupport implements IMemb
 	
 	@Override
 	public int selectMemberIsExist(Map<String, Object> param) {
-		getSqlSession().selectOne("memberInfoDaoImpl.selectMemberIsExist", param);
-		return IntegerAndString.StringToInt(param.get("result").toString(),0);
+		return getSqlSession().selectOne("memberInfoDaoImpl.selectMemberIsExist", param);
 	}
 	
 	@Override
 	public Long selectMemberIdByPhone(Map<String, Object> param) {
-		getSqlSession().selectOne("memberInfoDaoImpl.selectMemberIdByPhone", param);
-		return Long.parseLong(param.get("result").toString());
+		return getSqlSession().selectOne("memberInfoDaoImpl.selectMemberIdByPhone", param);
 	}
 	
 	

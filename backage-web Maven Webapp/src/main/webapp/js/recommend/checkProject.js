@@ -97,3 +97,11 @@ $(function() {
         $(this).toggleClass('selected');
   });
 });
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#checkProjectTable').DataTable().ajax.reload();
+	
+});

@@ -61,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<option value="0">未发布</option>
 										</select>
 									</span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						 </div>

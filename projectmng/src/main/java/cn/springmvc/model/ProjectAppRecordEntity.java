@@ -252,6 +252,7 @@ public class ProjectAppRecordEntity {
 	private String repayMaxTime;//合同约定下一个还款日 
 	private String getDate;//服务器时间
 	private String managementName;//资产管理方
+	private int    checkStatuNow;//1通过；其他未通过
 	public long getPrincipalAmount() {
 		return principalAmount;
 	}
@@ -735,6 +736,12 @@ public class ProjectAppRecordEntity {
 	}
 	public void setManagementName(String managementName) {
 		this.managementName = managementName;
+	}
+	public int getCheckStatuNow() {
+		return checkStatuNow;
+	}
+	public void setCheckStatuNow(int checkStatuNow) {
+		this.checkStatuNow = checkStatuNow;
 	}
 	
 }

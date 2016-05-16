@@ -65,15 +65,16 @@ public class StaffController  {
 	*/
 	@RequestMapping("/emp")
 	public String toRoleEmpList(HttpServletRequest req){
-		List<EducationInfoEntity> eduList = dictionariesCore.GetEducationList();
-		List<NationInfoEntity> nationsList = dictionariesCore.GetNationInfoList();
-		PageEntity entity = new PageEntity();
-//		List<DeptInfo> depts = iDeptInfoServer.findall();
-//		List<PostInfo> posts = iPostInfoServer.getListByParam(entity);
-		req.setAttribute("educations", eduList);
-		req.setAttribute("nations", nationsList);
-//		req.setAttribute("depts", depts);
-//		req.setAttribute("posts", posts);
+		String errorMsg = "";//异常消息
+		try{
+			List<EducationInfoEntity> eduList = dictionariesCore.GetEducationList();
+			List<NationInfoEntity> nationsList = dictionariesCore.GetNationInfoList();
+			req.setAttribute("educations", eduList);
+			req.setAttribute("nations", nationsList);
+		}catch(Exception e){
+			errorMsg = e.getMessage();
+			req.setAttribute("errorMsg", errorMsg);
+		}
 		return "role/role-emp";
 	}
 	

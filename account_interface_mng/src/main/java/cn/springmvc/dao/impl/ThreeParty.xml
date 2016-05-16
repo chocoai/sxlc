@@ -24,21 +24,24 @@
    		<where>
    			mi.Member_ID=#{memberId} and mi.Member_Type=0 and Attest_Type_ID = 1
    		</where>
+   		limit 1
   </select>
   <!-- 查询企业会员开户所需基本信息 -->
   <select id="selectcAccountById" resultMap="sAccountInterface" parameterType="Map" >
    	select mi.Logname,
    	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) AS pphone,
    	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) AS pemail,
-   CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey}) using utf8) AS pname,ci.Companye_BLN AS pidcard
+   CONVERT(AES_DECRYPT(UNHEX(ela.Compang_Name),#{skey}) using utf8) AS pname,
+   CONVERT(AES_DECRYPT(UNHEX(ela.Firm_BLN),#{skey}) using utf8) AS pidcard
    	 from Member_Info mi 
-   	 left join Company_Info ci on ci.Company_ID=mi.Company_ID
+<!--    	 left join Company_Info ci on ci.Company_ID=mi.Company_ID -->
    	 left join Personal_Base_Info pbi on pbi.Personal_Id=mi.Personal_Id
-<!--    	 left join Member_Attest_Info mai on mai.Member_ID = mi.Member_ID and mai.Member_Type=1 -->
-<!-- 	 left join Enterprise_License_Attest ela on ela.Certification_ID = mai.Certification_ID -->
+    left join Member_Attest_Info mai on mai.Member_ID = mi.Member_ID and mai.Member_Type=1 
+ 	 left join Enterprise_License_Attest ela on ela.Certification_ID = mai.Certification_ID 
    		<where>
-   			mi.Member_ID=#{memberId} and mi.Member_Type=1
+   			mi.Member_ID=#{memberId} and mi.Member_Type=1 and Attest_Type_ID = 12
    		</where>
+   		limit 1
   </select>
   <!-- 查询平台账号信息 -->
   <select id="findThirdPartyMark" resultType="String" parameterType="Map">
@@ -66,6 +69,7 @@
 				#{openType,	 mode=IN,	jdbcType=INTEGER},
 				#{skey,	 mode=IN,	jdbcType=VARCHAR},
 				#{tradeIDtow,	 mode=IN,	jdbcType=BIGINT},
+				#{compId,	 mode=IN,	jdbcType=BIGINT},
 				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
@@ -178,7 +182,7 @@
   <select id="finBankCode" resultMap="sWithdraws" parameterType="Map">
   	SELECT Bank_No,Branch_Address,BankCode,Card_Province,Card_City FROM
  		Bank_Card_Info bci LEFT JOIN Bank_Code bc ON bci.Bank_Id=bc.Bank_ID 
- 		WHERE bci.Bank_Card_Id=#{bankCardId}
+ 		WHERE bci.Bank_Card_Id=#{bankCardId} limit 1
   </select>
   
   <!-- 提现成功返回 -->

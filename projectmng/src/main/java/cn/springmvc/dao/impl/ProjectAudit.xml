@@ -13,7 +13,7 @@
      <association property="projectAppRecordEntity" 	resultMap="resultProjectDetail"/>
  </resultMap>
  <resultMap type = "cn.springmvc.model.ProjectAppRecordEntity" id = "resultProjectDetail">
-        <id property = "ID"						column = "Apply_Id" />
+        <id property = "applyId"						column = "Apply_Id" />
 		<result property = "memberID"       	column = "Member_ID" />
 		<result property = "projectType"    	column = "Project_Type" />
 		<result property = "projectBaseID"  	column = "Project_Base_ID" />
@@ -49,13 +49,14 @@
         <result property = "endDate"       	    column = "End_Date" /> 
         <result property = "holdDate"       	column = "Hold_Date" /> 
         <result property = "managementName"     column = "Management_Name" /> 
-        <result property = "guaranteeName"     column = "Guarantee_Name" /> 
-        <result property = "releaseDate"       column = "Release_Date" />
+        <result property = "guaranteeName"      column = "Guarantee_Name" /> 
+        <result property = "releaseDate"        column = "Release_Date" />
         <result property = "pushIndex"          column = "pushIndex" />
+        <result property = "checkStatuNow"      column = "checkStatuNow" />
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"></association>
     </resultMap> 
      <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
-            <id property = "ID" 				 column = "id" />
+            <id property = "id" 				 column = "id" />
 			<result property = "projectTitle"    column = "Project_Title" /> 
 			<result property = "uses"            column = "Uses" />
 			<result property = "repaySource"     column = "Repay_Source" />
@@ -79,7 +80,13 @@
 	   CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) Compang_Name, 
 	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
-            as memberName
+            as memberName,
+       ifnull((select pck.Check_Statu  
+	        from  Project_Check_Record pck
+	        join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
+	        join   Process_Project pp on pp.Process_ID = ap.Process_ID 
+	        where  pp.Indexs =  #{map.sIndexs} and  par.Apply_Id = pck.Apply_Id and pck.Check_Statu != 2 limit 1 
+	        ),0)    as checkStatuNow   
 	   from  Project_App_Record par 
 	   left join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id  
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
@@ -97,7 +104,7 @@
 		      (
 			       select Apply_Id  
 			       from  Project_Check_Record pck
-			       left join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
+			       join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
 			       where  
 			        ap.Process_ID =  
 				    (select Process_ID from Process_Project where Indexs &lt;#{map.sIndexs} 
@@ -105,7 +112,9 @@
 				  
 			        and pck.Check_Statu = 1
 		       )  
-		       or  
+		       
+		       or 
+		        
 		       (select count(Process_ID) from Process_Project where Indexs &lt;#{map.sIndexs} 
 		        and statu =1 order by Indexs desc limit 1
 		        ) = 0
@@ -122,8 +131,9 @@
 	       and par.Apply_Id in
 	       (select Apply_Id  
 	        from  Project_Check_Record pck
-	        left join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
-	        where  ap.Process_ID in  (select Process_ID from Process_Project where Indexs =#{map.sIndexs})
+	        join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
+	        join   Process_Project pp on pp.Process_ID = ap.Process_ID 
+	        where  pp.Indexs =  #{map.sIndexs} 
 	        and pck.Check_Statu != 2  
 	        ) 
 	     </if>
@@ -133,8 +143,9 @@
 	        and par.Apply_Id not in 
 	       (select Apply_Id  
 	        from  Project_Check_Record pck
-	        left join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
-	        where  ap.Process_ID in  (select Process_ID from Process_Project where Indexs =#{map.sIndexs}) 
+	        join   Activities_Project ap on  ap.Process_ID=pck.Process_ID
+	        join   Process_Project pp on pp.Process_ID = ap.Process_ID 
+	        where  pp.Indexs =  #{map.sIndexs} 
 	        and  pck.Check_Statu !=2
 	        ) 
 	     </if> 
@@ -166,9 +177,7 @@
 	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
 	   left join Member_Info mi on mi.Member_ID = par.Member_ID  
 	   where  par.Apply_Id=#{ID}
-    </select>
-     
-     
+    </select> 
       <!--  修改项目基本信息 -->  
     <select id="updateProjectDetail"  statementType="CALLABLE" parameterType="Map"> 
 	     {call updateProjectDetail(
@@ -194,7 +203,7 @@
     <select id="projectAudit"  statementType="CALLABLE" parameterType="Map"> 
 	     {call projectAudit(
 				#{ApplyId ,	     mode=IN,	jdbcType=BIGINT},
-				#{Indexsnow,	mode=IN,	jdbcType=INTEGER}, 
+				#{Indexsnow,	 mode=IN,	jdbcType=INTEGER}, 
 				#{checkStatu,	 mode=IN,	jdbcType=INTEGER},
 				#{CheckRemark,	 mode=IN,	jdbcType=VARCHAR},
 				#{adminID,	     mode=IN,	jdbcType=INTEGER},

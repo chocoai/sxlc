@@ -73,5 +73,10 @@ public class Constant {
 	 * 缓存宗教列表key
 	 */
 	public static final String RELIGIONLIST = "	religionList";
+	
+	/**
+	 * 催收账单配置内容
+	 */
+	public static final String LoanRepayUrgedSet = "Loan_Repay_Urged_Set1";
 }
 

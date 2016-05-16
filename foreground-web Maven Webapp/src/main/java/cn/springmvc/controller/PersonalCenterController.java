@@ -115,15 +115,15 @@ public class PersonalCenterController{
 		MemberInfo loginMember = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
 		MemberInfo memberInfo = null;
 
-		//企业会员额外处理
+		//企业会员处理
 		if (loginMember.getMemberType().intValue() == 1) {
 			memberInfo = this.memberService.memberComplanyInfo(loginMember.getId());
 			if (memberInfo.getBaseInfo().getPersonalPhone() != null && memberInfo.getBaseInfo().getPersonalPhone().length() == 11) {
-				memberInfo.getBaseInfo().setPersonalPhone(memberInfo.getBaseInfo().getPersonalPhone().substring(0, 3)+ "****"+ memberInfo.getBaseInfo().getPersonalPhone().substring(memberInfo.getBaseInfo().getPersonalPhone().length() - 3,memberInfo.getBaseInfo().getPersonalPhone().length()));
+				memberInfo.getBaseInfo().setPersonalPhone(memberInfo.getBaseInfo().getPersonalPhone().substring(0, 3)+ " **** "+ memberInfo.getBaseInfo().getPersonalPhone().substring(memberInfo.getBaseInfo().getPersonalPhone().length() - 3,memberInfo.getBaseInfo().getPersonalPhone().length()));
 			}
 			if (memberInfo.getBaseInfo().getQq() != null
 					&& memberInfo.getBaseInfo().getQq().length() >= 5) {
-				memberInfo.getBaseInfo().setQq(memberInfo.getBaseInfo().getQq().substring(0, 2)+ "***"+ memberInfo.getBaseInfo().getQq().substring(memberInfo.getBaseInfo().getQq().length() - 2,memberInfo.getBaseInfo().getQq().length()));
+				memberInfo.getBaseInfo().setQq(memberInfo.getBaseInfo().getQq().substring(0, 2)+ " **** "+ memberInfo.getBaseInfo().getQq().substring(memberInfo.getBaseInfo().getQq().length() - 2,memberInfo.getBaseInfo().getQq().length()));
 			}
 			request.setAttribute("userInfo", memberInfo);
 			return "account/personalCenter/baseInformationForEnterprise";
@@ -132,17 +132,23 @@ public class PersonalCenterController{
 		//个人会员处理
 		memberInfo = this.memberService.memberPersonalInfo(loginMember.getId());
 		if (memberInfo.getBaseInfo().getPersonalPhone() != null && memberInfo.getBaseInfo().getPersonalPhone().length() == 11) {
-			memberInfo.getBaseInfo().setPersonalPhone(memberInfo.getBaseInfo().getPersonalPhone().substring(0, 3)+ "****"+ memberInfo.getBaseInfo().getPersonalPhone().substring(memberInfo.getBaseInfo().getPersonalPhone().length() - 3,memberInfo.getBaseInfo().getPersonalPhone().length()));
+			memberInfo.getBaseInfo().setPersonalPhone(memberInfo.getBaseInfo().getPersonalPhone().substring(0, 3)+ " **** "+ memberInfo.getBaseInfo().getPersonalPhone().substring(memberInfo.getBaseInfo().getPersonalPhone().length() - 3,memberInfo.getBaseInfo().getPersonalPhone().length()));
 		}
 		if (memberInfo.getBaseInfo().getQq() != null && memberInfo.getBaseInfo().getQq().length() >= 5) {
-			memberInfo.getBaseInfo().setQq(memberInfo.getBaseInfo().getQq().substring(0, 2)+ "****"+ memberInfo.getBaseInfo().getQq().substring(memberInfo.getBaseInfo().getQq().length() - 2,memberInfo.getBaseInfo().getQq().length()));
+			memberInfo.getBaseInfo().setQq(memberInfo.getBaseInfo().getQq().substring(0, 2)+ " **** "+ memberInfo.getBaseInfo().getQq().substring(memberInfo.getBaseInfo().getQq().length() - 2,memberInfo.getBaseInfo().getQq().length()));
 		}
 		if(memberInfo.getBaseInfo().getPersonalEmail() != null){
 			if(memberInfo.getBaseInfo().getPersonalEmail().indexOf("@") >= 3){
-				memberInfo.getBaseInfo().setPersonalEmail(memberInfo.getBaseInfo().getPersonalEmail().substring(0,3)+"****"+memberInfo.getBaseInfo().getPersonalEmail().substring(memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"), memberInfo.getBaseInfo().getPersonalEmail().length()));
+				memberInfo.getBaseInfo().setPersonalEmail(memberInfo.getBaseInfo().getPersonalEmail().substring(0,3)+" **** "+memberInfo.getBaseInfo().getPersonalEmail().substring(memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"), memberInfo.getBaseInfo().getPersonalEmail().length()));
 			}else{
-				memberInfo.getBaseInfo().setPersonalEmail(memberInfo.getBaseInfo().getPersonalEmail().substring(0,memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"))+"****"+memberInfo.getBaseInfo().getPersonalEmail().substring(memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"), memberInfo.getBaseInfo().getPersonalEmail().length()));
+				memberInfo.getBaseInfo().setPersonalEmail(memberInfo.getBaseInfo().getPersonalEmail().substring(0,memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"))+" **** "+memberInfo.getBaseInfo().getPersonalEmail().substring(memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"), memberInfo.getBaseInfo().getPersonalEmail().length()));
 			}
+		}
+		memberInfo.getBaseInfo().setPersonalIDCard("130503670401001");
+		if(memberInfo.getBaseInfo().getPersonalIDCard() != null && memberInfo.getBaseInfo().getPersonalIDCard().length() == 18){
+			memberInfo.getBaseInfo().setPersonalIDCard(memberInfo.getBaseInfo().getPersonalIDCard().substring(0, 6)+" **** "+memberInfo.getBaseInfo().getPersonalIDCard().substring(14));
+		}else if(memberInfo.getBaseInfo().getPersonalIDCard() != null && memberInfo.getBaseInfo().getPersonalIDCard().length() == 15){
+			memberInfo.getBaseInfo().setPersonalIDCard(memberInfo.getBaseInfo().getPersonalIDCard().substring(0, 6)+" **** "+memberInfo.getBaseInfo().getPersonalIDCard().substring(11));
 		}
 		
 		request.setAttribute("userInfo", memberInfo);
@@ -2485,11 +2491,11 @@ public class PersonalCenterController{
 	
 
 	/***
-	* 开户返回页面
-	* 
-	* @author 李杰
-	* @return
-	* @date 2016-4-28 下午7:46:50
+	 * 开户返回页面
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-4-28 下午7:46:50
 	 */
 	@RequestMapping(value="openThirdAccountCallbackPage")
 	public String openThirdAccountCallback(HttpServletRequest request,HttpServletResponse response){
@@ -2502,7 +2508,6 @@ public class PersonalCenterController{
 			return "account/personalCenter/optionFall";
 		}
 	}
-	
 	
 	
 	/***
@@ -2601,7 +2606,7 @@ public class PersonalCenterController{
 		MemberInfo memberInfo = (MemberInfo)request.getSession().getAttribute(Constant.LOGINUSER);
 		entity.setMemberId(memberInfo.getId());
 		entity.setMemberType(memberInfo.getMemberType());
-		entity.setAuthorizeTypeOpen("1");
+		entity.setAuthorizeTypeOpen("3");
 		interfaceServerTestI.testLoanAuthorize(entity);
 		request.setAttribute("accountInterfaceEntity", entity);
 		return "dryLot/loanauthorizetest";

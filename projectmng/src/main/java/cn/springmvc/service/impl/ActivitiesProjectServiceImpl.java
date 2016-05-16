@@ -15,6 +15,7 @@ import cn.springmvc.service.ActivitiesProjectService;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity; 
+import product_p2p.kit.pageselect.PageUtil;
 @Service("activitiesProjectServiceImpl")
 public class ActivitiesProjectServiceImpl implements ActivitiesProjectService {
 	@Resource(name="activitiesProjectDaoImpl")
@@ -81,9 +82,9 @@ public class ActivitiesProjectServiceImpl implements ActivitiesProjectService {
 	@Override
 	public List<ActivitiesProjectEntity> selectActivitiesProjectListpage(
 			PageEntity pageEntity) {
-		List<ActivitiesProjectEntity> activitiesProjectList=null;    
-	 	activitiesProjectList = activitiesProjectListDaoImpl.selectActivitiesProjectAllpage(pageEntity);  
-		return activitiesProjectList; 
+		List<ActivitiesProjectEntity> list= activitiesProjectListDaoImpl.selectActivitiesProjectAllpage(pageEntity);  
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list; 
 	}
 
 	@Override

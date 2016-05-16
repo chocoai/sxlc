@@ -170,6 +170,7 @@ public class GuaCompensatoryController {
 		req.put("logname", logname);
 		req.put("personalName", personalName);
 		req.put("personalPhone", personalPhone);
+		req.put("isCompensatory", 1);
 		
 		
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);

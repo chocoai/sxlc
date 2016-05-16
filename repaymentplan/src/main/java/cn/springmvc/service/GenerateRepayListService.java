@@ -45,5 +45,21 @@ public interface GenerateRepayListService {
 	* @throws null
 	 */
 	long GetForecastIncome(long lProId,long lInvestAmount);
+	
+	/**
+	 * 计算债权转让投资预计收益
+	* CreditorTransForecastIncome		债权转让投资预计收益
+	* TODO(描述)
+	* @author 张友  
+	* * @Title: CreditorTransForecastIncome 
+	* @Description: TODO 
+	* @param  lProId					债权转让申请ID
+	* @param  lInvestAmount				投资金额
+	* @param @return 设定文件 
+	* @return long 返回类型 
+	* @date 2016-5-10 下午2:17:27
+	* @throws	null
+	 */
+	long CreditorTransForecastIncome(long lProId,long lInvestAmount);
 }
 

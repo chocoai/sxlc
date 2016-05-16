@@ -11,6 +11,7 @@ $(function () {
 		url : appPath + "/guarant/query4select.do",
 		data : {guaranteeId : result},
 		success : function (msg) {
+			console.log(msg.compensationStatisticsEntity);
 			$("#guaranteeName").text(msg.guaranteeInfoEntity.guaranteeName);
 			$("#companyeBLN").text(msg.guaranteeInfoEntity.companyeBLN);
 			$("#companyOC").text(msg.guaranteeInfoEntity.companyOC);
@@ -49,6 +50,22 @@ $(function () {
 					$("#fileList").html("<img src=\""+item.guaranteeURL+"\" />");
 				});
 				
+			}
+			
+			if (msg.memberThirdAuthInfoEntity !=null) {
+				$("#tirdnum").text(msg.memberThirdAuthInfoEntity.memberThirdInfoEntity.thirdPartyAccount);
+				$("#currentMoney").text(msg.memberThirdAuthInfoEntity.memberThirdInfoEntity.userBalances);
+				if (msg.memberThirdAuthInfoEntity.openAutoPay ==0) {
+					$("#isOrno").text("否");
+				}else {
+					$("#isOrno").text("是");
+				}
+			}
+			
+			if (msg.compensationStatisticsEntity != null) {
+				$("#sumMoney").text(msg.compensationStatisticsEntity.totalCompensationAmount);
+				$("#backMoney").text(msg.compensationStatisticsEntity.allCompensatoryPayment);
+				$("#nobackMoney").text(msg.compensationStatisticsEntity.noCompensatoryPayment);
 			}
 			
 		}

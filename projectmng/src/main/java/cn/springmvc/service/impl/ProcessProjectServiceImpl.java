@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 
 import cn.springmvc.dao.ProcessProjectDao;
 import cn.springmvc.dao.ProcessProjectListDao;
@@ -95,7 +96,9 @@ public class ProcessProjectServiceImpl implements ProcessProjectService {
 	@Override
 	public List<ProcessProjectEntity> selectProcessProjectListpage(PageEntity pageEntity) {
 		
-		return processProjectListDaoImpl.selectProcessProjectAllpage(pageEntity);    
+		List<ProcessProjectEntity> list=  processProjectListDaoImpl.selectProcessProjectAllpage(pageEntity);    
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 	}
 
 	@Override

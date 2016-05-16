@@ -33,7 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<jsp:include page="../common/cm-project.jsp">
 				<jsp:param value="304" name="_index_m2"/>
 				<jsp:param value="" name="_index_m3"/>
-			</jsp:include>
+			</jsp:include>	
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -112,14 +112,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				<div class="form-group formGroup">
 	    				<label for="modify_endTime" class="col-sm-4 control-label">项目借款结束日期:</label>
     					<div class="col-sm-8">
-    						<input type="text"  class="form-control notspecial Wdate formControl" name="modify_endTime" id="modify_endTime" onFocus="WdatePicker()">
+    						<input type="text"  class="form-control notspecial Wdate formControl" disabled="disabled" name="modify_endTime" id="modify_endTime" onFocus="WdatePicker()">
     					</div>
 	    			</div>
-	    			<div class="form-group formGroup">
+	    			<!-- <div class="form-group formGroup">
 	    				<div class="formGroup-sub">
 	    					<button type="submit" class="btn btn-success">确认延长</button>
 	    				</div>
-	    			</div>
+	    			</div> -->
     			</form>
     		</div>
 		</div>

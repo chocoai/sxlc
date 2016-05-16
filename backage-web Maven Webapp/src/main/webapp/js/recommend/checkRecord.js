@@ -127,3 +127,11 @@ $(function() {
         $(this).toggleClass('selected');
   });
 });
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#checkrecordtable').DataTable().ajax.reload();
+	
+});

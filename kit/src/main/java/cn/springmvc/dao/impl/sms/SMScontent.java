@@ -666,4 +666,37 @@ public class SMScontent {
 		return set;
 	}
 	
+	/** 
+	* ContentSMS25 借款人项目发布确认消息
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: ContentSMS25 
+	* @Description: TODO 
+	* @param @param memberId
+	* @param @param money
+	* @param @param mmoney
+	* @param @param hkfs
+	* @param @param times
+	* @param @param applyId
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-13 下午1:35:02
+	* @throws 
+	*/
+	public String ContentSMS25(long memberId,String money,String mmoney,String hkfs,String times,long applyId){
+		String set = smsReadDaoImpl.WhetherThereTextMessaging(-1,25);
+		if (set!=null && !set.equals("")) {
+			String logName=smsReadDaoImpl.findLogName(memberId);
+			String projectTitle=smsReadDaoImpl.findProjectNameById(applyId);
+			set=set.replaceAll("\\$\\{zhanghao\\}", logName);
+			set=set.replaceAll("\\$\\{xmbt\\}", projectTitle);
+			set=set.replaceAll("\\$\\{zsjkje\\}", mmoney);
+			set=set.replaceAll("\\$\\{jkje\\}", money);
+			set=set.replaceAll("\\$\\{jksj\\}", times);
+			set=set.replaceAll("\\$\\{hkfs\\}", hkfs);
+			set=set.replaceAll("\\$\\{ty\\}", "Y");
+			set=set.replaceAll("\\$\\{qx\\}", "N");
+		}
+		return set;
+	}
 }

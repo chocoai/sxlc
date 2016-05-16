@@ -55,57 +55,57 @@
     <!-- 平台收益统计-->  
 	<select id="selectPlatformRevenue" parameterType = "map"  resultType="cn.springmvc.model.PlatformRevenueStatisticsEntity">
 	  select  
-		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
+		ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		where tts.Trade_Type_Id = 801) as rMngFeeAmount,<!-- 收取借款管理费总额 -->
+		where tts.Trade_Type_Id = 801),0) as rMngFeeAmount,<!-- 收取借款管理费总额 -->
 		
 		
-		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
+		ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		where tts.Trade_Type_Id = 801) as investMngFeeAmount,<!-- 收取投资管理费总额 -->
+		where tts.Trade_Type_Id = 804),0) as investMngFeeAmount,<!-- 收取投资管理费总额 -->
 		
-		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0)
+		ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		where tts.Trade_Type_Id = 806)  as rRiskMarginFee,<!-- 收取风险保证金总额-->
+		where tts.Trade_Type_Id = 806),0)  as rRiskMarginFee,<!-- 收取风险保证金总额-->
 		
-		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
+		ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		where tts.Trade_Type_Id = 807) as oRiskMarginFee, <!-- 退还风险保证金总额-->
+		where tts.Trade_Type_Id = 807),0) as oRiskMarginFee, <!-- 退还风险保证金总额-->
 		 
-		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
+		ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		where tts.Trade_Type_Id = 102) as rechargeFee,<!-- 会员支付充值费用总额-->
+		where tts.Trade_Type_Id = 102 and otr.Get_Pay = 1),0) as rechargeFee,<!-- 会员支付充值费用总额 有问题不要了-->
 		
-		(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
+		ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED))  
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		where tts.Trade_Type_Id = 202) as withdrawalFee, <!-- 会员支付提现手续费总额-->
+		where tts.Trade_Type_Id = 202 and otr.Get_Pay = 1),0) as withdrawalFee, <!-- 会员支付提现手续费总额-->
 		 
-		 (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED)),0) 
-		 from Member_Withdrawal_Recharge where Deal_Type = 0 ) as pRechargeFee,<!-- 平台代付充值费用总额 -->
+		 ifnull((select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED)) 
+		 from Member_Withdrawal_Recharge where Deal_Type = 0 ),0) as pRechargeFee,<!-- 平台代付充值费用总额 -->
 		
-		 (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED)),0)
-		 from Member_Withdrawal_Recharge where Deal_Type = 1 and Statu = 1)  as pwidthdrawFee, <!-- 平台代付提现费用总额 -->
+		 ifnull((select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{keys})) AS SIGNED))
+		 from Member_Withdrawal_Recharge where Deal_Type = 1 and Statu = 1),0)  as pwidthdrawFee, <!-- 平台代付提现费用总额 -->
 		
-		 (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee),#{keys})) AS SIGNED)),0) 
-		 from Member_Withdrawal_Recharge where Deal_Type = 1 and Statu = 1) as pgetwidthdrawFee, <!-- 平台收取提现手续费 -->
-		 
-		 (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)),0) 
-		 from Own_Trading_Records  otr 
-		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		 where tts.Trade_Type_Id = 502) as rTransFeeAmount,<!-- 平台收取债权转让手续费总额-->
+		 ifnull((select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee),#{keys})) AS SIGNED)) 
+		 from Member_Withdrawal_Recharge where Deal_Type = 1 and Statu = 1),0) as pgetwidthdrawFee, <!-- 平台收取提现手续费 -->
 		 
 		 ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		 from Own_Trading_Records  otr 
 		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
-		 where tts.Trade_Type_Id = 409),0) as roverFeeAmount,<!-- 收取逾期罚金总额-->
+		 where tts.Trade_Type_Id = 805),0) as rTransFeeAmount,<!-- 平台收取债权转让手续费总额-->
 		 
-		ifnull( (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED))
+		 ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 from Own_Trading_Records  otr 
+		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
+		 where tts.Trade_Type_Id = 409 and otr.Get_Pay = 1),0) as roverFeeAmount,<!-- 收取逾期罚金总额  不用了-->
+		 
+		 ifnull( (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED))
 		 from Own_Trading_Records  otr 
 		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
 		 where tts.Trade_Type_Id = 601),0)  as rcompenRepayAmount,<!-- 平台代偿回款总金额-->
@@ -118,91 +118,105 @@
 		 ifnull((select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
          from InviteMaster_Award_PayRecord where Pay_Statu = 2),0) as inviteMasterAward, <!-- 推荐达人提奖总额 -->
          
-         (select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
-         from FinancialAdvisor_Award_PayRecord  where Pay_Statu = 2 ) as financialAdvisorAward <!-- 理财顾问提奖总额-->
+         ifnull((select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
+         from FinancialAdvisor_Award_PayRecord  where Pay_Statu = 2 ),0) as financialAdvisorAward, <!-- 理财顾问提奖总额-->
+          ifnull((select 
+		 (
+		(select prr.Record_Amount   
+		from project_riskmargin_record prr
+		join project_app_record pap on  prr.Apply_ID =  pap.Apply_Id
+		where pap.Invest_Statu  = 4 and  prr.Guarantee_ID = 0  and  Get_Pay = 1 and prr.Status = 1)
+		
+		- 
+		(select prr.Record_Amount   
+		from project_riskmargin_record prr
+		join project_app_record pap on  prr.Apply_ID =  pap.Apply_Id
+		where pap.Invest_Statu  = 4 and  prr.Guarantee_ID = 0  and  Get_Pay = -1 and prr.Status = 1) 
+		)),0) as   kcrRiskMarginFee
+   
     </select>
     <!--       财务相关   -->
     <select id="selectFinancialRelated"  parameterType = "map"  resultType="cn.springmvc.model.FinancialRelatedEntity">
-    select 
-       (select ifnull(sum(Gift_Amount),0)  from Member_Redpackets ) as totalRedpackets ,<!-- 红包发放总额 -->
-       (select ifnull(sum(Gift_Amount),0)  from Member_Redpackets where Receive_Date !=null) as getTotalRedpackets ,<!-- 红包领取总额 -->
-       (select ifnull(sum(Affair_Account),0) from Redpackets_Affair  ) as affairAccount ,<!-- 活动红包总额-->
+     select 
+       ifnull((select sum(Gift_Amount)  from Member_Redpackets),0) as totalRedpackets ,<!-- 红包发放总额 -->
+       ifnull((select sum(Gift_Amount)  from Member_Redpackets where Receive_Date !=null),0) as getTotalRedpackets ,<!-- 红包领取总额 -->
+       ifnull((select sum(Affair_Account) from Redpackets_Affair),0)  as affairAccount ,<!-- 活动红包总额-->
       
-       (select ifnull(sum(Gift_Amount),0) from Member_Redpackets_UseRecord  where Invest_Type = 0 and Statu = 1)  as useRedpackets,<!-- 红包使用总额 -->
+       ifnull((select sum(Gift_Amount) from Member_Redpackets_UseRecord  where Invest_Type = 0 and Statu = 1),0)  as useRedpackets,<!-- 红包使用总额 -->
     
-       ((select sum(Gift_Amount)  from Member_Redpackets ) -
-       (select ifnull(sum(Gift_Amount),0) from Member_Redpackets_UseRecord  where Invest_Type = 0 and Statu = 1)) as notuseRedpackets,<!-- 红包未使用总额 -->
+       ifnull(((select sum(Gift_Amount)  from Member_Redpackets ) -
+       (select ifnull(sum(Gift_Amount),0) from Member_Redpackets_UseRecord  where Invest_Type = 0 and Statu = 1)),0) as notuseRedpackets,<!-- 红包未使用总额 -->
       
-       (select 
+       ifnull((select 
         ifnull(sum(mr.Gift_Amount-
 	    (select mru.Gift_Amount from  Member_Redpackets_UseRecord mru where 
 	    mru.Member_RP_ID=mr.Member_RP_ID and mru.Statu!=-1) ),0)
 	    from  Member_Redpackets   mr    
-        where     mr.Statu !=2 and mr.End_Date &lt; now() )  as overRedpackets, <!-- 过期红包总额-->
+        where     mr.Statu !=2 and mr.End_Date &lt; now() ),0)  as overRedpackets, <!-- 过期红包总额-->
         
-        (select ifnull(sum(Gift_Amount),0) from Member_Vouchers 
-        ) as totalVouchers,<!-- 代金券兑换总额 -->
+        ifnull((select sum(Gift_Amount) from Member_Vouchers 
+        ),0) as totalVouchers,<!-- 代金券兑换总额 -->
         
-        ( select ifnull(sum(Gift_Amount),0) from Member_Vouchers_UseRecord
+        ifnull(( select sum(Gift_Amount) from Member_Vouchers_UseRecord
          where Invest_Type = 0 and Statu = 1  
-         ) as useVouchers,<!-- 代金券使用总额 -->
+         ),0) as useVouchers,<!-- 代金券使用总额 -->
          
-        (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+        ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		 from Own_Trading_Records  otr 
 		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
 		 where tts.Trade_Type_Id = 311 
-		 ) as payWithdrawal, <!-- 累计返现总额-->
+		 ),0) as payWithdrawal, <!-- 累计返现总额-->
 		
 		(select count(Apply_Id) from Project_App_Record where Reward_Rate !=0) as totalRewardproject,<!-- 奖励标总数-->
         
-        (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+        ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		from Own_Trading_Records  otr 
 		left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
 		where tts.Trade_Type_Id = 1102 
-		) as payAward, <!-- 累计奖励总额-->
+		),0) as payAward, <!-- 累计奖励总额-->
         
-        (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+        ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		 from Own_Trading_Records  otr 
 		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
 		 where tts.Trade_Type_Id = 601 
-		 ) as rcompenRepayAmount,<!-- 平台代偿回款总金额-->
+		 ),0) as rcompenRepayAmount,<!-- 平台代偿回款总金额-->
 		 
-		 (select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
+		 ifnull((select sum(CAST((AES_DECRYPT(UNHEX(otr.Amount),#{keys})) AS SIGNED)) 
 		 from Own_Trading_Records  otr 
 		 left join Trade_Type_Second tts on  otr.Trade_Own_Id=tts.Trade_Type_Id
 		 where tts.Trade_Type_Id = 602 
-		 ) as rcompenAmount,<!-- 平台代偿总金额-->
+		 ),0) as rcompenAmount,<!-- 平台代偿总金额-->
 		 
-		 (select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
+		 ifnull((select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
          from InviteMaster_Award_PayRecord where Pay_Statu = 2 
-         ) as inviteMasterAward, <!-- 推荐达人提奖总额 -->
+         ),0) as inviteMasterAward, <!-- 推荐达人提奖总额 -->
          
-         (select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
+         ifnull((select sum(ifnull(Borrow_Award,0)+ifnull(Invest_Award,0)+ifnull(Repay_Award,0))  
          from FinancialAdvisor_Award_PayRecord  where Pay_Statu = 2  
-         ) as financialAdvisorAward, <!-- 理财顾问提奖总额-->
+         ),0) as financialAdvisorAward, <!-- 理财顾问提奖总额-->
          
-         (select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) 
+         ifnull((select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) 
 		 from Member_Withdrawal_Recharge where Deal_Type = 0  
-		 ) as pRechargeFee,<!-- 充值统计 -->
+		 ),0) as pRechargeFee,<!-- 充值统计 -->
 		
-		 (select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED))
+		 ifnull((select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED))
 		 from Member_Withdrawal_Recharge 
 		 where Deal_Type = 1 and Statu = 1 
-		 )  as pwidthdrawFee <!-- 提现统计 -->
-		 
+		 ),0)  as pwidthdrawFee <!-- 提现统计 -->
+       
     </select> 
     
     
      <!-- 充值统计 （最近30天充值统计 走势图）-->  
 	<select id="selectRechargethree" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
-		select Receive_Date day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pRechargeFee
+		select  STR_TO_DATE(DATE_FORMAT(Receive_Date,'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s') day ,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pRechargeFee
 		from Member_Withdrawal_Recharge 
 		where Deal_Type = 0 and  DATEDIFF(now(),Receive_Date)&lt;30
 		group by DATE_FORMAT(Receive_Date,'%Y%m%d') 	
 	</select> 
 	 <!-- 提现统计 （最近30天充值统计 走势图）-->  
 	<select id="selectWithdrawalthree" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
-		select Receive_Date day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pwidthdrawFee
+		select STR_TO_DATE(DATE_FORMAT(Receive_Date,'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s') day,sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),#{keys})) AS SIGNED)) as pwidthdrawFee
 		from Member_Withdrawal_Recharge 
 		where Deal_Type = 1 and  DATEDIFF(now(),Receive_Date)&lt;30
 		group by DATE_FORMAT(Receive_Date,'%Y%m%d') 	
@@ -210,7 +224,7 @@
          
      <!-- 累计注册会员个数（最近30天注册会员个数走势图）-->  
 	<select id="selectMember" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
-		select Reg_Date day,count(member_ID) as countMember
+		select STR_TO_DATE(DATE_FORMAT(Reg_Date,'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s') day,count(member_ID) as countMember
 		from member_info 
 		where DATEDIFF(now(),Reg_Date)&lt;30
 		group by DATE_FORMAT(Reg_Date,'%Y%m%d') 	
@@ -225,9 +239,9 @@
    <!--  累计待还本金、待还总额（元）（待还本金+待还利息）（还款中项目） -->
 	<select id="StaticsProjectTime" parameterType = "map"  resultType="cn.springmvc.model.OperationItemStatisticsEntity">
 	   select 
-		( select SUM(Invest_Amount_Valid) investAmount 
+		ifnull(( select SUM(Invest_Amount_Valid) investAmount 
 		  from Invest_Record where 1=1 
-		 ) as cumulative, 
+		 ),0) as cumulative, 
 		 
 		(select count(par.Apply_ID) 
 		 from Project_App_Record par 
@@ -254,23 +268,23 @@
 	   from     Loan_Real_Repay lrr  where lrr.Repay_Id = lr.Repay_Id)
 	    from Loan_Repay lr where   lr.Statu in(0,2) and  lr.IsValid = 0  )  as notRepayTotal,
 	    
-	   (
+	   ifnull((
 	    select  sum(ir.Invest_Amount_Valid) 
         from invest_record ir 
         where   ir.Invest_Date BETWEEN STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y%m%d')) ,'%Y%m%d %H%i%s') AND STR_TO_DATE(DATE_FORMAT(DATE_ADD(now(),INTERVAL 1 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s')
-	    ) as sumInvestD,
+	    ),0) as sumInvestD,
 	    
-	    (
+	   ifnull( (
 	    select sum(ir.Invest_Amount_Valid)
         from invest_record ir 
         where  ir.Invest_Date BETWEEN STR_TO_DATE(DATE_FORMAT(DATE_ADD(now(),INTERVAL -7 DAY),'%Y%m%d') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y%m%d')) ,'%Y%m%d %H%i%s')
-        )  as sumInvestW ,
+        ),0)  as sumInvestW ,
         
-        (
+        ifnull((
          select sum(ir.Invest_Amount_Valid) as sumInvest 
          from invest_record ir 
          where  ir.Invest_Date BETWEEN STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y%m'),'01') ,'%Y%m%d %H%i%s') AND STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y%m')+'01',01) ,'%Y%m%d %H%i%s')
-        )  as  sumInvestM
+        ),0)  as  sumInvestM
 	    
 	</select>
 	
@@ -294,7 +308,7 @@
 	
 	<!-- 今日前台访问量（次）（最近30天前台访问量走势图） -->  
 	<select id="StaticsFrontAccess" parameterType = "map"  resultType="cn.springmvc.model.CoutEntity">
-	    select Record_Date day,count(Session_Id) as countFrontAccess
+	    select  STR_TO_DATE(DATE_FORMAT(Record_Date,'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s') day,count(Session_Id) as countFrontAccess
 	    from Front_Access_Record 
 	    where DATEDIFF(now(),Record_Date)&lt;30
 	    group by DATE_FORMAT(Record_Date,'%Y%m%d') 

@@ -178,3 +178,11 @@ $(function() {
   });
 });
 
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#table_id').DataTable().ajax.reload();
+	
+});
+

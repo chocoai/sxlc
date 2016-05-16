@@ -66,7 +66,7 @@
     <!-- 根据查询发布项目列表 -->  
 	<select id="selectProjectPublishList"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectDetail" >
 	select 
-	   (select max(Indexs) from Process_Project where  statu =1 ) as pushIndex,
+	   (select max(Indexs) from Process_Project where  statu =1 ) as pushIndex,par.Apply_Id,
 	    pbi.Project_Title,pap.Release_Date,par.Project_No,mi.Logname,mi.Member_Type,mi.Member_No,pap.Record_Date,par.Project_ID,
 	   pty.Project_Name,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,pbi.Repay_Way,par.Invest_Statu,
 	   pbi.Amount, par.Project_Base_ID, replayway.name1,par.Check_Statu,par.Invest_Max,

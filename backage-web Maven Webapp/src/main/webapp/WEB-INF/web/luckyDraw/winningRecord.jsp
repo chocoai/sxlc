@@ -58,7 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="con-item"><span>中奖会员用户名</span><input id="logname" type="text" class="notspecial" /></span>
 									<span class="con-item"><span>中奖会员手机号</span><input id="personalPhone" type="text" class="notspecial" /></span>
 									<span class="con-item"><span>抽奖活动开始时间</span><input type="text" id="startDate1" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate1" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						 </div>

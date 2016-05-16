@@ -94,14 +94,14 @@ String content = request.getParameter("content");
 	 			<div class="">
 		   			<table class="checkdetailtable">
 						<tr>
-							<td class="tt"><label>第三方账户号：</label><span id="tirdnum">第三方账户号</span></td>
-							<td class="tt"><label>当前余额：</label><span id="currentMoney" class="moneyFormat">30000</span>元</td>
-							<td class="tt"><label>代偿总金额：</label><span id="sumMoney" class="moneyFormat">30000</span>元</td>
+							<td class="tt"><label>第三方账户号：</label><span id="tirdnum"></span></td>
+							<td class="tt"><label>当前余额：</label><span id="currentMoney" class="moneyFormat"></span>元</td>
+							<td class="tt"><label>代偿总金额：</label><span id="sumMoney" class="moneyFormat"></span>元</td>
 						</tr>
 						<tr>
-						<td class="tt"><label>代偿回款总金额：</label><span id="backMoney" class="moneyFormat">30000</span>元</td>
-							<td class="tt"><label>代偿未回款总金额：</label><span id="nobackMoney" class="moneyFormat">30000</span>元</td>
-							<td class="tt"><label>自动代偿是否开启：</label><span id="isOrno">是</span></td>
+						<td class="tt"><label>代偿回款总金额：</label><span id="backMoney" class="moneyFormat"></span>元</td>
+							<td class="tt"><label>代偿未回款总金额：</label><span id="nobackMoney" class="moneyFormat"></span>元</td>
+							<td class="tt"><label>自动代偿是否开启：</label><span id="isOrno"></span></td>
 						</tr>
 					</table>
 					<div class="layui-layer-btn addproprocessbtn">

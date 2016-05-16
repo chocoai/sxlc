@@ -73,7 +73,7 @@ public class ProjectPublishServiceImpl implements ProjectPublishService {
  		
   		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
  		long id = generatorUtil.GetId();
-		map.put("checkid", 201);
+		map.put("checkid", id);
  		int result = projectPublishDaoImpl.publishProject(map);
  		if(result == 1) {
 			generatorUtil.SetIdUsed(id); 

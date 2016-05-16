@@ -83,6 +83,7 @@
 						<div class="w-content emp-add">
 							<form action="javascript:addStaff()" id="dataForm" method="post">
 								<table>
+									<input type="hidden" id="errorMsg" value="${errorMsg}"/>
 									<tr>
 										<td class="tt"><label class="ineed">姓名：</label></td>
 										<td class="con">

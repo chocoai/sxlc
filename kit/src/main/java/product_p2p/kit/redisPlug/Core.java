@@ -10,7 +10,7 @@ public class Core {
 	private static JedisPool pool = null;  
 	
 	static{
-		jedis = new Jedis("192.168.2.8");
+		jedis = new Jedis("localhost");
 		if (pool == null) {
 			// 建立连接池配置参数
             JedisPoolConfig config = new JedisPoolConfig();
@@ -23,7 +23,7 @@ public class Core {
             
             config.setTestOnBorrow(true);
             // 创建连接池
-            pool = new JedisPool(config, "192.168.2.8", 6379);  
+            pool = new JedisPool(config, "localhost", 6379);  
         }  
 	}
 	
@@ -217,9 +217,12 @@ public class Core {
 	* @throws
 	 */
 	public static int putVerCodeByPhone(String phone,String code){
-		jedis.set(phone+"dl", code);
-		jedis.expire(phone+"dl", 180);
-		return 1;
+		if(getString(phone+"register")==null){
+			jedis.set(phone+"dl", code);
+			jedis.expire(phone+"dl", 180);
+			return 1;
+		}
+		return 0;
 	}
 
 	
@@ -235,9 +238,9 @@ public class Core {
 	* @date 2016-4-15 上午9:48:39
 	 */
 	public static int putRegisterPhoneCode(String phone,String code){
-		putString(phone+"register", code);
-		jedis.expire(phone+"register", 180);
-		return 1;
+			long result = putString(phone+"register", code);
+			jedis.expire(phone+"register", 180);
+			return 1;
 	}
 	
 	/***
@@ -253,6 +256,20 @@ public class Core {
 		return getString(phone+"register");
 	}
 	
+	/***
+	* 清除缓存中的注册短信验证码
+	* 
+	* @author 李杰
+	* @param phone
+	* @return
+	* @date 2016-5-13 上午11:03:33
+	 */
+	public static long removeRegisterPhoneCode(String phone){
+		return jedis.del(phone+"register");
+	}
+	
+	
+	
 	/**
 	 * 缓存忘记密码中发送的短信验证码
 	 * putForgetPWDPhoneCode
@@ -266,9 +283,12 @@ public class Core {
 	 * @throws
 	 */
 	public static int putWithdrawPhoneCode(String phone,String code){
-		putString(phone+"Withdraw", code);
-		jedis.expire(phone+"Withdraw", 180);
-		return 1;
+		if(getString(phone+"Withdraw")==null){
+			putString(phone+"Withdraw", code);
+			jedis.expire(phone+"Withdraw", 180);
+			return 1;
+		}
+		return 0;
 	}
 	
 	public static String getWithdrawPhoneCode(String phone){
@@ -276,9 +296,12 @@ public class Core {
 	}
 	
 	public static int putForgetPWDPhoneCode(String phone,String code){
-		putString(phone+"ForgetPWD", code);
-		jedis.expire(phone+"ForgetPWD", 180);
-		return 1;
+		if(getString(phone+"ForgetPWD")==null){
+			putString(phone+"ForgetPWD", code);
+			jedis.expire(phone+"ForgetPWD", 180);
+			return 1;
+		}
+		return 0;
 	}
 	/**
 	 * 获取忘记密码中发送的短信验证码
@@ -296,9 +319,12 @@ public class Core {
 	}
 	
 	public static int putForgetPWDStatu(String phone,String statu){
-		putString(phone+"ForgetPWDStatu", statu);
-		jedis.expire(phone+"ForgetPWDStatu", 1800);
-		return 1;
+		if(getString(phone+"ForgetPWDStatu")==null){
+			putString(phone+"ForgetPWDStatu", statu);
+			jedis.expire(phone+"ForgetPWDStatu", 180);
+			return 1;
+		}
+		return 0;
 	}
 	/**
 	 * 获取忘记密码中发送的短信验证码

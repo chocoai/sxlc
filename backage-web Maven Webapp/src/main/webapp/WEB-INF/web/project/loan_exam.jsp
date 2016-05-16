@@ -67,18 +67,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>类型名称</span><input type="text" class=""></span>
+									<span class="con-item"><span>项目名称</span><input type="text" class="ProjectTitle"></span>
 									<span class="con-item"><span>借款人申请时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></span>
-									<span class="con-item"><span>借款人用户名</span><input type="text" class=""></span>
-									<span class="con-item"><span>借款人姓名</span><input type="text" class=""></span>
+									<span class="con-item"><span>借款人用户名</span><input type="text" class="Logname"></span>
+									<span class="con-item"><span>借款人姓名</span><input type="text" class="name"></span>
 									<span class="con-item">
 										<span>项目状态</span>
-										<select>
-											<option>未通过</option>
-											<option>通过</option>
+										<select id="statu">
+											<option value="">选择</option>
+											<option value="-1">未通过</option>
+											<option value="1">通过</option>
 										</select>
 									</span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						</div>
@@ -93,41 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div> 					  	
 							</div>
 							<div class="panel-body">
-								<table id="table_loan_detail_list" class="display">
-									<thead>
-										<tr>
-											<th></th>
-							                <th>借款人申请日期</th>
-							                <th>借款申请项目编号</th>
-							                <th>借款人用户名</th>
-							                <th>借款人姓名</th>
-							                <th>借款项目名称</th>
-							                <th>借款产品类型</th>
-							                <th>借款期限</th>
-							                <th>借款金额</th>
-							                <th>年化利率</th>
-							                <th>还款方式</th>
-							                <th>状态</th>
-							            </tr>
-							        </thead>
-							        <tbody>
-							        <%for (int i = 0; i < 15; i++) {%>
-							        	<tr>
-							        		<td><input type="checkbox"></td>
-							        		<td>20160427</td>
-							                <td>000001</td>
-							                <td>用户名</td>
-							                <td>姓名</td>
-							                <td>项目名称</td>
-							                <td>产品类型</td>
-							                <td>20天</td>
-							                <td>30万</td>
-							                <td>2%~15%</td>
-							                <td>还款方式</td>
-							                <td>审核中</td>
-							            </tr>
-									<%}%>
-							       	</tbody>
+								<table id="table_id" class="display">
 							    </table>
 							</div>
 						</div>
@@ -139,21 +106,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script src="js/project/loan_exam.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-	 console.log(_index);
-	$('#table_loan_detail_list').DataTable({
-		scrollX:true,
-		autoWidth : false,
-		"aaSorting" : [ ],//默认第几个排序
-		"aoColumnDefs" : [
-		//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-		{
-			"orderable" : false,
-			"aTargets" : [0,1,2,3,4,5,6,7,8,9,10,11]
-		} // 制定列不参与排序
-		],
-	});
-	</script>
 		</div>
 	</div>
 </body>

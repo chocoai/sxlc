@@ -306,3 +306,11 @@ $(function() {
         $(this).toggleClass('selected');
   });
 });
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#applicationAudit').DataTable().ajax.reload();
+	
+});

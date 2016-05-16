@@ -439,13 +439,13 @@
 	<!--  忘记密码-查询登录名与手机号是否匹配 -->
 	<select id="selectMemberIsExist"  parameterType="Map" resultType="int">
 		SELECT COUNT(*) FROM member_info mi INNER JOIN Personal_Base_Info pbi 
-		ON mi.Personal_Id=pbi.Personal_Id WHERE mi.Logname=#{loginName} AND pbi.Personal_Phone=#{phone}
+		ON mi.Personal_Id=pbi.Personal_Id WHERE mi.Logname=#{loginName} AND pbi.Personal_Phone=HEX(AES_ENCRYPT(#{phone},#{skey}))
 	</select>
 	
 	<!-- 忘记密码-根据手机号查询用户ID -->
-	<select id="selectMemberIdByPhone"  parameterType="Map" resultType="int">
+	<select id="selectMemberIdByPhone"  parameterType="Map" resultType="long">
 		SELECT mi.Member_ID FROM member_info mi INNER JOIN Personal_Base_Info pbi 
-		ON mi.Personal_Id=pbi.Personal_Id WHERE pbi.Personal_Phone=#{phone}
+		ON mi.Personal_Id=pbi.Personal_Id WHERE pbi.Personal_Phone=HEX(AES_ENCRYPT(#{phone},#{skey}))
 	</select>
 	
 	<!-- 添加好友 -->

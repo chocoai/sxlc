@@ -11,7 +11,6 @@ import cn.sxlc.account.manager.model.AuthorizeInterfaceEntity;
 import cn.sxlc.account.manager.model.LoanTransferEntity;
 import cn.sxlc.account.manager.model.RechargeEntity;
 import cn.sxlc.account.manager.model.RepayInterfaceEntity;
-import cn.sxlc.account.manager.model.TransferSubmitEntity;
 import cn.sxlc.account.manager.model.WithdrawsInterdaceEntity;
 
 /** 
@@ -611,14 +610,13 @@ public interface ManagedInterfaceServerTestI {
 	* TODO(描述)
 	* @author 朱祖轶  
 	* * @Title: PurchaseVIP 
-	* @Description: TODO 
+	* @Description: TODO 00
 	* @param @param memberId 会员id
 	* @param @param years 购买年限
 	* @param startTime 购买开始时间
 	* @param @return 设定文件 
 	* @return LoanTransferEntity 返回类型 
 	* @date 2016-4-20 下午3:21:55
-	* @throws 
 	*/
 	public LoanTransferEntity PurchaseVIP(long memberId,int years,String startTime);
 	

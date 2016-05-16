@@ -50,30 +50,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel-body">
 							<table id="table_id" class="display">
 								<thead>
-									<tr>
-										<th></th>
-										<th>活动点名称</th>
-										<th>审批类型</th>
-										<th>操作</th>
-									</tr>
 								</thead>
 								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>活动点名称</td>
-										<td>平台审批</td>
-										<td>
-											<a href="javascript:;" class="btn-up">上移</a>
-											<a href="javascript:;" class="btn-down">下移</a>
-											<a href="javascript:;" class="btn-del">移除</a>
-										</td>
-									</tr>
-									<%
-										}
-									%>
 								</tbody>
 							</table>
 						</div>
@@ -87,36 +65,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script type="text/javascript" src="js/config/proexam-process.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-		//默认禁用搜索和排序
-		/* $.extend( $.fn.dataTable.defaults, {
-		    searching: true,
-		    ordering:  false
-		} ); */
-		$('#table_id').DataTable({
-			"scrollX":true,
-			"autoWidth" : false,
-			//scrollY : 500,
-			//paging : false,//分页
-			//"searching" : false,
-			"info" : false,//左下角信息
-			//"ordering": false,//排序
-			"aaSorting" : [],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [ 0, 1, 2, 3 ]
-			} // 制定列不参与排序
-			],
-			colReorder : false,
-			"sScrollX" : "100%",
-			"sScrollXInner" : "100%",
-			"bScrollCollapse" : true
-		});
-			</script>
+	<script type="text/javascript" src="js/config/proexam-process.js"></script>
 		</div>
 	</div>
 </body>

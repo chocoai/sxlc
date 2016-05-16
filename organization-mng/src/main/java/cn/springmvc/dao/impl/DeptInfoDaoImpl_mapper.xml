@@ -35,6 +35,9 @@
 	<select id="getListByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="deptResult">
 		select * from dept_info WHERE Dept_Statu = true 
 		<where>
+			<if test="map!=null and  map.spreDeptId >0 ">
+				and	PreDept_Id   =  #{map.spreDeptId};
+			</if>
 			<if test="map!=null and  map.deptNo != null and map.deptNo !=''">
 				and	Dept_No  LIKE '%${map.deptNo}%'
 			</if>

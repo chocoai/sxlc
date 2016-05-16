@@ -114,3 +114,11 @@ $(".obtn-exam").click(function(){
 	    btn:['确认', '取消']
     });
 });
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#applicationAudit').DataTable().ajax.reload();
+	
+});

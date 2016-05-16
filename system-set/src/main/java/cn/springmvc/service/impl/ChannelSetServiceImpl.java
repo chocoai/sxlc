@@ -14,6 +14,8 @@ import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
 
+import cn.springmvc.dao.HandleChannelSetDao;
+import cn.springmvc.dao.SelectChannelSetDao;
 import cn.springmvc.dao.impl.HandleChannelSetDaoImpl;
 import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
 import cn.springmvc.dao.impl.HandleQuickRechargeFeeDaoImpl;
@@ -22,6 +24,7 @@ import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectChannelSetDaoImpl;
 import cn.springmvc.dao.impl.SelectCreditorDaoImpl;
 import cn.springmvc.dao.impl.SelectQuickRechargeFeeDaoImpl;
+import cn.springmvc.model.AccountEscrowInterfaceEntity;
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.MailHistoryEntity;
 import cn.springmvc.model.MailSettingsEntity;
@@ -47,9 +50,9 @@ import cn.springmvc.service.QuickRechargeFeeService;
 public class ChannelSetServiceImpl implements
 ChannelSetService {
 	@Resource(name="selectChannelSetDaoImpl")
-	private SelectChannelSetDaoImpl  selectChannelSetDaoImpl;
+	private SelectChannelSetDao  selectChannelSetDaoImpl;
 	@Resource(name="handleChannelSetDaoImpl")
-	private HandleChannelSetDaoImpl  handleChannelSetDaoImpl;
+	private HandleChannelSetDao  handleChannelSetDaoImpl;
 	@Resource(name="optRecordWriteDaoImpl")
 	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
@@ -223,6 +226,11 @@ ChannelSetService {
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleChannelSetDaoImpl.SetEnableDisable(map);
+	}
+
+	@Override
+	public List<AccountEscrowInterfaceEntity> TypeAccountInterface() {
+		return selectChannelSetDaoImpl.TypeAccountInterface();
 	}
 }
 

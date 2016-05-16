@@ -72,7 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<span class="con-item textRight2">
 												<span>借款人手机号</span><input id="personalPhone" type="text" class="notspecial" />
 											</span>
-											<button class="obtn obtn-query glyphicon glyphicon-search compayrecbtn">查询</button>
+											<button type="button" class="obtn obtn-query glyphicon glyphicon-search compayrecbtn">查询</button>
 									</form>
 							  	</div>
 							 </div>

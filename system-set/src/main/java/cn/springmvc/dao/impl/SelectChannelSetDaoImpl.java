@@ -16,6 +16,7 @@ import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.dao.SelectChannelSetDao;
 import cn.springmvc.dao.SelectCreditorDao;
 import cn.springmvc.dao.SelectQuickRechargeFeeDao;
+import cn.springmvc.model.AccountEscrowInterfaceEntity;
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.MailHistoryEntity;
 import cn.springmvc.model.MailSettingsEntity;
@@ -80,7 +81,7 @@ public class SelectChannelSetDaoImpl extends SqlSessionDaoSupport implements Sel
 	public List<ThreeInterfaceEntity> selectThreeInterface(PageEntity pageEntity) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectList("ChannelSetXML.selectThreeInterface", pageEntity, new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+		return getSqlSession().selectList("ChannelSetXML.selectThreeInterface", pageEntity.getMap(), new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 	}
 
 	@Override
@@ -106,6 +107,11 @@ public class SelectChannelSetDaoImpl extends SqlSessionDaoSupport implements Sel
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("ChannelSetXML.SMSHistory", pageEntity, new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+	}
+
+	@Override
+	public List<AccountEscrowInterfaceEntity> TypeAccountInterface() {
+		return getSqlSession().selectList("ChannelSetXML.TypeAccountInterface");
 	}
 }
 

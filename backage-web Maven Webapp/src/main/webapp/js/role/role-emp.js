@@ -148,7 +148,11 @@ $(function() {
 		document.getElementById("dataForm").reset();
 		
 		validform5(".layui-layer-btn0","dataForm",false,3);
-		
+		var errorMsg = $("#errorMsg").val();
+		if(errorMsg !=null && errorMsg != ""){
+			layer.alert("redis服务异常，查询字典失败！<br>"+errorMsg,{icon:0});
+			return;
+		}
 		layer.open({
 		    type: 1,
 		    area: ['750px', '500px'], //高宽
@@ -185,6 +189,11 @@ $(function() {
 		}
 		if(data.length>1){
 			layer.alert("不能选择多条数据进行修改！",{icon:0});
+			return;
+		}
+		var errorMsg = $("#errorMsg").val();
+		if(errorMsg !=null && errorMsg != ""){
+			layer.alert("redis服务异常，查询字典失败！<br>"+errorMsg,{icon:0});
 			return;
 		}
 		$(".emp-add #personalName").val(data[0].baseInfo.personalName);

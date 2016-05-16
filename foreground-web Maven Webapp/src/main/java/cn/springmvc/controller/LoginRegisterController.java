@@ -70,7 +70,7 @@ public class LoginRegisterController {
 	 */
 	@RequestMapping(value="register",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String register(HttpServletRequest request,String logname,String memberPwd,String confirmPassword,String beinvitateCode,String personalPhone,String checkCoede,String phoneCheckCode,int memberType){
+	public String register(HttpServletResponse response,HttpServletRequest request,String logname,String memberPwd,String confirmPassword,String beinvitateCode,String personalPhone,String checkCoede,String phoneCheckCode,int memberType){
 		logger.debug("注册会员:logname(登录名)="+logname+",memberPwd(登录密码)="+memberPwd+",confirmPassword(确认密码)="+confirmPassword+",beinvitateCode(被邀请码)="+beinvitateCode+",personalPhone(手机号)="+personalPhone+",checkCoede(验证码)="+checkCoede+",phoneCheckCode(手机验证码)="+phoneCheckCode+",memberType(会员类型)="+memberType);
 		Map<String,Object> param = new HashMap<String,Object>();
 		String message = "";
@@ -113,13 +113,28 @@ public class LoginRegisterController {
 		info.setMemberType(memberType);
 		PersonalBaseInfo baseInfo = new PersonalBaseInfo();
 		baseInfo.setPersonalPhone(personalPhone);
-		int optionCode = memberService.individualMember(info, baseInfo);
+		int optionCode = memberService.individualMember(info, baseInfo);									//注册
 		if(optionCode == -1){
 			message = "用户名重复";
 		}else if(optionCode == -2){
 			message = "电话号码重复";
 		}else if(optionCode == -3){
 			message = "邀请码无效";
+		}else if(optionCode == 0){//注册成功,后直接跳转到个人中心去
+			//清除缓存中的验证码
+			Core.removeRegisterPhoneCode(personalPhone);
+			message = "注册成功";
+			MemberInfo memberinfo = memberService.findMemberInfoByParam(logname, memberPwd, memberType);	//获取信息
+			if(memberinfo != null){
+				request.getSession().setAttribute(Constant.LOGINUSER, memberinfo);
+				KeyPair keyPair =  RSAPlugn.GetKeyPair();
+				request.getSession().setAttribute(Constant.publicKey, RSAPlugn.PublicKeyToString((RSAPublicKey)keyPair.getPublic()));
+				request.getSession().setAttribute(Constant.privateKey, RSAPlugn.PrivateKeyToString((RSAPrivateKey)keyPair.getPrivate()));
+				
+				Cookie cookie = new Cookie("rememberMeInfo", logname+"-"+memberType);
+				cookie.setMaxAge(30*24*60*60);
+				response.addCookie(cookie);
+			}
 		}
 		param.put("statu",optionCode);
 		param.put("message", message);
@@ -231,7 +246,6 @@ public class LoginRegisterController {
 		return message;
 	}
 	
-	
 	/***
 	* 发送注册短信验证码
 	* @author 李杰 
@@ -267,7 +281,7 @@ public class LoginRegisterController {
 			param.put("code", code);
 			int iresult = Core.putRegisterPhoneCode(codePhone, code);
 			if(iresult == 1){
-				String[] result = sendSmsUtil.SendSms(param,0,0,null);//{"0",""};
+				String[] result ={"0",""};// sendSmsUtil.SendSms(param,0,0,null);//
 				if(result[0].equals("0")){
 					logger.debug("用户注册手机短信验证码发送成功："+codePhone+" : "+code);
 					message.put("statu", 1);
@@ -394,6 +408,23 @@ public class LoginRegisterController {
 		return JSONObject.toJSONString(param);
 	}
 	
+	
+	/***
+	 * 退出登录 
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-13 下午1:58:02
+	 */
+	@RequestMapping("exitVisit")
+	public String exit(HttpServletRequest request){
+		request.getSession().removeAttribute(Constant.LOGINUSER);
+		return "loginRegister/exitSuccess";
+	} 
+	
+	
+	
+	
 	/***
 	* 去注册成功界面
 	* 
@@ -412,8 +443,6 @@ public class LoginRegisterController {
 	public String registerSuccess(){return "loginRegister/registerSuccess";}
 	
 	
-	
-	
 	/**
 	 * 忘记密码发送手机验证码
 	* sendForgetPWDPhoneVarCode
@@ -426,25 +455,25 @@ public class LoginRegisterController {
 	* @date 2016-5-6 下午3:48:32
 	* @throws
 	 */
-	@RequestMapping(value="sendForgetPWDPhoneVarCode")
+	@RequestMapping(value="sendForgetPWDPhoneVarCode", produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public Object sendForgetPWDPhoneVarCode(HttpServletRequest request,String loginName,String phone,Integer imgCode){
 		Map<String,Object> message = new HashMap<String, Object>();
-		if(phone == null || StringUtils.checkPhone(phone)){
+		if(phone == null || !StringUtils.checkPhone(phone)){
 			message.put("statu", "2");
 			message.put("message", "请输入有效手机号");
 		}
-		
+		System.out.println(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD").toString());
 		if(imgCode == null ){
 			message.put("statu", "3");
 			message.put("checkCode", "请输入图片验证码");
-		}else if(!imgCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD").toString())){
+		}else if(!imgCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD"))){
 			message.put("statu", "4");
 			message.put("message", "图片验证码错误");
 		}
 		
 		if(message.keySet().size() > 0){
-			return message;
+			return JSONObject.toJSONString(message);
 		}
 		int result = memberService.selectMemberIsExist(loginName, phone);
 		if(result!=1){
@@ -457,7 +486,7 @@ public class LoginRegisterController {
 		logger.debug("忘记密码发送手机验证码发送成功："+phone+" : "+code);
 		message.put("statu", 1);
 		message.put("message", "验证码发送成功，请注意查收");
-		return message;
+		return JSONObject.toJSONString(message);
 	}
 	/**
 	 * 提交忘记密码申请
@@ -472,14 +501,14 @@ public class LoginRegisterController {
 	* @date 2016-5-6 下午4:13:45
 	* @throws
 	 */
-	@RequestMapping(value="checkForgetPWD")
+	@RequestMapping(value="checkForgetPWD", produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String checkForgetPWD(HttpServletRequest request , String phone,String code,String imgCode){
 		Map<String,Object> message = new HashMap<String, Object>();
 		//根据手机号取出验证码
 		String  s = Core.getForgetPWDPhoneCode(phone);
 		
-		if(code.equals(s) && imgCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD").toString())){
+		if(code.equals(s) && !imgCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD"))){
 			//验证通过  把状态存到缓存中
 			logger.debug("忘记密码手机验证码 验证通过："+phone+" : "+code);
 			Core.putForgetPWDStatu(phone, "true");
@@ -511,14 +540,35 @@ public class LoginRegisterController {
 	* @date 2016-5-6 下午5:43:34
 	* @throws
 	 */
-	@RequestMapping(value="setNewPassWord")
+	@RequestMapping(value="setNewPassWord", produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String setNewPassWord(HttpServletRequest request,String loginName , String phone , String newPassWord){
+	public String setNewPassWord(HttpServletRequest request,String loginName , String phone , String newPassWord,String imgCode){
 		Map<String,Object> message = new HashMap<String, Object>();
+		if(phone == null || !StringUtils.checkPhone(phone)){
+			message.put("statu", "2");
+			message.put("message", "请输入有效手机号");
+		}
+		System.out.println(imgCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD").toString()));
+		if(imgCode == null ){
+			message.put("statu", "3");
+			message.put("checkCode", "请输入图片验证码");
+		}else if(!imgCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD").toString())){
+			message.put("statu", "4");
+			message.put("message", "图片验证码错误");
+		}
+		
+		if(message.keySet().size() > 0){
+			return JSONObject.toJSONString(message);
+		}
+		
 		//根据手机号取出 是否通过 忘记密码的手机验证
 		String  s = Core.getForgetPWDStatu(phone);
 		
-		if(!s.equals("true")){
+		if(s==null){
+			message.put("statu", -1);
+			message.put("message", "请重新验证你的手机验证码");
+			return JSONObject.toJSONString(message);
+		}else if(!s.equals("true")){
 			message.put("statu", -1);
 			message.put("message", "请重新验证你的手机验证码");
 			return JSONObject.toJSONString(message);
@@ -527,7 +577,7 @@ public class LoginRegisterController {
 		long memberId = memberService.selectMemberIdByPhone(loginName,phone);
 		
 		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("newPassWord", newPassWord);
+		map.put("memberPwd", newPassWord);
 		map.put("memberID", memberId);
 		int result = updatePasswordService.updatepersonPassword(map);
 		

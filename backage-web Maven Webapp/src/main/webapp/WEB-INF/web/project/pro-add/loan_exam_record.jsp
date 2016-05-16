@@ -21,6 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 	<div class="container add_type_contianer">
 		<div class="panel-body">
+			<input id="applyId" type="hidden" value="${applyId}"/>
 			<table id="table_id" class="display">
 			</table>
 		</div>
@@ -37,6 +38,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					"dataSrc": "results", 
 					"type": "POST",
 					"data": function ( d ) {
+						var applyId = $("#applyId").val();
+						d.applyId=encrypt.encrypt(applyId);
 					}  
 				},
 				columns: [

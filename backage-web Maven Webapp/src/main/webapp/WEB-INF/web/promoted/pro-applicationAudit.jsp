@@ -62,7 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</select>
 									</span>
 									<span class="con-item"><span>所在地</span><input id="houseAddress" type="text" class="notspecial" /></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						 </div>
@@ -79,52 +79,51 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<table id="applicationAudit" class="display">
 								</table>
 							</div>
-							<!-- 审核弹出层2016-05-11伍成然 -->
-							<div class="layerExam">
-								<table>
-									<tr class="col-md-12">
-										<td class="tt"><label>会员编号：</label></td>
-										<td class="con">
-											<span>100001</span>
-										</td>
-									</tr>
-									<tr class="col-md-12">	
-										<td class="tt"><label>会员用户名：</label></td>
-										<td class="con">
-											<span>用户名</span>
-										</td>
-									</tr>	
-									<tr class="col-md-12">
-										<td class="tt"><label>姓名：</label></td>
-										<td class="con">
-											<span>姓名</span>
-										</td>
-									</tr>	
-									<tr class="col-md-12">	
-										<td class="tt"><label>手机号：</label></td>
-										<td class="con">
-											<span>18322224444</span>
-										</td>
-									</tr>	
-									<tr class="col-md-12">	
-										<td class="tt"><label>审核结果：</label></td>
-										<td class="con">
-											<select class="w3">
-												<option>请选择</option>
-												<option>通过</option>
-												<option>拒绝</option>
-												<option>踢出</option>
-											</select>
-										</td>
-									</tr>	
-								</table>
-							</div>
 						</div>
 					</div>
 				
 				</div>
 			</div>
-		
+			<!-- 审核弹出层2016-05-11伍成然 -->
+			<div class="layerExam" style="display:none">
+				<table>
+					<tr class="col-md-12">
+						<td class="tt"><label>会员编号：</label></td>
+						<td class="con">
+							<span>100001</span>
+						</td>
+					</tr>
+					<tr class="col-md-12">	
+						<td class="tt"><label>会员用户名：</label></td>
+						<td class="con">
+							<span>用户名</span>
+						</td>
+					</tr>	
+					<tr class="col-md-12">
+						<td class="tt"><label>姓名：</label></td>
+						<td class="con">
+							<span>姓名</span>
+						</td>
+					</tr>	
+					<tr class="col-md-12">	
+						<td class="tt"><label>手机号：</label></td>
+						<td class="con">
+							<span>18322224444</span>
+						</td>
+					</tr>	
+					<tr class="col-md-12">	
+						<td class="tt"><label>审核结果：</label></td>
+						<td class="con">
+							<select class="w3">
+								<option>请选择</option>
+								<option>通过</option>
+								<option>拒绝</option>
+								<option>踢出</option>
+							</select>
+						</td>
+					</tr>	
+				</table>
+			</div>
 			<!-- 尾部 -->
 			
 		</div>

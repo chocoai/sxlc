@@ -79,7 +79,7 @@ public class GuaranteeController {
 			req.put("companyeBLN", companyeBLN);
 			req.put("contactName", contactName);
 			req.put("contactPhone", contactPhone);
-			req.put("statu", IntegerAndString.StringToInt(recordStatus, -1));
+			req.put("recordStatus", IntegerAndString.StringToInt(recordStatus, -1));
 		
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));

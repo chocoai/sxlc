@@ -52,12 +52,12 @@
   	from Guarantee_Info gi left join personal_base_info pbi on gi.Personal_Id=pbi.Personal_Id
   	<where>
   		<!-- 编号、担保机构名称、营业执照号、联系人姓名、联系人手机号、状态 -->
-  		 <!-- <if test="map.guaranteeNo!=null">and gi.Guarantee_NO like '%${map.guaranteeNo}%'</if>
-  		<if test="map.guaranteeName != null">and gi.Guarantee_Name like '%${map.guaranteeName}%'</if>
-  		<if test="map.companyeBLN != null">and gi.Companye_BLN like '%${map.companyeBLN}%'</if>
-  		<if test="map.contactName != null">and gi.Contact_Name like '%${map.contactName}%'</if>
-  		<if test="map.contactPhone !=null">and gi.Contact_Phone like '%${map.contactPhone}%'</if>
-  		<if test="map.recordStatus != -1">and gi.Record_Status=#{map.recordStatus}</if> -->
+  		<if test="map.guaranteeNo!=null and map.guaranteeNo!=''">and gi.Guarantee_NO like '%${map.guaranteeNo}%'</if>
+  		<if test="map.guaranteeName != null  and map.guaranteeName!=''">and gi.Guarantee_Name like '%${map.guaranteeName}%'</if>
+  		<if test="map.companyeBLN != null  and map.companyeBLN!=''">and gi.Companye_BLN like '%${map.companyeBLN}%'</if>
+  		<if test="map.contactName != null  and map.contactName!=''">and gi.Contact_Name like '%${map.contactName}%'</if>
+  		<if test="map.contactPhone !=null  and map.contactPhone!=''">and gi.Contact_Phone like '%${map.contactPhone}%'</if>
+  		<if test="map.recordStatus != -1">and gi.Record_Status=#{map.recordStatus}</if>
   	</where>
   	 order by gi.Add_Time desc
   </select>
@@ -549,28 +549,28 @@
 		cc
 		<where>
 			<if test="map.projectNo != null and map.projectNo!=''">
-				projectNo like '%${map.projectNo}%'
+			AND	projectNo like '%${map.projectNo}%'
 			</if>
 			<if test="map.projectID!=-1">
-				projectID = #{map.projectID}
+			AND	projectID = #{map.projectID}
 			</if>
 			<if test="map.projectTitle != null and map.projectTitle != ''">
-				projectTitle like '%${map.projectTitle}%'
+			AND	projectTitle like '%${map.projectTitle}%'
 			</if>
 			<if test="map.logname != null and map.logname != ''">
-				logname like '%${map.logname}%'
+			AND	logname like '%${map.logname}%'
 			</if>
 			<if test="map.personalPhone != null and map.personalPhone != ''">
-				personalPhone like '%${map.personalPhone}%'
+			AND	personalPhone like '%${map.personalPhone}%'
 			</if>
 			<if test="map.personalName != null and map.personalName != ''">
-				personalName like '%${map.personalName}%'
+			AND	personalName like '%${map.personalName}%'
 			</if>
 			<if test="map.guaranteeID!=-1">
-				guaranteeID = #{map.guaranteeID}
+			AND	guaranteeID = #{map.guaranteeID}
 			</if>
 			<if test="map.isCompensatory!=-1">
-				isCompensatory= #{map.isCompensatory}
+			AND	isCompensatory= #{map.isCompensatory}
 			</if>
 		</where>
     </select>

@@ -33,8 +33,10 @@ public class IntegralMallController {
 	
 	@Autowired
 	private IIntegrallService iIntegrallService;
+	
 	@Autowired
 	private IntegralMallBannerService integralMallBannerService;
+	
 	@Autowired
 	private CommodityTypeService  commodityTypeService;  
 	

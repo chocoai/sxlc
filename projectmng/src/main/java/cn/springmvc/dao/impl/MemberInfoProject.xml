@@ -20,7 +20,6 @@
 		<result column="pbiCompany_Size" 		property="pbiCompanySize"/> 
 		<result column="Position" 		    property="position"/>  
 		<result column="workYear" 		    property="workYear"/>  
-		<result column="EducationName" 		property="educationName"/>   
 		<result column="MaritalName" 		property="maritalName"/>    
 		<result column="Start_Date" 		property="startDate"/>    
 		<result column="Establishments" 	property="establishments"/> 
@@ -29,14 +28,18 @@
 		<result column="Company_Industry" 	property="companyIndustry"/>
 		<result column="Company_Size" 		property="companySize"/>  
 		<result column="Company_Life" 		property="companyLife"/>   
+		<result column="Member_No" 		property="memberNo"/>   
+		<result column="Personal_IDCard" 		property="personalIdCard"/>   
+		<result column="Companye_BLN" 		property="companyeBLN"/>   
+		<result column="contactName" 		property="contactName"/>   
 	</resultMap> 
 	 <!-- 查询会员基本信息 -->  
 	<select id="selectMemberInfoByProjectID" parameterType="Map"  resultMap="resultListMemberInfo">
-	   select mi.Member_ID,mi.Logname, mi.Member_Type,mi.Company_ID,mi.Personal_ID,mi.Reg_Date,
-	   pd.Province_Name,cd.City_Name ,pbi.SexID,ei.EducationName, 
+	   select mi.Member_ID,mi.Logname, mi.Member_Type,mi.Company_ID,mi.Personal_ID,mi.Reg_Date,mi.Member_No,
+	   pd.Province_Name,cd.City_Name ,pbi.SexID,ei.EducationName,pbicom.Personal_Name as contactName,
 	   pji.Company_Industry as pbiCompany_Industry,pji.Company_Size as pbiCompany_Size,
-	   pji.Position,pji.Start_Date,mif.MaritalName,pbi.House_Address, 
-	   ci.Company_Industry,ci.Company_Size,ci.Company_Life,ci.Establishments,ci.Company_Address,
+	   pji.Position,pji.Start_Date,mif.MaritalName,pbi.House_Address,pbi.Personal_IDCard, 
+	   ci.Company_Industry,ci.Company_Size,ci.Company_Life,ci.Establishments,ci.Company_Address,ci.Companye_BLN,
 	   ci.Company_Capital,pji.Monthly_Income,
 	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end 

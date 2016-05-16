@@ -18,6 +18,17 @@
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)}
 	</select> 
+	
+	<resultMap type = "cn.springmvc.model.CreditorTransBaseEntity" id ="creditorTransBaseEntity">
+            <id property = "lId" 				 column = "CTA_Id" />
+			<result property = "sSurplus"    	 column = "Surplus_Time" /> 
+			<result property = "iSurplusType"    column = "Surplus_Time_Type" />
+			<result property = "sSubSurplus"     column = "Surplus_Time_Sub" />
+			<result property = "ttEndDate" 		 column = "ProEnd_Date" />
+			<result property = "sRepayWay" 		 column = "Repay_Way" />
+			<result property = "iYearRate" 		 column = "Year_Rate" />
+     </resultMap> 
+     
 	<!-- 根据项目申请ID查询项目基本信息 -->  
 	<select id="selectProjectBaseInfo"  parameterType="map" resultMap="replayProjectDetail.resultBaseInfoentity" >
 	   select pbi.Repay_Way,pbi.Year_Rate,pbi.Amount,pbi.Deadline,
@@ -25,5 +36,17 @@
        from  Project_App_Record par
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID 
 	   where  par.Apply_Id=#{id}
+    </select> 
+    
+    <!-- 根据债权转让申请ID查询债权基本信息 -->  
+	<select id="selectCreditorTransBaseInfo"  parameterType="map" resultMap="creditorTransBaseEntity" >
+	   select cta.Surplus_Time,cta.Surplus_Time_Type,cta.Surplus_Time_Sub,par.ProEnd_Date,
+	    pbi.Repay_Way,pbi.Year_Rate,par.CTA_Id
+	    from Creditor_Trans_App cta 
+	   	left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id
+	   	left join Project_App_Record par on par.Apply_Id = ir.Apply_Id
+	   	left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID 
+	   	left join Project_App_Process pap on pap.Apply_Id = par.Apply_Id
+	   where cta.CTA_Id = #{id}
     </select> 
 </mapper>

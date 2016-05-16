@@ -45,20 +45,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</tr>
 						</thead>
 						<tbody>
-							<%
-								for (int i = 0; i < 6; i++) {
-							%>
-							<tr>
-								<td><input type="checkbox"></td>
-								<td>活动点名称1</td>
-							</tr>
-							<%
-								}
-							%>
 						</tbody>
 					</table>
 					<div class="layui-layer-btn addproprocessbtn">
-						<a class="layui-layer-btn0">添加</a>
+						<a class="layui-layer-btn0" onclick = "addProgress()">添加</a>
 						<a class="layui-layer-btn1" href="web/config/proexam-process.jsp">取消</a>
 					</div>
 				</div>
@@ -66,17 +56,3 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<jsp:include page="../../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="js/config/proexam-process.js"></script>
-	<script>
-		$('#addproexamexam').DataTable({
-			//scrollY : 400,
-			"scrollX":true,
-			"aaSorting" : [  ],//默认第几个排序
-			"aoColumnDefs" : [
-			//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-			{
-				"orderable" : false,
-				"aTargets" : [0,1]
-			} // 制定列不参与排序
-			],
-		});
-	</script>

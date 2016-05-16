@@ -258,6 +258,7 @@ public class MemberInfoServiceImpl implements IMemberService{
 				}else if(ctaStatu.equals("3") || ctaStatu.equals("4")){
 					list.get(i).setStatuName("成功");
 				}
+				list.get(i).setStatu(Integer.parseInt(ctaStatu));
 				list.get(i).setLoanTypeName("债权投资");
 			}else{//项目投资
 				if (pStatu.equals("0") || pStatu.equals("2")) {
@@ -267,6 +268,7 @@ public class MemberInfoServiceImpl implements IMemberService{
 				}else if(pStatu.equals("3") || pStatu.equals("4")){
 					list.get(i).setStatuName("成功");
 				}
+				list.get(i).setStatu(Integer.parseInt(pStatu));
 				list.get(i).setLoanTypeName("项目投资");
 			}
 		}
@@ -365,6 +367,7 @@ public class MemberInfoServiceImpl implements IMemberService{
 	@Override
 	public int selectMemberIsExist(String loginName,String phone) {
 		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		param.put("loginName", loginName);
 		param.put("phone", phone);
 		return memberDao.selectMemberIsExist(param);
@@ -373,6 +376,8 @@ public class MemberInfoServiceImpl implements IMemberService{
 	@Override
 	public Long selectMemberIdByPhone(String loginName,String phone) {
 		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("loginName", loginName);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		param.put("phone", phone);
 		return memberDao.selectMemberIdByPhone(param);
 	}

@@ -18,8 +18,9 @@ import product_p2p.kit.StringUtil.StringUtils;
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.optrecord.InsertMemberLogEntity;
 import product_p2p.kit.spring.SpringUtil;
-import cn.membermng.model.MemberInfo;
+
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
+import cn.springmvc.model.MemberInfo;
 
 public class SessionCheckInterceptor implements HandlerInterceptor{
 	
@@ -113,7 +114,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 	public boolean checkParam(HttpServletRequest request){
 		//获取请求中的参数
 		Map<String,String[]> map = request.getParameterMap();
-		Map<String, String> newMap = new HashMap<>();
+		Map<String, String> newMap = new HashMap<String,String>();
 		for (String str : map.keySet()) {
 			newMap.put(str, map.get(str)[0]);
 		}

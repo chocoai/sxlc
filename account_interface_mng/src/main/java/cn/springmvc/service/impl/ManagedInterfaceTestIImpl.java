@@ -125,9 +125,9 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 			type=2;
 		}
 		//开户 界面返回通知地址
-		memberEntity.setReturnURL("http://110.185.5.33:14000/foreground-web/personalCenter/openThirdAccountCallbackPage.html");
+		memberEntity.setReturnURL("http://182.150.178.103:14000/foreground-web/personalCenter/openThirdAccountCallbackPage.html");
 		//开户 服务器返回通知地址
-		memberEntity.setNotifyURL("http://110.185.5.33:14000/foreground-web/personalCenter/openThirdAccountCallback.html");
+		memberEntity.setNotifyURL("http://182.150.178.103:14000/foreground-web/personalCenter/openThirdAccountCallback.html");
 		//开户信息提交三方地址
 		memberEntity.setSubmitURL("http://218.4.234.150:88/main/loan/toloanregisterbind.action");
 		//查询此次操作订单号
@@ -297,6 +297,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				Map<String, Object> map = new HashMap<String, Object>();
 				long iId=generatorUtil.GetId();
 				long tradeIDtow=generatorUtil.GetId();
+				long compId=generatorUtil.GetId();
 				map.put("tid", iId);//第三方账户信息id
 				map.put("merbillno", sMerBillNo);
 				map.put("backDetailEncrypt", accountInterfaceReturnEntity2.getSignInfo());
@@ -307,6 +308,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 				map.put("thirdPartymark", accountInterfaceReturnEntity2.getMoneymoremoreId());
 				map.put("openType", 1);//开户成功
 				map.put("authFee", IntegerAndString.StringToLong(accountInterfaceReturnEntity2.getAuthFee()));//实名认证手续费
+				map.put("compId", compId);
 				map.put("skey", DbKeyUtil.GetDbCodeKey());
 				map.put("tradeIDtow", tradeIDtow);
 				int relust=handleThreePartyDaoImpl.openAccountBack(map);
@@ -326,10 +328,15 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 					if(relust==2){
 						generatorUtil.SetIdUsed(iId);
 						generatorUtil.SetIdUsed(tradeIDtow);
+						
+					}
+					if (!typeS.equals("0")) {
+						generatorUtil.SetIdUsed(compId);
 					}
 				}else {
 					generatorUtil.SetIdUsedFail(iId);
 					generatorUtil.SetIdUsedFail(tradeIDtow);
+					generatorUtil.SetIdUsedFail(compId);
 				}
 			}else {
 				String remark=accountInterfaceReturnEntity2.getRemark1();//得到拼接的会员id
@@ -712,7 +719,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		withdrawalsFeeEntity=selectThreePartyDaoImpl.isWithdrawalsCheak(map);
 		
 		//管理费费率 
-		//withdrawsEntity.setsFeeRate("");
+		withdrawsEntity.setsFeeRate("");
 		withdrawalsFeeEntity.getWithdrawal_Fee_Third();
 		//平台垫付百分比
 		withdrawsEntity.setsPtRate(withdrawalsFeeEntity.getWithdrawal_Fee_Pingtai()+"");
@@ -736,7 +743,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		withdrawsEntity.setRemark2(paymentMemberType+"");
 		withdrawsEntity.setRemark3(orderNoString);
 		withdrawsEntity.setSubmitURL("http://218.4.234.150:88/main/loan/toloanwithdraws.action");
-		withdrawsEntity.setReturnURL("http://182.150.179.116:14000/loanrechargereturn.html");
+		withdrawsEntity.setReturnURL("http://182.150.178.103:14000/loanrechargereturn.html");
 		withdrawsEntity.setNotifyURL("http://182.150.179.116:14000/testLoanRechargeNotify.action");
 		//提交数据签名动作
 		String dataStr = withdrawsEntity.getWithdrawMoneymoremore()
@@ -1039,8 +1046,8 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		authorizeInterfaceEntity.setRemark2(authorizeInterfaceEntity.getMemberId()+"");
 		authorizeInterfaceEntity.setRemark3(OrderNo);
 		authorizeInterfaceEntity.setSubmitURL("http://218.4.234.150:88/main/loan/toloanauthorize.action");
-		authorizeInterfaceEntity.setReturnURL("http://182.150.179.29:14000/foreground-web/personalCenter/authorizedCallBackPage.html");
-		authorizeInterfaceEntity.setNotifyURL("http://182.150.179.29:14000/foreground-web/personalCenter/authorizedCallBack.html");
+		authorizeInterfaceEntity.setReturnURL("http://182.150.177.127:14000/foreground-web/personalCenter/authorizedCallBackPage.html");
+		authorizeInterfaceEntity.setNotifyURL("http://182.150.177.127:14000/foreground-web/personalCenter/authorizedCallBack.html");
 		String privatekey = Common.privateKeyPKCS8;
 		String dataStr = authorizeInterfaceEntity.getMoneymoremoreId() + authorizeInterfaceEntity.getPlatformMoneymoremore()
 				+ authorizeInterfaceEntity.getAuthorizeTypeOpen()
@@ -1175,6 +1182,7 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 					authorizeInterfaceReturnEntity.setStatu(1);
 				}
 			}
+			request.setAttribute("accountInterfaceReturnEntity", authorizeInterfaceReturnEntity);
 			if(authorizeInterfaceReturnEntity.getStatu()==0){//授权操作成功
 				//关闭还是开启
 				//授权
@@ -4567,6 +4575,16 @@ public class ManagedInterfaceTestIImpl implements ManagedInterfaceServerTestI{
 		loanTransferEntity.setSubmitURL(tra.getSubmitURL());
 		loanTransferEntity.setReturnURL(tra.getReturnURL()) ;
 		loanTransferEntity.setNotifyURL(tra.getNotifyURL());
+		
+		
+		
+		//------------------------------------------------------------------------------
+		loanTransferEntity.setSubmitURL("");
+		loanTransferEntity.setReturnURL("") ;
+		loanTransferEntity.setNotifyURL("http://182.150.176.114/foreground-web/invest/debtInvestmentBack.html");
+		//-----------------------------------------------------------------------------
+		
+		
 		// TODO Auto-generated method stub return null;
 		String privatekey = Common.privateKeyPKCS8;
 		String dataStr = loanTransferEntity.getLoanJsonList()

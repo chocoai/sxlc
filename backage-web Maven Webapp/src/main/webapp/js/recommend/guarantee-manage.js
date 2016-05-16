@@ -49,40 +49,70 @@ function manageAdd(){
 /* 修改担保机构信息部分开始 */
 function manageMod(){
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
-	$(".right_col").load("web/recommend/re-add/gua-manage-mod.jsp?content=" + rowdata[0].guaranteeID);
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要修改的机构！",{icon:0});
+		return;
+	}else{
+		$(".right_col").load("web/recommend/re-add/gua-manage-mod.jsp?content=" + rowdata[0].guaranteeID);
+	}
 }
 /* 修改担保机构信息部分结束*/
 /* 查看担保机构信息部分开始 */
 function checkDetail(){
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
-	$(".right_col").load("web/recommend/re-add/gua-checkDetail.jsp?content=" + rowdata[0].guaranteeID);
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要查看的机构！",{icon:0});
+		return;
+	}else{
+		$(".right_col").load("web/recommend/re-add/gua-checkDetail.jsp?content=" + rowdata[0].guaranteeID);
+	}
 }
 /* 查看担保机构信息部分结束*/
 /* 代偿记录查询部分开始 */
 function checkRecord(){
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
-	$(".right_col").load("web/recommend/re-add/checkRecord.jsp?content=" + rowdata[0].guaranteeID);
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要查看的机构！",{icon:0});
+		return;
+	}else{
+		$(".right_col").load("web/recommend/re-add/checkRecord.jsp?content=" + rowdata[0].guaranteeID);
+	}
 }
 /* 代偿记录查询部分结束 */
 
 /* 担保机构管理员管理部分开始 */
 function manageAdmain(){
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
-	$(".right_col").load("web/recommend/re-add/guaranteeAdmainManage.jsp?content=" + rowdata[0].guaranteeID);
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要查看的机构！",{icon:0});
+		return;
+	}else{
+		$(".right_col").load("web/recommend/re-add/guaranteeAdmainManage.jsp?content=" + rowdata[0].guaranteeID);
+	}
 }
 /* 担保机构管理员管理部分结束 */
 
 /* 担保项目查询部分开始  */
 function checkProject(){
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
-	$(".right_col").load("web/recommend/re-add/checkProject.jsp?content=" + rowdata[0].guaranteeID);
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要查看的机构！",{icon:0});
+		return;
+	}else{
+		$(".right_col").load("web/recommend/re-add/checkProject.jsp?content=" + rowdata[0].guaranteeID);
+	}
 }
 /* 担保项目查询部分结束  */
 
 /* 代偿回款记录查询部分开始 */
 function checkPayment(){
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
-	$(".right_col").load("web/recommend/re-add/checkPayment.jsp?content=" + rowdata[0].guaranteeID);
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要查看的机构！",{icon:0});
+		return;
+	}else{
+		$(".right_col").load("web/recommend/re-add/checkPayment.jsp?content=" + rowdata[0].guaranteeID);
+	}
 }
 /* 代偿回款记录查询部分结束 */
 
@@ -190,5 +220,13 @@ $(function() {
  $('#table_id tbody').on( 'click', 'tr', function () {
         $(this).toggleClass('selected');
   });
+});
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#table_id').DataTable().ajax.reload();
+	
 });
 

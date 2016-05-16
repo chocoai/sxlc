@@ -5,22 +5,23 @@
         <id column="Process_ID"  property="id" />
 		<result column="AP_Name" property="apName" />
 		<result column="Role_ID" property="roleID" /> 
+		<result column="Role_Type" property="roleType" /> 
 		<result column="Statu"   property="statu" /> 
 		<result column="optName" property="optName" />
     </resultMap> 
     <!-- 分页查询项目审批活动点列表 -->  
 	<select id="selectActivitiesProjectList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListActivitiesProject">
-	   select ap.Process_ID,ap.AP_Name,ap.Role_ID,op.optName
+	   select ap.Process_ID,ap.Role_Type,ap.AP_Name,ap.Role_ID,ap.Statu,op.optName
 	   from  Activities_Project ap
 	   LEFT JOIN operation op on op.optID=ap.Role_ID
-           <where>  
+          <!--  <where>  
 	            <if test="map.apName != null">  
 	                ap.AP_Name like  '%${map.apName}%'  
 	            </if>   
 	            <if test="map.statu != -1">  
 	                and ap.Statu=#{map.statu}
 	            </if>   
-           </where>  
+           </where>   -->
     </select>       
 	<!-- 新增项目审批活动点 -->  
  	 <select id="insertActivitiesProject"  statementType="CALLABLE" parameterType="cn.springmvc.model.ActivitiesProjectEntity"> 
@@ -43,11 +44,11 @@
 	<update id="updateActivitiesProjectByID"  parameterType="cn.springmvc.model.ActivitiesProjectEntity">
 	   update  Activities_Project 
 	   <set>
-	       <if test="apName != null" >
+	       <if test="apName != null and  apName !='' " >
 	         AP_Name=#{apName},
 	       </if> 
-	       <if test="roleID != 0" >
-	         Role_ID=#{roleID},
+	       <if test="roleType != 0" >
+	         Role_Type=#{roleType},
 	       </if>
 	    </set>  
 	   where Process_ID=#{id} 
@@ -62,7 +63,7 @@
 	   and Process_ID not in ( select Process_ID from  Process_Project )  
     </update> 
     <!-- 根据ID查询审批活动点-->  
-	<select id="selectActivitiesProjectByID"  parameterType="int" resultMap="resultListActivitiesProject" >
+	<select id="selectActivitiesProjectByID"  parameterType="long" resultMap="resultListActivitiesProject" >
 	   select Process_ID,AP_Name,Role_ID,Statu from  Activities_Project where Process_ID =#{id};  
     </select>        
 </mapper>   

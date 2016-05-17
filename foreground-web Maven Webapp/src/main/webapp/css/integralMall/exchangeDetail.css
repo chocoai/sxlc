@@ -1,6 +1,6 @@
 /* CSS Document */
 @charset "UTF-8";
-/* ÉèÖÃ¶¥²¿Á´½ÓÑùÊ½ */
+/* ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .intergralMallCommon .mainPageTop2{
 	color:#72c0f3;
 }
@@ -21,7 +21,7 @@
 .nowPositionContent span{
 	color:#111 !important;
 }
-/* ÉÌÆ·ÏêÇé¾ßÌå²¿·Ö */
+/* ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å²¿ï¿½ï¿½ */
 .productListArea{
 	width:100%;
 	min-width:1200px;
@@ -30,7 +30,7 @@
 	width:1200px;
 	margin:0 auto 20px auto;
 }
-/* ÉÌÆ·ÏêÇé¾ßÌåÄÚÈÝ²¿·Ö */
+/* ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ */
 .productInfo{
 	background:#fff;
 	padding:30px 40px 0 40px;
@@ -110,7 +110,7 @@
 	border-bottom:1px dashed #dedede;
 	cursor:pointer;
 }
-/* µã»÷ÉèÖÃÄ¬ÈÏµØÖ·Ê±Ìí¼Ó´ËÑùÊ½   */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½Ïµï¿½Ö·Ê±ï¿½ï¿½Ó´ï¿½ï¿½ï¿½Ê½   */
 .addressUlLi{
 	background:url(../../resource/img/integralMall/jfsc_28.png) no-repeat;
 }
@@ -246,7 +246,7 @@
 .updateHover{
 	background:none !important;
 }
-/* ulÄ£Äâselect¹²ÓÃÑùÊ½ */
+/* ulÄ£ï¿½ï¿½selectï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .selectValue{
 	display: none;
 }
@@ -352,3 +352,4 @@
 	background-color: #38aaf4;
 	cursor: pointer;
 }
+.goodsImg{width: 122px;height: 115px;}

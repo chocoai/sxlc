@@ -104,7 +104,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<tr class="col-md-6">
 										<td class="tt"><label>借款金额：</label></td>
 										<td class="con">
-											<span class="moneyFormat">${proPurpose.amount}</span>元
+											<span>${proPurpose.amount}</span>元
 										</td>
 									</tr>
 									<tr class="col-md-6">
@@ -377,9 +377,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<tr class="col-md-8 col-md-offset-4">
 										<td class="tt"></td>
 										<td class="con">
-											<button type="submit" class="btn btn-success appendixUpload">上传申请附件</button>
-											<button type="submit" class="btn btn-success btn-pre">保存</button>
-											<button type="submit" class="btn btn-default beforeBtn">返回</button>
+											<button type="button" class="btn btn-success appendixUpload">上传申请附件</button>
+											<button type="button" class="btn btn-success btn-pre">保存</button>
+											<button type="button" class="btn btn-default beforeBtn">返回</button>
 										</td>
 									</tr>
 								</table>
@@ -447,12 +447,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											    <span class="rec-dimensions">*可图片、文档、压缩包</span>
 											</div>
 										</td>
-									</tr><!-- 附件添加结束 -->
+									</tr>
+									<tr class="col-md-12">
+										<td class="tt" valign="top"></td>
+										<td class="con" id="fileList"></td>
+									</tr>
+									<!-- 附件添加结束 -->
 									<tr class="col-md-8 col-md-offset-4">
 										<td class="tt"></td>
 										<td class="con">
-											<button type="submit" class="btn btn-success preBack">保存并返回</button>
-											<button type="submit" class="btn btn-default cancel">取消</button>
+											<button type="button" class="btn btn-success preBack">保存并返回</button>
+											<button type="button" class="btn btn-default cancel">取消</button>
 										</td>
 									</tr>
 								</table>

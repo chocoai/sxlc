@@ -22,7 +22,7 @@ function changeNum(){
 }
 
 //function
-//根据id获取商品详情
+//itemDetail根据id获取商品详情
 function getGoodsInfo(){
 	var temp = window.location.href;
 	goodsId = temp.split("goodsId=")[1];
@@ -43,6 +43,7 @@ function getGoodsInfo(){
 				var html = template("goodsDet", data);
 				$("#productListArea").append(html);		//填充数据
 				changeNum();
+				toExchangeDetail();
 			}else{
 				
 			}
@@ -51,5 +52,16 @@ function getGoodsInfo(){
 		error:function(){
 			layer.alert("请求异常，请稍后再试",{icon:2});
 		}*/
+	});
+}
+
+//点击到兑换详情页面，传递数量
+function toExchangeDetail(){
+	$(".buy").click(function(){
+		var count = $("#count").val();//兑换数量
+		if(count){
+			var newLink = $(this).attr("data-href")+"?count="+count;
+			window.location.href = newLink;
+		}
 	});
 }

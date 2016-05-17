@@ -48,7 +48,9 @@ $(function(){
 				          },  
 				          { title:"项目类型简介","data": "briefIntroduction", 
 				        	  "mRender": function (data, type, full) {
-				        		  	if(data.length>8){//当内容长度大于8时隐藏详细信息
+				        		  	if(data==null){
+				        		  		return "";
+				        	  		}else if(data.length>8){//当内容长度大于8时隐藏详细信息
 				        	    		return ' <a href="javascript:;" onclick="showText(this)" title="项目详情">'+data.substring(0,7)+'...</a>';
 				        	    	}else {
 				        	    		return data;
@@ -92,7 +94,7 @@ $(function(){
 			  scrollXInner : "100%",
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          }
-	 
+	
 	});//表格初始化完毕
 	 
 	//表格单选效果(有复选框)
@@ -219,7 +221,7 @@ function showDetail(type){
 //		$(".right_col").load("project/toProTypeDetail");
 		window.location.href=appPath+"/project/toProTypeDetail";
 	}else if(type==2){
-		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的数据！",{icon:0});
 			return;

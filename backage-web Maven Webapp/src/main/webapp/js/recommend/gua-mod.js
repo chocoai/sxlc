@@ -39,6 +39,7 @@ $(function () {
 });
 //修改担保机构
 function modgua () {
+	var guId = $("#guId").val();
 	var guaranteeName = encrypt.encrypt($("#guaranteeName").val());
 	var companyeBLN = encrypt.encrypt($("#companyeBLN").val() + "");
 	var companyOC = encrypt.encrypt($("#companyOC").val() + "");
@@ -83,18 +84,18 @@ function modgua () {
 			},
 		success : function (data) {
 			if (data == 0) {
-				layer.alert("添加成功",{icon:1});  
-				document.getElementById("manageAdd").reset();
+				layer.alert("修改成功",{icon:1});  
+				document.getElementById("manageMod").reset();
 				setTimeout('location.reload()',2000);
 			}else if (data == -1) {
 				layer.alert("担保机构名称存在",{icon:2});
-				document.getElementById("manageAdd").reset();
+				document.getElementById("manageMod").reset();
 			}else if (data == -2) {
 				layer.alert("营业执照号已存在",{icon:2});
-				document.getElementById("manageAdd").reset();
+				document.getElementById("manageMod").reset();
 			}else {
 				layer.alert("服务器异常",{icon:2});
-				document.getElementById("manageAdd").reset();
+				document.getElementById("manageMod").reset();
 			}
 		}
 	});

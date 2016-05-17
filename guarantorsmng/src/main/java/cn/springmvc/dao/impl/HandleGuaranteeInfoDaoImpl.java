@@ -1,6 +1,7 @@
 
 package cn.springmvc.dao.impl; 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
+import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.HandleGuaranteeInfoDao;
@@ -36,10 +39,10 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
-
+	IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 	@Override
 	public Map<String, Object> handleGuaranteeInfo(Map<String, Object> map) {
-		
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
 		getSqlSession().selectOne("GuaranteeInfoXML.handleGuaranteeInfo", map);
 		return map;
@@ -140,10 +143,24 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 
 
 	@Override
-	public int insertGuaranteeAdmin(Map<String, Object> map) {
-		
+	public int insertGuaranteeAdmin(long staffId,String adminName,String adminPwd,String adminRemark,int stype) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		long adminID= generatorUtil.GetId();
+		map.put("adminID", adminID);
+		map.put("staffId", staffId);
+		map.put("adminName", adminName);
+		map.put("adminPwd", adminPwd);
+		map.put("adminRemark", adminRemark);
+		map.put("stype", stype);
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().insert("GuaranteeInfoXML.insertGuaranteeAdmin", map);
+		getSqlSession().selectOne("GuaranteeInfoXML.insertGuaranteeAdmin", map);
+		int result= IntegerAndString.StringToInt(map.get("result").toString(), 0);
+		if (result==1) {
+			generatorUtil.SetIdUsed(adminID);
+		}else {
+			generatorUtil.SetIdUsedFail(adminID);
+		}
+		return result;
 	}
 	@Override
 	public int updateGuaranteeAdmin(Map<String, Object> map) {
@@ -162,6 +179,17 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 		
 		// TODO Auto-generated method stub return 0;
 		return getSqlSession().update("GuaranteeInfoXML.updateManagementAdmin",map);
+	}
+	@Override
+	public int updateMGAdmin(String adminName, String adminPwd,
+			String adminRemark, long adminId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("adminName", adminName);
+		map.put("adminPwd", adminPwd);
+		map.put("adminRemark", adminRemark);
+		map.put("adminId", adminId);
+		// TODO Auto-generated method stub return 0;
+		return getSqlSession().update("GuaranteeInfoXML.updateMGAdmin",map);
 	}
 }
 

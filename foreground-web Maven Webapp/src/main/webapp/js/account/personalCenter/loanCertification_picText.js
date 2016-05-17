@@ -80,6 +80,7 @@ $(function(){
 		area=encrypt.encrypt(area+"");
 		value=encrypt.encrypt(value+"");
 		cid=encrypt.encrypt(cid+"");
+		annex = encrypt.encrypt(annex+"");
 		var str_url="personalCenter/authHousing.html";
 		NetUtil.ajax(
 			str_url,
@@ -269,16 +270,30 @@ $(function(){
 			var homeAddress=data[0].homeAddress;//房屋地址
 			var value=data[0].value;//价值
 			var cid=data[0].rid;//认证ID	
-			
+			var statu = data.status;
+			if(statu=="0" || statu=="3" || statu=="4"){
+				$(".editType").val("0");
+			}else{
+				$(".editType").val("1");
+			}
 			$(".area").val(area);
 			$(".dateSelect").val(sEndDate);
 			$(".address").val(homeAddress);
 			$(".value").val(value);
 			$(".cid").val(cid);
-			$(".editType").val("1");
-			$(".previewHide").val(data[0].attachPath);
-			$("#previewImg").attr("src",attachPath);
-			$(".previewHide").attr("id","1");
+//			$(".previewHide").val(data[0].attachPath);
+//			$("#previewImg").attr("src",attachPath);
+//			$(".previewHide").attr("id","1");
+//			console.log(data);
+			var arr = data[0].attachPath.split(",");
+			var str = "";
+			for (var a = 0;a<arr.length;a++){
+				str += "<div class='authPreviDiv'>"+
+   				"<img class='previewImg'  src='"+attachPrefix+arr[a]+"'>"+
+   				"<input type='hidden' class='previewHide' value='"+arr[a]+"' />"+
+   				"</div>";
+			};
+			$(".authPreviDiv_u").html(str);
 		}		
 	}
 	
@@ -296,18 +311,29 @@ $(function(){
 			var value=data[0].value;//价值
 			var cid=data[0].rid;
 			var attachPath=attachPrefix+""+data[0].attachPath;//附件
-			
+			var statu = data.status;
+			if(statu=="0" || statu=="3" || statu=="4"){
+				$(".editType").val("0");
+			}else{
+				$(".editType").val("1");
+			}
 			$(".brand").val(brand);
 			$(".dateSelect").val(sEndDate);
 			$(".model").val(model);
 			$(".licensePlate").val(licensePlate);
 			$(".value").val(value);
 			$(".cid").val(cid);
-			$(".editType").val("1");
-			$(".previewHide").val(data[0].attachPath);
-			$("#previewImg").attr("src",attachPath);
-			$(".previewHide").attr("id","1");			
-			
+//			$(".previewHide").val(data[0].attachPath);
+//			$("#previewImg").attr("src",attachPath);
+			var arr = data[0].attachPath.split(",");
+			var str = "";
+			for (var a = 0;a<arr.length;a++){
+				str += "<div class='authPreviDiv'>"+
+   				"<img class='previewImg'  src='"+attachPrefix+arr[a]+"'>"+
+   				"<input type='hidden' class='previewHide' value='"+arr[a]+"' />"+
+   				"</div>";
+			};
+			$(".authPreviDiv_u").html(str);
 		}
 	}
 	
@@ -323,11 +349,26 @@ $(function(){
 			var sEndDate=data.sEndDate;//登记时间
 			var cid=data.rid;
 			var attachPath=attachPrefix+""+data.attachPath;//附件
+			var statu = data.status;
+			if(statu=="0" || statu=="3" || statu=="4"){
+				$(".editType").val("0");
+			}else{
+				$(".editType").val("1");
+			}
 			$(".dateSelect").val(sEndDate);
-			$(".editType").val("1");
 			$(".previewHide").val(attachPath);
-			$("#previewImg").attr("src",attachPath);
-			$(".previewHide").attr("id","1");	
+//			$("#previewImg").attr("src",attachPath);
+//			$(".previewHide").attr("id","1");	
+			var arr = data.attachPath.split(",");
+			var str = "";
+			for (var a = 0;a<arr.length;a++){
+				str += "<div class='authPreviDiv'>"+
+   				"<img class='previewImg'  src='"+data.attachPrefix+arr[a]+"'>"+
+   				"<input type='hidden' class='previewHide' value='"+arr[a]+"' />"+
+   				"</div>";
+			};
+			$(".authPreviDiv_u").html(str);
+			
 			$(".radio").each(function(){
 				var val=$(this).attr("value");
 				if(val==marriageType){

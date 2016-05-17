@@ -39,7 +39,7 @@
 		   					</li>
 		   					<li class="contetnList">
 		   						<label>新手机号码：</label>
-		   						<input class="email newphone" type="text" lang="请输入您的新手机号" datatype="zPhone" maxlength="11" >
+		   						<input class="email newphone" type="text" disabled lang="请输入您的新手机号" datatype="zPhone" maxlength="11" >
 		   					</li>
 		   					<li class="contetnList">
 		   						<label>验证码：</label>
@@ -52,7 +52,7 @@
 		   						<label>手机验证码：</label>
 		   						<div class="dynamicValidationPhone">
 		   							<input class="code codeGet dynamicCode" type="text" lang="请输入验证码" datatype="Z6" maxlength="6" >
-		   							<div class="codeBtn">获取验证码</div>
+		   							<div class="codeBtn disabled">获取验证码</div>
 		   						</div>
 		   					</li>
 		   					<li class="contetnList">

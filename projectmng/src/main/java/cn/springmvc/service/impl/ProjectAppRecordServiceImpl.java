@@ -68,7 +68,7 @@ public class ProjectAppRecordServiceImpl implements ProjectAppRecordService {
 	@Override
 	public int handleProjectAppRecord(Map<String, Object> map,
 			InsertAdminLogEntity entity, String[] sIpInfo) {
-		entity.setsDetail("借款意向补充资料"+map.toString());
+//		entity.setsDetail("借款意向补充资料"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return null;
 		long parId = generatorUtil.GetId();

@@ -21,7 +21,14 @@ import product_p2p.kit.datatrans.IntegerAndString;
  * @date 2016-5-12 下午1:36:35  */
 
 public class LoanProjectEntity {
-    private String  realEndDate;      //融资结束时间
+	private Long  applyID;    		  //项目ID
+    public Long getApplyID() {
+		return applyID;
+	}
+	public void setApplyID(Long applyID) {
+		this.applyID = applyID;
+	}
+	private String  realEndDate;      //融资结束时间
     private String  projectNo;        //项目编号
     private String  projectName;      //项目类型名称
     private String  projectTitle;     // 项目标题

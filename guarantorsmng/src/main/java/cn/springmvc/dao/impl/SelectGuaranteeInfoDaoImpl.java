@@ -1,6 +1,7 @@
 
 package cn.springmvc.dao.impl; 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +12,11 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.SelectGuaranteeInfoDao;
+import cn.springmvc.model.AdminGMEntity;
 import cn.springmvc.model.CompensationStatisticsEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBankCard;
@@ -49,7 +52,7 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 	/* *  *  * @return * @see cn.springmvc.dao.SelectGuaranteeInfoDao#selectGuaranteeInfoById(java.util.Map) */
 	@Override
 	public GuaranteeInfoEntity selectGuaranteeInfoById(Map<String, Object> map) {
-		
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectOne("GuaranteeInfoXML.selectGuaranteeInfoById",map);
 	}
@@ -57,10 +60,11 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 	
 	/* *  *  * @param pageEntity
 	/* *  *  * @return * @see cn.springmvc.dao.SelectGuaranteeInfoDao#selectAllGuaranteeInfo(product_p2p.kit.pageselect.PageEntity) */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<GuaranteeInfoEntity> selectAllGuaranteeInfo(
 			PageEntity pageEntity) {
-		
+		pageEntity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("GuaranteeInfoXML.selectAllGuaranteeInfo", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 	}
@@ -195,6 +199,13 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("GuaranteeInfoXML.findbankcardforguaranteeID", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
+	}
+	@Override
+	public AdminGMEntity selectAdmin(long adminID) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("adminId", adminID);
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectOne("GuaranteeInfoXML.selectAdmin",map);
 	}
 }
 

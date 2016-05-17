@@ -28,21 +28,21 @@ $(function(){
 				          },
 				          { title:"会员编号","data": "memberNo"},  
 				          { title:"会员用户名","data": "logname"},  
-				          { title:"会员名称","data": "PersonalName", 
+				          { title:"会员名称","data": "personalName", 
 				        	  "mRender": function (data, type, full) {
 				        		  	if(data !=null && data !=''){
 				        	    		return data;
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
-				          { title:"会员联系号码","data": "PersonalPhone", 
+				          { title:"会员联系号码","data": "personalPhone", 
 				        	  "mRender": function (data, type, full) {
 				        		  if(data !=null && data !=''){
 				        	    		return data;
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -59,7 +59,7 @@ $(function(){
 				        	    	}else if(data == 3){
 				        	    		return "等额本金";
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -67,7 +67,9 @@ $(function(){
 				          { title:"还款来源","data": "repaySource"},  
 				          { title:"借款描述","data": "projectDescript", 
 				        	  "mRender": function (data, type, full) {
-				        		  	if(data.length>8){//当内容长度大于8时隐藏详细信息
+				        		  	if(data==null){
+				        		  		return "";
+				        	  		}else if(data.length>8){//当内容长度大于8时隐藏详细信息
 				        	    		return ' <a href="javascript:;" onclick="showText(this)" title="借款描述">'+data.substring(0,7)+'...</a>';
 				        	    	}else {
 				        	    		return data;
@@ -83,7 +85,7 @@ $(function(){
 				        		  }else if(data==2){
 				        			  return full.deadline+"年标";
 				        		  }else{
-				        			  return "无数据";
+				        			  return "";
 				        		  }
 				        	  }
 				          },  
@@ -151,7 +153,7 @@ $(function(){
 	validform5("layui-layer-btn0","saveNotice",true,"3");
 	//查看审批记录
 	$('#loan_exam_record').on('click', function(){
-		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 				layer.alert("请选择要查看的项目！",{icon:0});
 				return;
@@ -168,7 +170,7 @@ $(function(){
 	});
 	//拒绝借款
 	$('#refuse_payment').on('click', function(){
-		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 				layer.alert("请选择要拒绝借款的会员！",{icon:0});
 				return;
@@ -202,7 +204,7 @@ $(function(){
 	});
 	//借款会员拉黑
 	$("#loan_member_black").on("click",function(){
-		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 				layer.alert("请选择要拉黑的会员！",{icon:0});
 				return;
@@ -234,7 +236,7 @@ $(function(){
 });
 /******补充资料*******/
 function addInfo(){
-	var data = $('#table_id').DataTable().rows('.selected').data(); 
+	var data = $('#table_id').DataTable().rows('.selected').data();
 	if(data.length<1){
 			layer.alert("请选择要操作的数据！",{icon:0});
 			return;
@@ -246,7 +248,7 @@ function addInfo(){
 }
 /******查看借款项目详情*******/
 function view_detail(){
-	var data = $('#table_id').DataTable().rows('.selected').data(); 
+	var data = $('#table_id').DataTable().rows('.selected').data();
 	if(data.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;
@@ -256,7 +258,7 @@ function view_detail(){
 }
 /******分配理财顾问*******/
 function allocation(){
-		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 				layer.alert("请选择要操作的数据！",{icon:0});
 				return;

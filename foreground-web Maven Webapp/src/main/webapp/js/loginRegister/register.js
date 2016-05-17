@@ -28,17 +28,15 @@ $(function(){
 	/*同意条款*/	
 	$(".check-box").click(function(){
 		if($(".checkBox").hasClass("active"))
-		{
-			$(".checkBox").removeClass("active");
-		}
+			{
+				$(".checkBox").removeClass("active");
+			}
 		else
-		{
-			$(".checkBox").addClass("active");	
-		}
+			{
+				$(".checkBox").addClass("active");	
+			}
 	});
 });
-
-/*弹出层:提示输入手机号&提示密码*/
 
 
 
@@ -79,73 +77,105 @@ $(function(){
 	$(".get-tel-check").on("click",function(){
 		$item = $(this);
 		var phone = $(this).parent().parent().parent().find(".input-tel-num").val();
-		alert(phone);
+		var imgCode = $(this).parent().parent().parent().find(".img-check").val();
+		if (imgCode == "请输入图形验证码"){
+			layer.alert("请输入图形验证码");
+			return false;
+		}
+		var data = {codePhone:phone,imgCheckCode:imgCode};
+		var vsign = sendBef(data);
 		$.ajax({
 			url:"sendRegisterPhoneVarCode.html",
 			type:"post",
 			dataType:"json",
-			data:{codePhone:phone},
+			data:{codePhone:phone,imgCheckCode:imgCode,sign:vsign},
 			success:function(json){
 				if(json.statu == 1){
-					$item.val("已发送");
+					layer.alert("发送成功",function(index){
+						layer.close(index);
+						var setTime = 60 ; //60秒
+						$item.addClass("disabled");
+						var run = setInterval(function(){
+							$item.val(setTime+"s");
+							setTime--;
+							if (setTime <= 0 ){
+								clearInterval(run);
+								$item.val("重新发送");
+								$item.removeClass("disabled");
+							}
+						},1000);
+					})
 				}else{
-					$item.val("发送失败");
+					layer.alert(json.message,function(index){
+						layer.close(index);
+						$(".imgCode").attr("src","authImage.html?parma="+Math.random() * 10);
+						$item.val("重新发送");
+					})
 				}
 			}
 		});
 	});
-	setTimeout(function(){
-		$(".get-tel-check").val("重新获取")
-	},30000);
 });
-
-	
-	
-function checkPersonalName(memberName){
-	if(memberName == undefined || memberName == null || memberName == ""){
-		return false;
-	}
-	$.ajax({
-		url:"checkName.html",
-		type:"post",
-		data:{userName:memberName},
-		success:function(json){
-			return json;
-		}
-	});
-}
-
-function checkPersonalPhone(phone){
-	if(phone == undefined || phone == null || phone == ""){
-		return false;
-	}
-	$.ajax({
-		url:"checkPhone.html",
-		type:"post",
-		data:{phone:phone},
-		success:function(json){
-			return json;
-		}
-	});
-}
-
-function checkCountInvitateCode(sinvitateCode){
-	if(invitateCode == undefined || invitateCode == null || invitateCode == ""){
-		return false;
-	}
-	$.ajax({
-		url:"countInvitateCode.html",
-		type:"post",
-		data:{invitateCode:sinvitateCode},
-		success:function(json){
-			return json;
-		}
-	});
-}
-
 
 /* 验证     */
 $(function(){
+	$(".persolName").blur(function(){
+		var $that = $(this);
+		if ($that.next().hasClass("Validform_right")){
+			NetUtil.ajax(
+					"checkName.html",
+					{param:$(this).val()},
+					function(r){
+						var data = JSON.parse(r);
+						if (data.status == "y"){
+							$that.next().removeClass("Validform_wrong").addClass("Validform_right").html("")
+						}else{
+							$that.next().removeClass("Validform_right").addClass("Validform_wrong").html(data.info)
+						}
+					}
+			)
+		}
+	})
+	
+	$(".persolPhone").blur(function(){
+		var $that = $(this);
+		if ($that.next().hasClass("Validform_right")){
+			NetUtil.ajax(
+					"checkPhone.html",
+					{param:$(this).val()},
+					function(r){
+						var data = JSON.parse(r);
+						if (data.status == "y"){
+							$that.next().removeClass("Validform_wrong").addClass("Validform_right").html("")
+						}else{
+							$that.next().removeClass("Validform_right").addClass("Validform_wrong").html(data.info)
+						}
+					}
+			)
+		}
+	})
+	
+	$(".yaoqing").blur(function(){
+		var $that = $(this);
+		if ($(this).val()!=""&&$(this).val()!="请输入邀请码"){
+			NetUtil.ajax(
+					"countInvitateCode.html",
+					{param:$(this).val()},
+					function(r){
+//						console.log(r);
+						var data = JSON.parse(r);
+						if (data.status == "y"){
+							$that.next().removeClass("Validform_wrong").addClass("Validform_right").html("")
+						}else{
+							$that.next().removeClass("Validform_right").addClass("Validform_wrong").html(data.info)
+						}
+					}
+			)
+		}
+	})
+	
+	
+	
 	var data = {};
 	var app = $("#testbox").Validform({
 		tiptype:3,//提示信息类型
@@ -177,7 +207,10 @@ $(function(){
 			return true;
 			*/
 			
-			
+			if (!$("#checkRule1").hasClass("active")){
+				layer.alert("请同意注册协议条款");
+				return false
+			}
 			
 			var userName = $(".content1 .input-user-name").val();
 			var userPhone= $(".content1 .input-tel-num").val();
@@ -196,24 +229,32 @@ $(function(){
 			sendDate.logname = userName;
 			sendDate.memberPwd = userpassword;
 			sendDate.confirmPassword = ruserpassword;
-			sendDate.beinvitateCode = inviteCode;
+			if (inviteCode != "请输入邀请码"){
+				sendDate.beinvitateCode = inviteCode;
+			}
 			sendDate.personalPhone = userPhone;
 			sendDate.checkCoede = imgCheck;
 			sendDate.phoneCheckCode = telCheck;
 			sendDate.memberType = optionsRadios;
 			
-			
 			var vsign = sendBef(sendDate);
+			sendDate.sign = vsign;
 			$.ajax({
 				url:"register.html",
 				type:"post",
 				dataType:"json",
-				data:{sign:vsign,logname:userName,memberPwd:userpassword,confirmPassword:ruserpassword,beinvitateCode:inviteCode,personalPhone:userPhone,checkCoede:imgCheck,phoneCheckCode:telCheck,memberType:optionsRadios},
+				data:sendDate,
 				success:function(json){
 					if(json.statu == 0){
-						alert("注册成功");
+						layer.alert("注册成功",function(){
+							window.location.href="accountOverview/accountOverview.html";
+						});
 					}else{
-						alert(json.message);
+						layer.alert(json.message,function(index){
+							layer.close(index);
+							$(".imgCode").attr("src","authImage.html?parma="+Math.random() * 10);
+						});
+						
 					}
 				}
 			});
@@ -221,19 +262,6 @@ $(function(){
 	    }
 	});
 	
-	app.addRule([{
-        ele: ".input-user-name",
-        //datatype: "logname",
-        nullmsg: "请输入用户名！",
-        ajaxurl: "checkName.html",
-        errormsg: "用户名由 6-18位的字母下划线和数字组成！至少6个字符,最多18个字符！"
-    },{
-        ele: ".input-tel-num",
-        //datatype: "logname",
-        //nullmsg: "请输入用户名！",
-        ajaxurl: "checkPhone.html",
-        //errormsg: "用户名由 6-18位的字母下划线和数字组成！至少6个字符,最多18个字符！"
-    }]);
 	
 	function getData(){
 		//var data = {};
@@ -258,6 +286,12 @@ $(function(){
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,
 		beforeSubmit:function(){
+			
+			if (!$("#checkRule2").hasClass("active")){
+				layer.alert("请同意注册协议条款")
+				return false
+			}
+			
 			var userName = $(".content2 .input-user-name").val();
 			var userPhone= $(".content2 .input-tel-num").val();
 			var userpassword= $(".content2 .input-password").val();
@@ -275,25 +309,32 @@ $(function(){
 			sendDate.logname = userName;
 			sendDate.memberPwd = userpassword;
 			sendDate.confirmPassword = ruserpassword;
-			sendDate.beinvitateCode = inviteCode;
+			
+			if (inviteCode != "请输入邀请码"){
+				sendDate.beinvitateCode = inviteCode;
+			}
 			sendDate.personalPhone = userPhone;
 			sendDate.checkCoede = imgCheck;
 			sendDate.phoneCheckCode = telCheck;
 			sendDate.memberType = optionsRadios;
 			
-			
 			var vsign = sendBef(sendDate);
-			//console.log(vsign);
+			sendDate.sign = vsign;
 			$.ajax({
 				url:"register.html",
 				type:"post",
 				dataType:"json",
-				data:{sign:vsign,logname:userName,memberPwd:userpassword,confirmPassword:ruserpassword,beinvitateCode:inviteCode,personalPhone:userPhone,checkCoede:imgCheck,phoneCheckCode:telCheck,memberType:optionsRadios},
+				data:sendDate,
 				success:function(json){
 					if(json.statu == 0){
-						alert("注册成功");
+						layer.alert("注册成功",function(){
+							window.location.href="accountOverview/accountOverview.html";
+						});
 					}else{
-						alert(json.message);
+						layer.alert(json.message,function(index){
+							layer.close(index)
+							$(".imgCode").attr("src","authImage.html?parma="+Math.random() * 10);
+						});
 					}
 				}
 			});
@@ -302,20 +343,9 @@ $(function(){
 	});
 	
 	
-	app2.addRule([{
-        ele: ".input-user-name",
-        //datatype: "logname",
-        nullmsg: "请输入用户名！",
-        ajaxurl: "checkName.html",
-        errormsg: "用户名由 6-18位的字母下划线和数字组成！至少6个字符,最多18个字符！"
-    },{
-        ele: ".input-tel-num",
-        //datatype: "logname",
-        //nullmsg: "请输入用户名！",
-        ajaxurl: "checkPhone.html",
-        //errormsg: "用户名由 6-18位的字母下划线和数字组成！至少6个字符,最多18个字符！"
-    }]);
-	
+	$(".imgCode").on("click",function(){
+		$(".imgCode").attr("src","authImage.html?parma="+Math.random() * 10);
+	});
 });
 
 function sendBef(params){
@@ -331,8 +361,8 @@ function sendBef(params){
             code += key;
             code += params[key];
         }
+        console.log(code);
         var md5_value = hex_md5(code).toUpperCase();
-        //console.log("string to sign:" + code);
         return md5_value;
     }
     return null;

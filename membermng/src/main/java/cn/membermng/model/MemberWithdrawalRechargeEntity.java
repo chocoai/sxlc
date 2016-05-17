@@ -226,7 +226,7 @@ public class MemberWithdrawalRechargeEntity {
 	}
 	public void setReceiveDate(Date receiveDate) {
 		this.receiveDate = receiveDate;
-		this.sReceiveDate = TimestampAndString.DateToString2(receiveDate);
+		this.sReceiveDate = TimestampAndString.DateToString3(receiveDate);
 	}
 	public String getsReceiveDate() {
 		return sReceiveDate;

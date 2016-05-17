@@ -43,6 +43,7 @@ var RE = {
 	inviteCode:		/^[0-9]{12}$/,//邀请码验证
 	titleRemarks:	/^((?![a-zA-Z]+$)||(?![a-z0-9]+$))[\u4E00-\u9FA5a-zA-Z0-9]{0,40}$/,//0-40个字，不含特殊字符
 	accountOpen:	/^[JLZ][0-9]{13}$/, //开户许可证编号：J基本户、L临时户、Z专用户；后面四位是地区代码;再后面7位是顺序号;最后2位表示第几个版本：这个要解释一下，比如你新开基本户，那么最后2位就是01；对这个基本户变更一次，换发了新许可证，那么就顺延成02
+	lognameOrPhone:		/^(?![0-9]+$)(?![a-zA-Z]+$)(?![\u4E00-\u9FA5]+$)[0-9A-Za-z\u4E00-\u9FA5]{6,16}|1\d{10}$/
 };
 
 //正则参考
@@ -248,7 +249,16 @@ var IDCard = function(gets, obj, curform, datatype) {//身份证
 		return true;
 	}
 };
-
+var lognameOrPhone = function(gets,obj,curform,datatype){
+	var value = obj.attr("lang");
+	if(!gets || gets == value){
+		return "用户名不可为空";
+	}
+	if(!RE.logName.test(gets)){  
+	    return "请输入6~16位的数字、字母或汉字的两两组合或11位手机号码";
+	}
+	return true;
+}
 
 var logname = function(gets,obj,curform,datatype) {
 				var value = obj.attr("lang");
@@ -563,7 +573,8 @@ var extdatatype = {
 	"legal":legal,
 	"accountOpen":accountOpen,
 	"cartNumber":cartNumber,
-	"businessNum":businessNum
+	"businessNum":businessNum,
+	"lognameOrPhone":lognameOrPhone
 }
 
 
@@ -614,6 +625,7 @@ function validform5(btn,formId,postonce,tipsType) {
 			"z2_20":z2_20,
 			"titleRemarks":titleRemarks,
 			"inviteCode":inviteCode,
+			"lognameOrPhone":lognameOrPhone
 		},
 		beforeSubmit:function(curform){//提交借款申请时添加家庭成员和家庭成员信息拼接
 				        //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。  

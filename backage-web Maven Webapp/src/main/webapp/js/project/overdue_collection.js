@@ -85,7 +85,7 @@ $(function() {
 $(function(){
 //借款项目详情
 	$('.obtn-loan-prodetail').click(function(){
-		var data = $('#table_id').DataTable().rows('.selected').data(); 
+		var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 				layer.alert("请选择项目！",{icon:0});
 				return;
@@ -95,7 +95,7 @@ $(function(){
 	});
 //	账单详情
 	$('.obtn-bill-detail').click(function(){
-		var rdata = $('#table_id').DataTable().rows('.selected').data();
+		var rdata = $('#table_id').DataTable().rows('.selected').data();
 		 if(rdata.length<1){
 				layer.alert("请选择项目！",{icon:0});
 				return;
@@ -147,7 +147,7 @@ $(function(){
 	});
 //电话回访	
 	$('.obtn-callback').click(function(){
-		 var rdata = $('#table_id').DataTable().rows('.selected').data();
+		var rdata = $('#table_id').DataTable().rows('.selected').data();
 		 if(rdata.length<1){
 				layer.alert("请选择项目！",{icon:0});
 				return;

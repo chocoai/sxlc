@@ -12,7 +12,10 @@
  
 package cn.membermng.model; 
 
+import java.sql.Timestamp;
+
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.datatrans.TimestampAndString;
 
 /** 
  * @author 刘利 
@@ -493,7 +496,7 @@ public class MemberTradingRecordsEntity {
 		return recordDate;
 	}
 	public void setRecordDate(String recordDate) {
-		this.recordDate = recordDate;
+		this.recordDate = TimestampAndString.TimestampToString(Timestamp.valueOf(recordDate));
 	}
 	public String getRecordNo() {
 		return recordNo;

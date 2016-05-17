@@ -198,15 +198,15 @@
 				    				<img onclick="window.location.href='integralMall/itemDetail.html?goodsId={{item.commodityId}}'" src="{{item.commoditySmallIcon}}" />
 				    			</div>
 				    			<div class="detailProduct">
-				   					<p onclick="window.location.href='integralMall/itemDetail.html'">{{item.commodityName}}</p>
+				   					<p onclick="window.location.href='integralMall/itemDetail.html?goodsId={{item.commodityId}}'">{{item.commodityName}}</p>
 				    				<span><samp>所需积分：</samp><em>{{item.needPoint}}</em></span>
-				    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
+				    				<a href="integralMall/exchangeDetail_{{item.commodityId}}.html">立即兑换</a>
 				    			</div>
 				    			<div class="flowTop">
 				   					<p onclick="window.location.href='integralMall/itemDetail.html'" class="dddd">{{item.commodityName}}</p>
 				    				<p><samp>所需积分：</samp><span>{{item.needPoint}}</span></p>
 				    				<p><samp>市场价格：</samp><span>{{item.marketPrice}}</span></p>
-				    				<a href="integralMall/exchangeDetail.html">立即兑换</a>
+				    				<a href="integralMall/exchangeDetail_{{item.commodityId}}.html">立即兑换</a>
 				    			</div>
 				    			<!-- 兑换完的商品，当商品兑换完之后才出现，添加样式sellOutHide,否则就移除样式sellOutHide  -->
 				    			<div class="sellOutArea sellOutHide">

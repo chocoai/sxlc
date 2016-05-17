@@ -41,12 +41,35 @@
    								<div class="iEDTrecordTypeLeft">
 	   								<label class="iEDTrecordTypeLeft">交易类型：</label>
 	   								<div class="iEDTrecordTypeLeft clearfix">
-	   									<input class="selectValue tradeTypeId" value="0" >
+	   									<input class="selectValue tradeTypeId" value="-1" >
 	   									<input class="selectInput iEDInputA" type="text" lang="全部" readOnly="true"/>
 									    <ul class="select iEDSelect" onselectstart="return false">
-									    	<li class="selectOption" value="0">全部</li>
+									    	<li class="selectOption" value="-1">全部</li>
+									    	<li class="selectOption" value="0">其他</li>
 									    	<li class="selectOption" value="1">充值</li>
-									    	<li class="selectOption" value="2">生活缴费</li>
+									    	<li class="selectOption" value="2">提现成功</li>
+									    	<li class="selectOption" value="3">冻结借款项目投标金额</li>
+									    	<li class="selectOption" value="4">扣除借款项目投标金额</li>
+									    	<li class="selectOption" value="5">冻结债权转让投标金额</li>
+									    	<li class="selectOption" value="6">扣除债权转让投标金额</li>
+									    	<li class="selectOption" value="7">借款项目放款</li>
+									    	<li class="selectOption" value="8">债权转让放款</li>
+									    	<li class="selectOption" value="9">借款人还款</li>
+									    	<li class="selectOption" value="10">获得投资收益</li>
+									    	<li class="selectOption" value="11">投资借款项目流标</li>
+									    	<li class="selectOption" value="12">投资债权转让流标</li>
+									    	<li class="selectOption" value="13">支付担保收益</li>
+									    	<li class="selectOption" value="14">代偿还款</li>
+									    	<li class="selectOption" value="15">积分兑换</li>
+									    	<li class="selectOption" value="16">获取担保收益</li>
+									    	<li class="selectOption" value="17">代偿回款</li>
+									    	<li class="selectOption" value="18">提现登记</li>
+									    	<li class="selectOption" value="19">提现打回</li>
+									    	<li class="selectOption" value="20">支付借款管理费</li>
+									    	<li class="selectOption" value="21">支付风险备付金</li>
+									    	<li class="selectOption" value="23">代偿还款</li>
+									    	<li class="selectOption" value="24">代偿回款</li>
+									    	<li class="selectOption" value="25">支付项目认证费用</li>
 									    </ul>
 	   								</div>
    								</div>
@@ -86,11 +109,16 @@
 									{{each results as info index}}
 		   							<li class="awardTableRegister">
 		   								<div class="awardTabRegister">
-		   									<div class="awardTableHead1 "><span>{{info.recordNo}}</span></div>
-		   									<div class="awardTableHead2 "><span>{{info.tradeType}}<span></div>		
-		   									<div class="awardTableHead3a "><span class="moneyFormat">{{info.statisticsAmounts}}</span></div>
+		   									<div class="awardTableHead1 "><span>{{info.tradeID}}</span></div>
+											{{if info.tradeType==null}}
+		   									<div class="awardTableHead2 "><span>其他<span></div>
+											{{/if}}		
+											{{if info.tradeType!=null}}
+		   									<div class="awardTableHead2 "><span>{{info.tradeType}}<span></div>
+											{{/if}}		
+		   									<div class="awardTableHead3a "><span class="moneyFormat">{{info.amounts}}</span></div>
 		   									<div class="awardTableHead4 awardDistance "><span class="moneyFormat">{{info.totalAmounts}}</span></div>
-		   									<div class="awardTableHead5a awardDistance "><span class="moneyFormat">{{info.statisticsFrozenAmounts}}</span></div>
+		   									<div class="awardTableHead5a awardDistance "><span class="moneyFormat">{{info.frozenBalances}}</span></div>
 		   									<div class="awardTableHead6 awardDistance "><span class="moneyFormat">{{info.willRecPrincipals}}</span></div>
 		   									<div class="awardTableHead7 awardDistance "><span class="moneyFormat">{{info.willRecInterests}}</span></div>
 		   									<div class="awardTableHead8 awardDistance "><span class="moneyFormat">{{info.userBalances}}</span></div>

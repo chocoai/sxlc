@@ -77,7 +77,13 @@ function quryCertification(){
 					var data=r.data;
 					//console.log(data);
 					if(data!=null && data!=""){
-						$(".editType").val("1");
+						var statu = data.status;
+						if(statu=="0" || statu=="3" || statu=="4"){
+							$(".editType").val("0");
+						}else{
+							$(".editType").val("1");
+						}
+						console.log(r)
 						var attachPrefix=data.attachPrefix;
 						var attachPath=data.attachPath;
 						if(attachPath!=null && attachPath!=""){

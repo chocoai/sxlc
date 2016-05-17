@@ -29,6 +29,21 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 	 * 记录日志
 	 */
 	public OptRecordWriteDaoImpl optRecordWriteDaoImpl;
+	
+	Set<String> exitRouts = null;
+	
+	public SessionCheckInterceptor() {
+		exitRouts = new HashSet<String>();
+		exitRouts.add("openThirdAccountCallbackPage");					//开户回调1
+		exitRouts.add("openThirdAccountCallback");						//开户回调2
+		exitRouts.add("authorizedCallBack");							//二次分配授权
+		exitRouts.add("authorizedCallBackPage");						//二次分配授权
+		exitRouts.add("loanRechargeNotify");							//绑定银行卡回调
+		exitRouts.add("debtInvestmentBack");							//债权投资回调
+		exitRouts.add("memberInvestmentPage");							//項目投資返回
+		exitRouts.add("memberInvestmentvoid");							//項目投資返回
+	}
+	
 
 	
 	@Override
@@ -46,6 +61,13 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest arg0, HttpServletResponse arg1,Object arg2) throws Exception {
 		arg1.setContentType("text/html;charset=UTF-8");
+		String requestUrl = arg0.getRequestURI();
+		String requestPath= requestUrl.substring(requestUrl.lastIndexOf("/")+1, requestUrl.lastIndexOf("."));
+		if(exitRouts.contains(requestPath)){	//授权直接走
+			return true;
+		}
+		
+		
 		HttpSession session = arg0.getSession();
 		optRecordWriteDaoImpl = (OptRecordWriteDaoImpl) SpringUtil.getBean(OptRecordWriteDaoImpl.class);
 		

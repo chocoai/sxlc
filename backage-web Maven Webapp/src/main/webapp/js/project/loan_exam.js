@@ -71,7 +71,7 @@ $(function(){
 				        	    	}else if(data == 3){
 				        	    		return "等额本金";
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -84,7 +84,7 @@ $(function(){
 				        	    	}else if(data == -1){
 				        	    		return "已拒绝";
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          }  
@@ -136,7 +136,7 @@ $(document).ready(function() {
     /** *************查看历史审批记录************** **/
     $('#history_exam_record').on('click', function(){
     	
-    	var data = $('#table_id').DataTable().rows('.selected').data(); 
+    	var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 				layer.alert("请选择要查看的项目！",{icon:0});
 				return;
@@ -167,18 +167,18 @@ function down(){
 
 /*******项目审核*******/
 function proAudit(){
-	var data = $('#table_id').DataTable().rows('.selected').data(); 
+	var data = $('#table_id').DataTable().rows('.selected').data(); 
 	if(data.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;
 	}
 	var applyId = data[0].applyId;//Project_App_Record 表Apply_Id
-	window.location.href=appPath+"/project/toLoanProPostPg?content="+applyId+"&start="+$("#pushIndex").val();
+	window.location.href=appPath+"/project/toLoanProPostPg?content="+applyId+"&start="+$("#sIndexs").val()+"&length=1";
 //	$(".right_col").load("web/project/pro-add/loan_pro_exam.jsp");
 }
 /******查看借款项目详情*******/
 function view_detail(){
-	var data = $('#table_id').DataTable().rows('.selected').data(); 
+	var data = $('#table_id').DataTable().rows('.selected').data(); 
 	if(data.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;

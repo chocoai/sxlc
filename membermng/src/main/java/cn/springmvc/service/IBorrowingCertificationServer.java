@@ -408,6 +408,7 @@ public interface IBorrowingCertificationServer {
 	* @author 李杰
 	* @Title: businessLicense
 	* @param businessLicenseNumber									营业执照号码
+	* @param companyName										公司名称
 	* @param regAddress												注册地址
 	* @param regPerson												注册法人
 	* @param regCapital												注册资金
@@ -419,7 +420,7 @@ public interface IBorrowingCertificationServer {
 	* @return
 	* @date 2016-3-24 下午4:10:30
 	 */
-	public int  businessLicense(long memberId,String businessLicenseNumber,String regAddress,String regPerson,String regCapital,String businessScope,String CompanyType,String regDate,String endTime,String enclosure);
+	public int  businessLicense(long memberId,String businessLicenseNumber,String companyName,String regAddress,String regPerson,String regCapital,String businessScope,String CompanyType,String regDate,String endTime,String enclosure);
 	
 	/***
 	* 查看企业会员营业执照认证
@@ -452,7 +453,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 下午4:10:30
 	 */
-	public int editBusinessLicense(long memberId,String businessLicenseNumber,String regAddress,String regPerson,String regCapital,String businessScope,String CompanyType,String regDate,String endTime,String enclosure);
+	public int editBusinessLicense(long memberId,String businessLicenseNumber,String companyName,String regAddress,String regPerson,String regCapital,String businessScope,String CompanyType,String regDate,String endTime,String enclosure);
 
 	
 	

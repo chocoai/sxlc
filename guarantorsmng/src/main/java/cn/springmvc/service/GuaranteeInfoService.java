@@ -6,6 +6,7 @@ import java.util.Map;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.springmvc.model.AdminGMEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBankCard;
 import cn.springmvc.model.GuaranteeBorrowingEntity;
@@ -392,7 +393,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-4-20 上午10:46:30
 	* @throws 
 	*/
-	public int insertGuaranteeAdmin(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	public int insertGuaranteeAdmin(long staffId,String adminName,String adminPwd,String adminRemark,int stype,InsertAdminLogEntity entity,String[] sIpInfo);
 	/** 
 	* findGuaranteeAdmin(根据保荐机构id,查询担保机构管理员信息) 
 	* TODO(描述)
@@ -530,6 +531,37 @@ public interface GuaranteeInfoService {
 	* @throws 
 	*/
 	public List<GuaranteeBankCard> findbankcardforguaranteeID(PageEntity pageEntity);
+	
+	/** 
+	* updateMGAdmin 根据管理员id 修改管理员信息
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: updateMGAdmin 
+	* @Description: TODO 
+	* @param @param adminName
+	* @param @param adminPwd
+	* @param @param adminRemark
+	* @param @param adminId
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-17 下午5:08:15
+	* @throws 
+	*/
+	public int updateMGAdmin(String adminName,String adminPwd,String adminRemark,long adminId);
+	
+	/** 
+	* selectAdmin 查询单个管理员
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: selectAdmin 
+	* @Description: TODO 
+	* @param @param adminID
+	* @param @return 设定文件 
+	* @return AdminGMEntity 返回类型 
+	* @date 2016-5-17 下午5:18:15
+	* @throws 
+	*/
+	public AdminGMEntity selectAdmin(long adminID); 
 }
 
 

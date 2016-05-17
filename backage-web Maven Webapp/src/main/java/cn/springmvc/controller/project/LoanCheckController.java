@@ -27,7 +27,9 @@ import cn.springmvc.model.ProcessProjectEntity;
 import cn.springmvc.model.ProjectAppAttachmentEntity;
 import cn.springmvc.model.ProjectAppProcessEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;
+import cn.springmvc.model.ProjectCheckAttachDealEntity;
 import cn.springmvc.model.ProjectCheckAttachEntity;
+import cn.springmvc.service.GenerateRepayListService;
 import cn.springmvc.service.ProcessProjectService;
 import cn.springmvc.service.ProjectAppRecordService;
 import cn.springmvc.service.ProjectAuitService;
@@ -68,6 +70,8 @@ public class LoanCheckController {
 	@Resource(name="projectBaseInfoServiceImpl")
 	private ProjectBaseInfoService projectBaseInfoService;
 	
+	@Resource(name="generateRepayListServiceImpl")
+	private GenerateRepayListService generateRepayListService;
 	/** 
 	 * @author 唐国峰 
 	 * @Description: 借款审核页面
@@ -236,7 +240,7 @@ public class LoanCheckController {
 	
 	/** 
 	 * @author 唐国峰 
-	 * @Description: 发布项目页面
+	 * @Description: 发布/审核项目页面
 	 * @param req
 	 * @return String  
 	 * @date 2016-5-13 下午12:37:46
@@ -247,8 +251,10 @@ public class LoanCheckController {
 		Map<String,Object> param=new HashMap<String,Object>();
 		Long Indexsnow = Long.parseLong(req.getParameter("start"));//发布审批流程序号
 		req.setAttribute("Indexsnow", Indexsnow);
+		req.setAttribute("pgType", req.getParameter("length"));//页面类型：1：项目审核 2：项目发布
 		Long applyId = Long.parseLong(req.getParameter("content"));
 		param.put("applyId", applyId);
+		
 		//根据申请id获取项目详情
 //		ProjectDetailTYEntity proDetail = proDetailService.selectProjectdetailByIDbc(applyId);
 		//查询项目详情
@@ -388,13 +394,23 @@ public class LoanCheckController {
 		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
 		//获取解密参数
 		Map<String,Object> param=new HashMap<String,Object>();
-		Long attachIndex = Long.parseLong(req.getParameter("attachIndex"));
+		Integer attachIndex = Integer.parseInt(req.getParameter("attachIndex"));
 		param.put("attachIndex", attachIndex);
 		Long appCheckId = Long.parseLong(req.getParameter("appCheckId"));
 		param.put("appCheckId", appCheckId);
 		
 		int result=0;
+		//删除附件
 		result = projectAuitService.deleteProjectCheckAttachone(param,logEntity,sIpInfo);
+		ProjectCheckAttachDealEntity entity = new ProjectCheckAttachDealEntity();
+		entity.setAppCheckId(appCheckId);
+		entity.setAttachIndex(attachIndex);
+		entity.setDealType(1);//操作类型 0：添加 1：删除
+		entity.setAdminID(admin.getId());
+		if(result>0){
+			//插入附件操作记录
+			projectAuitService.insertCheckAttachone(entity);
+		}
 		return result;
 	}
 	
@@ -443,7 +459,12 @@ public class LoanCheckController {
 		param.put("ImageUrl", ImageUrl);
 		param.put("adminID", admin.getId());
 		int result=0;
+		//发布项目
 		result = projectPublishService.publishProject(param,logEntity,sIpInfo);
+		if(result>0){
+			//生成该项目的还款计划
+			generateRepayListService.GenerateRepayList(Integer.parseInt(ApplyId));
+		}
 		return result;
 	}
 	
@@ -500,8 +521,8 @@ public class LoanCheckController {
 		param.put("increaseRange", increaseRange);
 		String investMax = req.getParameter("investMax");
 		param.put("investMax", investMax);
-//		String investCountMax = req.getParameter("investCountMax");
-//		param.put("investCountMax", investCountMax);
+		String investCountMax = req.getParameter("investCountMax");
+		param.put("investCountMax", investCountMax);
 		String RepayGuarantee = req.getParameter("RepayGuarantee");
 		param.put("RepayGuarantee", RepayGuarantee);
 		
@@ -513,8 +534,7 @@ public class LoanCheckController {
 	
 	/** 
 	 * @author 唐国峰 
-	 * @Description: 
-	 * @param req
+	 * @Description: 获取项目审核分页数据
 	 * @return PageEntity  
 	 * @date 2016-5-16 下午5:14:55
 	 * @throws 
@@ -562,6 +582,53 @@ public class LoanCheckController {
 		return pager;
 	}
 	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 审核项目 
+	 * @param req
+	 * @return int  
+	 * @date 2016-5-17 上午10:32:07
+	 * @throws 
+	 */
+	@RequestMapping("/projectAudit")
+	@ResponseBody
+	public int projectAudit(HttpServletRequest req){
+		//操作日志参数
+		HttpSession session = req.getSession();
+		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		//moduleID=20110(个人会员分配理财顾问)
+		//optID=2011001(分配理财顾问）
+		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
+		String [] sIpInfo = new String[8];
+		logEntity.setiAdminId(admin.getId());
+		logEntity.setlModuleId(20110);
+		logEntity.setlOptId(2011001);
+		logEntity.setsIp(AddressUtils.GetRemoteIpAddr(req, sIpInfo));
+		logEntity.setsMac(null);
+		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
+		//获取解密参数
+		Map<String,Object> param=new HashMap<String,Object>();
+		String ApplyId = req.getParameter("ApplyId");////项目申请ID
+		param.put("ApplyId", ApplyId);
+		String Indexsnow = req.getParameter("Indexsnow");//审批流程序号
+		param.put("Indexsnow", Indexsnow);
+		String checkStatu = req.getParameter("checkStatu");//审核结果 1：通过 -1：打回
+		param.put("checkStatu", checkStatu);
+		String CheckRemark = req.getParameter("CheckRemark");
+		param.put("CheckRemark", CheckRemark);
+//		String startDate = req.getParameter("startDate");
+//		param.put("startDate", startDate);
+//		String endDate = req.getParameter("endDate");
+//		param.put("endDate", endDate);
+		String affix = req.getParameter("affix");
+		param.put("affix", affix);
+//		String ImageUrl = req.getParameter("ImageUrl");
+//		param.put("ImageUrl", ImageUrl);
+		param.put("adminID", admin.getId());
+		int result=0;
+		result = projectAuitService.projectAudit(param,logEntity,sIpInfo);
+		return result;
+	}
 	
 	
 }

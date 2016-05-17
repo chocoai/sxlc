@@ -1,19 +1,20 @@
 package cn.springmvc.dao.impl;
 
-import cn.springmvc.dao.AccountSupportDao;
-import cn.sxlc.account.manager.model.InvestAccountFeeEntity;
-import cn.sxlc.account.manager.model.UnUsedRedpacketsEntity;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
-
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import cn.springmvc.dao.AccountSupportDao;
+import cn.sxlc.account.manager.model.InvestAccountFeeEntity;
+import cn.sxlc.account.manager.model.UnUsedRedpacketsEntity;
 
 /**
  * 获取管理员  账户信息
@@ -55,6 +56,12 @@ public class AccountDaoSupport extends SqlSessionDaoSupport implements AccountSu
 
         getSqlSession().selectOne("AccountDao.GetRemainderVouchers", param);
 
+//----------------------------------------------------------------------------
+        if(param.get(DaoConstant.PARAM_RESULT) == null){
+        	param.put(DaoConstant.PARAM_RESULT,"0");
+        }
+//----------------------------------------------------------------------------
+    
         lResult = IntegerAndString.StringToLong(param.get(DaoConstant.PARAM_RESULT).toString(), -1);
 
         return lResult;

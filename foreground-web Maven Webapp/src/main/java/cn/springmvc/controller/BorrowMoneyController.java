@@ -131,6 +131,7 @@ public class BorrowMoneyController {
 		
 		ProjectPurposeEntity entity = new ProjectPurposeEntity();
 		entity.setMemberID(lMemberInfo[0]);
+		entity.setMemberType((int)lMemberInfo[1]);
 		entity.setProjectID(projectID);
 		entity.setUses(uses);
 		entity.setRepaySource(repaySource);
@@ -147,9 +148,21 @@ public class BorrowMoneyController {
 			message.put("code", 200);
 			message.put("message", "提交借款申请成功");
 			message.put("data",result);
+		}else if(result==-1){
+			message.put("code", 500);
+			message.put("message", "未开通第三方账户");
+			message.put("data",result);
+		}else if(result==-2){
+			message.put("code", 500);
+			message.put("message", "未授权二次分配授权");
+			message.put("data",result);
+		}else if(result==-3){
+			message.put("code", 500);
+			message.put("message", "黑名单会员禁止借款");
+			message.put("data",result);
 		}else{
 			message.put("code", 500);
-			message.put("message", "提交借款申请失败");
+			message.put("message", "提交借款申请失败，请检查您的借款申请");
 			message.put("data",result);
 		}
 		return JSONObject.toJSONString(message);

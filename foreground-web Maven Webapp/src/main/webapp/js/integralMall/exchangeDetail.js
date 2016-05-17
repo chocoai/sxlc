@@ -1,3 +1,4 @@
+//兑换商品详情
 $(function(){
 	var count=0;
 	$(".addressUl li").mouseover(function(){
@@ -26,6 +27,8 @@ $(function(){
 		}
 		$(this).siblings("ul").children("li").next().hide();
 	});
+	
+	//已有地址修改
 	$(".alertAddress").click(function(){
 		$(this).parent().next().show();
 		$(this).parent().siblings("li").next().hide();
@@ -173,3 +176,74 @@ function clickDown(){
 	});
 	$('.layui-layer-title').css("border-bottom","none");
 }
+
+
+
+//20160513数据交互  chenzhen
+//exchangeDetail根据id获取兑换详情，计算总积分
+function getExchangeInfo(){
+	var temp = window.location.href;
+	var goodsId = temp.split("_")[1].split(".html")[0];
+	var count = temp.split("count=")[1] || 1;
+	$(".exchangeNum").text(count);//兑换数量赋值
+	if(goodsId == null || isNaN(goodsId)){
+		return;
+	}
+	
+	var singlePoint = $("#singlePoint").val();//单个积分
+	var exchangePoint = singlePoint*count || 0;//总积分计算
+	$(".exchangePoint").text(exchangePoint);//总积分赋值
+	
+	/*$.ajax({
+		url:"integralMall/commodityInfo_"+goodsId+".html",
+		type:"get",
+		dataType:"json",
+		timeout:10000,
+		success:function(data){
+			console.log(data);
+			if(data){
+				$("#commoditySmallIcon").attr("src",data.commoditySmallIcon);
+				$("#commodityName").text(data.commodityName);//商品名称赋值
+				var exchangePoint = data.needPoint*count || 0;//总积分计算
+				$(".exchangePoint").text(exchangePoint);//总积分赋值
+			}
+		},
+		error:function(){
+			layer.alert("请求异常，请稍后再试",{icon:2});
+		}
+	});*/
+	
+	
+}
+
+//地址操作对象
+var Addr = {
+	//
+	getAddr:function(){
+		
+	},
+	
+	//新增地址
+	add : function(){
+		console.log("add");
+	},
+	//修改地址
+	mod: function(){
+		console.log("mod");
+		
+	},
+	//设置默认地址
+	setDef: function(){
+		console.log("set");
+		
+	},
+	//选中地址
+	check: function(){
+		console.log("check");
+	}
+};
+
+//添加收件地址
+$("#addrAdd").on("click",function(){
+	Addr.add();
+});

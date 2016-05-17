@@ -272,6 +272,7 @@
 	height:184px;
 	text-align:center;
 }
+.productImg img{width:200px;height:184px;}
 .productCard{
 	border-top:1px solid #dcdcdc;
 }

@@ -1,5 +1,8 @@
 
 package cn.dictionaries.model; 
+
+import java.io.Serializable;
+
 /**
  * 字典：乡镇实例
 * @author 杨翰林
@@ -7,8 +10,15 @@ package cn.dictionaries.model;
 * @since 
 * @date 2016-4-1 上午11:44:31
  */
-public class TownInfoEntity {
+public class TownInfoEntity implements Serializable{
 	
+	
+	/** 
+	* @Fields serialVersionUID : TODO（用一句话描述这个变量表示什么） 
+	*/
+	
+	private static final long serialVersionUID = -9110728536784620617L;
+
 	//乡id
 	private int tId;
 	

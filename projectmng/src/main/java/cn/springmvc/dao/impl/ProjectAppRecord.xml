@@ -3,7 +3,7 @@
 <mapper namespace="ProjectAppRecordXML"> 
 	<!-- 借款意向信息 -->  
    <resultMap type="cn.springmvc.model.ProjectPurposeEntity" id="ProjectPurpose">
-   		 <id column="ID" property="id" />
+   		 <id column="Purpose_ID" property="id" />
 		<result column="Member_ID" property="memberID" />
 		<result column="Uses" property="uses" />
 		<result column="Repay_Source" property="repaySource" />
@@ -17,10 +17,10 @@
 		<result column="Admin_Id" property="adminId" /> 
 		<result column="Deal_Statu" property="dealStatu" />
 		<result column="Deal_Date" property="dealDate" />
-		<result column="Logname" property="Logname" />
-		<result column="Member_No" property="MemberNo" />
-		<result column="Personal_Name" property="PersonalName" />
-		<result column="Personal_Phone" property="PersonalPhone" />
+		<result column="Logname" property="logname" />
+		<result column="Member_No" property="memberNo" />
+		<result column="Personal_Name" property="personalName" />
+		<result column="Personal_Phone" property="personalPhone" />
 		<result column="Financial" property="financial" />
 		<result column="sendrecordDate" property="sendrecordDate" />
 		<result column="Apply_Id" property="applyid" />
@@ -43,7 +43,13 @@
    			<if test="map.logname!=null and map.logname!='' ">and mi.Logname like '%${map.logname}%'</if>
    			<if test="map.personalPhone!=null and map.personalPhone!='' ">and pbi.Personal_Phone like '%${map.personalPhone}%'</if>
    			<!-- 只允许绑定了该理财顾问的管理员查看 -->
-   			<if test="map.adminid!=-1 and map.adminid!='' ">and pp.Admin_Id = #{map.adminid}</if>
+   			<if test="map.adminid!=-1 and map.adminid!='' ">
+   			and ((pp.Admin_Id = #{map.adminid} and
+   					(select count(*) from Project_Purpose pcp where pcp.Admin_Id =#{map.adminid})>0) 
+   				or (select count(*) from Project_Purpose pcp where pcp.Admin_Id =#{map.adminid})=0
+   				or (SELECT Staff_Type FROM Admin WHERE admin_id=#{map.adminid} limit 1) = 2 
+   				)
+   			</if>
    		order by 
    		<if test="map.amount==1">Amount </if>
    		<if test="map.recordDate==1">Record_Date</if>
@@ -154,6 +160,7 @@
 				#{auotInvestMax,	 mode=IN,	jdbcType=INTEGER},
 				#{cStatu,	 mode=IN,	jdbcType=INTEGER},
 				#{styp,	 mode=IN,	jdbcType=INTEGER},
+				#{adminId,	 mode=IN,	jdbcType=BIGINT},
 				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>

@@ -252,17 +252,20 @@ public class InvestController {
 			Date cTime 		= new Date();										//系统当前时间
 			Date endTime 	= sdf.parse(appRecordEntity.getEndDate());			//投资最晚时间
 			
+			logger.debug("项目开标时间："+sdf.format(startTime)+", 项目结束时间："+sdf.format(endTime)+",系统当前时间："+sdf.format(cTime));
 			
-			//真是TM郁闷,这也不晓得那也不晓得
 			//重新定义项目状态
+			//项目状态的等于投标中 并且项目开标时间大于当前时间  项目为预热中
 			if(appRecordEntity.getInvestStatu() == 0 && startTime.after(cTime)){
 				//预热中
 				request.setAttribute("investmentStatus", "1");
 				request.setAttribute("endTime", sdf.format(startTime));
-			}else if(appRecordEntity.getInvestStatu() == 0 && startTime.before(cTime) && appRecordEntity.getInvestRate() < 1000000){
+			//项目状态的等于投标中 开标时间大于当前时间 并且投资进度不为10% 并且 结束时间小于当前时间
+			}else if(appRecordEntity.getInvestStatu() == 0 && startTime.before(cTime) && appRecordEntity.getInvestRate() < 1000000 && endTime.after(cTime)){
 				//投标中(融资中)
 				request.setAttribute("investmentStatus", "2");
 				request.setAttribute("endTime", sdf.format(endTime));
+			//项目状态等于投标完成 或者 
 			}else if(appRecordEntity.getInvestStatu() == 2 || (appRecordEntity.getInvestStatu() == 0 && appRecordEntity.getInvestRate() >= 1000000)
 					|| (appRecordEntity.getCheckStatu() == 1 && appRecordEntity.getPublishStatu() == 2 && appRecordEntity.getInvestStatu() == 0 && (endTime.after(cTime) || endTime.equals(cTime)))){
 				//投标完成
@@ -273,7 +276,7 @@ public class InvestController {
 				request.setAttribute("investmentStatus", "6");
 				request.setAttribute("endTime", sdf.format(endTime));
 			}else if(appRecordEntity.getCheckStatu() == -1){
-				//申请失败s
+				//申请失败
 				request.setAttribute("investmentStatus", "7");
 				request.setAttribute("endTime", sdf.format(endTime));
 			}else if(appRecordEntity.getInvestStatu() == 3 || appRecordEntity.getInvestStatu() == 4){
@@ -320,7 +323,7 @@ public class InvestController {
 			MemberThirdAuthInfoEntity authInfoEntity = balanceService.selectMemberThirdAuthInfo(param);*/
 			
 			//查询出代金券
-			long vouchers = accountSupportService.getRemainderVouchers(memberInfo.getId());
+			long vouchers = 0;//accountSupportService.getRemainderVouchers(memberInfo.getId());
 			String sVouchers = IntegerAndString.LongToString(vouchers);
 			
 			//查询出红包
@@ -496,7 +499,8 @@ public class InvestController {
 			MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
 			long lAmount   = IntegerAndString.StringToLong(sAmount);
 			long lVouchers = IntegerAndString.StringToLong(slVouchers);
-			LoanTransferEntity entity = interfaceServerTestI.PreInvestmentTreatment(projectId, memberInfo.getId(), (short)0, lAmount, redPacks, lVouchers, sDirectPwd,(short)0);
+			LoanTransferEntity entity = interfaceServerTestI.PreInvestmentTreatment(projectId, memberInfo.getId(), 
+						(short)0, lAmount, redPacks, lVouchers, sDirectPwd,(short)0,request,"invest/memberInvestmentPage.html","invest/memberInvestmentvoid.html");
 			request.setAttribute("loanTransferEntity", entity);
 			if(entity.getStatu() == 0){		//成功
 				return "dryLot/loantransfertest";
@@ -509,6 +513,43 @@ public class InvestController {
 		}
 		return "invest/investFalse";
 	}
+	
+	
+	/***
+	* 投資囘調頁面
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-17 下午4:57:24
+	 */
+	@RequestMapping("/memberInvestmentPage")
+	public String memberInvestmentPage(HttpServletRequest request,HttpServletResponse response){
+		String result = interfaceServerTestI.testInvestmentReturn(request, response);
+		if(result.equals("SUCCESS")){
+			return "invest/investSuccess";
+		}else{
+			return "invest/investFalse";
+		}
+	}
+	
+	
+	/***
+	* 投資無頁面囘調
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-17 下午4:58:11
+	 */
+	@RequestMapping("/memberInvestmentvoid")
+	public void memberInvestmentvoid(HttpServletRequest request,HttpServletResponse response){
+		interfaceServerTestI.testInvestmentNotify(request,response);
+	}
+	
+	
+	
+	
 	
 	
 	/**
@@ -622,7 +663,7 @@ public class InvestController {
 			MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
 			if(memberInfo != null){
 				//查询出代金券
-				long vouchers = accountSupportService.getRemainderVouchers(memberInfo.getId());
+				long vouchers = 0;//accountSupportService.getRemainderVouchers(memberInfo.getId());
 				String sVouchers = IntegerAndString.LongToString(vouchers);
 				
 				//查询出红包
@@ -754,9 +795,6 @@ public class InvestController {
 		interfaceServerTestI.TransferOfCreditorsInvest(request, response);
 	}
 	
-	
-	
-	
 	/***
 	* 债权投资记录
 	* 
@@ -779,59 +817,6 @@ public class InvestController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@RequestMapping("/projectDetail")
-	public String projectDetail(){
-		return "invest/projectDetail";
-	}
-	@RequestMapping("/riskControl")
-	public String riskControl(){
-		return "invest/riskControl";
-	}
-	@RequestMapping("/repaymentPlan")
-	public String repaymentPlan(){
-		return "invest/repaymentPlan";
-	}
-	@RequestMapping("/investmentList")
-	public String investmentList(){
-		return "invest/investmentList";
-	}
-	@RequestMapping("/projectCourse")
-	public String projectCourse(){
-		return "invest/projectCourse";
-	}
-	@RequestMapping("/postLoanSupervision")
-	public String postLoanSupervision(){
-		return "invest/postLoanSupervision";
-	}
-	@RequestMapping("/proDetail")
-	public String proDetail(){
-		return "invest/proDetail";
-	}
-	@RequestMapping("/riskCtrl")
-	public String riskCtrl(){
-		return "invest/riskCtrl";
-	}
-	@RequestMapping("/repayArrang")
-	public String repayArrang(){
-		return "invest/repayArrang";
-	}
-	@RequestMapping("/proCourse")
-	public String proCourse(){
-		return "invest/proCourse";
-	}
-	@RequestMapping("/bidRecord")
-	public String bidRecord(){
-		return "invest/bidRecord";
-	}
 	@RequestMapping("/investSuccess")
 	public String investSuccess(){
 		return "invest/investSuccess";

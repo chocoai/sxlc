@@ -52,6 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<legend>项目基本信息</legend>
 											<input type="hidden" id="applyId" value="${proRecord.applyId}">
 											<input type="hidden" id="Indexsnow" value="${Indexsnow}">
+											<input type="hidden" id="pgType" value="${pgType}">
 											<table>
 												<tr class="col-md-4">
 													<td class="tt"><label>借款项目名称：</label></td>
@@ -142,6 +143,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 												<tr class="col-md-7 col-md-offset-5">	
 													<td class="tt">
 														<button class="btn btn-info btnMod">修改</button>
+													</td>
+												</tr>
+												<tr class="col-md-4">
+													<td class="tt"><label>允许投标人数：</label></td>
+													<td class="con">${proRecord.investCountMax}
 													</td>
 												</tr>
 											</table>
@@ -246,6 +252,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 														<textarea cols="20" rows="3" name=""  id="projectDescript" maxlength="200">${proRecord.projectTypeentity.projectDescript}</textarea>
 													</td>
 												</tr>
+												<tr class="col-md-4">
+													<td class="tt"><label>允许投标人数：</label></td>
+													<td class="con">
+														<input type="text" id="investCountMax" class="con-PP numberReg" value="${proRecord.investCountMax}" datatype="nNum0" maxlength="3">
+													</td>
+												</tr>
 												<tr class="col-md-7 col-md-offset-5">
 													<td class="tt">
 														<button class="btn btn-success btnPreserve">保存</button>
@@ -307,7 +319,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</fieldset>
 									</c:if>	
 									<c:if test="${memberInfo.memberType == 1}">
-										<fieldset class="enterprise" style="display:none"><!-- 企业信息 -->
+										<fieldset class="enterprise" style="display:block"><!-- 企业信息 -->
 											<legend>会员基本信息</legend>
 											<div class="w-content ishow">
 												<table>
@@ -347,6 +359,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											</div>
 										</fieldset><!-- 认证展示模块结束 -->
 									</c:if>	
+									<c:if test="${memberInfo.memberType != 0 && memberInfo.memberType != 1}">
+										<fieldset class="" style="display:block"><!-- 企业信息 -->
+											<legend>会员基本信息</legend>
+											<div class="w-content ishow">
+												<table>
+													<tr class="col-md-3">
+														<td class="tt"><label>无法确定的会员类型</label></td>
+													</tr>
+												</table>
+											</div>
+										</fieldset>
+									</c:if>
+									
+									
 									<!-- 信用统计模块 -->
 									<fieldset>
 										<legend>借款信用统计</legend>
@@ -523,112 +549,113 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<!-- 审核记录审核附件删除记录结束 -->
 				
-				<!--项目发布操作---开始  -->
-				<fieldset class="uploadEnclosure postDiv">
-					<legend>上传项目图片</legend>
-					<table>
-						<tr>
-							<input type="hidden" id="ImageUrl">
-							<td class="tt">上传项目形象图片：</td>
-							<td class="con">
-								<!--dom结构部分-->
-								<div id="uploader">
-								    <!--用来存放item-->
-								    <div id="filePicker">图片选择</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="tt" valign="top"></td>
-							<td class="con" id="fileList"></td>
-						</tr>
-						<tr>
-							<input type="hidden" id="affix">
-							<td class="tt" valign="top">项目前台显示图片名称：</td>
-							<td class="con" >
-								<input type="text" id="fileName">
-							</td>
-						</tr>
-						<tr>
-							<td class="tt"></td>
-							<td class="con">
-								<!--dom结构部分-->
-								<div >
-								    <!--用来存放item-->
-								    <div id="filePicker1">图片选择</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="tt" valign="top"></td>
-							<td class="con fileList" id="fileList1"></td>
-						</tr>
-						<tr>
-							<td class="tt">选择项目起止时间:</td>
-							<td class="con"><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></td>
-						</tr>
-					</table>
-					<div class="preserveBtn">
-						<button class="btn btn-success postBtn">发布</button>
-						<button class="btn btn-default cancleAndReturn">取消</button>
-					</div>
-				</fieldset>
-				<!--项目发布操作---结束  -->
-				<!--项目审核操作---开始  -->
-				<fieldset class="uploadEnclosure chkDiv">
-					<legend>上传项目审核附件信息</legend>
-					<table>
-						<tr class="col-lg-6 col-md-6">
-							<td class="tt"><label>附件名称：</label></td>
-							<td class="con"><input type="text"></td>
-						</tr>	
-						<tr class="col-lg-6 col-md-6">
-							<td class="tt"><label>附件备注：</label></td>
-							<td class="con"><input type="text"></td>
-						</tr>
-						<tr class="col-lg-12 col-md-12">
-							<td class="tt">上传附件：</td>
-							<td class="con">
-								<!--dom结构部分-->
-								<div id="uploader">
-								    <!--用来存放item-->
-								    <div id="filePicker">图片选择</div>
-								</div>
-							</td>
-						</tr>
-						<tr class="col-lg-12 col-md-12">
-							<td class="tt" valign="top"></td>
-							<td class="con" id="fileList"></td>
-						</tr>
-						<tr class="col-lg-12 col-md-12 buttonS">
-							<td class="ts">
-								<button class="btn btn-success btnPreserve">提交</button>
-								<button class="btn btn-default btnCancel">重置</button>
-							</td>
-						</tr>
-					</table>
-				</fieldset>
-				<fieldset class="uploadEnclosure chkDiv">
-					<table>
-						<tr class="col-md-12">
-							<td class="tt"><label>选择审核结果：</label></td>
-							<td class="con">
-								<select class="auditResult">
-									<option>同意</option>
-									<option>驳回</option>
-									<option>借款项目终止</option>
-								</select>
-							</td>
-						</tr>
-						<tr class="col-md-12">
-							<td class="tt"><label>填写审核意见：</label></td>
-							<td class="con">
-								<textarea rows="5" cols="80"></textarea>
-							</td>
-						</tr>
-					</table>		
-				</fieldset>	
-				<!--项目审核操作---结束  -->
+				<c:if test="${pgType == 2}">
+					<!--项目发布操作---开始  -->
+					<fieldset class="uploadEnclosure postDiv">
+						<legend>上传项目图片</legend>
+						<table>
+							<tr>
+								<input type="hidden" id="ImageUrl">
+								<td class="tt">上传项目形象图片：</td>
+								<td class="con">
+									<!--dom结构部分-->
+									<div id="uploader">
+									    <!--用来存放item-->
+									    <div id="filePicker">图片选择</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="tt" valign="top"></td>
+								<td class="con" id="fileList"></td>
+							</tr>
+							<tr>
+								<input type="hidden" id="affix">
+								<td class="tt" valign="top">项目前台显示图片名称：</td>
+								<td class="con" >
+									<input type="text" id="fileName">
+								</td>
+							</tr>
+							<tr>
+								<td class="tt"></td>
+								<td class="con">
+									<!--dom结构部分-->
+									<div >
+									    <!--用来存放item-->
+									    <div id="filePicker1">图片选择</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="tt" valign="top"></td>
+								<td class="con fileList" id="fileList1"></td>
+							</tr>
+							<tr>
+								<td class="tt">选择项目起止时间:</td>
+								<td class="con"><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" ></td>
+							</tr>
+						</table>
+						<div class="preserveBtn">
+							<button class="btn btn-success postBtn">发布</button>
+							<button class="btn btn-default cancleAndReturn">取消</button>
+						</div>
+					</fieldset>
+					<!--项目发布操作---结束  -->
+				</c:if>
+				<c:if test="${pgType == 1}">
+					<!--项目审核操作---开始  -->
+					<fieldset class="uploadEnclosure chkDiv">
+						<legend>上传项目审核附件信息</legend>
+						<table>
+							<input type="hidden" id="affixChk">
+							<tr class="col-lg-12 col-md-12">
+								<td class="tt"><label>附件名称：</label></td>
+								<td class="con"><input id="attachName" type="text"></td>
+							</tr>
+							<tr class="col-lg-12 col-md-12">
+								<td class="tt">上传附件：</td>
+								<td class="con">
+									<!--dom结构部分-->
+									<div>
+									    <!--用来存放item-->
+									    <div id="filePicker2">图片选择</div>
+									</div>
+								</td>
+							</tr>
+							<tr class="col-lg-12 col-md-12">
+								<td class="tt" valign="top"></td>
+								<td class="con fileList" id="fileList2"></td>
+							</tr>
+						</table>
+					</fieldset>
+					<fieldset class="uploadEnclosure chkDiv">
+						<table>
+							<tr class="col-md-12">
+								<td class="tt"><label>选择审核结果：</label></td>
+								<td class="con">
+									<select class="auditResult">
+										<option value="1">同意</option>
+										<option value="-1">驳回</option>
+										<option value="2">通过需补齐资料</option>
+									</select>
+								</td>
+							</tr>
+							<tr class="col-md-12">
+								<td class="tt"><label>填写审核意见：</label></td>
+								<td class="con">
+									<textarea id="CheckRemark" rows="5" cols="80"></textarea>
+								</td>
+							</tr>
+							<tr class="col-lg-12 col-md-12 buttonS" align="right">
+								<td class="ts">
+									<button class="btn btn-success chkSubmitBtn">提交</button>
+									<button class="btn btn-default cancleAndReturn">取消</button>
+								</td>
+							</tr>
+						</table>		
+					</fieldset>	
+					<!--项目审核操作---结束  -->
+				</c:if>
 			</div>
 		</div>
 		<!-- 公用js -->

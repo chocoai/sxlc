@@ -1,10 +1,10 @@
 /* CSS Document */
 @charset "UTF-8";
-/* 锟斤拷锟斤拷锟斤拷start 锟斤拷锟斤拷 20160326 */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷穝tart 閿熸枻鎷烽敓鏂ゆ嫹 20160326 */
 *{
 	font-family: "Microsoft YaHei" ! important;
 }
-/* 缁熶竴绂佹涓枃杈撳叆鍒伴噾棰濇涓�*/
+/* 缂佺喍绔寸粋浣诡剾娑擃厽鏋冩潏鎾冲弳閸掍即鍣炬０婵囶攱娑擄拷*/
 input.format{
 	ime-mode:disabled;
 }
@@ -13,8 +13,8 @@ body{
 	min-width: 1200px;
 	background-color: #f8f8f8;
 }
-/* 锟斤拷锟斤拷锟斤拷end */
-/* top start 锟斤拷锟斤拷 20160326 */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷積nd */
+/* top start 閿熸枻鎷烽敓鏂ゆ嫹 20160326 */
 .top{
 	width: 100%;
 	min-width: 1200px;
@@ -132,8 +132,8 @@ body{
 	color:#5e5d5d;
 	cursor: pointer;
 }
-/* top end 锟斤拷锟斤拷 20160326 */
-/* bottom start 锟斤拷锟斤拷 20160326 */
+/* top end 閿熸枻鎷烽敓鏂ゆ嫹 20160326 */
+/* bottom start 閿熸枻鎷烽敓鏂ゆ嫹 20160326 */
 .bottom{
 	width: 100%;
 	min-width: 1200px;
@@ -299,8 +299,8 @@ body{
 	background:url(../../resource/img/common/bottom4.png) no-repeat;
 	background-position:center;
 }
-/* bottom end 锟斤拷锟斤拷 20160326 */
-/* mainPageTop start 锟斤拷锟斤拷 20160326 */
+/* bottom end 閿熸枻鎷烽敓鏂ゆ嫹 20160326 */
+/* mainPageTop start 閿熸枻鎷烽敓鏂ゆ嫹 20160326 */
 .mainPageTop{
 	width: 100%;
 	min-width: 1200px;
@@ -336,8 +336,8 @@ body{
 	text-decoration: none;
 	color:#72c0f3;
 }
-/* mainPageTop end 锟斤拷锟斤拷 20160326 */
-/* intergralMallCommon start 锟斤拷锟斤拷 20160328 */
+/* mainPageTop end 閿熸枻鎷烽敓鏂ゆ嫹 20160326 */
+/* intergralMallCommon start 閿熸枻鎷烽敓鏂ゆ嫹 20160328 */
 .intergralMallCommon{
 	width: 100%;
 	min-width: 1200px;
@@ -386,8 +386,8 @@ body{
 	text-decoration: none;
 	color:#72c0f3;
 }
-/* intergralMallCommon end 锟斤拷锟斤拷 20160328 */
-/* 锟斤拷锟斤拷锟斤拷呖锟绞�*/
+/* intergralMallCommon end 閿熸枻鎷烽敓鏂ゆ嫹 20160328 */
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷峰憱閿熺粸锟�/
 .cm_aside{
 	position:fixed;
 	bottom:0;
@@ -466,13 +466,13 @@ body{
 	background:url(../../resource/img/index/fhdb.png) no-repeat;
 	background-position:center;
 }
-/* 锟斤拷锟斤拷锟斤拷呓锟斤拷锟�
+/* 閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷峰憮閿熸枻鎷烽敓锟�
 
 
 
 
-/*    胥福星    20160419    弹出层样式     */
-/* 输入错误时弹出的样式  */
+/*    鑳ョ鏄�   20160419    寮瑰嚭灞傛牱寮�    */
+/* 杈撳叆閿欒鏃跺脊鍑虹殑鏍峰紡  */
 .tipError,
 .after,
 .pre{
@@ -507,7 +507,7 @@ body{
 	height:45px;
 	background:url(../../resource/img/account/common/tipsError_03.png) no-repeat;
 }
-/* 获取焦点时弹出的样式  */
+/* 鑾峰彇鐒︾偣鏃跺脊鍑虹殑鏍峰紡  */
 .tip,
 .afterTip,
 .preTip{
@@ -542,7 +542,7 @@ body{
 	height:45px;
 	background:url(../../resource/img/account/common/tip_07.png) no-repeat;
 }
-/* 输入正确的提示弹出层 */
+/* 杈撳叆姝ｇ‘鐨勬彁绀哄脊鍑哄眰 */
 .tipOk{
 	position:absolute;
 }
@@ -554,7 +554,7 @@ body{
 	vertical-align:middle;
 	background:url(../../resource/img/account/common/zq.png) no-repeat;
 }
-/* 获取动态验证码的弹出提示层样式  */
+/* 鑾峰彇鍔ㄦ�楠岃瘉鐮佺殑寮瑰嚭鎻愮ず灞傛牱寮� */
 .dynamicVerificationSpan{
 	display:inline-block;
 	position:absolute;
@@ -653,4 +653,22 @@ body{
 	height:430px;
 	background-color: #fff;
 	margin: 50px auto;
+}
+.top_minFang{
+	display:inline-block;
+	background-color:#ff8200;
+	color:white;
+	width:16px;
+	height:16px;
+	text-align:center;
+	line-height:16px;
+	font-size:12px
+}
+.shu-line{
+	display:inline-block;
+	height:16px;
+	width:1px;
+	margin:0 2px;
+	background-color:gray;
+	vertical-align:middle;
 }

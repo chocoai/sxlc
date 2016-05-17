@@ -2,6 +2,8 @@ package cn.springmvc.model;
 
 import java.util.List;
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /**
  * 借款意向实体类
  * @author 刘利
@@ -70,10 +72,10 @@ public class ProjectPurposeEntity {
 	 */
 	private Integer dealStatu;
 	
-	private String MemberNo;
-	private String Logname;
-	private String PersonalName;
-	private String PersonalPhone;
+	private String memberNo;
+	private String logname;
+	private String personalName;
+	private String personalPhone;
 	private int financial;//有无分配理财顾问 大于0则为有
 	private String sendrecordDate;//提交申请时间
 	private  long projectID;//借款类型ID
@@ -87,6 +89,25 @@ public class ProjectPurposeEntity {
 	 * 积分处理时间
 	 */
 	private String dealDate;
+	
+	public String getMemberNo() {
+		return memberNo;
+	}
+	public void setMemberNo(String memberNo) {
+		this.memberNo = memberNo;
+	}
+	public String getLogname() {
+		return logname;
+	}
+	public void setLogname(String logname) {
+		this.logname = logname;
+	}
+	public String getPersonalPhone() {
+		return personalPhone;
+	}
+	public void setPersonalPhone(String personalPhone) {
+		this.personalPhone = personalPhone;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -117,6 +138,7 @@ public class ProjectPurposeEntity {
 	}
 	public void setAmount(Long amount) {
 		this.amount = amount;
+		this.amountStr= IntegerAndString.LongToString(amount);
 	}
 	public String getAmountStr() {
 		return amountStr;
@@ -178,30 +200,6 @@ public class ProjectPurposeEntity {
 	public void setDealDate(String dealDate) {
 		this.dealDate = dealDate;
 	}
-	public String getMemberNo() {
-		return MemberNo;
-	}
-	public void setMemberNo(String memberNo) {
-		MemberNo = memberNo;
-	}
-	public String getLogname() {
-		return Logname;
-	}
-	public void setLogname(String logname) {
-		Logname = logname;
-	}
-	public String getPersonalName() {
-		return PersonalName;
-	}
-	public void setPersonalName(String personalName) {
-		PersonalName = personalName;
-	}
-	public String getPersonalPhone() {
-		return PersonalPhone;
-	}
-	public void setPersonalPhone(String personalPhone) {
-		PersonalPhone = personalPhone;
-	}
 	public int getFinancial() {
 		return financial;
 	}
@@ -260,6 +258,12 @@ public class ProjectPurposeEntity {
 	public void setProjectAppMngFeeEntity(
 			ProjectAppMngFeeEntity projectAppMngFeeEntity) {
 		this.projectAppMngFeeEntity = projectAppMngFeeEntity;
+	}
+	public String getPersonalName() {
+		return personalName;
+	}
+	public void setPersonalName(String personalName) {
+		this.personalName = personalName;
 	} 
 
 	

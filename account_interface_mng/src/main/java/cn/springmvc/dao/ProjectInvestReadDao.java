@@ -1,9 +1,6 @@
 package cn.springmvc.dao;
 
 import cn.sxlc.account.manager.model.TransferSubmitEntity;
-import cn.sxlc.account.manager.model.UnUsedRedpacketsEntity;
-
-import java.util.List;
 
 public interface ProjectInvestReadDao {
 

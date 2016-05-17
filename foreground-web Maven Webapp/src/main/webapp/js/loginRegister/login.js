@@ -62,11 +62,11 @@ $(function(){
 /*弹出层:提示输入手机号&提示密码*/	
 $(function(){
 	
-	var cookie = getCookie("rememberMeInfo");
+	var cookie = getCookie("mName");
+	var mType = getCookie("mType");
 	if(cookie == null || cookie == undefined || cookie == ""){}else{
-		var array = cookie.split("-");
-		$(".content1 .input-user-name").val(array[0])
-		if(array[1] == 0){
+		$(".content1 .input-user-name").val(decodeURI(cookie,"utf-8"));
+		if(mType == 0){
 			$("input[class='radioclass1']").click();
 		}else{
 			$("input[class='radioclass2']").click();
@@ -77,11 +77,20 @@ $(function(){
 });
 
 
+function getCookie(name){
+　　var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+　　if(arr != null){
+	return arr[2];
+　　}　　　　
+　　return null;
+}
+
+
 
 /* 胥福星     */
 /* 20160417   */
 /* 提交验证       */
-var isExit = false;
+
 $(".content1 .login-btn").on("click",function(){
 /*	if(isExit){
 		return false;
@@ -198,15 +207,6 @@ $(".content1 .login-btn").on("click",function(){
 	
 });
 
-function getCookie(name){
-　　var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
-　　if(arr != null){
-	return unescape(arr[2]);
-　　}　　　　
-　　return null;
-}
-
-
 var isExit = false;
 /* 验证     */
 $(function(){
@@ -216,10 +216,6 @@ $(function(){
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,
 		beforeSubmit:function(){
-			if(isExit){
-				return false;
-			}
-			isExit = true;
 			var userName = $(".content1 .input-user-name").val();
 			var userpassword= $(".content1 .input-password").val();
 			var imgCheck = $(".content1 .img-check").val();
@@ -229,6 +225,31 @@ $(function(){
 				irememberMe = 1;
 			}
 			userpassword = hex_md5(userpassword);
+			
+			NetUtil.ajax(
+					"login.html",
+					{memberType:imemberType,memberName:userName,password:userpassword,checkCode:imgCheck,rememberMe:irememberMe},
+					function(r){
+						var json = JSON.parse(r);
+						if(json.statu == 1){
+							window.location.href="accountOverview/accountOverview.html";
+						}else{
+							layer.alert(json.message,function(index){
+								layer.close(index);
+								$(".codeDiv img").attr("src","authImage.html?parma="+Math.random() * 10);
+							})
+						}
+//						else if(json.statu == -3){
+//							$(".input-password").next().next().removeClass("Validform_right").addClass("Validform_wrong")
+//							.html(json.message)
+//							$(".codeDiv img").attr("src","authImage.html?parma="+Math.random() * 10);
+//						}else{
+//							layer.alert(json.message);
+//							$(".input-password").next().next().removeClass("Validform_right").addClass("Validform_wrong")
+//							.html(json.checkCode)
+//							$(".codeDiv img").attr("src","authImage.html?parma="+Math.random() * 10);
+//						}
+/*=======
 			$.ajax({
 				url:"login.html",
 				type:"post",
@@ -248,9 +269,9 @@ $(function(){
 						$(".input-password").next().next().removeClass("Validform_right").addClass("Validform_wrong")
 						.html(json.checkCode)
 						$(".codeDiv img").attr("src","authImage.html?parma="+Math.random() * 10);
+>>>>>>> .r2377*/
 					}
-				}
-			});
+				)
 			return false;
 		}
 	});

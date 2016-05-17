@@ -248,19 +248,25 @@ public interface HandleGuaranteeInfoDao {
 	public int updateGuaranteeAdmin(Map<String, Object> map);
 	
 	
+	
+	
 	/** 
-	* insertGuaranteeAdmin 添加担保机构管理员 
+	* insertGuaranteeAdmin 添加担保机构管理员  或资产管理方 管理员 
 	* TODO(描述)
 	* @author 朱祖轶  
 	* * @Title: insertGuaranteeAdmin 
 	* @Description: TODO 
-	* @param @param map
+	* @param @param staffId 担保机构id
+	* @param @param adminName 管理员名称
+	* @param @param adminPwd 管理员密码
+	* @param @param adminRemark 管理员描述
+	* @param @param stype 1：担保机构管理员 非1：资产管理方管理员
 	* @param @return 设定文件 
-	* @return int 返回类型 
-	* @date 2016-4-20 上午10:46:30
+	* @return int 返回类型  1:成功
+	* @date 2016-5-17 上午10:05:12
 	* @throws 
 	*/
-	public int insertGuaranteeAdmin(Map<String, Object> map);
+	public int insertGuaranteeAdmin(long staffId,String adminName,String adminPwd,String adminRemark,int stype);
 	
 	
 	/** 
@@ -290,5 +296,23 @@ public interface HandleGuaranteeInfoDao {
 	* @throws 
 	*/
 	public int insertManagementAdmin(Map<String, Object> map);
+	
+	
+	/** 
+	* updateMGAdmin 根据管理员id 修改管理员信息
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: updateMGAdmin 
+	* @Description: TODO 
+	* @param @param adminName
+	* @param @param adminPwd
+	* @param @param adminRemark
+	* @param @param adminId
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-17 下午5:08:15
+	* @throws 
+	*/
+	public int updateMGAdmin(String adminName,String adminPwd,String adminRemark,long adminId);
 }
 

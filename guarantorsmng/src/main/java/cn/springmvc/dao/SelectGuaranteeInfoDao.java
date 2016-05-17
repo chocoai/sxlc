@@ -6,6 +6,7 @@ import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
 
+import cn.springmvc.model.AdminGMEntity;
 import cn.springmvc.model.CompensationStatisticsEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBankCard;
@@ -292,5 +293,21 @@ public interface SelectGuaranteeInfoDao {
 	* @throws 
 	*/
 	public List<GuaranteeBankCard> findbankcardforguaranteeID(PageEntity pageEntity);
+	
+	
+	
+	/** 
+	* selectAdmin 查询单个管理员
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: selectAdmin 
+	* @Description: TODO 
+	* @param @param adminID
+	* @param @return 设定文件 
+	* @return AdminGMEntity 返回类型 
+	* @date 2016-5-17 下午5:18:15
+	* @throws 
+	*/
+	public AdminGMEntity selectAdmin(long adminID); 
 }
 

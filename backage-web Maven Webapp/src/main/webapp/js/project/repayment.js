@@ -64,7 +64,7 @@ $(function() {
 				        	    	}else if(data.deadlineTypes == 2){
 				        	    		return data.deadline+"年";
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -87,7 +87,7 @@ $(function() {
 				        		  }else if(data == 1){
 				        			return "是";  
 				        		  }else{
-				        			  return "无数据";
+				        			  return "";
 				        		  }
 				        	  }
 				          }  
@@ -137,7 +137,7 @@ $(function() {
 $(function(){
 	//还款计划
 	$('#repayment_plan').click(function(){
-		 var data = $('#table_id').DataTable().rows('.selected').data();
+		 var data = $('#table_id').DataTable().rows('.selected').data();
 		 if(data.length<1){
 				layer.alert("请选择项目！",{icon:0});
 				return;
@@ -154,7 +154,7 @@ $(function(){
 	});
 //	查看投资记录
 	$('#repayment_invest_record').click(function(){
-		 var data = $('#table_id').DataTable().rows('.selected').data();
+		 var data = $('#table_id').DataTable().rows('.selected').data();
 		 if(data.length<1){
 				layer.alert("请选择项目！",{icon:0});
 				return;

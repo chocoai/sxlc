@@ -10,7 +10,7 @@ public class Core {
 	private static JedisPool pool = null;  
 	
 	static{
-		jedis = new Jedis("localhost");
+		jedis = new Jedis("192.168.2.14");
 		if (pool == null) {
 			// 建立连接池配置参数
             JedisPoolConfig config = new JedisPoolConfig();
@@ -23,7 +23,7 @@ public class Core {
             
             config.setTestOnBorrow(true);
             // 创建连接池
-            pool = new JedisPool(config, "localhost", 6379);  
+            pool = new JedisPool(config, "192.168.2.8", 6379);  
         }  
 	}
 	

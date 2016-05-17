@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<!-- 会员余额处理 -->   
+<mapper namespace="balanceDeal">  
+
+	<!--     未处理交易记录信息映射   -->
+    <resultMap type="cn.membermng.model.MemberTradingIdEntity" id="balanceDeal">
+        <id column="Trade_ID"      property="lId" />
+		<result column="Member_Type" property="sType" />
+    </resultMap>  
+
+    <!-- 查询未处理余额的会员交易记录信息 -->  
+	<select id="getMemberUnDealRecord" parameterType="Map"  resultMap ="balanceDeal">
+	   select Trade_ID,Member_Type from Member_Trading_Records where Deal_Statu = 0 and Member_Type = 0
+    </select>  
+    
+    <!-- 会员交易记录余额处理 -->
+    <select id="DealTradeRecord"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call DealTradeRecord(
+				#{tradeID,		mode=IN,	jdbcType=BIGINT},
+				#{sKey,			mode=IN,	jdbcType=VARCHAR},
+				#{result,		mode=IN,	jdbcType=BIGINT}
+    		)}
+    	]]>
+	</select>
+	
+	<!-- 查询未处理账户详情的会员交易记录信息 -->  
+	<select id="getMemberUnDealAccountRecord" parameterType="Map"  resultMap ="balanceDeal">
+	   select Trade_ID,Member_Type from Member_Trading_Records where Deal_Statu = 1 and Member_Type = 0 and Account_Deal_Statu=0
+    </select>
+    
+    <!-- 会员交易记录账户详细信息处理 -->
+    <select id="DealTradeRecordAccount"  statementType="CALLABLE" resultType="Map">
+		<![CDATA[{call DealTradeRecordAccount(
+				#{tradeID,		mode=IN,	jdbcType=BIGINT},
+				#{sKey,			mode=IN,	jdbcType=VARCHAR},
+				#{result,		mode=IN,	jdbcType=BIGINT}
+    		)}
+    	]]>
+	</select>
+	
+</mapper>   

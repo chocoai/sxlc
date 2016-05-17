@@ -164,8 +164,8 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<!--弹出层  -->
    	<div class="inv-record">
-		<ul class="inv-record-info">
-			<li>
+		<ul id="investRecordUl" class="inv-record-info">
+			<li id="investRecordTop">
 				<div class="contentOut5">
 					<div class="c-content">
 						投资完成时间

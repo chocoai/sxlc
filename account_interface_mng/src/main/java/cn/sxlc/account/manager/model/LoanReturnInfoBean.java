@@ -1,6 +1,5 @@
 package cn.sxlc.account.manager.model;
 
-import java.util.List;
 
 
 public class LoanReturnInfoBean {

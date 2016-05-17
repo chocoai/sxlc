@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import cn.springmvc.dao.impl.AccountDaoSupport;
 import cn.springmvc.dao.impl.HandleThreePartyDaoImpl;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.dao.impl.ProjectInvestReadDaoImpl;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.Upload.FtpClientUtil;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
@@ -196,7 +197,7 @@ public class LoanApplyController {
 		entity.setMemberID(memberID);
 		Integer memberType = Integer.parseInt(req.getParameter("memberType"));
 		entity.setMemberType(memberType);
-		Long amount = Long.parseLong(req.getParameter("amount"));
+		Long amount = IntegerAndString.StringToLong(req.getParameter("amount"));
 		entity.setAmount(amount);
 		String uses = req.getParameter("uses");
 		entity.setUses(uses);
@@ -210,7 +211,7 @@ public class LoanApplyController {
 		entity.setDeadlineType(deadlineType);
 		Integer repayWay = Integer.parseInt(req.getParameter("repayWay"));
 		entity.setRepayWay(repayWay);
-		Integer yearRate = Integer.parseInt(req.getParameter("yearRate"));
+		Integer yearRate = IntegerAndString.StringToInt(req.getParameter("yearRate"));
 		entity.setYearRate(yearRate);
 		entity.setAdminId(admin.getId());
 		
@@ -525,6 +526,8 @@ public class LoanApplyController {
 		param.put("projectDescript", projectDescript);
 		String guarantyDescribe = req.getParameter("guarantyDescribe");
 		param.put("guarantyDescribe", guarantyDescribe);
+		//暂时写死
+		param.put("projectType", 1);//项目类型id
 		//第二步参数
 		String autoStart = req.getParameter("autoStart");
 		param.put("autoStart", autoStart);
@@ -552,6 +555,16 @@ public class LoanApplyController {
 		param.put("mngFeeRate", mngFeeRate);
 		String investCountMax = req.getParameter("investCountMax");
 		param.put("investCountMax", investCountMax);
+		//未处理
+		String guaranteeRate = req.getParameter("guaranteeRate");//担保费率,选了担保机构就会让填这个值
+		param.put("guaranteeRate", guaranteeRate);
+		String mngFeeRateIncreace = req.getParameter("mngFeeRateIncreace");//管理费增量 
+		param.put("mngFeeRateIncreace", mngFeeRateIncreace);
+		String mngFeeAmount = req.getParameter("mngFeeAmount");//管理费金额
+		param.put("mngFeeAmount", mngFeeAmount);
+		String rewardIcon = req.getParameter("rewardIcon");//奖励标图标 空表示不单独配置，使用默认
+		param.put("rewardIcon", rewardIcon);
+		
 		//公用参数
 		String cStatu = req.getParameter("cStatu");
 		param.put("cStatu", cStatu);//cStatu:1:提交申请，2：保存草稿 
@@ -559,6 +572,8 @@ public class LoanApplyController {
 		param.put("ppid", ppid);//意向借款id	 
 		String pbiid = req.getParameter("pbiid");
 		param.put("pbiid", pbiid);//项目基础信息id
+		param.put("checkStatu", 0);//审核状态 -1	审核打回  0 未审核  1 审核通过
+		param.put("adminId", admin.getId());
 		String styp = req.getParameter("styp");
 		param.put("styp", styp);//styp:1：第一步只修改第一步的参数 2：第二步 只修改第二步的参数	
 		

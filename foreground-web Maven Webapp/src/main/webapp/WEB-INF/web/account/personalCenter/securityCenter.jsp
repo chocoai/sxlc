@@ -30,41 +30,84 @@
    					</div>
    					<ul class="securityArea">
    					<!-- 已经做了的过程添加tdAuthen样式，否则添加tdUnauth样式    -->
-   						<li class="tdSecurity">
-   							<span class="tdFirst">实名认证</span>
-   							<span class="tdSpan certification">
-	   							<c:if test="${securityInfo.realNameStatus == 0 }">未验证</c:if>
-	   							<c:if test="${securityInfo.realNameStatus == 1 }">审核中</c:if>
-	   							<c:if test="${securityInfo.realNameStatus == 2 }">已验证</c:if>
-	   							<c:if test="${securityInfo.realNameStatus == 3 }">已打回</c:if>
-	   							<c:if test="${securityInfo.realNameStatus == 3 }">已过期</c:if>
-   							</span>
-   							<span class="tdContent">${securityInfo.realName}</span>
-
-   							<span class="link linkUnauthen"><a href="personalCenter/SC_realNameAuthentication.html">验证</a></span>
-   							<span class="link linkAlert certificationSpan"><a href="personalCenter/SC_realNameAuthentication.html">修改</a></span>
-   						</li>
-   						<li class="tdSecurity">
-   							<span class="tdFirst">第三方开户</span>
-
-   							<span class="tdSpan account">
-   								<c:if test="${securityInfo.thirdStatus == 0 }">未开通</c:if>
-   								<c:if test="${securityInfo.thirdStatus == 2 }">已开通</c:if>
-   							</span>
-   							<span class="tdContent">${securityInfo.thirdPartyAccount}</span>
-   							<span class="link linkUnauthen accountSpan"><a href="personalCenter/openAccount.html">开户</a></span>
-   						</li>
+   						<c:if test="${loginUser.memberType == 0 }">
+	   						<li class="tdSecurity">
+	   							<span class="tdFirst">实名认证</span>
+	   							<span class="tdSpan certification">
+		   							<c:if test="${securityInfo.realNameStatus == 0 }">未验证</c:if>
+		   							<c:if test="${securityInfo.realNameStatus == 1 }">审核中</c:if>
+		   							<c:if test="${securityInfo.realNameStatus == 2 }">已验证</c:if>
+		   							<c:if test="${securityInfo.realNameStatus == 3 }">已打回</c:if>
+		   							<c:if test="${securityInfo.realNameStatus == 3 }">已过期</c:if>
+	   							</span>
+	   							<span class="tdContent">${securityInfo.realName}</span>
+								<c:if test="${securityInfo.realNameStatus == 0 }">
+		   							<span class="link linkUnauthen"><a href="personalCenter/authInfo/1.html">认证</a></span>
+								</c:if>
+	   							<c:if test="${securityInfo.realNameStatus == 1 }">
+	   								<span class="link linkAlert certificationSpan"><a href="personalCenter/SC_realNameAuthentication.html">修改</a></span>
+	   							</c:if>
+	   						</li>
+	   						<li class="tdSecurity">
+	   							<span class="tdFirst">第三方开户</span>
+	   							<span class="tdSpan account">
+	   								<c:if test="${securityInfo.thirdStatus == 0 }">未开通</c:if>
+	   								<c:if test="${securityInfo.thirdStatus == 2 }">已开通</c:if>
+	   							</span>
+	   							<span class="tdContent">${securityInfo.thirdPartyAccount}</span>
+	   							<span class="link linkUnauthen accountSpan">
+		   							<c:if test="${securityInfo.thirdStatus == 0 && (securityInfo.realNameStatus == 1 || securityInfo.realNameStatus == 2) }">
+			   							<a href="personalCenter/openAccount.html">开户</a>
+		   							</c:if>
+	   							</span>
+   							</li>
+	   					</c:if>
+	   					<c:if test="${loginUser.memberType == 1 }">
+	   						<li class="tdSecurity">
+	   							<span class="tdFirst">营业执照认证</span>
+	   							<span class="tdSpan certification">
+		   							<c:if test="${businessInfo.status == 0 }">未验证</c:if>
+		   							<c:if test="${businessInfo.status == 1 }">审核中</c:if>
+		   							<c:if test="${businessInfo.status == 2 }">已验证</c:if>
+		   							<c:if test="${businessInfo.status == 3 }">已打回</c:if>
+		   							<c:if test="${businessInfo.status == 3 }">已过期</c:if>
+	   							</span>
+	   							<span class="tdContent">${businessInfo.Firm_BLN}</span>
+	   							<c:if test="${businessInfo.status == 0 }">
+	   								<span class="link linkUnauthen"><a href="personalCenter/authInfo/12.html">认证</a></span>
+	   							</c:if>
+	   							<c:if test="${businessInfo.status == 1 }">
+		   							<span class="link linkAlert certificationSpan"><a href="personalCenter/SC_realNameAuthentication.html">修改</a></span>
+	   							</c:if>
+	   						</li>
+	   						
+	   						<li class="tdSecurity">
+	   							<span class="tdFirst">第三方开户</span>
+	   							<span class="tdSpan account">
+	   								<c:if test="${securityInfo.thirdStatus == 0 }">未开通</c:if>
+	   								<c:if test="${securityInfo.thirdStatus == 2 }">已开通</c:if>
+	   							</span>
+	   							<span class="tdContent">${securityInfo.thirdPartyAccount}</span>
+	   							<span class="link linkUnauthen accountSpan">
+	   								<c:if test="${securityInfo.thirdStatus == 0 && (businessInfo.status == 1 || businessInfo.status == 2)}">
+		   								<a href="personalCenter/openAccount.html">开户</a>
+	   								</c:if>
+	   							</span>
+   							</li>
+	   					</c:if>
    						<li class="tdSecurity">
    							<span class="tdFirst">手机绑定</span>
-
    							<span class="tdSpan">
    								<c:if test="${securityInfo.phoneStatus == 0 }">未绑定</c:if>
    								<c:if test="${securityInfo.phoneStatus == 2 }">已绑定</c:if>
    							</span>
    							<span class="tdContent">${securityInfo.personalPhone}</span>
-
-   							<span class="link linkAlert"><a href="personalCenter/SC_phonebinding.html">修改</a></span>
-   							<span class="link unbound"><a href="personalCenter/SC_phonebinding.html">绑定</a></span>
+							<c:if test="${securityInfo.phoneStatus == 2 }">
+								<span class="link linkAlert"><a href="personalCenter/SC_phonebinding.html">修改</a></span>
+							</c:if>
+   							<c:if test="${securityInfo.phoneStatus == 0 }">
+   								<span class="link unbound"><a href="personalCenter/SC_phonebinding.html">绑定</a></span>
+   							</c:if>
    						</li>
    						<li class="tdSecurity">
    							<span class="tdFirst">邮箱绑定</span>
@@ -74,9 +117,12 @@
    								<c:if test="${securityInfo.emailStatus == 2 }">已绑定</c:if>
    							</span>
    							<span class="tdContent">${securityInfo.personalEmail }</span>
-
-   							<span class="link linkAlert"><a href="personalCenter/SC_emailChange.html">修改</a></span>
-   							<span class="link unbound"><a href="personalCenter/SC_emailbinding.html">绑定</a></span>
+							<c:if test="${securityInfo.emailStatus == 2 }">
+	   							<span class="link linkAlert"><a href="personalCenter/SC_emailChange.html">修改</a></span>
+							</c:if>
+							<c:if test="${securityInfo.emailStatus == 0 }">
+	   							<span class="link unbound"><a href="personalCenter/SC_emailbinding.html">绑定</a></span>
+							</c:if>
    						</li>
    						<li class="tdSecurity">
    							<span class="tdFirst">登录密码重置</span>
@@ -86,9 +132,13 @@
    						</li>
    						<li class="tdSecurity">
    							<span class="tdFirst">二次分配授权</span>
-   							<span class="tdSpan">未绑定</span>
+   							<span class="tdSpan"><c:if test="${securityInfo.openSecondDistribute == 0}">未绑定</c:if><c:if test="${securityInfo.openSecondDistribute == 1}">已绑定</c:if></span>
    							<span class="tdContent"></span>
-   							<span class="link linkUnset"><a href="personalCenter/authorized.html">设置</a></span>
+   							<span class="link linkUnset">
+   								<c:if test="${securityInfo.openSecondDistribute == 0}">
+		   							<a href="personalCenter/authorized.html">设置</a>
+   								</c:if>
+		   					</span>
    						</li>
    						<li class="tdSecurity">
    							<span class="tdFirst">登录验证方式</span>

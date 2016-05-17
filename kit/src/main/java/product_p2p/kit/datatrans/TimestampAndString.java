@@ -77,7 +77,15 @@ public class TimestampAndString {
   		sResult = datafFormat.format(date);
   		return sResult;
   	}
-  	
+  	public static String DateToString3(Date date){
+  		String sResult = "";
+  		if(date == null){
+  			return sResult;
+  		}
+  		SimpleDateFormat datafFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  		sResult = datafFormat.format(date);
+  		return sResult;
+  	}
   	/**
   	 * 计算两个时间相差几个月又几天
   	* getDateSubMonthDay	计算两个时间相差几个月又几天 

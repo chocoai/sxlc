@@ -1,9 +1,9 @@
 package cn.sxlc.account.manager.model;
 
+import java.sql.Timestamp;
+
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.datatrans.TimestampAndString;
-
-import java.sql.Timestamp;
 
 /**
  * 未使用红包实体

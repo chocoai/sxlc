@@ -17,8 +17,9 @@
 	</select>
 	
 	<!-- 查询放款列表-->  
-	<select id="selectLoanList"  parameterType="long" resultType="cn.springmvc.model.ProjectDetailTYEntity" >
-	   select 
+	<select id="selectLoanList"  parameterType="long" resultType="cn.springmvc.model.LoanProjectEntity" >
+	   select
+	   par.Apply_Id            as  applyID,
 	   pap.Real_End_Date       as  realEndDate,
 	   par.Project_No          as  projectNo,
 	   pty.Project_Name        as  projectName,
@@ -45,7 +46,7 @@
 	   join Member_Info mi               on mi.Member_ID = par.Member_ID  
 	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id and mi.Member_Type=0
 	   left join Company_Info  ci        on ci.Company_ID=mi.Company_ID and mi.Member_Type=1
-	   where   par.Publish_Statu = 2 and par.Check_Statu = 1 (par.Invest_Statu = 2 or (par.Invest_Statu = 0 and par.Invest_Rate>=1000000) or 
+	   where   par.Publish_Statu = 2 and par.Check_Statu = 1 and (par.Invest_Statu = 2 or (par.Invest_Statu = 0 and par.Invest_Rate>=1000000) or 
 	          (par.Invest_Statu = 0 and pap.End_Date&lt;=now()) or par.Invest_Statu >=3)
 	   <!-- 项目编号--> 
        <if test = "map.projectNo != null and map.projectNo != ''">  
@@ -71,11 +72,11 @@
 	     </if>  
           <!-- 	        借款期限 -->
 	     <if test = "map.dealine !=  null and map.dealine !=  '' and map.dealine !=  -1"> 
-	       and  pbi.Deadline = #{map.dealine}  and 
+	       and  pbi.Deadline = #{map.dealine}  
 	     </if>  
 	      <!-- 	        借款期限类型 -->
 	     <if test = "map.deadlineType !=  null and map.deadlineType !=  '' and map.deadlineType !=  -1"> 
-	       and  pbi.Deadline_Type = #{map.deadlineType}  and 
+	       and  pbi.Deadline_Type = #{map.deadlineType} 
 	     </if>  
 	      <!-- 	       最小借款金额-->
 	     <if test = "map.minAmount !=  null and map.minAmount !=  ''"> 

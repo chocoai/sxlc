@@ -42,21 +42,25 @@
 				   						<input class="inputText numberReg businessLicenseNumber " type="text" datatype="businessNum" lang="请输入营业执照号码" maxlength="15"/>
 				   					</li>
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>注册地址：</span></div>
+				   						<div class="mustLabel"><span><samp>*</samp>公司名称：</span></div>
+				   						<input class="inputText companyName " type="text" datatype="enteraddr" lang="请输入公司名称" maxlength="25"/>
+				   					</li>
+				   					<li class="inputList">
+				   						<div class="mustLabel"><span><samp></samp>注册地址：</span></div>
 				   						<input class="inputText regAddress " type="text" datatype="enteraddr" lang="请输入注册地址" maxlength="25"/>
 				   					</li>
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>注册法人：</span></div>
+				   						<div class="mustLabel"><span><samp></samp>注册法人：</span></div>
 				   						<input class="inputText regPerson " type="text" datatype="legal" lang="请输入注册法人" maxlength="25"/>
 				   					</li>
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>注册资金：</span></div>
+				   						<div class="mustLabel"><span><samp></samp>注册资金：</span></div>
 				   						<input class="inputText regCapital " type="text" datatype="acountM" lang="请输入注册资金" maxlength="12"/>
 				   						<span class="unitPrice">元</span>
 				   					</li>
 				   					
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>经营范围：</span></div>
+				   						<div class="mustLabel"><span><samp></samp>经营范围：</span></div>
 				   						<input class="inputText businessScope " type="text" datatype="enteraddr" lang="请选择经营范围" maxlength="25"/>
 				   					</li>
 				   					<li class="inputList">
@@ -64,7 +68,7 @@
 				   						<input class="inputText CompanyType " type="text" datatype="enteraddr" lang="请输入公司类型" maxlength="25"/>
 				   					</li>
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>注册时间：</span></div>
+				   						<div class="mustLabel"><span><samp></samp>注册时间：</span></div>
 				   						<input class="inputText dateSelect Wdate regDate " onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择注册时间"/>
 				   					</li>
 				   					<li class="inputList">

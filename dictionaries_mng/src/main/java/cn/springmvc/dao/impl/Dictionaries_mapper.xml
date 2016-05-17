@@ -98,4 +98,14 @@
 		select Religion_Id,Type_Name from religion_type where Type_Statu = 1 
 	</select>
 	
+	<!-- 账单催收映射 -->
+	<resultMap type="cn.dictionaries.model.LoanRepayUrgedSetEntity" id="loanRepayUrgedSetEntity">
+		<result column="Bill_Days" property="sDays"/>
+		<result column="Bill_Content" property="sBillContent"/>
+		<result column="Bill_Content_Overdue" property="sBillOverdue"/>
+	</resultMap>
+	<!-- 账单催收配置 -->
+	<select id="GetLoanRepayUrgedSet" resultMap ="loanRepayUrgedSetEntity">
+		select Bill_Days,Bill_Content,Bill_Content_Overdue from Loan_Repay_Urged_Set order by Bill_Days desc limit 0,1
+	</select>
 </mapper>

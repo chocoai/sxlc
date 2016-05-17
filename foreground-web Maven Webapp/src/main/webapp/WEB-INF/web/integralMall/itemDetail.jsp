@@ -69,10 +69,10 @@
 		    				</div>
 		    				<div class="number">
 		    					<span class="subBtn" >-</span>
-		    					<input value="1"/>
+		    					<input id="count" value="1"/>
 		    					<span class="addBtn" >+</span>
 		    				</div>
-		    				<a class="buy" href="integralMall/exchangeDetail.html">立即兑换</a>
+		    				<a class="buy" data-href="integralMall/exchangeDetail_{{commodityId}}.html">立即兑换</a>
 		    			</div>
 		    		</div>
 		    		<div class="description">

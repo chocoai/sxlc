@@ -13,6 +13,7 @@ import product_p2p.kit.redisPlug.Core;
 import cn.dictionaries.model.CityInfoEntity;
 import cn.dictionaries.model.CountyInfoEntity;
 import cn.dictionaries.model.EducationInfoEntity;
+import cn.dictionaries.model.LoanRepayUrgedSetEntity;
 import cn.dictionaries.model.MaritalInfoEntity;
 import cn.dictionaries.model.NationInfoEntity;
 import cn.dictionaries.model.ProvinceInfoEntity;
@@ -237,5 +238,31 @@ public class DictionariesCore extends Constant {
 		
 		return list;
 	}
+	
+	/**
+	 * 获取催收账单配置
+	* GetRepayBillSet			获取催收账单配置
+	* 							获取催收账单配置
+	* @author 张友  
+	* * @Title: GetRepayBillSet 
+	* @Description: TODO 
+	* @param @return 			账单设置
+	* @return LoanRepayUrgedSetEntity 返回类型 
+	* @date 2016-5-11 下午3:38:37
+	* @throws
+	 */
+	public LoanRepayUrgedSetEntity GetRepayBillSet(){
+		LoanRepayUrgedSetEntity sResult = null;
+		
+		Object obj = Core.getObject(LoanRepayUrgedSet);
+		sResult = (LoanRepayUrgedSetEntity)obj;
+		if(sResult == null){
+			sResult = dictionariesDaoImpl.GetLoanRepayUrgedSet();
+			Core.putRsa(LoanRepayUrgedSet, sResult);
+		}
+		
+		return sResult;
+	}
+	
 }
 

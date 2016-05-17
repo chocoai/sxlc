@@ -54,6 +54,8 @@ function bindCity(pid){
 		data:{proId:spid},
 		success:function(json){
 			//console.log(json);
+			$(".city").parent().find(".selectValue").attr("value",0);
+			$(".city").parent().find(".selectInput").val("请选择");
 			$(".city li").remove();
 			for (var int = 0; int < json.length; int++) {
 				$(".city").append("<li class=\"selectOption\" value=\""+json[int].cId+"\">"+json[int].cName+"</li>");
@@ -82,6 +84,8 @@ function bindCounty(cid){
 		data:{cid:scid},
 		success:function(json){
 			//console.log(json);
+			$(".county").parent().find(".selectValue").attr("value",0);
+			$(".county").parent().find(".selectInput").val("请选择");
 			$(".county li").remove();
 			for (var int = 0; int < json.length; int++) {
 				$(".county").append("<li class=\"selectOption\" value=\""+json[int].xId+"\">"+json[int].xName+"</li>");
@@ -120,7 +124,14 @@ function submitEditPersonal(){
 		dataType:"json",
 		data:{memberQQ:smemberQQ,address:loction,hjdz:homeTown,provinceId:sprovinceId,cityId:scityId,countyId:scountyId},
 		success:function(json){
-			//console.log(json);
+			if(json.statu == 0){
+				layer.alert(json.message,function(index){
+					layer.close(index);
+					window.location.href="personalCenter/baseInformationForPerson.html";
+				});
+			}else{
+				layer.alert(json.message);
+			}
 		}
 	});
 }
@@ -162,12 +173,12 @@ function submitEditCompanlyInfo(){
 	function success(json){
 		json = JSON.parse(json);
 		if(json.status == 0){
-			alert(json.message);
-			window.location.href="personalCenter/baseInformationForPerson.html";
-		}else if(json.status == -2){
-			alert("参数出错");
+			layer.alert(json.message,function(index){
+				layer.close(index);
+				window.location.href="personalCenter/baseInformationForPerson.html";
+			});
 		}else{
-			alert(json.message);
+			layer.alert(json.message);
 		}
 	}
 }

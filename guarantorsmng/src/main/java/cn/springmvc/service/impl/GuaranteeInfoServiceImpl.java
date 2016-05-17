@@ -17,6 +17,7 @@ import cn.springmvc.dao.impl.HandleGuaranteeInfoDaoImpl;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.dao.impl.SelectGuaranteeInfoDaoImpl;
+import cn.springmvc.model.AdminGMEntity;
 import cn.springmvc.model.CompensationStatisticsEntity;
 import cn.springmvc.model.GuaranteeAdminEntity;
 import cn.springmvc.model.GuaranteeBankCard;
@@ -337,14 +338,18 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 	}
 
 	@Override
-	public int insertGuaranteeAdmin(Map<String, Object> map,
+	public int insertGuaranteeAdmin(long staffId,String adminName,String adminPwd,String adminRemark,int stype,
 			InsertAdminLogEntity entity, String[] sIpInfo) {
 
-		// TODO Auto-generated method stub return 0;
-		entity.setsDetail("添加担保机构管理员 :" + map.toString());
+		if (stype==1) {
+			entity.setsDetail("添加担保机构管理员 :管理员名称:" + adminName+"管理员密码:"+adminPwd+"管理员描述:"+adminRemark+"担保机构id:"+staffId);
+		}else {
+			entity.setsDetail("添加资产管理方管理员 :管理员名称:" + adminName+"管理员密码:"+adminPwd+"管理员描述:"+adminRemark+"资产管理方id:"+staffId);
+		}
+		
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
-		return handleGuaranteeInfoDaoImpl.insertGuaranteeAdmin(map);
+		return handleGuaranteeInfoDaoImpl.insertGuaranteeAdmin(staffId, adminName, adminPwd, adminRemark, stype);
 	}
 
 	@Override
@@ -459,5 +464,18 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 		PageUtil.ObjectToPage(pageEntity, list);
 
 		return list;
+	}
+	@Override
+	public int updateMGAdmin(String adminName, String adminPwd,
+			String adminRemark, long adminId) {
+		
+		// TODO Auto-generated method stub return 0;
+		return handleGuaranteeInfoDaoImpl.updateMGAdmin(adminName, adminPwd, adminRemark, adminId);
+	}
+	@Override
+	public AdminGMEntity selectAdmin(long adminID) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectGuaranteeInfoDaoImpl.selectAdmin(adminID);
 	}
 }

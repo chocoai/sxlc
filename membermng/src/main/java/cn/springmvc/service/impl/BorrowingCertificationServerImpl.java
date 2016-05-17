@@ -413,12 +413,13 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	
 	
 	@Override
-	public int businessLicense(long memberId,String businessLicenseNumber, String regAddress,String regPerson, String regCapital, 
+	public int businessLicense(long memberId,String businessLicenseNumber,String companyName, String regAddress,String regPerson, String regCapital, 
 			String businessScope,String CompanyType, String regDate, String endTime, String enclosure) {
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		Long id = generatorUtil.GetId();
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("businessLicenseNumber", businessLicenseNumber);
+		param.put("companyName", companyName);
 		param.put("cid", id);
 		param.put("regAddress", regAddress);
 		param.put("regPerson", regPerson);
@@ -447,10 +448,11 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	}
 	
 	@Override
-	public int editBusinessLicense(long memberId,String businessLicenseNumber,String regAddress, String regPerson, String regCapital,
+	public int editBusinessLicense(long memberId,String businessLicenseNumber,String companyName,String regAddress, String regPerson, String regCapital,
 			String businessScope, String CompanyType, String regDate,String endTime, String enclosure) {
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("businessLicenseNumber", businessLicenseNumber);
+		param.put("companyName", companyName);
 		param.put("regAddress", regAddress);
 		param.put("regPerson", regPerson);
 		param.put("regCapital", regCapital);

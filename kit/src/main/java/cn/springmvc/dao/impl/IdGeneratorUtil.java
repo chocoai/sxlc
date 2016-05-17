@@ -477,7 +477,7 @@ public class IdGeneratorUtil {
 			}
 			
 		}*/
-//		idWriteDaoImpl.InsertIdInfo(lIdList);
+		idWriteDaoImpl.InsertIdInfo(lIdList);
 	}
 	
 	/**

@@ -1,5 +1,7 @@
 package cn.springmvc.controller; 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -84,7 +86,7 @@ public class LoginRegisterController {
 			message = "请输入确认密码";
 		}else if(!memberPwd.equals(confirmPassword)){
 			message = "两次输入密码不一致";
-		}else if(StringUtils.checkInviteCode(beinvitateCode)){
+		}else if(beinvitateCode != null && StringUtils.checkInviteCode(beinvitateCode)){
 			message = "请输入有效邀请码";
 		}else if(personalPhone == null || personalPhone.trim().length() == 0){
 			message = "请输入联系电话";
@@ -92,11 +94,17 @@ public class LoginRegisterController {
 			message = "请输入有效联系电话";
 		}else if(checkCoede == null || checkCoede.trim().length() == 0){
 			message = "请输入验证码";
-		}else if(!checkCoede.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
+		}/*else if(!checkCoede.equals("1")){
+			message = "验证码错误";
+		}*/
+			
+		else if(!checkCoede.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){			
 			message = "验证码不正确";
 		}else if(phoneCheckCode == null || phoneCheckCode.trim().length() == 0){
 			message = "请输入短信验证码";
-		}else if(phoneCheckCode.equals(Core.getRegisterPhoneCode(phoneCheckCode))){
+		}/*else if(!phoneCheckCode.equals("100100")){
+			message = "短信验证码错误";
+		}*/else if(phoneCheckCode.equals(Core.getRegisterPhoneCode(phoneCheckCode))){							
 			message = "短信验证码错误";
 		}
 		
@@ -131,9 +139,16 @@ public class LoginRegisterController {
 				request.getSession().setAttribute(Constant.publicKey, RSAPlugn.PublicKeyToString((RSAPublicKey)keyPair.getPublic()));
 				request.getSession().setAttribute(Constant.privateKey, RSAPlugn.PrivateKeyToString((RSAPrivateKey)keyPair.getPrivate()));
 				
-				Cookie cookie = new Cookie("rememberMeInfo", logname+"-"+memberType);
-				cookie.setMaxAge(30*24*60*60);
-				response.addCookie(cookie);
+				String loginCookieValue;
+				try {
+					loginCookieValue = URLEncoder.encode(logname+"-"+memberType,"utf-8");
+					Cookie cookie = new Cookie("rememberMeInfo", loginCookieValue);
+					cookie.setMaxAge(30*24*60*60);
+					response.addCookie(cookie);
+				} catch (UnsupportedEncodingException e) {
+					logger.error("用户登录:"+logname+"登录出现设置Cookie错误"+e.getLocalizedMessage());
+				}
+				
 			}
 		}
 		param.put("statu",optionCode);
@@ -258,30 +273,37 @@ public class LoginRegisterController {
 	 */
 	@RequestMapping(value="sendRegisterPhoneVarCode",produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String sendRegisterPhoneVarCode(HttpServletRequest request,String codePhone){
+	public String sendRegisterPhoneVarCode(HttpServletRequest request,String codePhone,String imgCheckCode){
 		Map<String,Object> message = new HashMap<String, Object>();
 		if(codePhone == null || !StringUtils.checkPhone(codePhone)){
 			message.put("statu", "-1");
 			message.put("message", "请输入有效手机号");
+		}else if(imgCheckCode == null ||imgCheckCode.trim().length() == 0){
+			message.put("statu", "-1");
+			message.put("message", "请输入图形验证码");
+		}else if(!imgCheckCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
+			message.put("statu", "-1");
+			message.put("message", "图形验证码输入错误");
 		}
+		
 		if(message.keySet().size() > 0){
 			return JSONObject.toJSONString(message);
 		}
 		//首先判断此号是否已经发送了
-		String sCode = Core.getRegisterPhoneCode(codePhone);
+		/*String sCode = Core.getRegisterPhoneCode(codePhone);
 		if(sCode != null){
 			logger.debug("用户注册手机短信验证码发送成功："+codePhone+" : "+sCode);
 			message.put("statu", 1);
 			message.put("message", "验证码发送成功,请注意查收");
 			return JSONObject.toJSONString(message);
-		}else{
+		}else{*/
 			String code = StringUtils.varCode();
 			Map<String,Object> param = new HashMap<String, Object>();
 			param.put("phone", codePhone);
 			param.put("code", code);
 			int iresult = Core.putRegisterPhoneCode(codePhone, code);
 			if(iresult == 1){
-				String[] result ={"0",""};// sendSmsUtil.SendSms(param,0,0,null);//
+				String[] result = sendSmsUtil.SendSms(param,0,0,null);//
 				if(result[0].equals("0")){
 					logger.debug("用户注册手机短信验证码发送成功："+codePhone+" : "+code);
 					message.put("statu", 1);
@@ -297,7 +319,7 @@ public class LoginRegisterController {
 				message.put("message", "验证码发送失败,请重试!");
 			}
 			return JSONObject.toJSONString(message);
-		}
+//		}
 	}
 	
 	/***
@@ -340,52 +362,43 @@ public class LoginRegisterController {
 		
 		Map<String,Object> param = new HashMap<String, Object>();
 		boolean isExit = false;
-		if(memberType > 1){
+		if(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString() == null ){
+			param.put("message", "请刷新页面再试");
+		}else if(memberType > 1){
 			isExit = true;
-			param.put("memberType", "请选择正确的会员类型");
-		}else{
-			param.put("memberType", "");
-		}
-		
-		if(memberName == null || memberName.trim().length() == 0){
+			param.put("message", "请选择正确的会员类型");
+		}else if(memberName == null || memberName.trim().length() == 0){
 			isExit = true;
-			param.put("memberName", "请输入用户名");
+			param.put("message", "请输入用户名");
 		}else if(!StringUtils.checkCarLogName(memberName) && !StringUtils.checkPhone(memberName)){
 			isExit = true;
-			param.put("memberName", "请输入正确用户名");
-		}else{
-			param.put("memberName", "");
-		}
-		
-		if(password == null || password.trim().length() == 0){
+			param.put("message", "请输入正确用户名");
+		}else if(password == null || password.trim().length() == 0){
 			isExit = true;
-			param.put("password", "请输入登录密码");
-		}else{
-			param.put("password", "");
-		}
-		
-		if(checkCode == null || checkCode.trim().length() == 0){
+			param.put("message", "请输入登录密码");
+		}/*else if(!checkCode.equals("1")){
 			isExit = true;
-			param.put("checkCode", "请输入验证码");
+			param.put("message", "验证码错误");
+		}*/else if(checkCode == null || checkCode.trim().length() == 0){
+			isExit = true;
+			param.put("message", "请输入验证码");
 		}else if(!checkCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
 			isExit = true;
 			param.put("message", "验证码错误");
-		}else{
-			param.put("checkCode", "");
 		}
 		
 		if(isExit){
-			param.put("statu", -2);
+			param.put("statu", "-2");
 			return JSONObject.toJSONString(param);
 		}
 		
 		String[] sIpInfo = new String[6];
 		String ip = AddressUtils.GetRemoteIpAddr(request, sIpInfo);
 		String sSessionId = request.getSession().getId();
-		int result = memberService.login(memberName, password, memberType, ip, sIpInfo, referer,sSessionId);
+		int result = memberService.login(memberName, password, memberType,  ip, sIpInfo, referer,sSessionId);
 		if(result == 0){
 			//查询个人信息
-			param.put("statu", 1);
+			param.put("statu", "1");
 			param.put("message", "登录成功");
 			MemberInfo memberinfo = memberService.findMemberInfoByParam(memberName, password, memberType);
 			if(rememberMe == 1 || memberinfo != null){
@@ -394,15 +407,23 @@ public class LoginRegisterController {
 				request.getSession().setAttribute(Constant.publicKey, RSAPlugn.PublicKeyToString((RSAPublicKey)keyPair.getPublic()));
 				request.getSession().setAttribute(Constant.privateKey, RSAPlugn.PrivateKeyToString((RSAPrivateKey)keyPair.getPrivate()));
 				
-				Cookie cookie = new Cookie("rememberMeInfo", memberName+"-"+memberType);
-				cookie.setMaxAge(30*24*60*60);
-				response.addCookie(cookie);
+				try {
+					System.out.println(URLEncoder.encode(memberName,"utf-8"));
+					Cookie name = new Cookie("mName", URLEncoder.encode(memberName,"utf-8"));
+					Cookie type = new Cookie("mType", memberType+"");
+					name.setMaxAge(30*24*60*60);
+					type.setMaxAge(30*24*60*60);
+					response.addCookie(name);
+					response.addCookie(type);
+				} catch (UnsupportedEncodingException e) {
+					logger.error("用户登录:"+memberName+"登录出现设置Cookie错误"+e.getLocalizedMessage());
+				}
 			}else{
-				param.put("statu", 0);
+				param.put("statu", "0");
 				param.put("message", "登录失败");
 			}
 		}else{
-			param.put("statu", -3);
+			param.put("statu", "-3");
 			param.put("message", "账号或密码错误");
 		}
 		return JSONObject.toJSONString(param);
@@ -419,11 +440,10 @@ public class LoginRegisterController {
 	@RequestMapping("exitVisit")
 	public String exit(HttpServletRequest request){
 		request.getSession().removeAttribute(Constant.LOGINUSER);
+		request.getSession().removeAttribute(Constant.publicKey);
+		request.getSession().removeAttribute(Constant.privateKey);
 		return "loginRegister/exitSuccess";
 	} 
-	
-	
-	
 	
 	/***
 	* 去注册成功界面

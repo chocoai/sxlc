@@ -33,6 +33,8 @@ public class LoginCheckFilter implements Filter{
 		exitRouts.add("authorizedCallBackPage");						//二次分配授权
 		exitRouts.add("loanRechargeNotify");							//绑定银行卡回调
 		exitRouts.add("debtInvestmentBack");							//债权投资回调
+		exitRouts.add("memberInvestmentPage");							//項目投資返回
+		exitRouts.add("memberInvestmentvoid");							//項目投資返回
 	}
 	
 	

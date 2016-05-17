@@ -21,8 +21,18 @@ public class RealNameAuth {
 	private String				positive;		//身份证图片
 	private String				reverse;		//身份证图片
 	private int					status;			//认证状态
+	private String				attachPrefix;  //附件访问前缀url
 	
-	
+	public String getAttachPrefix() {
+		return attachPrefix;
+	}
+
+
+	public void setAttachPrefix(String attachPrefix) {
+		this.attachPrefix = attachPrefix;
+	}
+
+
 	public String getNationName() {
 		return nationName;
 	}

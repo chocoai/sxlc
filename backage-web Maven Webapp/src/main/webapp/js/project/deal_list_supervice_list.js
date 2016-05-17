@@ -28,7 +28,9 @@ $(function(){
 				          { title:"添加时间","data": "recordDate"},  
 				          { title:"摘要","data": "abstracts", 
 				        	  "mRender": function (data, type, full) {
-				        		  	if(data.length>8){//当内容长度大于8时隐藏详细信息
+				        		  	if(data==null){
+				        		  		return "";
+				        	  		}else if(data.length>8){//当内容长度大于8时隐藏详细信息
 				        	    		return ' <a href="javascript:;" onclick="showText(this)" title="摘要">'+data.substring(0,7)+'...</a>';
 				        	    	}else {
 				        	    		return data;
@@ -146,7 +148,7 @@ $(function(){
 	});
 	/*贷后信息查询*/
 	$(".obtn-searchmsg").on("click touchstart",function(){
-		var data = $('#table_id').DataTable().rows('.selected').data();
+		 var data = $('#table_id').DataTable().rows('.selected').data();
 		 if(data.length<1){
 				layer.alert("请选择要查询的贷后信息！",{icon:0});
 				return;

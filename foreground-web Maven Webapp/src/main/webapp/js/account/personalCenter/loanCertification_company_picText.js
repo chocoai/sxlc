@@ -54,6 +54,7 @@ $(function(){
 		
 		var editType=$(".editType").val();//0-新增  1-修改 
 		var businessLicenseNumber=$(".businessLicenseNumber").val();//营业执照号
+		var companyName = $(".companyName").val();//公司名称
 		var regAddress=$(".regAddress").val();//注册地址
 		var regPerson=$(".regPerson").val();//注册法人
 		var regCapital=$(".regCapital").val();//注册资金
@@ -85,6 +86,7 @@ $(function(){
 
 		editType=encrypt.encrypt(editType+"");
 		businessLicenseNumber=encrypt.encrypt(businessLicenseNumber+"");
+		companyName=encrypt.encrypt(companyName+"");
 		regAddress=encrypt.encrypt(regAddress+"");
 		regPerson=encrypt.encrypt(regPerson+"");
 		regCapital=encrypt.encrypt(regCapital+"");
@@ -97,7 +99,7 @@ $(function(){
 		
 		NetUtil.ajax(
 				str_url,
-				{editType:editType,businessLicenseNumber:businessLicenseNumber,regAddress:regAddress,regPerson:regPerson,regCapital:regCapital,businessScope:businessScope,CompanyType:CompanyType,regDate:regDate,endTime:endTime,annex:annex,cid:cid},
+				{editType:editType,businessLicenseNumber:businessLicenseNumber,companyName:companyName,regAddress:regAddress,regPerson:regPerson,regCapital:regCapital,businessScope:businessScope,CompanyType:CompanyType,regDate:regDate,endTime:endTime,annex:annex,cid:cid},
 				function(r){
 					var r = JSON.parse(r);
 					if (r.status == 0){
@@ -462,6 +464,7 @@ $(function(){
 	function dealBusiness(data,attachPrefix){
 		if(data!=null && data!=""){
 			var businessLicenseNumber=data.Firm_BLN;//执照号
+			var companyName = data.companyName;//公司名称
 			var regAddress=data.Firm_Address;//注册地址
 			var regPerson=data.Firm_Legal;//法人
 			var regCapital=data.Reg_Capital;//注册资金
@@ -470,8 +473,14 @@ $(function(){
 			var regDate=data.Reg_Date;//注册时间
 			var endTime=data.End_Date;//有效期
 			var attachPath=attachPrefix+""+data.Attach_Path;//附件
-			
+			var statu = data.status;
+			if(statu=="0" || statu=="3" || statu=="4"){
+				$(".editType").val("0");
+			}else{
+				$(".editType").val("1");
+			}
 			$(".businessLicenseNumber").val(businessLicenseNumber);
+			$(".companyName").val(companyName);
 			$(".regAddress").val(regAddress);
 			$(".regPerson").val(regPerson);
 			$(".regCapital").val(regCapital);
@@ -480,7 +489,6 @@ $(function(){
 			$(".regDate").val(regDate);
 			$(".endTime").val(endTime);
 			
-			$(".editType").val("1");
 			$(".previewHide").val(data.Attach_Path);
 			$("#previewImg").attr("src",attachPath);
 			$(".previewHide").attr("id","1");				
@@ -505,7 +513,12 @@ $(function(){
 			var regDate=data.SetUp_Date;//成立日期
 			var endTime=data.End_Date;//有效期
 			var attachPath=attachPrefix+""+data.Attach_Path;//附件
-			
+			var statu = data.status;
+			if(statu=="0" || statu=="3" || statu=="4"){
+				$(".editType").val("0");
+			}else{
+				$(".editType").val("1");
+			}
 			$(".address").val(address);
 			$(".regPserson").val(regPserson);
 			$(".regCapital").val(regCapital);
@@ -515,7 +528,6 @@ $(function(){
 			$(".regDate").val(regDate);
 			$(".endTime").val(endTime);
 			
-			$(".editType").val("1");
 			$(".previewHide").val(data.Attach_Path);
 			$("#previewImg").attr("src",attachPath);
 			$(".previewHide").attr("id","1");			
@@ -537,8 +549,12 @@ $(function(){
 			$(".organizationalCode").val(organizationalCode);
 			$(".startTime").val(startTime);
 			$(".endTime").val(endTime);
-			
-			$(".editType").val("1");
+			var statu = data.status;
+			if(statu=="0" || statu=="3" || statu=="4"){
+				$(".editType").val("0");
+			}else{
+				$(".editType").val("1");
+			}
 			$(".previewHide").val(data.Attach_Path);
 			$("#previewImg").attr("src",attachPath);
 			$(".previewHide").attr("id","1");			
@@ -558,12 +574,16 @@ $(function(){
 			var bankAccount=data.Bank_No;//帐号
 			var endTime=data.End_Date;
 			var attachPath=attachPrefix+""+data.Attach_Path;//附件
-			
+			var statu = data.status;
+			if(statu=="0" || statu=="3" || statu=="4"){
+				$(".editType").val("0");
+			}else{
+				$(".editType").val("1");
+			}
 			$(".accountOpeningCode").val(accountOpeningCode);
 			$(".opBank").val(opBank);
 			$(".bankAccount").val(bankAccount);
 			$(".endTime").val(endTime);
-			$(".editType").val("1");
 			$(".previewHide").val(data.Attach_Path);
 			$("#previewImg").attr("src",attachPath);
 			$(".previewHide").attr("id","1");			
@@ -583,10 +603,15 @@ $(function(){
 			var issueOrgan=data.Issue_Organ;//颁发机构
 			var endTime=data.End_Date;
 			var attachPath=attachPrefix+""+data.Attach_Path;//附件
+			var statu = data.status;
+			if(statu=="0" || statu=="3" || statu=="4"){
+				$(".editType").val("0");
+			}else{
+				$(".editType").val("1");
+			}
 			$(".credentialsNO").val(credentialsNO);
 			$(".issueOrgan").val(issueOrgan);
 			$(".endTime").val(endTime);
-			$(".editType").val("1");
 			$(".previewHide").val(data.Attach_Path);
 			$("#previewImg").attr("src",attachPath);
 			$(".previewHide").attr("id","1");				
@@ -605,12 +630,17 @@ $(function(){
 			var issueDate=data.Issue_Date;//颁发时间
 			var endTime=data.End_Date;//有效期
 			var attachPath=attachPrefix+""+data.Attach_Path;//附件
+			var statu = data.status;
+			if(statu=="0" || statu=="3" || statu=="4"){
+				$(".editType").val("0");
+			}else{
+				$(".editType").val("1");
+			}
 			$(".fileSummary").val(fileSummary);
 			$(".issueOrgan").val(issueOrgan);
 			$(".issueDate").val(issueDate);
 			$(".endTime").val(endTime);
 			$(".endTime").val(endTime);
-			$(".editType").val("1");
 			$(".previewHide").val(data.Attach_Path);
 			$("#previewImg").attr("src",attachPath);
 			$(".previewHide").attr("id","1");				

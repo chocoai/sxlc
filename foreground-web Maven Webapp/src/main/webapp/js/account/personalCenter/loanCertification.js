@@ -42,7 +42,7 @@ $(function(){
 		}
 		if($(this).html().match("已认证") || $(this).html().match("审核中")){
 			$(this).parent().find(".linkCheck").show();
-		}else if($(this).html().match("已过期") || $(this).html().match("未通过")){
+		}else if($(this).html().match("已过期") || $(this).html().match("未通过")||$(this).html().match("已打回")){
 			$(this).parent().find(".linkAlert").show();
 		}else if($(this).html().match("未认证")){
 			$(this).parent().find(".linkAuthen").show();

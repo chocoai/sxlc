@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -20,7 +21,7 @@
     <!-- 在这里加入页面内容 -->
     <!-- 商品列表的静态页面       胥福星       2016-3-29 -->
     <div class="nowPosition">
-    	<div class="nowPositionContent">您当前位置 > <a href="integralMall/mallIndex.html">积分商城</a> > <span>商品列表</span></div>
+    	<div class="nowPositionContent">您当前位置 &gt; <a href="integralMall/mallIndex.html">积分商城</a> &gt; <span>商品列表</span></div>
     </div>
     <div class="productListArea">
     	<div class="main">
@@ -46,16 +47,24 @@
     			</div>
     			<div class="integralFilter">
     				<div class="filterImg2"></div>
-    				<ul class="clearfix filterLi">
+    				<ul class="clearfix filterLi i-b2">
     					<li><span class="selected">全部</span></li>
-    					<li><span>家用电器</span></li>
+    					<c:if test="${CommodityTypeList != null && CommodityTypeList !=''}">
+    						<c:forEach items="${CommodityTypeList}" var="data">
+		    					<li><span>${data.commodityClassify}</span></li>
+    						</c:forEach>
+    					</c:if>
+    					<c:if test="${CommodityTypeList == null}">
+	    					<li><span></span></li>
+    					</c:if>
+    					<!-- <li><span>家用电器</span></li>
     					<li><span>美容美妆</span></li>
     					<li><span>日用百货</span></li>
     					<li><span>公仔玩具</span></li>
     					<li><span>体育户外</span></li>
     					<li><span>食品饮料</span></li>
     					<li><span>数码产品</span></li>
-    					<li><span>创意饰品</span></li>
+    					<li><span>创意饰品</span></li> -->
     				</ul>
     			</div>
     		</div>

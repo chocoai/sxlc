@@ -42,11 +42,14 @@
 									window.location = "personalCenter/securityCenter.html";
 								});
 							}else{
-								layer.alert(json.message);
+								layer.alert(json.message,function(index){
+									layer.close(index);
+									$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
+								});
 							}
 							
 						}
-				)
+				);
 				
 				return false
 			}

@@ -29,7 +29,7 @@
      join Member_Trading_Records_Account mtra on mtra.Trade_ID =  mtr.Trade_ID
      join Own_Trading_Records_Balance otrb on otrb.Own_Trading_ID = mtr.Trade_ID 
      <where>  
-            mtr.Member_ID =#{map.memberID} and mtr.Member_Type =#{map.memberType} and mtr.Account_Deal_Statu=1 
+           mtr.Member_ID =#{map.memberID} and mtr.Member_Type =#{map.memberType} and mtr.Account_Deal_Statu=1 
 	   <if test="map.tradeTypeId != -1"> 
 	      and mtr.Trade_Type_Id =  #{map.tradeTypeId}
 	   </if>
@@ -112,7 +112,13 @@
 	       <if test="map.order == -10"> 
 	       order by  totalAmount asc
 	     </if>
+	       <!-- 	            交易时间-->
+	     <if test="map.order == 0"> 
+	       order by mtr.Record_Date desc
+	     </if>
+	       
 	 </where> 
+	
 	</select>
      <!-- 	  交易记录详情 -->
 	 <select id="selectTradingRecordsdetail" parameterType="Map" resultMap="memberTradingRecordsMap.resultMemberTradingRecords">
@@ -187,6 +193,9 @@
 		     </if>
 		      <if test="map.order == -3"> 
 		       order by  Real_Money asc
+		     </if>
+		     <if test="map.order == 0"> 
+		       order by  mwr.Receive_Date desc
 		     </if>
 	 </select>
        <!-- 	     总的充值手续费 -->
@@ -272,6 +281,9 @@
 		     </if>
 		      <if test="map.order == -3"> 
 		       order by  Real_Money asc
+		     </if>
+		     <if test="map.order == 0"> 
+		       order by  mwr.Receive_Date desc
 		     </if>
 	  </select>
 	  

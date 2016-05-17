@@ -490,34 +490,33 @@ public class GuaranteeController {
 	 */
 	@RequestMapping("/saveAdmin")
 	@ResponseBody
-	public int addAdmin(HttpServletRequest request, Map<String,Object> req) {
+	public int addAdmin(HttpServletRequest request) {
 		
 		HttpSession session = HttpSessionUtil.getSession(request);
 		InsertAdminLogEntity entity = new InsertAdminLogEntity();
 		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
-		Admin admin = new Admin();
 		
-		String adminName = request.getParameter("adminName");
-		String adminPwd = request.getParameter("adminPwd");
-		String adminRemark = request.getParameter("adminRemark");
+		String userName = request.getParameter("userName");
+		String password = request.getParameter("password");
+		String remark = request.getParameter("remark");
+		String guaranteeID = request.getParameter("guaranteeID");
+		String stype = request.getParameter("stype");
 		
-		if (!"".equals(adminRemark)) {
-			admin.setAdminRemark(adminRemark);
-		}
-			admin.setAdminName(adminName);
-			admin.setAdminPwd(adminPwd);
+		
 		String [] sIpInfo = new String[6];
 		if (userInfo != null) {
 			entity.setiAdminId(userInfo.getId());
 		}
-		entity.setlOptId(90105);
+		entity.setlOptId(90104);
 		entity.setlModuleId(901);
 		entity.setsDetail("");
 		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
-		int num = adminService.saveAdmin(admin, 0, entity, sIpInfo);
+		int num = guaranteeInfoService.insertGuaranteeAdmin(
+				IntegerAndString.StringToLong(guaranteeID, -1), userName, 
+				password, remark, IntegerAndString.StringToInt(stype, -1), entity, sIpInfo);
 		return num;
 	}
 	

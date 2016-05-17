@@ -156,9 +156,20 @@ public class BankCardMngController {
 		memberBankCardEntity.setMemberID(lMemberInfo[0]);
 		memberBankCardEntity.setMemberType((int)lMemberInfo[1]);
 		int result = bankCardService.insertMemberBackCard(bankCardInfoEntity, memberBankCardEntity);
-		message.put("code", 200);
-		message.put("message", "添加成功");
-		message.put("data",result);
+		if(result==1){
+			message.put("code", 200);
+			message.put("message", "添加成功");
+			message.put("data", result);
+		}else if(result==-3){
+			message.put("code", 403);
+			message.put("message", "该会员绑定银行卡已超过15张");
+		}else if(result==-2){
+			message.put("code", 403);
+			message.put("message", "该银行卡已被绑定");
+		}else{
+			message.put("code", 403);
+			message.put("message", "信息有误");
+		}
 		return JSONObject.toJSONString(message);
 	}
 	

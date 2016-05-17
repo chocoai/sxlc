@@ -2,7 +2,7 @@ $(function(){
 	$(".TB").addClass("down");
 	$(".TB2").addClass("down2");
 });
-/* 安全中心页面js代码  */
+///* 安全中心页面js代码  */
 $(function(){
 	$(".tdSpan").each(function(){
 		if($(this).html().match("已验证") || $(this).html().match("已绑定") || $(this).html().match("已开通") || $(this).html().match("已设置") || $(this).html().match("已选择")){
@@ -10,26 +10,26 @@ $(function(){
 		}else if($(this).html().match("未验证") || $(this).html().match("未开通")  || $(this).html().match("未绑定")  || $(this).html().match("未设置")  || $(this).html().match("未选择")){
 			$(this).addClass("tdUnauth");
 		}
-		if($(".certification").html().match("已验证") && $(".account").html().match("未开通")){
-			$(this).parent().find(".certificationSpan").show();
-			$(this).parent().find(".accountSpan").show();
-		}else if($(".certification").html().match("未验证")){
-			$(this).parent().find(".linkUnauthen").show();
-			$(this).parent().find(".accountSpan").hide();
-		}
-		if($(this).html().match("已设置")){
-			$(this).parent().find(".linkUnset").hide();
-		}else{
-			$(this).parent().find(".linkUnset").show();
-		}
-		if($(this).html().match("已绑定")){
-			$(this).parent().find(".linkAlert").show();
-		}else{
-			$(this).parent().find(".unbound").show();
-		}
-		if($(this).html().match("已选择") || $(this).html().match("--")){
-			$(this).parent().find(".linkAlert").show();
-		}
+//		if($(".certification").html().match("已验证") && $(".account").html().match("未开通")){
+//			$(this).parent().find(".certificationSpan").show();
+//			$(this).parent().find(".accountSpan").show();
+//		}else if($(".certification").html().match("未验证")){
+//			$(this).parent().find(".linkUnauthen").show();
+//			$(this).parent().find(".accountSpan").hide();
+//		}
+//		if($(this).html().match("已设置")){
+//			$(this).parent().find(".linkUnset").hide();
+//		}else{
+//			$(this).parent().find(".linkUnset").show();
+//		}
+//		if($(this).html().match("已绑定")){
+//			$(this).parent().find(".linkAlert").show();
+//		}else{
+//			$(this).parent().find(".unbound").show();
+//		}
+//		if($(this).html().match("已选择") || $(this).html().match("--")){
+//			$(this).parent().find(".linkAlert").show();
+//		}
 	});
 });
 /* 胥福星     2016-04-06  密码框提示span模拟   */
@@ -107,22 +107,7 @@ $(function(){
 	});
 	
 });
-/* 邮箱绑定弹出提示层 */
 
-/******ajax获取验证状态*******/
-/*$.ajax({
-    type: "post",
-    dataType: "html",
-    url: '*.html',
-    data: html,
-    success: function (data) {
-        if (data != "") {         
-            $("#RN").html(data);
-        }else{
-        	$("#RN").html('--');
-        }
-    }
-});*/
 
 
 $(function(){

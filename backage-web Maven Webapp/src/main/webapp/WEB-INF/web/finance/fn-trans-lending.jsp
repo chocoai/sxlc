@@ -64,7 +64,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</span>
 									<span class="con-item"><span>放款时间</span><input type="text" id="loanStartDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'loanEndDate\')||\'2020-10-01\'}' })">-&nbsp;&nbsp;<input type="text" id="loanEndDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'loanStartDate\')}' ,maxDate:'2020-10-01' })"></span>
 									<span class="con-item"><span>流标时间</span><input type="text" id="failStartDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'failEndDate\')||\'2020-10-01\'}' })">-&nbsp;&nbsp;<input type="text" id="failEndDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'failStartDate\')}' ,maxDate:'2020-10-01' })"></span>
-									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+									<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 								</form>
 						  	</div>
 						</div>
@@ -73,9 +73,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 							  	<div class="action_item">
-							  		<button id="" class="obtn glyphicon glyphicon-plus obtn-export">放款</button>
-						  			<button id="" class="obtn glyphicon glyphicon-plus tobe_lending_invest_record">流标</button>
+							  		<button id="loan" class="obtn glyphicon glyphicon-plus obtn-export">放款</button>
+						  			<button id="pass" class="obtn glyphicon glyphicon-plus tobe_lending_invest_record">流标</button>
 								</div>
+								<form id="form1" action="lending/loan.do" type="post">
+									<input id="stype" name="stype" type="hidden" value="" />
+									<input id="projectId" name="projectId" type="hidden" value="" />
+									<input id="auditType" name="auditType" type="hidden" value="" />
+								</form>
 							</div>
 							<div class="panel-body">
 								<table id="table_pro_lending" class="display">
@@ -126,39 +131,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 公用js -->
 			<jsp:include page="../common/cm-js.jsp"></jsp:include>
 			<!-- 私用js -->
+			<script type="text/javascript" src="js/finance/fn-trans-lending.js"></script>
 			<script src=""></script>
 			<script type="text/javascript">
-			//默认禁用搜索和排序
-			/* $.extend( $.fn.dataTable.defaults, {
-			    searching: true,
-			    ordering:  false
-			} ); */
-			// 这样初始化，排序将会打开
-			$(function() {
-				$('#table_pro_lending').DataTable({
-					"autoWidth" : true,
-					"scrollX": true,
-					//"scrollY": true,
-					//paging : false,//分页
-					
-					//"searching" : false,
-					"info" : false,//左下角信息
-					//"ordering": false,//排序
-					"aaSorting" : [[ 8, "desc"],[ 10, "desc"],[ 11, "desc"]],//默认第几个排序
-					"aoColumnDefs" : [
-					//{"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
-					{
-						"orderable" : false,
-						"aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 7, 9]
-					} // 制定列不参与排序
-					],
-					colReorder : false,
-					"scrollX": true,
-					"sScrollX" : "100%",
-					"sScrollXInner" : "100%",
-					"bScrollCollapse" : true
-				});
-			});
+				var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 			</script>
 		</div>
 	</div>

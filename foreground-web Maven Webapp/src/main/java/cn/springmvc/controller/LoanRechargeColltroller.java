@@ -65,7 +65,7 @@ public class LoanRechargeColltroller {
 		recharge.setRemark3(remark);
 		recharge.setIsApp(0);
 		
-		recharge =managedInterfaceServer.testLoanRecharge(recharge);
+		recharge =managedInterfaceServer.testLoanRecharge(recharge,request);
 	
 		request.setAttribute("rechange", recharge);
 		return "dryLot/loanrechargetest";

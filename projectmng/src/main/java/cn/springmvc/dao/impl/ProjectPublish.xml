@@ -47,6 +47,7 @@
         <result property = "projectName" 		column = "Project_Name" /> 
         <result property = "recordDate"       	column = "Record_Date" /> 
         <result property = "pushIndex"          column = "pushIndex" />
+         <result property = "releaseDate"       column = "Release_Date" />
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	    </association>
     </resultMap> 
@@ -76,8 +77,8 @@
 	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbiper.Personal_Name),#{map.keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
             as memberName
-	   from  Project_App_Process pap 
-	   left join Project_App_Record par on  pap.Apply_Id=par.Apply_Id  
+	   from   Project_App_Record par
+	   left join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id  
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
 	   left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 

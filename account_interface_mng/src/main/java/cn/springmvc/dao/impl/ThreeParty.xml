@@ -9,6 +9,7 @@
     <result column="pname" property="name"/>
     <result column="pidcard" property="idcard"/>
     <result column="Logname" property="logName"/>
+    <result column="pemail" property="email"/>
   </resultMap>
   <!-- 查询个人会员开户所需基本信息 -->
   <select id="selectpAccountById" resultMap="sAccountInterface" parameterType="Map" >
@@ -91,6 +92,7 @@
   <select id="rechargeBack" resultType="Map" statementType="CALLABLE">
   		<![CDATA[{call RechargeBack(
 				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{rechargeType,	 mode=IN,	jdbcType=INTEGER},
 				#{rechargeID,	 mode=IN,	jdbcType=BIGINT},
 				#{memberType,	 mode=IN,	jdbcType=INTEGER},
 				#{memberID,	 mode=IN,	jdbcType=BIGINT},
@@ -167,7 +169,7 @@
   </resultMap>
   <!-- 根据会员类型查询提现规则设置 -->
   <select id="isWithdrawalsCheak" resultMap="Withdrawal" parameterType="Map">
-  		select Withdrawal_Fee_Third,Withdrawal_Type_Third,Withdrawal_Fee_Pingtai,Check_Type,Payment_Member_Type from Withdrawal_Set where Payment_Member_Type=#{paymentMemberType}
+  		select Withdrawal_Fee_Third,Withdrawal_Type_Third,Withdrawal_Fee_Pingtai,Check_Type,Payment_Member_Type from Withdrawal_Set where Payment_Member_Type=#{paymentMemberType} limit 1
   </select>
   
   
@@ -791,4 +793,19 @@
     		)}
     	]]>
     </select>
+    
+     <!-- 项目放款-->  
+    <select id="FuangKuan"  statementType="CALLABLE" parameterType="Map"> 
+	     {call FuangKuan(
+				#{lId ,	         mode=IN,	jdbcType=BIGINT},
+				#{lApplyId,	     mode=IN,	jdbcType=BIGINT},
+				#{sMerBillNo,	 mode=IN,	jdbcType=VARCHAR},
+				#{sOrderNos,	 mode=IN,	jdbcType=VARCHAR},
+				#{iStatu,	     mode=IN,	jdbcType=INTEGER},
+				#{backInfoenc,	 mode=IN,	jdbcType=VARCHAR},
+				#{backinfo,	     mode=IN,	jdbcType=VARCHAR},
+				#{Skey,	         mode=IN,	jdbcType=VARCHAR}, 
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)} 
+	</select>
 </mapper>

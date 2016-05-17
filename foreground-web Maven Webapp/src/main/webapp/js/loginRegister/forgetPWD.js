@@ -136,7 +136,7 @@ $(function(){
 					layer.alert("网络错误");
 					return false;
 				}
-			})
+			});
 			return false;
 		}
 	});

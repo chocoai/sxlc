@@ -45,14 +45,14 @@
 					<div class="input-group clearfix">
 			    		<div class="inputUserName clearfix">
 			    			<div class="left-title"><span>*</span>用户名:</div>
-			    			<input type="text" class="input-user-name" value="请输入用户名" datatype="logname" name="userName" maxlength="16"
+			    			<input type="text" class="input-user-name persolName" value="请输入用户名" datatype="logname" name="userName" maxlength="16"
 							onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
 						</div>
 						<div class="inputTelNum clearfix">
 			    			<div class="left-title"><span>*</span>联系人手机号:</div>
-			    			<input type="text" class="input-tel-num" datatype="zPhone" name="personPhone" value="请输入联系人手机号" maxlength="11"
+			    			<input type="text" class="input-tel-num persolPhone" datatype="zPhone" name="personPhone" value="请输入联系人手机号" maxlength="11"
 							onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
@@ -71,7 +71,7 @@
 						</div>
 						<div class="inputInviteCode clearfix">
 							<div class="left-title">邀请码:</div>
-			    			<input type="text" class="input-invite-code" datatype="inviteCode" ignore="ignore" value="请输入邀请码" maxlength="12"
+			    			<input type="text" class="input-invite-code yaoqing" datatype="inviteCode" ignore="ignore" value="请输入邀请码" maxlength="12"
 							onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
@@ -83,7 +83,7 @@
 								onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 								onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 								style="color:#bfbfbf">
-								<img src="authImage.html">
+								<img src="authImage.html" class="imgCode">
 							</div>
 						</div>
 						<div class="inputTelCheck clearfix">
@@ -96,14 +96,14 @@
 								<input type="button" class="get-tel-check" value="获取验证码">
 							</div>
 						</div>
-						<div class="checkbox-link clearfix">
-							<div class="checkBox">
+						<div class="checkbox-link clearfix" >
+							<div class="checkBox" id="checkRule1">
 					        	<label>
 					          		<input type="checkbox" class="check-box">我已阅读并同意使用条款和隐私条款
 					       		</label>
 					       	</div>		     		      		
 				      	</div>
-				      	<div class="loginBtn">
+				      	<div class="loginBtn"">
 				      		<input type="button" class="register-btn ctntRegisterSub" value="立即注册">
 				    	</div>
 		    		</div>
@@ -116,14 +116,14 @@
 					<div class="input-group clearfix">
 			    		<div class="inputUserName clearfix">
 			    			<div class="left-title"><span>*</span>用户名:</div>
-			    			<input type="text" class="input-user-name" value="请输入用户名" datatype="logname" maxlength="16"
+			    			<input type="text" class="input-user-name persolName" value="请输入用户名" datatype="logname" maxlength="16"
 							onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
 						</div>
 						<div class="inputTelNum clearfix">
 			    			<div class="left-title"><span>*</span>联系人手机号:</div>
-			    			<input type="text" class="input-tel-num" datatype="zPhone" value="请输入联系人手机号" maxlength="11"
+			    			<input type="text" class="input-tel-num persolPhone" datatype="zPhone" value="请输入联系人手机号" maxlength="11"
 							onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
@@ -142,7 +142,7 @@
 						</div>
 						<div class="inputInviteCode clearfix">
 							<div class="left-title">邀请码:</div>
-			    			<input type="text" class="input-invite-code" datatype="inviteCode" ignore="ignore" value="请输入邀请码" maxlength="12"
+			    			<input type="text" class="input-invite-code yaoqing" datatype="inviteCode" ignore="ignore" value="请输入邀请码" maxlength="12"
 							onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
@@ -154,7 +154,7 @@
 								onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 								onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 								style="color:#bfbfbf">
-								<img src="authImage.html">
+								<img src="authImage.html" class="imgCode">
 							</div>
 						</div>
 						<div class="inputTelCheck clearfix">
@@ -168,9 +168,9 @@
 							</div>
 						</div>
 						<div class="checkbox-link clearfix">
-							<div class="checkBox">
+							<div class="checkBox"  id="checkRule2">
 					        	<label>
-					          		<input type="checkbox" class="check-box">我已阅读并同意使用条款和隐私条款
+					          		<input type="checkbox" checked class="check-box">我已阅读并同意使用条款和隐私条款
 					       		</label>
 					       	</div>		     		      		
 				      	</div>

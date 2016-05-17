@@ -16,7 +16,6 @@ import cn.sxlc.account.manager.model.LoanInfoBeanSubmit;
 import cn.sxlc.account.manager.model.LoanInfoSecondaryBean;
 import cn.sxlc.account.manager.model.TransferSubmitEntity;
 import cn.sxlc.account.manager.utils.InterfaceConstant;
-import cn.sxlc.account.manager.utils.InterfaceUtil;
 
 /**
  * Created by yonghuang on 16/4/14.

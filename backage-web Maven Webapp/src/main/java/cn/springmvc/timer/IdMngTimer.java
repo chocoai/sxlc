@@ -3,6 +3,7 @@ package cn.springmvc.timer;
 import java.util.TimerTask;
 
 import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.service.impl.BalanceDealUtil;
 
 
 public class IdMngTimer extends TimerTask{
@@ -14,6 +15,7 @@ public class IdMngTimer extends TimerTask{
 				idMng = IdGeneratorUtil.GetIdGeneratorInstance();
 			}
 			idMng.IdFileMng();
+			
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
 		}

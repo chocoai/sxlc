@@ -11,7 +11,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
 import product_p2p.kit.datatrans.IntegerAndString;
-
+import product_p2p.kit.dbkey.DbKeyUtil;
 import cn.springmvc.dao.HandleThreePartyDao;
 
 
@@ -193,6 +193,29 @@ public class HandleThreePartyDaoImpl extends SqlSessionDaoSupport implements Han
 		getSqlSession().selectOne("ThreePartyXML.PurchaseVipBack", map);
 		int rule=IntegerAndString.StringToInt(map.get("result").toString(), 0);
 		return rule;
+	}
+	@Override
+	public int FangKuanLoan(long lApplyId,String sMerBillNo,String sOrderNos,int iStatu,
+			String backInfoenc,String backinfo) {
+		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+		long id = generatorUtil.GetId(); 
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("lId", id);
+		map.put("lApplyId", lApplyId);
+		map.put("sMerBillNo", sMerBillNo);
+		map.put("sOrderNos", sOrderNos);
+		map.put("iStatu", iStatu);
+		map.put("backInfoenc", backInfoenc);
+		map.put("backinfo", backinfo);
+		map.put("Skey",DbKeyUtil.GetDbCodeKey());
+		getSqlSession().selectOne("ThreePartyXML.FuangKuan",map);
+		int result =IntegerAndString.StringToInt(map.get("result").toString(),0);
+		if(result == 1) {
+			generatorUtil.SetIdUsed(id); 
+		}else{
+			generatorUtil.SetIdUsedFail(id);
+		} 
+        return result;
 	}
 }
 

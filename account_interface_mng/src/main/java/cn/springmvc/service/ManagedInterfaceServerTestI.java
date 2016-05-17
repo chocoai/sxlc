@@ -81,7 +81,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return RechargeEntity 返回类型 
 	* @throws 
 	*/
-	public RechargeEntity testLoanRecharge(RechargeEntity recharge);
+	public RechargeEntity testLoanRecharge(RechargeEntity recharge,HttpServletRequest request);
 	
 	
 	
@@ -242,7 +242,7 @@ public interface ManagedInterfaceServerTestI {
 	* @date 2016-5-12 下午1:57:28
 	* @throws 
 	*/
-	public AuditEntity ProjectSubmitDataProcessing(int stype,long pid,String auditType,String returnURL,String notifyURL);
+	public AuditEntity ProjectSubmitDataProcessing(int stype,long pid,String auditType,String returnURL,String notifyURL,HttpServletRequest request);
 	
 	/** 
 	* testLoanTransferAuditReturn 双乾第三方放款、提现审核 页面返回 
@@ -670,7 +670,7 @@ public interface ManagedInterfaceServerTestI {
 	* @date 2016-4-28 下午4:23:32
 	*/
 	public LoanTransferEntity PreInvestmentTreatment(long lProjectId, long lMemberId, short sIsAuto,long lAmount, String sRedpacketsInfo,
-            long lVouchers, String sDirectPwd,short sClient);
+            long lVouchers, String sDirectPwd,short sClient,HttpServletRequest request,String returnURL,String notifyURL);
 	
 	
 	/** 
@@ -726,4 +726,19 @@ public interface ManagedInterfaceServerTestI {
 	* @throws 
 	*/
 	public void TransferOfCreditorsInvest(HttpServletRequest request,HttpServletResponse response);
+	
+	
+	/** 
+	* TransferOfCreditorsFangkuanBack 债权转让放款 服务器返回 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: TransferOfCreditorsFangkuanBack 
+	* @Description: TODO 
+	* @param @param request
+	* @param @param response 设定文件 
+	* @return void 返回类型 
+	* @date 2016-5-17 上午10:57:58
+	* @throws 
+	*/
+	public void TransferOfCreditorsFangkuanBack(HttpServletRequest request,HttpServletResponse response);
 }

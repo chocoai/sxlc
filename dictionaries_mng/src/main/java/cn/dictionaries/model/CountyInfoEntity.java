@@ -1,5 +1,8 @@
 
 package cn.dictionaries.model; 
+
+import java.io.Serializable;
+
 /**
  * 字典 ： 县区实例
 * @author 杨翰林
@@ -7,7 +10,14 @@ package cn.dictionaries.model;
 * @since 
 * @date 2016-4-1 下午2:23:47
  */
-public class CountyInfoEntity {
+public class CountyInfoEntity implements Serializable{
+
+	
+	/** 
+	* @Fields serialVersionUID : TODO（用一句话描述这个变量表示什么） 
+	*/
+	
+	private static final long serialVersionUID = 4454993226350444721L;
 
 	//县id
 	private int xId;

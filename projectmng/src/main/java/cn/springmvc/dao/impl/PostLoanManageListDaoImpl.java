@@ -12,6 +12,7 @@
  
 package cn.springmvc.dao.impl; 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
-
 import cn.springmvc.dao.PostLoanManageListDao;
 import cn.springmvc.model.PostProjectEntity;
 import cn.springmvc.model.ProjectAfterLoanAttachmentEntity;
@@ -157,6 +158,25 @@ public class PostLoanManageListDaoImpl extends SqlSessionDaoSupport implements
 			result = 0;
 		}
 		return result;
+	}
+	
+	@Override
+	public void GetLoanRepayOverdueInfo(long lId, long[] lResult) {
+		
+		if(lResult==null || lResult.length<2){
+			return;
+		}
+		String sKey = DbKeyUtil.GetDbCodeKey();
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("", lId);
+		param.put("", sKey);
+		
+		getSqlSession().selectOne("Post_Loan_Manage.GetLoanRepayOverdueInfo", param);
+		lResult[0] = IntegerAndString.StringToLong((String)param.get("lOverdueInterest"), 0);
+		lResult[1] = IntegerAndString.StringToLong((String)param.get("lOverdue"), 0);
+		
+		param = null;
+		
 	}
 
 }

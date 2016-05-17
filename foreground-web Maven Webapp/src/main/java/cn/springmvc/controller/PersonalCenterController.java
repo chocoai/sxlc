@@ -40,6 +40,7 @@ import cn.membermng.model.RealNameAuth;
 import cn.membermng.model.SecurityInfo;
 import cn.membermng.model.SendSetEntity;
 import cn.membermng.model.VIPPurchaseRecordsEntity;
+import cn.springmvc.dao.impl.sms.SendEmail;
 import cn.springmvc.dao.impl.sms.SendSmsUtil;
 import cn.springmvc.service.CertificationAuditService;
 import cn.springmvc.service.EmailBindingService;
@@ -88,6 +89,9 @@ public class PersonalCenterController{
 	private SendSmsUtil sendSmsUtil;
 
 	@Autowired
+	private SendEmail sendEmail;
+	
+	@Autowired
 	private ManagedInterfaceServerTestI interfaceServerTestI;
 
 	@Autowired
@@ -102,6 +106,9 @@ public class PersonalCenterController{
 	private FinancialAdvisorService financialAdvisorService;
 	@Autowired
 	private InviteMasterApplyService inviteMasterApplyService;
+
+	
+	
 	/****
 	 * 会员基本信息
 	 * 
@@ -144,7 +151,6 @@ public class PersonalCenterController{
 				memberInfo.getBaseInfo().setPersonalEmail(memberInfo.getBaseInfo().getPersonalEmail().substring(0,memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"))+" **** "+memberInfo.getBaseInfo().getPersonalEmail().substring(memberInfo.getBaseInfo().getPersonalEmail().indexOf("@"), memberInfo.getBaseInfo().getPersonalEmail().length()));
 			}
 		}
-		memberInfo.getBaseInfo().setPersonalIDCard("130503670401001");
 		if(memberInfo.getBaseInfo().getPersonalIDCard() != null && memberInfo.getBaseInfo().getPersonalIDCard().length() == 18){
 			memberInfo.getBaseInfo().setPersonalIDCard(memberInfo.getBaseInfo().getPersonalIDCard().substring(0, 6)+" **** "+memberInfo.getBaseInfo().getPersonalIDCard().substring(14));
 		}else if(memberInfo.getBaseInfo().getPersonalIDCard() != null && memberInfo.getBaseInfo().getPersonalIDCard().length() == 15){
@@ -358,7 +364,6 @@ public class PersonalCenterController{
 		int cid = Integer.parseInt(request.getParameter("cid"));
 		return JSONObject.toJSONString(this.memberService.getCountyList(cid));
 	}
-
 	
 	@RequestMapping({ "/baseInformationForEnterprise" })
 	public String baseInformationForEnterprise() {
@@ -378,10 +383,14 @@ public class PersonalCenterController{
 		MemberInfo info = (MemberInfo) request.getSession().getAttribute("loginUser");
 		SecurityInfo securityInfo = memberService.securityInfo(info.getId(), info.getMemberType());
 		if (info.getMemberType().intValue() == 1) {
-			Map<String, Object> map = this.borrowingCertificationServer.showBusinessLicense(info.getId().longValue());
+			Map<String, Object> map = borrowingCertificationServer.showBusinessLicense(info.getId().longValue());
+			if(map == null){
+				map = new HashMap<String,Object>();
+				map.put("status", 0);
+			}
 			request.setAttribute("businessInfo", map);
 		} else {
-			RealNameAuth realNameInfo = this.borrowingCertificationServer.showAuthRealName(info.getId());
+			RealNameAuth realNameInfo = borrowingCertificationServer.showAuthRealName(info.getId());
 			if ((realNameInfo.getRealName() != null) && (realNameInfo.getRealName().length() > 0)){
 				realNameInfo.setRealName(realNameInfo.getRealName().substring(0, 1)+ "**");
 			}else{
@@ -395,6 +404,8 @@ public class PersonalCenterController{
 			securityInfo.setRealName(realNameInfo.getRealName() + realNameInfo.getPersonalIDCard());
 			securityInfo.setRealNameStatus(realNameInfo.getStatus());
 		}
+		
+		
 		if(securityInfo.getPersonalPhone() != null && securityInfo.getPersonalPhone().length() >= 11){
 			securityInfo.setPersonalPhone(securityInfo.getPersonalPhone().substring(0, 3)+"****"+securityInfo.getPersonalPhone().substring(securityInfo.getPersonalPhone().length()-4, securityInfo.getPersonalPhone().length()));
 		}
@@ -732,7 +743,40 @@ public class PersonalCenterController{
 		
 		return pagePath;
 	}
+	
+	
+	/**
+	 * 读取实名认证信息
+	* showAuthRealName
+	* @author 邱陈东  
+	* * @Title: showAuthRealName 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-17 下午2:51:33
+	* @throws
+	 */
+	@RequestMapping(value="showAuthRealName",produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String showAuthRealName(HttpServletRequest request){
+		Map<String, Object> message = new HashMap<String, Object>();
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		RealNameAuth data = borrowingCertificationServer.showAuthRealName(lMemberInfo[0]);
 
+		if(data!=null){
+			data.setAttachPrefix(FtpClientUtil.getFtpFilePath());
+			message.put("status", 0);
+			message.put("message", "读取信息成功");
+			message.put("data", data);
+		}else{
+			message.put("status", -1);
+			message.put("message", "没有数据");
+		}
+		return JSONObject.toJSONString(message);
+	}
+	
 	/***
 	 * 个人会员实名认证/修改
 	 * 
@@ -756,30 +800,32 @@ public class PersonalCenterController{
 
 		Map<String, Object> message = new HashMap<String, Object>();
 		if ((userName == null) || (!StringUtils.checkUserName(userName))) {
-			message.put("userName", "请输入用户名");
+			message.put("message", "请输入用户名");
 		}
 		if ((idCard == null) || (!StringUtils.checkIdCard(idCard))) {
-			message.put("idCard", "请输入身份证号");
+			message.put("message", "请输入身份证号");
 		}
 		if (homeTown == null) {
-			message.put("homeTown", "请输入籍贯");
+			//message.put("message", "请输入籍贯");
 		}
 		if (endTime == null) {
-			message.put("endTime", "请选择有效期");
-		} else {
+			//message.put("message", "请选择有效期");
+		} else if(endTime.equals("请选择有效期")){
+			endTime="2222-12-30";
+		}else {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try {
 				Date date = sdf.parse(endTime);
 				endTime = sdf.format(date);
 			} catch (Exception e) {
-				message.put("endTime", "请选择有效期");
+				message.put("message", "请选择有效期");
 			}
 		}
-		String[] annexArray = annex.split(",");
-		if (annexArray.length != 2) {
-			message.put("annex", "请上传身份证照片");
+		String[] annexArray = null;
+		annexArray = annex.split(",");
+		if(annexArray == null || annexArray.length != 2){
+			annexArray = new String[]{"",""};
 		}
-
 		if (message.keySet().size() > 0) {
 			message.put("status", "-2");
 			return JSONObject.toJSONString(message);
@@ -937,6 +983,7 @@ public class PersonalCenterController{
 		CurrencyAuth data = borrowingCertificationServer.showAuthAddress(lMemberInfo[0]);
 		
 		if(data!=null){
+			data.setAttachPrefix(FtpClientUtil.getFtpFilePath());
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
@@ -1032,6 +1079,7 @@ public class PersonalCenterController{
 		 List<CurrencyAuth> data = borrowingCertificationServer.showAuthHousing(lMemberInfo[0]);
 		
 		if(data.size()>0){
+			message.put("attachPrefix", FtpClientUtil.getFtpFilePath());
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
@@ -1133,6 +1181,7 @@ public class PersonalCenterController{
 		List<CurrencyAuth> data = borrowingCertificationServer.showAuthProduction(lMemberInfo[0]);
 		
 		if(data.size()>0){
+			message.put("attachPrefix", FtpClientUtil.getFtpFilePath());
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
@@ -1232,6 +1281,7 @@ public class PersonalCenterController{
 		CurrencyAuth data = borrowingCertificationServer.showAuthEducation(lMemberInfo[0]);
 		
 		if(data!=null){
+			data.setAttachPrefix(FtpClientUtil.getFtpFilePath());
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
@@ -1316,6 +1366,7 @@ public class PersonalCenterController{
 		CurrencyAuth data = borrowingCertificationServer.showAuthMarriage(lMemberInfo[0]);
 		
 		if(data!=null){
+			data.setAttachPrefix(FtpClientUtil.getFtpFilePath());
 			message.put("status", 0);
 			message.put("message", "读取信息成功");
 			message.put("data", data);
@@ -1429,6 +1480,7 @@ public class PersonalCenterController{
 		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
 		
 		String businessLicenseNumber = request.getParameter("businessLicenseNumber");//营业执照号码
+		String companyName = request.getParameter("companyName");//公司名称
 		String regAddress = request.getParameter("regAddress");//注册地址
 		String regPerson = request.getParameter("regPerson");//注册法人
 		String regCapital = request.getParameter("regCapital");//注册资金
@@ -1456,9 +1508,9 @@ public class PersonalCenterController{
 		
 		int result = -1;
 		if(editType==0){
-			result = borrowingCertificationServer.businessLicense(lMemberInfo[0], businessLicenseNumber, regAddress, regPerson, regCapital, businessScope, CompanyType, regDate, endTime, annex);
+			result = borrowingCertificationServer.businessLicense(lMemberInfo[0], businessLicenseNumber, companyName,regAddress, regPerson, regCapital, businessScope, CompanyType, regDate, endTime, annex);
 		}else{
-			result = borrowingCertificationServer.editBusinessLicense(lMemberInfo[0], businessLicenseNumber, regAddress, regPerson, regCapital, businessScope, CompanyType, regDate, endTime, annex);
+			result = borrowingCertificationServer.editBusinessLicense(lMemberInfo[0], businessLicenseNumber, companyName,regAddress, regPerson, regCapital, businessScope, CompanyType, regDate, endTime, annex);
 		}
 		
 		if(result == -1){
@@ -1470,7 +1522,6 @@ public class PersonalCenterController{
 		}
 		return JSONObject.toJSONString(message);
 	}
-	
 	
 	//工商执照认证
 	/**
@@ -2174,21 +2225,35 @@ public class PersonalCenterController{
 	@RequestMapping(value = "sendEditBindPhoneCheckCode", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String sendEditBindPhoneCheckCode(HttpServletRequest request) {
-		String phone = request.getParameter("phone");
+		String phone 		= request.getParameter("phone");
+		String imgCheckCode = request.getParameter("imgCheckCode"); 
 		Map<String, Object> message = new HashMap<String, Object>();
-		if ((phone == null) || (!StringUtils.checkPhone(phone))) {
-			message.put("phone", "请输入手机号");
-			message.put("status", Integer.valueOf(-2));
+		if(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString() == null){
+			message.put("message", "页面已失效，请刷新后再试");
+			message.put("status", "-2");
+			return JSONObject.toJSONString(message);
+		}else if ((phone == null) || (!StringUtils.checkPhone(phone))) {
+			message.put("message", "请输入手机号");
+			message.put("status", "-2");
+			return JSONObject.toJSONString(message);
+		}else if(imgCheckCode == null || imgCheckCode.trim().length() == 0){
+			message.put("message", "请输入图形验证码");
+			message.put("status", "-2");
+			return JSONObject.toJSONString(message);
+		}else if(!imgCheckCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
+			message.put("message", "图形验证码错误");
+			message.put("status", "-2");
 			return JSONObject.toJSONString(message);
 		}
 
-		String sCode = Core.getEditBindPhoneCode(phone);
-		if (sCode != null) {
-			this.logger.debug("用户修改手机绑定手机短信验证码发送成功：" + phone + " : " + sCode);
-			message.put("status", Integer.valueOf(1));
-			message.put("message", "验证码发送成功,请注意查收");
-			return JSONObject.toJSONString(message);
-		}
+//		String sCode = Core.getEditBindPhoneCode(phone);
+//		if (sCode != null) {
+//			this.logger.debug("用户修改手机绑定手机短信验证码发送成功：" + phone + " : " + sCode);
+//			message.put("status", Integer.valueOf(1));
+//			message.put("message", "验证码发送成功,请注意查收");
+//			return JSONObject.toJSONString(message);
+//		}
+		
 		String code = StringUtils.varCode();
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("phone", phone);
@@ -2199,22 +2264,89 @@ public class PersonalCenterController{
 			if (result[0].equals("0")) {
 				this.logger
 						.debug("用户修改手机绑定手机短信验证码发送成功：" + phone + " : " + code);
-				message.put("status", 1);
+				message.put("status", "1");
 				message.put("message", "验证码发送成功,请注意查收");
 			} else {
 				this.logger
 						.debug("用户修改手机绑定手机短信验证码发送失败：" + phone + " : " + code);
-				message.put("status", 0);
+				message.put("status", "0");
 				message.put("message", "验证码发送失败,请重试!");
 			}
 		} else {
 			this.logger.debug("用户注册手机短信验证码发送失败：" + phone + " : " + code);
-			message.put("status", 0);
+			message.put("status", "0");
 			message.put("message", "验证码发送失败,请重试!");
 		}
 		return JSONObject.toJSONString(message);
 	}
 
+	
+	/***
+	* 检查原电话号码是否存在
+	* 
+	* @author 李杰
+	* @param request
+	* @return
+	* @date 2016-5-16 下午3:00:55
+	*/
+	@RequestMapping(value="checkOldPhone",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String checkOldPhone(HttpServletRequest request){
+		String 		oldPhone 	= request.getParameter("phone");
+		MemberInfo 	memberInfo 	= (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		if(oldPhone == null || oldPhone.trim().length() == 0){
+			Map<String,String> messge = new HashMap<String,String>();
+			messge.put("status", "-2");
+			messge.put("message", "请输入原电话号码");
+			return JSONObject.toJSONString(messge);
+		}else if(oldPhone.equals(mobilePhoneBindingService.selectOldPhone(memberInfo.getId()))){
+			Map<String,String> messge = new HashMap<String,String>();
+			messge.put("status", "1");
+			messge.put("message", "");
+			return JSONObject.toJSONString(messge);
+		}else{
+			Map<String,String> messge = new HashMap<String,String>();
+			messge.put("status", "-3");
+			messge.put("message", "原电话号码错误");
+			return JSONObject.toJSONString(messge);
+		}
+	}
+	
+	
+	/***
+	 * 检查用户电话号码是否存在
+	 * 
+	 * @author 李杰
+	 * @param request
+	 * @return
+	 * @date 2016-5-17 上午10:38:52
+	 */
+	@RequestMapping(value="/checkPhone",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String checkPhone(HttpServletRequest request){
+		String phone = request.getParameter("phone");
+		Map<String,Object> param = new HashMap<String, Object>();
+		if(phone == null || phone.trim().length() != 11){
+			param.put("status", "0");
+			param.put("message", "请输入联系电话");
+			return JSONObject.toJSONString(param);
+		}else if(!StringUtils.checkPhone(phone)){
+			param.put("status", "0");
+			param.put("message", "请输入有效电话");
+			return JSONObject.toJSONString(param);
+		}
+		int result = memberService.chechPhone(phone);
+		if(result == 0){
+			param.put("status", "y");
+			param.put("info", "");
+		}else{
+			param.put("status", "n");
+			param.put("info", "已被使用");
+		}
+		return JSONObject.toJSONString(param);
+	}
+	
+	
 	/***
 	 * 修改手机绑定
 	 * 
@@ -2226,28 +2358,26 @@ public class PersonalCenterController{
 	@RequestMapping(value = "editBindPhone", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String editBindPhone(HttpServletRequest request) {
-		String oldPhone = request.getParameter("oldPhone");
-		String newPhone = request.getParameter("newPhone");
-		String chekcCode = request.getParameter("imgCheckCode");
-		String phoneCode = request.getParameter("phoneCode");
+		String oldPhone = request.getParameter("oldPhone");							//原手机号
+		String newPhone = request.getParameter("newPhone");							//新手机号
+		String chekcCode = request.getParameter("imgCheckCode");					//图形验证吗
+		String phoneCode = request.getParameter("phoneCode");						//短信验证码
 
 		Map<String, Object> param = new HashMap<String, Object>();
-		if ((oldPhone == null) || (!StringUtils.checkPhone(oldPhone))) {
-			param.put("oldPhone", "请输入原来手机号码");
-		}
-		if ((newPhone == null) || (!StringUtils.checkPhone(newPhone))) {
-			param.put("newPhone", "请输入新手机号码");
-		}
-		if ((chekcCode == null) || (chekcCode.trim().length() == 0))
-			param.put("chekcCode", "请输入验证码");
-		else if (!chekcCode.equals(request.getSession()
-				.getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())) {
-			param.put("chekcCode", "验证码错误");
-		}
-		if ((phoneCode == null) || (phoneCode.trim().length() == 0))
-			param.put("phoneCode", "请输入短信验证码");
-		else if (!phoneCode.equals(Core.getEditBindPhoneCode(newPhone))) {
-			param.put("phoneCode", "短信验证码错误");
+		if(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION") == null){
+			param.put("message", "页面已失效,请刷新后再试");
+		}else if ((oldPhone == null) || (!StringUtils.checkPhone(oldPhone))) {
+			param.put("message", "请输入原来手机号码");
+		}else if ((newPhone == null) || (!StringUtils.checkPhone(newPhone))) {
+			param.put("message", "请输入新手机号码");
+		}else  if ((chekcCode == null) || (chekcCode.trim().length() == 0)){
+			param.put("message", "请输入验证码");
+		}else if (!chekcCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())) {
+			param.put("message", "验证码错误");
+		}else if ((phoneCode == null) || (phoneCode.trim().length() == 0)){
+			param.put("message", "请输入短信验证码");
+		}else if (!phoneCode.equals(Core.getEditBindPhoneCode(newPhone))) {
+			param.put("message", "短信验证码错误");
 		}
 
 		if ((oldPhone != null) && (newPhone != null)
@@ -2261,20 +2391,19 @@ public class PersonalCenterController{
 		}
 
 		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
-		String phones = mobilePhoneBindingService.selectOldPhone(memberInfo.getId());
 		if (oldPhone.equals(mobilePhoneBindingService.selectOldPhone(memberInfo.getId()))) {
 			Map<String, Object> param2 = new HashMap<String, Object>();
 			param2.put("personalPhone", newPhone);
 			param2.put("personalID", memberInfo.getPersonalId());
 			int result = this.mobilePhoneBindingService.updatepersonPhone(param2);
 			if (result == 1) {
-				param.put("status", 1);
+				param.put("status", "1");
 				param.put("message", "修改成功");
 			} else if (result == -1) {
-				param.put("status", -1);
+				param.put("status", "-1");
 				param.put("message", "手机号已被使用");
 			} else {
-				param.put("status", 0);
+				param.put("status", "0");
 				param.put("message", "修改失败");
 			}
 		} else {
@@ -2294,40 +2423,57 @@ public class PersonalCenterController{
 	@RequestMapping(value = "sendBindEmailCheckCode", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String sendBindEmailCheckCode(HttpServletRequest request) {
-		String email = request.getParameter("email");
+		String email		 = request.getParameter("email");
+		String imgCheckCode  = request.getParameter("imgCheckCode");
 		Map<String, Object> message = new HashMap<String, Object>();
 		if ((email == null) || (!StringUtils.checkMail(email))) {
-			message.put("email", "请输入邮箱");
+			message.put("message", "请输入邮箱");
+			message.put("status", -2);
+			return JSONObject.toJSONString(message);
+		}else if(imgCheckCode == null || imgCheckCode.trim().length() == 0){
+			message.put("message", "请输入图形验证码");
+			message.put("status", -2);
+			return JSONObject.toJSONString(message);
+		}else if(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString() == null){
+			message.put("message", "页面失效,请刷新后再试");
+			message.put("status", -2);
+			return JSONObject.toJSONString(message);
+		}else if(!imgCheckCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
+			message.put("message", "图形验证码错误");
 			message.put("status", -2);
 			return JSONObject.toJSONString(message);
 		}
 
-		String sCode = Core.getBindEmailCode(email);
-		if (sCode != null) {
-			this.logger.debug("用户绑定邮箱邮箱证码发送成功：" + email + " : " + sCode);
-			message.put("status", 1);
-			message.put("message", "验证码发送成功,请注意查收");
-			return JSONObject.toJSONString(message);
-		}
+//		String sCode = Core.getBindEmailCode(email);
+//		if (sCode != null) {
+//			this.logger.debug("用户绑定邮箱邮箱证码发送成功：" + email + " : " + sCode);
+//			message.put("status", 1);
+//			message.put("message", "验证码发送成功,请注意查收");
+//			return JSONObject.toJSONString(message);
+//		}
+		
+		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		
 		String code = StringUtils.varCode();
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("email", email);
 		param.put("code", code);
 		int iresult = Core.putBindEmailCode(email, code);
 		if (iresult == 1) {
-			String[] result = { "0", "" };// 处理发送------------------------------------------------------------------------
-			if (result[0].equals("0")) {
+			short memberType = (short) memberInfo.getMemberType().intValue();
+			int result = sendEmail.checkEmail(email, "您的邮箱绑定验证码为："+code+"", request, memberInfo.getId(),memberType , (short)0, 0L);// 处理发送------------------------------------------------------------------------
+			if (result == 1) {
 				this.logger.debug("用户绑定邮箱邮箱证码发送成功：" + email + " : " + code);
-				message.put("status", 1);
+				message.put("status", "1");
 				message.put("message", "验证码发送成功,请注意查收");
 			} else {
 				this.logger.debug("用户绑定邮箱邮箱证码发送失败：" + email + " : " + code);
-				message.put("status", -1);
+				message.put("status", "-1");
 				message.put("message", "验证码发送失败,请重试!");
 			}
 		} else {
-			this.logger.debug("用户注册手机短信验证码发送失败：" + email + " : " + code);
-			message.put("status", -1);
+			this.logger.debug("用户绑定邮箱邮箱证码发送失败：" + email + " : " + code);
+			message.put("status", "-1");
 			message.put("message", "验证码发送失败,请重试!");
 		}
 		return JSONObject.toJSONString(message);
@@ -2344,26 +2490,27 @@ public class PersonalCenterController{
 	@RequestMapping(value = "bindEmail", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String bindEmail(HttpServletRequest request) {
-		String email = request.getParameter("email"); // 邮箱地址
-		String imgCheckCode = request.getParameter("checkCode"); // 验证码
+		String email = request.getParameter("email"); 					// 邮箱地址
+		String imgCheckCode = request.getParameter("checkCode"); 		// 验证码
 		String emailCheckCode = request.getParameter("emailCheckCode"); // 邮箱验证码
 
 		Map<String, Object> param = new HashMap<String, Object>();
-		if (email == null || email.trim().length() <= 0) {
-			param.put("email", "请输入邮箱地址");
+		if(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString() == null){
+			param.put("message", "请输入邮箱地址");
+		}else if (email == null || email.trim().length() <= 0) {
+			param.put("message", "请输入邮箱地址");
 		} else if (!StringUtils.checkMail(email)) {
-			param.put("email", "请输入有效邮箱地址");
+			param.put("message", "请输入有效邮箱地址");
 		}
 		if (imgCheckCode == null || imgCheckCode.trim().length() <= 0) {
-			param.put("imgCheckCode", "请输入图形验证码");
-		} else if (!imgCheckCode.equals(request.getSession()
-				.getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())) {
-			param.put("imgCheckCode", "图形验证码错误");
+			param.put("message", "请输入图形验证码");
+		} else if (!imgCheckCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())) {
+			param.put("message", "图形验证码错误");
 		}
 		if (emailCheckCode == null || emailCheckCode.trim().length() <= 0) {
-			param.put("emailCheckCode", "请输入邮箱验证码");
+			param.put("message", "请输入邮箱验证码");
 		} else if (!emailCheckCode.equals(Core.getBindEmailCode(email))) {
-			param.put("emailCheckCode", "邮箱验证码错误");
+			param.put("message", "邮箱验证码错误");
 		}
 
 		if (param.keySet().size() > 0) {
@@ -2403,34 +2550,32 @@ public class PersonalCenterController{
 	@RequestMapping(value = "editBindEmail", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String editBindEmail(HttpServletRequest request) {
-		String oldEmail = request.getParameter("oldEmail");
-		String newEmail = request.getParameter("newEmail");
-		String checkCode = request.getParameter("checkCode");
-		String emailCode = request.getParameter("emailCode");
+		String oldEmail = request.getParameter("oldEmail");					//原一邮箱地址
+		String newEmail = request.getParameter("newEmail");					//新邮箱地址
+		String checkCode = request.getParameter("checkCode");				//图形验证码
+		String emailCode = request.getParameter("emailCode");				//邮箱验证码
 
 		Map<String, Object> message = new HashMap<String, Object>();
-		if (oldEmail == null || oldEmail.trim().length() <= 0) {
-			message.put("oldEmail", "请输入邮箱地址");
+		if(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString() == null){
+			message.put("message", "页面已失效,请刷新后重试");
+		}else if (oldEmail == null || oldEmail.trim().length() <= 0) {
+			message.put("message", "请输入邮箱地址");
 		} else if (!StringUtils.checkMail(oldEmail)) {
-			message.put("oldEmail", "请输入有效有限地址");
-		}
-		if (newEmail == null || newEmail.trim().length() <= 0) {
-			message.put("newEmail", "请输入有效邮箱地址");
-		} else if (!StringUtils.checkMail(newEmail)) {
-			message.put("newEmail", "请输入有效邮箱地址");
-		}
-		if (newEmail != null && oldEmail != null && newEmail.equals(oldEmail)) {
-			message.put("newEmail", "新邮箱和旧邮箱不能一致");
-		}
-		if (checkCode == null || checkCode.trim().length() <= 0) {
-			message.put("checkCode", "请输入图形验证码");
+			message.put("message", "请输入有效有限地址");
+		}else if (newEmail == null || newEmail.trim().length() <= 0) {
+			message.put("message", "请输入有效邮箱地址");
+		}else if (!StringUtils.checkMail(newEmail)) {
+			message.put("message", "请输入有效邮箱地址");
+		}else if (newEmail != null && oldEmail != null && newEmail.equals(oldEmail)) {
+			message.put("message", "新邮箱和旧邮箱不能一致");
+		}else if (checkCode == null || checkCode.trim().length() <= 0) {
+			message.put("message", "请输入图形验证码");
 		} else if (!checkCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())) {
-			message.put("checkCode", "图形验证码错误");
-		}
-		if (emailCode == null || emailCode.trim().length() <= 0) {
-			message.put("emailCode", "请输入邮箱验证码");
+			message.put("message", "图形验证码错误");
+		}else if (emailCode == null || emailCode.trim().length() <= 0) {
+			message.put("message", "请输入邮箱验证码");
 		} else if (!emailCode.equals(Core.getBindEmailCode(newEmail))) {
-			message.put("emailCode", "邮箱验证码错误");
+			message.put("message", "邮箱验证码错误");
 		}
 
 		if (message.keySet().size() > 0) {
@@ -2467,8 +2612,6 @@ public class PersonalCenterController{
 		}
 		return JSONObject.toJSONString(message);
 	}
-
-	
 	
 	/***
 	 * 开通第三方
@@ -2500,9 +2643,9 @@ public class PersonalCenterController{
 	@RequestMapping(value="openThirdAccountCallbackPage")
 	public String openThirdAccountCallback(HttpServletRequest request,HttpServletResponse response){
 		String result = interfaceServerTestI.testLoanRegisterBindReturn(request, response);
-		request.setAttribute("title", "第三方开户");
-		request.setAttribute("detail", "第三方开户");
-		if(result == "SUCCESS"){
+		request.setAttribute("title", "开户");
+		request.setAttribute("detail", "开户");
+		if(result.equals("SUCCESS")){
 			return "account/personalCenter/optionSuccess";
 		}else{
 			return "account/personalCenter/optionFall";
@@ -2536,30 +2679,28 @@ public class PersonalCenterController{
 	@RequestMapping(value="resetPassword",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String resetPassword(HttpServletRequest request){
-		String oldPassword = request.getParameter("oldPassword");
-		String newPassword = request.getParameter("newPassword");
-		String confirmPwd  = request.getParameter("confirmPwd");
-		String imgCheckCode= request.getParameter("imgCheckCode");
+		String oldPassword = request.getParameter("oldPassword");					//原始密码
+		String newPassword = request.getParameter("newPassword");					//新密码
+		String confirmPwd  = request.getParameter("confirmPwd");					//确认密码
+		String imgCheckCode= request.getParameter("imgCheckCode");					//图形验证码
 		
 		Map<String,Object> message = new HashMap<String,Object>();
-		if(oldPassword == null || oldPassword.trim().length() <= 0){
-			message.put("oldPassword", "请输入用户原密码");
-		}
-		if(newPassword == null || newPassword.trim().length() <= 0){
-			message.put("newPassword", "请输入新密码");
-		}
-		if(confirmPwd == null || confirmPwd.trim().length() <= 0){
-			message.put("confirmPwd", "请输入确认密码");
-		}
-		if(newPassword != null && confirmPwd != null){
+		if(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION") == null){
+			message.put("message", "页面已失效,请刷新后再试");
+		}else if(oldPassword == null || oldPassword.trim().length() <= 0){
+			message.put("message", "请输入用户原密码");
+		}else if(newPassword == null || newPassword.trim().length() <= 0){
+			message.put("message", "请输入新密码");
+		}else if(confirmPwd == null || confirmPwd.trim().length() <= 0){
+			message.put("message", "请输入确认密码");
+		}else if(newPassword != null && confirmPwd != null){
 			if(!newPassword.equals(confirmPwd)){
-				message.put("oldPassword", "两次输入密码不一致");
+				message.put("message", "两次输入密码不一致");
 			}
-		}
-		if(imgCheckCode == null || imgCheckCode.trim().length() <= 0){
-			message.put("imgCheckCode", "请输入图形验证码");
+		}else if(imgCheckCode == null || imgCheckCode.trim().length() <= 0){
+			message.put("message", "请输入图形验证码");
 		}else if(!imgCheckCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
-			message.put("imgCheckCode", "图形验证码输入错误");
+			message.put("message", "图形验证码输入错误");
 		}
 		
 		if(message.keySet().size() > 0){
@@ -2577,7 +2718,7 @@ public class PersonalCenterController{
 			int result = passwordService.updatepersonPassword(param);
 			if(result == 1){
 				message.put("status", "1");
-				message.put("message", "密码修改该成功");
+				message.put("message", "密码修改成功");
 			}else{
 				message.put("status", "-1");
 				message.put("message", "修改失败");

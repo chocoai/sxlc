@@ -78,7 +78,7 @@
 	   				<div class="authenContent">
 		   				<div class="authen clearfix">
 		   				    <div class="previewPictureDiv">
-		   				    <div class="wdateSelect" <c:if test="${t==3 || t==4 || t==5 || t==6 || t==9 || t==16 || t==17 || t==20 || t==21 || t==24 }"> style="display:block" </c:if> >
+		   				    <div class="wdateSelect" <c:if test="${t==2||t==3 || t==4 || t==5 || t==6 || t==9 ||t==1136091|| t==16 || t==17 || t==20 || t==21 || t==24 }"> style="display:block" </c:if> >
 	   							<span>有效期：</span>
 	   							<input class="inputText dateSelect Wdate" onfocus="WdatePicker({readOnly:true})" type="text"  lang="请选择有效期"/>
 		   					</div>

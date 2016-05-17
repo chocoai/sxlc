@@ -1,22 +1,23 @@
 package cn.springmvc.dao.impl;
 
-import cn.springmvc.dao.ProjectInvestReadDao;
-import cn.sxlc.account.manager.model.InvestAccountFeeEntity;
-import cn.sxlc.account.manager.model.LoanInfoBeanSubmit;
-import cn.sxlc.account.manager.model.LoanInfoSecondaryBean;
-import cn.sxlc.account.manager.model.TransferSubmitEntity;
-import cn.sxlc.account.manager.utils.InterfaceConstant;
-import cn.sxlc.account.manager.utils.InterfaceUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.datatrans.IntegerAndString;
-
-import java.util.*;
-
-import javax.annotation.Resource;
+import cn.springmvc.dao.ProjectInvestReadDao;
+import cn.sxlc.account.manager.model.InvestAccountFeeEntity;
+import cn.sxlc.account.manager.model.LoanInfoBeanSubmit;
+import cn.sxlc.account.manager.model.LoanInfoSecondaryBean;
+import cn.sxlc.account.manager.model.TransferSubmitEntity;
+import cn.sxlc.account.manager.utils.InterfaceConstant;
 @Repository("projectInvestReadDaoImpl")
 public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements ProjectInvestReadDao {
 
@@ -116,6 +117,14 @@ public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements Proje
 
         getSqlSession().selectOne("ProjectInvestDao.MemberInvestCheckRecord", param);
 
+        
+//=========================================================================================
+        if(param.get(DaoConstant.PARAM_RESULT) == null){
+        	param.put(DaoConstant.PARAM_RESULT, "0");
+        }
+//=========================================================================================
+        
+        
         int iResult = IntegerAndString.StringToInt(param.get(DaoConstant.PARAM_RESULT).toString(), 0);
         lRedpackets[0] = IntegerAndString.StringToLong(param.get(DaoConstant.PARAM_RED_PACKETS).toString(), 0);
         if (iResult == 1) {

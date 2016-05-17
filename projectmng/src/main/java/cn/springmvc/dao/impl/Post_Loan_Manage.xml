@@ -541,16 +541,10 @@
 		  END memberName,	
 		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+
 		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
-		  lr.Indexs, 
-          case 
-             when lr.Statu !=3 then 0 <!-- 计算逾期费 -->
-             when lr.Statu =3  then 
-             (select  IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{skey})) AS SIGNED)),0)
-                     + IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{skey})) AS SIGNED)),0)
-             from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID  )
-             end  Overdue_Amount,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0) as SDRepay_Principal,
+		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) as SDRepay_Interest,
+		  lr.Indexs,lr.Repay_MaxTime,
            
-            (select  lrr.Repay_Time  from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID order by Repay_Time desc limit 1) as Repay_Time, 
 		    case 
               when lr.Statu !=3 then DATEDIFF(now(),lr.Repay_MaxTime) 
               when lr.Statu =3  then (select DATEDIFF(lr.Repay_MaxTime,lrr.Repay_Time)  from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID order by Repay_Time desc limit 1)
@@ -563,6 +557,16 @@
 		  LEFT JOIN Company_Info ci ON mi.Personal_Id = ci.Company_ID
 		  where  lr.Repay_ID = #{repayID}
 	</select> 
+	
+	<!-- 
+	(select  lrr.Repay_Time  from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID order by Repay_Time desc limit 1) as Repay_Time,
+	,  case 
+             when lr.Statu !=3 then 0 计算逾期费
+             when lr.Statu =3  then 
+             (select  IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{skey})) AS SIGNED)),0)
+                     + IFNULL(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{skey})) AS SIGNED)),0)
+             from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID  )
+             end  Overdue_Amount, -->
 	  
    <!-- 	逾期催收 -->
 	<select id="getOverdueCollection" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="projectInfoMap.ProjectCollection">
@@ -712,5 +716,15 @@
 		FROM System_Set
 	</select>
 	
+	<!-- 获取逾期利息，逾期罚金-->  
+    <select id="GetLoanRepayOverdueInfo"  statementType="CALLABLE" parameterType="Map"> 
+	     {call GetLoanRepayOverdueInfo(
+				#{lId,	     	 		 mode=IN,	jdbcType=BIGINT},
+				#{sKey,	 		 		 mode=IN,	jdbcType=VARCHAR},
+				#{lOverdueInterest,	     mode=OUT,	jdbcType=BIGINT},
+				#{lOverdue,	 			 mode=OUT,	jdbcType=BIGINT}
+    		)} 
+    		
+	</select>
 </mapper>
  

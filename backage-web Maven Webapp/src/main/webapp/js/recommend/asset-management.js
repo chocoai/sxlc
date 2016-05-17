@@ -45,13 +45,23 @@ function assetAdd(){
 /* 修改部分开始 */
 function assetMod(){
 	var rowdata = $('#assettable').DataTable().rows('.selected').data();
-	$(".right_col").load("web/recommend/re-add/assetmod.jsp?content=" + rowdata[0].managementID);
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要查看的管理方！",{icon:0});
+		return;
+	}else{
+		$(".right_col").load("web/recommend/re-add/assetmod.jsp?content=" + rowdata[0].managementID);
+	}
 }
 /* 修改部分结束 */
 /* 查看部分开始 */
 function assetDetail(){
 	var rowdata = $('#assettable').DataTable().rows('.selected').data();
-	$(".right_col").load("web/recommend/re-add/asset-checkDetail.jsp?content=" + rowdata[0].managementID);
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要查看的管理方！",{icon:0});
+		return;
+	}else{
+		$(".right_col").load("web/recommend/re-add/asset-checkDetail.jsp?content=" + rowdata[0].managementID);
+	}
 }
 /* 查看部分结束 */
 /*资产管理方管理员管理部分开始 */

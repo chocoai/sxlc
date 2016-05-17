@@ -137,7 +137,7 @@ public class IntegralMallController {
 	
 	
 	/**
-	 * 保存收件地址
+	 * 添加收件地址
 	 * TODO(描述)
 	 * @author 刘利   
 	 * @Description: TODO 
@@ -254,7 +254,7 @@ public class IntegralMallController {
 	    MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo);  
 		List<ShippingAddress>  Address =  iIntegrallService.ShippingAddressList(lMemberInfo[0]);
 		request.setAttribute("info", info);
-		request.setAttribute("Address", Address);
+		request.setAttribute("addr", Address);
 		return "integralMall/exchangeDetail";
 	}
 	

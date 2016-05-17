@@ -62,12 +62,12 @@ $(function(){
 				        	  "mRender": function (data, type, full) {
 				        		  	if(data == 0){
 				        	    		return "未发布";
-				        	    	}else if(data == 0){
+				        	    	}else if(data == 1){
 				        	    		return "已发布";
 				        	    	}else if(data == -1){
 				        	    		return "已拒绝";
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -118,7 +118,7 @@ $(function(){
 $(function(){
 //	拒绝
 	$('#refuse').click(function(){
-		var rdata = $('#table_id').DataTable().rows('.selected').data();
+		var rdata = $('#table_id').DataTable().rows('.selected').data();
 		if(rdata.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;
@@ -154,7 +154,7 @@ $(function(){
 	});
 //	项目借款结束日期延长
 	$('#end_time_along').click(function(){
-		var rdata = $('#table_id').DataTable().rows('.selected').data();
+		var rdata = $('#table_id').DataTable().rows('.selected').data();
 		if(rdata.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;
@@ -204,7 +204,7 @@ $(function(){
 });
 /******查看借款项目详情*******/
 function view_detail(){
-	var data = $('#table_id').DataTable().rows('.selected').data(); 
+	var data = $('#table_id').DataTable().rows('.selected').data(); 
 	if(data.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;
@@ -214,12 +214,12 @@ function view_detail(){
 }
 /******发布*******/
 function proPost(){
-	var data = $('#table_id').DataTable().rows('.selected').data(); 
+	var data = $('#table_id').DataTable().rows('.selected').data(); 
 	if(data.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;
 	}
 	var applyId = data[0].applyId;//Project_App_Record 表Apply_Id
-	window.location.href=appPath+"/project/toLoanProPostPg?content="+applyId+"&start="+$("#pushIndex").val();
+	window.location.href=appPath+"/project/toLoanProPostPg?content="+applyId+"&start="+$("#pushIndex").val()+"&length=2";
 }
 

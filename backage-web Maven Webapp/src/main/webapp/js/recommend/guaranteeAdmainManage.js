@@ -20,16 +20,90 @@ function manageAdmainAdd(){
 	}*/
 	});
 }
+
+$(function () {
+	$("#add").bind('click', function () {
+		$("#manageAdd").submit();
+	});
+	
+	$("#mod").bind('click', function () {
+		$("#manageMod").submit();
+	});
+});
+
+function addMange() {
+	var guId = $("#guId").val();
+	var userName = $("#userName").val();
+	var remark = $("#remark").val();
+	var password = $("#pwd").val();
+	$.ajax({
+		type : 'post',
+		url : appPath + "/guarant/saveAdmin.do",
+		data : {
+			userName : encrypt.encrypt("" + userName),
+			password : encrypt.encrypt("" + password),
+			guaranteeID : encrypt.encrypt("" + guId),
+			remark : encrypt.encrypt("" + remark),
+			stype : encrypt.encrypt("" + 1)
+		},
+		success : function (data) {
+			if (data == 1) {
+				layer.alert("添加成功!",{icon:1});
+				setTimeout('location.reload()',2000);
+			}else {
+				layer.alert("添加失败!",{icon:2});  
+			}
+		}
+	});
+}
+
+function modMange() {
+	var rowdata = $('#admaintable').DataTable().rows('.selected').data();
+	var guId = rowdata[0].adminID;
+	var userName = $("#userName").val();
+	var remark = $("#remark").val();
+	var password = $("#pwd").val();
+	$.ajax({
+		type : 'post',
+		url : appPath + "/guarant/saveAdmin.do",
+		data : {
+			userName : encrypt.encrypt("" + userName),
+			password : encrypt.encrypt("" + password),
+			guaranteeID : encrypt.encrypt("" + guId),
+			remark : encrypt.encrypt("" + remark),
+			stype : encrypt.encrypt("" + 1)
+		},
+		success : function (data) {
+			if (data == 1) {
+				layer.alert("添加成功!",{icon:1});
+				setTimeout('location.reload()',2000);
+			}else {
+				layer.alert("添加失败!",{icon:2});  
+			}
+		}
+	});
+}
 //修改管理员
 function manageAdmainMod(){
-	/*$.ajax({
-		type : 'post',
-		url : appPath + "/guarant/queryAdmin.do",
-		data : {},
-		success : function (msg) {
-			alert(msg);
-		}
-	});*/
+	var rowdata = $('#admaintable').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要修改的管理员！",{icon:0});
+		return;
+	}else{
+		$.ajax({
+			type : 'post',
+			url : appPath + "/guarant/queryAdmin.do",
+			data : {
+				guaranteeID : encrypt.encrypt("" + rowdata[0].guaranteeID)
+			},
+			success : function (msg) {
+				$("#musername").val();
+				$("#mpwd").val();
+				$("#mrpwd").val();
+				$("#remark").val();
+			}
+		});
+	}
 	layer.open({
 		type: 1,
 		area: ['550px', '430px'], //高宽
@@ -48,39 +122,43 @@ function manageAdmainMod(){
 }
 //启用停用
 function enableOrdisEnable(type){
-	
-	layer.confirm('确定执行该操作？', {
-		btn: ['确定', '取消']
-	}, function(index, layero){
-		//按钮【按钮一】的回调
-		var rowdata = $('#admaintable').DataTable().rows('.selected').data();
-		var status = "";
-		if (type == 1) {
-			status = 1;
-		}else {
-			status = 0;
-		}
-		$.ajax({
-			type : 'post',
-			url : appPath + "/guarant/ofOrOpenAdmin.do", 
-			data : {
-				adminID : encrypt.encrypt("" + rowdata[0].adminID), 
-				status : encrypt.encrypt("" + status)
-			},
-			success : function (msg) {
-				if (msg == 0) {
-					layer.alert("操作成功!",{icon:1});
-					setTimeout('location.reload()',2000);
-				}else {
-					layer.alert("操作失败!",{icon:2});  
-				}
+	var rowdata = $('#admaintable').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要操作的管理员！",{icon:0});
+		return;
+	}else{
+		layer.confirm('确定执行该操作？', {
+			btn: ['确定', '取消']
+		}, function(index, layero){
+			//按钮【按钮一】的回调
+			var status = "";
+			if (type == 1) {
+				status = 1;
+			}else {
+				status = 0;
 			}
+			$.ajax({
+				type : 'post',
+				url : appPath + "/guarant/ofOrOpenAdmin.do", 
+				data : {
+					adminID : encrypt.encrypt("" + rowdata[0].adminID), 
+					status : encrypt.encrypt("" + status)
+				},
+				success : function (msg) {
+					if (msg == 0) {
+						layer.alert("操作成功!",{icon:1});
+						setTimeout('location.reload()',2000);
+					}else {
+						layer.alert("操作失败!",{icon:2});  
+					}
+				}
+			});
+			//执行完关闭
+			layer.close(index);
+		}, function(index){
+			//按钮【按钮二】的回调
 		});
-		//执行完关闭
-		layer.close(index);
-	}, function(index){
-		//按钮【按钮二】的回调
-	});
+	}
 }
 //表格初始化
 $(function() {

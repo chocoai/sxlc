@@ -62,7 +62,7 @@
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">身份证：</div>
-			   					<div class="con">${userInfo.baseInfo.personalIDCard } ***</div>
+			   					<div class="con">${userInfo.baseInfo.personalIDCard }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">最高学历：</div>
@@ -165,7 +165,7 @@
 				   				<div class="item">
 				   					<div class="label">户籍地址：</div>
 				   					<div class="con">
-				   						<input type="text" lang="请输入户籍地址" datatype="qq" value="${userInfo.baseInfo.qq }" class="input-homeTown numberReg" maxlength= "12">
+				   						<input type="text" lang="请输入户籍地址" datatype="enteraddr" value="${userInfo.baseInfo.census }" class="input-homeTown" maxlength= "12">
 				   					</div>
 				   				</div>
 				   				<div class="item">

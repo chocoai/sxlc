@@ -56,7 +56,7 @@ $(function() {
 				        	    	}else if(data.deadlineTypes == 2){
 				        	    		return data.deadline+"年";
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -74,7 +74,7 @@ $(function() {
 				        	    	}else if(data == 3){
 				        	    		return "等额本金";
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -88,7 +88,7 @@ $(function() {
 				        	    	}else if(data == 2){
 				        	    		return "已还清";
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -101,7 +101,7 @@ $(function() {
 				        	    	}else if(data == 1){
 				        	    		return '是';
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -159,7 +159,7 @@ $(function() {
 $(document).ready(function() {
     /*** *************项目详情״̬********* ***/
     $('#deal_list_pro_detail').on('click', function(){
-    	var data = $('#table_id').DataTable().rows('.selected').data(); 
+    	var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 				layer.alert("请选择项目！",{icon:0});
 				return;
@@ -171,7 +171,7 @@ $(document).ready(function() {
     
     /******************还款详情**********************/
     $('#deal_list_pay_detail').on('click', function(){
-    	var data = $('#table_id').DataTable().rows('.selected').data(); 
+    	var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 				layer.alert("请选择项目！",{icon:0});
 				return;
@@ -181,7 +181,7 @@ $(document).ready(function() {
     });
     /** *************贷后监管************** **/
     $('#deal_list_suppervision').on('click', function(){
-    	var data = $('#table_id').DataTable().rows('.selected').data(); 
+    	var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 				layer.alert("请选择项目！",{icon:0});
 				return;

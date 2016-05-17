@@ -18,34 +18,98 @@ $(function(){
 		datatype:extdatatype,
 		ajaxPost:true,
 		beforeSubmit:function(){
-			//缺：图片是否上传判断
-			//console.log($(".selectValue").attr("value"))
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
 			var url = "personalCenter/personalRealName.html";
-			var userName = encrypt.encrypt($(".realName").val()+"");
-			var nationId =  encrypt.encrypt($(".selectValue").attr("value")+"");
-			var idCard = encrypt.encrypt($(".personId").val()+"");
-			var homeTown = encrypt.encrypt($(".homeTown").val()+"");
-			var endTime = encrypt.encrypt($(".dateSelect").val()+"");
-			var annex = encrypt.encrypt("abcd.jpg,abcd1.jpg"+"");//暂时固定
-			var data = {userName:userName,nationId:nationId,idCard:idCard,homeTown:homeTown,
-					endTime:endTime,annex:annex};
-			//console.log(data);
+			//必填
+			var data={};
+			var data.userName = encrypt.encrypt($(".realName").val()+"");
+			var data.idCard = encrypt.encrypt($(".personId").val()+"");
+			//选填
+			var nationId =  $(".selectValue").attr("value");
+			if (nationId!= 0){
+				data.nationId = encrypt.encrypt(nationId+"")
+			}
+			var homeTown =$(".homeTown").val();
+			if (homeTown!="请输入籍贯"){
+				data.homeTown = encrypt.encrypt(homeTown+"")
+			}
+			var endTime = (".dateSelect").val();
+			if (endTime!=undefined&&endTime!="请选择有效期"&&endTime!=""){
+				data.endTime = encrypt.encrypt(homeTown+"")
+			}
+			var img1 = $(".previewHide").eq(0).val();
+			var img2 = $(".previewHide").eq(1).val();
+			if (img1!=null&&img2!=null){
+				data.annex = encrypt.encrypt(img1+","+img2+"")
+			}
 			NetUtil.ajax(
 					url,
 					data,
 					function(r){
-						//console.log(r)
-						if (r.status == ""){
-							
+						console.log(r)
+						var json = JSON.parse(r)
+						if (json.status == 1){
+							layer.alert("提交成功",function(index){
+								layer.close(index);
+								window.location = "personalCenter/loanCertification.html";
+							})
+						}else{
+							layer.alert(json.message);
 						}
-						
 					}
 			)
 			
 			return false;
 		}
 	});
-	
+	showAuthRealName();
 })
+function showAuthRealName(){
+	$.ajax({
+		type:"GET",
+		url:"personalCenter/showAuthRealName.html",
+		async:true,
+		success:function(r){
+			var object=JSON.parse(r);
+			if(object.status == 0){
+				var data = object.data;
+				dealRealName(data);
+			}
+		}
+	})		
+}
+function dealRealName(data){
+	if(data!=null && data!=""){
+		var realName = data.realName;
+		var personalIDCard = data.personalIDCard;
+		var sexId =data.sexId;
+		var sex ="";
+		if(sexId=0){
+			sex="女";
+		}else{
+			sex="男";
+		}
+		var homeTown = data.homeTown;
+		var aationId = data.aationId;//民族Id
+		var nationName = data.nationName;
+		var endDate = data.endDate;
+		var img1 = data.attachPrefix+data.positive;
+		var img2 = data.attachPrefix+data.reverse;
+		var statu = data.status;
+		if(statu=="0" || statu=="3" || statu=="4"){
+			$(".editType").val("0");
+		}else{
+			$(".editType").val("1");
+		}
+		$(".realName").val(realName);
+		$(".personId").val(personalIDCard);
+		$(".nationSelect .selectValue").val(aationId);
+		$(".nationSelect .selectInput").val(nationName);
+		$(".homeTown").val(homeTown);
+		$(".gender").html(sex);
+		$(".dateSelect ").val(endDate);
+		$("#previewImg1").attr("src",img1);
+		$("#previewImg2").attr("src",img2);
+	}
+}

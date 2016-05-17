@@ -53,7 +53,7 @@ $(function() {
 				        		  	}else if(data == 4){
 				        		  		return "结清";
 				        		  	}else{
-				        		  		return "无数据";
+				        		  		return "";
 				        		  	}
 				        	  }
 				          }
@@ -104,7 +104,7 @@ $(function() {
 $(function(){
 	//	审核
 	$('#credit_assignment_exam').click(function(){
-		var rdata = $('#table_id').DataTable().rows('.selected').data();
+		var rdata = $('#table_id').DataTable().rows('.selected').data();
 		if(rdata.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;
@@ -157,7 +157,7 @@ $(function(){
 	
 //	投标结束时间延长
 	$('#credit_assignment_late').click(function(){
-		var rdata = $('#table_id').DataTable().rows('.selected').data();
+		var rdata = $('#table_id').DataTable().rows('.selected').data();
 		if(rdata.length<1){
 			layer.alert("请选择项目！",{icon:0});
 			return;

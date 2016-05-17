@@ -20,12 +20,15 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
-import product_p2p.kit.pageselect.PageUtil; 
+import product_p2p.kit.pageselect.PageUtil;
+import cn.dictionaries.model.LoanRepayUrgedSetEntity;
 import cn.springmvc.dao.PostLoanManageDao;
 import cn.springmvc.dao.PostLoanManageListDao;
+import cn.springmvc.dao.impl.DictionariesCore;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.LoanRepayUrgedRecordEntity;
@@ -194,6 +197,51 @@ public class PostLoanManageServiceImpl implements PostLoanManageService {
 	public String getProjectBill(long lRepayId) {
 		String sResult = "";
 		
+		String sKey = DbKeyUtil.GetDbCodeKey();
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("skey", sKey);
+		param.put("repayID", lRepayId);
+		// 获取账单基本信息
+		PostProjectEntity entity = postLoanManageListDao.getBillingDetails(param);
+		// 获取账单配置信息
+		LoanRepayUrgedSetEntity setEntity = DictionariesCore.GetDictionariesInstead().GetRepayBillSet();
+		if(entity.getOverDay()>0){
+			// 逾期
+			long[] lOverFee = {0,0};
+			postLoanManageListDao.GetLoanRepayOverdueInfo(lRepayId, lOverFee);
+			String sOverInterest = IntegerAndString.LongToString(lOverFee[0]);
+			String sOverFee = IntegerAndString.LongToString(lOverFee[1]);
+			sResult = setEntity.getsBillOverdue();
+			if(sResult!=null){
+				if(entity.getMemberName()!=null){
+					sResult = sResult.replace("\\$\\{name\\}", entity.getMemberName());
+				}else{
+					sResult = sResult.replace("\\$\\{name\\}", "");
+				}
+//				sResult = sResult.replace("\\$\\{name\\}", entity.getMemberName());
+				sResult = sResult.replace("\\$\\{benjin\\}", entity.getsPrincipal());
+				sResult = sResult.replace("\\$\\{lixi\\}", entity.getsInterest());
+				sResult = sResult.replace("\\$\\{enddate\\}", entity.getRepayMaxTime());
+				sResult = sResult.replace("\\$\\{day\\}", Integer.toString(entity.getOverDay()));
+				sResult = sResult.replace("\\$\\{yqlixi\\}", sOverInterest);
+				sResult = sResult.replace("\\$\\{yqfajin\\}", sOverFee);
+			}
+		}else{
+			// 未逾期
+			sResult = setEntity.getsBillContent();
+			if(sResult!=null){
+				if(entity.getMemberName()!=null){
+					sResult = sResult.replace("\\$\\{name\\}", entity.getMemberName());
+				}else{
+					sResult = sResult.replace("\\$\\{name\\}", "");
+				}
+				sResult = sResult.replace("\\$\\{benjin\\}", entity.getsPrincipal());
+				sResult = sResult.replace("\\$\\{lixi\\}", entity.getsInterest());
+				sResult = sResult.replace("\\$\\{enddate\\}", entity.getRepayMaxTime());
+			}
+		}
+		
+		param = null;
 		return sResult;
 	}
 

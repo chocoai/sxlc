@@ -20,7 +20,9 @@
    		<div class="register-box">
    			<div class="successBox">
    				<div class="congratulation">您的投资失败！</div>
-   				<div class="tiss">${ }</div>
+
+   				<div class="tiss">${message }</div>
+
    			</div>
    		</div>
    	</div>

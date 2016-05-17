@@ -28,17 +28,18 @@ String content = request.getParameter("content");
 			<!-- 管理员管理部分结束 --> 
 			<!-- 管理员管理-添加管理员部分开始 -->
 			<div class="w-content" id="manageAdmainAdd">
-				<div class="fieldsetitem">
+				<form id="manageAdd" action="javascript:addMange()">
+					<div class="fieldsetitem">
 					<span>担保机构管理员：</span>
 					<label>担保机构管理员</label>
 				</div>
 				<div class="fieldsetitem">
 					<span>用户名：</span>
-					<input type="text" class="" placeholder="" datatype="logname"/>
+					<input id="userName" type="text" class="" placeholder="" datatype="logname"/>
 				</div>
 				<div class="fieldsetitem">
 					<span>密码：</span>
-					<input type="password" class="" placeholder="" datatype="logPass"/>
+					<input id="pwd" type="password" class="" placeholder="" datatype="logPass"/>
 				</div>
 				<div class="fieldsetitem">
 					<span>确认密码：</span>
@@ -46,40 +47,44 @@ String content = request.getParameter("content");
 				</div>
 				<div class="fieldsetitem">
 					<span class="remark">备注：</span>
-					<textarea rows="" cols="" class="ta-noresize"></textarea>
+					<textarea id="remark" rows="" cols="" class="ta-noresize"></textarea>
 				</div>
 				<div class="cmbtncontainer guaranbtndiv">
-					<a class="commonbtn0">添加</a>
+					<a id="add" class="commonbtn0">添加</a>
 					<a class="commonbtn1">取消</a>
 				</div>
+			</form>
+				
 			</div>
 			<!-- 管理员管理-添加管理员部分结束 -->
 			<!-- 管理员管理-修改管理员部分开始 -->
 			<div class="w-content" id="manageAdmainMod">
-				<div class="fieldsetitem">
+				<form id="manageMod" action="javascript:modMange()" type="post">
+					<div class="fieldsetitem">
 					<span>担保机构管理员：</span>
 					<label>担保机构管理员</label>
 				</div>
 				<div class="fieldsetitem">
 					<span>用户名：</span>
-					<input type="text" class="username" placeholder="" value="用户名" readonly="readonly" datatype="logname"/>
+					<input id="musername" type="text" class="username" placeholder="" value="用户名" readonly="readonly" datatype="logname"/>
 				</div>
 				<div class="fieldsetitem">
 					<span>密码：</span>
-					<input type="text" class="password" placeholder=""  datatype="logPass"/>
+					<input id="mpwd" type="text" class="password" placeholder=""  datatype="logPass"/>
 				</div>
 				<div class="fieldsetitem">
 					<span>确认密码：</span>
-					<input type="text" class="" placeholder="" datatype="logPass"/>
+					<input id="mrpwd" type="text" class="" placeholder="" datatype="logPass"/>
 				</div>
 				<div class="fieldsetitem">
 					<span class="remark">备注：</span>
-					<textarea rows="" cols="" class="ta-noresize"></textarea>
+					<textarea id="mremark" rows="" cols="" class="ta-noresize"></textarea>
 				</div>
 				<div class="cmbtncontainer guaranbtndiv">
-					<a class="commonbtn0">修改</a>
+					<a id="mod" class="commonbtn0">修改</a>
 					<a class="commonbtn1">取消</a>
 				</div>
+				</form>
 			</div>
 			<!-- 管理员管理-修改管理员部分结束 -->		
 	
@@ -91,54 +96,11 @@ String content = request.getParameter("content");
 			layer.closeAll(); //再执行关闭  
 		});
 		$(function(){
-			
-			$("#manageAdmainAdd").Validform({
-				btnSubmit:".commonbtn0",
-				ajaxPost:true,
-				tiptype:"3",
-				beforesubmit:function(){
-					//ajax
-					/* $.ajax({
-						type : 'post',
-						url : appPath + "/guarant/saveAdmin.do",
-						data : {},
-						success : function (msg) {
-							alert(msg);
-						}
-					}); */
-					
-					return false;
-				}
-			});
-		
-			$("#manageAdmainMod").Validform({
-				btnSubmit:".commonbtn0",
-				ajaxPost:true,
-				tiptype:"3",
-				beforesubmit:function(){
-					//ajax
-					/* $.ajax({
-						type : 'post',
-						url : appPath + "/guarant/saveAdmin.do",
-						data : {},
-						success : function (msg) {
-							alert(msg);
-						}
-					}); */
-					
-					return false;
-				}
-			}); 
-			//validform5(".layui-layer-btn0","manageAdmainMod",false,"3");
+			validform5(".commonbtn0","manageAdd",false,"3");
+			validform5(".commonbtn1","manageMod",false,"3");
 		});
 	</script>
 	<script type="text/javascript">
 		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
-		
-		$(function () {
-			/* $(".commonbtn0").bind('click', function () {
-				alert(111);
-			}); */
-		});
 	</script>
 			

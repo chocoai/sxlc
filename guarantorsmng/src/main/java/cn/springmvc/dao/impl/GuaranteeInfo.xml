@@ -28,21 +28,54 @@
     <result column="Personal_Phone" property="personalPhone"/>
   </resultMap>
   <sql id="GuaranteeInfo_Column_List" >
-    	Guarantee_ID,pbi.Personal_Id,Guarantee_NO,Guarantee_Name,
-    	Companye_BLN,Company_OC,Tax_RegNo,Establishments,
-    	Company_Capital,Company_Address,Company_Source,
-    	Company_Business,Company_Profile,Contact_Name,
-    	Contact_Phone,Contact_Email,Add_Time,Record_Status,Delete_Flag,
-    	pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone
+    	Guarantee_ID,pbi.Personal_Id,Guarantee_NO,
+    	CONVERT((AES_DECRYPT(UNHEX(Guarantee_Name),#{map.skey})) using utf8) Guarantee_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(Companye_BLN),#{map.skey})) using utf8) Companye_BLN,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_OC),#{map.skey})) using utf8) Company_OC,
+    	CONVERT((AES_DECRYPT(UNHEX(Tax_RegNo),#{map.skey})) using utf8) Tax_RegNo,
+    	CONVERT((AES_DECRYPT(UNHEX(Establishments),#{map.skey})) using utf8) Establishments,
+    	Company_Capital,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_Address),#{map.skey})) using utf8) Company_Address,
+    	Company_Source,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_Business),#{map.skey})) using utf8) Company_Business,
+    	Company_Profile,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Name),#{map.skey})) using utf8) Contact_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Phone),#{map.skey})) using utf8) Contact_Phone,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Email),#{map.skey})) using utf8) Contact_Email,Add_Time,Record_Status,Delete_Flag,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) Personal_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) Personal_IDCard,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) Personal_Phone
   </sql>
   <!-- 根据担保机构id 查询担保机构信息 -->
+<!--   <select id="selectGuaranteeInfoById" resultMap="GuaranteeInfo" parameterType="Map" > -->
+<!--    	select Guarantee_ID,gi.Personal_Id,Guarantee_NO,Guarantee_Name, -->
+<!--     	Companye_BLN,Company_OC,Tax_RegNo,Establishments, -->
+<!--     	Company_Capital,Company_Address,Company_Source, -->
+<!--     	Company_Business,Company_Profile,Contact_Name, -->
+<!--     	Contact_Phone,Contact_Email,Add_Time,Record_Status,Delete_Flag -->
+<!--     	,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone -->
+<!--     from Guarantee_Info gi left join personal_base_info pbi on gi.Personal_Id=pbi.Personal_Id where Guarantee_ID=#{guaranteeID}; -->
+<!--   </select> -->
+  
   <select id="selectGuaranteeInfoById" resultMap="GuaranteeInfo" parameterType="Map" >
-   	select Guarantee_ID,gi.Personal_Id,Guarantee_NO,Guarantee_Name,
-    	Companye_BLN,Company_OC,Tax_RegNo,Establishments,
-    	Company_Capital,Company_Address,Company_Source,
-    	Company_Business,Company_Profile,Contact_Name,
-    	Contact_Phone,Contact_Email,Add_Time,Record_Status,Delete_Flag
-    	,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone
+   	select 
+   	Guarantee_ID,pbi.Personal_Id,Guarantee_NO,
+    	CONVERT((AES_DECRYPT(UNHEX(Guarantee_Name),#{skey})) using utf8) Guarantee_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(Companye_BLN),#{skey})) using utf8) Companye_BLN,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_OC),#{skey})) using utf8) Company_OC,
+    	CONVERT((AES_DECRYPT(UNHEX(Tax_RegNo),#{skey})) using utf8) Tax_RegNo,
+    	CONVERT((AES_DECRYPT(UNHEX(Establishments),#{skey})) using utf8) Establishments,
+    	Company_Capital,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_Address),#{skey})) using utf8) Company_Address,
+    	Company_Source,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_Business),#{skey})) using utf8) Company_Business,
+    	Company_Profile,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Name),#{skey})) using utf8) Contact_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Phone),#{skey})) using utf8) Contact_Phone,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Email),#{skey})) using utf8) Contact_Email,Add_Time,Record_Status,Delete_Flag,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey})) using utf8) Personal_IDCard,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone
     from Guarantee_Info gi left join personal_base_info pbi on gi.Personal_Id=pbi.Personal_Id where Guarantee_ID=#{guaranteeID};
   </select>
   
@@ -66,7 +99,7 @@
   <select id="handleGuaranteeInfo" resultType="Map" statementType="CALLABLE">
   <!--types 0:添加  1：修改 ;result 0:成功 -1：担保机构名称存在 -2：营业执照号已存在-->
   		<![CDATA[{call handleGuaranteeInfo(
-				#{guaranteeID,	 mode=IN,	jdbcType=INTEGER},
+				#{guaranteeID,	 mode=IN,	jdbcType=BIGINT},
 				#{guaranteeName,	 mode=IN,	jdbcType=VARCHAR},
 				#{companyeBLN,	 mode=IN,	jdbcType=VARCHAR},
 				#{companyOC,	 mode=IN,	jdbcType=VARCHAR},
@@ -83,8 +116,9 @@
 				#{personalPhone,	 mode=IN,	jdbcType=VARCHAR},
 				#{personalName,	 mode=IN,	jdbcType=VARCHAR},
 				#{personalIDCard,	 mode=IN,	jdbcType=VARCHAR},
-				#{personalId,	 mode=IN,	jdbcType=INTEGER},
+				#{personalId,	 mode=IN,	jdbcType=BIGINT},
 				#{types,	 mode=IN,	jdbcType=INTEGER},
+				#{skey,	 mode=IN,	jdbcType=VARCHAR},
 				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
@@ -217,7 +251,7 @@
   <select id="handleManagementInfo" resultType="Map" statementType="CALLABLE">
   <!--types 0:添加  1：修改 ;result 0:成功 -1：资产管理方名称存在 -2：营业执照号已存在-->
   		<![CDATA[{call handleManagementInfo(
-				#{managementID,	 mode=IN,	jdbcType=INTEGER},
+				#{managementID,	 mode=IN,	jdbcType=BIGINT},
 				#{managementName,	 mode=IN,	jdbcType=VARCHAR},
 				#{companyeBLN,	 mode=IN,	jdbcType=VARCHAR},
 				#{companyOC,	 mode=IN,	jdbcType=VARCHAR},
@@ -234,7 +268,7 @@
 				#{personalPhone,	 mode=IN,	jdbcType=VARCHAR},
 				#{personalName,	 mode=IN,	jdbcType=VARCHAR},
 				#{personalIDCard,	 mode=IN,	jdbcType=VARCHAR},
-				#{personalId,	 mode=IN,	jdbcType=INTEGER},
+				#{personalId,	 mode=IN,	jdbcType=BIGINT},
 				#{types,	 mode=IN,	jdbcType=INTEGER},
 				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
@@ -394,12 +428,26 @@
   		update Management_Manage_Info set Status=#{statu} where Management_ID=#{managementID} and Admin_ID=#{adminId}
   </update>
   
+  <update id="updateMGAdmin"  parameterType="Map">
+  		update Admin set adminName=#{adminName},adminPwd=#{adminPwd},adminRemark=#{adminRemark} where Admin_ID=#{adminId} and Staff_Type = 4
+  </update>
+  <select id="selectAdmin" parameterType="Map" resultType="cn.springmvc.model.AdminGMEntity">
+  		select adminName,adminPwd,adminRemark,Admin_ID adminId from Admin where Admin_ID=#{adminId} and Staff_Type = 4 limit 1
+  </select>
   
-  <!-- 添加担保机构管理员 -->
-  <insert id="insertGuaranteeAdmin" parameterType="Map">
-  		insert into Guarantee_Manage_Info(Admin_ID,Guarantee_ID,Add_Time,Status)
-  			values(#{adminId},#{guaranteeID},now(),1)
-  </insert>
+  <!-- 添加担保机构 或资产管理方 管理员 -->
+  <select id="insertGuaranteeAdmin" resultType="Map" statementType="CALLABLE">
+  		<![CDATA[{call insertGuaranteeAdmin(
+				#{adminID,	 mode=IN,	jdbcType=BIGINT},
+				#{staffId,	 mode=IN,	jdbcType=BIGINT},
+				#{adminName,	 mode=IN,	jdbcType=VARCHAR},
+				#{adminPwd,	 mode=IN,	jdbcType=VARCHAR},
+				#{adminRemark,	 mode=IN,	jdbcType=VARCHAR},
+				#{stype,	 mode=IN,	jdbcType=INTEGER},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
   <!-- 添加资产管理方管理员 -->
   <insert id="insertManagementAdmin" parameterType="Map">
   		insert into Management_Manage_Info(Admin_ID,Management_ID,Add_Time,Status)

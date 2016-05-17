@@ -2,12 +2,20 @@ $(function(){
 	//发送邮箱验证码
 	$(".codeBtn").on("click",function(){
 		var entryEmail = $(".emailNew").val();
-		if(entryEmail!="undefined"){
+		var imgCode = $(".imgCode").val();
+		if (imgCode == "请输入验证码"){
+			layer.alert("请输入验证码",function(index){
+				layer.close(index);
+			})
+			return false;
+		}
+		var $item = $(this);
+		if(entryEmail!="请输入您的新邮箱号"){
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
 			entryEmail = encrypt.encrypt(entryEmail+"");
 			var str_Url = "personalCenter/sendBindEmailCheckCode.html";
-			var json_Data = {email:entryEmail};
+			var json_Data = {email:entryEmail,imgCheckCode:encrypt.encrypt(imgCode+"")};
 			NetUtil.ajax(
 				str_Url, 
 				json_Data, 
@@ -15,18 +23,32 @@ $(function(){
 					//console.log(r);
 					var json = JSON.parse(r);
 					if(json.status == 1){
-						$(".codeBtn").html("已发送").addClass("disabled");
-						setTimeout(function(){
-							$(".codeBtn").html("重新发送").removeClass("disabled");
-						},30000);
-						
+						layer.alert("发送成功",function(index){
+							layer.close(index);
+							var setTime = 60 ; //60秒
+							$item.addClass("disabled");
+							var run = setInterval(function(){
+								$item.html(setTime+"s");
+								setTime--;
+								if (setTime <= 0 ){
+									clearInterval(run);
+									$item.html("重新发送");
+									$item.removeClass("disabled");
+								}
+							},1000);
+						})
 					}else{
-						$(".codeBtn").html("发送失败");
+						layer.alert(json.message,function(index){
+							layer.close(index);
+							$(".codeBtn").html("重新发送");
+							$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
+						})
+						
 					}
 				}
 			)
 		}else{
-			layer.alert("请输入邮箱")
+			layer.alert("请输入您的新邮箱号")
 		}
 	});
 	$(".codeImg").on("click",function(){
@@ -67,7 +89,10 @@ $(function(){
 							window.location = "personalCenter/securityCenter.html";
 						})
 					}else{
-						layer.alert(r.message)
+						layer.alert(r.message,function(index){
+							layer.close(index);
+							$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
+						})
 					}
 				}
 			)

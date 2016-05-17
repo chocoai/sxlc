@@ -186,5 +186,20 @@ public interface PostLoanManageListDao {
 	 * @date 2016-5-1 下午6:13:18
 	 */
 	public Integer getExpirationReminderSet();
+	
+	/**
+	 * 根据还款计划ID 获取逾期利息，逾期罚金
+	* GetLoanRepayOverdueInfo	根据还款计划ID 获取逾期利息，逾期罚金 
+	* 根据还款计划ID 获取逾期利息，逾期罚金
+	* @author 张友  
+	* * @Title: GetLoanRepayOverdueInfo 
+	* @Description: 
+	* @param  lId							还款计划ID
+	* @param  lResult 设定文件 					0：返回逾期利息	1：返回逾期罚金
+	* @return void 返回类型 					
+	* @date 2016-5-11 下午3:07:26
+	* @throws		null
+	 */
+	void GetLoanRepayOverdueInfo(long lId,long[] lResult);
 }
 

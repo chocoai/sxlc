@@ -32,7 +32,7 @@ $(function() {
 				        		  }else if(data == -3){
 				        			  return "需补充材料";
 				        		  }else{
-				        			  return "无数据";
+				        			  return "";
 				        		  }
 				        	  }
 				          },  
@@ -54,7 +54,6 @@ $(function() {
 //			  scrollXInner : "100%",
               rowCallback:function(row,data){//添加单击事件，改变行的样式      
               }
-	 
 	});//表格初始化完毕
 	 
 	//表格单选效果(有复选框)
@@ -119,7 +118,6 @@ $(function() {
 //				  scrollXInner : "100%",
 	              rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	              }
-		 
 		});//表格初始化完毕
 		 
 		//表格单选效果(有复选框)
@@ -179,7 +177,6 @@ $(function() {
 //					  scrollXInner : "100%",
 		              rowCallback:function(row,data){//添加单击事件，改变行的样式      
 		              }
-			 
 			});//表格初始化完毕
 			 
 			//表格单选效果(有复选框)
@@ -219,6 +216,7 @@ $(function() {
 		 data.startDate= encrypt.encrypt(startDate);
 		 data.endDate= encrypt.encrypt(endDate);
 		 data.affix= encrypt.encrypt(affix);
+		 data.ImageUrl= encrypt.encrypt(ImageUrl);
 		 $.ajax( {  
 				url:appPath+"/project/publishProject",
 				data:data,
@@ -240,8 +238,48 @@ $(function() {
 					layer.alert("服务器异常",{icon:2});  
 				}  
 			});		
+	 });
+	 
+	 /**
+	  * 审核提交按钮
+	  */
+	 $(".chkSubmitBtn").on("click",function(){
+		 var data ={};
+		 var ApplyId = $("#applyId").val();
+		 var Indexsnow = $("#Indexsnow").val();
+		 var checkStatu = $(".auditResult").val();
+		 var CheckRemark = $("#CheckRemark").val();
+		 var affix = $("#affixChk").val();//附件列表
 		 
-		 
+		 data.ApplyId= encrypt.encrypt(ApplyId);
+		 data.Indexsnow= encrypt.encrypt(Indexsnow);
+		 data.checkStatu= encrypt.encrypt(checkStatu);
+		 data.CheckRemark= encrypt.encrypt(CheckRemark);
+		 data.affix= encrypt.encrypt(affix);
+		 $.ajax( {  
+			 url:appPath+"/project/projectAudit",
+			 data:data,
+			 type:'post',  
+			 cache:false,  
+			 dataType:'json',  
+			 success:function(data) { 
+				 if(data==1){
+					 layer.alert("审核成功！",{icon:1});
+					 window.history.back();
+				 }else if(data==0){
+					 layer.alert("未找到要审核的项目",{icon:2});  
+				 }else if(data==-1){
+					 layer.alert("该项目已审核通过",{icon:0});  
+				 }else if(data==-3){
+					 layer.alert("该项目该审核批次已审核",{icon:0});  
+				 }else if(data==-4){
+					 layer.alert("上一级审核未通过",{icon:0});  
+				 }
+			 },  
+			 error : function() {  
+				 layer.alert("服务器异常",{icon:2});  
+			 }  
+		 });		
 	 });
 	 
 	 
@@ -262,7 +300,7 @@ $(function() {
  * @param attachIndex 附件编号
  */
 function del(appCheckId,attachIndex){
-	layer.confirm('确定删除该条信息？', {
+	layer.confirm('确定删除该附件？', {
 		  btn: ['确定', '取消']
 		}, function(index, layero){
 			$.ajax( {  
@@ -308,6 +346,7 @@ $(function(){
 	//项目基本信息修改保存
 	$(".btnPreserve").click(function(){
 		var data = {};
+		var ApplyId = $("#applyId").val();
 		var projectTitle = $("#projectTitle").val();
 		var uses = $("#uses").val();
 		var repaySource = $("#repaySource").val();
@@ -320,9 +359,10 @@ $(function(){
 		var minStart = $("#minStart").val();
 		var increaseRange = $("#increaseRange").val();
 		var investMax = $("#investMax").val();
-//		var investCountMax = $("#investCountMax").val();
+		var investCountMax = $("#investCountMax").val();
 		var RepayGuarantee = $("#RepayGuarantee").val();
 		
+		data.ApplyId=encrypt.encrypt(ApplyId);
 		data.projectTitle=encrypt.encrypt(projectTitle);
 		data.uses=encrypt.encrypt(uses);
 		data.repaySource=encrypt.encrypt(repaySource);
@@ -335,6 +375,7 @@ $(function(){
 		data.minStart=encrypt.encrypt(minStart);
 		data.increaseRange=encrypt.encrypt(increaseRange);
 		data.investMax=encrypt.encrypt(investMax);
+		data.investCountMax=encrypt.encrypt(investCountMax);
 		data.RepayGuarantee=encrypt.encrypt(RepayGuarantee);
 		
 		$.ajax( {  
@@ -367,7 +408,9 @@ $(function(){
 });
 
 
-
+/**
+ * 上传项目形象图片
+ */
 $(function(){
 	//上传初始化
 	var uploader = WebUploader.create({
@@ -395,7 +438,7 @@ $(function(){
 	                '<div class="info">' + file.name + '</div>' +
 	            '</div>'
 	            ),
-	    	$del = $del = $('<div class="file-panel"><span class="cancel">删除</span></div>'),
+	    	$del = $('<div class="file-panel"><span class="cancel">删除</span></div>'),
 	        $img = $li.find('img');
 	
 	
@@ -490,8 +533,9 @@ $(function(){
 
 
 
-
-
+/**
+ * 项目前台显示图片
+ */
 $(function(){
 	//上传初始化
 	var uploader = WebUploader.create({
@@ -519,7 +563,7 @@ $(function(){
 	                '<div class="info">' + $("#fileName").val() + '</div>' +
 	            '</div>'
 	            ),
-	        	$del = $del = $('<div class="file-panel"><span class="cancel">删除</span></div>'),
+	        	$del = $('<div class="file-panel"><span class="cancel">删除</span></div>'),
 		        $img = $li.find('img');
 	
 	
@@ -624,6 +668,146 @@ $(function(){
 	// 完成上传完了，成功或者失败，先删除进度条。
 	uploader.on( 'uploadComplete', function( file ) {
 	    $( '#'+file.id ).find('.progress').remove();
+	});
+	
+	
+});
+
+/**
+ *	项目审核附件
+ */
+$(function(){
+	//上传初始化
+	var uploader = WebUploader.create({
+		auto: true,														//选完文件后，是否自动上传。
+		swf: 'plugs/webuploader/0.1.5/Uploader.swf',					//swf文件路径
+		server: appPath+'/UpdateBsnLicense',	//文件接收服务端。
+		// 选择文件的按钮。可选。
+		pick: '#filePicker2',											//内部根据当前运行是创建，可能是input元素，也可能是flash.
+		fileNumLimit: 10,												//个数限制
+		//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
+		fileSingleSizeLimit: 1024*512,
+		accept: {														//只允许选择图片文件
+			title: 'Images',
+			extensions: 'gif,jpg,jpeg,bmp,png',
+			mimeTypes: 'image/*'
+		},
+		resize: false													//不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+	});
+	
+	// 当有文件添加进来的时候
+	uploader.on( 'fileQueued', function( file ) {
+		var $li = $(
+				'<div id="' + file.id + '" class="file-item thumbnail">' +
+				'<img>' +
+				'<div class="info">' + $("#attachName").val() + '</div>' +
+				'</div>'
+		),
+		$del = $('<div class="file-panel"><span class="cancel">删除</span></div>'),
+		$img = $li.find('img');
+		
+		
+		// $list为容器jQuery实例
+		$list = $("#fileList2");
+		$list.append( $li );
+		$del.appendTo( $li );
+		
+		//预览时操作面板显隐
+		$("#fileList2 .file-item").each(function(){
+			$(this).mouseenter(function(){
+				$(this).parent().find(".file-panel").animate({height:30},"fast");
+			}).mouseleave(function(){
+				$(this).parent().find(".file-panel").animate({height:0},"fast");
+			});
+		});
+		
+		//销毁
+		$del.on('click', 'span', function() {
+			removeFile(file);
+		});
+		
+		// 负责view的销毁
+		function removeFile(file) {
+			var $li = $('#' + file.id);
+			uploader.removeFile(file, true);
+			$li.off().find('.file-panel').off().end().remove();
+		}
+		
+		
+		// 创建缩略图
+		// 如果为非图片文件，可以不用调用此方法。
+		// thumbnailWidth x thumbnailHeight 为 100 x 100
+		// 优化retina, 在retina下这个值是2
+		ratio = window.devicePixelRatio || 1,
+		thumbnailWidth = 250 * ratio,
+		thumbnailHeight = 150 * ratio,
+		
+		uploader.makeThumb( file, function( error, src ) {
+			if ( error ) {
+				$img.replaceWith('<div>不能预览</div>');
+				return;
+			}
+			
+			$img.attr( 'src', src );
+		}, thumbnailWidth, thumbnailHeight );
+	});
+	
+	// 文件上传过程中创建进度条实时显示。
+	uploader.on( 'uploadProgress', function( file, percentage ) {
+		var $li = $( '#'+file.id ),
+		$percent = $li.find('.progress span');
+		
+		// 避免重复创建
+		if ( !$percent.length ) {
+			$percent = $('<p class="progress"><span></span></p>')
+			.appendTo( $li )
+			.find('span');
+		}
+		
+		$percent.css( 'width', percentage * 100 + '%' );
+	});
+	
+	uploader.on( 'beforeFileQueued', function( file ) {
+		var fileName = $("#attachName").val();
+		if(fileName !=null && fileName != ""){
+			return true;
+		}else{
+			layer.alert("文件名不能为空",{icon:0});  
+			return false;
+		}
+	});
+	
+	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+	uploader.on( 'uploadSuccess', function( file,json ) {
+		var result = json._raw;
+		var uploadUrl=result.split(",")[1];
+		var fileName= $("#attachName").val();
+		var newValue = fileName+","+uploadUrl;
+		var oldValue = $("#affixChk").val();
+		if(oldValue !=null && oldValue != ""){
+			$("#affixChk").val(oldValue+";"+newValue);
+		}else{
+			$("#affixChk").val(newValue);
+		}
+		$( '#'+file.id ).addClass('upload-state-done');
+	});
+	
+	// 文件上传失败，显示上传出错。
+	uploader.on( 'uploadError', function( file ) {
+		var $li = $( '#'+file.id ),
+		$error = $li.find('div.error');
+		
+		// 避免重复创建
+		if ( !$error.length ) {
+			$error = $('<div class="error"></div>').appendTo( $li );
+		}
+		
+		$error.text('上传失败');
+	});
+	
+	// 完成上传完了，成功或者失败，先删除进度条。
+	uploader.on( 'uploadComplete', function( file ) {
+		$( '#'+file.id ).find('.progress').remove();
 	});
 	
 	

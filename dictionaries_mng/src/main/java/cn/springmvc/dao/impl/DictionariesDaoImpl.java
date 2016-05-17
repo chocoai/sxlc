@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import cn.dictionaries.model.CityInfoEntity;
 import cn.dictionaries.model.CountyInfoEntity;
 import cn.dictionaries.model.EducationInfoEntity;
+import cn.dictionaries.model.LoanRepayUrgedSetEntity;
 import cn.dictionaries.model.MaritalInfoEntity;
 import cn.dictionaries.model.NationInfoEntity;
 import cn.dictionaries.model.ProvinceInfoEntity;
@@ -199,6 +200,26 @@ public class DictionariesDaoImpl extends SqlSessionDaoSupport{
 		list = getSqlSession().selectList("Dictionaries.GetReligionInfo");
 		
 		return list;
+	}
+	
+	/**
+	 * 获取账单配置
+	* GetLoanRepayUrgedSet			获取账单配置
+	* 								获取账单配置
+	* @author 张友  
+	* * @Title: GetLoanRepayUrgedSet 
+	* @Description: TODO 
+	* @param @return				账单配置
+	* @return LoanRepayUrgedSetEntity 返回类型 
+	* @date 2016-5-11 下午3:50:04
+	* @throws
+	 */
+	public LoanRepayUrgedSetEntity GetLoanRepayUrgedSet(){
+		LoanRepayUrgedSetEntity entity = null;
+		
+		entity = getSqlSession().selectOne("Dictionaries.GetLoanRepayUrgedSet");
+		
+		return entity;
 	}
 	
 	@Override

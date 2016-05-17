@@ -895,7 +895,7 @@ function creatApply(data){
 							}
 					_html+='</div>'+
 					'<div class="contentOut4">'+
-						'<div class="c-content toConfirm" data-projectId="'+data.results[i].projectId+'">'+data.results[i].statusName+'</div>'+
+						'<div class="c-content viewDetails" data-projectId="'+data.results[i].projectId+'">'+data.results[i].statusName+'</div>'+
 					'</div>'+
 				'</li>';
 				

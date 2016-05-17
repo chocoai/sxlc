@@ -67,8 +67,8 @@
 						   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
 						   					<div class="previewPicture" id="file" style="float: none;" >
 						   						<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
-						   						<input type='hidden' class='previewHide' id="0" >
 						   					</div>
+						   					<div class="authPreviDiv_u"></div>
 						   					<!-- <span class="hint">（请上传附件图片）</span> -->
 						   				</li>
 					   					<li class="inputList">
@@ -94,7 +94,7 @@
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification_picText.js"></script>	
 	<script>
-	expUpload(1);
+	expUpload(0);
 		/* 验证     */
 		/* $(function(){checkCAR();});
 			function checkCAR(){

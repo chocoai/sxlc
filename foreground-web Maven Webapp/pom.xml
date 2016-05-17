@@ -146,11 +146,13 @@
       <scope>test</scope>
     </dependency>
     
+    <!-- jstl s -->
     <dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>jstl</artifactId>
 		<version>1.2</version>
 	</dependency>
+    <!-- jstl e -->
     
     <!-- 工具模块 -->
     <dependency> 

@@ -100,7 +100,7 @@ public class SelectProjectAppRecordDaoImpl extends SqlSessionDaoSupport  impleme
 		return getSqlSession().selectOne("projectPurpose.getIsopen",map);
 		
 	}
-	@Override
+//	@Override
 	public int BlackMemberJudgment(long memberId, int mType) {
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("memberId", memberId);

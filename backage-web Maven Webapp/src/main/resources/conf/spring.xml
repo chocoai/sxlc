@@ -18,11 +18,13 @@
     <bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean" lazy-init="false">  
         <property name="scheduledTimerTasks">  
             <list>  
-                <ref local="scheduledIdTask"/>  
+                <ref local="scheduledIdTask"/> 
+                <ref local="scheduledBalanceTask"/> 
             </list>  
         </property>  
     </bean>
     
+    <!-- id生成 -->
     <bean id="scheduledIdTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">  
         <property name="delay" value="10000" />  
         <property name="period" value="600000" />  
@@ -36,6 +38,19 @@
         <property name="targetMethod" value="run"/>  
     </bean> 
     
-    <bean id="idTask" class="cn.springmvc.timer.IdMngTimer">  
-    </bean> 
+    <bean id="idTask" class="cn.springmvc.timer.IdMngTimer"></bean> 
+    
+    <!-- 会员余额处理  -->
+    <bean id="scheduledBalanceTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">  
+        <property name="delay" value="5000" />  
+        <property name="period" value="300000" />  
+        <property name="timerTask">  
+            <ref bean="methodInvokingBalanceTask"/>  
+        </property>  
+    </bean>
+    <bean id="methodInvokingBalanceTask" class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">  
+        <property name="targetObject" ref="balanceMngTimer"/>  
+        <property name="targetMethod" value="run"/>  
+    </bean>
+    <bean id="balanceMngTimer" class="cn.springmvc.timer.BalanceMngTimer"></bean> 
 </beans>

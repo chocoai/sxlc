@@ -13,9 +13,11 @@
     <title>实名认证</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
     <script type="text/javascript">
+    	var appPath="<%=path%>";
     	var publickey = '<%=session.getAttribute("publicKey")%>';
     </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
+	<link rel="stylesheet" type="text/css" href="plugs/webuploader/webuploader.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/loanCertification.css">
 </head>
 <body> 
@@ -42,9 +44,13 @@
 				   						<input class="inputText realName" type="text" datatype="enterperson" lang="请输入姓名" maxlength="20"/>
 				   					</li>
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>民族：</span></div>
+				   						<div class="mustLabel"><span><samp>*</samp>身份证号：</span></div>
+				   						<input class="inputText personId" datatype="IDCard" type="text" lang="请输入您的身份证号" maxlength="18"/>
+				   					</li>
+				   					<li class="inputList">
+				   						<div class="mustLabel"><span><samp></samp>民族：</span></div>
 				   						<div class="selectArea nationSelect">
-				   							<input class="selectValue" value="0" >
+				   							<input class="selectValue" value="0">
 				   							<input class="selectInput" type="text" lang="请选择民族" readOnly="true">
 				   							<ul class="select" onselectstart="return false">
 				   								<c:forEach items="${nationList }" var="nat">
@@ -54,51 +60,28 @@
 				   						</div>
 				   					</li>
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>身份证号：</span></div>
-				   						<input class="inputText personId" datatype="IDCard" type="text" lang="请输入您的身份证号" maxlength="18"/>
+				   						<div class="mustLabel"><span><samp></samp>籍贯：</span></div>
+				   						<input class="inputText homeTown" type="text" lang="请输入籍贯" maxlength="20"/>
 				   					</li>
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>籍贯：</span></div>
-				   						<input class="inputText homeTown" type="text" datatype="enterperson" lang="请输入籍贯" maxlength="20"/>
-				   					</li>
-				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>性别：</span></div>
+				   						<div class="mustLabel"><span><samp></samp>性别：</span></div>
 				   						<div class="gender">男</div>
 				   					</li>
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>有效期：</span></div>
+				   						<div class="mustLabel"><span><samp></samp>有效期：</span></div>
 				   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker()" type="text" lang="请选择有效期"/>
 				   					</li>
 				   					<li class="inputList">
-				   						<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
-				   						<!-- <div class="previewPicture"> -->
-<!-- 					   						<ul class="clearfix"> -->
-<!-- 					   							<li> -->
-<!-- 													<div class="input-Area"> -->
-<!-- 														<input type="hidden" value="2" class="shopImagsCount"> -->
-<!-- 														<input type="hidden" value="2" name="projectInfoEntity.projectInfoShopEntity[${statu.index }].shopType"> -->
-<!-- 														<input type="text" value="${projectInfoEntity.projectInfoShopEntity[statu.index].shopName }" maxlength="10" placeholder="请输入上传类型" name="projectInfoEntity.projectInfoShopEntity[${statu.index }].shopName"> -->
-<!-- 													</div> -->
-<!-- 													<div class="subPicture-Area"> -->
-<!-- 														<div></div> -->
-<!-- 														<span>添加图片</span> -->
-<!-- 														<img id="img-${outindex+5+statu.index }" class="img" alt="" src="${projectInfoEntity.projectInfoShopEntity[statu.index ].shopUrl}"/>  -->
-<!-- 														<input  name="uploadFile" type="file"  class="file" id="file-${outindex+5+statu.index }" size="28"  onchange="shoppreImg('<%=basePath %>',this.id,'img-${outindex+5+statu.index }');" /> -->
-<!-- 														<button onclick="$(this).parent().parent().remove();"></button> -->
-<!-- 													</div> -->
-<!-- 													<div class="infor-Area"> -->
-<!-- 														<input type="hidden" value="${projectInfoEntity.projectInfoShopEntity[statu.index].shopUrl }" name="projectInfoEntity.projectInfoShopEntity[${statu.index }].shopUrl"> -->
-<!-- 													</div> -->
-<!-- 												</li> -->
-<!-- 					   						</ul> -->
-				   						<!-- </div> -->
-				   						<div class="previewPicture">
+				   						<div class="mustLabel"><span><samp></samp>附件：</span></div>
+				   						<div class="previewPicture" id="file1">
 				   							<img class="previewImg" id="previewImg1" src="resource/img/account/common/opacity.png">
-				   							<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput1" onchange="preImg(this.id,'previewImg1')" onblur="if(document.getElementById('previewImg').src=='null')document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" >
+				   							<input value="" type="hidden" class="previewHide">
+				   							<!-- <input type="file"accept=".png,.jpg" class="previewInput" id="previewInput1" onchange="preImg(this.id,'previewImg1')" onblur="if(document.getElementById('previewImg1').src==null)document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" > -->
 				   						</div>
-				   						<div class="previewPicture">
+				   						<div class="previewPicture" id="file2">
 				   							<img class="previewImg" id="previewImg2" src="resource/img/account/common/opacity.png">
-				   							<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput2" onchange="preImg(this.id,'previewImg2')" onblur="if(document.getElementById('previewImg').src=='null')document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" >
+				   							<input value="" type="hidden" class="previewHide">
+				   							<!-- <input type="file" accept=".png,.jpg" class="previewInput" id="previewInput2" onchange="preImg(this.id,'previewImg2')" onblur="if(document.getElementById('previewImg2').src==null)document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" > -->
 				   						</div>
 				   					</li>	
 		   					        <li class="inputList">
@@ -115,7 +98,13 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
+	<script type="text/javascript" src="plugs/webuploader/webuploader.js" ></script>
+   	<script type="text/javascript" src="js/exp-upload.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/LC_personal_realNameAuthentication.js"></script>
 </body>
+	<script>
+		expOneUpload("file1",1);
+		expOneUpload("file2",1);
+	</script>
 </html>

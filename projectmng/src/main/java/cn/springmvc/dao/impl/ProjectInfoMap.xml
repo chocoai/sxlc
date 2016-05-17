@@ -94,8 +94,12 @@
 		<result column="Amount"               property="amount"/>
 		<result column="Indexs"               property="indexs"/>
 		<result column="Repay_Time"           property="repayTime"/>
+		<result column="Repay_MaxTime"        property="repayMaxTime"/>
 		<result column="overDay"              property="overDay"/> 
 		<result column="Overdue_Amount"       property="overdueAmount"/> 
+		<result column="SDRepay_Principal"    property="lPrincipal"/> 
+		<result column="SDRepay_Interest"     property="lInterest"/> 
 	</resultMap>	
+<!-- 		 -->
      
 </mapper>

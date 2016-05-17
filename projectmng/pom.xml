@@ -36,6 +36,11 @@
       <artifactId>kit</artifactId> 
       <version>0.0.1-SNAPSHOT</version> 
     </dependency>  
+    <dependency> 
+      <groupId>product_p2p</groupId>
+  	  <artifactId>dictionaries_mng</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency> 
     
   </dependencies> 
   <build>

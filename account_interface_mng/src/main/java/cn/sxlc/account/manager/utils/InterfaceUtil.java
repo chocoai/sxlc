@@ -1,10 +1,11 @@
 package cn.sxlc.account.manager.utils;
 
-import cn.springmvc.dao.impl.UtilDaoImpl;
-import org.springframework.stereotype.Controller;
-import product_p2p.kit.redisPlug.Core;
-
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+
+import product_p2p.kit.redisPlug.Core;
+import cn.springmvc.dao.impl.UtilDaoImpl;
 
 @Controller("interfaceUtil")
 public class InterfaceUtil {

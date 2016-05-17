@@ -1,5 +1,8 @@
 
 package cn.dictionaries.model; 
+
+import java.io.Serializable;
+
 /**
  * 字典：婚姻状况实例
 * @author 杨翰林
@@ -7,7 +10,14 @@ package cn.dictionaries.model;
 * @since 
 * @date 2016-4-1 下午2:46:01
  */
-public class MaritalInfoEntity {
+public class MaritalInfoEntity implements Serializable{
+
+	
+	/** 
+	* @Fields serialVersionUID : TODO（用一句话描述这个变量表示什么） 
+	*/
+	
+	private static final long serialVersionUID = -3791410848486535259L;
 
 	//婚姻状况id
 	private int mId;

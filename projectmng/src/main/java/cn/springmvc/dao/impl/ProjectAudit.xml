@@ -56,7 +56,7 @@
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"></association>
     </resultMap> 
      <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
-            <id property = "id" 				 column = "id" />
+            <id property = "id" 				 column = "Project_Base_ID" />
 			<result property = "projectTitle"    column = "Project_Title" /> 
 			<result property = "uses"            column = "Uses" />
 			<result property = "repaySource"     column = "Repay_Source" />
@@ -165,13 +165,13 @@
      
      <!-- 根据项目申请ID查询借款项目详情 -->  
 	<select id="selectProjectdetail"  parameterType="long" resultMap="resultProjectDetail" >
-	   select pbi.Project_Title,pbi.Amount,replayway.name1,pbi.Repay_Way,pbi.Uses,
+	   select pbi.Project_Title,pbi.Amount,replayway.name1,pbi.Repay_Way,pbi.Uses,pbi.Project_Base_ID,
 	   pbi.Repay_Source,pbi.Deadline,pbi.Deadline_Type,par.Invest_Max,pbi.Year_Rate,
 	   par.MinStart,par.Increase_Range,pbi.Project_Descript,
 	   par.Apply_Id, pap.Record_Date,par.Project_No,mi.Logname,mi.Member_Type,par.Project_ID,
-	   pty.Project_Name,par.Invest_Statu, par.Project_Base_ID,par.Project_ID, par.Check_Statu
-	   from  Project_App_Process pap 
-	   left join Project_App_Record par on  pap.Apply_Id=par.Apply_Id  
+	   pty.Project_Name,par.Invest_Statu, par.Project_Base_ID,par.Project_ID, par.Check_Statu, par.Invest_Count_Max
+	   from Project_App_Record par 
+	   left join Project_App_Process pap on  pap.Apply_Id=par.Apply_Id  
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
 	   left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 

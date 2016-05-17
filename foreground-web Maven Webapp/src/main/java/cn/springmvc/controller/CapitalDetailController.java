@@ -56,7 +56,7 @@ public class CapitalDetailController {
 	@RequestMapping(value="/selectMemberTradingRecords",produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String selectMemberTradingRecords(HttpServletRequest request){
-		String tradeTypeId = request.getParameter("tradeTypeId");//交易类型：-1全部
+		String tradeTypeId = request.getParameter("tradeTypeId");//交易类型：-1全部  交易类型 0：其他 1：充值 2：提现成功 3：冻结借款项目投标金额 4：扣除借款项目投标金额 5：冻结债权转让投标金额 6：扣除债权转让投标金额 7：借款项目放款 8：债权转让放款 9：借款人还款 10：获得投资收益 11：投资借款项目流标 12：投资债权转让流标 13：支付担保收益 14：代偿还款 15：积分兑换 16：获取担保收益 17：代偿回款 18：提现登记 19：提现打回 20：支付借款管理费 21：支付风险备付金 23：代偿还款 24：代偿回款 25：支付项目认证费用
 		if(tradeTypeId==null||tradeTypeId.equals("")){
 			tradeTypeId="-1";
 		}
@@ -96,6 +96,8 @@ public class CapitalDetailController {
 		}
 		if(!StringUtils.isEmpty(order)){
 			param.put("order",order);
+		}else{
+			param.put("order", 0);
 		}
 
 		
@@ -214,6 +216,8 @@ public class CapitalDetailController {
 		}
 		if(!StringUtils.isEmpty(order)){
 			param.put("order",order);
+		}else{
+			param.put("order", 0);
 		}
 		if(!StringUtils.isEmpty(thirdMerBillno)){
 			param.put("threeNum",thirdMerBillno);
@@ -278,6 +282,8 @@ public class CapitalDetailController {
 		}
 		if(!StringUtils.isEmpty(order)){
 			param.put("order",order);
+		}else{
+			param.put("order", 0);
 		}
 		if(!StringUtils.isEmpty(threeNum)){
 			param.put("threeNum",threeNum);

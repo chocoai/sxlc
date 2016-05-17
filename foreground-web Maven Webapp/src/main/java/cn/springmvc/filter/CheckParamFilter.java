@@ -42,10 +42,12 @@ public class CheckParamFilter implements Filter{
 		exitRout.add("loanList");									//我要投资-获取债权投资列表
 		exitRout.add("selectInvestRecordIndex");					//首页网站公告
 		exitRout.add("debtInvestmentBack");							//债权投资回调
-		exitRout.add("authImage");											//图片验证码
-		exitRout.add("sendForgetPWDPhoneVarCode");			//忘记密码-发送手机验证码
-		exitRout.add("checkForgetPWD");									//提交忘记密码-修改密码申请
-		exitRout.add("setNewPassWord");									//设置新密码
+		exitRout.add("authImage");									//图片验证码
+		exitRout.add("sendForgetPWDPhoneVarCode");					//忘记密码-发送手机验证码
+		exitRout.add("checkForgetPWD");								//提交忘记密码-修改密码申请
+		exitRout.add("setNewPassWord");								//设置新密码
+		exitRout.add("memberInvestmentPage");						//項目投資返回
+		exitRout.add("memberInvestmentvoid");						//項目投資返回
 	}
 
 	@Override

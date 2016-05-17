@@ -1,35 +1,109 @@
 	/* 验证     */
 $(function(){
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publickey);
+	
+	
+	
+	//逐项验证。。。。1.输入旧手机
+	$(".phoneBind").on("blur",function(){
+		var $this = $(this);
+		if ($(this).next().hasClass("Validform_right")){
+			var url = "personalCenter/checkOldPhone.html";
+			var phone = encrypt.encrypt($(this).val()+"");
+			NetUtil.ajax(
+					url,
+					{phone:phone},
+					function(r){
+						var data = JSON.parse(r);
+						if (data.status == "1"){
+							$(".newphone").removeProp("disabled");
+						}else{
+							layer.alert(data.message,function(index){
+								layer.close(index);
+								$(".newphone").prop("disabled",true);
+								$(".codeBtn").prop("disabled",true);
+							});
+						}
+					}
+			)
+		}
+	})
+	//新手机是否存在
+	$(".newphone").on("blur",function(){
+		var $this = $(this);
+		if ($(this).next().hasClass("Validform_right")){
+			var url = "personalCenter/checkPhone.html";
+			var phone = encrypt.encrypt($(this).val()+"");
+			NetUtil.ajax(
+					url,
+					{phone:phone},
+					function(r){
+						var data = JSON.parse(r);
+						if (data.status == "1"){
+							$(".codeBtn").removeProp("disabled");
+						}else{
+							layer.alert(data.message,function(index){
+								layer.close(index);
+								$(".codeBtn").prop("disabled",true);
+							});
+						}
+					})
+			}
+	})
+	
+	
+	
+	
 	/* 发送手机验证码 */
 	$(".codeBtn").on("click",function(){
 		var phone = $(".newphone").val();
-		if(phone!="undefined"){
+		var imgCode = $(".imgCode").val();
+		if (imgCode == "请输入验证码"){
+			layer.alert("请输入验证码");
+			return false;
+		}
+		var $item = $(this);
+		if(phone!="请输入您的新手机号"){
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
 			phone = encrypt.encrypt(phone+"");
 			var str_Url = "personalCenter/sendEditBindPhoneCheckCode.html";
-			var json_Data = {phone:phone};
+			var json_Data = {phone:phone,imgCheckCode:encrypt.encrypt(imgCode+"")};
 			NetUtil.ajax(
 				str_Url, 
 				json_Data, 
 				function(r){
-					//console.log(r);
 					var json = JSON.parse(r);
 					if(json.status == 1){
-						$(".codeBtn").html("已发送").addClass("disabled");
-						setTimeout(function(){
-							$(".codeBtn").html("重新发送").removeClass("disabled");
-						},30000);
-						
+						layer.alert("发送成功",function(index){
+							layer.close(index);
+							var setTime = 60 ; //60秒
+							$item.addClass("disabled");
+							var run = setInterval(function(){
+								$item.html(setTime+"s");
+								setTime--;
+								if (setTime <= 0 ){
+									clearInterval(run);
+									$item.html("重新发送");
+									$item.removeClass("disabled");
+								}
+							},1000);
+						})
 					}else{
-						$(".codeBtn").html("发送失败")
+						layer.alert(json.message,function(index){
+							layer.close(index);
+							$(".codeBtn").html("重新发送");
+							$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
+						})
 					}
 				}
 			)
 		}else{
-			layer.alert("请输入新手机号码");
+			layer.alert("请输入您的新手机号");
 		}
 	});
+	
 	$(".codeImg").on("click",function(){
 		$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
 	});
@@ -41,8 +115,7 @@ $(function(){
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,
 		beforeSubmit:function(){
-			var encrypt = new JSEncrypt();
-			encrypt.setPublicKey(publickey);
+			
 			
 			var soldPhone = $(".phoneBind").val();
 			soldPhone = encrypt.encrypt(soldPhone+"");
@@ -63,20 +136,13 @@ $(function(){
 				{oldPhone:soldPhone,newPhone:snewPhone,imgCheckCode:simgCheckCode,phoneCode:sphoneCode},
 				function(r){
 					var json = JSON.parse(r);
-					//console.log(json)
 					if(json.status == "1"){
 						layer.alert("修改成功",function(){
 							window.location = "personalCenter/securityCenter.html";
 						});
-					}else if(json.status == "-2"){
-						if(json.phoneCode){
-							layer.alert(json.phoneCode);
-						};
-						if(json.chekcCode){
-							layer.alert(json.chekcCode);
-						};
-					}else{
+					}else {
 						layer.alert(json.message);
+						$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
 					}
 				}
 			)

@@ -26,7 +26,7 @@
     </select>
     <!-- 根据项目申请ID查询附件审核记录 -->  
 	<select id="selectCheckAttachDeal"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectCheckAttach" >
-	      SELECT PCA.App_Check_Id,pcr.Check_Date,apadd.AP_Name as addapName,ad.adminName,PCA.Attach_Title
+	      SELECT PCA.App_Check_Id,pcr.Check_Date,apadd.AP_Name as addapName,ad.adminName,PCA.Attach_Title,PCA.Attach_Index
 		  from  Project_Check_Attach PCA
 		  left join  Project_Check_Record pcr on pcr.App_Check_Id = PCA.App_Check_Id
 		  left join Admin ad on ad.Admin_ID = pcr.Admin_ID 

@@ -40,7 +40,7 @@
 	    		</div>
 	    		<div class="content1 input-group clearfix">
 		    		<div class="inputUserName clearfix">
-		    			<input type="text" class="input-user-name" name="userNMae" datatype="logname" value="用户名/手机号" maxlength="16"
+		    			<input type="text" class="input-user-name" name="userNMae" datatype="lognameOrPhone" lang="用户名/手机号" value="用户名/手机号" maxlength="16"
 						onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
 						onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 						style="color:#bfbfbf" />

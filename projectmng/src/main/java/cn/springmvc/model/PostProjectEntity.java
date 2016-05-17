@@ -21,21 +21,51 @@ import product_p2p.kit.datatrans.IntegerAndString;
  * @date 2016-4-15 下午5:14:45  */
 
 public class PostProjectEntity {
-	private long   repayID;//还款计划ID
-	private long   applyId;//借款项目申请ID
-	private String projectNo;//项目编号
-	private String projectTitle; //项目标题
-    private String memberName; //借款会员名称
-    private long   amount;//账单金额 
-    private String amounts;//账单金额 
-    private int    indexs;//账单期数
-    private String repayMaxTime;//应还款时间
-    private int    overDay;//逾期天数
-    private long   overdueAmount;//逾期费用
-    private String overdueAmounts;//逾期费用
-    private String repayTime;//实际还款时间
-    private String merbillNo;//账单编号
-    private String holdDate;//放款时间
+	private long   repayID;					//还款计划ID
+	private long   applyId;					//借款项目申请ID
+	private String projectNo;				//项目编号
+	private String projectTitle; 			//项目标题
+    private String memberName; 				//借款会员名称
+    private long   amount;					//账单金额 
+    private String amounts;					//账单金额 
+    private long   lPrincipal;				//应还本金
+    private String sPrincipal;				//应还本金
+    private long   lInterest;				//应还利息
+    private String sInterest;				//应还利息
+    private int    indexs;					//账单期数
+    private String repayMaxTime;			//应还款时间
+    private int    overDay;					//逾期天数
+    private long   overdueAmount;			//逾期费用
+    private String overdueAmounts;			//逾期费用
+    private String repayTime;				//实际还款时间
+    private String merbillNo;				//账单编号
+    private String holdDate;				//放款时间
+	public long getlPrincipal() {
+		return lPrincipal;
+	}
+	public void setlPrincipal(long lPrincipal) {
+		this.lPrincipal = lPrincipal;
+		this.sPrincipal = IntegerAndString.LongToString(lPrincipal);
+	}
+	public String getsPrincipal() {
+		return sPrincipal;
+	}
+	public void setsPrincipal(String sPrincipal) {
+		this.sPrincipal = sPrincipal;
+	}
+	public long getlInterest() {
+		return lInterest;
+	}
+	public void setlInterest(long lInterest) {
+		this.lInterest = lInterest;
+		this.sInterest = IntegerAndString.LongToString(lInterest);
+	}
+	public String getsInterest() {
+		return sInterest;
+	}
+	public void setsInterest(String sInterest) {
+		this.sInterest = sInterest;
+	}
 	public long getOverdueAmount() {
 		return overdueAmount;
 	}

@@ -188,8 +188,8 @@ jQuery.fn.layoutClick = function(str){
 					dataType:"json",
 					success:function(r){
 						//console.log(r)
-						if (num<parseInt(r.userBalances)&&num<=parseInt(r.sSumAount)){
-							var hei = 423 + Math.ceil(r.redPackList.length /3)*40;
+						if (num<=parseInt(r.userBalances)&&num<=parseInt(r.sSumAount)){
+							var hei = 453 + Math.ceil(r.redPackList.length /3)*40;
 							layer.open({
 								title :'我要投资',//标题
 								skin: 'layer-ext-myskin',//皮肤
@@ -258,7 +258,7 @@ jQuery.fn.layoutClick = function(str){
 											};
 										});
 										
-										$("#useVouchers").on("blur",function(){
+										$("#useVouchers").on("keyup",function(){
 											var re = /^[0-9]*[1-9][0-9]*$/; //正整数
 											var str = detail.getRedBags();
 											var thisVal = $(this).val()||"0";
@@ -379,7 +379,7 @@ $(function(){
 	
 	
 	
-	$("#investMoney").on("blur",function(){
+	$("#investMoney").on("keyup",function(){
 		var num = $(this).val();
 		if (num!="50元起投且金额为整数"&&num){
 			var re = /^[0-9]*[1-9][0-9]*$/ ; //正整数

@@ -19,6 +19,8 @@ $(function(){
 
 
 //function
-function test(){
-	
+
+//获取商品列表
+function getGoodsList(){
+		
 }

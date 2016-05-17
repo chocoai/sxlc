@@ -1,4 +1,3 @@
-debugger;
 $(function() {
 	//表格初始化
 	$('#table_id').DataTable(
@@ -26,21 +25,21 @@ $(function() {
 				          },
 				          { title:"会员编号","data": "memberNo"},  
 				          { title:"会员用户名","data": "logname"},  
-				          { title:"会员名称","data": "PersonalName", 
+				          { title:"会员名称","data": "personalName", 
 				        	  "mRender": function (data, type, full) {
 				        		  if(data !=null && data !=''){
 				        	    		return data;
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
-				          { title:"会员联系号码","data": "PersonalPhone", 
+				          { title:"会员联系号码","data": "personalPhone", 
 				        	  "mRender": function (data, type, full) {
 				        		  if(data !=null && data !=''){
 				        	    		return data;
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -57,7 +56,7 @@ $(function() {
 				        	    	}else if(data == 3){
 				        	    		return "等额本金";
 				        	    	}else{
-				        	    		return "无数据";
+				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
@@ -65,7 +64,9 @@ $(function() {
 				          { title:"还款来源","data": "repaySource"},  
 				          { title:"借款描述","data": "projectDescript", 
 				        	  "mRender": function (data, type, full) {
-				        		  	if(data.length>8){//当内容长度大于8时隐藏详细信息
+				        		  	if(data==null){
+				        		  		return "";
+				        	  		}else if(data.length>8){//当内容长度大于8时隐藏详细信息
 				        	    		return ' <a href="javascript:;" onclick="showText(this)" title="借款描述">'+data.substring(0,7)+'...</a>';
 				        	    	}else {
 				        	    		return data;
@@ -81,7 +82,7 @@ $(function() {
 				        		  }else if(data==2){
 				        			  return full.deadline+"年标";
 				        		  }else{
-				        			  return "无数据";
+				        			  return "";
 				        		  }
 				        	  }
 				          },  
@@ -102,7 +103,7 @@ $(function() {
 			  scrollXInner : "100%",
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          }
-	 
+	
 	});//表格初始化完毕
 	 
 	//表格单选效果(有复选框)
@@ -169,7 +170,7 @@ $(function() {
 		          serverSide: true,//打开后台分页  
 		          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 		          }
-		 
+		
 		});//表格初始化完毕
 		 
 		//表格单选效果(有复选框)
@@ -213,7 +214,7 @@ function findBorrower(){
 	    content: $('.borrower'),//DOM或内容
 	    btn:['确定','取消']
 		,yes: function(index, layero){ //或者使用btn1
-			var data = $('#table_borrow').DataTable().rows('.selected').data(); 
+			var data = $('#table_borrow').DataTable().rows('.selected').data();
 			if(data.length<1){
 					layer.alert("请选择会员！",{icon:0});
 					return;

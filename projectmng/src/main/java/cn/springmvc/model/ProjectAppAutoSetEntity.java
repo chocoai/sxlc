@@ -1,6 +1,8 @@
 
 package cn.springmvc.model; 
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /** 
  * 项目自动投标比例设置
 * @author 朱祖轶 
@@ -11,6 +13,7 @@ public class ProjectAppAutoSetEntity {
 	private long projectID;//项目ID
 	private int autoStart;//自动投标开始时间（投标开始N分钟后才能开始自动投标）
 	private int autoInvestMax;//自动投标最大比例（所有自动投标所占借款总金额的最大比例，单位：一百万分之）	
+	private String autoInvestMaxs;//自动投标最大比例（所有自动投标所占借款总金额的最大比例，单位：一百万分之）	
 	public long getProjectID() {
 		return projectID;
 	}
@@ -28,6 +31,13 @@ public class ProjectAppAutoSetEntity {
 	}
 	public void setAutoInvestMax(int autoInvestMax) {
 		this.autoInvestMax = autoInvestMax;
+		this.autoInvestMaxs= IntegerAndString.IntToString(autoInvestMax);
+	}
+	public String getAutoInvestMaxs() {
+		return autoInvestMaxs;
+	}
+	public void setAutoInvestMaxs(String autoInvestMaxs) {
+		this.autoInvestMaxs = autoInvestMaxs;
 	}
 	
 }

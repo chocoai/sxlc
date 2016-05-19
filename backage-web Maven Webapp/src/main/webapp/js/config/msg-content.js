@@ -93,7 +93,7 @@ function addOrUpdate(type){
 		title="添加";
 	}else if(type==2){
 		title="修改";
-		var data = $('#table_id').DataTable().rows('.selected').data();
+		vae data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的数据！",{icon:0});
 			return;

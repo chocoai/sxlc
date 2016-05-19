@@ -80,7 +80,6 @@ $(function(){
 		area=encrypt.encrypt(area+"");
 		value=encrypt.encrypt(value+"");
 		cid=encrypt.encrypt(cid+"");
-		annex = encrypt.encrypt(annex+"");
 		var str_url="personalCenter/authHousing.html";
 		NetUtil.ajax(
 			str_url,

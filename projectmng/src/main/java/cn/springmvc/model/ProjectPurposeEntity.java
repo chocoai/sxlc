@@ -59,6 +59,7 @@ public class ProjectPurposeEntity {
 	 * 预计年化收益率(万分之)
 	 */
 	private Integer yearRate;
+	private String yearRates;
 	/**
 	 * 申请时间
 	 */
@@ -175,6 +176,7 @@ public class ProjectPurposeEntity {
 	}
 	public void setYearRate(Integer yearRate) {
 		this.yearRate = yearRate;
+		this.yearRates= IntegerAndString.IntToString(yearRate);
 	}
 	public String getRecordDate() {
 		return recordDate;
@@ -264,6 +266,12 @@ public class ProjectPurposeEntity {
 	}
 	public void setPersonalName(String personalName) {
 		this.personalName = personalName;
+	}
+	public String getYearRates() {
+		return yearRates;
+	}
+	public void setYearRates(String yearRates) {
+		this.yearRates = yearRates;
 	} 
 
 	

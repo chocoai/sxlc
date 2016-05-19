@@ -64,8 +64,11 @@ public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements Proje
         param.put(DaoConstant.PARAM_RESULT, 0);
 
         getSqlSession().selectOne(DaoConstant.PROJECT_INVEST_DAO_GET_PROJECT_MAX_INVEST_AMOUNT, param);
-
-        lResult = IntegerAndString.StringToLong(param.get(DaoConstant.PARAM_RESULT).toString(), -1);
+        
+        lResult = 0;
+        if(param.get(DaoConstant.PARAM_RESULT)!=null){
+        	lResult = IntegerAndString.StringToLong(param.get(DaoConstant.PARAM_RESULT).toString(), -1);
+        }
 
         return lResult;
     }
@@ -122,11 +125,17 @@ public class ProjectInvestReadDaoImpl extends AccountDaoSupport implements Proje
         if(param.get(DaoConstant.PARAM_RESULT) == null){
         	param.put(DaoConstant.PARAM_RESULT, "0");
         }
+        if(param.get(DaoConstant.PARAM_RED_PACKETS) == null){
+        	param.put(DaoConstant.PARAM_RED_PACKETS, "0");
+        }
 //=========================================================================================
         
         
         int iResult = IntegerAndString.StringToInt(param.get(DaoConstant.PARAM_RESULT).toString(), 0);
-        lRedpackets[0] = IntegerAndString.StringToLong(param.get(DaoConstant.PARAM_RED_PACKETS).toString(), 0);
+        lRedpackets[0] = 0;
+        if(param.get(DaoConstant.PARAM_RED_PACKETS) != null){
+        	lRedpackets[0] = IntegerAndString.StringToLong(param.get(DaoConstant.PARAM_RED_PACKETS).toString(), 0);
+        }
         if (iResult == 1) {
             sResult = "success";
         } else if (iResult == 0) {

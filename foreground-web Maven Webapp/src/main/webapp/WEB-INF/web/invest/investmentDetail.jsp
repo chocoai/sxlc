@@ -19,7 +19,9 @@
    	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
    	<script type="text/javascript" src="js/common/template.js"></script>
    	<script type="text/javascript">
-    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    	var publickey 		= '<%=session.getAttribute("publicKey")%>';
+    	var minStarts 		= '${appRecordEntity.minStarts}';//起投金额
+    	var increaseRanges 	= '${appRecordEntity.increaseRanges}';//加价幅度
     </script>
     <!-- 此处加入代码 -->
     <!--伍成然2016-3-28  -->
@@ -57,7 +59,7 @@
 						</h1>					
 					</div>
 					<div class="inv-item-amount">
-						<p>项目金额</P>
+						<p>项目金额 </P>
 						<h1 class="moneyFormat">${appRecordEntity.projectBaseInfoentity.amounts }</h1><span>元</span>
 						<c:if test = "${appRecordEntity.rewardRates != 0.0000}">
 						<span class="reward">					
@@ -82,7 +84,7 @@
 						<div class="barbox"> 
 							<div class="barline"></div> 
 						</div>
-						<span class="progress_totle">${appRecordEntity.investRate }%</span>
+						<span class="progress_totle">${appRecordEntity.investRates }%</span>
 					</div>
 					<c:if test="${investmentStatus == 1}">   <%-- 预热中 --%>
 					<div class="info-label">
@@ -178,7 +180,7 @@
 								style="color:#bfbfbf">
 							    <div class="charge-addon1">元</div>
 							 </div>
-							 <input type="button" class="login-now" value="立即登录">
+							 <input type="button" class="login-now" onclick="window.location='<%=path%>/login.html'" value="立即登录">
 						</div>
 					</form>
 				</c:if>
@@ -196,7 +198,7 @@
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
 						    <div class="charge-addon">元</div>
-						    <input class="charge-btn" type="button" value="充值">
+						    <input class="charge-btn" type="button"  onclick="window.location='<%=path%>/fundManagement/recharge.html'" value="充值">
 						</div><!-- /input-group -->
 						<div class="expected-return">预期收益：<span id="pageProfit">0.00</span>元</div>
 						<input type="button" class="inv-now" id="inv-now" value="立即投资">

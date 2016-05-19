@@ -15,10 +15,19 @@ function addSEO(){
 /*  修改SEO设置     */
 function alertSEO(){
 	var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
-	$("#seoTitle").val(rowdata[0].seoTitle);
-	$("#seoDescription").val(rowdata[0].seoDescription);
-	$("#seoKeyword").val(rowdata[0].seoKeyword);
-	$("#seoTypeName").val(rowdata[0].seoTypeName);
+	if(rowdata.length <= 0){
+		layer.alert("请选择需要操作的记录",{icon:0});
+		return;
+	}
+	$("#mseoTitle").val(rowdata[0].seoTitle);
+	$("#mseoDescription").val(rowdata[0].seoDescription);
+	$("#mseoKeyword").val(rowdata[0].seoKeyword);
+	$("#mseoTypeName option").each(function () {
+		if ($(this).text() == rowdata[0].seoTypeName) {
+			$(this).attr('selected', 'selected');
+		}
+	});
+	
 	layer.open({
 		type: 1,
 		area: ['500px', '300px'], //高宽
@@ -38,6 +47,7 @@ $(function () {
 				str += "<option value=\""+item.seoTypeID+"\">"+item.seoTypeName+"</option>";
 			});
 			$("#seoTypeName").html(str);
+			$("#mseoTypeName").html(str);
 		}
 	});
 });
@@ -48,15 +58,15 @@ $(function() {
 	});
 });
 
-function addSEO () {
+function addSeo () {
 	var seoTitle = $("#seoTitle").val();
 	var seoDescription = $("#seoDescription").val();
 	var seoKeyword = $("#seoKeyword").val();
 	var seoTypeName = $("#seoTypeName").val();
-	seoTitle = encrypt.setPublicKey(seoTitle);
-	seoDescription = encrypt.setPublicKey(seoDescription);
-	seoKeyword = encrypt.setPublicKey(seoKeyword);
-	seoTypeName = encrypt.setPublicKey(seoTypeName);
+	seoTitle = encrypt.encrypt((seoTitle));
+	seoDescription = encrypt.encrypt((seoDescription));
+	seoKeyword = encrypt.encrypt((seoKeyword));
+	seoTypeName = encrypt.encrypt((seoTypeName));
 	$.ajax({
 		type : 'post',
 		url : appPath + "/seo/addSEO.do",
@@ -67,7 +77,7 @@ function addSEO () {
 			seoTypeName : seoTypeName
 		},
 		success : function(msg) {
-			if (data == 1) {
+			if (msg == 1) {
 				layer.alert("添加成功",{icon:1});  
 				document.getElementById("addSEOForm").reset();
 				setTimeout('location.reload()',2000);
@@ -85,18 +95,18 @@ $(function() {
 	});
 });
 
-function modSEO () {
+function modseo () {
 	var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
-	var seoId = rowdata[0].SeoSetID;
-	var seoTitle = $("#seoTitle").val();
-	var seoDescription = $("#seoDescription").val();
-	var seoKeyword = $("#seoKeyword").val();
-	var seoTypeName = $("#seoTypeName").val();
-	seoTitle = encrypt.setPublicKey(seoTitle);
-	seoDescription = encrypt.setPublicKey(seoDescription);
-	seoKeyword = encrypt.setPublicKey(seoKeyword);
-	seoTypeName = encrypt.setPublicKey(seoTypeName);
-	seoId = encrypt.setPublicKey(seoId);
+	var seoId = rowdata[0].seoSetID;
+	var seoTitle = $("#mseoTitle").val();
+	var seoDescription = $("#mseoDescription").val();
+	var seoKeyword = $("#mseoKeyword").val();
+	var seoTypeName = $("#mseoTypeName").val();
+	seoTitle = encrypt.encrypt(seoTitle);
+	seoDescription = encrypt.encrypt(seoDescription);
+	seoKeyword = encrypt.encrypt(seoKeyword);
+	seoTypeName = encrypt.encrypt(seoTypeName);
+	seoId = encrypt.encrypt(seoId + "");
 	$.ajax({
 		type : 'post',
 		url : appPath + "/seo/addSEO.do",
@@ -108,7 +118,7 @@ function modSEO () {
 			seoId : seoId
 		},
 		success : function(msg) {
-			if (data == 1) {
+			if (msg == 1) {
 				layer.alert("修改成功",{icon:1});  
 				document.getElementById("alertSEOForm").reset();
 				setTimeout('location.reload()',2000);
@@ -134,27 +144,30 @@ $(function(){
 $(function () {
 	$(".obtn-dept-del").on("click touchstart",function(){
 		//获得选取的对象
-		
+		var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+		if(rowdata.length <= 0){
+			layer.alert("请选择需要操作的记录",{icon:0});
+			return;
+		}
 		layer.confirm('确定删除？', {
 		  btn: ['确定', '取消']
 		}, function(index, layero){
 		  //确定的回调
-		  var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
 		  //加密操作
-		  var result = encrypt.encrypt(rowdata[0].SeoSetID + "");
+		  var seoSetID = encrypt.encrypt(rowdata[0].seoSetID + "");
 		  $.ajax({
 		  	type : 'post',
 		  	url : appPath + "/seo/del.do",
-		  	data : {SeoSetID : result},
+		  	data : {seoSetID : seoSetID},
 		  	success : function (msg) {
-		  		if (msg == 0) {
+		  		if (msg == 1) {
 		  			layer.alert("删除成功!",{icon:1});
 		  			setTimeout('location.reload()',2000);
+		  		}else {
+		  			layer.alert("服务器异常!",{icon:0});
+		  			setTimeout('location.reload()',2000);
 		  		}
-		  	},
-		  	error : function() {  
-		           layer.alert("操作失败!",{icon:2});  
-		    } 
+		  	}
 		  });
 			
 			layer.close(index);
@@ -192,7 +205,7 @@ $(function() {
                 		  return sReturn;
                 	  }
                   },
-                  { title:"SeoSetID","data": "SeoSetID" },
+                  { title:"ID","data": "seoSetID" },
                   { title:"title内容","data": "seoTitle" },
                   { title:"描述","data": "seoDescription" },
                   { title:"关键词","data": "seoKeyword" },

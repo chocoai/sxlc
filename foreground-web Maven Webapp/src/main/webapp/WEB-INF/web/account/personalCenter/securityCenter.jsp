@@ -45,7 +45,7 @@
 		   							<span class="link linkUnauthen"><a href="personalCenter/authInfo/1.html">认证</a></span>
 								</c:if>
 	   							<c:if test="${securityInfo.realNameStatus == 1 }">
-	   								<span class="link linkAlert certificationSpan"><a href="personalCenter/SC_realNameAuthentication.html">修改</a></span>
+	   								<span class="link linkAlert certificationSpan"><a href="personalCenter/authInfo/1.html">修改</a></span>
 	   							</c:if>
 	   						</li>
 	   						<li class="tdSecurity">
@@ -77,7 +77,7 @@
 	   								<span class="link linkUnauthen"><a href="personalCenter/authInfo/12.html">认证</a></span>
 	   							</c:if>
 	   							<c:if test="${businessInfo.status == 1 }">
-		   							<span class="link linkAlert certificationSpan"><a href="personalCenter/SC_realNameAuthentication.html">修改</a></span>
+		   							<span class="link linkAlert certificationSpan"><a href="personalCenter/authInfo/12.html">修改</a></span>
 	   							</c:if>
 	   						</li>
 	   						

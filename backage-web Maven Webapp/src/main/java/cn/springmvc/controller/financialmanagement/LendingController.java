@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.springmvc.service.LoanService;
 import cn.springmvc.service.ManagedInterfaceServerTestI;
+import cn.springmvc.service.TransferableCreditsService;
 import cn.sxlc.account.manager.model.AuditEntity;
 
 import product_p2p.kit.datatrans.IntegerAndString;
@@ -35,6 +36,8 @@ public class LendingController {
 	@Resource(name="managedInterfaceTestIImpl")
 	private ManagedInterfaceServerTestI managedInterfaceServerTestI;
 
+	@Resource(name="transferableCreditsServiceImpl")
+	private TransferableCreditsService transferableCreditsService;
 	
 	/**
 	 * 
@@ -101,7 +104,7 @@ public class LendingController {
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
-		
+		transferableCreditsService.transferableCreditsFangKuan(pager);
 		return pager;
 	}
 	
@@ -128,7 +131,8 @@ public class LendingController {
 		String auditType = request.getParameter("auditType");
 		
 		AuditEntity auditEntity = managedInterfaceServerTestI
-				.ProjectSubmitDataProcessing(IntegerAndString.StringToInt(stype), IntegerAndString.StringToLong(projectId), auditType, "/lending/backURL.do", "/lending/backServerURL.do");
+				.ProjectSubmitDataProcessing(IntegerAndString.StringToInt(stype), IntegerAndString.StringToLong(projectId),
+						auditType, "/lending/backURL.do", "/lending/backServerURL.do", request);
 		request.setAttribute("transferAudit", auditEntity);
 		return "dryLot/loantransyhl";
 	}
@@ -146,9 +150,15 @@ public class LendingController {
 	* @throws
 	 */
 	@RequestMapping("/backURL")
-	public String returnURL() {
-		
-		return "recommend/success";
+	public String returnURL(HttpServletRequest request, HttpServletResponse response) {
+		String result = managedInterfaceServerTestI.testLoanTransferAuditReturn(request, response);
+		if("FAIL".equals(result)){
+			return "recommend/fail";
+		}else if("SUCCESS".equals(result)){
+			return "recommend/success";
+		}else{
+			return "recommend/fail";
+		}
 	}
 	
 	/**
@@ -165,7 +175,7 @@ public class LendingController {
 	 */
 	@RequestMapping("/backServerURL")
 	public void notifyURL(HttpServletRequest request, HttpServletResponse response) {
-		managedInterfaceServerTestI.testLoanAuthorizeNotify(request, response);
+		managedInterfaceServerTestI.testLoanTransferAuditNotify(request, response);
 	}
 }
 

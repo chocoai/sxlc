@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.RSA.RSAPlugn;
+import product_p2p.kit.Upload.FtpClientUtil;
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
@@ -103,9 +104,11 @@ public class AdminController {
 				String privatekey=new  String(Base64.encodeBase64((privatek.getEncoded())));
 				session.setAttribute(Constant.publicKey, publicKey);
 				session.setAttribute(Constant.privateKey, privatekey);
-				
-				 moduleList = roleInfoServer.getModuleList();	//模块权限
-				 operationList = roleInfoServer.getOperationList(); //操作权限
+				String hostPath = FtpClientUtil.getFtpFilePath();
+				hostPath = hostPath.substring(0, hostPath.length()-1);
+				session.setAttribute("ImgProfix", hostPath);//图片前缀
+				moduleList = roleInfoServer.getModuleList();	//模块权限
+				operationList = roleInfoServer.getOperationList(); //操作权限
 			}
 			//设置session
 			//session.setAttribute("", );

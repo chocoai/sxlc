@@ -34,24 +34,18 @@ $(function() {
 				          { title:"项目名称","data": "projectTitle"},  
 				          { title:"借款会员","data": "loanMemberName"},  
 				          { title:"转让会员","data": "tranMemberName"},  
-				          { title:"转让金额","data": "transPrincipals"},  
-				          { title:"转让价格","data": "transferPrices"},
+				          { title:"转让金额(元)","data": "transPrincipals"},  
+				          { title:"转让价格(元)","data": "transferPrices"},
 				          { title:"转让折扣(%","data": "transDiscounts"},
 				          { title:"投标结束时间","data": "transMaxTime"},
-				          { title:"转让状态","data": "statu", 
+				          { title:"转让状态","data": "checkStatu", 
 				        	  "mRender": function (data, type, full) {
-				        		  	if(data == -1){
-				        		  		return "待流标处理";
+				        		    if(data == -1){
+				        		  		return "已打回";
 				        		  	}else if(data == 0){
-				        		  		return "投标中";
+				        		  		return "未审核";
 				        		  	}else if(data == 1){
-				        		  		return "流标";
-				        		  	}else if(data == 2){
-				        		  		return "投标完成";
-				        		  	}else if(data == 3){
-				        		  		return "还款中";
-				        		  	}else if(data == 4){
-				        		  		return "结清";
+				        		  		return "已审核";
 				        		  	}else{
 				        		  		return "";
 				        		  	}
@@ -130,7 +124,7 @@ $(function(){
 				  data.checkstatu = encrypt.encrypt(checkstatu);
 				  data.transMaxTime = encrypt.encrypt(transMaxTime);
 				  data.checkRemark = encrypt.encrypt(checkRemark);
-				  data.ctaId = encrypt.encrypt(ctaId);
+				  data.ctaId = encrypt.encrypt(ctaId+"");
 
 				  $.ajax( {  
 					  url:appPath+"/project/creditorTransAppCheck",
@@ -174,7 +168,7 @@ $(function(){
 				  var ctaId = rdata[0].ctaId;//债权转让申请ID
 				  var transMaxTime = $("#transMaxTime").val();//最迟转让时间
 				  data.transMaxTime = encrypt.encrypt(transMaxTime);
-				  data.ctaId =  encrypt.encrypt(ctaId);
+				  data.ctaId =  encrypt.encrypt(ctaId+"");
 
 				  $.ajax( {  
 					  url:appPath+"/project/updateTransMaxTime",

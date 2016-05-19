@@ -4,7 +4,6 @@ $(function(){
 	encrypt.setPublicKey(publickey);
 	
 	
-	
 	//逐项验证。。。。1.输入旧手机
 	$(".phoneBind").on("blur",function(){
 		var $this = $(this);
@@ -22,7 +21,6 @@ $(function(){
 							layer.alert(data.message,function(index){
 								layer.close(index);
 								$(".newphone").prop("disabled",true);
-								$(".codeBtn").prop("disabled",true);
 							});
 						}
 					}
@@ -30,6 +28,7 @@ $(function(){
 		}
 	})
 	//新手机是否存在
+	
 	$(".newphone").on("blur",function(){
 		var $this = $(this);
 		if ($(this).next().hasClass("Validform_right")){
@@ -40,12 +39,13 @@ $(function(){
 					{phone:phone},
 					function(r){
 						var data = JSON.parse(r);
-						if (data.status == "1"){
-							$(".codeBtn").removeProp("disabled");
+						console.log(data)
+						if (data.status == "y"){
+							$(".codeBtn").removeClass("disabled")
 						}else{
-							layer.alert(data.message,function(index){
+							layer.alert(data.info,function(index){
 								layer.close(index);
-								$(".codeBtn").prop("disabled",true);
+								$(".codeBtn").addClass("disabled")
 							});
 						}
 					})
@@ -83,7 +83,7 @@ $(function(){
 							var run = setInterval(function(){
 								$item.html(setTime+"s");
 								setTime--;
-								if (setTime <= 0 ){
+								if (setTime < 0 ){
 									clearInterval(run);
 									$item.html("重新发送");
 									$item.removeClass("disabled");

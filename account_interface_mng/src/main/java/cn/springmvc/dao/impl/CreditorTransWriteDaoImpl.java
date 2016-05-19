@@ -33,9 +33,9 @@ public class CreditorTransWriteDaoImpl extends SqlSessionDaoSupport implements C
             return iResult;
         }
 
-        String[] sR = StringUtils.split(sRemark, ",");
-        String[] sR1 = StringUtils.split(sRemark1, ",");
-        String[] sR2 = StringUtils.split(sRemark2, ",");
+        String[] sR = StringUtils.split(sRemark, "CTCT");
+        String[] sR1 = StringUtils.split(sRemark1, "A");
+        String[] sR2 = StringUtils.split(sRemark2, "A");
 
         if (ArrayUtils.isEmpty(sR) || sR.length < 2) {
             return iResult;
@@ -70,13 +70,13 @@ public class CreditorTransWriteDaoImpl extends SqlSessionDaoSupport implements C
 
         param.put(DaoConstant.PARAM_MEMBER_ID, IntegerAndString.StringToLong(sR1[0], 0));        //投资会员id
         param.put(DaoConstant.PARAM_CREDITOR_TRANS_APPLY_ID, IntegerAndString.StringToLong(sR1[1], 0));        //债权转让申请ID
-        param.put(DaoConstant.PARAM_MONEY, IntegerAndString.StringToLong(sR1[2]));                //实际投资金额 投资总金额-使用红包-使用代金券
+        param.put(DaoConstant.PARAM_MONEY, IntegerAndString.StringToLong(sR1[2], 0));                //实际投资金额 投资总金额-使用红包-使用代金券
         param.put(DaoConstant.PARAM_AUTO_TENDER, IntegerAndString.StringToLong(sR1[5], 0));            // 是否为自动投标
         param.put(DaoConstant.PARAM_CLIENT, IntegerAndString.StringToLong(sR1[6], 0));            // 投资客户端
         param.put(DaoConstant.PARAM_ENCRYPT_KEY, sKey);            // 加密解密key
-        param.put(DaoConstant.PARAM_RED_PACKETS, IntegerAndString.StringToLong(sR1[3]));            // 使用红包
-        param.put(DaoConstant.PARAM_VOUCHERS, IntegerAndString.StringToLong(sR1[4]));            // 使用代金券
-        param.put(DaoConstant.PARAM_MANAGE_FEE, IntegerAndString.StringToLong(sR2[0]));            // 本次分润管理费
+        param.put(DaoConstant.PARAM_RED_PACKETS, IntegerAndString.StringToLong(sR1[3], 0));            // 使用红包
+        param.put(DaoConstant.PARAM_VOUCHERS, IntegerAndString.StringToLong(sR1[4], 0));            // 使用代金券
+        param.put(DaoConstant.PARAM_MANAGE_FEE, IntegerAndString.StringToLong(sR2[0], 0));            // 本次分润管理费
 
         getSqlSession().selectOne(DaoConstant.CREDITOR_TRANS_DAO_PROCESS_CREDITOR_TRANS_RESULT, param);
         iResult = IntegerAndString.StringToInt(param.get(DaoConstant.PARAM_RESULT).toString(), 0);

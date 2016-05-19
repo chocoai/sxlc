@@ -82,8 +82,8 @@ public class DebtTransferController {
 		//设置查询参数
 		PageEntity pager = new PageEntity();
 		Map<String,Object> param=new HashMap<String,Object>();
-		String skey = DbKeyUtil.GetDbCodeKey();
-		param.put("skey", skey);
+		String sKey = DbKeyUtil.GetDbCodeKey();
+		param.put("sKey", sKey);
 		param.put("projectNo", projectNo);
 		param.put("billNo", billNo);
 		param.put("name", name);

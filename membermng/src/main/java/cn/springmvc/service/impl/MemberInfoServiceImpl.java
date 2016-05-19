@@ -26,6 +26,7 @@ import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.PersonalBaseInfo;
 import cn.membermng.model.RadPackage;
 import cn.membermng.model.SecurityInfo;
+import cn.membermng.model.UntreatedMessageEntity;
 import cn.springmvc.dao.IMemberReadDao;
 import cn.springmvc.dao.IMemberWriteDao;
 import cn.springmvc.dao.impl.DictionariesDaoImpl;
@@ -35,6 +36,7 @@ import cn.springmvc.service.IMemberService;
 @Service
 public class MemberInfoServiceImpl implements IMemberService{
 	
+
 	@Resource(name="memberInfoReadDaoImpl")
 	private IMemberReadDao memberDao;
 	
@@ -164,7 +166,6 @@ public class MemberInfoServiceImpl implements IMemberService{
 		param.put("cityId", cityId);
 		param.put("countyId", countyId);
 		param.put("contactsName", contactsName);
-		param.put("contactsPhone", contactsPhone);
 		param.put("contactsQQ", contactQQ);
 		param.put("contactsEmail", contactEmail);
 		param.put("companyProfile", companyProfile);
@@ -385,6 +386,41 @@ public class MemberInfoServiceImpl implements IMemberService{
 	@Override
 	public int confirmReceipt(Map<String, Object> param) {
 		return memberWriteDao.confirmReceipt(param);
+	}
+	
+	@Override
+	public MemberInfo loadMemberInfo(long memberId,int memberType) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("memberId", memberId);
+		param.put("memberType", memberType);
+		return memberDao.loadMemberInfo(param);
+		
+	}
+
+
+	@Override
+	public int sign(long memberId) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("memberId", memberId);
+		
+		//判断今日是否已经签到
+		int result = memberDao.checkTodaySignNum(param);
+		
+		if(result>0){
+			return -1;//今日已经签到,不能重复签到
+		}
+		return memberWriteDao.sign(param);
+		
+	}
+
+
+	@Override
+	public UntreatedMessageEntity loadUntreatedMessage(long memberId) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("memberId", memberId);
+		
+		return memberDao.loadUntreatedMessage(param);
+		
 	}
 	
 }

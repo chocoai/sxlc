@@ -146,7 +146,8 @@ function addActivity(){
 			if(data >0){
 				layer.alert("添加成功。",{icon:1}); 
 				$(".layui-layer-btn1").click();
-				setTimeout('location.reload()',500);
+				var table = $('#table_id').DataTable();
+				table.ajax.reload();
 			}else{
 				layer.alert("添加失败。",{icon:2});  
 			}
@@ -185,7 +186,8 @@ function updateActivity(){
 			if(data >0){
 				layer.alert("修改成功。",{icon:1}); 
 				$(".layui-layer-btn1").click();
-				setTimeout('location.reload()',500);
+				var table = $('#table_id').DataTable();
+				table.ajax.reload();
 			}else{
 				layer.alert("修改失败。",{icon:2});  
 			}
@@ -239,10 +241,11 @@ function stopOrStart(btn){
 						layer.alert("启用成功。",{icon:1});
 					}
 				  	layer.close(index);
-				  	setTimeout('location.reload()',500);
+				  	var table = $('#table_id').DataTable();
+					table.ajax.reload();
 				}else {
 					if(stutus==0){
-						layer.alert("审批流程约束，停用失败!",{icon:2});
+						layer.alert("无法停用!",{icon:2});
 					}else{
 						layer.alert("启用失败!",{icon:2});
 					}
@@ -284,6 +287,8 @@ function showActivity(){
 		            "url": appPath+"/activity/getactivityList.do",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) { 
+		            	d.content = -1;//所有的 包括有效和无效
+		            	d.autu= "";//活动点名称
 		            }  
 		        },
 		        columns: [  

@@ -27,6 +27,7 @@ import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
 import cn.springmvc.model.TransferRulesEntity;
 import cn.springmvc.model.TransferableCreditsEntity;
+import cn.springmvc.model.TransferableCreditsFangKuanEntity;
 import cn.springmvc.service.GuaranteeInfoService;
 import cn.springmvc.service.TransferableCreditsService;
 
@@ -53,7 +54,7 @@ TransferableCreditsService {
 		tra=selectTransferableCreditsDaoImpl.selectTransferRules(param);
 		param.put("holdDate", tra.getHoldDay());
 		param.put("repayMaxTime", tra.getInterestDay());
-		param.put("repayMaxTime", tra.getRangeDay());
+		param.put("sRepayMaxTime", tra.getRangeDay());
 		List<TransferableCreditsEntity>  list=selectTransferableCreditsDaoImpl.selectTransferableCredits(page);
 		PageUtil.ObjectToPage(page, list);
 		return list;
@@ -74,6 +75,14 @@ TransferableCreditsService {
 		}
 		return result;
 	}
-
+	@Override
+	public List<TransferableCreditsFangKuanEntity> transferableCreditsFangKuan(
+			PageEntity paEntity) {
+		
+		List<TransferableCreditsFangKuanEntity>  list=selectTransferableCreditsDaoImpl.transferableCreditsFangKuan(paEntity);
+		PageUtil.ObjectToPage(paEntity, list);
+		return list;
+		
+	}
 }
 

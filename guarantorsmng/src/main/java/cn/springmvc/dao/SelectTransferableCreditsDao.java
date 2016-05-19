@@ -8,6 +8,7 @@ import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.TransferRulesEntity;
 import cn.springmvc.model.TransferableCreditsEntity;
+import cn.springmvc.model.TransferableCreditsFangKuanEntity;
 
 
 
@@ -48,5 +49,20 @@ public interface SelectTransferableCreditsDao {
 	* @throws 
 	*/
 	public List<TransferableCreditsEntity> selectTransferableCredits(PageEntity paEntity);
+	
+	
+	/** 
+	* transferableCreditsFangKuan 债权转让放款列表查询
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: transferableCreditsFangKuan 
+	* @Description: TODO 
+	* @param @param paEntity
+	* @param @return 设定文件 
+	* @return List<TransferableCreditsFangKuanEntity> 返回类型 
+	* @date 2016-5-18 上午10:11:23
+	* @throws 
+	*/
+	public List<TransferableCreditsFangKuanEntity> transferableCreditsFangKuan(PageEntity paEntity);
 }
 

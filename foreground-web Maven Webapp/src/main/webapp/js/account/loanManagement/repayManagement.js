@@ -52,7 +52,7 @@ function getStayStillPlans(curr,length){
 		url:"loanManagement/stayStillPlans.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 1	//每页条数为预留数据，后台有默认值
+			"length":length || 10	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
@@ -171,7 +171,7 @@ function getRepayManagementin(curr,length){
 		url:"loanManagement/repayManagementin.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 1	//每页条数为预留数据，后台有默认值
+			"length":length || 10	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
@@ -355,32 +355,17 @@ function getRepayInfo(){
 					layer.close(index);
 				});
 				return;
-	    	}
-	    	
+	    	} 
 	    	//判断申请ID
 			if(applyId ==null || applyId == ""){
 				return;
-			}
-	    	var data = {};//
+			} 
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
-			data.repalyId = encrypt.encrypt(repalyId+"");
-	    	data.applyId = encrypt.encrypt(applyId+"");
-	    	
-	    	//正常还款操作
-	    	var url1 = "loanManagement/RepaymentPost.html";
-	    	NetUtil.ajax(
-				url1,
-				data,
-				function(r){ 
-					var rdb = JSON.parse(r);
-					//console.log(rdb);
-					$(".repay-confirm").attr("disabled",false);
-					layer.alert(data.message,{icon:1});
-					layer.closeAll();
-				}
-			);
-			
+			alert(encrypt.encrypt(repalyId+""));
+			$("#repalyId").val(encrypt.encrypt(repalyId+""));
+			$("#applyId").val(encrypt.encrypt(applyId+""));
+			document.form1.submit();   
 		});
 		//
 	});
@@ -446,35 +431,36 @@ function getRepayPlan(curr,length){
 
 //还款中的借款-提前还款
 function getEarlyRepayInfo(){
+	var data= {};
 	var temp = window.location.href;
+	var applyId = null;//申请id
 	projectId = temp.split("projectId=")[1] || temp.split("a=")[1];
 	////console.log(projectId);
 	if(projectId == null || isNaN(projectId)){
 		return;
 	}
 	
-	var url = "loanManagement/getAdvanceReplay.html";
-	var applyId = null;//申请编号
 	
-	//查询提前还款详情
-	$.ajax({
-		url:url,
-		type:"get",
-		dataType:"json",
-		timeout:10000,
-		success:function(data){
-			//console.log(data);
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publickey);
+	data.applyId = encrypt.encrypt(projectId+"");
+	
+	var url = "loanManagement/getAdvanceReplay.html";
+	
+	
+	NetUtil.ajax(
+		url,
+		data,
+		function(r){
+			var rdb = JSON.parse(r);
 			var unit = "元";//单位
-			applyId = data.applyId;
-			$("#repayPrincipals").text(Number(data.repayPrincipals).toFixed(2)+unit);
-			$("#repayInterests").text(Number(data.repayInterests).toFixed(2)+unit);
-			$("#penaltyTotals").text(Number(data.penaltyTotals).toFixed(2)+unit);
-			$("#replayTotals").text(Number(data.replayTotals).toFixed(2)+unit);
-		},
-		error:function(){
-			layer.alert("请求异常，请稍后再试",{icon:2});
+			applyId = rdb.applyId;
+			$("#repayPrincipals").text(Number(rdb.repayPrincipals).toFixed(2)+unit);
+			$("#repayInterests").text(Number(rdb.repayInterests).toFixed(2)+unit);
+			$("#penaltyTotals").text(Number(rdb.penaltyTotals).toFixed(2)+unit);
+			$("#replayTotals").text(Number(rdb.replayTotals).toFixed(2)+unit);
 		}
-	});
+	);
 	
 	
 	layer.open({
@@ -502,19 +488,9 @@ function getEarlyRepayInfo(){
 		if(applyId ==null || applyId == ""){
 			return;
 		}
+		
     	var url1 = "loanManagement/AdvcancePost_"+applyId+".html";
-    	$.ajax({
-			url:url1,
-			type:"get",
-			dataType:"json",
-			timeout:10000,
-			success:function(data){
-				////console.log(data);
-			},
-			error:function(){
-				layer.alert("请求异常，请稍后再试",{icon:2});
-			}
-		});
+    	window.location.href = url1;
 	});
 	//
 }

@@ -69,6 +69,12 @@ public class MemberManagerWriteDaoImpl extends SqlSessionDaoSupport implements I
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
 
+	@Override
+	public int updateMyInvete(Map<String, Object> map) {
+		getSqlSession().selectOne("memberManagerDao.updateMyInvite",map);
+		return Integer.parseInt(map.get("result").toString());
+	}
+
 
 	
 }

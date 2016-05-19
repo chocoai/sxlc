@@ -20,6 +20,7 @@ import cn.membermng.model.MyPoint;
 import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.RadPackage;
 import cn.membermng.model.SecurityInfo;
+import cn.membermng.model.UntreatedMessageEntity;
 import cn.springmvc.dao.IMemberReadDao;
 
 
@@ -171,6 +172,31 @@ public class MemberInfoReadDaoImpl extends SqlSessionDaoSupport implements IMemb
 	}
 	
 	
+	@Override
+	public MemberInfo loadMemberInfo(Map<String, Object> param) {
+		
+		return getSqlSession().selectOne("memberInfoDaoImpl.loadMemberInfo",param);
+	}
+
+	
+
+	@Override
+	public int checkTodaySignNum(Map<String, Object> param) {
+		
+		return getSqlSession().selectOne("memberInfoDaoImpl.checkTodaySignNum", param);
+		
+	}
+	
+
+
+	@Override
+	public UntreatedMessageEntity loadUntreatedMessage(Map<String, Object> param) {
+		UntreatedMessageEntity entity = new UntreatedMessageEntity();
+		entity = getSqlSession().selectOne("memberInfoDaoImpl.loadUntreatedMessage",param);
+		return entity;
+	}
+
+
 	@Autowired
 	@Override
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {

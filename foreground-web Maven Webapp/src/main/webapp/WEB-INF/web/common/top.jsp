@@ -36,14 +36,16 @@
 			<c:if test="${loginUser != null }">
 				<span class="topRight1">欢迎您！</span>
 				<span >
-				王大先生
-				<span class="top_minFang">2</span>
+				${loginUser.logname }
+				<span class="top_minFang messageNum" >0</span>
 				<span><img src="resource/img/common/icos.jpg" style="vertical-align:middle"></span>
 				<span class="shu-line"></span>
 				</span>
 				<a href="exitVisit.html" class="topRight3">安全退出</a>
+				<input type="hidden" class="online">
 			</c:if>
 		</div>
 	</div>
 </div>
 <jsp:include page="../common/aside.jsp"></jsp:include>
+<script type="text/javascript" src="js/common/top.js"></script>

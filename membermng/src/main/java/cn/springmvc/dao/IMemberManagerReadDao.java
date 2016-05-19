@@ -345,5 +345,15 @@ public interface IMemberManagerReadDao {
 	 */
 	public int getAdminIdByPhone(Map<String, Object> param);
 
-	
+	/**
+	 * 会员已认证列表
+	 * TODO
+	 * 创建日期：2016-5-18下午1:41:22
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return void
+	 */
+	public List<MemberAttestInfo> selectAuditList(Map<String, Object> map);
+
 }

@@ -35,6 +35,8 @@ public class LoginCheckFilter implements Filter{
 		exitRouts.add("debtInvestmentBack");							//债权投资回调
 		exitRouts.add("memberInvestmentPage");							//項目投資返回
 		exitRouts.add("memberInvestmentvoid");							//項目投資返回
+		exitRouts.add("ReplayCallBackReturn");							//項目还款返回
+		exitRouts.add("ReplayCallBackNotify");							//項目还款返回
 	}
 	
 	

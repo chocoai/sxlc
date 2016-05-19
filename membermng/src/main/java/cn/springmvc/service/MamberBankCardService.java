@@ -93,7 +93,7 @@ public interface MamberBankCardService {
 	 * @date 2016-3-28 下午3:45:43
 	 */
 	public int updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity,
-			Map<String,Object> map,long memberID);
+			Map<String,Object> map,long memberID,int memberType);
 	/**
 	 * 移除银行卡
 	 * @author 刘利   

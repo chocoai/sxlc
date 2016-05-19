@@ -3,6 +3,7 @@ jQuery.fn.format=function(num){
 	return (num.toFixed(2) + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
 };
 /* 编辑框 */
+var attachJson=[];//附件集合
 var pi = UE.getEditor('payguide');
 var guarantyDescribe = $("#guarantyDescribe").html();
 $(function(){
@@ -25,8 +26,6 @@ $(function(){
 		$(".check_select2").prop("checked",true);
 	}
 	
-	
-	
 	//初始化editor插件数据
 	if(guarantyDescribe !=null && guarantyDescribe != ""){
 		pi.addListener("ready", function () {
@@ -34,7 +33,24 @@ $(function(){
 	    });
 	}
 	
-	
+	/**
+	 * 天标只能选到期还本息
+	 */
+	//初始化
+	if($("#typeChange").val()==0){
+		$(".repayWay").val(2);
+		$(".repayWay").attr("disabled",true);
+	}
+	//天标改变事件
+	$("#typeChange").on("change",function(){
+		var type = $(this).val();
+		if(type==0){
+			$(".repayWay").val(2);
+			$(".repayWay").attr("disabled",true);
+		}else{
+			$(".repayWay").attr("disabled",false);
+		}
+	});
 	
 	
 	$(".moneyFormat").each(function(){
@@ -54,53 +70,76 @@ $(function(){
 function nextSave(){
 	var data={};//保存参数对象
 	var projectTitle = $(".enterN-r").val();
-	data.projectTitle=encrypt.encrypt(projectTitle);
+	if (projectTitle != null && projectTitle != "") {
+		data.projectTitle=encrypt.encrypt(projectTitle);
+	}
 	var amount = $(".loanMoney").val();
-	data.amount=encrypt.encrypt(amount);
+	if (amount != null && amount != "") {
+		data.amount=encrypt.encrypt(amount);
+	}
 	var deadline = $(".con-term").val();
-	data.deadline=encrypt.encrypt(deadline);
+	if (deadline != null && deadline != "") {
+		data.deadline=encrypt.encrypt(deadline);
+	}
 	var deadlineType = $(".conT").val();
-	data.deadlineType=encrypt.encrypt(deadlineType);
+	if (deadlineType != null && deadlineType != "") {
+		data.deadlineType=encrypt.encrypt(deadlineType);
+	}
 	var investMax = $(".con-PP").val();
-	data.investMax=encrypt.encrypt(investMax);
+	if (investMax != null && investMax != "") {
+		data.investMax=encrypt.encrypt(investMax);
+	}
 	var yearRate = $(".startTY").val();
-	data.yearRate=encrypt.encrypt(yearRate);
+	if (yearRate != null && yearRate != "") {
+		data.yearRate=encrypt.encrypt(yearRate);
+	}
 	var minStart = $(".startingIA").val();
-	data.minStart=encrypt.encrypt(minStart);
+	if (minStart != null && minStart != "") {
+		data.minStart=encrypt.encrypt(minStart);
+	}
 	var increaseRange = $(".conIncrease").val();
-	data.increaseRange=encrypt.encrypt(increaseRange);
+	if (increaseRange != null && increaseRange != "") {
+		data.increaseRange=encrypt.encrypt(increaseRange);
+	}
 	var repayWay = $(".repayWay").val();
-	data.repayWay=encrypt.encrypt(repayWay);
+	if (repayWay != null && repayWay != "") {
+		data.repayWay=encrypt.encrypt(repayWay);
+	}
 	var repayGuarantee = $(".repayGuarantee").val();
-	data.repayGuarantee=encrypt.encrypt(repayGuarantee);
+	if (repayGuarantee != null && repayGuarantee != "") {
+		data.repayGuarantee=encrypt.encrypt(repayGuarantee);
+	}
+	var repaySource = $(".repaySource").val();
+	if (repaySource != null && repaySource != "") {
+		data.repaySource=encrypt.encrypt(repaySource);
+	}
 	var uses = $(".uses").val();
-	data.uses=encrypt.encrypt(uses);
+	if (uses != null && uses != "") {
+		data.uses=encrypt.encrypt(uses);
+	}
 	var projectDescript = $(".projectDescript").val();
-	data.projectDescript=encrypt.encrypt(projectDescript);
+	if (projectDescript != null && projectDescript != "") {
+		data.projectDescript=encrypt.encrypt(projectDescript);
+	}
 	var guarantyDescribe = pi.getContent();
-	data.guarantyDescribe=encrypt.encrypt(guarantyDescribe);
+	if (guarantyDescribe != null && guarantyDescribe != "") {
+		data.guarantyDescribe=encrypt.encrypt(guarantyDescribe);
+	}
 	var ppid = $("#ppid").val();
-	data.ppid=encrypt.encrypt(ppid);//意向借款id	
+	if (ppid != null && ppid != "") {
+		data.ppid=encrypt.encrypt(ppid);//意向借款id	
+	}
 	var pbiid = $("#pbiid").val();
-	data.pbiid=encrypt.encrypt(pbiid);//项目基础信息id
+	if (pbiid != null && pbiid != "") {
+		data.pbiid=encrypt.encrypt(pbiid);//项目基础信息id
+	}
 	data.cStatu=encrypt.encrypt("2");//cStatu:1:提交申请，2：保存草稿 
 	data.styp=encrypt.encrypt("1");//styp:1：第一步只修改第一步的参数 2：第二步 只修改第二步的参数	
 	//第二步假参数
 	data.autoStart=encrypt.encrypt("0");
-	data.auotInvestMax=encrypt.encrypt("0");
-	data.rateAddRate=encrypt.encrypt("0");
 	data.isDirect=encrypt.encrypt("0");
-	data.rewardRate=encrypt.encrypt("0");
-//	data.guaranteeID=encrypt.encrypt(guaranteeID);
-//	data.assetManagerID=encrypt.encrypt(assetManagerID);
 	data.riskMarginType=encrypt.encrypt("0");
-	data.riskMarginRate = encrypt.encrypt("0");
-	data.mngFeeRate=encrypt.encrypt("0");
-	data.investCountMax=encrypt.encrypt("0");
-	data.guaranteeRate=encrypt.encrypt("0");
-	data.mngFeeRateIncreace=encrypt.encrypt("0");
-	data.mngFeeAmount=encrypt.encrypt("0");
-	data.rewardIcon=encrypt.encrypt("");
+	data.guaranteeType=encrypt.encrypt("0");
 	
 	$.ajax( {  
 		url:appPath+"/project/handleProjectAppRecord",
@@ -112,13 +151,27 @@ function nextSave(){
 			if(data==1){
 				layer.alert("提交申请成功",{icon:1});
 			}else if(data==2){
+				//第二步展示信息初始化
 				layer.alert("信息保存成功",{icon:1});
+				$("#amountStrS").html(amount);
+				$("#repayGuaranteeS").html(repayGuarantee);
+				if(deadlineType ==0){
+					$("#deadlineS").html(deadline+" 天");
+				}else if(deadlineType ==1){
+					$("#deadlineS").html(deadline+" 月");
+				}else if(deadlineType ==2){
+					$("#deadlineS").html(deadline+" 年");
+				}
+				$("#useS").html(uses);
+				$("#guarantyDescribeS").html(guarantyDescribe);
 				$(".modInfo").hide();
 				$(".nextField").show();
 			}else if(data==-1){
 				layer.alert("该意向借款已提交申请",{icon:2});  
 			}else if(data==-2){
 				layer.alert("借款标题已存在",{icon:2});  
+			}else if(data == -100){
+				layer.alert("登录失效，请登录后再操作！",{icon:2});  
 			}
 		},  
 		error : function() {  
@@ -137,9 +190,13 @@ function nextSave(){
 function saveLast(){
 	var data={};//保存参数对象
 	var autoStart = $(".autoStart").val();
-	data.autoStart=encrypt.encrypt(autoStart);
+	if (autoStart != null && autoStart != "") {
+		data.autoStart=encrypt.encrypt(autoStart);
+	}
 	var auotInvestMax = $(".auotInvestMax").val();
-	data.auotInvestMax=encrypt.encrypt(auotInvestMax);
+	if (auotInvestMax != null && auotInvestMax != "") {
+		data.auotInvestMax=encrypt.encrypt(auotInvestMax);
+	}
 	if($(".isAddRates").is(':checked')){//选中
 		data.rateAddRate=encrypt.encrypt($(".rateAddRates").val());
 	}else{
@@ -157,11 +214,17 @@ function saveLast(){
 		data.rewardRate=encrypt.encrypt("0");
 	}
 	var guaranteeID = $(".guaranteeID").val();
-	data.guaranteeID=encrypt.encrypt(guaranteeID);
+	if (guaranteeID != null && guaranteeID != "") {
+		data.guaranteeID=encrypt.encrypt(guaranteeID);
+	}
 	var assetManagerID = $(".assetManagerID").val();
-	data.assetManagerID=encrypt.encrypt(assetManagerID);
+	if (assetManagerID != null && assetManagerID != "") {
+		data.assetManagerID=encrypt.encrypt(assetManagerID);
+	}
 	var riskMarginType = $(".riskMarginType").val();
-	data.riskMarginType=encrypt.encrypt(riskMarginType);
+	if (riskMarginType != null && riskMarginType != "") {
+		data.riskMarginType=encrypt.encrypt(riskMarginType);
+	}
 	if($(".isRiskMargin").is(':checked')){//选中
 		if($(".riskMarginType").val()==0){
 			data.riskMarginRate = encrypt.encrypt($(".riskMarginValue").val());
@@ -172,19 +235,39 @@ function saveLast(){
 	if($(".isMngFeeRate").is(':checked')){//选中
 		var mngFeeRate = $(".mngFeeRate").val();
 		data.mngFeeRate=encrypt.encrypt(mngFeeRate);
+		var amount = $(".loanMoney").val();
+	    data.mngFeeAmount = encrypt.encrypt(Number(amount) * Number(mngFeeRate));
 	}
 	var investCountMax = $(".investCountMax").val();
-	data.investCountMax=encrypt.encrypt(investCountMax);
-	
-	//未处理
-//	var guaranteeRate = $(".guaranteeRate").val();
-//	data.guaranteeRate=encrypt.encrypt(guaranteeRate);
-	data.guaranteeRate=encrypt.encrypt("0");
-	data.mngFeeRateIncreace=encrypt.encrypt("0");
-	data.mngFeeAmount=encrypt.encrypt("0");
-	data.rewardIcon=encrypt.encrypt("");
-	
+	if (investCountMax != null && investCountMax != "") {
+		data.investCountMax=encrypt.encrypt(investCountMax);
+	}
+	var guaranteeType = $(".guaranteeType").val();
+	data.guaranteeType=encrypt.encrypt(guaranteeType);
+	var guaranteeValue = $(".guaranteeValue").val();
+	if(guaranteeType ==0){
+		data.guaranteeRate=encrypt.encrypt(guaranteeValue);
+	}else if(guaranteeType ==1){
+		data.guaranteeFee=encrypt.encrypt(guaranteeValue);
+	}
 	var ppid = $("#ppid").val();
+	//红包惊喜标
+	if($(".isRedPackage").is(':checked')){//选中
+		var redPackageList=[];
+		$(".red_add").each(function(){
+			var obj = {};
+			var $this = $(this);
+			var investRedPackageMin = $this.find(".investRedPackageMin").val();
+			var investNum = $this.find(".investNum").val();
+			var redPackage = $this.find(".redPackage").val();
+			obj.investRedPackageMin=investRedPackageMin;
+			obj.investNum=investNum;
+			obj.redPackage=redPackage;
+			obj.purposeId=ppid;
+			redPackageList.push(obj);
+		});
+		data.start = JSON.stringify(redPackageList);
+	}
 	data.ppid=encrypt.encrypt(ppid);//意向借款id	
 	var pbiid = $("#pbiid").val();
 	data.pbiid=encrypt.encrypt(pbiid);//项目基础信息id
@@ -200,8 +283,13 @@ function saveLast(){
 		success:function(data) { 
 			if(data==1){
 				layer.alert("信息保存成功",{icon:1});
+				window.location.href=appPath+"/project/toLoanApplyList";
 			}else if(data==-2){
 				layer.alert("借款标题已存在",{icon:2});  
+			}else if(data == -10){
+				layer.alert("保存红包惊喜标异常："+data.msg,{icon:2});  
+			}else if(data == -100){
+				layer.alert("登录失效，请登录后再操作！",{icon:2});  
 			}
 		},  
 		error : function() {  
@@ -230,10 +318,29 @@ $(function(){
 	 * 保存附件按钮
 	 */
 	$(".preBack").click(function(){
-		
-		
-		$(".appendix").hide();
-		$(".nextField").show();
+		var data={};
+		data.start = JSON.stringify(attachJson);
+		$.ajax( {  
+			url:appPath+"/project/addAttachment",
+			data:data,
+			type:'post',  
+			cache:false,  
+			dataType:'json',  
+			success:function(data) { 
+				if(data>0){
+					layer.alert("保存成功",{icon:1});
+					$(".appendix").hide();
+					$(".nextField").show();
+				}else if(data == -10){
+					layer.alert("保存红包惊喜标异常："+data.msg,{icon:2});  
+				}else if(data == -100){
+					layer.alert("登录失效，请登录后再操作！",{icon:2});  
+				}
+			},  
+			error : function() {  
+				layer.alert("服务器异常",{icon:2});
+			}  
+		});
 	});
 	$(".cancel").click(function(){
 		$(".appendix").hide();
@@ -435,14 +542,15 @@ $(function(){
 	uploader.on( 'uploadSuccess', function( file,json ) {
 		var result = json._raw;
 		var uploadUrl=result.split(",")[1];
-		var fileName= $("#attachName").val();
-		var newValue = fileName+","+uploadUrl;
-		var oldValue = $("#affixChk").val();
-		if(oldValue !=null && oldValue != ""){
-			$("#affixChk").val(oldValue+";"+newValue);
-		}else{
-			$("#affixChk").val(newValue);
-		}
+		var obj = {};
+		var attachInfoType = $(".attachInfoType").val();
+		var attachTitle = $(".add-title").val();
+		var attachUrl = uploadUrl;
+		obj.attachInfoType=attachInfoType;
+		obj.attachTitle=attachTitle;
+		obj.attachUrl=attachUrl;
+		obj.purposeId=$("#ppid").val();
+		attachJson.push(obj);
 		$( '#'+file.id ).addClass('upload-state-done');
 	});
 	

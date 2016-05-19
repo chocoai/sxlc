@@ -19,6 +19,7 @@ $(function(){
 			}
 		
 	} );
+	$("#updateInvite").on("click",modifyInvite);//修改我的邀请人
 });
 
 /**
@@ -32,23 +33,23 @@ function  showMemberInviteMan(memberId){
 	  	data : {
 	  		memberId : memberId
 		},
-		dataType:"text",
+		dataType:"json",
 	  	success : function (data) {
 	  		if(data!= null && data.length>0){
-	  			if(data[0].realName!=null){
-	  				$("#realName").val(data[0].realName);
+	  			if(data[0].realName!=null && data[0].realName!=""){
+	  				$("#realName").text(data[0].realName);
 	  			}else{
-	  				$("#realName").val("无");
+	  				$("#realName").text("无");
 	  			}
-	  			if(data[0].memberNo!=null){
-	  				$("#memberNo").val(data[0].memberNo);
+	  			if(data[0].memberNo!=null && data[0].memberNo!=""){
+	  				$("#memberNo").text(data[0].memberNo);
 	  			}else{
-	  				$("#memberNo").val("无");
+	  				$("#memberNo").text("无");
 	  			}
-	  			if(data[0].phone!=null){
-	  				$("#phone").val(data[0].phone);
+	  			if(data[0].phone!=null && data[0].phone!=""){
+	  				$("#phone").text(data[0].phone);
 	  			}else{
-	  				$("#phone").val("无");
+	  				$("#phone").text("无");
 	  			}
 	  		}
 	  	},
@@ -57,6 +58,49 @@ function  showMemberInviteMan(memberId){
 	    }
  });
 }
+
+/**
+ * 修改我的邀请人
+ */
+function modifyInvite(){
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+    var	inviteId=rowdata[0].memberId;
+	alert(memberId);
+    inviteId = encrypt.encrypt(inviteId+"");
+    layer.confirm('确定拉黑该会员？', {
+		btn:['确定', '取消']
+	  ,yes: function(index, layero){ //或者使用btn1
+		$.ajax( {  
+			url:appPath+"/member/updateMyInvete.do",
+			data:{
+				inviteId:inviteId,
+				memberId:memberId
+				},
+			type:'post',  
+			cache:false,  
+			dataType:'text',  
+			success:function(data) { 
+				 if(data==0){
+					  layer.alert("修改成功。",{icon:1}); 
+					  window.history.back();
+				 }else{
+					 layer.alert("修改失败!",{icon:1});  
+				 }
+			},  
+			error : function() {  
+				layer.alert("操作失败!",{icon:2});  
+			} 
+		}); 
+	  },cancel: function(index){//或者使用btn2（concel）
+		  	//取消的回调
+		  }
+	});
+}
+
 /**
  * 显示 期望的邀请人
  */

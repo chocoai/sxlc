@@ -82,8 +82,13 @@ $(function(){
 			layer.alert("请输入图形验证码");
 			return false;
 		}
+		if ($(".persolPhone").next().hasClass("Validform_wrong")){
+			layer.alert($(".persolPhone").next().html());
+			return false
+		}
 		var data = {codePhone:phone,imgCheckCode:imgCode};
 		var vsign = sendBef(data);
+		$item.addClass("disabled");
 		$.ajax({
 			url:"sendRegisterPhoneVarCode.html",
 			type:"post",
@@ -91,14 +96,14 @@ $(function(){
 			data:{codePhone:phone,imgCheckCode:imgCode,sign:vsign},
 			success:function(json){
 				if(json.statu == 1){
-					layer.alert("发送成功",function(index){
+					layer.alert(json.message,function(index){
 						layer.close(index);
 						var setTime = 60 ; //60秒
 						$item.addClass("disabled");
 						var run = setInterval(function(){
 							$item.val(setTime+"s");
 							setTime--;
-							if (setTime <= 0 ){
+							if (setTime < 0 ){
 								clearInterval(run);
 								$item.val("重新发送");
 								$item.removeClass("disabled");
@@ -110,6 +115,7 @@ $(function(){
 						layer.close(index);
 						$(".imgCode").attr("src","authImage.html?parma="+Math.random() * 10);
 						$item.val("重新发送");
+						$item.removeClass("disabled");
 					})
 				}
 			}

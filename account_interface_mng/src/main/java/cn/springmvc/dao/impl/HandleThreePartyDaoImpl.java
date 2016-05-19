@@ -217,5 +217,29 @@ public class HandleThreePartyDaoImpl extends SqlSessionDaoSupport implements Han
 		} 
         return result;
 	}
+	
+	@Override
+	public int insertInvestIncome(Map<String, Object> map) {
+		
+		getSqlSession().selectOne("investincomeList.insertInvestIncome",map);
+		return IntegerAndString.StringToInt(map.get("result").toString(),0);  
+	}
+	 
+	@Override
+	public int updateReplay(Map<String, Object> map) {
+		
+	    getSqlSession().selectOne("investincomeList.updateReplay",map);
+	    return IntegerAndString.StringToInt(map.get("result").toString(),0);  
+		
+	}
+	
+	@Override
+	public int CompensatoryRepayBack(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return 0;
+		getSqlSession().selectOne("ThreePartyXML.CompensatoryRepayBack",map);
+		return IntegerAndString.StringToInt(map.get("result").toString(),0);  
+	}
+	
 }
 

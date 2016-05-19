@@ -13,9 +13,10 @@
     </resultMap>  
 	<!-- 分页查询的项目审批流程-->  
 	<select id="selectProcessProjectListpage"  parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListProcessProject" >
-	   select pp.PP_ID, pp.Process_ID,pp.Batch,pp.Indexs,pp.Statu,ap.AP_Name
-	   from  Process_Project  pp
-	   LEFT JOIN Activities_Project ap   on ap.Process_ID=pp.Process_ID  
+	  SELECT pp.PP_ID, pp.Process_ID,pp.Batch,pp.Indexs,pp.Statu,ap.AP_Name
+		FROM  Process_Project  pp
+		LEFT JOIN Activities_Project ap   ON ap.Process_ID=pp.Process_ID  
+		ORDER BY ap.Role_Type ASC,pp.Indexs DESC
     </select> 
      <!-- 新增项目审批流程 -->    
  	 <select id="insertProcessProject"  statementType="CALLABLE" parameterType="cn.springmvc.model.ProcessProjectEntity"> 

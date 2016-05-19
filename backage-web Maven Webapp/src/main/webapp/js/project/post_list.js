@@ -53,11 +53,11 @@ $(function(){
 				          { title:"项目编号","data": "projectNo"},  
 				          { title:"借款人编号","data": "memberNo"},  
 				          { title:"借款人用户名","data": "logname"},  
-				          { title:"借款人名称","data": "membername"},  
+				          { title:"借款人名称","data": "memberName"},  
 				          { title:"产品类型","data": "projectName"},  
 				          { title:"借款期限","data": "projectBaseInfoentity.deadline"},  
-				          { title:"借款金额","data": "projectBaseInfoentity.amount"},  
-				          { title:"年化利率","data": "projectBaseInfoentity.yearRate"},  
+				          { title:"借款金额(元)","data": "projectBaseInfoentity.amounts"},  
+				          { title:"年化利率(%)","data": "projectBaseInfoentity.yearRates"},  
 				          { title:"状态","data": "checkStatu", 
 				        	  "mRender": function (data, type, full) {
 				        		  	if(data == 0){
@@ -128,7 +128,7 @@ $(function(){
 			},function(){
 				var data={};
 				var applyId = rdata[0].applyId;//申请ID
-				data.applyId =  encrypt.encrypt(applyId);
+				data.applyId =  encrypt.encrypt(applyId+"");
 				
 				$.ajax( {  
 					url:appPath+"/project/refuseProBorrow",
@@ -175,7 +175,7 @@ $(function(){
 					  return;
 				  }
 				  data.endDate = encrypt.encrypt(endDate);
-				  data.applyId =  encrypt.encrypt(applyId);
+				  data.applyId =  encrypt.encrypt(applyId+"");
 				  $.ajax( {  
 					  url:appPath+"/project/updateEndtime",
 					  data: data,  
@@ -216,8 +216,12 @@ function view_detail(){
 function proPost(){
 	var data = $('#table_id').DataTable().rows('.selected').data(); 
 	if(data.length<1){
-			layer.alert("请选择项目！",{icon:0});
-			return;
+		layer.alert("请选择项目！",{icon:0});
+		return;
+	}
+	if(data[0].checkStatu == 1){
+		layer.alert("该项目已发布！",{icon:0});
+		return;
 	}
 	var applyId = data[0].applyId;//Project_App_Record 表Apply_Id
 	window.location.href=appPath+"/project/toLoanProPostPg?content="+applyId+"&start="+$("#pushIndex").val()+"&length=2";

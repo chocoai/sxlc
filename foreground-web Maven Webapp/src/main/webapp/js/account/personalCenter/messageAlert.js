@@ -14,10 +14,8 @@ function changeState(projectId,typeId,option){
 				var data = JSON.parse(r);
 				//console.log(data)
 				if (data.status == "1"){
-					layer.alert("修改成功",function(){
-						window.location.reload();
-					});
-				}else if(data.status ！= "1"){
+					
+				}else if(data.status!= "1"){
 					layer.alert(data.message,function(){
 						window.location.reload();
 					});

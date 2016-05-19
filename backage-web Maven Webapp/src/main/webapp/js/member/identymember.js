@@ -100,7 +100,7 @@ function showMemberIdentyList(){
 		                  },
 		                  { title:"会员编码","data": "memberNo"},   
 		                  { title:Name,"data": "personalName" },  
-		                  { title:"用户名","data": "memberName" },
+		                  { title:"用户名","data": "logname" },
 		                  { title:"注册时间","data": "sRegDate" },
 		                  { title:Phone,"data": "personalPhone"},   
 		                  { title:"身份证号","data": "personalIdCard"},   

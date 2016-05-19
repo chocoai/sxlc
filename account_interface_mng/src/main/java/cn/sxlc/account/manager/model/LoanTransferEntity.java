@@ -18,7 +18,7 @@ public class LoanTransferEntity {
 	private String randomTimeStamp;//
 	private String remark1;//
 	private String remark2;//
-	private String remark3;//
+	private String remark3="";//
 	private String submitURL;//提交地址
 	private String returnURL;//页面返回网址
 	private String notifyURL;//后台通知网址

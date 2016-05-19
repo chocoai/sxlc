@@ -78,7 +78,7 @@ function modManage() {
 	
 	$.ajax({
 		type : 'post',
-		url :　appPath + "/asset/save.do",
+		url : appPath + "/asset/save.do",
 		data : {
 			managementName : managementName,
 			companyeBLN : companyeBLN,

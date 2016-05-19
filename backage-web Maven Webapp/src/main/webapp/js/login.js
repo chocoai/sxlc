@@ -17,7 +17,7 @@ function login() {
 				type : "post",
 				dataType:"text",
 				error : function() {
-					openwindow("操作失败！");
+					layer.alert("操作失败！",{icon:0});  
 					return;
 				},
 				success : function(data) {
@@ -34,45 +34,45 @@ function login() {
 							type : "post",
 							dataType:"text",
 							error : function() {
-								openwindow("操作失败！");
+								layer.alert("操作失败！",{icon:0});  
 								return;
 							},
 							success : function(data) {
 								if (data == 0) {
 									window.location.href = "web/index/index.jsp"; // web/common/homPage.jsp
 								} else if (data == 1) {
-									openwindow("登录失败！");
+									layer.alert("登录失败！",{icon:2}); 
 									refreshImg('vCodeImg');//刷新验证码
 									return false;
 								}else if (data == -1) {
-									openwindow("用户名不存在！");
+									layer.alert("用户名不存在！",{icon:2}); 
 									refreshImg('vCodeImg');//刷新验证码
 									return false;
 								} else if (data == 2) {
-									openwindow("密码错误！");
+									layer.alert("密码错误！",{icon:2}); 
 									refreshImg('vCodeImg');//刷新验证码
 									return false;
 								} else if (data == 3) {
-									openwindow("用户名已失效！");
+									layer.alert("用户名已失效！",{icon:2}); 
 									refreshImg('vCodeImg');//刷新验证码
 									return false;
 								}
 							}
 						});
 					} else if (data == 0) {
-						alert("验证码错误！");
+						layer.alert("验证码错误！",{icon:2});  
 					}
 				},
 			});
 		}else {
-			alert("请输入验证码！");
+			layer.alert("请输入验证码！",{icon:0});  
 		}
 	}else {
 		return false;
 	}
 }
 
-//验证码
+/*//验证码
 function codeIdenty(_index) {
 	_index=0;
 	var code = $("#code").val();
@@ -85,7 +85,7 @@ function codeIdenty(_index) {
 			type : "post",
 			dataType:"text",
 			error : function() {
-				openwindow("操作失败！");
+				layer.alert("操作失败！",{icon:0});  
 				return;
 			},
 			success : function(data) {
@@ -98,15 +98,13 @@ function codeIdenty(_index) {
 			}
 		});
 	}else {
-		alert("请输入验证码！");
+		layer.alert("请输入验证码！",{icon:0});  
 	}
-}
+}*/
 //回车登录
 function keyLogin(){
 	if (event.keyCode==13){
-		setTimeout(function(){
-			login();
-		},100);
+		setTimeout(login,100);
 	}
 }
 
@@ -115,24 +113,21 @@ function userNameval() {
 	var userName = $("#adminName").val();
 	var userNames = /^[A-z\d]{5,16}$/;
 	if (userName == "" || userName == null) {
-		openwindow("用户名不能为空！");
+		layer.alert("用户名不能为空！",{icon:0});  
 		return false;
 	}
 	if (!userNames.exec(userName)) {
-		openwindow("请输入5-16位数字或字母组成的用户名！");
+		layer.alert("请输入5-16位数字或字母组成的用户名！",{icon:0});  
 		return false;
 	}
 	var userPwd = $("#adminPwd").val();
 	if (userPwd == "" || userPwd == null) {
-		openwindow("密码不能为空！");
+		layer.alert("密码不能为空！",{icon:0});  
 		return false;
 	}
 	return true;
 }
 
-function openwindow(mess){
-	alert(mess);
-}
 /**
  * 加载执行
  */
@@ -140,8 +135,6 @@ $(function(){
 	$("#loginBtn").click(function(){
 		login();
 	});
-	
-	keyLogin();
 });
 
 /**

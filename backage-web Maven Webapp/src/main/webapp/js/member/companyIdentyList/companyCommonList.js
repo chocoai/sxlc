@@ -34,7 +34,13 @@ $(function(){
 	});
 });
 
-
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#table_id').DataTable().ajax.reload();
+	
+});
 /**
  * 跳转到审核或者查看详情页面
  * @param btn  区分页面

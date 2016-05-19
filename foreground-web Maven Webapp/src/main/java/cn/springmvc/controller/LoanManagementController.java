@@ -41,6 +41,7 @@ import cn.membermng.model.ReplayDetailEntity;
 import cn.membermng.model.StayStillPlan;
 import cn.springmvc.service.IMyLoanService;
 import cn.springmvc.service.ManagedInterfaceServerTestI;
+import cn.springmvc.service.RepaymentInterfaceServer;
 import cn.springmvc.util.MemberSessionMng;
 import cn.sxlc.account.manager.model.AuthorizeInterfaceEntity;
 import cn.sxlc.account.manager.model.LoanTransferEntity;
@@ -61,12 +62,12 @@ public class LoanManagementController {
 	@Autowired
 	private ManagedInterfaceServerTestI interfaceServerTestI;
 	
-	
+	@Autowired
+	private RepaymentInterfaceServer repaymentInterfaceServer;
 	
 	/**
 	 * 我的借款-借款记录-融资中
-	 * @author 刘利   
-	 * @Description: TODO 
+	 * @author 刘利
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
 	 * @date 2016-4-29 上午10:39:35
@@ -95,8 +96,7 @@ public class LoanManagementController {
 	
 	/**
 	 * 我的借款-借款记录-融资结束
-	 * @author 刘利   
-	 * @Description: TODO 
+	 * @author 刘利
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
 	 * @date 2016-4-29 上午11:39:31
@@ -125,9 +125,7 @@ public class LoanManagementController {
 	/**
 	 * 
 	 * 我的借款-借款记录-还款中
-	 * TODO(描述)
-	 * @author 刘利   
-	 * @Description: TODO 
+	 * @author 刘利
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -145,7 +143,7 @@ public class LoanManagementController {
 		Map<String,Object> param =  new HashMap<String, Object>();
 		param.put("memberId", lMemberInfo[0]);
 		pageEntity.setPageNum(start);
-		pageEntity.setPageSize(length);
+		pageEntity.setPageSize(10);
 		pageEntity.setMap(param);
 		List<RepaymentIn> list = imyLoanService.repaymentIns(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list); 
@@ -157,7 +155,6 @@ public class LoanManagementController {
 	/**
 	 * 我的借款-借款记录-已流标
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -187,7 +184,6 @@ public class LoanManagementController {
 	/**
 	 * 我的借款-借款记录-已结清
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -217,7 +213,6 @@ public class LoanManagementController {
 	/**
 	 * 我的借款-借款申请记录
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -247,7 +242,6 @@ public class LoanManagementController {
 	/**
 	 * 我的借款-待确认借款申请 
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -278,7 +272,6 @@ public class LoanManagementController {
 	/**
 	 * 还款中的借款-还款计划
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -307,7 +300,6 @@ public class LoanManagementController {
 	/**
 	 * 已结清的-还款记录
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
 	 * @date 2016-4-29 下午4:22:32
@@ -336,7 +328,6 @@ public class LoanManagementController {
 	/**
 	 * 还款管理-待还计划
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -366,7 +357,6 @@ public class LoanManagementController {
 	/**
 	 * 还款管理-还款中的借款
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -396,7 +386,6 @@ public class LoanManagementController {
 	/**
 	 * 还款管理-还款中的借款-还款计划
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
 	 * @date 2016-4-29 下午5:51:34
@@ -427,13 +416,12 @@ public class LoanManagementController {
 	/**
 	 * 提前还款详情
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
 	 * @date 2016-5-3 下午2:54:42
 	 */
-	@RequestMapping(value="/getAdvanceReplay",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/getAdvanceReplay",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String getAdvanceReplay(HttpServletRequest request) { 
 		
@@ -458,7 +446,6 @@ public class LoanManagementController {
 	/**
 	 * 正常还款详情
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -466,18 +453,12 @@ public class LoanManagementController {
 	 */
 	@RequestMapping(value="/ReplayDetail_{replyaID:[0-9]+}")
 	@ResponseBody
-	public String  ReplayDetail(HttpServletRequest request,@PathVariable String replyaID) { 
-
-		long replyID = 0;//还款计划ID
-		try {
-			replyID = Long.parseLong(replyaID);
-		} catch (Exception e) {
-			return null;
-		}    
+	public String  ReplayDetail(HttpServletRequest request,@PathVariable long replyaID) { 
+ 
 		long[] lMemberInfo = new long[2] ;	 
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
-		ReplayDetailEntity loanRepay =  imyLoanService.selectReplayDetail(replyID,lMemberInfo[0],
+		ReplayDetailEntity loanRepay =  imyLoanService.selectReplayDetail(replyaID,lMemberInfo[0],
 				(int)lMemberInfo[1]); 
 		return JSONObject.toJSONString(loanRepay);
 		
@@ -487,7 +468,6 @@ public class LoanManagementController {
 	/**
 	 * 我的借款-投资记录
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -516,38 +496,30 @@ public class LoanManagementController {
 	/**
 	 * 点击提前还款确认
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
 	 * @date 2016-5-3 下午4:50:07
 	 */
-	@RequestMapping(value="/AdvcancePost_{sprojectId:[0-9]+}")
-	@ResponseBody
-	public String AdvcancePost(HttpServletRequest request,@PathVariable String sprojectId){
-		
-		long applyId = 0;//项目申请ID
-		try {
-			applyId = Long.parseLong(sprojectId);
-		} catch (Exception e) {
-			return null;
-		} 
+	@RequestMapping(value="/AdvcancePost_{sprojectId:[0-9]+}") 
+	public String AdvcancePost(HttpServletRequest request,@PathVariable long sprojectId){
+		 
 	 	long[] lMemberInfo = new long[2] ;	 
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo);  
 		long lonmemberId   =  lMemberInfo[0];
 		int  lonmembertype =  (int) lMemberInfo[1];
 		int[] results       =  new int[1];
-		RepayInterfaceEntity entity = interfaceServerTestI.EarlyRepaymentProcessing
-				(lonmemberId, lonmembertype, applyId, results);
-		LoanTransferEntity loanEntity = interfaceServerTestI.earlyRepaymentSubm(entity);
+		RepayInterfaceEntity entity = repaymentInterfaceServer.RepaymentProcessing
+				(lonmemberId, lonmembertype, sprojectId,0, results);
+		LoanTransferEntity loanEntity = repaymentInterfaceServer.earlyRepaymentSubm(entity,request,"loanManagement/ReplayCallBackReturn.html","loanManagement/ReplayCallBackNotify.html");
 		if(results[0] == 0){
 		    request.setAttribute("loanTransferEntity", loanEntity);
 		}else if(results[0] == -1) {
-			request.setAttribute("detail", "该项目已结清");
-			return "account/loanManagement/optionFall";
+			request.setAttribute("message", "该项目已结清");
+			return "account/loanManagement/replayFalse";
 		}else if(results[0] == -2) {
-			request.setAttribute("detail", "存在逾期未还的项目");
-			return "account/loanManagement/optionFall";
+			request.setAttribute("message", "存在逾期未还的项目");
+			return "account/loanManagement/replayFalse";
 		}
 	    return "dryLot/loantransfertest"; 
 	}
@@ -556,7 +528,6 @@ public class LoanManagementController {
 	/**
 	 * 还款页面返回
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @param response
 	 * @param @return 设定文件 
@@ -565,7 +536,7 @@ public class LoanManagementController {
 	 */
 	@RequestMapping(value="ReplayCallBackReturn")
 	public String ReplayCallBackReturn(HttpServletRequest request,HttpServletResponse response) {
-		String results = interfaceServerTestI.testRepaymentReturn();
+		String results = repaymentInterfaceServer.testRepaymentReturn(request,response);
 		request.setAttribute("title", "还款");
 		if(results == "SUCCESS"){
 			request.setAttribute("detail", "还款成功"); 
@@ -580,7 +551,6 @@ public class LoanManagementController {
 	/**
 	 * 还款后台返回
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @param response 设定文件 
 	 * @return void 返回类型 
@@ -588,7 +558,7 @@ public class LoanManagementController {
 	 */
 	@RequestMapping(value="ReplayCallBackNotify",produces = "text/html;charset=UTF-8")
 	public void ReplayCallBackNotify(HttpServletRequest request,HttpServletResponse response){
-		interfaceServerTestI.testRepaymentNotify();
+		repaymentInterfaceServer.testRepaymentNotify(request,response);
 	}
 	
 	
@@ -596,14 +566,12 @@ public class LoanManagementController {
 	/**
 	 * 正常还款
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
 	 * @date 2016-5-3 下午5:49:59
 	 */
 	@RequestMapping(value="/RepaymentPost",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
-	@ResponseBody
 	public String RepaymentPost(HttpServletRequest request){
 		
 		long applyId	=  IntegerAndString.StringToLong(request.getParameter("applyId"), 0);	//项目申请ID 
@@ -614,17 +582,17 @@ public class LoanManagementController {
 		int  lonmembertype =  (int) lMemberInfo[1];
 		int[] results       =  new int[1];
 		
-		RepayInterfaceEntity entity = interfaceServerTestI.RepaymentProcessing
+		RepayInterfaceEntity entity = repaymentInterfaceServer.RepaymentProcessing
 				(lonmemberId, lonmembertype, applyId, repalyId, results); 
-		LoanTransferEntity loanEntity = interfaceServerTestI.earlyRepaymentSubm(entity);
+		LoanTransferEntity loanEntity = repaymentInterfaceServer.earlyRepaymentSubm(entity,request,"loanManagement/ReplayCallBackReturn.html","loanManagement/ReplayCallBackNotify.html");
 		if(results[0] == 0){
 		    request.setAttribute("loanTransferEntity", loanEntity);
 		}else if(results[0] == 1) {
 			request.setAttribute("message", "还款中");
-			return "account/loanManagement/ReplayFalse";
+			return "account/loanManagement/replayFalse";
 		}else if(results[0] == 3) {
 			request.setAttribute("message", "已还款");
-			return "account/loanManagement/ReplayFalse";
+			return "account/loanManagement/replayFalse";
 		}
 	    return "dryLot/loantransfertest";
 		
@@ -635,7 +603,6 @@ public class LoanManagementController {
 	/**
 	 * 查询该会员的自动还款设置
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -665,7 +632,6 @@ public class LoanManagementController {
 	/**
 	 * 修改自动还款设置
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
@@ -696,7 +662,6 @@ public class LoanManagementController {
 	/**
 	 * 自动还款授权
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 ActivitiesProjectEntity
@@ -719,26 +684,20 @@ public class LoanManagementController {
 	/**
 	 * 借款人确认详情
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 
 	 * @date 2016-5-3 下午2:54:42
 	 */
-	@RequestMapping(value="/ReplayDetail_{applyIds:[0-9]+}")
+ 	@RequestMapping(value="/confirmationLoanInfo_{applyIds:[0-9]+}",produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public String  confirmationLoanInfo(HttpServletRequest request,@PathVariable String applyIds) { 
+	public String  confirmationLoanInfo(HttpServletRequest request,@PathVariable long applyIds) { 
 
-		long applyId = 0;//项目申请ID
-		try {
-			applyId = Long.parseLong(applyIds);
-		} catch (Exception e) {
-			return null;
-		}    
+	 
 		long[] lMemberInfo = new long[2] ;	 
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
-		ComfirLoanInfo LoanInfo =  imyLoanService.confirmationLoanInfo(lMemberInfo[0],applyId); 
+		ComfirLoanInfo LoanInfo =  imyLoanService.confirmationLoanInfo(lMemberInfo[0],applyIds); 
 		return JSONObject.toJSONString(LoanInfo);
 		
 	}
@@ -746,7 +705,6 @@ public class LoanManagementController {
 	/**
 	 * 借款人确认
 	 * @author 刘利   
-	 * @Description: TODO 
 	 * @param @param request
 	 * @param @return 设定文件 
 	 * @return String 返回类型 

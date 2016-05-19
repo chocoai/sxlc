@@ -2,7 +2,7 @@
 <div class="repaymentPlan">
 <!--伍成然2016-3-30  -->
 <ul class="table grid-table1" id="repaymentPlan">
-   <li>
+   <li id="repaymentPlanTop">
       <div>合约还款日期</div>
       <div>应还本金</div>
       <div>应还利息</div>

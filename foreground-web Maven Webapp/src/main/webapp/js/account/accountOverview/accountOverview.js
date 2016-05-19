@@ -15,9 +15,9 @@ $(function(){
 			$(this).addClass("active").siblings("div").removeClass("active");
 			$(".planM").eq(i).show().siblings(".planM").hide();
 			if($(this).is(".payment")){
-				getInvestIncome();
+				getInvestIncome(2016);
 			}else if($(this).is(".repayment")){
-				getLoanRepay();
+				getLoanRepay(2016);
 			}
 		});
 		$(".more").click(function(){
@@ -66,7 +66,7 @@ function selectMyAccountHome(){
 				}
 				$(".giftUserBalances").html(data.giftUserBalances);
 				$(".giftAmount").html(data.giftAmount);
-				$(".integralResidue").html(data.integralResidue);
+				$(".integralResidue").html(data.integralResidue+"<a class=\"integralResidue_a \" href=\"integralMall/mallIndex.html\">兑换</a>");
 				$(".friends").html(data.friends);
 				
 				$(".investAmountValid").html(data.investAmountValid);
@@ -238,7 +238,7 @@ function loadInvertIncomeList(list){
 			    	x:50,
 			    	y:20,
 			    	x2:20,
-			    	y2:40,
+			    	y2:40
 			    },
 		    toolbox: {
 		        show : true,
@@ -255,10 +255,10 @@ function loadInvertIncomeList(list){
 			        type: 'category',
 			        axisLine:{lineStyle:{
 			            			color:'#dedede',
-		            			width:1,
+		            			width:1
 			            		}},
 			        axisLabel:{
-			        	textStyle:{color:'#787878'},
+			        	textStyle:{color:'#787878'}
 			        },
 		        boundaryGap: false,
 		        data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
@@ -267,12 +267,12 @@ function loadInvertIncomeList(list){
 		        type: 'value',
 		        axisLine:{lineStyle:{
 			            			color:'#dedede',
-		            			width:1,
+		            			width:1
 			            		}},
 			        axisLabel: {
 			            formatter: '{value}元',
-			        	textStyle:{color:'#787878'},
-			        },
+			        	textStyle:{color:'#787878'}
+			        }
 	  		},
 		    series : [
 		        {
@@ -358,7 +358,7 @@ function loadLoanRepayList(list){
 			    	x:50,
 			    	y:20,
 			    	x2:20,
-			    	y2:40,
+			    	y2:40
 			    },
 		    toolbox: {
 		        show : true,
@@ -375,10 +375,10 @@ function loadLoanRepayList(list){
 			        type: 'category',
 			        axisLine:{lineStyle:{
 			            			color:'#dedede',
-		            			width:1,
+		            			width:1
 			            		}},
 			        axisLabel:{
-			        	textStyle:{color:'#787878'},
+			        	textStyle:{color:'#787878'}
 			        },
 		        boundaryGap: false,
 		        data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
@@ -387,12 +387,12 @@ function loadLoanRepayList(list){
 		        type: 'value',
 		        axisLine:{lineStyle:{
 			            			color:'#dedede',
-		            			width:1,
+		            			width:1
 			            		}},
 			        axisLabel: {
 			            formatter: '{value}元',
-			        	textStyle:{color:'#787878'},
-			        },
+			        	textStyle:{color:'#787878'}
+			        }
 	  		},
 		    series : [
 		        {
@@ -443,7 +443,7 @@ function getRepayRecord(){
 	});
 }
 
-function loadRepayRecordList(){
+function loadRepayRecordList(list){
 	var data;
 	var s="";
 	$(".repayRecordList").remove();
@@ -454,7 +454,10 @@ function loadRepayRecordList(){
 		return;
 	}
 	for(var i=0;i<list.length;i++){
-		data=list[i].sdRecvAmounts;
+		data=list[i];
+		if(data.abstracts==undefined){
+			data.abstracts="";
+		}
 		s=s+"<li class='clearfix repayRecordList'>"
 				+"<div class='capitalDynamicsML'>"
 					+"<div class='DynamicsMLTop'>"+data.month+"<label class='circle grey'></label></div>"

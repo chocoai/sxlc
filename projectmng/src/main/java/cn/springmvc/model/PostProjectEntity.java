@@ -40,6 +40,7 @@ public class PostProjectEntity {
     private String repayTime;				//实际还款时间
     private String merbillNo;				//账单编号
     private String holdDate;				//放款时间
+    private String projectBill;				//账单展示
 	public long getlPrincipal() {
 		return lPrincipal;
 	}
@@ -168,6 +169,12 @@ public class PostProjectEntity {
 	}
 	public void setHoldDate(String holdDate) {
 		this.holdDate = holdDate;
+	}
+	public String getProjectBill() {
+		return projectBill;
+	}
+	public void setProjectBill(String projectBill) {
+		this.projectBill = projectBill;
 	} 
 	
 }

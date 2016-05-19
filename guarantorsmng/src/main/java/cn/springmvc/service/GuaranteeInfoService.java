@@ -562,6 +562,21 @@ public interface GuaranteeInfoService {
 	* @throws 
 	*/
 	public AdminGMEntity selectAdmin(long adminID); 
+	
+	
+	/** 
+	* OverduecompensationByid 根据还款计划id查询单个逾期代偿信息
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: OverduecompensationByid 
+	* @Description: TODO 
+	* @param @param repayID
+	* @param @return 设定文件 
+	* @return OverdueCompensationEntity 返回类型 
+	* @date 2016-5-18 上午11:33:45
+	* @throws 
+	*/
+	public OverdueCompensationEntity OverduecompensationByid(long repayID); 
 }
 
 

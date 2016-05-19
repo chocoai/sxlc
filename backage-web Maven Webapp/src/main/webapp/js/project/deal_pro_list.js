@@ -40,7 +40,6 @@ $(function() {
 				        		  return sReturn;
 				        	  }
 				          },
-				          { title:"id","data": "applyId"},  
 				          { title:"项目编号","data": "projectNo"},  
 				          { title:"项目名称","data": "projectBaseInfoentity.projectTitle"},  
 				          { title:"借款人用户名","data": "logname"},  

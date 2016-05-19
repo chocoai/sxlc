@@ -1,13 +1,21 @@
 
 package cn.springmvc.service.impl; 
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import product_p2p.kit.dbkey.DbKeyUtil;
+
 import cn.springmvc.dao.impl.CreditorTransReadDaoImpl;
 import cn.springmvc.dao.impl.CreditorTransWriteDaoImpl;
+import cn.springmvc.dao.impl.HandleThreePartyDaoImpl;
+import cn.springmvc.dao.impl.IdGeneratorUtil;
+import cn.springmvc.dao.impl.ProjectInvestWriteDaoImpl;
 import cn.springmvc.service.CreditorTransInvestService;
+import cn.sxlc.account.manager.model.LoanInfoBeanSubmit;
 import cn.sxlc.account.manager.model.LoanTransferReturnEntity;
 import cn.sxlc.account.manager.model.TransferSubmitEntity;
 
@@ -25,6 +33,10 @@ public class CreditorTransInvestServiceImpl implements CreditorTransInvestServic
 	private CreditorTransReadDaoImpl creditorTransReadDaoImpl;
 	@Resource(name="creditorTransWriteDaoImpl")
 	private CreditorTransWriteDaoImpl creditorTransWriteDaoImpl;
+	@Resource(name="handleThreePartyDaoImpl")
+	private HandleThreePartyDaoImpl  handleThreePartyDaoImpl;
+	@Resource(name="projectInvestWriteDaoImpl")
+	private ProjectInvestWriteDaoImpl projectInvestWriteDaoImpl;  
 	
 	@Override
 	public long getCreditorMaxInvestAmount(long lProjectId, long lMemberId,
@@ -48,11 +60,34 @@ public class CreditorTransInvestServiceImpl implements CreditorTransInvestServic
 	@Override
 	public TransferSubmitEntity getCreditorTransInfo(short sIsAuto,
 			long lMemberId, long lCreditorTransAppId, long lAmount,
-			long lRedPackets, long lVouchers, short sClient) {
+			long lRedPackets, long lVouchers, short sClient,String sRedpackets) {
 		
-		return creditorTransReadDaoImpl.getCreditorTransInfo(sIsAuto, lMemberId, lCreditorTransAppId, lAmount, 
+		TransferSubmitEntity entity = creditorTransReadDaoImpl.getCreditorTransInfo(sIsAuto, lMemberId, lCreditorTransAppId, lAmount, 
 				lRedPackets, lVouchers, sClient);
 		
+		List<LoanInfoBeanSubmit> list = entity.getLoanInfoBeanSubmits();
+		LoanInfoBeanSubmit submitEntity = null;
+		String sOrderNo = "";
+		String sSubOrderNo = "";
+		int iSize = 0;
+		if(list!= null){
+			iSize = list.size();
+		}
+		for(int i=0;i<iSize;i++){
+			submitEntity = list.get(i);
+			if(i == 0){
+				sOrderNo = handleThreePartyDaoImpl.generateorderNo("PI");
+				submitEntity.setOrderNo(sOrderNo);
+			}else{
+				sSubOrderNo = handleThreePartyDaoImpl.generateorderNo("PI");
+				submitEntity.setOrderNo(sOrderNo);
+			}
+		}
+		long lId = IdGeneratorUtil.GetIdGeneratorInstance().GetId();
+		String sKey = DbKeyUtil.GetDbCodeKey();
+		projectInvestWriteDaoImpl.InsertProjectInvestTmp(lId,(short)1, lCreditorTransAppId, lMemberId, sOrderNo,sSubOrderNo, lAmount, lRedPackets, sRedpackets, lVouchers, sIsAuto, sKey);
+		
+		return entity;
 	}
 
 	@Override

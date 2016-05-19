@@ -80,7 +80,7 @@ public class VIPSetSubEntity {
 
 	public void setInvestMngRate(int investMngRate) {
 		this.investMngRate = investMngRate;
-		this.investMngRates = IntegerAndString.IntToString(investMngRate);;
+		this.investMngRates = IntegerAndString.IntToString(investMngRate);
 	}
 
 	public String getinvestMngRates() {

@@ -290,7 +290,7 @@ public class BankCardMngController {
 		
 		long[] lMemberInfo = new long[2] ;		
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
-		int result = bankCardService.updateBankCardInfo(bankCardInfoEntity, map,lMemberInfo[0]);
+		int result = bankCardService.updateBankCardInfo(bankCardInfoEntity, map,lMemberInfo[0],(int)lMemberInfo[1]);
 		if(result==1){
 			message.put("code", 200);
 			message.put("message", "修改成功");

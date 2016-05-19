@@ -169,7 +169,7 @@ public class IntegralMallController {
 	    MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo);  
 		ShippingAddress entity = new ShippingAddress();  
 		entity.setMemberId(lMemberInfo[0]);
-		entity.setCityName(contactName);
+		entity.setContactName(contactName);
 		entity.setProvince(provinceId);
 		entity.setCity(cityId);
 		entity.setCounty(countyId);

@@ -290,4 +290,17 @@ public class MemberManagerServiceImpl implements IMemberManangerService{
 		return managerWriteDao.updateAdminPwd(param);
 	}
 
+	@Override
+	public List<MemberAttestInfo> selectAuditList(Map<String, Object> map) {
+		List<MemberAttestInfo>  list =  memberManagerDao.selectAuditList(map);
+		return list;
+	}
+
+
+	@Override
+	public int updateMyInvete(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return managerWriteDao.updateMyInvete(map);
+	}
+
 }

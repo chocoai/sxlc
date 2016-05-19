@@ -43,7 +43,7 @@ var RE = {
 	inviteCode:		/^[0-9]{12}$/,//邀请码验证
 	titleRemarks:	/^((?![a-zA-Z]+$)||(?![a-z0-9]+$))[\u4E00-\u9FA5a-zA-Z0-9]{0,40}$/,//0-40个字，不含特殊字符
 	accountOpen:	/^[JLZ][0-9]{13}$/, //开户许可证编号：J基本户、L临时户、Z专用户；后面四位是地区代码;再后面7位是顺序号;最后2位表示第几个版本：这个要解释一下，比如你新开基本户，那么最后2位就是01；对这个基本户变更一次，换发了新许可证，那么就顺延成02
-	lognameOrPhone:		/^(?![0-9]+$)(?![a-zA-Z]+$)(?![\u4E00-\u9FA5]+$)[0-9A-Za-z\u4E00-\u9FA5]{6,16}|1\d{10}$/
+	lognameOrPhone:		/^1\d{10}|(?![0-9]+$)(?![a-zA-Z]+$)(?![\u4E00-\u9FA5]+$)[0-9A-Za-z\u4E00-\u9FA5]{6,16}$/
 };
 
 //正则参考
@@ -99,7 +99,7 @@ var days = /^[0-9]*[1-9][0-9]{1,3}$/;//天数：大于0的整数，最大3位数
 //错误提示信息，公用部分，特殊提示特殊处理
 var ErrorTips = {
 	nullmsg:"请输入内容！"
-}
+};
 
 
 //验证判断带返回信息
@@ -254,7 +254,7 @@ var lognameOrPhone = function(gets,obj,curform,datatype){
 	if(!gets || gets == value){
 		return "用户名不可为空";
 	}
-	if(!RE.logName.test(gets)){  
+	if(!RE.lognameOrPhone.test(gets)){  
 	    return "请输入6~16位的数字、字母或汉字的两两组合或11位手机号码";
 	}
 	return true;
@@ -575,7 +575,7 @@ var extdatatype = {
 	"cartNumber":cartNumber,
 	"businessNum":businessNum,
 	"lognameOrPhone":lognameOrPhone
-}
+};
 
 
 //==============================================Case===============================================

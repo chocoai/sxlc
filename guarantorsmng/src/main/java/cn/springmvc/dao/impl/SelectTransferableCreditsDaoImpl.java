@@ -15,6 +15,7 @@ import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.dao.SelectTransferableCreditsDao;
 import cn.springmvc.model.TransferRulesEntity;
 import cn.springmvc.model.TransferableCreditsEntity;
+import cn.springmvc.model.TransferableCreditsFangKuanEntity;
 
 
 
@@ -41,6 +42,12 @@ public class SelectTransferableCreditsDaoImpl extends SqlSessionDaoSupport imple
 		return getSqlSession().selectList("TransferableCreditsXML.selectTransferableCredits", page,new RowBounds(page.getPageNum(), page.getPageSize()));
 	}
 
-	
+	@Override
+	public List<TransferableCreditsFangKuanEntity> transferableCreditsFangKuan(
+			PageEntity page) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectList("TransferableCreditsXML.transferableCreditsFangKuan", page,new RowBounds(page.getPageNum(), page.getPageSize()));
+	}
 }
 

@@ -26,6 +26,7 @@
 		<result property = "picIcon"       	        column = "Pic_Icon" /> 
 		<result property = "surplusTimeSub"       	column = "Surplus_Time_Sub" /> 
 		<result property = "transMaxTime"       	column = "Trans_MaxTime" /> 
+		<result property = "dealDate"       	    column = "Deal_Date" /> 
     </resultMap> 
     <!-- 分页查询债权转让项目列表 -->  
 	<select id = "selectCreditorTransferList" parameterType = "product_p2p.kit.pageselect.PageEntity"  resultMap = "resultCreditorTransfer">
@@ -33,7 +34,12 @@
 	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal,
 	    CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed) Trans_Discount,
 		cta.Surplus_Time_Type,cta.Cta_Invest_Rate,replayway.name1 as repalyways,
-		transStatu.name1  as transStatus,par.Apply_Id,cta.CTA_Id,cta.Statu as transStatu,cta.End_Date,
+		transStatu.name1  as transStatus,
+		par.Apply_Id,
+		cta.CTA_Id,
+		cta.Statu as transStatu,
+		cta.End_Date,
+		cta.Deal_Date,
 		((par.Rate_Add_Rate + pbi.Year_Rate)*1000000/CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed)) as expectYearrate
 		from Creditor_Trans_App cta 
 		left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id 
@@ -132,6 +138,7 @@
 	mi.Credit_Integral,
 	cta.End_Date,
 	pty.Pic_Icon,
+	cta.Deal_Date,
 	CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{sKey})) as signed) Trans_Principal,
 	CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{sKey})) as signed) Trans_Discount,
 	(select Level_Mark from Credit_Level where  mi.Credit_Integral between Credit_Score_Min and Credit_Score_Max and statu =1) as  Level_Mark,

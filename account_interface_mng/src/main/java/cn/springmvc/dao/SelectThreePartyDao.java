@@ -5,6 +5,9 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import cn.springmvc.model.InvestRecordInfoEntity;
+import cn.springmvc.model.LoanRepayEntitys;
+import cn.springmvc.model.ProjectDetailEntity;
 import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 import cn.sxlc.account.manager.model.AwardEntity;
 import cn.sxlc.account.manager.model.InvestRecordEntity;
@@ -769,5 +772,77 @@ public interface SelectThreePartyDao {
 	* @throws 
 	*/
 	public int BlackMemberJudgmentOne(long memberId, int mType);
+	
+	/**
+	 * 根据项目ID查询该项目的投资记录
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param Map{}
+	 * @param @return 设定文件 
+	 * @return List<InvestRecordEntity> 返回类型 
+	 * @date 2016-4-12 下午2:16:44
+	 */
+	public List<InvestRecordInfoEntity>  selectInvestListByProjectID(Map<String,Object> map);
+	
+	/** 
+	 * 根据项目申请记录id查询项目详情   ProjectBaseInfoEntitys
+	 * @author 刘利   
+	 * @Description: 根据项目申请记录id查询项目详情  
+	 * @param id  项目申请记录id 
+	 * @return ProjectAppProcessEntity 返回类型 
+	 * @date 2016-3-21 下午1:55:21 
+	 */
+	ProjectDetailEntity  selectProjectDetailByID(long id);
+	
+	/**
+	 * 根据投资ID查询投资信息 
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param investID 投资ID
+	 * @param @return 设定文件 
+	 * @return InvestRecordEntity 返回类型 
+	 * @date 2016-4-12 下午2:56:27
+	 */
+	public InvestRecordInfoEntity selectInvestInfoByInvestID(long investID);
+	/**
+	 * 根据项目申请ID查询该项目的还款计划
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param applyID 项目申请ID
+	 * @param @return 设定文件 
+	 * @return List<LoanRepayEntity> 返回类型 
+	 * @date 2016-4-12 下午3:16:00
+	 */
+	public List<LoanRepayEntitys> selectLoanRepayIDByapplyID(long applyID);
+ 
+	
+	/** 
+	* findUserMoney 查询账户可用余额
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findUserMoney 
+	* @Description: TODO 
+	* @param @param memberID
+	* @param @param memberType
+	* @param @return 设定文件 
+	* @return long 返回类型 
+	* @date 2016-5-19 下午3:05:01
+	* @throws 
+	*/
+	public long findUserMoney(long memberID,int memberType);
+	
+	
+	/** 
+	* findInterestMngFee 利息管理费
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: findInterestMngFee 
+	* @Description: TODO 
+	* @param @return 设定文件 
+	* @return long 返回类型 
+	* @date 2016-5-19 下午3:11:14
+	* @throws 
+	*/
+	public long findInterestMngFee();
 }
 

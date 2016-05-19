@@ -108,8 +108,12 @@ public class MemberInfo {
 	private String		townName;				//
 	private Integer		integral;				//当前积分
 	private Integer		creditIntegral;			//当前信用积分
+	//2016年5月18日 邱陈东 增加
+	private String		integralLevelName;		//当前等级
+	private String		creditLevelName;			//当前信用等级
 	
-	
+	private int			recordNum;					//签到次数
+	//增加字段到此结束
 	private Date		regDate;				//注册时间
 	private String      sRegDate;				//注册时间
 	private Date		recordDate;				//第三方开通时间
@@ -681,5 +685,29 @@ public class MemberInfo {
 	
 	public PersonalBaseInfo getPersonalBaseInfo() {
 		return personalBaseInfo;
+	}
+
+	public String getIntegralLevelName() {
+		return integralLevelName;
+	}
+
+	public void setIntegralLevelName(String integralLevelName) {
+		this.integralLevelName = integralLevelName;
+	}
+
+	public String getCreditLevelName() {
+		return creditLevelName;
+	}
+
+	public void setCreditLevelName(String creditLevelName) {
+		this.creditLevelName = creditLevelName;
+	}
+
+	public int getRecordNum() {
+		return recordNum;
+	}
+
+	public void setRecordNum(int recordNum) {
+		this.recordNum = recordNum;
 	}
 }

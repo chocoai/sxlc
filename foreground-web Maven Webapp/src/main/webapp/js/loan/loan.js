@@ -389,6 +389,7 @@ $(function(){
 						if (r.code == 200){
 							clickUp();
 						}else{
+							$(".applyTalent2 .apply-top span").html(r.message);
 							clickDown();
 						}
 					}

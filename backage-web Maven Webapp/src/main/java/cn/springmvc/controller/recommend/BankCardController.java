@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
@@ -63,14 +64,19 @@ public class BankCardController {
 	public PageEntity bankCardList(HttpServletRequest request, Map<String, Object> req) {
 		
 		PageEntity pager = new PageEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
 		
 		String start = request.getParameter("start");
 		String length = request.getParameter("length");
 		String memberType = request.getParameter("memberType");
 		
-		if ("".equals(memberType)) {
+		if (!"".equals(memberType)) {
 			req.put("memberType", memberType);
 		}
+
+		req.put("guaranteeID", 1);
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
@@ -174,6 +180,7 @@ public class BankCardController {
 		String branch = request.getParameter("branch");
 		String bankNo = request.getParameter("cardNo");
 		String bankPhone = request.getParameter("phone");
+		String memberType = request.getParameter("memberType");
 		
 		BankCardInfoEntity bankCard = new BankCardInfoEntity();
 		MemberBankCardEntity memberBankCard = new MemberBankCardEntity();
@@ -186,7 +193,7 @@ public class BankCardController {
 		bankCard.setBranchAddress("");
 		
 		memberBankCard.setMemberID(userInfo.getId());
-		memberBankCard.setMemberType(1);
+		memberBankCard.setMemberType(IntegerAndString.StringToInt(memberType, -1));
 		
 		String [] sIpInfo = new String[6];
 		if (userInfo != null) {
@@ -224,9 +231,9 @@ public class BankCardController {
 		
 		HttpSession session = HttpSessionUtil.getSession(request);
 		InsertAdminLogEntity entity = new InsertAdminLogEntity();
-		String bankId = request.getParameter("bankId");
+		String bankCardId = request.getParameter("bankCardId");
 		
-		req.put("bankCardId", bankId);
+		req.put("bankCardId", bankCardId);
 		
 		String [] sIpInfo = new String[6];
 		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
@@ -240,9 +247,9 @@ public class BankCardController {
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
-		mamberBankCardService.deleteMemberBankCard(req);
+		int num = mamberBankCardService.deleteMemberBankCard(req);
 		
-		return 0;
+		return num;
 	}
 	
 	/**
@@ -259,6 +266,8 @@ public class BankCardController {
 	* @date 2016-5-10 上午9:41:59
 	* @throws
 	 */
+	@RequestMapping("/update")
+	@ResponseBody
 	public int modBank(HttpServletRequest request, Map<String, Object> req) {
 		
 		HttpSession session = HttpSessionUtil.getSession(request);
@@ -270,7 +279,8 @@ public class BankCardController {
 		String branch = request.getParameter("branch");
 		String bankNo = request.getParameter("cardNo");
 		String bankPhone = request.getParameter("phone");
-		String receiveCard = request.getParameter("receiveCard");
+		String bankCardId = request.getParameter("bankCardId");
+		String memberType = request.getParameter("memberType");
 		
 		BankCardInfoEntity bankCard = new BankCardInfoEntity();
 		
@@ -282,7 +292,7 @@ public class BankCardController {
 		bankCard.setBranchAddress("");
 		
 		req.put("bankNo", bankNo);
-		req.put("receiveCard", receiveCard);
+		req.put("receiveCard", bankCardId);
 		
 		String [] sIpInfo = new String[6];
 		if (userInfo != null) {
@@ -293,10 +303,36 @@ public class BankCardController {
 		entity.setsDetail("");
 		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
 		entity.setsMac(null);
-		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		entity.setsUrl(LoadUrlUtil.getFullURL(request)); 
 		
-		mamberBankCardService.updateBankCardInfo(bankCard, req, userInfo.getId());
-		return 0;
+		int num = mamberBankCardService.updateBankCardInfo(bankCard, req, userInfo.getStaffId(), IntegerAndString.StringToInt(memberType, -1));
+		return num;
+	}
+	
+	/**
+	 * 
+	* selectMemberBankCardByID根据id查询银行卡 
+	* TODO根据id查询银行卡
+	* @author 杨翰林  
+	* * @Title: selectMemberBankCardByID 
+	* @Description: 根据id查询银行卡
+	* @param @return 设定文件 
+	* @return BankCardInfoEntity 返回类型 
+	* @date 2016-5-18 下午2:41:10
+	* @throws
+	 */
+	@RequestMapping("/queryBank")
+	@ResponseBody
+	public BankCardInfoEntity selectMemberBankCardByID(HttpServletRequest request) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String bankCardId = request.getParameter("bankCardId");
+		BankCardInfoEntity bankCardInfoEntity = mamberBankCardService
+				.selectMemberBankCardByID(IntegerAndString.StringToLong(bankCardId, -1), 1);
+		
+		return bankCardInfoEntity;
 	}
 	
 }

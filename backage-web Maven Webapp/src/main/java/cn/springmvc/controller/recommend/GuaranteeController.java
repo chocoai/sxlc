@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.springmvc.model.Admin;
+import cn.springmvc.model.AdminGMEntity;
 import cn.springmvc.model.GuaranteeInfoDetailsEntity;
 import cn.springmvc.service.GuaranteeAgenciesService;
 import cn.springmvc.service.GuaranteeInfoService;
@@ -535,15 +536,40 @@ public class GuaranteeController {
 	 */
 	@RequestMapping("/queryAdmin")
 	@ResponseBody
-	public Admin queryAdmin (HttpServletRequest request) {
+	public AdminGMEntity selectAdmin (HttpServletRequest request) {
 		
-		String adminId = request.getParameter("adminId");
-		Admin admin = adminService.findAdminById(Long.valueOf(adminId));
+		String adminID = request.getParameter("adminID");
+		AdminGMEntity admin = guaranteeInfoService.selectAdmin(Long.valueOf(adminID));
 		
 		return admin;
 	}
 	
-	
+	/**
+	 * 
+	* updateMGAdmin修改管理员 
+	* TODO修改管理员
+	* @author 杨翰林  
+	* * @Title: updateMGAdmin 
+	* @Description: 修改管理员 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-17 下午7:04:04
+	* @throws
+	 */
+	@RequestMapping("/update")
+	@ResponseBody
+	public int updateMGAdmin(HttpServletRequest request) {
+		
+		String userName = request.getParameter("userName");
+		String password = request.getParameter("password");
+		String adminID = request.getParameter("adminID");
+		String remark = request.getParameter("remark");
+		int num = guaranteeInfoService.updateMGAdmin(
+				userName, password, remark, IntegerAndString.StringToLong(adminID, -1));
+		
+		return num;
+	}
 	
 }
 

@@ -22,11 +22,10 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.springmvc.model.MemberAttestTypeEntity;
 import cn.springmvc.model.ProjectBaseInfoEntity;
-import cn.springmvc.model.ProjectBaseInfoEntitys;
 import cn.springmvc.model.ProjectPurposeEntity;
 import cn.springmvc.model.ProjectPurposeSetEntity;
 import cn.springmvc.model.ProjectTypeTermEntity;
-import cn.springmvc.service.ProjectBaseInfoService;
+import cn.springmvc.service.ProjectBaseInfoService; 
 import cn.springmvc.service.ProjectPurposeService;
 import cn.springmvc.service.ProjectPurposeSetService;
 import cn.springmvc.util.MemberSessionMng;
@@ -121,9 +120,9 @@ public class BorrowMoneyController {
 		Integer deadline =  IntegerAndString.StringToInt(request.getParameter("deadline"),1);
 		Integer deadlineType = IntegerAndString.StringToInt(request.getParameter("deadlineType"),1);
 		Integer repayWay = IntegerAndString.StringToInt(request.getParameter("repayWay"),1);
-		Long projectID = Long.parseLong(request.getParameter("projectID"));
+		Long projectID = IntegerAndString.StringToLong(request.getParameter("projectID"),0);
 		Long amount = IntegerAndString.StringToLong(request.getParameter("amount"));
-		Integer yearRate = IntegerAndString.StringToInt(request.getParameter("yearRate"))/100;
+		Integer yearRate = IntegerAndString.StringToInt(request.getParameter("yearRate"));
 		
 		//获取登录人（申请人）ID
 		long[] lMemberInfo = new long[2] ;
@@ -146,23 +145,23 @@ public class BorrowMoneyController {
 		Map<String,Object> message = new HashMap<String, Object>();
 		if(result == 1){
 			message.put("code", 200);
-			message.put("message", "提交借款申请成功");
+			message.put("message", "提交借款申请成功！");
 			message.put("data",result);
 		}else if(result==-1){
 			message.put("code", 500);
-			message.put("message", "未开通第三方账户");
+			message.put("message", "未开通第三方账户！");
 			message.put("data",result);
 		}else if(result==-2){
 			message.put("code", 500);
-			message.put("message", "未授权二次分配授权");
+			message.put("message", "未授权二次分配授权！");
 			message.put("data",result);
 		}else if(result==-3){
 			message.put("code", 500);
-			message.put("message", "黑名单会员禁止借款");
+			message.put("message", "黑名单会员禁止借款！");
 			message.put("data",result);
 		}else{
 			message.put("code", 500);
-			message.put("message", "提交借款申请失败，请检查您的借款申请");
+			message.put("message", "请重新检查您的借款申请！");
 			message.put("data",result);
 		}
 		return JSONObject.toJSONString(message);

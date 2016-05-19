@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		svalue = URLDecoder.decode(svalue, "utf-8");
 %>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" onkeydown="keyLogin();">
 
 <head>
 	<base href="<%=basePath%>">
@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</script>	    
 </head>
 
-<body class="nav-md">
+<body class="nav-md" >
 	<div class="container body">
 		<div class="longinTop">
 			<div class="loginTopContent">
@@ -89,7 +89,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="longinBottom">
 			<p>Copyright(c)蜀ICP备10201230号-1 成都四象联创科技有限公司  .All rights reserved.</p>
-			<p>技术支持 ：成都四象联创客户有限公司</p>
+			<p>技术支持 ：成都四象联创科技有限公司</p>
 		</div>
 	</div>
 	
@@ -99,3 +99,4 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/loginInterface.js"></script>
 </body>
+</html>

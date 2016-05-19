@@ -121,7 +121,7 @@ function addOrUpdate(type){
 		}
 	}else if(type==2){
 		title="修改最新动态";
-		var data = $('#mediaTb').DataTable().rows('.selected').data();
+		var data = $('#mediaTb').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的数据！",{icon:0});
 			return;
@@ -206,7 +206,7 @@ function addOrUpdate(type){
 function enableOrDisable(type,id){
 	$.ajax( {  
 		url:appPath+"/front/enableMediRepo.do",
-		data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id)},
+		data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id+"")},
 		type:'post',  
 		cache:false,  
 		dataType:'json',  

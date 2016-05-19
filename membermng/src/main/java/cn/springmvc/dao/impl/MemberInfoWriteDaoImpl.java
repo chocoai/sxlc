@@ -60,12 +60,20 @@ public class MemberInfoWriteDaoImpl extends SqlSessionDaoSupport implements IMem
 		return IntegerAndString.StringToInt(param.get("result").toString(), 0);
 				
 	}
-
+	
+	@Override
+	public int sign(Map<String, Object> param) {
+		//getSqlSession().insert("memberInfoDaoImpl.sign", param);
+		return getSqlSession().insert("memberInfoDaoImpl.sign", param);
+		
+	}
+	
 	@Autowired
 	@Override
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
+
 
 
 }

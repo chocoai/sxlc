@@ -19,6 +19,7 @@ public class SecurityInfo {
 	private int							phoneStatus;					//手机绑定状态
 	private String						personalEmail;					//邮箱绑定
 	private int							emailStatus;					//邮箱绑定状态
+	private int							openSecondDistribute;			//二次分配授权状态
 	
 	public SecurityInfo() {}
 
@@ -101,7 +102,14 @@ public class SecurityInfo {
 	public void setEmailStatus(int emailStatus) {
 		this.emailStatus = emailStatus;
 	}
-	
+
+	public int getOpenSecondDistribute() {
+		return openSecondDistribute;
+	}
+
+	public void setOpenSecondDistribute(int openSecondDistribute) {
+		this.openSecondDistribute = openSecondDistribute;
+	}
 	
 	
 }

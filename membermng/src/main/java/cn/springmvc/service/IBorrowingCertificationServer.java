@@ -46,7 +46,7 @@ public interface IBorrowingCertificationServer {
 	* @param birthplace						会员籍贯
 	* @param positive						会员身份证正面
 	* @param reverse						会员身份证反面
-	* @return								-1 已存在认证记录、0提交认证申请成功
+	* @return								-2身份證已被使用、-1 已存在认证记录、0提交认证申请成功 
 	* @date 2016-3-23 上午11:25:59
 	 */
 	public int authRealName(Long mid,String realName, Integer sex, Integer national,String idCard, String birthplace, String positive, String reverse,String endTime);

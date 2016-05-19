@@ -276,7 +276,7 @@ public class RSAPlugn implements Serializable{
 			}
 			result = out.toByteArray();
 			out.close();
-			logger.debug("私钥加密、公钥解密-解密\t:"+new String(result));
+			logger.debug("公钥加密、私钥解密-解密\t:"+new String(result));
 			return new String(result,"utf-8");
 		} catch (Exception e) {
  			e.printStackTrace();			

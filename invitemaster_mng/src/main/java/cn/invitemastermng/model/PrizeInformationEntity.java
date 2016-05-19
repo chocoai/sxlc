@@ -22,6 +22,8 @@ import product_p2p.kit.datatrans.IntegerAndString;
 
 public class PrizeInformationEntity { 
 	private long 	prizeID;//	奖品ID	 
+	private long 	manageID;//	抽奖管理ID	
+	private long 	lotteryID;//抽奖活动ID
 	private int	    prizeType;//	字典：奖品类型DICTJPLX	 
 	private String	prizeName;//	奖品名称	VARCHAR(120) 
 	private long	prizeWorth;//	奖品价值（红包面值、实物市值、代金券面值、返现券面值） 
@@ -32,6 +34,7 @@ public class PrizeInformationEntity {
 	private int     grade;//获奖等级
 	private long    gradeOdds;//等级基数
 	private long    winningOdds;//中奖概率基数
+	private String  winningOddss;//中奖概率基数
 	private String  prizeTypes;//奖品类型下拉时用
 	public int getGrade() {
 		return grade;
@@ -50,6 +53,7 @@ public class PrizeInformationEntity {
 	}
 	public void setWinningOdds(long winningOdds) {
 		this.winningOdds = winningOdds;
+		this.winningOddss = IntegerAndString.LongToString(winningOdds);
 	}
 	public long getPrizeID() {
 		return prizeID;
@@ -105,6 +109,24 @@ public class PrizeInformationEntity {
 	}
 	public void setPrizeTypes(String prizeTypes) {
 		this.prizeTypes = prizeTypes;
+	}
+	public long getManageID() {
+		return manageID;
+	}
+	public void setManageID(long manageID) {
+		this.manageID = manageID;
+	}
+	public long getLotteryID() {
+		return lotteryID;
+	}
+	public void setLotteryID(long lotteryID) {
+		this.lotteryID = lotteryID;
+	}
+	public String getWinningOddss() {
+		return winningOddss;
+	}
+	public void setWinningOddss(String winningOddss) {
+		this.winningOddss = winningOddss;
 	}
  
 }

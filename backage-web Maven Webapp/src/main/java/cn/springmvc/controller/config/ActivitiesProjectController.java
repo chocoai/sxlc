@@ -1,5 +1,8 @@
 package cn.springmvc.controller.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -48,12 +51,21 @@ public class ActivitiesProjectController {
 	@RequestMapping(value ="/getactivityList", method = RequestMethod.GET)
 	@ResponseBody
 	public PageEntity getactivityList(HttpServletRequest request){
+		
+		int statu = IntegerAndString.StringToInt(request.getParameter("content"),0);
+		String autu =request.getParameter("auth");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("statu", statu);
+		map.put("apName", autu);
 		int pageSize = IntegerAndString.StringToInt(request.getParameter("length"), 10) ;//每页显示行数
 		int page = IntegerAndString.StringToInt(request.getParameter("start"), 1) ;
+		
 		page = page/pageSize + 1;	//当前页数
 		PageEntity pageEntity = new PageEntity();
 		pageEntity.setPageNum(page);
 		pageEntity.setPageSize(pageSize);
+		pageEntity.setMap(map);
 		pageEntity.setDraw(Integer.parseInt(request.getParameter("draw") == null ? "0"
                 : request.getParameter("draw")) + 1);
 		activitiesProjectService.selectActivitiesProjectListpage(pageEntity);

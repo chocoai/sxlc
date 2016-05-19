@@ -257,20 +257,23 @@ public class InvestController {
 			//重新定义项目状态
 			//项目状态的等于投标中 并且项目开标时间大于当前时间  项目为预热中
 			if(appRecordEntity.getInvestStatu() == 0 && startTime.after(cTime)){
-				//预热中
+				//预热中 
 				request.setAttribute("investmentStatus", "1");
 				request.setAttribute("endTime", sdf.format(startTime));
-			//项目状态的等于投标中 开标时间大于当前时间 并且投资进度不为10% 并且 结束时间小于当前时间
+			//项目状态的等于投标中 开标时间大于当前时间 并且投资进度不为10%.10 并且 结束时间小于当前时间
 			}else if(appRecordEntity.getInvestStatu() == 0 && startTime.before(cTime) && appRecordEntity.getInvestRate() < 1000000 && endTime.after(cTime)){
 				//投标中(融资中)
 				request.setAttribute("investmentStatus", "2");
 				request.setAttribute("endTime", sdf.format(endTime));
 			//项目状态等于投标完成 或者 
 			}else if(appRecordEntity.getInvestStatu() == 2 || (appRecordEntity.getInvestStatu() == 0 && appRecordEntity.getInvestRate() >= 1000000)
-					|| (appRecordEntity.getCheckStatu() == 1 && appRecordEntity.getPublishStatu() == 2 && appRecordEntity.getInvestStatu() == 0 && (endTime.after(cTime) || endTime.equals(cTime)))){
+					|| (appRecordEntity.getInvestStatu() == 0 && (endTime.before(cTime) || endTime.equals(cTime)))){
 				//投标完成
 				request.setAttribute("investmentStatus", "5");
-				request.setAttribute("endTime",sdf.parse(appRecordEntity.getHoldDate()));	//放款时间
+				request.setAttribute("endTime", "");
+				if(appRecordEntity.getHoldDate()!=null){
+					request.setAttribute("endTime",sdf.format(sdf.parse(appRecordEntity.getHoldDate())));	//放款时间
+				}
 			}else if(appRecordEntity.getInvestStatu() == 1 || appRecordEntity.getInvestStatu() == -3){
 				//流标
 				request.setAttribute("investmentStatus", "6");
@@ -282,14 +285,14 @@ public class InvestController {
 			}else if(appRecordEntity.getInvestStatu() == 3 || appRecordEntity.getInvestStatu() == 4){
 				//还款中 Or 已结清
 				request.setAttribute("investmentStatus", appRecordEntity.getInvestStatu());
-				request.setAttribute("endTime",sdf.parse(appRecordEntity.getHoldDate()));	//放款时间
+				request.setAttribute("endTime",sdf.format(sdf.parse(appRecordEntity.getHoldDate())));	//放款时间
 			}else{
 				request.setAttribute("investmentStatus", appRecordEntity.getInvestStatu());
-				request.setAttribute("endTime",sdf.parse(appRecordEntity.getHoldDate()));	//放款时间
+				request.setAttribute("endTime",sdf.format(sdf.parse(appRecordEntity.getHoldDate())));	//放款时间
 			}
 		} catch (Exception e) {
 			request.setAttribute("investmentStatus", "0");
-			logger.error("投标计算投标开始(结束)时间异常->投标名为："+appRecordEntity.getProjectName()+",开始时间为："+appRecordEntity.getStartDate()+",结束时间为："+appRecordEntity.getEndDate());
+			logger.error("投标计算投标开始(结束)时间异常->投标名为："+appRecordEntity.getProjectName()+",开始时间为："+appRecordEntity.getStartDate()+",结束时间为："+appRecordEntity.getEndDate()+" ,错误信息："+e.getLocalizedMessage());
 		}
 		return "invest/investmentDetail";
 	}
@@ -550,8 +553,6 @@ public class InvestController {
 	
 	
 	
-	
-	
 	/**
 	* 债权转让列表
 	* 
@@ -658,18 +659,22 @@ public class InvestController {
 			List<BorrowingTypeInfo> borrowingList = borrowingCertificationServer.getAllByMemberAndLoanType(creditorTransferListEntity.getApplyId());
 			request.setAttribute("borrowingList", borrowingList);
 			
-			//查询出本次可投金额
-			
 			MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
 			if(memberInfo != null){
+				//查询出本次可投金额
+				long sumAount = creditorTransInvestService.getCreditorMaxInvestAmount(creditorTransferListEntity.getApplyId(), memberInfo.getId(), ctaId, DbKeyUtil.GetDbCodeKey());
+				if(sumAount < 0){
+					sumAount = 0;
+				}
 				//查询出代金券
-				long vouchers = 0;//accountSupportService.getRemainderVouchers(memberInfo.getId());
+				long vouchers = accountSupportService.getRemainderVouchers(memberInfo.getId());
 				String sVouchers = IntegerAndString.LongToString(vouchers);
 				
 				//查询出红包
 				List<UnUsedRedpacketsEntity> redPackList = accountSupportService.getMemberUnUsedRedPackets(memberInfo.getId());
 				
 				//查询出会员总余额
+				request.setAttribute("sSumAount", IntegerAndString.LongToString(sumAount));
 				request.setAttribute("userBalances", IntegerAndString.LongToString(memberService.getRemainderTotal(memberInfo.getId())));
 				request.setAttribute("sVouchers", sVouchers);
 				request.setAttribute("redPackList", redPackList);
@@ -734,12 +739,9 @@ public class InvestController {
 		}else{
 			//查询出可投金额
 			long sumAount = creditorTransInvestService.getCreditorMaxInvestAmount(projectId, memberInfo.getId(), ctid, DbKeyUtil.GetDbCodeKey());
-					//projectInvestService.GetMaxInvestAmount(projectId, memberInfo.getId(), DbKeyUtil.GetDbCodeKey(),(short)0);
-			/*//查询出可用余额
-			Map<String,Object> param = new HashMap<String, Object>();
-			param.put("memberID", memberInfo.getId());
-			param.put("memberType", memberInfo.getMemberType());
-			MemberThirdAuthInfoEntity authInfoEntity = balanceService.selectMemberThirdAuthInfo(param);*/
+			if(sumAount < 0){
+				sumAount = 0;
+			}
 			
 			//查询出代金券
 			long vouchers = accountSupportService.getRemainderVouchers(memberInfo.getId());
@@ -750,7 +752,7 @@ public class InvestController {
 			
 			//查询红包使用比例
 			int proportion = projectInvestService.GetRedpacketsInvestRate();
-			result.put("sSumAount", sumAount);
+			result.put("sSumAount", IntegerAndString.LongToString(sumAount));
 			result.put("sVouchers", sVouchers);
 			result.put("redPackList", redPackList);
 			result.put("userBalances", IntegerAndString.LongToString(memberService.getRemainderTotal(memberInfo.getId())));
@@ -774,11 +776,11 @@ public class InvestController {
 		long lAmount				= IntegerAndString.StringToLong(request.getParameter("lAmount"));
 		String	sRedPacketsInfo		= request.getParameter("sRedPacketsInfo");
 		long lVouchers				= IntegerAndString.StringToLong(request.getParameter("lVouchers"));
-		LoanTransferEntity loanTran = interfaceServerTestI.TransferOfCreditorsRights(projectId, memberInfo.getId(), lCreditorTransAppId, (short)0, lAmount, sRedPacketsInfo, lVouchers, (short)0);
+		LoanTransferEntity loanTran = interfaceServerTestI.TransferOfCreditorsRights(projectId, memberInfo.getId(), lCreditorTransAppId, (short)0, lAmount, sRedPacketsInfo, lVouchers, (short)0, request, "invest/memberInvestmentPage.html", "invest/debtInvestmentBack.html");
 		request.setAttribute("loanTransferEntity", loanTran);
 		if(loanTran.getStatu() == 0){		//成功
 			return "dryLot/loantransfertest";
-		}else{							//失败
+		}else{								//失败
 			request.setAttribute("message", loanTran.getMassage());
 			return "invest/investFalse";
 		}

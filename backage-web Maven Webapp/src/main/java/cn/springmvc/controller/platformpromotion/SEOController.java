@@ -108,8 +108,12 @@ public class SEOController {
 		if (userInfo != null) {
 			entity.setiAdminId(userInfo.getId());
 		}
-		entity.setlOptId(1005);
-		entity.setlModuleId(2);
+		if (seoId != null && !"".equals(seoId)) {
+			entity.setlOptId(100502);
+		}else {
+			entity.setlOptId(100501);
+		}
+		entity.setlModuleId(1005);
 		entity.setsDetail("");
 		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
 		entity.setsMac(null);
@@ -168,15 +172,15 @@ public class SEOController {
 		if (userInfo != null) {
 			entity.setiAdminId(userInfo.getId());
 		}
-		entity.setlOptId(1005);
-		entity.setlModuleId(2);
+		entity.setlOptId(100503);
+		entity.setlModuleId(1005);
 		entity.setsDetail("");
 		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
 		int num = extensionModuleService.
-				seoDelete(IntegerAndString.StringToInt(seoSetID), entity, sIpInfo);
+				seoDelete(IntegerAndString.StringToInt(seoSetID, -1), entity, sIpInfo);
 		
 		return num;
 	}

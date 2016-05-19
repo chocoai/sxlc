@@ -478,4 +478,10 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 		// TODO Auto-generated method stub return null;
 		return selectGuaranteeInfoDaoImpl.selectAdmin(adminID);
 	}
+	@Override
+	public OverdueCompensationEntity OverduecompensationByid(long repayID) {
+		
+		// TODO Auto-generated method stub return null;
+		return selectGuaranteeInfoDaoImpl.OverduecompensationByid(repayID);
+	}
 }

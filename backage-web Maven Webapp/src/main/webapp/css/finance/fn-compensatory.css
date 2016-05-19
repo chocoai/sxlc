@@ -1,4 +1,4 @@
-
+/* 
 #compenfunction .form-group{
 	width:203px;
 	margin:5px 10px;
@@ -16,9 +16,9 @@
 }
 .form-inline{
 	margin-left:15px;
-}
+} */
 /* Ìõ¼þ²éÑ¯   */
-.con-item{
+/* .con-item{
 	display:inline-block;
 	min-width:325px;
 	max-width:325px;
@@ -33,4 +33,13 @@
 }
 .search input{
 	width:200px;
+} */
+
+#compenfunction .form-inline{
+	width:450px;
+	margin:0 auto;
+}
+#compenfunction .form-group{
+	width:203px;
+	margin:5px 10px;
 }

@@ -53,6 +53,7 @@
         <result property = "releaseDate"        column = "Release_Date" />
         <result property = "pushIndex"          column = "pushIndex" />
         <result property = "checkStatuNow"      column = "checkStatuNow" />
+        <result property = "projectName"        column = "Project_Name" />
         <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"></association>
     </resultMap> 
      <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity">
@@ -88,8 +89,9 @@
 	        where  pp.Indexs =  #{map.sIndexs} and  par.Apply_Id = pck.Apply_Id and pck.Check_Statu != 2 limit 1 
 	        ),0)    as checkStatuNow   
 	   from  Project_App_Record par 
-	   left join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id  
-	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
+	   join Project_Purpose ppu on par.Purpose_ID =  ppu.Purpose_ID
+	   join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id  
+	   join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
 	   left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
 	   join Member_Info mi on mi.Member_ID = par.Member_ID  
@@ -98,7 +100,9 @@
 	   left join Management_Info mana on mana.Management_ID = par.Management_ID
 	   left join Guarantee_Info gua on gua.Guarantee_ID = par.Guarantee_ID
 	    <where> 
-         <!--  par.Apply_Id=#{map.ID} --> 
+         <!--  par.Apply_Id=#{map.ID} -->
+           ppu.Deal_Statu = 1
+           and 
 	       (
 		      par.Apply_Id in
 		      (
@@ -165,11 +169,10 @@
      
      <!-- 根据项目申请ID查询借款项目详情 -->  
 	<select id="selectProjectdetail"  parameterType="long" resultMap="resultProjectDetail" >
-	   select pbi.Project_Title,pbi.Amount,replayway.name1,pbi.Repay_Way,pbi.Uses,pbi.Project_Base_ID,
-	   pbi.Repay_Source,pbi.Deadline,pbi.Deadline_Type,par.Invest_Max,pbi.Year_Rate,
-	   par.MinStart,par.Increase_Range,pbi.Project_Descript,
-	   par.Apply_Id, pap.Record_Date,par.Project_No,mi.Logname,mi.Member_Type,par.Project_ID,
-	   pty.Project_Name,par.Invest_Statu, par.Project_Base_ID,par.Project_ID, par.Check_Statu, par.Invest_Count_Max
+	   select par.*,
+	   pbi.Project_Title,pbi.Amount,replayway.name1,pbi.Repay_Way,pbi.Uses,pbi.Project_Base_ID,
+	   pbi.Repay_Source,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,
+	   pbi.Project_Descript, pty.Project_Name,pap.Record_Date,mi.Logname,mi.Member_Type, pty.Project_Name
 	   from Project_App_Record par 
 	   left join Project_App_Process pap on  pap.Apply_Id=par.Apply_Id  
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID

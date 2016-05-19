@@ -165,9 +165,9 @@ function submitPlatCofig(){
  * @param fileListObj	存放图片div 
  */
 function appendImg(imgURL,fileListObj){
-	var imgRealURL ="http://cdsxlc.com:21000/";
+	var imgRealURL =$("#hostPath").val();
 	if(imgURL==null || imgURL==""){
-		return 
+		return ;
 	}else{
 		imgRealURL+=imgURL;
 	}

@@ -104,16 +104,16 @@
 											</div>
 											<div class="secondaryTitleInfoRight">
 												<div class="InfoRightM">
-													<label class="vouchers"></label>代金券<span class="firstSpan moneyFormat giftUserBalances">0</span>
+													<label class="vouchers"></label>代金券<span class="fl_r_mr_40 moneyFormat giftUserBalances">0</span>
 												</div>
 												<div class="InfoRightM">
-													<label class="luckyMoney"></label>红包<span class="secondSpan moneyFormat giftAmount">0</span>
+													<label class="luckyMoney"></label>红包<span class="fl_r_mr_40 moneyFormat giftAmount">0</span>
 												</div>
 												<div class="InfoRightM">
-													<label class="intAble"></label>可用积分(分)<span class="thirdSpan"><span class="integralResidue">0</span><a href="integralMall/mallIndex.html">兑换</a></span>
+													<label class="intAble"></label>可用积分(分)<span class="fl_r_mr_40 integralResidue"></span>
 												</div>
 												<div class="InfoRightM">
-													<label class="invitated"></label>已邀请好友(位)<span class="fourthSpan friends">0</span>
+													<label class="invitated"></label>已邀请好友(位)<span class="fl_r_mr_40 friends">0</span>
 												</div>
 											</div>
 	   									</div>

@@ -47,7 +47,7 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 	@Resource(name="replayProjectDetailListDaoImpl")
 	private  ReplayProjectDetailListDao replayProjectDetailListDao; 
 	@Override
-	public int GenerateRepayList(int applyID) {
+	public int GenerateRepayList(long applyID) {
 		
 		ProjectDetailEntity projectAppRecordEntity = null;
 		projectAppRecordEntity = replayProjectDetailListDao.selectProjectDetailByID(applyID);
@@ -74,10 +74,10 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 		 String presentDate3 = sdf3.format(new Date());//获取当前系统时间
 		 List<LoanRepayEntitys> planList = RepalyUtitls.getIncomePlan2(deadLineType,amounts,yearrates,Short.valueOf(deadline+""),Short.valueOf(replayway+""), presentDate3);
 		 LoanRepayEntitys planEntity = new LoanRepayEntitys();
-		 String planStr = "";
-		 Long id = generatorUtil.GetId();
+		 String planStr = ""; 
 		 int iSize = planList.size();
 		 for(int m = 0;m < iSize; m++ ){ 
+			Long id = generatorUtil.GetId();
 			planEntity = planList.get(m); 
 			if(planStr.equals("")) {
 				planStr = RepalyUtitls.StringToLong(planEntity.getCorpus())+","+RepalyUtitls.StringToLong(planEntity.getInterest())+","+planEntity.getRetrieveDateTime()+","+(m+1) +","+id+"";
@@ -94,10 +94,12 @@ public class GenerateRepayListServiceImpl implements GenerateRepayListService {
 		 if(str.length >0){
 			for (int i = 0; i < str.length; i++) {
 				String[] info = str[i].split(",");
-				if(iResult == 0){
-					generatorUtil.SetIdUsed(Long.valueOf(info[4]));
-				}else{
-					generatorUtil.SetIdUsedFail(Long.valueOf(info[4]));
+				if(info.length>3){
+					if(iResult == 0){
+						generatorUtil.SetIdUsed(Long.valueOf(info[4]));
+					}else{
+						generatorUtil.SetIdUsedFail(Long.valueOf(info[4]));
+					}
 				}
 			}
 		 }

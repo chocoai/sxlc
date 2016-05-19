@@ -133,7 +133,8 @@ $(function(){
 $(function(){
 	$(".sign").mouseover(function(){
 		$(".ALT3").find(".tipLeft").remove();
-		$(this).layoutHover5("已签到" + '<span class="number">3</span>' +"次");
+		var recordNum = $(".recordNum").html();
+		$(this).layoutHover5("已签到" + '<span class="number">'+recordNum+'</span>' +"次");
 	});
 	$(".sign").mouseout(function(){
 		$(this).parent().find(".tipDown2").remove();
@@ -141,13 +142,13 @@ $(function(){
 });
 $(function(){
 	/* 当鼠标移动到mark1、mark2、mark3、mark4、mark5上时，出现提示窗口*/
-	$(".ALT3 > .mark1").mouseenter(function(){
+	/*$(".ALT3 > .mark1").mouseenter(function(){
 		$(this).layoutHover4("11111");
 		//alert(1);		
 		$(".tipLeftDiv").mouseenter(function(){
 			$(".ALT3 > .mark1").layoutHover4("11111");
 		});
-	});
+	});*/
 	$(".tipLeft").mouseleave(function(){
 		alert(3);
 		$(".tipLeft").remove();
@@ -159,7 +160,7 @@ $(function(){
 	});
 	
 	
-	$(".ALT3 > .mark2").mouseover(function(){
+	/*$(".ALT3 > .mark2").mouseover(function(){
 		if($(this).parent().find(".tipLeft")){
 			$(this).parent().find(".tipLeft").remove();
 		}
@@ -185,12 +186,16 @@ $(function(){
 	});
 	$(".ALT3 > .mark4").mouseout(function(){
 		$(this).parent().find(".tipLeft").remove();
-	});
+	});*/
 	$(".ALT3 > .mark5").mouseover(function(){
 		if($(this).parent().find(".tipLeft")){
 			$(this).parent().find(".tipLeft").remove();
 		}
-		$(this).layoutHover4("未开通第三方" + '<a class="third">立即开通</a>');
+		if($(this).attr("openThird")==0){
+			//已开通
+		}else{
+			$(this).layoutHover4("未开通第三方" + '<a class="third">立即开通</a>');
+		}
 	});
 	$(".ALT3 > .mark5").mouseout(function(){
 		$(this).parent().find(".tipLeft").remove();
@@ -312,14 +317,30 @@ function addElement(sourceId){
 /*签到成功弹出层伍成然2016-4-7*/
 $(function(){
 	$(".sign").click(function(){
-		layer.open({
-			title :false,//标题
-			closeBtn:false,
-	        type: 1,
-	        area: ['447px', '353px'],//大小宽*高
-	        shadeClose: true, //点击遮罩关闭
-	        content: $('.sign-success')//内容，里边是包含内容的div的class
-	    });
+		$.ajax({
+			url:"personalCenter/sign.html",
+			type:"post",
+			dataType:"json",
+			success:function(data){
+				//data.statu   1签到成功  -1 重复签到  else 签到失败
+				loadMemberInfo();
+				if(data.statu==1){
+					layer.open({
+						title :false,//标题
+						closeBtn:false,
+						type: 1,
+						area: ['447px', '353px'],//大小宽*高
+						shadeClose: true, //点击遮罩关闭
+						content: $('.sign-success')//内容，里边是包含内容的div的class
+					});
+				}else{
+					layer.alert(data.message);
+				}
+			},
+			error:function(){
+				layer.alert("签到失败");
+			}
+		});
 	});
 });
 /*签到成功弹出层结束伍成然2016-4-7*/

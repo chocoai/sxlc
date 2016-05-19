@@ -149,10 +149,10 @@ public class LuckyDrawServiceImpl implements LuckyDrawService {
 		
 	}
 	@Override
-	public int PrizeSet(Map<String, Object> map,InsertAdminLogEntity 
+	public long PrizeSet(Map<String, Object> map,InsertAdminLogEntity 
 			logentity,String[] sIpInfo) {
 		
-		int result = 0;
+		long result = 0;
 		if(map == null) { 
 		  return 0;	
 		}
@@ -170,7 +170,8 @@ public class LuckyDrawServiceImpl implements LuckyDrawService {
 		  result = luckyDrawDao.PrizeSet(map);
 		  if(result == 1) {
 				generatorUtil.SetIdUsed(id); 
-				logentity.setsDetail("添加奖品"+map.get("prizename").toString());
+				result = id;
+				logentity.setsDetail("添加奖品"+map.get("prizename").toString()); 
 		   		optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		  }else{
 				generatorUtil.SetIdUsedFail(id);
@@ -179,7 +180,8 @@ public class LuckyDrawServiceImpl implements LuckyDrawService {
        }else{
         	//修改
           result = luckyDrawDao.PrizeSet(map);
-          if(result == 1) {  
+          if(result == 1) { 
+        	result = IntegerAndString.StringToLong(map.get("lId").toString());
    		    logentity.setsDetail("修改奖品"+map.get("prizename").toString());
    		    optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
    		  }
@@ -246,5 +248,12 @@ public class LuckyDrawServiceImpl implements LuckyDrawService {
 		
 	}
 
+	@Override
+	public LotteryActivityEntity selectLotteryActivitylimit() {
+		
+		return luckyDrawListDao.selectLotteryActivitylimit();
+		
+	}
+   
 }
 

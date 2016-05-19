@@ -1,3 +1,4 @@
+var checkPass = false;//校验标识
 //兑换商品详情
 $(function(){
 	var count=0;
@@ -19,7 +20,9 @@ $(function(){
 	$(".btn a").mouseover(function(){
 		$(this).addClass("saveBtnHover").siblings().removeClass("saveBtnHover");
 	});
-	$(".addAddress").click(function(){
+	
+	//添加
+	$(".addAddress").on("click",function(){
 		if($(this).parent().next().is(":hidden")){
 			$(this).parent().next().show();
 		}else{
@@ -29,11 +32,20 @@ $(function(){
 	});
 	
 	//已有地址修改
-	$(".alertAddress").click(function(){
+	$(".alertAddress").on("click",function(){
+		var addrDet = $(this).parent().next("div.addressWhite");
+		var provId = addrDet.find(".m-prov").val() || 0;
+		var cityId = addrDet.find(".m-city").val() || 0;
+		bindCity(provId);
+		bindCounty(cityId);
+		
 		$(this).parent().next().show();
 		$(this).parent().siblings("li").next().hide();
 		$(this).parent().parent().siblings(".addAddress").parent().next().hide();
 	});
+	
+	//获取省
+	bindPro();
 });
 
 /* input标签的输入改变      */
@@ -137,18 +149,14 @@ $(function(){
 			});
 		});
 	});
-	$("#zeng_shouHuo").Validform({
+	
+	$("#add-form").Validform({
 		tiptype:3,//提示信息类型
 		btnSubmit:".saveBtn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		datatype:extdatatype,//扩展验证类型
-		ajaxPost:{//使用ajax提交时
-			url:"",
-			datatype:"json",
-			success:function(data,obj){
-	        },
-	        error:function(data,obj){
-	            //console.log(data.status);
-	        }
+		beforeSubmit:function(curform){
+			Addr.add();//添加
+			return false;
 		}
 	});
 });
@@ -225,7 +233,68 @@ var Addr = {
 	
 	//新增地址
 	add : function(){
-		console.log("add");
+		//debugger;
+		var contactName = $("#receiver").val();			//姓名
+		var provinceId = $("#addr-prov").val();			//省
+		var cityId = $("#addr-city").val();				//市
+		var countyId = $("#addr-county").val();			//县
+		var detailedAddress = $("#addr-det").val();		//详细地址
+		var contactPhone = $("#receiver-phone").val();	//手机
+		var deliveryChoice = $("#receiver-time").val(); //送货时间
+		var isDefaultAddress = $("#isDefaultAddress").val();//设为默认
+		
+		var data = {};//数据
+		var encrypt = new JSEncrypt();//加密
+		encrypt.setPublicKey(publicKey);
+		
+		if (contactName!=undefined){//处理
+			data.contactName = encrypt.encrypt(contactName+"");
+		};
+		if (provinceId!=undefined){//处理
+			data.provinceId = encrypt.encrypt(provinceId+"");
+		};
+		if (cityId!=undefined){//处理
+			data.cityId = encrypt.encrypt(cityId+"");
+		};
+		if (countyId!=undefined){//处理
+			data.countyId = encrypt.encrypt(countyId+"");
+		};
+		if (detailedAddress!=undefined){//处理
+			data.detailedAddress = encrypt.encrypt(detailedAddress+"");
+		};
+		if (contactPhone!=undefined){//处理
+			data.contactPhone = encrypt.encrypt(contactPhone+"");
+		};
+		if (deliveryChoice!=undefined){//处理
+			data.deliveryChoice = encrypt.encrypt(deliveryChoice+"");
+		};
+		if (isDefaultAddress!=undefined){//处理
+			data.isDefaultAddress = encrypt.encrypt(isDefaultAddress+"");
+		};
+		
+		var url = "integralMall/saveShippingAddress.html";
+		
+		NetUtil.ajax(
+			url,
+			data,
+			function(r){ 
+			    var data = JSON.parse(r);
+			    var icon = null;
+			    if(data){
+				    if(data.result == 1){
+				    	icon = 1;
+				    }else if(data.result == -1){
+				    	icon = 0;
+				    }else{
+				    	icon = 2;
+				    }
+			    	layer.alert(data.message,{icon:icon});
+			    	window.location.href = window.location.href;
+			    }
+			 	
+			}
+		);
+		
 	},
 	//修改地址
 	mod: function(){
@@ -244,6 +313,86 @@ var Addr = {
 };
 
 //添加收件地址
-$("#addrAdd").on("click",function(){
+/*$("#addrAdd").on("click",function(){
 	Addr.add();
-});
+});*/
+
+//获取省
+function bindPro(){
+	$(".province li,.city li,.county li").remove();
+	$.ajax({
+		url:"personalCenter/provinceList.html",
+		dataType:"json",
+		type:"post",
+		success:function(json){
+			//console.log(json);
+			for (var int = 0; int < json.length; int++) {
+				$(".province").append("<li class=\"selectOption\" value=\""+json[int].pId+"\">"+json[int].pName+"</li>");
+			}
+			$(".province .selectOption").on("click",function(){
+				$(this).parent().parent().find(".selectInput").val($(this).html());
+				$(this).parent().parent().find(".selectValue").attr("value",$(this).attr("value"));
+				$(this).parent().slideUp(200);
+				$(this).parent().parent().find(".selectInput").css('color','#2f2f2f');
+				$(".county li").remove();
+				bindCity($(this).attr("value"));
+			});
+		}
+	});
+}
+
+//获取市
+function bindCity(pid){
+	$(".city li,.county li").remove();
+	$("#addr-city,#addr-county").attr("value","0").next(".selectInput").val("请选择");
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publicKey);
+	var spid = encrypt.encrypt(pid);
+	$.ajax({
+		url:"personalCenter/citys.html",
+		dataType:"json",
+		type:"post",
+		data:{proId:spid},
+		success:function(json){
+			//console.log(json);
+			for (var int = 0; int < json.length; int++) {
+				$(".city").append("<li class=\"selectOption\" value=\""+json[int].cId+"\">"+json[int].cName+"</li>");
+			}
+			$(".city .selectOption").on("click",function(){
+				$(this).parent().parent().find(".selectInput").val($(this).html());
+				$(this).parent().parent().find(".selectValue").attr("value",$(this).attr("value"));
+				$(this).parent().slideUp(200);
+				$(this).parent().parent().find(".selectInput").css('color','#2f2f2f');
+				$(".county li").remove();
+				bindCounty($(this).attr("value"));
+			});
+		}
+	});
+}
+
+//获取区县
+function bindCounty(cid){
+	$(".county li").remove();
+	$("#addr-county").attr("value","0").next(".selectInput").val("请选择");
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publicKey);
+	var scid = encrypt.encrypt(cid);
+	$.ajax({
+		url:"personalCenter/countys.html",
+		dataType:"json",
+		type:"post",
+		data:{cid:scid},
+		success:function(json){
+			console.log(json);
+			for (var int = 0; int < json.length; int++) {
+				$(".county").append("<li class=\"selectOption\" value=\""+json[int].xId+"\">"+json[int].xName+"</li>");
+			}
+			$(".county .selectOption").on("click",function(){
+				$(this).parent().parent().find(".selectInput").val($(this).html());
+				$(this).parent().parent().find(".selectValue").attr("value",$(this).attr("value"));
+				$(this).parent().slideUp(200);
+				$(this).parent().parent().find(".selectInput").css('color','#2f2f2f');
+			});
+		}
+	});
+}

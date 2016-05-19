@@ -396,7 +396,7 @@
 			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
 		  END memberName,	
 		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
-		  lr.Indexs,
+		  lr.Indexs,lr.Repay_ID,pa.Apply_Id,
 		  lr.Repay_MaxTime
 		FROM Loan_Repay lr 
 		JOIN Project_App_Record pa
@@ -448,7 +448,7 @@
 			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
 		  END Personal_Name,	
 		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
-		  lr.Indexs,
+		  lr.Indexs,lr.Repay_ID,pa.Apply_Id,
 		  lr.Repay_MaxTime
 		FROM Loan_Repay lr 
 		JOIN Project_App_Record pa
@@ -496,7 +496,7 @@
 			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
 		  END Personal_Name,	
 		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) Amount,
-		  lr.Indexs,
+		  lr.Indexs,lr.Repay_ID,pa.Apply_Id,
 		  lr.Repay_MaxTime
 		FROM Loan_Repay lr 
 		JOIN Project_App_Record pa

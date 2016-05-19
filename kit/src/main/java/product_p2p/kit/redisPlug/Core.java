@@ -50,9 +50,13 @@ public class Core {
 	 * @return 受影响的行数
 	 */
 	public static Long putString(String key,String value){
-		long l = jedis.append(key,value);
+		String l = jedis.set(key,value);
 		jedis.expire(key, JEDIS_EXPIRE);
-		return l;
+		if(l.equals("OK")){
+			return 1L;
+		}else{
+			return 0L;
+		}
 	}
 	
 	/***

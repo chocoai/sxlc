@@ -128,20 +128,40 @@
 		<result	column="City_Id"			property="cityId"/>
 		<result	column="County_Id"			property="countyId"/>
 		<result	column="Town_Id"			property="townId"/>
+		<result	column="Province_Name"		property="provinceName"/>
+		<result	column="City_Name"			property="cityName"/>
+		<result	column="County_Name"		property="countyName"/>
+		<result	column="Town_Name"			property="townName"/>
 	</resultMap>
 	<!-- 获取个人会员信息 -->
 	<select id="memberPersonalInfo" parameterType="Map" resultMap="memberPersonalInfo">
-		select mi.member_id,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as Personal_Name,pbi.Nation_Id,pbi.SexID,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey}) using utf8) as Personal_IDCard,pbi.Education,pbi.Marital_Status,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) as Personal_Phone,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.QQ),#{skey}) using utf8) as QQ,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),#{skey}) using utf8) as Personal_Email,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.Census),#{skey}) using utf8) as Census,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.House_Address),#{skey}) using utf8) as House_Address,
-		mi.Province_Id,mi.City_Id,mi.County_Id,mi.Town_Id
+		select 
+		mi.member_id,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),	#{skey}) using utf8) as Personal_Name,
+		pbi.Nation_Id,
+		pbi.SexID,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_IDCard),	#{skey}) using utf8) as Personal_IDCard,
+		pbi.Education,
+		pbi.Marital_Status,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),	#{skey}) using utf8) as Personal_Phone,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.QQ),				#{skey}) using utf8) as QQ,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),	#{skey}) using utf8) as Personal_Email,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Census),			#{skey}) using utf8) as Census,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.House_Address),	#{skey}) using utf8) as House_Address,
+		mi.Province_Id,
+		mi.City_Id,
+		mi.County_Id,
+		mi.Town_Id,
+		pd.Province_Name,
+		cd.City_Name,
+		cod.County_Name,
+		td.Town_Name
 		from Member_Info mi
-		left join Personal_Base_Info pbi on mi.Personal_ID = pbi.Personal_Id
+		left join Personal_Base_Info 	pbi on mi.Personal_ID 	= pbi.Personal_Id
+		left join Province_Dictionary 	pd 	on mi.Province_Id 	= pd.province_Id
+		left join City_Dictionary 		cd 	on cd.City_id 		= mi.City_id
+		left join County_Dictionary 	cod on cod.County_Id 	= mi.County_Id
+		left join Town_Dictionary 		td 	on td.Town_id 		= mi.Town_id
 		where mi.member_id = #{memberId} and mi.member_Type = 0
 	</select>
 	
@@ -159,6 +179,7 @@
 		<result	column="Establishments"		property="companyInfo.establishments"/>
 		<result	column="Company_Source"		property="companyInfo.companySource"/>
 		<result	column="Company_Capital"	property="companyInfo.companyCapital"/>
+		<result column="Company_Profile"	property="companyInfo.companyProfile"/>
 		<result column="Personal_Name"		property="baseInfo.personalName"/>
 		<result	column="Personal_Phone"		property="baseInfo.personalPhone"/>
 		<result	column="QQ"					property="baseInfo.qq"/>
@@ -183,6 +204,7 @@
 		ci.Establishments,
 		ci.Company_Source,
 		ci.Company_Capital,
+		ci.Company_Profile,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as Personal_Name, 
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey}) using utf8) as Personal_Phone,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.QQ),#{skey}) using utf8) as QQ,
@@ -232,9 +254,7 @@
 			#{cityId,					mode=IN,			jdbcType=INTEGER},
 			#{countyId,					mode=IN,			jdbcType=INTEGER},
 			#{contactsName,				mode=IN,			jdbcType=VARCHAR},
-			#{contactsPhone,			mode=IN,			jdbcType=VARCHAR},
 			#{contactsQQ,				mode=IN,			jdbcType=VARCHAR},
-			#{contactsEmail,			mode=IN,			jdbcType=VARCHAR},
 			#{companyProfile,			mode=IN,			jdbcType=VARCHAR},
 			#{skey,						mode=IN,			jdbcType=VARCHAR},
 			#{result,					mode=OUT,			jdbcType=INTEGER}
@@ -309,9 +329,9 @@
 	<!-- 会员积分信息 -->
 	<select id="points" parameterType="Map" resultType="cn.membermng.model.MyPoint">
 		select 
-		(select sum(Quantity) from Integral_Records where Integral_Direction = 1 and member_id = mi.Member_ID) as cumulativeIntegral,
-		mi.Integral as availableIntegral,
-		(select sum(Quantity) from Integral_Records where Integral_Direction = -1 and member_id = mi.Member_ID) as usedIntegral
+		ifnull((select sum(Quantity) from Integral_Records where Integral_Direction = 1 and member_id = mi.Member_ID),0) as cumulativeIntegral,
+		ifnull(mi.Integral,0) as availableIntegral,
+		ifnull((select sum(Quantity) from Integral_Records where Integral_Direction = -1 and member_id = mi.Member_ID),0) as usedIntegral
 		from member_info mi where mi.member_id = #{memberId} and member_Type = #{memberType}
 	</select>
 	
@@ -414,16 +434,24 @@
 	</select>
 	
 	
-	<!-- 回去安全中心认证信息 -->
+	<!-- 获取安全中心认证信息 -->
 	<select id="securityInfo"	parameterType="Map" resultType="cn.membermng.model.SecurityInfo">
 		select 
 		(select ThirdParty_Account from Member_Third_Info mti 
-			where mti.Member_ID = mi.member_id and mti.Member_Type = mi.Member_Type) as thirdPartyAccount,
+			where mti.Member_ID = mi.member_id and mti.Member_Type = mi.Member_Type
+		) as thirdPartyAccount,
 		(select 
-			CONVERT(AES_DECRYPT(UNHEX(Personal_Phone),#{skey}) using utf8) from Personal_Base_Info pbi where pbi.Personal_Id = mi.Personal_Id) as personalPhone,
+			CONVERT(AES_DECRYPT(UNHEX(Personal_Phone),#{skey}) using utf8) from Personal_Base_Info pbi where pbi.Personal_Id = mi.Personal_Id
+		) as personalPhone,
 		(select 
-			CONVERT(AES_DECRYPT(UNHEX(Personal_Email),#{skey}) using utf8) from Personal_Base_Info pbi where pbi.Personal_Id = mi.Personal_Id) as personalEmail
-		from member_info mi where mi.member_id = #{memberId} and mi.member_type = #{memberType}
+			CONVERT(AES_DECRYPT(UNHEX(Personal_Email),#{skey}) using utf8) from Personal_Base_Info pbi where pbi.Personal_Id = mi.Personal_Id
+		) as personalEmail,
+		(select 
+			Open_Second_Distribute from Member_Third_Info mti left join Member_Third_Auth_Info mtai on mtai.Account_Id = mti.Account_Id where mti.Member_Id = #{memberId}
+		) as openSecondDistribute
+		from member_info mi 
+		where mi.member_id = #{memberId} 
+		and mi.member_type = #{memberType}
 	</select>
 	
 	<!-- 查询陌生人 -->
@@ -435,6 +463,42 @@
 		or	 	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey}) using utf8) 	like '${map.memberName}%'
 		or	 	CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.sKey}) using utf8) 	like '${map.memberName}%'	
 	</select>
+	
+	<!-- 个人首页-基本信息查询 -->
+	<select id="loadMemberInfo" parameterType="Map" resultType="cn.membermng.model.MemberInfo">
+	SELECT
+		mi.logName AS logname,
+		mi.Integral AS integral,
+		mti.ThirdParty_Account AS thirdPartyAccount,
+		<if test="memberType==0">
+		pbi.Personal_Phone AS personalPhone,
+		pbi.Personal_Email AS personalEmail,
+		Personal_IDCard AS personalIdCard,
+		</if>
+		(SELECT COUNT(1) FROM Member_Sign_Record msr WHERE msr.Member_ID=#{memberId}) AS recordNum,
+		(SELECT ml.Level_Mark FROM member_level ml WHERE mi.Integral >= ml.Score_Min ORDER BY ml.Score_min ASC LIMIT 1) AS integralLevelName,
+		(SELECT cl.Level_Mark FROM Credit_Level cl WHERE mi.Credit_Integral>=cl.Credit_Score_Min ORDER BY cl.Credit_Score_Min ASC LIMIT 1) AS creditLevelName
+	FROM member_info mi
+	LEFT JOIN member_third_info mti ON mi.Member_ID=mti.Member_ID
+	<if test="memberType==0">
+	LEFT JOIN Personal_Base_Info pbi ON mi.Personal_ID=pbi.Personal_ID
+	</if>
+	WHERE mi.member_id = #{memberId}
+	</select>
+	
+	<!-- 查询今日是否已经签到 -->
+	<select id="checkTodaySignNum" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM Member_Sign_Record msr WHERE msr.Member_ID=#{memberId} and DATE(msr.Record_Date)=CURDATE() 
+	</select>
+	
+	<select id="loadUntreatedMessage" parameterType="Map" resultType="cn.membermng.model.UntreatedMessageEntity">
+	SELECT
+		(SELECT COUNT(*) FROM Member_MsgRecord msr WHERE msr.member_ID=1 AND msr.Msg_Type =#{memberId} AND msr.Read_Statu=0 AND msr.statu=0) AS stationMessageNum,
+		(SELECT COUNT(*) FROM Member_Station_Letter msl WHERE msl.Member_ID_Rec=#{memberId} AND msl.Is_Read=0) AS letterNum,
+		(SELECT COUNT(*) FROM Member_FriendShip_Record mfr WHERE mfr.Member_ID_Receive=#{memberId} AND mfr.Statu=0) AS applicationFriendNum
+	FROM DUAL
+	</select>
+	
 	
 	<!--  忘记密码-查询登录名与手机号是否匹配 -->
 	<select id="selectMemberIsExist"  parameterType="Map" resultType="int">
@@ -474,4 +538,10 @@
 			#{eId,					mode=IN,			jdbcType=BIGINT}
 		)
 	</select>
+	
+	<insert id="sign" parameterType="Map" >
+		insert into 
+		Member_Sign_Record(Member_ID	,Record_Date,Get_Integral)
+		VALUES(#{memberId},now(),(select sign_points from manager_regpoints_rule limit 1))
+	</insert>
 </mapper>

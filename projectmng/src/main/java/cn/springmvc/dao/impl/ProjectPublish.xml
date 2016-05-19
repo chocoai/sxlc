@@ -78,16 +78,17 @@
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
             as memberName
 	   from   Project_App_Record par
-	   left join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id  
-	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
+	   join Project_Purpose ppu on par.Purpose_ID =  ppu.Purpose_ID
+	   join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id  
+	   join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID
 	   left join DICT replayway on   replayway.code1= pbi.Repay_Way  and replayway.tcode = 'DICT_HKFS'
 	   left join ProjectBaseInfo pty on  par.Project_ID=pty.Project_ID 
 	   left join Member_Info mi on mi.Member_ID = par.Member_ID   
 	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id 
 	   left join Company_Info  ci  on ci.Company_ID=mi.Company_ID
-	    <where>  
-          par.Publish_Statu=2  
-          and  (
+	    <where> 
+	       ppu.Deal_Statu = 1 
+           and  (
 		      par.Apply_Id in
 		      (
 			       select Apply_Id  
@@ -192,13 +193,13 @@
     <select id="publish"  statementType="CALLABLE" parameterType="Map"> 
 	     {call projectPublish(
 				#{ApplyId ,	     mode=IN,	jdbcType=BIGINT},
-				#{Indexsnow ,	     mode=IN,	jdbcType=INTEGER},
+				#{Indexsnow ,	 mode=IN,	jdbcType=INTEGER},
 				#{checkStatu,	 mode=IN,	jdbcType=INTEGER},
 				#{CheckRemark,	 mode=IN,	jdbcType=VARCHAR},
 				#{adminID,	     mode=IN,	jdbcType=INTEGER},
 				#{checkid,	     mode=IN,	jdbcType=INTEGER},
 				#{startDate,	 mode=IN,	jdbcType=VARCHAR},
-				#{endDate,	     mode=IN,	jdbcType=VARCHAR}, 
+				#{endDate2,	     mode=IN,	jdbcType=VARCHAR}, 
 				#{affix,	     mode=IN,	jdbcType=VARCHAR},
 				#{ImageUrl,	     mode=IN,	jdbcType=VARCHAR},
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}

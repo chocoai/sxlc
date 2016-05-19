@@ -18,13 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sun.corba.se.impl.util.Utility;
-
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
-
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.DeptInfo;
 import cn.springmvc.model.Trui;

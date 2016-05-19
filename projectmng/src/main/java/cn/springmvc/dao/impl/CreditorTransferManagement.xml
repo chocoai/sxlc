@@ -6,7 +6,7 @@
         <result property = "billNo"       	        column = "Bill_No" />
         <result property = "applyTime"       	    column = "Apply_Time" />
 		<result property = "projectTitle"       	column = "Project_Title" />
-		<result property = "ProjectNo"    	        column = "Project_No" />
+		<result property = "projectNo"    	        column = "Project_No" />
 		<result property = "tranLogname"  	        column = "TranLogname" /> 
 		<result property = "loanLogname"  	        column = "LoanLogname" /> 
 		<result property = "loanMemberName" 	    column = "LoanmemberName" />
@@ -16,8 +16,8 @@
 		<result property = "transferPrice" 		    column = "TransferPrice" />
 		<result property = "ctaInvestRate" 			column = "Cta_Invest_Rate" />
 		<result property = "transMaxTime" 		    column = "Trans_MaxTime" />
-		<result property = "Check_Statu" 		    column = "checkStatu" /> 
-		<result property = "Statu" 		            column = "statu" />   
+		<result property = "checkStatu" 		    column = "Check_Statu" /> 
+		<result property = "statu" 		            column = "statu" />   
     </resultMap> 
     <!-- 分页查询债权转让项目列表 -->  
 	<select id = "selectCreditorTransferManager" parameterType = "product_p2p.kit.pageselect.PageEntity"  resultMap = "resultCreditorTransfer">
@@ -60,7 +60,7 @@
 	                or pbitran.Personal_Name like  '%${map.name}%' ) 
 	             </if> 
 	              <!-- 转让金额-->
-	             <if test = "map.TransPrincipal !=  null"> 
+	             <if test = "map.TransPrincipal !=  null and map.TransPrincipal !=  ''"> 
 	                and CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) =  #{map.TransPrincipal}
 	             </if> 
 	     </where>
@@ -92,7 +92,7 @@
      <resultMap type = "cn.springmvc.model.CreditorTransferCheckEntity" id = "resultCreditorTransferdetails">
         <id property = "ctaId"						column = "CTA_Id" />
 		<result property = "projectTitle"       	column = "Project_Title" />
-		<result property = "ProjectNo"    	        column = "Project_No" />
+		<result property = "projectNo"    	        column = "Project_No" />
 	    <result property = "billNo"       	        column = "Bill_No" />
 	    <result property = "applyTime"       	    column = "Apply_Time" />
 		<result property = "transPrincipal"  	    column = "Trans_Principal" />
@@ -103,10 +103,10 @@
     </resultMap> 
       <!-- 查询债权转让项目详情 -->  
 	<select id = "selectCreditorTransferDetailCheck" parameterType = "Map"  resultMap = "resultCreditorTransferdetails"> 
-	select cta.CTA_Id,pbi.Project_Title,par.Project_No,cta.Bill_No,cta.Apply_Time,cta.Trans_Principal,cta.Surplus_Time,
-	cta.Surplus_Time_Type,cta.Trans_Discount,cta.Trans_MaxTime,
-	CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) Trans_Principal,
-	CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed) Trans_Discount 
+	select cta.CTA_Id,pbi.Project_Title,par.Project_No,cta.Bill_No,cta.Apply_Time,cta.Surplus_Time,
+	cta.Surplus_Time_Type,cta.Trans_MaxTime,
+	CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{sKey})) as signed) Trans_Principal,
+	CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{sKey})) as signed) Trans_Discount 
 	from Creditor_Trans_App cta 
 	left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id 
 	left join Project_App_Record par  on par.Apply_Id = ir.Apply_Id

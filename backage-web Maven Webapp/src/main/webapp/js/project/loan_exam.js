@@ -54,13 +54,13 @@ $(function(){
 				          { title:"借款人申请日期","data": "recordDate"},  
 				          { title:"借款申请项目编号","data": "projectNo"},  
 				          { title:"借款人用户名","data": "logname"},  
-				          { title:"借款人姓名","data": "membername"},  
+				          { title:"借款人姓名","data": "memberName"},  
 				          { title:"借款项目名称","data": "projectBaseInfoentity.projectTitle"},  
 				          { title:"借款产品类型","data": "projectName"},  
 				          { title:"借款期限","data": "projectBaseInfoentity.deadline"},  
-				          { title:"借款金额","data": "projectBaseInfoentity.amount"},  
-				          { title:"年化利率","data": "projectBaseInfoentity.yearRate"},  
-				          { title:"还款方式","data": "repayWay", 
+				          { title:"借款金额(元)","data": "projectBaseInfoentity.amounts"},  
+				          { title:"年化利率(%)","data": "projectBaseInfoentity.yearRates"},  
+				          { title:"还款方式","data": "projectBaseInfoentity.repayWay", 
 				        	  "mRender": function (data, type, full) {
 				        		  if(data == 0){
 				        	    		return "等额本息";
@@ -75,16 +75,12 @@ $(function(){
 				        	    	}  
 				        	  }
 				          },  
-				          { title:"状态","data": "", 
+				          { title:"状态","data": "checkStatuNow", 
 				        	  "mRender": function (data, type, full) {
-				        		  	if(data == 0){
-				        	    		return "未发布";
-				        	    	}else if(data == 0){
-				        	    		return "已发布";
-				        	    	}else if(data == -1){
-				        	    		return "已拒绝";
+				        		  	if(data == 1){
+				        	    		return "已审核";
 				        	    	}else{
-				        	    		return "";
+				        	    		return "未审核";
 				        	    	}  
 				        	  }
 				          }  
@@ -170,6 +166,10 @@ function proAudit(){
 	var data = $('#table_id').DataTable().rows('.selected').data(); 
 	if(data.length<1){
 			layer.alert("请选择项目！",{icon:0});
+			return;
+	}
+	if(data[0].checkStatuNow == 1){
+			layer.alert("该项目已审核！",{icon:0});
 			return;
 	}
 	var applyId = data[0].applyId;//Project_App_Record 表Apply_Id

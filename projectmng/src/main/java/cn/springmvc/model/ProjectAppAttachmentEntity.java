@@ -9,6 +9,7 @@ package cn.springmvc.model;
 * @date 2016-3-22 下午5:19:27  */
 public class ProjectAppAttachmentEntity {
 	private long applyId;//	项目申请ID
+	private long purposeId;//借款意向ID
 	private int attachInfoType;//附件类型：0：其他 1：借款方资料 2：抵押资料 3：现场调查资料	
 	private String attachTitle;//附件标题	
 	private String attachUrl;//	附件路径
@@ -35,6 +36,12 @@ public class ProjectAppAttachmentEntity {
 	}
 	public void setAttachUrl(String attachUrl) {
 		this.attachUrl = attachUrl;
+	}
+	public long getPurposeId() {
+		return purposeId;
+	}
+	public void setPurposeId(long purposeId) {
+		this.purposeId = purposeId;
 	}
 	
 }

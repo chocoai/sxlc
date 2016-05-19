@@ -6,6 +6,7 @@ $(".commonbtn0").bind('click', function () {
 	var remark = $("#remarks").val();
 	remark = encrypt.encrypt((remark + ""));
 	$("#remark").val(remark);
+	$("#memberType").val(encrypt.encrypt($("#memberTypes").val() + ""));
 	$("#rechargeform").submit();
 });
 
@@ -15,8 +16,6 @@ $(function () {
 	$("#rechargeTypes").bind('change', function () {
 		var rechargeType = $(this).val();
 		var amount = $("#amounts").val();
-		
-		
 		if (rechargeType == "") {
 			$("#rechargeC").text(0);
 			$("#realMoney").text(parseInt(amount) - 0);
@@ -44,7 +43,6 @@ $(function () {
 	$("#amounts").bind('mouseout', function () {
 		var rechargeType = $("#rechargeTypes").val();
 		var amount = $(this).val();
-		
 		if (rechargeType == "") {
 			$("#rechargeC").text(0);
 			$("#realMoney").text(parseInt(amount) - 0);
@@ -65,6 +63,7 @@ $(function () {
 		amount = encrypt.encrypt((amount + ""));
 		$("#rechargeType").val(rechargeType);
 		$("#amount").val(amount);
+		
 		
 	});
 });

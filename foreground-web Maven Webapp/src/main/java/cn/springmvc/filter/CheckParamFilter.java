@@ -48,6 +48,8 @@ public class CheckParamFilter implements Filter{
 		exitRout.add("setNewPassWord");								//设置新密码
 		exitRout.add("memberInvestmentPage");						//項目投資返回
 		exitRout.add("memberInvestmentvoid");						//項目投資返回
+		exitRout.add("ReplayCallBackReturn");							//項目还款返回
+		exitRout.add("ReplayCallBackNotify");							//項目还款返回
 	}
 
 	@Override

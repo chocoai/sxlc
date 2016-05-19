@@ -1,5 +1,9 @@
 /* 查看详情页面加载    */
-
+	
+if(typeof(_index)!='undefined'){
+	var index3 = _index.m3;
+	var index2 = _index.m2;
+}
 function detailView(){
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
 	if(rowdata.length<1){
@@ -7,7 +11,7 @@ function detailView(){
 		return;
 	}
 	var content=rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/memberDetail.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/memberDetail.jsp?content="+content+"&_index_m3="+index3;
 }
 /*  借款查询      */
 function loanView(){
@@ -17,7 +21,7 @@ function loanView(){
 		return;
 	}
 	var content=rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/loanView.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/loanView.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   投资查询       */
 function investView(){
@@ -27,7 +31,7 @@ function investView(){
 		return;
 	}
 	var content=rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/investView.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/investView.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 } 
 /*   交易记录       */
 function transactionRecord(){
@@ -38,7 +42,7 @@ function transactionRecord(){
 	}
 	var content=rowdata[0].memberId;
 	var memberType = $("#memberType").val();
-	$(".right_col").load("web/member/allMembers/transactionRecord.jsp?content="+content+"&start="+memberType);
+	window.location.href = appPath+"/web/member/allMembers/transactionRecord.jsp?content="+content+"&start="+memberType+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   查看邀请会员列表          */
 function inviteView(){
@@ -48,7 +52,7 @@ function inviteView(){
 		return;
 	}
 	var content = rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/inviteView.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/inviteView.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   银行卡查询          */
 function cardView(){
@@ -58,7 +62,7 @@ function cardView(){
 		return;
 	}
 	var content = rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/cardView.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/cardView.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   重置密码纪录          */
 function resetPWDRecord(){
@@ -68,7 +72,7 @@ function resetPWDRecord(){
 		return;
 	}
 	var content = rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/resetPWD.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/resetPWD.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   修改邀请会员          */
 function inviteVip(){
@@ -78,7 +82,7 @@ function inviteVip(){
 		return;
 	}
 	var content = rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/inviteVIP-change.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/inviteVIP-change.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 
 /*   发送     */
@@ -101,7 +105,7 @@ function recordQuery(){
 	}
 	var content = rowdata[0].memberId;
 	var memberType = $("#memberType").val();
-	$(".right_col").load("web/member/allMembers/member-recordQuery.jsp?content="+content+"&start="+memberType);
+	window.location.href = appPath+"/web/member/allMembers/member-recordQuery.jsp?content="+content+"&start="+memberType+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   充值记录查询          */
 function rechargeRecord(){
@@ -112,7 +116,7 @@ function rechargeRecord(){
 	}
 	var content = rowdata[0].memberId;
 	var memberType = $("#memberType").val();
-	$(".right_col").load("web/member/allMembers/member-rechargeRecord.jsp?content="+content+"&start="+memberType);
+	window.location.href = appPath+"/web/member/allMembers/member-rechargeRecord.jsp?content="+content+"&start="+memberType+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   黑名单查询          */
 function memeberBlackRecord(){
@@ -122,11 +126,17 @@ function memeberBlackRecord(){
 		return;
 	}
 	var content = rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/memberBlackRecord.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/memberBlackRecord.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   查看提交认证信息          */
 function perSubmitAuthentication(){
-	$(".right_col").load("web/member/allMembers/per-submitAuthentication.jsp");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	var content = rowdata[0].memberId;
+	window.location.href = appPath+"/web/member/allMembers/per-submitAuthentication.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   债权转让记录         */
 function bondTransforRecord(){
@@ -136,15 +146,15 @@ function bondTransforRecord(){
 		return;
 	}
 	var content = rowdata[0].memberId;
-	$(".right_col").load("web/member/allMembers/bondTransforRecord.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/bondTransforRecord.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   分配理财顾问         */
 function financialAdvisor(){
-	$(".right_col").load("web/member/allMembers/per-financialAdvisor.jsp");
+	window.location.href = appPath+"/web/member/allMembers/per-financialAdvisor.jsp?_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   变更理财顾问         */
 function changeFinancialAdvisor(){
-	$(".right_col").load("web/member/allMembers/per-changeFinancialAdvisor.jsp");
+	window.location.href = appPath+"/web/member/allMembers/per-changeFinancialAdvisor.jsp?_index_m2="+index2+"&_index_m3="+index3;
 }
 /*   查询历史理财顾问         */
 function inquiryFinancialAdvisor(){
@@ -154,7 +164,7 @@ function inquiryFinancialAdvisor(){
 		return;
 	}
 	var content = rowdata[0].memberID;
-	$(".right_col").load("web/member/allMembers/per-inquiryFinancialAdvisor.jsp?content="+content);
+	window.location.href = appPath+"/web/member/allMembers/per-inquiryFinancialAdvisor.jsp?content="+content+"&_index_m2="+index2+"&_index_m3="+index3;
 }
 
 /**
@@ -176,7 +186,7 @@ $(function () {
 		encrypt.setPublicKey(publicKey_common);
 		//result 为加密后参数
 		memberId = encrypt.encrypt(memberId+"");
-		layer.confirm('确定拉黑该会员？', {
+		layer.confirm('确定修改邀请人？', {
 			btn:['确定', '取消']
 		  ,yes: function(index, layero){ //或者使用btn1
 		    //确定的回调
@@ -276,6 +286,9 @@ function messageSendPer(title,page,type){
 	}
 	var content=rowdata[0].memberId;
 	page= page+"?content="+content;
+	
+	
+	//window.location.href = appPath+"/"+page;
 	if(title == "" || page == "" || type == "" ){
 		console.log("参数异常,请检查参数");
 		return;
@@ -412,7 +425,7 @@ function prohibitedItem(){
 	},cancel: function(index){//或者使用btn2（concel）
 		//取消的回调
 	}
-	});
+  });
 }
 
 

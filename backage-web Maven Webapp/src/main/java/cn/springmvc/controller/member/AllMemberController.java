@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -1003,7 +1004,13 @@ public class AllMemberController {
 		map.put("memberId", memberId);
 		MyRecommand myRecommand = memberManangerService.MyRecommandMan(map);
 		List<MyRecommand> list = new ArrayList<MyRecommand>();
-		list.add(myRecommand);
+		if(myRecommand ==null){
+			MyRecommand entity = new MyRecommand();
+			entity.setMemberNo("");
+			entity.setPhone("");
+			entity.setRealName("");
+			list.add(entity);
+		}
 		return list ;
 	}
 	
@@ -1040,6 +1047,26 @@ public class AllMemberController {
 		return pageEntity;
 	}	
 	
+	/**
+	 * 修改我的邀请人
+	 * TODO
+	 * 创建日期：2016-5-18下午4:29:14
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * int
+	 */
+	@RequestMapping(value ="/updateMyInvete", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateMyInvete(HttpServletRequest request){
+		long memberId = IntegerAndString.StringToLong(request.getParameter("memberId"),0);
+		long inveteId = IntegerAndString.StringToLong(request.getParameter("inviteId"),0);
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("memberId", memberId);
+		map.put("inviteId", inveteId);
+		int iResult = memberManangerService.updateMyInvete(map);
+		return iResult ;
+	}
 	/**
 	 * 拉黑记录查看
 	 * TODO
@@ -1151,8 +1178,24 @@ public class AllMemberController {
 		}
 		return iResult;
 	}
-	
-	
+	/**
+	 * 会员已认证列表
+	 * TODO
+	 * 创建日期：2016-5-18下午1:39:32
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return PageEntity
+	 */
+	@RequestMapping(value ="/selectAuditList", method = RequestMethod.POST)
+	@ResponseBody
+	public List<MemberAttestInfo> selectAuditList(HttpServletRequest request){
+		long memberId = IntegerAndString.StringToLong(request.getParameter("memberId"),0);
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("memberId", memberId);
+		List<MemberAttestInfo> list = memberManangerService.selectAuditList(map);
+		return list;
+	}
 	
 	/*************************会员操作 end *************************************************************/		
 	

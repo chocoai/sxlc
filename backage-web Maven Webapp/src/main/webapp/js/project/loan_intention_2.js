@@ -43,7 +43,7 @@ $(function() {
 				        	    	}  
 				        	  }
 				          },  
-				          { title:"借款金额","data": "amount"},  
+				          { title:"借款金额(元)","data": "amountStr"},  
 				          { title:"借款期限","data": "deadline"},  
 				          { title:"还款方式","data": "repayWay", 
 				        	  "mRender": function (data, type, full) {
@@ -198,8 +198,17 @@ $(function() {
 		 
 		 
 		 validform5(".layui-layer-btn0","dataForm",false,"3");
-	 
-	
+		//天标改变事件
+		$("#deadlineType").on("change",function(){
+			var type = $(this).val();
+			if(type==0){
+				$("#repayWay").val(2);
+				$("#repayWay").attr("disabled",true);
+			}else{
+				$("#repayWay").attr("disabled",false);
+			}
+		});
+		 
 });
 
 /* 借款人查询弹窗与弹窗中表格样式控制
@@ -221,6 +230,7 @@ function findBorrower(){
 			}
 			$("#memberID").val(data[0].memberId);
 			$("#memberType").val(data[0].memberType);
+			$("#memberName").val(data[0].memberName);
 			layer.close(index);
 	  },cancel: function(index){//或者使用btn2（concel）
 		//取消的回调

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import cn.springmvc.service.ManagedInterfaceServerTestI;
 import cn.springmvc.util.HttpSessionUtil;
 import cn.sxlc.account.manager.model.RechargeEntity;
 
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
 /**
  * 
@@ -148,8 +150,7 @@ public class PlatAccountOptionController {
 	* @throws
 	 */
 	@RequestMapping("/recharge")
-	@ResponseBody
-	public RechargeEntity recharge(HttpServletRequest request) {
+	public String recharge(HttpServletRequest request) {
 		
 		HttpSession session = HttpSessionUtil.getSession(request);
 		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
@@ -157,17 +158,60 @@ public class PlatAccountOptionController {
 		String rechargeType = request.getParameter("rechargeType");
 		String amount =request.getParameter("amount");//充值金额
 		String remark = request.getParameter("remark");//备注
+		String memberType = request.getParameter("memberType");//备注
 		
 		RechargeEntity recharge = new RechargeEntity();
 		recharge.setMemberId(userInfo.getId());
-		recharge.setMemberType(1);
+		recharge.setMemberType(IntegerAndString.StringToInt(memberType, -1));
 		recharge.setRechargeType(rechargeType);
 		recharge.setAmount(amount);
 		recharge.setRemark3(remark);
 		
-		RechargeEntity rechargeEntity = managedInterfaceServerTestI.testLoanRecharge(recharge);
+		RechargeEntity rechargeEntity = managedInterfaceServerTestI.testLoanRecharge(recharge, request);
 		
-		return rechargeEntity;
+		request.setAttribute("rechargeEntity", rechargeEntity);
+		return "dryLot/loanrechargetest";
+	}
+	
+	/**
+	 * 
+	* returnURL第三方回调 页面返回地址 
+	* TODO第三方回调 页面返回地址
+	* @author 杨翰林  
+	* * @Title: returnURL 
+	* @Description: 第三方回调 页面返回地址 
+	* @param  设定文件 
+	* @return void 返回类型 
+	* @date 2016-5-17 上午11:02:50
+	* @throws
+	 */
+	@RequestMapping("/backURL")
+	public String returnURL(HttpServletRequest request, HttpServletResponse response) {
+		
+		String isSuccess = managedInterfaceServerTestI.testLoanAuthorizeReturn(request, response);
+		
+		if ("SUCCESS".equals(isSuccess)) {
+			return "recommend/success";
+		}else {
+			return "recommend/fail";
+		}
+	}
+	
+	/**
+	 * 
+	* notifyURL第三方回调 服务器返回地址 
+	* TODO第三方回调 服务器返回地址
+	* @author 杨翰林  
+	* * @Title: notifyURL 
+	* @Description: 第三方回调 服务器返回地址 
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-17 上午11:06:01
+	* @throws
+	 */
+	@RequestMapping("/backServerURL")
+	public void notifyURL(HttpServletRequest request, HttpServletResponse response) {
+		managedInterfaceServerTestI.testLoanAuthorizeNotify(request, response);
 	}
 }
 

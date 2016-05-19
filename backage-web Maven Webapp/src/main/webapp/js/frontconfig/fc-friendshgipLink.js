@@ -122,7 +122,7 @@ function modLink(){
 		var id = encrypt.encrypt(friendLinkId + "");
 		$.ajax({
 			type : 'post',
-			url :　appPath +　"/link/update.do",
+			url : appPath + "/link/update.do",
 			data : {
 				name : name,
 				url : url,

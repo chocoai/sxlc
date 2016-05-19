@@ -99,6 +99,12 @@ public class LuckyDrawListDaoImpl extends SqlSessionDaoSupport implements
 		return getSqlSession().selectList("LuckyDraw.selectPrizeTypes");
 		
 	}
+	@Override
+	public LotteryActivityEntity selectLotteryActivitylimit() {
+		
+		return getSqlSession().selectOne("LuckyDraw.selectLotteryActivitylimit");
+		
+	}
 
 }
 

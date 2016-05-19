@@ -60,7 +60,9 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 		param.put("homeTown", birthplace);
 		param.put("positive", positive);
 		param.put("reverse", reverse);
-		param.put("endTime", endTime+" 23:59:59");
+		if(endTime != null){
+			param.put("endTime", endTime+" 23:59:59");
+		}
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		param.put("result", 1);
 		

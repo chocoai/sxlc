@@ -317,7 +317,7 @@ $(function() {
 			content: $(".dept-select"),//DOM或内容
 			btn:['添加', '关闭']
 		,yes: function(index, layero){ //或者使用btn1
-			var data = $('#deptTbList').DataTable().rows('.selected').data(); 
+			var data = $('#deptTbList').DataTable().rows('.selected').data();
 			if(data.length<1){
 				layer.alert("请选择职务！",{icon:0});
 				return;
@@ -381,7 +381,6 @@ $(function() {
 		                        ],
                 rowCallback:function(row,data){//添加单击事件，改变行的样式      
                 }
-	 
 	});
 	
 	//表格单选效果(有复选框)

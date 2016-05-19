@@ -34,8 +34,14 @@
 			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
 			left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_Id
 			<where>
-				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
+				mi.Member_Type=#{map.memberType} 
 				and mai.Status=#{map.status}
+				<if test="map.attestTypeID &gt; 25">
+					and mat.Attest_Type_ID> #{map.attestTypeID}
+				</if>
+				<if test="map.attestTypeID &lt; 26">
+					and mat.Attest_Type_ID= #{map.attestTypeID}
+				</if>
 				<if test="map.logname!=null and map.logname!=''">
 					and mi.Logname like '%${map.logname}%'
 				</if>
@@ -224,6 +230,12 @@
 	<where>
 	    mi.Member_Type=1 and mat.Attest_Type_ID=#{map.attestTypeID}
 		and mai.Status=#{map.status}
+		<if test="map.attestTypeID  &gt;  25">
+			and mi.Logname like '%${map.logname}%'
+		</if>
+		<if test="map.attestTypeID &lt; 26">
+			and mi.Logname like '%${map.logname}%'
+		</if>
 		<if test="map.logname!=null and map.logname!=''">
 			and mi.Logname like '%${map.logname}%'
 		</if>
@@ -821,13 +833,13 @@
     	<where>
     		fa.Service_Statu = 0
     		<if test="map.servicePhone != null and map.servicePhone !='' ">
-    			servicePhone like '%${map.servicePhone}%'
+    			and servicePhone like '%${map.servicePhone}%'
     		</if>
     		<if test="map.realName != null and map.realName !='' ">
-    			realName like '%${map.realName}%'
+    			and realName like '%${map.realName}%'
     		</if>
     		<if test="map.serviceNo != null and map.serviceNo !='' ">
-    			serviceNo like '%${map.serviceNo}%'
+    			and serviceNo like '%${map.serviceNo}%'
     		</if>
     	</where>
     </select>
@@ -863,19 +875,19 @@
     	  (SELECT count(*) FROM Member_Financial_Advisor mfa WHERE mfa.Member_ID = mi.Member_ID )=0 ) cc
 		<!-- + 会员类型 -->
     		<if test="map.memberNo!=null and map.memberNo !=''">
-    			memberNo like '%${map.memberNo}%'
+    			and memberNo like '%${map.memberNo}%'
     		</if>
     		<if test="map.logName!=null and map.logName !=''">
-    			logName like '%${map.logName}%'
+    			and logName like '%${map.logName}%'
     		</if>
     		<if test="map.personalName!=null and map.personalName !=''">
-    			personalName like '%${map.personalName}%'
+    			and personalName like '%${map.personalName}%'
     		</if>
     		<if test="map.startTime!=null and map.startTime !=''">
-    			regDate >= #{map.startTime}
+    			and regDate >= #{map.startTime}
     		</if>
     		<if test="map.endTime!=null and map.endTime !=''">
-    			#{map.endTime} >= regDate
+    			and #{map.endTime} >= regDate
     		</if>
     	</where>
     </select>
@@ -905,30 +917,31 @@
 		mi.Member_Type = #{map.memberType} and (SELECT count(*) FROM Member_Financial_Advisor mfa WHERE mfa.Member_ID = mi.Member_ID )>0
 		) newTab
 		<where>
+			1=1
 			<if test="map.memberNo!=null and map.memberNo !=''">
-    			memberNo like '%${map.memberNo}%'
+    			and memberNo like '%${map.memberNo}%'
     		</if>
     		<if test="map.logName!=null and map.logName !=''">
-    			logName like '%${map.logName}%'
+    			and logName like '%${map.logName}%'
     		</if>
     		<if test="map.personalName!=null and map.personalName !=''">
-    			personalName like '%${map.personalName}%'
+    			and personalName like '%${map.personalName}%'
     		</if>
     		<if test="map.startTime!=null and map.startTime !=''">
-    			regDate >= #{map.startTime}
+    			and regDate >= #{map.startTime}
     		</if>
     		<if test="map.endTime!=null and map.endTime !=''">
-    			#{map.endTime} >= regDate
+    			and #{map.endTime} >= regDate
     		</if>
     		<if test="map.fAName!=null and map.fAName !=''">
-    			fAName like '%${map.fAName}%'
+    			and fAName like '%${map.fAName}%'
     		</if>
 		</where>
     </select>
     
     
     <select id="ChangeHistory" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.ExistingFinancialAdvisorEntity">
-    	select pbi.Personal_Name fAName,mfa.Remove_Date regDate from Member_Financial_Advisor mfa left join Financial_Advisor fa
+    	select CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) as fAName,mfa.Remove_Date regDate from Member_Financial_Advisor mfa left join Financial_Advisor fa
     		on mfa.FA_ID = fa.FA_ID
     		left join Staff_Info si on si.Staff_Id = fa.Staff_Id
     		left join Personal_Base_Info pbi on si.Personal_Id = pbi.Personal_Id

@@ -93,12 +93,17 @@
 <div class="identification-info">
 <div class="left-head">认证信息</div>
 	<ul class="blue-table clearfix">
-	   <c:forEach items="${borrowingList }" var="bti">
-	   	 <li>
+	   <li>
+	   	  <div>认证项目</div>
+	      <div>状态</div>
+	      <div>认证状态</div>
+	   </li>  
+	   <c:forEach items="${borrowingList }" var="bit">
+	   	<li>
 	   	  <div>${bit.attestTypeName }</div>
 	      <div>${bit.statusName }</div>
 	      <div>${bit.endTime }</div>
-	   </li>   
+	   	</li>   
 	   </c:forEach>
 	</ul>
 </div>

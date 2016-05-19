@@ -60,10 +60,11 @@ function showResetPwd(memberId){
 		                	  }
 		                  },
 		                  { title:"操作时间","data": "sRecordDate"},   
+		                  { title:"操作管理员名称","data": "adminName" },
 		                  { title:"操作管理员名称","data": "adminName" },  
 		        ],
 		        aoColumnDefs : [
-		        				// {"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
+		        				 {"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
 		        				{
 		        						"orderable" : false,
 		        						"aTargets" : [0,1,2,3]

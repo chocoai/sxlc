@@ -9,6 +9,7 @@ package cn.springmvc.model;
 * @date 2016-3-22 下午5:02:59  */
 public class ProjectInvestRedPackageEntity {
 	private long applyId;//	项目申请ID
+	private long purposeId;//借款意向ID
 	private int investRedPackageMin;//投资超过N元 单位：元 精确到小数点后4位	
 	private int investNum;//前M位投资人	
 	private int redPackage;//	获取红包金额 单位：元 精确到小数点后4位
@@ -35,6 +36,12 @@ public class ProjectInvestRedPackageEntity {
 	}
 	public void setRedPackage(int redPackage) {
 		this.redPackage = redPackage;
+	}
+	public long getPurposeId() {
+		return purposeId;
+	}
+	public void setPurposeId(long purposeId) {
+		this.purposeId = purposeId;
 	}
 	
 }

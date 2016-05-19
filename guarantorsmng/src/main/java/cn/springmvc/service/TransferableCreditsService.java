@@ -13,6 +13,7 @@ import cn.springmvc.model.GuaranteeRelationalEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
 import cn.springmvc.model.TransferableCreditsEntity;
+import cn.springmvc.model.TransferableCreditsFangKuanEntity;
 
 
 
@@ -33,7 +34,6 @@ public interface TransferableCreditsService {
 	* @param @return 设定文件 
 	* @return List<TransferableCreditsEntity> 返回类型 
 	* @date 2016-3-31 上午11:05:38
-	* @throws 
 	*/
 	public List<TransferableCreditsEntity> selectTransferableCredits(PageEntity page);
 	/** 
@@ -46,9 +46,23 @@ public interface TransferableCreditsService {
 	* @param @return 设定文件 
 	* @return Map<String,Object> 返回类型 
 	* @date 2016-3-31 上午11:32:16
-	* @throws 
 	*/
 	public int creditorTransApp(Map<String, Object> map);
+	
+	
+	/** 
+	* transferableCreditsFangKuan(这里用一句话描述这个方法的作用) 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: transferableCreditsFangKuan 
+	* @Description: TODO 
+	* @param @param paEntity
+	* @param @return 设定文件 
+	* @return List<TransferableCreditsFangKuanEntity> 返回类型 
+	* @date 2016-5-18 上午10:15:19
+	* @throws 
+	*/
+	public List<TransferableCreditsFangKuanEntity> transferableCreditsFangKuan(PageEntity paEntity);
 }
 
 

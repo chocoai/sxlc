@@ -16,6 +16,9 @@ import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 import cn.springmvc.dao.SelectThreePartyDao;
+import cn.springmvc.model.InvestRecordInfoEntity;
+import cn.springmvc.model.LoanRepayEntitys;
+import cn.springmvc.model.ProjectDetailEntity;
 import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 import cn.sxlc.account.manager.model.AwardEntity;
 import cn.sxlc.account.manager.model.InvestRecordEntity;
@@ -111,7 +114,7 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 			Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("ThreePartyXML.selectAllInvestForEarlyRepayment",map);
+		return getSqlSession().selectList("ThreePartyXML.selectAllInvestForEarlyRepayment",map);
 	}
 
 	@Override
@@ -372,5 +375,60 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 		int result = IntegerAndString.StringToInt(map.get("result").toString(), 0);
 		return result;
 	}
-}
+	
+	@Override
+	public List<InvestRecordInfoEntity> selectInvestListByProjectID(
+			Map<String, Object> map) { 
+		return getSqlSession().selectList("investincomeList.selectInvestListByProjectID",map); 
+	}
+	
+	@Override
+	public ProjectDetailEntity selectProjectDetailByID(long id) {
 
+		ProjectDetailEntity projectAppRecordEntity = null;
+		projectAppRecordEntity = getSqlSession().selectOne("ThreePartyXML.selectProjectdetail",id);
+		return  projectAppRecordEntity;
+
+	}
+	
+
+	@Override
+	public InvestRecordInfoEntity selectInvestInfoByInvestID(long investID) {
+		
+		return getSqlSession().selectOne("investincomeList.selectInvestInfoByInvestID",investID);
+		
+	}
+	@Override
+	public List<LoanRepayEntitys> selectLoanRepayIDByapplyID(long applyID) {
+		
+		return  getSqlSession().selectList("investincomeList.selectLoanRepayIDByapplyID",applyID);
+		 
+   }
+	@Override
+	public long findUserMoney(long memberID, int memberType) {
+		
+		// TODO Auto-generated method stub return 0;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberID", memberID);
+		map.put("memberType", memberType);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
+		return getSqlSession().selectOne("ThreePartyXML.findUserMoney",map);
+	}
+	@Override
+	public long findInterestMngFee() {
+		
+		// TODO Auto-generated method stub return 0;
+		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("memberID", memberID);
+//		map.put("memberType", memberType);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
+		Long sdsLong=getSqlSession().selectOne("ThreePartyXML.findInterestMngFee",map);
+		long retu=0;
+		if (sdsLong==null) {
+			retu=0;
+		}else {
+			retu=sdsLong;
+		}
+		return retu;
+	}
+}

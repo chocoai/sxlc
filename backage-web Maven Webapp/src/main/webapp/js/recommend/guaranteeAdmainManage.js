@@ -59,26 +59,25 @@ function addMange() {
 
 function modMange() {
 	var rowdata = $('#admaintable').DataTable().rows('.selected').data();
-	var guId = rowdata[0].adminID;
-	var userName = $("#userName").val();
-	var remark = $("#remark").val();
-	var password = $("#pwd").val();
+	var adminID = rowdata[0].adminID;
+	var userName = $("#musername").val();
+	var remark = $("#mremark").val();
+	var password = $("#mpwd").val();
 	$.ajax({
 		type : 'post',
-		url : appPath + "/guarant/saveAdmin.do",
+		url : appPath + "/guarant/update.do",
 		data : {
 			userName : encrypt.encrypt("" + userName),
 			password : encrypt.encrypt("" + password),
-			guaranteeID : encrypt.encrypt("" + guId),
-			remark : encrypt.encrypt("" + remark),
-			stype : encrypt.encrypt("" + 1)
+			adminID : encrypt.encrypt("" + adminID),
+			remark : encrypt.encrypt("" + remark)
 		},
 		success : function (data) {
 			if (data == 1) {
-				layer.alert("添加成功!",{icon:1});
+				layer.alert("操作成功!",{icon:1});
 				setTimeout('location.reload()',2000);
 			}else {
-				layer.alert("添加失败!",{icon:2});  
+				layer.alert("操作失败!",{icon:2});  
 			}
 		}
 	});
@@ -94,13 +93,13 @@ function manageAdmainMod(){
 			type : 'post',
 			url : appPath + "/guarant/queryAdmin.do",
 			data : {
-				guaranteeID : encrypt.encrypt("" + rowdata[0].guaranteeID)
+				adminID : encrypt.encrypt("" + rowdata[0].adminID)
 			},
 			success : function (msg) {
-				$("#musername").val();
-				$("#mpwd").val();
-				$("#mrpwd").val();
-				$("#remark").val();
+				$("#musername").val(msg.adminName);
+				$("#mpwd").val(msg.adminPwd);
+				$("#mrpwd").val(msg.adminPwd);
+				$("#mremark").val(msg.adminRemark);
 			}
 		});
 	}

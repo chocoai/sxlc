@@ -99,7 +99,7 @@ $(".obtn-send-phonemsg").on('click',function(){
 			  var data={};
 			    var urgedDetail = $("#msgcontent").val();
 			    data.urgedType = encrypt.encrypt("1");//1:短信 
-			    data.urgedDetail = encrypt.encrypt(urgedDetail); 
+			    data.content = urgedDetail; 
 			    data.applyID = encrypt.encrypt(rdata[0].applyId+"");
 			    data.repayId = encrypt.encrypt(rdata[0].repayID+"");
 			    $.ajax( {  
@@ -160,6 +160,7 @@ $(function(){
 				  $("#amounts").val(data.amounts);
 				  $("#indexs").val(data.indexs);
 				  $("#repayMaxTime").val(data.repayMaxTime);
+				  $("#projectBill").html(data.projectBill);
 				  
 				  layer.open({
 			            type: 1,

@@ -118,7 +118,7 @@
 	</select>
 	<!-- 查询结果封装 -->
     <resultMap type = "cn.invitemastermng.model.SeoSetEntity" id = "SEO_Display"> 
-        <id property = "SeoSetID"           column = "Seo_Set_ID" />
+        <id property = "seoSetID"           column = "Seo_Set_ID" />
         <result property = "Seo_Type_ID"    column = "seoTypeID" />
 		<result property = "seoTitle"       column = "Seo_Title" />
 		<result property = "seoDescription" column = "Seo_Description" />  

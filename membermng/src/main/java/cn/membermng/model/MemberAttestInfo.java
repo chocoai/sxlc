@@ -3,6 +3,8 @@ package cn.membermng.model;
 import java.util.Date;
 import java.util.List;
 
+import product_p2p.kit.datatrans.TimestampAndString;
+
 
 
 /***
@@ -21,8 +23,10 @@ public class MemberAttestInfo {
 	private String              attestName;					//认证类型
 	private	Integer				status;						//认证状态
 	private Date				recordDate;					//申请时间
+	private String				sRecordDate;				
 	private Date 				checkDate;					//认证申请时间
-	private Date				ednDate;					//有效期结束时间
+	private Date				endDate;					//有效期结束时间'
+	private String              sEndDate;					//
 	private String				remark;						//备注
 	private Integer				deleteFlag;					//删除标记
 	
@@ -45,7 +49,7 @@ public class MemberAttestInfo {
 		this.status = status;
 		this.recordDate = recordDate;
 		this.checkDate = checkDate;
-		this.ednDate = ednDate;
+		this.endDate = ednDate;
 		this.remark = remark;
 		this.deleteFlag = deleteFlag;
 	}
@@ -100,6 +104,7 @@ public class MemberAttestInfo {
 	}
 	public void setRecordDate(Date recordDate) {
 		this.recordDate = recordDate;
+		this.sRecordDate =  TimestampAndString.DateToString(recordDate);
 	}
 	public Date getCheckDate() {
 		return checkDate;
@@ -107,12 +112,24 @@ public class MemberAttestInfo {
 	public void setCheckDate(Date checkDate) {
 		this.checkDate = checkDate;
 	}
-	public Date getEdnDate() {
-		return ednDate;
+	
+	public Date getEndDate() {
+		return endDate;
+		
 	}
-	public void setEdnDate(Date ednDate) {
-		this.ednDate = ednDate;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+		this.sEndDate = TimestampAndString.DateToString(endDate);
 	}
+
+	public String getsRecordDate() {
+		return sRecordDate;
+	}
+
+	public String getsEndDate() {
+		return sEndDate;
+	}
+
 	public String getRemark() {
 		return remark;
 	}

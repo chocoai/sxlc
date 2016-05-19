@@ -300,3 +300,17 @@ img{
 .con-item select{
 	width:169px;
 }
+.cerfiedBtn,.checkBtn{
+	display: none
+}
+.authen ul{
+	width:850px;
+	height:35px
+}
+.authen ul li{
+  list-style: none;
+  hight:30px;
+  line-height:30px;
+  width: 150px;
+  float: left;
+}

@@ -7,7 +7,7 @@
 			+ path + "/";
 %>
 <div class="accountCommonTop">
-	早上好，欢迎<span>王大先生</span>！今天你理财了吗？
+	早上好，欢迎<span class="left_name"></span>！今天你理财了吗？
 </div>
 <div class="accountCommonLeft">
 	<div class="accountLeftTop">
@@ -17,14 +17,14 @@
 				<img class="userFaceTop" src="resource/img/account/common/userface.png">
 			</div>
 			<div class="userInfo">
-				<label>王大先生</label>
-				<p>称号:<span>小二</span></p>
-				<p>信用等级:<span>高</span></p>
+				<label class="left_name"></label>
+				<p>称号:<span class="integralLevelName"></span></p>
+				<p>信用等级:<span class="creditLevelName"></span></p>
 			</div>
 		</div>
 		<div class="ALT2">
 			<div class="integral">
-				<span>4000积分</span>
+				<span class="integral_score"></span>
 			</div>
 			<div class="sign">
 				<label></label>
@@ -32,15 +32,15 @@
 			</div>
 		</div>
 		<div class="ALT3"><!-- 在这里加入m1 m2 m3 m4 m5分别点亮下面的图标 -->
-			<div class="mark1"></div>
-			<div class="mark2"></div>
-			<div class="mark3"></div>
-			<div class="mark4"></div>
-			<div class="mark5"></div>
+			<div class="mark1"><img src="resource/img/account/common/wdzh_7.png"></div>
+			<div class="mark2"><img src="resource/img/account/common/wdzh_9.png"></div>
+			<div class="mark3"><img src="resource/img/account/common/wdzh_11.png"></div>
+			<!-- <div class="mark4"><img src="resource/img/account/common/wdzh_13.png"></div> -->
+			<div class="mark5" openThird="1"><img src="resource/img/account/common/wdzh_15.png"></div>
 		</div>
 		<div class="ALT4">
 			<label></label>
-			第三方账号：<span>1258745</span>
+			第三方账号：<span class="thirdPartyAccount"></span>
 		</div>
 	</div>
 	<div class="accountLeftBottom" onselectstart="return false">
@@ -116,6 +116,7 @@
 </div>
 <div class="sign-success">
 	<img src="resource/img/account/qdcg2_03.jpg">
-	<p>您已经签到<a>3</a>次</p>
+	<p>您已经签到<a class="recordNum">3</a>次</p>
 	<div class="btn" onclick="layer.closeAll()">确定</div>
 </div>
+<script type="text/javascript" src="js/account/accountCommonLeft.js"></script>

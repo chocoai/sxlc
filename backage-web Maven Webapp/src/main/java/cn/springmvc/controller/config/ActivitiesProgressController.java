@@ -70,12 +70,12 @@ public class ActivitiesProgressController {
 	 * @param
 	 * return int
 	 */
-	@RequestMapping("/addProgress")
+	@RequestMapping("/saveProgress")
 	@ResponseBody
-	public int addProgress(HttpServletRequest request){
-		int apId = IntegerAndString.StringToInt(request.getParameter("apId"),0);
+	public int saveProgress(HttpServletRequest request){
+		int apID = IntegerAndString.StringToInt(request.getParameter("apId"),0);
 		ProcessProjectEntity entitys = new ProcessProjectEntity();
-		entitys.setApID(apId);
+		entitys.setApID(apID);
 		entitys.setBatch(0);
 		InsertAdminLogEntity  entity = new InsertAdminLogEntity(); //以后加
 		HttpSession session = request.getSession();
@@ -105,7 +105,7 @@ public class ActivitiesProgressController {
 	@ResponseBody
 	public int upOrDownProgress(HttpServletRequest request){
 		int id = IntegerAndString.StringToInt(request.getParameter("id"),0);
-		int flag = IntegerAndString.StringToInt(request.getParameter("statu"),0);
+		int flag = IntegerAndString.StringToInt(request.getParameter("statu"),1);
 		
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("iid", id);

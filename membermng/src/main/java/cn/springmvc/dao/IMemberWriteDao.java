@@ -87,4 +87,16 @@ public interface IMemberWriteDao {
 	 */
 	public int confirmReceipt(Map<String, Object> param);
 	
+	/**
+	 * 会员签到
+	* sign
+	* @author 邱陈东  
+	* * @Title: sign 
+	* @param @param param
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-18 下午3:40:07
+	* @throws
+	 */
+	public int sign(Map<String, Object> param);
 }

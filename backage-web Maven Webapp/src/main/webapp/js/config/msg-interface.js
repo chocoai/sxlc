@@ -48,7 +48,6 @@ $(function(){
 					          { title:"最近一次操作管理员","data": "optName"},  
 					          { title:"操作","data": "", 
 					        	  "mRender": function (data, type, full) {
-					        		  console.log(full);
 					        		  if(full.statu==0){
 					        			  return "<a onclick=\"enableOrDisable(1,'"+full.id+"');\" href=\"javascript:void(0);\">启用</a>" ;
 					        		  }else if(full.statu==1){
@@ -71,7 +70,6 @@ $(function(){
 		    	  scrollXInner : "100%",
 		          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 		          }
-		 
 		});//表格初始化完毕
 		 
 		//表格单选效果(有复选框)
@@ -110,7 +108,7 @@ function addOrUpdate(type){
 		title="短信地址接口添加";
 	}else if(type==2){
 		title="短信接口地址修改";
-		var data = $('#table_id').DataTable().rows('.selected').data();
+		var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的数据！",{icon:0});
 			return;
@@ -181,7 +179,7 @@ function enableOrDisable(type,id){
 	}, function(index, layero){
 		$.ajax({  
 			url:appPath+"/config/addOrUpdateMsgInterface.do",
-			data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id),"type":encrypt.encrypt("3")},
+			data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id+""),"type":encrypt.encrypt("3")},
 			type:'post',  
 			cache:false,  
 			dataType:'json', 

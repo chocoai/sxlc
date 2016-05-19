@@ -183,7 +183,7 @@ function showMemberAdviserList(){
 		                		  return sReturn;
 		                	  }
 		                  },
-		                  { title:"会员编码","data": "memberNo"},   
+		                  { title:"会员编号","data": "memberNo"},   
 		                  { title:"用户名","data": "logName" },
 		                  { title:Name,"data": "personalName" }, 
 		                  { title:"注册时间","data": "sRegDate" },

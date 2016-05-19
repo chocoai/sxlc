@@ -185,4 +185,13 @@
 	<select id="selectPrizeTypes" resultType='cn.invitemastermng.model.PrizeInformationEntity'>
 	   select name1 as  prizeTypes,code1 as prizeType from DICT  where tcode='DICT_JPLX'
 	</select>
+	
+		
+    <!--查询最近一期 抽奖活动 -->
+	<select id="selectLotteryActivitylimit" 
+	resultType="cn.invitemastermng.model.LotteryActivityEntity">
+	   select Lottery_ID as lotteryID,Period as period,Integra as integra,
+	   Start_Date as startDate,End_Date as endDate,Status  as status
+	   from  Lottery_Activity  order by Period desc limit 1
+	</select>
 </mapper>

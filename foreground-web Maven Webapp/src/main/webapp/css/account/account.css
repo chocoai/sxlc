@@ -1,10 +1,10 @@
 /* CSS Document */
 @charset "UTF-8";
-/* ÉèÖÃ¶¥²¿Á´½ÓÑùÊ½ */
+/* ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .mainPageTop .mainPageTop4{
 	color:#72c0f3;
 }
-/*Í¨ÓÃÑùÊ½*/
+/*Í¨ï¿½ï¿½ï¿½ï¿½Ê½*/
 body .main{
 	width:100%;
 	min-width:1200px;
@@ -128,7 +128,7 @@ body .main{
 	float: left;
 	margin: 0 0 0 12px;
 }
-.mark1{
+/* .mark1{
 	background-image: url("../../resource/img/account/common/wdzh_7.png");
 }
 .mark2{
@@ -142,7 +142,7 @@ body .main{
 }
 .mark5{
 	background-image: url("../../resource/img/account/common/wdzh_15.png");
-}
+} */
 .m1 .mark1{
 	background-image: url("../../resource/img/account/common/wdzh_6.png");
 }
@@ -321,8 +321,8 @@ body .main{
 
 
 
-/* ÒÔÏÂÎª·â×°µÄcssÄÚÈÝ    */
-/* 2016-03-29 ñã¸£ÐÇ input±êÇ©µÄ¹«ÓÃÑùÊ½ */
+/* ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½×°ï¿½ï¿½cssï¿½ï¿½ï¿½ï¿½    */
+/* 2016-03-29 ï¿½ã¸£ï¿½ï¿½ inputï¿½ï¿½Ç©ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 input[type="text"]{
 	border:1px solid #d2d2d2;
 	outline:none;
@@ -336,7 +336,7 @@ input[type="text"]:focus{
 	border-color:#a5d7f7;
 }
 /* end */
-/* button¹²ÓÃÑùÊ½ */
+/* buttonï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .btn{
 	width:184px;
 	height:44px;
@@ -361,7 +361,7 @@ input[type="text"]:focus{
 	border:1px solid #168bd7;
 }
 /* end */
-/* ulÄ£Äâselect¹²ÓÃÑùÊ½ */
+/* ulÄ£ï¿½ï¿½selectï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .selectValue{
 	display: none;
 }
@@ -407,7 +407,7 @@ input[type="text"]:focus{
 	font-size:16px;
 	color:#333;
 }
-/* Í¼Æ¬Ô¤ÀÀ¹«ÓÃÑùÊ½   */
+/* Í¼Æ¬Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½   */
 .previewPicture{
 	display:inline-block;
 	min-width:187px;
@@ -441,9 +441,9 @@ input[type="text"]:focus{
 	width:30%;
 	height:auto;
 }
-/* µ¯³öÌáÊ¾µÄÑùÊ½ */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê½ */
 
-/*µ¯³ö²ãÎé³ÉÈ»2016-4-7*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È»2016-4-7*/
 .sign-success{
 	display:none;
 }
@@ -465,10 +465,10 @@ input[type="text"]:focus{
 	line-height:53px;
 	font-szie:18px;
 }
-/*µ¯³ö²ã½áÊøÎé³ÉÈ»2016-4-7*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È»2016-4-7*/
 
 
-/* µ¯³öÌáÊ¾²ãÑùÊ½   ñã¸£ÐÇ      2016-04-06  */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê½   ï¿½ã¸£ï¿½ï¿½      2016-04-06  */
 .tipUp,
 .tipDown,
 .tipLeft,
@@ -554,7 +554,7 @@ input[type="text"]:focus{
 	color:#72c0f3;
 	margin:0 5px;
 }
-/*½ûÓÃ°´Å¥Àà*/
+/*ï¿½ï¿½ï¿½Ã°ï¿½Å¥ï¿½ï¿½*/
 .disabled{
 	pointer-events: none;
 	opacity: 0.5;

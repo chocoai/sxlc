@@ -20,11 +20,14 @@ $(function(){
 	})
 	//去掉时间后的.0
 	template.helper("$toDelete",function(content){
-		var index = content.indexOf(".");
-		if (index>=0){
-			return content.substring(0,index)
+		if (content == null){
+			return content
+		}else{
+			var index = content.indexOf(".");
+			if (index>=0){
+				return content.substring(0,index)
+			}
 		}
-		
 	})
 
 	var debtAttorn = {
@@ -50,7 +53,7 @@ $(function(){
 							var data = JSON.parse(r);
 							if (data.tol>0){
 								var html = template("inTransferList",data);
-								$("inTransTop").siblings().remove();
+								$("#inTransTop").siblings().remove();
 								$("#inTransferUl").append(html);
 								var totalPage = Math.ceil(data.tol/data.pageSize);
 								var totalRecords = data.tol;
@@ -93,7 +96,6 @@ $(function(){
 						url,
 						data,
 						function(r){
-							
 							var data = JSON.parse(r);
 							//console.log(data)
 							if (data.tol>0){
@@ -125,11 +127,12 @@ $(function(){
 								        shadeClose: true, //点击遮罩关闭
 								        content: $('.layerWindow')//内容，里边是包含内容的div的class
 								    });
-									//console.log($(this).index());
-									$("#transferableMoney").html(data.infos[$(this).index()].sMoney);
-									$("#inputInvestId").val(data.infos[$(this).index()].investId);
-									
+									var index = $(this).parent().parent().parent().parent().index()-1;
+									console.log(index)
+									$("#transferableMoney").html(data.infos[index].sMoney);
+									$("#inputInvestId").val(data.infos[index].investId);
 								});
+								
 								
 								
 							};
@@ -301,12 +304,17 @@ $(function(){
 	
 	
 	$("#sureBtn").on("click",function(){
+		if (parseInt($("#getTransNum").val())>parseInt($("#transferableMoney").html())){
+			layer.alert("您最多转让"+$("#transferableMoney").html()+"元");
+			return false
+		}
 		var data = {};
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publickey);
 		data.iId = encrypt.encrypt($("#inputInvestId").val()+"");
 		data.discount = encrypt.encrypt($("#getSaleNum").val()+"");
 		data.extras = encrypt.encrypt($("#getTransNum").val()+"");
+		data.maxTime = encrypt.encrypt($("#maxTime").val()+"");
 		var url = "investmentManagement/turnOutDebts.html";
 		//console.log(data);
 		NetUtil.ajax(
@@ -315,19 +323,15 @@ $(function(){
 				function(r){
 					var data = JSON.parse(r);
 					//console.log(data)
-					if (data.status == 0){
-						layer.alert("转让成功",function(){
-							layer.close()
+					if (data.status == 1){
+						layer.alert("转让成功",function(index){
+							layer.closeAll();
 						})
-					}
-					if (data.status == -1){
-						layer.alert("转让失败")
-					}
-					if (data.status == -2){
-						layer.alert("转让金额大于可转让金额")
+					}else{
+						layer.alert(data.message);
 					}
 				}
-		)
+			)
 		
 	})
 	

@@ -13,12 +13,21 @@
     <title>兑换详情</title>
     <jsp:include page="../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/integralMall/exchangeDetail.css">
+	<script type="text/javascript">
+    	var publicKey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 </head>
 <body>
     <jsp:include page="../common/top.jsp"></jsp:include>
    	<jsp:include page="../integralMall/intergralMallCommon.jsp"></jsp:include>
     <!-- 在这里加入页面内容 -->
     <!-- 兑换详情界面     胥福星      2016-03-29 -->
+    <!-- 判断登录 -->
+    <c:if test="${sessionScope.loginUser == null }">
+    	<script type="text/javascript">
+			window.location.href = "login.html";
+		</script>
+    </c:if>
     <div class="nowPosition">
     	<div class="nowPositionContent">您当前位置 &gt;<a href="integralMall/mallIndex.html">积分商城</a>&gt;<span>兑换详情</span></div>
     </div>
@@ -51,8 +60,8 @@
 	    				</div>
 	    				<ul class="addressUl">
 	    					<!-- 点击设置默认地址时，对该地址添加addressUlLi样式       -->
-	    					<c:if test="${!empty Address}">
-		    					<c:forEach items="${Address}" var="data">
+	    					<c:if test="${!empty addr}">
+		    					<c:forEach items="${addr}" var="data">
 			    					<li class="addressUlLi">
 			    						<span>${data.contactName}</span>
 			    						<span class="addressColor">${data.provinceName}&nbsp;${data.cityName}&nbsp;${data.countyName}&nbsp;${data.villagesName}&nbsp;${data.street}&nbsp;${data.detailedAddress}&nbsp;</span>
@@ -64,14 +73,14 @@
 				    					<form>
 				    						<div class="list">
 					    						<label>收货人姓名</label>
-					    						<input value="晓大大" maxlength="20"/>
+					    						<input value="${data.contactName}" maxlength="20"/>
 				    						</div>
 				    						<div class="list">
 					    						<label>所在地址</label>
 					    						<div class="selectArea selectArea2">
-					    							<input class="selectValue" value="1" >
-												    <input class="selectInput selectInput2" type="text" lang="请选择" readOnly="true"/>
-												    <ul class="select1" onselectstart="return false">
+					    							<input class="selectValue m-prov" value="${data.province}" >
+												    <input class="selectInput selectInput2 m-prov-ipt" type="text" lang="请选择" value="${data.provinceName}" readOnly="true"/>
+												    <ul class="select1 province" onselectstart="return false">
 												        <li class="selectOption" value="1">四川</li>
 												        <li class="selectOption" value="2">重庆</li>
 												        <li class="selectOption" value="3">河南</li>
@@ -79,18 +88,18 @@
 												</div>
 					    						<span class="lineSpan"></span>
 					    						<div class="selectArea selectArea2">
-					    							<input class="selectValue" value="1" >
-												    <input class="selectInput selectInput2" type="text" lang="请选择" readOnly="true"/>
-												    <ul class="select1" onselectstart="return false">
+					    							<input class="selectValue m-city" value="${data.city}" >
+												    <input class="selectInput selectInput2 m-city-ipt" type="text" lang="请选择" value="${data.cityName}" readOnly="true"/>
+												    <ul class="select1 city" onselectstart="return false">
 												        <li class="selectOption" value="1">成都</li>
 												        <li class="selectOption" value="2">宜宾</li>
 												    </ul>
 												</div>
 					    						<span class="lineSpan"></span>
 					    						<div class="selectArea selectArea2">
-					    							<input class="selectValue" value="1" >
-												    <input class="selectInput selectInput2" type="text" lang="请选择" readOnly="true"/>
-												    <ul class="select1" onselectstart="return false">
+					    							<input class="selectValue m-county" value="${data.county}" >
+												    <input class="selectInput selectInput2 m-county-ipt" type="text" lang="请选择" value="${data.countyName}" readOnly="true"/>
+												    <ul class="select1 county" onselectstart="return false">
 												        <li class="selectOption" value="1">青羊</li>
 												        <li class="selectOption" value="2">郫县</li>
 												    </ul>
@@ -98,17 +107,25 @@
 				    						</div>
 				    						<div class="list">
 					    						<label>详细地址</label>
-					    						<input class="addressDetail" value="郫县天目路77号" maxlength="50" />
+					    						<input class="addressDetail" value="${data.detailedAddress}" maxlength="50" />
 				    						</div>
 				    						<div class="list">
 					    						<label>收件人手机</label>
-					    						<input class="numberReg" value="18885478521" maxlength="11">
+					    						<input class="numberReg" value="${data.contactPhone}" maxlength="11">
 				    						</div>
 				    						<div class="list">
 					    						<label>送件时间</label>
 					    						<div class="selectArea selectArea1">
-					    							<input class="selectValue" value="1" >
-												    <input class="selectInput selectInput1" type="text" lang="请选择" readOnly="true"/>
+					    							<input class="selectValue" value="${data.deliveryChoice}" >
+					    							<c:if test="${data.deliveryChoice == 1}">
+													    <input class="selectInput selectInput1" type="text" lang="请选择" value="只限工作日" readOnly="true"/>
+					    							</c:if>
+					    							<c:if test="${data.deliveryChoice == 2}">
+													    <input class="selectInput selectInput1" type="text" lang="请选择" value="不限" readOnly="true"/>
+					    							</c:if>
+					    							<c:if test="${data.deliveryChoice == 3}">
+													    <input class="selectInput selectInput1" type="text" lang="请选择" value="只限节假日" readOnly="true"/>
+					    							</c:if>
 												    <ul class="select1" onselectstart="return false">
 												        <li class="selectOption" value="1">只限工作日</li>
 												        <li class="selectOption" value="2">不限</li>
@@ -132,17 +149,17 @@
     				
     				<div class="addressWhite">
     					<p>新增收货地址</p>
-    					<form id="zeng_shouHuo">
+    					<form id="add-form">
     						<div class="list">
 	    						<label>收货人姓名</label>
-	    						<input datatype="z2_20" maxlength="20"/>
+	    						<input id="receiver" datatype="z2_20" maxlength="20"/>
     						</div>
     						<div class="list">
 	    						<label>所在地址</label>
 	    						<div class="selectArea selectArea2">
-	    							<input class="selectValue" value="0" >
+	    							<input id="addr-prov" class="selectValue" value="0" >
 								    <input class="selectInput selectInput2" type="text" lang="请选择" readOnly="true"/>
-								    <ul class="select1" onselectstart="return false">
+								    <ul class="select1 province" onselectstart="return false">
 								        <li class="selectOption" value="1">四川</li>
 								        <li class="selectOption" value="2">重庆</li>
 								        <li class="selectOption" value="3">河南</li>
@@ -150,18 +167,18 @@
 								</div>
 	    						<span class="lineSpan"></span>
 	    						<div class="selectArea selectArea2">
-	    							<input class="selectValue" value="0" >
+	    							<input id="addr-city" class="selectValue" value="0" >
 								    <input class="selectInput selectInput2" type="text" lang="请选择" readOnly="true"/>
-								    <ul class="select1" onselectstart="return false">
+								    <ul class="select1 city" onselectstart="return false">
 								        <li class="selectOption" value="1">成都</li>
 								        <li class="selectOption" value="2">宜宾</li>
 								    </ul>
 								</div>
 	    						<span class="lineSpan"></span>
 	    						<div class="selectArea selectArea2">
-	    							<input class="selectValue" value="0" >
+	    							<input id="addr-county" class="selectValue" value="0" >
 								    <input class="selectInput selectInput2" type="text" lang="请选择" readOnly="true"/>
-								    <ul class="select1" onselectstart="return false">
+								    <ul class="select1 county" onselectstart="return false">
 								        <li class="selectOption" value="1">青羊</li>
 								        <li class="selectOption" value="2">郫县</li>
 								    </ul>
@@ -169,16 +186,16 @@
     						</div>
     						<div class="list">
 	    						<label>详细地址</label>
-	    						<input class="addressDetail" datatype="enteraddr" maxlength="50"/>
+	    						<input id="addr-det" class="addressDetail" datatype="enteraddr" maxlength="50"/>
     						</div>
     						<div class="list">
 	    						<label>收件人手机</label>
-	    						<input class="numberReg" datatype="zphone" maxlength="11"/>
+	    						<input id="receiver-phone" class="numberReg" datatype="zPhone" maxlength="11"/>
     						</div>
     						<div class="list">
 	    						<label>送件时间</label>
 	    						<div class="selectArea selectArea1">
-	    							<input class="selectValue" value="1" >
+	    							<input id="receiver-time" class="selectValue" value="1" >
 								    <input class="selectInput selectInput1" type="text" lang="请选择" readOnly="true"/>
 								    <ul class="select1" onselectstart="return false">
 								        <li class="selectOption" value="1">只限工作日</li>
@@ -187,11 +204,12 @@
 								    </ul>
 								</div>
     						</div>
+	    					<div class="btn">
+		    					<a id="addrAdd" class="saveBtn saveBtnHover">保存收货地址</a>
+		    					<input id="isDefaultAddress" type="hidden" />
+		    					<a class="saveBtn" href="javascript:;">设为默认收货地址</a>
+	    					</div>
     					</form>
-    					<div class="btn">
-	    					<a id="addrAdd" class="saveBtn saveBtnHover" href="javascript:;">保存收货地址</a>
-	    					<a class="saveBtn" href="javascript:;">设为默认收货地址</a>
-    					</div>
     				</div>
     				
     				<!-- 确认信息 -->
@@ -227,9 +245,9 @@
    			<input type="button" class="btn" value="确定" onclick="window.location.href='integralMall/itemList.html';">
    		</div>
    	</div>
+   	
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
-	<script type="text/javascript" src="<%=basePath %>/js/integralMall/exchangeDetail.js"></script>
-	<script type="text/javascript" src="js/plugs/valid/valid.js"></script>
+	<script type="text/javascript" src="js/integralMall/exchangeDetail.js"></script>
 	<script type="text/javascript">
 		//根据id获取兑换详情
 		getExchangeInfo();

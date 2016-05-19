@@ -31,11 +31,11 @@ $(function(){
 	
 	//倒计时
 		
-//	$('.J_CountDown').each(function () {
-//		var $this = $(this),
-//        data = $this.attr('data-config');
-//        $this.countDown(eval('(' + data + ')'));
-//	});
+	$('.J_CountDown').each(function () {
+		var $this = $(this),
+        data = $this.attr('data-config');
+        $this.countDown(eval('(' + data + ')'));
+	});
 	
 	$(".pro-ing").mouseover(function(){
 		$(this).parent().children(".proLi").css("display","block");
@@ -90,6 +90,7 @@ jQuery.fn.layoutClick = function(str){
 						}
 						$(".moneyFormat1").html(total);
 						var html = template("repay_Plan",data);
+						$("#repaymentPlanTop").siblings().remove();
 						$("#repaymentPlan").append(html);	
 					}
 				})
@@ -108,6 +109,7 @@ jQuery.fn.layoutClick = function(str){
 						var data = r
 						if (r.info.length>0){
 							var html = template("invest_List",r);
+							$("#investmentListTop").siblings().remove();
 							$("#investmentList").append(html)	
 						}
 					}
@@ -223,7 +225,12 @@ jQuery.fn.layoutClick = function(str){
 										$(".input1").each(function(n){
 											var n = n;
 											$(this).mouseover(function(){
-												$(this).layoutClick("有效期至"+r.redPackList[n].sEndDate);
+												if (r.redPackList[n].sEndDate == null){
+													$(this).layoutClick("永久有效");
+												}else{
+													$(this).layoutClick("有效期至"+r.redPackList[n].sEndDate);
+												}
+												
 											});
 											$(this).mouseout(function(){
 												$(this).parent().find(".tipClick").remove();
@@ -259,6 +266,12 @@ jQuery.fn.layoutClick = function(str){
 										});
 										
 										$("#useVouchers").on("keyup",function(){
+											if ($(this).val()>r.sVouchers){
+												layer.alert("代金券使用超出余额",function(index){
+													layer.close(index);
+													$("#useVouchers").val(r.sVouchers)
+												})
+											}
 											var re = /^[0-9]*[1-9][0-9]*$/; //正整数
 											var str = detail.getRedBags();
 											var thisVal = $(this).val()||"0";
@@ -278,7 +291,7 @@ jQuery.fn.layoutClick = function(str){
 									}
 							)
 						}else{
-							layer.alert("余额不足");
+							layer.alert("余额不足或本次可投金额");
 						}
 					}
 				})
@@ -374,6 +387,8 @@ $(function(){
 			}else{
 				layer.alert("50元起投且金额为整数")
 			}
+		}else{
+			layer.alert("请填写投资金额")
 		}
 	});
 	
@@ -389,12 +404,13 @@ $(function(){
 		}
 	});
 	
+	var cta = ctId;
 	$("#confirmSubmit").click(function(){
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publickey);
 		var data = {};
-		var sDirectPwd;
-		if($("#codeContent").html()==undefined){
+/*		var sDirectPwd;*/
+/*		if($("#codeContent").html()==undefined){
 			
 		}else{
 			if ($("#directionalCode").val()){
@@ -403,7 +419,7 @@ $(function(){
 				layer.alert("请填写定向标密码");
 				return false;
 			}
-		}
+		}*/
 		
 		var slVouchers = encrypt.encrypt($("#nowVoucher").html());
 		var lAmount = encrypt.encrypt($("#nowInvestNum").html());
@@ -415,19 +431,22 @@ $(function(){
 		});
 		var redPacks = encrypt.encrypt(arr.join(",")+"");
 		var projectId = encrypt.encrypt(applyId+"");
+
+		var ctId = encrypt.encrypt(cta+"")
 		
-		$("input[name='slVouchers']").val(slVouchers);
+		$("input[name='lVouchers']").val(slVouchers);
 		$("input[name='lAmount']").val(lAmount);
-		$("input[name='redPacks']").val(redPacks);
+		$("input[name='sRedPacketsInfo']").val(redPacks);
 		$("input[name='projectId']").val(projectId);
+		$("input[name='lCreditorTransAppId']").val(ctId);
 		
-		var param = {slVouchers:slVouchers,lAmount:lAmount,redPacks:redPacks,projectId:projectId};
+		var param = {lCreditorTransAppId:ctId,slVouchers:slVouchers,lAmount:lAmount,redPacks:redPacks,projectId:projectId};
 		
 		
-		if ($("input[name='sDirectPwd']").length>0){
+/*		if ($("input[name='sDirectPwd']").length>0){
 			$("input[name='sDirectPwd']").val(sDirectPwd);
 			param.sDirectPwd = sDirectPwd;
-		}
+		}*/
 		
 		var obj = eval(param);
 		var sign = NetUtil.createSign(obj);

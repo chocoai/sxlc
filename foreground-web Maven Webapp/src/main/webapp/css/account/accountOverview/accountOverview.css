@@ -1,4 +1,4 @@
-/* 锟剿伙拷锟斤拷锟绞诧拷挚锟绞�锟斤拷锟接撅拷 2016-04-06 */
+/* 閿熷壙浼欐嫹閿熸枻鎷烽敓缁炶鎷锋寶閿熺粸锟介敓鏂ゆ嫹閿熸帴鎾呮嫹 2016-04-06 */
 .accountOverview{
 	margin:2% auto;
 }
@@ -71,7 +71,7 @@
 .secondaryTitle span{
 	font-size:18px;
 	color:#000;
-	margin-left:35px;
+	/* margin-left:35px; */
 }
 .secondaryTitleOperate{
 	vertical-align:middle;
@@ -283,11 +283,21 @@
 	text-decoration:underline;
 	margin-left:13px;
 }
+.integralResidue_a{
+	display:inline;
+	color:#999999;
+	text-decoration:underline;
+	margin-left:13px;
+}
 .fourthSpan{
 	margin-left:23% !important;
 }
-/* 锟剿伙拷锟斤拷锟绞诧拷纸锟斤拷锟�*/
-/* 锟截匡拷苹锟絴锟斤拷锟斤拷苹锟斤拷锟斤拷挚锟绞�*/
+.fl_r_mr_40{
+	float: right;
+	/* margin-right: 40px; */
+}
+/* 閿熷壙浼欐嫹閿熸枻鎷烽敓缁炶鎷风焊閿熸枻鎷烽敓锟�/
+/* 閿熸埅鍖℃嫹鑻归敓绲撮敓鏂ゆ嫹閿熸枻鎷疯嫻閿熸枻鎷烽敓鏂ゆ嫹鎸氶敓缁烇拷*/
 .plan{
 	border-bottom: 1px solid #ececec;
 }
@@ -381,8 +391,8 @@
 /* .planMSecond{
 	display:none;
 } */
-/* 锟截匡拷苹锟絴锟斤拷锟斤拷苹锟斤拷锟斤拷纸锟斤拷锟�*/
-/* 锟绞斤拷态锟斤拷锟街匡拷始 */
+/* 閿熸埅鍖℃嫹鑻归敓绲撮敓鏂ゆ嫹閿熸枻鎷疯嫻閿熸枻鎷烽敓鏂ゆ嫹绾搁敓鏂ゆ嫹閿燂拷*/
+/* 閿熺粸鏂ゆ嫹鎬侀敓鏂ゆ嫹閿熻鍖℃嫹濮�*/
 .capitalDynamics,.recommendBoutique{
 	width:100%;
 	margin:23px auto;
@@ -490,7 +500,7 @@
 .capitalDynamicsM ul{
 	min-height:285px;
 }
-/* 锟斤拷品锟狡硷拷锟斤拷锟街匡拷始 */
+/* 閿熸枻鎷峰搧閿熺嫛纭锋嫹閿熸枻鎷烽敓琛楀尅鎷峰 */
 .recommendBoutiqueM,.ad{
 	width:877px;
 	margin-top:33px;

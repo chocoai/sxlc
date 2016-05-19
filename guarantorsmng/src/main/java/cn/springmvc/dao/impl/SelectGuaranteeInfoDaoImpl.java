@@ -207,5 +207,14 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectOne("GuaranteeInfoXML.selectAdmin",map);
 	}
+	@Override
+	public OverdueCompensationEntity OverduecompensationByid(long repayID) {
+		// TODO Auto-generated method stub return null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("repayID", repayID);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectOne("GuaranteeInfoXML.selectAdmin",map);
+	}
 }
 

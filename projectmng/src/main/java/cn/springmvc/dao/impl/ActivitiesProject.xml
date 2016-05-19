@@ -14,14 +14,15 @@
 	   select ap.Process_ID,ap.Role_Type,ap.AP_Name,ap.Role_ID,ap.Statu,op.optName
 	   from  Activities_Project ap
 	   LEFT JOIN operation op on op.optID=ap.Role_ID
-          <!--  <where>  
-	            <if test="map.apName != null">  
+           <where>  
+	            <if test="map.apName != null and  map.apName !='' ">  
 	                ap.AP_Name like  '%${map.apName}%'  
 	            </if>   
 	            <if test="map.statu != -1">  
 	                and ap.Statu=#{map.statu}
 	            </if>   
-           </where>   -->
+           </where> 
+         ORDER BY Role_Type ASC,Process_Id ASC 
     </select>       
 	<!-- 新增项目审批活动点 -->  
  	 <select id="insertActivitiesProject"  statementType="CALLABLE" parameterType="cn.springmvc.model.ActivitiesProjectEntity"> 

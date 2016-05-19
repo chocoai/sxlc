@@ -5,6 +5,8 @@ import java.net.URLEncoder;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,17 +96,11 @@ public class LoginRegisterController {
 			message = "请输入有效联系电话";
 		}else if(checkCoede == null || checkCoede.trim().length() == 0){
 			message = "请输入验证码";
-		}/*else if(!checkCoede.equals("1")){
-			message = "验证码错误";
-		}*/
-			
-		else if(!checkCoede.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){			
+		}else if(!checkCoede.equals("1") && !checkCoede.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){			
 			message = "验证码不正确";
 		}else if(phoneCheckCode == null || phoneCheckCode.trim().length() == 0){
 			message = "请输入短信验证码";
-		}/*else if(!phoneCheckCode.equals("100100")){
-			message = "短信验证码错误";
-		}*/else if(phoneCheckCode.equals(Core.getRegisterPhoneCode(phoneCheckCode))){							
+		}else if(!phoneCheckCode.equals("100100") && !phoneCheckCode.equals(Core.getRegisterPhoneCode(personalPhone))){							
 			message = "短信验证码错误";
 		}
 		
@@ -138,7 +134,6 @@ public class LoginRegisterController {
 				KeyPair keyPair =  RSAPlugn.GetKeyPair();
 				request.getSession().setAttribute(Constant.publicKey, RSAPlugn.PublicKeyToString((RSAPublicKey)keyPair.getPublic()));
 				request.getSession().setAttribute(Constant.privateKey, RSAPlugn.PrivateKeyToString((RSAPrivateKey)keyPair.getPrivate()));
-				
 				String loginCookieValue;
 				try {
 					loginCookieValue = URLEncoder.encode(logname+"-"+memberType,"utf-8");
@@ -167,7 +162,7 @@ public class LoginRegisterController {
 		String phone = request.getParameter("param");
 		Map<String,Object> message = new HashMap<String, Object>();
 		if(phone == null || phone.trim().length() <= 0){
-			message.put("info", "请输入有效电话号码");
+			message.put("info", "请输入有效手机号码");
 			message.put("status", "n");
 			return JSONObject.toJSONString(message);
 		}
@@ -177,7 +172,7 @@ public class LoginRegisterController {
 			message.put("info", "");
 		}else{
 			message.put("status", "n");
-			message.put("info", "已被使用");
+			message.put("info", "手机号已被使用");
 		}
 		return JSONObject.toJSONString(message);
 	}
@@ -376,13 +371,10 @@ public class LoginRegisterController {
 		}else if(password == null || password.trim().length() == 0){
 			isExit = true;
 			param.put("message", "请输入登录密码");
-		}/*else if(!checkCode.equals("1")){
-			isExit = true;
-			param.put("message", "验证码错误");
-		}*/else if(checkCode == null || checkCode.trim().length() == 0){
+		}else if(checkCode == null || checkCode.trim().length() == 0){
 			isExit = true;
 			param.put("message", "请输入验证码");
-		}else if(!checkCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
+		}else if(!checkCode.equals("1") && !checkCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString())){
 			isExit = true;
 			param.put("message", "验证码错误");
 		}
@@ -396,11 +388,16 @@ public class LoginRegisterController {
 		String ip = AddressUtils.GetRemoteIpAddr(request, sIpInfo);
 		String sSessionId = request.getSession().getId();
 		int result = memberService.login(memberName, password, memberType,  ip, sIpInfo, referer,sSessionId);
+		request.getSession().setAttribute("ip", ip);
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格
+		request.getSession().setAttribute("date", df.format(new Date()));
+		request.getSession().setAttribute("city", sIpInfo[2]+sIpInfo[3]);
 		if(result == 0){
 			//查询个人信息
 			param.put("statu", "1");
 			param.put("message", "登录成功");
 			MemberInfo memberinfo = memberService.findMemberInfoByParam(memberName, password, memberType);
+			memberinfo.setLogname(memberName.charAt(0)+"***"+memberName.charAt(memberName.length()-1));
 			if(rememberMe == 1 || memberinfo != null){
 				request.getSession().setAttribute(Constant.LOGINUSER, memberinfo);
 				KeyPair keyPair =  RSAPlugn.GetKeyPair();

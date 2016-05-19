@@ -63,7 +63,7 @@ function addOrUpdate(type){
 		}
 	}else if(type==2){
 		title="修改合作伙伴";
-		var data = $('#partnerTb').DataTable().rows('.selected').data();
+		var data = $('#partnerTb').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的数据！",{icon:0});
 			return;

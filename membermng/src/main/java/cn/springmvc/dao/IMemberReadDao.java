@@ -13,6 +13,7 @@ import cn.membermng.model.MyPoint;
 import cn.membermng.model.MyRedPackage;
 import cn.membermng.model.RadPackage;
 import cn.membermng.model.SecurityInfo;
+import cn.membermng.model.UntreatedMessageEntity;
 
 
 /**
@@ -284,10 +285,42 @@ public interface IMemberReadDao {
 
 
 
-
+	/**
+	 * 个人中心读取当前登录人的姓名，称号，信用等级，积分，签到次数，第三方账号
+	* loadMemberInfo
+	* @author 邱陈东  
+	* * @Title: loadMemberInfo 
+	* @param @param param
+	* @return Map<String,Object> 返回类型 
+	* @date 2016-5-18 下午1:39:03
+	* @throws
+	 */
+	public MemberInfo loadMemberInfo(Map<String, Object> param);
 	
 
-
-
+	/**
+	 * 查询今日签到次数
+	* checkTodaySignNum
+	* @author 邱陈东  
+	* * @Title: checkTodaySignNum 
+	* @param @param param
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-18 下午3:53:21
+	* @throws
+	 */
+	public int checkTodaySignNum(Map<String, Object> param);
 	
+	/**
+	 * 读取未读站内信，站内消息，待处理好友申请数
+	* loadUntreatedMessage
+	* @author 邱陈东  
+	* * @Title: loadUntreatedMessage 
+	* @param @param param
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-19 上午9:52:52
+	* @throws
+	 */
+	public UntreatedMessageEntity loadUntreatedMessage(Map<String, Object> param);
 }

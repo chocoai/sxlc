@@ -50,7 +50,7 @@
 	and Repay_MaxTime>DATE_ADD(NOW(),INTERVAL #{map.sRepayMaxTime} DAY)) 
 	and ir.Member_ID=#{map.memberID} 
 	and ir.Invest_Id not in (select Invest_Id from Creditor_Trans_App where (Check_Statu=1 or Check_Statu=0) and (Statu=0 or Statu=2)) 
-  	and ir.IsValid = 0 and ir.Invest_Id=1 and pi.Invest_Statu=3
+  	and ir.IsValid = 0  and pi.Invest_Statu=3
   </select>
  <!-- 添加债权转让申请记录 -->
  <select id="creditorTransApp" resultType="Map" statementType="CALLABLE">
@@ -74,6 +74,43 @@
  </select>
  
  
- 
+ <select id="transferableCreditsFangKuan" resultType="cn.springmvc.model.TransferableCreditsFangKuanEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
+  	select * from(select  
+  	cta.CTA_Id tranId,pbi.Project_Title projectName,
+  	(select Logname from Member_Info mi where mi.Member_ID=prar.Member_ID limit 1) loanMemberName,
+  	(select mii.Logname from Member_Info mii where mii.Member_ID=ir.Member_ID limit 1) transferMemberName,
+  	CAST(((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.skey}))) as signed) transferMount,
+  	CAST(((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.skey}))) as signed)*
+  	CAST(((AES_DECRYPT(UNHEX(cta.Trans_Discount),#{map.skey}))) as signed) mount,
+  	CAST(((AES_DECRYPT(UNHEX(cta.Trans_Discount),#{map.skey}))) as signed) transferzk,
+  	cta.Cta_Invest_Rate investSe,cta.Statu status,
+  	(SELECT name1 from DICT WHERE code1=cta.Statu AND tcode='DICT_ZRZT' LIMIT 1) AS statusName,
+  	cta.Deal_Date fangkuanTime
+  	from Creditor_Trans_App cta
+  	left join Invest_Record ir on ir.Invest_Id = cta.Invest_Id
+  	left join Project_App_Record prar on prar.Apply_Id = ir.Apply_Id
+  	left join Project_Base_Info pbi on pbi.Project_Base_ID = prar.Project_Base_ID
+  	 where cta.Check_Statu = 1 and cta.Statu in (0,2)) newTabl
+  	 <where>
+  	 	<if test="map.projectName != null and map.projectName != ''">
+  	 		projectName like '%${map.projectName}%'
+  	 	</if>
+  	 	<if test="map.loanMemberName != null and map.loanMemberName != ''">
+  	 		loanMemberName like '%${map.loanMemberName}%'
+  	 	</if>
+  	 	<if test="map.transferMemberName != null and map.transferMemberName != ''">
+  	 		transferMemberName like '%${map.transferMemberName}%'
+  	 	</if>
+  	 	<if test="map.status != null and map.status != -1 and map.status != ''">
+  	 		status =#{map.status}
+  	 	</if>
+  	 	<if test="map.startfangkuanTime != null and map.startfangkuanTime != ''">
+  	 		fangkuanTime >= #{map.startfangkuanTime}
+  	 	</if>
+  	 	<if test="map.endfangkuanTime != null and map.endfangkuanTime != ''">
+  	 		#{map.endfangkuanTime} >= fangkuanTime
+  	 	</if>
+  	 </where>
+ </select>
   
 </mapper>

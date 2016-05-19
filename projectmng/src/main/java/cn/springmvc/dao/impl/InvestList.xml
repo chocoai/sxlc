@@ -16,6 +16,7 @@
         <result property = "startDate"          column = "Start_Date" /> 
 		<result property = "endDate"            column = "End_Date" /> 
 		<result property = "getDate"            column = "getDate" /> 
+		 <result property = "investRate" 		column = "Invest_Rate" /> 
         <association property="projectBaseInfoentity" 	resultMap="resultBaseInfoentity"/> 
     </resultMap> 
     <resultMap type = "cn.springmvc.model.ProjectBaseInformationEntity" id ="resultBaseInfoentity"> 
@@ -33,7 +34,8 @@
 	   par.Apply_Id, par.Invest_Statu,pim.Image_Url,par.Reward_Rate,par.Rate_Add_Rate,
        (pbi.Amount-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{map.sKey})) as signed)),0)  
        from Invest_Record  where Apply_Id=par.Apply_Id and IsValid=0)) availableaAmount,
-       now() as getDate 
+       now() as getDate ,par.Invest_Rate
+       
 	   from Project_App_Record par 
 	   left join Project_App_Process pap  on  pap.Apply_Id=par.Apply_Id
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID

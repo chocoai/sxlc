@@ -30,8 +30,11 @@ $(function(){
 	//去掉时间后的.0
 	template.helper("$toDelete",function(content){
 		var index = content.indexOf(".");
+		console.log(index)
 		if (index>=0){
 			return content.substring(0,index)
+		}else{
+			return content
 		}
 		
 	})
@@ -265,7 +268,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
-//							//console.log(data);
+							console.log(data);
 							if (data.tol>0){
 								var html = template("bidEnd_list",data);
 								$("#bidEndTop").siblings().remove();

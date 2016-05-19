@@ -65,7 +65,7 @@ $(function(){
 		/***********值的传入**********/
 		var door = true;//门控制
 		
-		var choosedOption1 = choosedOption;//充值方式
+		var choosedOption1 = $(".regchType").attr("value");//充值方式
 		var moneyInput1 = $(".rechargeInputFocus").val();//充值金额
 		var remarks1 = $(".rechargeRemarks").val();//备注
 		/**********充值金额处理***********/

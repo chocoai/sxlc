@@ -24,7 +24,7 @@
 	 Attest_Id				as attestId,
 	 Attest_Type			as attestType,
 	 Attest_Status			as status,
-	 di.tname				as statusName,
+	 di.name1				as statusName,
 	 end_Date				as endDate,
 	 (
 	 	select 

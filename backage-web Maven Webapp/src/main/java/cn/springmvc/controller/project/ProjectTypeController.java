@@ -207,9 +207,9 @@ public class ProjectTypeController {
 		String projectName = req.getParameter("projectName");
 		param.put("projectName",projectName);
 		String minAmount = req.getParameter("minAmount");
-		param.put("minAmount",minAmount);
+		param.put("minAmount",IntegerAndString.StringToInt(minAmount));
 		String maxAmount = req.getParameter("maxAmount");
-		param.put("maxAmount",maxAmount);
+		param.put("maxAmount",IntegerAndString.StringToInt(maxAmount));
 		String minRate = req.getParameter("minRate");
 		param.put("minRate",IntegerAndString.StringToInt(minRate));
 		String maxRate = req.getParameter("maxRate");

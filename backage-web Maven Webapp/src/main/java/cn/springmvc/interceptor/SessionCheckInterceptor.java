@@ -2,7 +2,9 @@ package cn.springmvc.interceptor;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +32,14 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 	@Autowired
 	public OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 
+	Set<String> exitRouts = null;
 	
+	public SessionCheckInterceptor() {
+		exitRouts = new HashSet<String>();
+		exitRouts.add("backURL");								    //第三方回调 页面返回地址  不拦截
+		exitRouts.add("backServerURL");								//第三方回调 服务器返回地址  不拦截
+	}
+
 	@Override
 	public void afterCompletion(HttpServletRequest arg0,HttpServletResponse arg1, Object arg2, Exception arg3)throws Exception {
 		//在一个请求调用之后执行
@@ -47,6 +56,16 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 	
 	@Override
 	public boolean preHandle(HttpServletRequest arg0, HttpServletResponse arg1,Object arg2) throws Exception {
+		String requestUrl = arg0.getRequestURI();
+		String requestPath= "";
+		if(requestUrl.lastIndexOf(".") > requestUrl.lastIndexOf("/")+1){
+			requestPath= requestUrl.substring(requestUrl.lastIndexOf("/")+1, requestUrl.lastIndexOf("."));
+		}else{
+			requestPath= requestUrl.substring(requestUrl.lastIndexOf("/")+1);
+		}
+		if(exitRouts.contains(requestPath)){	//授权直接走
+			return true;
+		}
 		arg1.setContentType("text/html;charset=UTF-8");
  		HttpSession session = arg0.getSession();
 		optRecordWriteDaoImpl = (OptRecordWriteDaoImpl) SpringUtil.getBean(OptRecordWriteDaoImpl.class);

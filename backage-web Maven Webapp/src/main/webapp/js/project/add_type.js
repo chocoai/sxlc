@@ -128,7 +128,6 @@ $(function(){
  * 保存
  */
 function addOrModify(){
-	debugger;
 	//验证数据范围是否正确
 	$(".beginNum").change();
 	$(".errorMsg").each(function(){

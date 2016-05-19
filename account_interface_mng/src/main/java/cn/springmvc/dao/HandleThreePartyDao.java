@@ -326,5 +326,42 @@ public interface HandleThreePartyDao {
 	 */
 	public int FangKuanLoan(long lApplyId,String sMerBillNo,String sOrderNos,int iStatu,
 			String backInfoenc,String backinfo);
+	
+	/**
+	 * 新增收益计划 
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param map
+	 * @param @return 设定文件 
+	 * @return int 返回类型  0失败1成功
+	 * @date 2016-4-12 下午3:47:23
+	 */
+	public int  insertInvestIncome(Map<String,Object> map);
+	
+	/**
+	 * 修改还款计划收益平账 
+	 * @author 刘利   
+	 * @Description: TODO 
+	 * @param @param map
+	 * @param @return 设定文件 
+	 * @return int 返回类型 
+	 * @date 2016-4-12 下午4:40:54
+	 */
+	public int updateReplay(Map<String,Object> map);
+	
+	
+	/** 
+	* CompensatoryRepayBack 代偿返回处理
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: CompensatoryRepayBack 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-18 下午5:16:02
+	* @throws 
+	*/
+	public int CompensatoryRepayBack(Map<String,Object> map );
 }
 

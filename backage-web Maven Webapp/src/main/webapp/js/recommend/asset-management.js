@@ -23,7 +23,7 @@ function enableOrdisEnable(type) {
 			},
 			success : function (msg) {
 				if (msg == 0) {
-					layer.alert("添加成功",{icon:1});  
+					layer.alert("操作成功",{icon:1});  
 					setTimeout('location.reload()',2000);
 				}else {
 					layer.alert("服务器异常",{icon:2});
@@ -89,41 +89,22 @@ function manageAdmainAdd(){
 		area: ['550px', '430px'], //高宽
 		title: "添加管理员管理",
 		maxmin: true,
-		content: $("#manageAdmainAdd"),//DOM或内容
-		btn:['确定', '取消']
-	,yes: function(index, layero){ //或者使用btn1
-		//确定的回调
-		//判断执行不同方法
-		
-	},cancel: function(index){//或者使用btn2（concel）
-		//取消的回调
-	}
+		content: $("#manageAdmainAdd")//DOM或内容
 	});
 }
 /* 添加 */
 /* 修改 */
-function manageAdmainMod(){
-	layer.open({
-		type: 1,
-		area: ['550px', '430px'], //高宽
-		title: "修改管理员管理",
-		maxmin: true,
-		content: $("#manageAdmainMod"),//DOM或内容
-		btn:['确定', '取消']
-	,yes: function(index, layero){ //或者使用btn1
-		//确定的回调
-		//判断执行不同方法
-		
-	},cancel: function(index){//或者使用btn2（concel）
-		//取消的回调
-	}
-	});
-}
+
 /* 修改 */
 /* 资产管理方管理员管理部分开始  */
 function assetAdmainManager(){
 	var rowdata = $('#assettable').DataTable().rows('.selected').data();
-	$(".right_col").load("web/recommend/re-add/assetAdmainManager.jsp?content=" + rowdata[0].managementID);
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要查看的管理方！",{icon:0});
+		return;
+	}else{
+		$(".right_col").load("web/recommend/re-add/assetAdmainManager.jsp?content=" + rowdata[0].managementID);
+	}
 }
 
 //表格初始化

@@ -70,7 +70,7 @@
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
-   	<script type="text/javascript" src="plugs/webuploader/webuploader.js" ></script>
+   	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/webuploader/webuploader.js" ></script>
    	<script type="text/javascript" src="js/exp-upload.js" ></script>	
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>

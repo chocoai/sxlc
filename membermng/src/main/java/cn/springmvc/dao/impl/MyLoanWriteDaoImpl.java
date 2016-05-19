@@ -19,6 +19,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 import cn.springmvc.dao.IMyLoanWriteDao;
 
 /** 自动还款设置
@@ -45,8 +47,8 @@ public class MyLoanWriteDaoImpl extends SqlSessionDaoSupport implements IMyLoanW
 	
 	@Override
 	public int confirmationLoan(Map<String, Object> param) {
-		
-		return getSqlSession().selectOne("myLoanReadDaoImpl.confirmationLoan",param);
+		getSqlSession().selectOne("myLoanReadDaoImpl.confirmationLoan",param);
+		return IntegerAndString.StringToInt(param.get("result").toString(), -1);
 	}
 	
 }

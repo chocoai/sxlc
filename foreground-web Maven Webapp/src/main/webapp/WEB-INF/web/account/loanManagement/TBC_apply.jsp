@@ -259,42 +259,46 @@
    		<ul>
    			<li>
    				<div class="leftTitle">产品类型：</div>
-   				<label>担保贷</label>
+   				<label class="loanTypeName"><!-- 担保贷 --></label>
    			</li>
    			<li>
    				<div class="leftTitle">项目标题：</div>
-   				<label>买房需用钱借款担保贷</label>
+   				<label class="loanTitle"><!-- 买房需用钱借款担保贷 --></label>
    			</li>
    			<li>
    				<div class="leftTitle">借款金额：</div>
-   				<label>1,000.00元</label>
+   				<label class="sLoanAmount"><!-- 1,000.00元 --></label>
    			</li>
    			<li>
    				<div class="leftTitle">借款期限：</div>
-   				<label>2个月</label>
+   				<label class="deadline"><!-- 2个月 --></label>
    			</li>
    			<li>
    				<div class="leftTitle">还款方式：</div>
-   				<label>先息后本</label>
+   				<label class="replayTypeName"><!-- 先息后本 --></label>
    			</li>
    			<li>
    				<div class="leftTitle">项目描述：</div>
-   				<label>借款担保贷</label>
+   				<label class="proJectDetail"><!-- 借款担保贷 --></label>
    			</li>
    			<li>
    				<div class="leftTitle">借款用途：</div>
-   				<label>买房首付</label>
+   				<label class="usageOfLoan"><!-- 买房首付 --></label>
    			</li>
    			<li>
    				<div class="leftTitle">还款来源：</div>
-   				<label>每月工资还款</label>
+   				<label class="paymentSource"><!-- 每月工资还款 --></label>
    			</li>
    		</ul>
    		<div class="btn-group">
-   			<input type="button" class="agree btn" value="同意" onclick="layer.closeAll()"><!--onclick关闭弹出层  -->
-   			<input type="button" class="refuse" value="拒绝" onclick="layer.closeAll()">
+   			<input id="optionvalue" type="hidden" value="" />
+   			<input type="button" class="agree btn" value="同意" data-val="2" onclick=""><!--onclick关闭弹出层  -->
+   			<input type="button" class="refuse" value="拒绝" data-val="-1" onclick="">
    		</div>
    	</div>
+   	<script type="text/javascript">
+		var publickey = '<%=session.getAttribute("publicKey")%>';
+	</script>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/myLoan.js"></script>

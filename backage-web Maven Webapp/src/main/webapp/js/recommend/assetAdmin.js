@@ -2,6 +2,136 @@
 //加密操作
 var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
+
+$(function () {
+	$("#add").bind('click', function () {
+		$("#addMange").submit();
+	});
+
+	$("#mod").bind('click', function () {
+		$("#modMange").submit();
+	});
+});
+
+function mangeAdd() {
+	$.ajax({
+		type : 'post',
+		url : appPath + "/guarant/saveAdmin.do",
+		data : {
+			guaranteeID : encrypt.encrypt($("#managementID").val() + ""),
+			userName : encrypt.encrypt($("#username").val() + ""),
+			password : encrypt.encrypt($("#pwd").val() + ""),
+			remark : encrypt.encrypt($("#remark").val() + ""),
+			stype : encrypt.encrypt(2 + "")
+		},
+		success : function (msg) {
+			if (msg == 1) {
+				layer.alert("添加成功",{icon:1});  
+				setTimeout('location.reload()',2000);
+			}else {
+				layer.alert("服务器异常",{icon:2});
+			}
+		}
+	});
+}
+
+function modMange() {
+	var rowdata = $('#assetadmaintable').DataTable().rows('.selected').data();
+	$.ajax({
+		type : 'post',
+		url : appPath + "/guarant/update.do",
+		data : {
+			adminID : encrypt.encrypt(rowdata[0].adminID + ""),
+			userName : encrypt.encrypt($("#musername").val() + ""),
+			password : encrypt.encrypt($("#mpwd").val() + ""),
+			remark : encrypt.encrypt($("#mremark").val() + "")
+		},
+		success : function (msg) {
+			if (msg == 1) {
+				layer.alert("添加成功",{icon:1});  
+				setTimeout('location.reload()',2000);
+			}else {
+				layer.alert("服务器异常",{icon:2});
+			}
+		}
+	});
+}
+/**
+ * 修改管理员
+ */
+function manageAdmainMod(){
+	var rowdata = $('#assetadmaintable').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要查看的管理方！",{icon:0});
+		return;
+	}else{
+		$.ajax({
+			type : 'post',
+			url : appPath + "/guarant/queryAdmin.do",
+			data : {
+				adminID : encrypt.encrypt(rowdata[0].adminID + "")
+			},
+			success : function (msg) {
+				$("#musername").val(msg.adminName);
+				$("#mpwd").val(msg.adminPwd);
+				$("#mrpwd").val(msg.adminPwd);
+				$("#mremark").val(msg.adminRemark);
+			}
+		});
+		layer.open({
+			type: 1,
+			area: ['550px', '430px'], //高宽
+			title: "修改管理员管理",
+			maxmin: true,
+			content: $("#manageAdmainMod")
+		});
+	}
+}
+
+/**
+ * 启用停用
+ */
+function enableOrdisEnable(type) {
+	var rowdata = $('#assetadmaintable').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要操作的管理员！",{icon:0});
+		return;
+	}else {
+		
+		var adminID = encrypt.encrypt(rowdata[0].adminID + "");
+		var recordStatus = 0;
+		if (type == 1) {
+			recordStatus = encrypt.encrypt(1 + "");
+		}else {
+			recordStatus = encrypt.encrypt(0 + "");
+		}
+		layer.confirm('确定启用？', {
+			btn: ['确定', '取消']
+		}, function(index, layero){
+			//按钮【按钮一】的回调
+			$.ajax({
+				type : 'post',
+				url : appPath + "/guarant/ofOrOpenAdmin.do",
+				data : {
+					adminID : adminID,
+					status : recordStatus
+				},
+				success : function (msg) {
+					if (msg == 0) {
+						layer.alert("操作成功",{icon:1});  
+						setTimeout('location.reload()',2000);
+					}else {
+						layer.alert("服务器异常",{icon:2});
+					}
+				}
+			});
+			//执行完关闭
+			layer.close(index);
+		}, function(index){
+			//按钮【按钮二】的回调
+		});
+	}
+}
 //表格初始化
 $(function() {
 	var appPath = getRootPath();//项目根路径
@@ -21,7 +151,9 @@ $(function() {
         ajax: {  
             "url": appPath + "/asset/queryAdmin.do",   
             "dataSrc": "results", 
-            "data": function ( d ) {  
+            "data": function ( d ) {
+            	var managementID = $("#managementID").val();
+            	d.managementID = encrypt.encrypt(managementID + "");
             } 
         },
         columns: [  

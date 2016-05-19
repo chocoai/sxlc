@@ -599,7 +599,7 @@
 			<if test="map.projectNo != null and map.projectNo!=''">
 			AND	projectNo like '%${map.projectNo}%'
 			</if>
-			<if test="map.projectID!=-1">
+			<if test="map.projectID!=-1 and map.projectID!=null and map.projectID!=''">
 			AND	projectID = #{map.projectID}
 			</if>
 			<if test="map.projectTitle != null and map.projectTitle != ''">
@@ -614,10 +614,10 @@
 			<if test="map.personalName != null and map.personalName != ''">
 			AND	personalName like '%${map.personalName}%'
 			</if>
-			<if test="map.guaranteeID!=-1">
+			<if test="map.guaranteeID!=-1 and map.guaranteeID!= null and map.guaranteeID!=''">
 			AND	guaranteeID = #{map.guaranteeID}
 			</if>
-			<if test="map.isCompensatory!=-1">
+			<if test="map.isCompensatory!=-1 and map.isCompensatory!= null and map.isCompensatory!=''">
 			AND	isCompensatory= #{map.isCompensatory}
 			</if>
 		</where>
@@ -625,7 +625,29 @@
     
     
     
-    
+    <select id="OverduecompensationByid" resultType="cn.springmvc.model.OverdueCompensationEntity" parameterType="Map">
+	select * from (SELECT par.Apply_Id applyId,par.Project_No projectNo,p.Project_Name,
+		pbi.Project_Title projectTitle,lr.Indexs indexs,
+		CONVERT((AES_DECRYPT(UNHEX(per.Personal_Name),#{skey})) using utf8) personalName,
+		mi.Logname logname,
+		CONVERT((AES_DECRYPT(UNHEX(per.Personal_Phone),#{skey})) using utf8) personalPhone,
+		gi.Guarantee_Name guaranteeName,
+		pbi.Real_Amount realAmount,lr.Repay_MaxTime repayMaxTime,
+		CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) as signed) sDRepayPrincipal,
+		CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) as signed) sDRepayInterest,
+		p.Project_ID projectID,lr.IsCompensatory isCompensatory,
+		lr.Repay_ID repayID,gi.Guarantee_ID guaranteeID
+		 FROM Loan_Repay lr
+		LEFT JOIN Project_App_Record par on par.Apply_Id = lr.Apply_Id
+		LEFT JOIN Project_Base_Info  pbi ON pbi.Project_Base_ID = par.Project_Base_ID
+		LEFT JOIN ProjectBaseInfo    p   ON p.Project_ID = par.Project_ID
+		LEFT JOIN Member_Info				 mi  ON mi.Member_ID = par.Member_ID
+		LEFT JOIN Personal_Base_Info per ON per.Personal_Id = mi.Personal_ID
+		LEFT JOIN Guarantee_Info		 gi	 ON gi.Guarantee_ID = par.Guarantee_ID
+		WHERE lr.Statu in (0,1)  AND lr.IsValid = 0 AND NOW()>lr.Repay_MaxTime)
+		cc
+		where repayID = #{repayID}
+    </select>
     
     
      <!-- 查询平台代偿记录列表 -->
@@ -749,7 +771,7 @@
 			LEFT JOIN Bank_Info bi ON bi.Bank_ID = bci.Bank_Id
 			LEFT JOIN City_Dictionary cd on cd.City_Id = bci.Card_City
 			WHERE mbc.Member_Type = #{map.memberType}  
-			<if test="map.guaranteeID != -1">
+			<if test="map.guaranteeID != -1 and map.guaranteeID !=null and map.guaranteeID!=''">
 				AND Member_ID = #{map.guaranteeID}
 			</if>
 			

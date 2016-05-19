@@ -2,7 +2,7 @@
 <div class="investmentList">
 <!--伍成然2016-3-30  -->
 <ul class="table grid-table2" id="investmentList">
-   <li>
+   <li id="investmentListTop">
       <div>投标人</div>
       <div>投标金额</div>
       <div>投标时间</div>

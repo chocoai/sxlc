@@ -316,7 +316,7 @@ function LoanIntemsList(){
 				        	  }
 				          }, 
 				          { title:"默认最高信用分数","data": "creditScore" },  
-				          { title:"操作时间","data": "sOptDate" },  
+				          { title:"操作时间","data": "optDate" },  
 				          { title:"最近一次操作管理员","data": "adminName" },  
 		                  { title:"状态","mRender":function(data, type, full){
 		                	  var sReturn ="";

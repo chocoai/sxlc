@@ -47,8 +47,7 @@ public class CreditorTransferListDaoImpl extends SqlSessionDaoSupport implements
 
 	}
 	@Override
-	public CreditorTransferListEntity selectCreditorTransferDetail(
-			Map<String, Object> map) {
+	public CreditorTransferListEntity selectCreditorTransferDetail(Map<String, Object> map) {
 		
 		return getSqlSession().selectOne("CreditorTransfer.selectCreditorTransferDetail",map);
 		

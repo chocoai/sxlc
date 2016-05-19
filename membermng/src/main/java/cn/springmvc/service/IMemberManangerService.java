@@ -376,6 +376,16 @@ public interface IMemberManangerService {
 	
 	
 	/**
+	 * 修改我的邀请人
+	 * TODO
+	 * 创建日期：2016-5-18下午4:31:28
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return int
+	 */
+	public int updateMyInvete(Map<String,Object> map);
+	/**
 	 * 
 	 * TODO
 	 * 创建日期：2016-5-6下午3:01:01
@@ -443,6 +453,15 @@ public interface IMemberManangerService {
 	 */
 	public int updateAdminPwd(Map<String, Object> param);
 
-
+	/**
+	 * 
+	 * TODO
+	 * 创建日期：2016-5-18下午1:41:22
+	 * 修改日期：
+	 * 作者：pengran
+	 * @param
+	 * return void
+	 */
+	public List<MemberAttestInfo> selectAuditList(Map<String, Object> map);
 
 }

@@ -38,7 +38,8 @@
 	   select mi.Member_ID,mi.Logname, mi.Member_Type,mi.Company_ID,mi.Personal_ID,mi.Reg_Date,mi.Member_No,
 	   pd.Province_Name,cd.City_Name ,pbi.SexID,ei.EducationName,pbicom.Personal_Name as contactName,
 	   pji.Company_Industry as pbiCompany_Industry,pji.Company_Size as pbiCompany_Size,
-	   pji.Position,pji.Start_Date,mif.MaritalName,pbi.House_Address,pbi.Personal_IDCard, 
+	   pji.Position,pji.Start_Date,mif.MaritalName,pbi.House_Address,
+	   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{keys})) using utf8), 
 	   ci.Company_Industry,ci.Company_Size,ci.Company_Life,ci.Establishments,ci.Company_Address,ci.Companye_BLN,
 	   ci.Company_Capital,pji.Monthly_Income,
 	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{keys})) using utf8)  

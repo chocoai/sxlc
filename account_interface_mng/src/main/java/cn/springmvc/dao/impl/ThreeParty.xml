@@ -306,7 +306,7 @@
   <!-- 根据投资id、还款计划id查询会员当期未收总本金 -->
   <select id="selectPrincipalByID" resultType="LONG" parameterType="Map">
   	select SUM(CAST(((AES_DECRYPT(UNHEX(ii.SDRecv_Principal),#{skey}))) as signed)) -
-  	SUM(CAST(((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{skey}))) as signed))
+  	IFNULL(SUM(CAST(((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{skey}))) as signed)),0)
   	from Invest_Income ii
   	left join Invest_Real_Income iri on iri.Income_Id=ii.Income_Id 
   	where ii.Invest_Id=#{investId} and ii.Repay_ID=#{repayId} and ii.IsValid=0 
@@ -320,26 +320,26 @@
    <!-- 查询还款 单个投资会员未收总利息 -->
   <select id="findInterestByOne" resultType="LONG" parameterType="Map">
   	select SUM(CAST(((AES_DECRYPT(UNHEX(ii.SDRecv_Interest),#{skey}))) as signed)) -
-  	SUM(CAST(((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey}))) as signed))
+  	IFNULL(SUM(CAST(((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey}))) as signed)),0)
   	from Invest_Income ii
   	left join Invest_Real_Income iri on iri.Income_Id=ii.Income_Id 
   	where ii.Invest_Id=#{investId} and ii.Repay_ID=#{repayId} and ii.IsValid=0 
   </select>
   <!-- 根据收益计划id查询出实际已收的所有罚息和罚金 -->
   <select id="allInvestRealIncome" parameterType="Map" resultType="Map">
-  	select sum(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey})) as signed)) as Repay_Overdue_Interest,
-				sum(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{skey})) as signed)) as Repay_Overdue
+  	select ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey})) as signed)),0) as Repay_Overdue_Interest,
+				ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{skey})) as signed)),0) as Repay_Overdue
 			from Invest_Real_Income iiof where Income_Id=#{incomeId}
   </select>
   
   <!-- 查询出提前还款 单个投资会员最近一期应收收益时间，月标 -->
   <select id="findTimesByMember" resultType="LONG" parameterType="Map">
-  	select IFNULL(datediff(SDRecv_MaxTime, NOW()))  from Invest_Income where Invest_Id=#{investId} and IsValid=0 and Statu=0 order by SDRecv_MaxTime desc limit 1
+  	select IFNULL(datediff(SDRecv_MaxTime, NOW()),0)  from Invest_Income where Invest_Id=#{investId} and IsValid=0 and Statu=0 order by SDRecv_MaxTime desc limit 1
   </select>
   
   <!-- 查询提前还款违约金设置 -->
   <select id="findPenaltyRate" resultType="Map">
-  	select Penalty_Invest_Rate,Penalty_PingTai_Rate from System_Set
+  	select IFNULL(Penalty_Invest_Rate,0),IFNULL(Penalty_PingTai_Rate,0) from System_Set limit 1
   </select>
   <!-- 查询出该项目的期限类型 -->
   <select id="projectDurationType" resultType="LONG" parameterType="Map">
@@ -403,14 +403,20 @@
   
   <!-- 还款返回处理 -->
   <select id="RepayBackQianduoduo" resultType="Map" statementType="CALLABLE">
-  <!-- -->
+  <!-- 
+  -->
   		<![CDATA[{call RepayBack_Qianduoduo(
 				#{detail,	 mode=IN,	jdbcType=VARCHAR},
 				#{applyId,	 mode=IN,	jdbcType=BIGINT},
 				#{newrepaythredId,	 mode=IN,	jdbcType=BIGINT},
 				#{repayMemberId,	 mode=IN,	jdbcType=BIGINT},
+				#{repayMemberType,	 mode=IN,	jdbcType=INTEGER},
+				#{repaythredId,	 mode=IN,	jdbcType=BIGINT},
+				#{realRepayID,	 mode=IN,	jdbcType=BIGINT},
 				#{thirdBillNo,	 mode=IN,	jdbcType=VARCHAR},
 				#{repalyId ,	 mode=IN,	jdbcType=BIGINT},
+				#{backDetailEncrypt ,	 mode=IN,	jdbcType=VARCHAR},
+				#{backDetail ,	 mode=IN,	jdbcType=VARCHAR},
 				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
 				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
@@ -808,4 +814,47 @@
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)} 
 	</select>
+	
+	
+	  <!-- 根据项目申请ID查询项目详情 -->  
+	<select id="selectProjectdetail"  parameterType="map" resultMap="replayProjectDetail.resultProjectDetail" >
+	   select pbi.Repay_Way,pbi.Year_Rate,pbi.Amount,pbi.Deadline,
+	   pbi.Deadline_Type  ,par.Apply_Id
+       from  Project_App_Record par
+	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID 
+	   where  par.Apply_Id=#{id}
+    </select>
+    
+    
+    
+    <!-- 代偿返回处理 -->
+  <select id="CompensatoryRepayBack" resultType="Map" statementType="CALLABLE">
+  <!-- -->
+  		<![CDATA[{call CompensatoryRepayBack(
+				#{detail,	 mode=IN,	jdbcType=VARCHAR},
+				#{applyId,	 mode=IN,	jdbcType=BIGINT},
+				#{repayMemberId,	 mode=IN,	jdbcType=BIGINT},
+				#{repayMemberType,	 mode=IN,	jdbcType=INTEGER},
+				#{repaythredId,	 mode=IN,	jdbcType=BIGINT},
+				#{realRepayID,	 mode=IN,	jdbcType=BIGINT},
+				#{thirdBillNo,	 mode=IN,	jdbcType=VARCHAR},
+				#{repalyId ,	 mode=IN,	jdbcType=BIGINT},
+				#{rePayRecordID ,	 mode=IN,	jdbcType=BIGINT},
+				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
+  
+  <select id="findUserMoney" parameterType="Map" resultType="LONG">
+  	select IFNULL(CAST((AES_DECRYPT(UNHEX(User_Balance),#{skey})) as signed),0) 
+  	from Member_Third_Info where Member_Type = #{memberType} and Member_ID = #{memberID}
+  </select> 
+  
+  <select id="findInterestMngFee" parameterType="Map" resultType="LONG">
+  	select IFNULL(CAST((AES_DECRYPT(UNHEX(Price_Datum),#{skey})) as signed),0) 
+  	from Interest_Mng_Fee limit 1
+  </select> 
+  
+  
 </mapper>

@@ -52,6 +52,7 @@ public class CreditorTransferListEntity {
 	private String  picIcon;//项目类型小图标
 	private int     surplusTimeSub;//剩余期限：二级时间
 	private String  transMaxTime;//最迟转让时间
+	private String  dealDate;//放款时间
 	public int getExpectYearrate() {
 		return expectYearrate;
 	}
@@ -245,6 +246,12 @@ public class CreditorTransferListEntity {
 	}
 	public void setTransMaxTime(String transMaxTime) {
 		this.transMaxTime = transMaxTime;
+	}
+	public String getDealDate() {
+		return dealDate;
+	}
+	public void setDealDate(String dealDate) {
+		this.dealDate = dealDate;
 	}
 }
 

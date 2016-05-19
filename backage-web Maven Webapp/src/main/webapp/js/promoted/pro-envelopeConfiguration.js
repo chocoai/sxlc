@@ -114,7 +114,7 @@ function modRed() {
 		data : {
 			invsit : invsit,
 			scale : scale,
-			lId :　lId
+			lId : lId
 		},
 		success : function (msg) {
 			if (msg == 1) {

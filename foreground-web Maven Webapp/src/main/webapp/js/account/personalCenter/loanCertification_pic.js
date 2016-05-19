@@ -49,13 +49,12 @@ function insertCertification(){
 					if (r.status == 0){
 						layer.alert("操作成功",function(){
 							window.location.href="personalCenter/loanCertification.html";
-						})
+						});
 					}else{
-						layer.alert(r.message)
+						layer.alert(r.message);
 					}
 				}
-			)		
-		
+			);
 	});
 }
 
@@ -80,10 +79,17 @@ function quryCertification(){
 						var statu = data.status;
 						if(statu=="0" || statu=="3" || statu=="4"){
 							$(".editType").val("0");
-						}else{
+						}else if(statu==1){
 							$(".editType").val("1");
+						}else{
+							$(".editType").val("2");
+							//时间输入框设为只读
+							$(".wdateSelect");
+							//移除保存按钮
+							$(".webuploader-container").remove();
+							$(".btn_u").remove();
 						}
-						console.log(r)
+						//console.log(r)
 						var attachPrefix=data.attachPrefix;
 						var attachPath=data.attachPath;
 						if(attachPath!=null && attachPath!=""){
@@ -102,9 +108,12 @@ function quryCertification(){
 						if(endTime!=null && endTime!=""){
 							$(".dateSelect").val(endTime);
 						}
-						
+
 					}
 				}
 			}
-		)	
+		);
+}
+function showSubmit(){
+	$(".btn_u").show();
 }

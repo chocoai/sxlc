@@ -45,7 +45,7 @@ public class MyAccountHomeServiceImpl implements MyAccountHomeService{
 	    
 		Map<String,Object> map =new HashMap<String,Object>();
 		map.put("Member_ID_IN", memberID); 
-		map.put("skey", DbKeyUtil.GetDbCodeKey()); 
+		map.put("Skey", DbKeyUtil.GetDbCodeKey()); 
 		myAccountHomeListDao.selectMyAccountHome(map);
 		MyAccountHomeEntity myAccountHomeEntity =new MyAccountHomeEntity();
 		if( map.get("User_Balance") != null) {

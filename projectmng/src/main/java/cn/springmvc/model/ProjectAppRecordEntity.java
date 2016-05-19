@@ -70,14 +70,17 @@ public class ProjectAppRecordEntity {
 	 * 起投金额 0：表示无限制
 	 */
 	private int  minStart;
+	private String  minStarts;
 	/**
 	 * 加价幅度 0：表示无限制	
 	 */
 	private int increaseRange;	
+	private String increaseRanges;	
 	/**
 	 * 最大投资比例 保留四位小数 0-1000000 0，1000000表示无限制（同一个会员投资总金额不能超过借款金额*最大投资比例）	
 	 */
 	private int investMax;	
+	private String investMaxs;	
 	/**
 	 * 申请状态 0：未审核 1：通过 -1：打回	
 	 */
@@ -398,18 +401,21 @@ public class ProjectAppRecordEntity {
 	}
 	public void setMinStart(int minStart) {
 		this.minStart = minStart;
+		this.minStarts= IntegerAndString.IntToString(minStart);
 	}
 	public int getIncreaseRange() {
 		return increaseRange;
 	}
 	public void setIncreaseRange(int increaseRange) {
 		this.increaseRange = increaseRange;
+		this.increaseRanges= IntegerAndString.IntToString(increaseRange);
 	}
 	public int getInvestMax() {
 		return investMax;
 	}
 	public void setInvestMax(int investMax) {
 		this.investMax = investMax; 
+		this.investMaxs= IntegerAndString.IntToString(investMax);
 	}
 	public int getCheckStatu() {
 		return checkStatu;
@@ -742,6 +748,24 @@ public class ProjectAppRecordEntity {
 	}
 	public void setCheckStatuNow(int checkStatuNow) {
 		this.checkStatuNow = checkStatuNow;
+	}
+	public String getInvestMaxs() {
+		return investMaxs;
+	}
+	public void setInvestMaxs(String investMaxs) {
+		this.investMaxs = investMaxs;
+	}
+	public String getMinStarts() {
+		return minStarts;
+	}
+	public void setMinStarts(String minStarts) {
+		this.minStarts = minStarts;
+	}
+	public String getIncreaseRanges() {
+		return increaseRanges;
+	}
+	public void setIncreaseRanges(String increaseRanges) {
+		this.increaseRanges = increaseRanges;
 	}
 	
 }

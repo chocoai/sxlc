@@ -28,7 +28,7 @@ $(function(){
 							var run = setInterval(function(){
 								$item.html(setTime+"s");
 								setTime--;
-								if (setTime <= 0 ){
+								if (setTime < 0 ){
 									clearInterval(run);
 									$item.html("重新发送");
 									$item.removeClass("disabled");

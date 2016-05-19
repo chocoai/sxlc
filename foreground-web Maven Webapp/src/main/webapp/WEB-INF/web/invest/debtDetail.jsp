@@ -138,14 +138,14 @@
 								style="color:#bfbfbf">
 							    <div class="charge-addon1">元</div>
 							 </div>
-							 <input type="button" class="login-now" value="立即登录">
+							 <input type="button" class="login-now"  onclick="window.location='<%=path%>/login.html'" value="立即登录">
 						</div>
 					</form>
 				</c:if>
 				<c:if test="${loginUser != null }">
 					<form id="loginedBox">
 					<div class="inv-deal-box logined">
-						<div class="inv-available">本次可投金额<div class="right"><span>${sSumAount }</span>元</div></div>
+						<div class="inv-available">本次可投金额<div class="right"><span>${sSumAount}</span>元</div></div>
 						<div class="amount-available">可用余额<div class="right"><span>${userBalances }</span>元</div></div>
 						<div class="input-group" style="height:50px;">
 						    <input type="text" class="charge-input" datatype="acountM" maxlength="10" value="50元起投且金额为整数" 
@@ -154,7 +154,7 @@
 							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
 						    <div class="charge-addon">元</div>
-						    <input class="charge-btn" type="button" value="充值">
+						    <input class="charge-btn" type="button" onclick="window.location='<%=path%>/fundManagement/recharge.html'" value="充值">
 						</div><!-- /input-group -->
 						<div class="expected-return">预期收益：<span id="pageProfit">0.00</span>元</div>
 						<input type="button" class="inv-now" id="inv-now" value="立即投资">
@@ -238,12 +238,12 @@
 		<div class="red-packets-top clearfix" id="red-packets-top">
 			
 		</div>
-		<c:if test="${appRecordEntity.isDirect == 1 }">
+<%-- 		<c:if test="${appRecordEntity.isDirect == 1 }">
 			<div class="info clearfix" id="codeContent">
 				<div class="leftTitle">定向标密码:</div>
 				<input type="text" id="directionalCode" class="inputDJJ1">
 			</div>
-		</c:if>
+		</c:if> --%>
 		<div class="red-packets-bottom clearfix">
 			<div class="label">本次投资总金额：<label  id="nowInvestNum">1,000.00</label>元</div>
 			<div class="label">使用代金券：<label  id="nowVoucher">100.00</label>元</div>
@@ -253,12 +253,13 @@
 		<div class="btn-group" >
 			<form action="invest/debtInvestment.html" id="form1" method="post" name="form1">
 			 	<input type="hidden" name="projectId" value="">
-			 	<input type="hidden" name="slVouchers" value="">
+			 	<input type="hidden" name="lCreditorTransAppId" value="">
+			 	<input type="hidden" name="lVouchers" value="">
 			 	<input type="hidden" name="lAmount" value="">
-			 	<input type="hidden" name="redPacks" value="">
-			 	<c:if test="${appRecordEntity.isDirect == 1 }">
+			 	<input type="hidden" name="sRedPacketsInfo" value="">
+<%-- 			 	<c:if test="${appRecordEntity.isDirect == 1 }">
 			 		<input type="hidden" name="sDirectPwd" value="">
-			 	</c:if>
+			 	</c:if> --%>
 			 	<input type="hidden" name="sign" value="">
 			</form>
 			<input type="button" class="confirm" value="确定" id="confirmSubmit">

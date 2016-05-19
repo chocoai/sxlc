@@ -18,6 +18,7 @@ $(function(){
  */
 function IdentyDetails(identyId,typeId){
 	$("#applyId").val(identyId);
+	var hostPath = $("#hostPath").val();
 	$.ajax( {  
 		 url:appPath+"/companyidety/identyDetail.do",
 			data:{
@@ -46,7 +47,6 @@ function IdentyDetails(identyId,typeId){
 					if(data.sEndDate!=null){//有效期
 						$("#sEndDate").val(data.sEndDate);	
 					}
-					
 					if(data.attachPath!=null && data.attachPath!=""){
 						var arrPath = data.attachPath.split(",");
 						var arrName = data.attachName.split(",");
@@ -55,8 +55,8 @@ function IdentyDetails(identyId,typeId){
 								$("#addImg").append("<tr><td style='height:220px;width:270px'>"
 			                    +"  		<div class='img-polaroid' style='width: 250px;height: 200px;' align='center'>"
 			                    +"      	 	<div style='border:1px solid #cccccc; class='thumb' >"
-			                 	+"	<a data-gallery='gallery-contract' target='blank' href='"+arrPath[i]+"' class='document'>"
-			                    +"         	  <img src='"+arrPath[i]+"' style='width:250px;height: 150px; '>"
+			                 	+"	<a data-gallery='gallery-contract' target='blank' href='"+hostPath+arrPath[i]+"' class='document'>"
+			                    +"         	  <img src='"+hostPath+arrPath[i]+"' style='width:250px;height: 150px; '>"
 			                    +"    </a></div>"
 			                    +"   			<p><a>"+arrName[i]+"</a>&nbsp;&nbsp;</p>"
 			                    +"</div></td></tr>");
@@ -64,8 +64,8 @@ function IdentyDetails(identyId,typeId){
 								$("#addImg tr:last").append("<td style='height:220px;width:270px'>"
 			                    +"  		<div class='img-polaroid' style='width: 250px;height: 200px;' align='center'>"
 			                    +"      	 	<div style='border:1px solid #cccccc;class='thumb'>"
-			                    +"	<a data-gallery='gallery-contract' target='blank' href='"+arrPath[i]+"' class='document'>"
-			                    +"         	  <img src='"+arrPath[i]+"' style='width:250px;height: 150px; '>"
+			                    +"	<a data-gallery='gallery-contract' target='blank' href='"+hostPath+arrPath[i]+"' class='document'>"
+			                    +"         	  <img src='"+hostPath+arrPath[i]+"' style='width:250px;height: 150px; '>"
 			                    +"       	 </a>	</div>"
 			                    +"   			<p><a>"+arrName[i]+"</a>&nbsp;&nbsp;</p>"
 			                    +"</div></td>");						
@@ -112,7 +112,8 @@ function submitIdentyList(){
 			success:function(data) { 
 				if(data!=null && data!=""){
 					if(data == 1){
-						layer.alert("审核成功。",{icon:1});  
+						layer.alert("审核成功。",{icon:1}); 
+						window.location.href = appPath+"/web/member/taxRegistrationAuthen.jsp?content="+typeId;
 					}else if(data == 2){
 						layer.alert("该认证项已审核。",{icon:0}); 
 					}else {

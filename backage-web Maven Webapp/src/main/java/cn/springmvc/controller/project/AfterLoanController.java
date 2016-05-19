@@ -201,7 +201,7 @@ public class AfterLoanController {
 		
 		//获取解密后参数
 		Integer urgedType = Integer.parseInt(req.getParameter("urgedType"));
-		String urgedDetail = req.getParameter("urgedDetail");
+		String urgedDetail = req.getParameter("content");
 		Long applyID = Long.parseLong(req.getParameter("applyID"));
 		Long repayId = Long.parseLong(req.getParameter("repayId"));
 		
@@ -354,11 +354,35 @@ public class AfterLoanController {
 		Integer repayID = Integer.parseInt(req.getParameter("repayID"));
 		PostProjectEntity details = new PostProjectEntity();
 		details = postLoanManageService.getBillingDetails(repayID);
-		String r = postLoanManageService.getProjectBill(repayID);
+		String projectBill = postLoanManageService.getProjectBill(repayID);
 		if(details!=null){
+			details.setProjectBill(projectBill);
 			return details;
 		}else{
 			return new PostProjectEntity();
+		}
+	}
+	
+	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 生成账单
+	 * @param req
+	 * @return String  账单内容
+	 * @date 2016-5-18 下午3:41:32
+	 * @throws 
+	 */
+	@RequestMapping("/getProjectBill")
+	@ResponseBody
+	public PostProjectEntity getProjectBill(HttpServletRequest req){
+		PostProjectEntity details = new PostProjectEntity();
+		Integer repayID = Integer.parseInt(req.getParameter("repayID"));
+		String projectBill = postLoanManageService.getProjectBill(repayID);
+		if(projectBill!=null){
+			details.setProjectBill(projectBill);
+			return details;
+		}else{
+			return  new PostProjectEntity();
 		}
 	}
 	

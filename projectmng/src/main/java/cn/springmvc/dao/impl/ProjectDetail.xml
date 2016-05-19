@@ -43,6 +43,7 @@
         <result property = "startDate"       	column = "Start_Date" />
         <result property = "endDate"       	    column = "End_Date" /> 
         <result property = "picIcon"       	    column = "Pic_Icon" /> 
+        <result property = "holdDate"       	column = "Hold_Date" />
        <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	   </association>
     </resultMap> 
@@ -68,13 +69,13 @@
 	   par.Invest_Statu,
 	   par.Increase_Range,par.MinStart,par.Invest_Max,
 	   
-	   pap.Record_Date,pap.Real_End_Date, 
+	   pap.Record_Date,pap.Real_End_Date,pap.Hold_Date, 
 	   
 	   (pbi.Amount-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{sKey})) as signed)),0) 
 	   from Invest_Record  where Apply_Id=par.Apply_Id and IsValid=0 )) availableaAmount,
 	   
 	   (select Level_Mark from Credit_Level where  mi.Credit_Integral between Credit_Score_Min and Credit_Score_Max and statu =1) as  Level_Mark
-	   
+	    
 	   from  Project_App_Record par  
 	   left join Project_App_Process pap on  pap.Apply_Id=par.Apply_Id
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID

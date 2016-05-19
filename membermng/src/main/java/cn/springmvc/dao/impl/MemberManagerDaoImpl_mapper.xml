@@ -21,7 +21,7 @@
 		<result		column="Member_ID"				property="memberId"/>
 		<result		column="Admin_ID"				property="adminId"/>
 		<result		column="Member_Type"			property="memberType"/>
-		<result		column="Attest_Type"			property="attestType"/>
+		<result		column="Attest_Type_ID"			property="attestType"/>
 		<result		column="Attest_TypeName"		property="attestName"/>
 		<result		column="Status"					property="status"/>
 		<result		column="Record_Date"			property="recordDate"/>
@@ -98,25 +98,25 @@
 		left join Member_Third_Info 	mti on mti.Member_ID = mi.Member_id and mti.Member_Type = mi.Member_Type
 		left join Member_Third_Auth_Info mtai on mti.Account_Id = mtai.Account_Id
 		<where>
-			mi.Member_Type=0
+			mi.Member_Type=0 
 			<if test="map!=null and map.memberNo != null and map.memberNo !='' ">
-				mi.Member_No LIKE '%${map.memberNo}%'
+				and mi.Member_No LIKE '%${map.memberNo}%'
 			</if>
 			<if test="map!=null and map.memberName != null and map.memberName !='' ">
-				mi.logname LIKE '%${map.memberName}%'
+				and  mi.logname LIKE '%${map.memberName}%'
 			</if>
 			<if test="map!=null and map.personalName != null and map.personalName !=''">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
 			</if>
 			<if test="map!=null and  map.personalPhone != null and  map.personalPhone !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
 			</if>
-			<!-- <if test="map!=null and  map.automaticBidding >-1">
-				mtai.Is_Auto_Invest = 0
+			<if test="map!=null and  map.automaticBidding >-1">
+				and mtai.Is_Auto_Invest = 0
 			</if>
 			<if test="map!=null and map.automaticRepayment> -1">
-				mtai.Open_Auto_Pay = 0
-			</if> -->
+				and mtai.Open_Auto_Pay = 0
+			</if>
 		</where>
 	</select>
 	
@@ -180,23 +180,23 @@
 		<where>
 			mi.Member_Type=1
 			<if test="map!=null and map.memberNo != null and map.memberNo !='' ">
-				mi.Member_No LIKE '%${map.memberNo}%'
+				and mi.Member_No LIKE '%${map.memberNo}%'
 			</if>
 			<if test="map!=null and map.memberName != null and map.memberName !='' ">
-				mi.logname LIKE '%${map.memberName}%'
+				and mi.logname LIKE '%${map.memberName}%'
 			</if>
 			<if test="map!=null and map.personalName != null and map.personalName !=''">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
 			</if>
 			<if test="map!=null and  map.personalPhone != null and  map.personalPhone !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
 			</if>
-		<!-- 	<if test="map!=null and  map.automaticBidding>-1">
-				mtai.Is_Auto_Invest = 0
+			<if test="map!=null and  map.automaticBidding>-1">
+				and mtai.Is_Auto_Invest = 0
 			</if>
 			<if test="map!=null and map.automaticRepayment> -1">
-				mtai.Open_Auto_Pay = 0
-			</if> -->
+				and mtai.Open_Auto_Pay = 0
+			</if>
 		</where>
 	</select>
 	
@@ -290,8 +290,14 @@
 	
 	<!-- 会员认证资料信息 -->
 	<select id="memberConfInfo" parameterType="Map" resultMap="memberAttestInfo">
-		SELECT mai.member_Id,mai.Attest_Type_ID, mat.Attest_TypeName FROM Member_Attest_info mai  LEFT JOIN   Member_Attest_Type mat ON mai.Attest_Type_ID=mat.Attest_Type_ID
-		where mai.member_Id = #{memberId}
+		SELECT mai.member_Id,mai.Attest_Type_ID,mai.Certification_ID,mai.Member_Type,mai.Status,mai.Record_Date,mai.End_Date, mat.Attest_TypeName FROM Member_Attest_info mai  LEFT JOIN   Member_Attest_Type mat ON mai.Attest_Type_ID=mat.Attest_Type_ID
+		where mai.member_Id = #{memberId} ORDER BY mai.Record_Date ASC,mai.Attest_Type_ID ASC
+	</select>
+	
+	<!-- 会员已认证认证资料信息 -->
+	<select id="twomemberConfInfo" parameterType="Map" resultMap="memberAttestInfo">
+		SELECT mai.member_Id,mai.Attest_Type_ID,mai.Certification_ID,mai.Member_Type, mat.Attest_TypeName FROM Member_Attest_info mai  LEFT JOIN   Member_Attest_Type mat ON mai.Attest_Type_ID=mat.Attest_Type_ID
+		where mai.member_Id = #{memberId} and mai.Status = 2 ORDER BY mai.Record_Date ASC,mai.Attest_Type_ID ASC
 	</select>
 	
 	<!-- 会员认证资料信息 -->
@@ -444,19 +450,20 @@
 		from member_info mi 
 		left join personal_base_info pbi on pbi.Personal_Id = mi.Personal_ID
 		<where>
-			<if test="map.memberNo != null">
-				mi.member_no = #{map.memberNo}
+		       mi.BeinvitateCode = (select InvitateCode from member_info where Member_ID =#{map.memberId} limit 1)
+			<if test="map.memberNo != null and map.memberNo != '' ">
+				and mi.member_no = #{map.memberNo}
 			</if>
-			<if test="map.personalName != null">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
+			<if test="map.personalName != null and  map.personalName !='' ">
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
 			</if>
 			
-			<if test="map.personalPhone != null">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
+			<if test="map.personalPhone != null and map.personalPhone != '' ">
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
 			</if>
 			
 			<if test="map.startTime != null">
-				mi.Reg_Date between #{map.startTime} and #{map.endTime}				
+				and mi.Reg_Date between #{map.startTime} and #{map.endTime}				
 			</if>
 		</where>
 	</select>
@@ -508,13 +515,13 @@
 			mi.Member_Type=0 and
 		    (select count(1) from Member_VIP_App_Record mvar where Certify_EDate > now() and Member_ID = mi.Member_ID) >= 1	
 			<if test="memberName != null and memberName != '' ">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
 	</select>
@@ -553,16 +560,16 @@
 		left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_ID 
 		left join Member_Third_Info  mti on mti.Member_ID = mi.Member_ID and mti.Member_Type = mi.Member_Type
 		<where>
-			mi.Member_Type=1 and
+			mi.Member_Type=1 and 
 		    (select count(1) from Member_VIP_App_Record mvar where Certify_EDate > now() and Member_ID = mi.Member_ID) >= 1	
 			<if test="memberName != null and memberName != '' ">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
 	</select>
@@ -604,22 +611,22 @@
 		left join County_Dictionary cod on cod.County_Id = mi.County_Id
 		left join Town_Dictionary td on td.Town_id = mi.Town_id
 		<where>
-			mi.Member_Type=0 and
+			mi.Member_Type=0  and 
 			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 0) = 0
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 			<if test="idCard != null and idcard != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
 			</if>
 			<if test="regDate != null and regDate != '' and endDate !='' ">
-				mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
+				and mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
 			</if>
 		</where>
 		order by mi.Reg_Date desc
@@ -648,21 +655,21 @@
 		left join Town_Dictionary 		td 	on td.Town_id = mi.Town_id
 		<where>
 			mi.Member_Type=1 and
-			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 0) = 0
+			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 2) = 0
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
 				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 			<if test="idCard != null and idcard != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
 			</if>
 			<if test="regDate != null and regDate != '' and endDate !='' ">
-				mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
+				and mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
 			</if>
 		</where>
 		order by mi.Reg_Date desc
@@ -707,23 +714,23 @@
 		left join Town_Dictionary td on td.Town_id = mi.Town_id
 		<where>
 			mi.Member_Type=0 and
-			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 0) > 0 and 
+			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 2) > 0 and 
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id) = 0 and 
 			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id ) = 0
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 			<if test="idCard != null and idcard != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
 			</if>
 			<if test="regDate != null and regDate != '' and endDate !='' ">
-				mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
+				and mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
 			</if>
 		</where>
 		order by mi.Reg_Date desc
@@ -757,19 +764,19 @@
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id) = 0 and 
 			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id ) = 0
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 			<if test="idCard != null and idcard != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
 			</if>
 			<if test="regDate != null and regDate != '' and endDate !='' ">
-				mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
+				and mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
 			</if>
 		</where>
 		order by mi.Reg_Date desc
@@ -839,13 +846,13 @@
 			mi.Member_Type=0 and
 			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND  par.Invest_Statu>=3) > 0  
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
 	</select>
@@ -887,13 +894,13 @@
 			mi.Member_Type=1 and
 			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND  par.Invest_Statu>=3) > 0  
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
 	</select>
@@ -957,13 +964,13 @@
 			mi.Member_Type=0 and
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
 	</select>
@@ -1003,13 +1010,13 @@
 			mi.Member_Type=1 and
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${map.memberName}%'
+				and mi.logname like '%${map.memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
 	</select>
@@ -1054,13 +1061,13 @@
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
 			AND  (select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND par.Invest_Statu>=3) > 0  
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${memberName}%'
+				and mi.logname like '%${memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
 		</where>
 	</select>	
@@ -1106,13 +1113,13 @@
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
 			AND  (select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND par.Invest_Statu>=3) > 0  
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${memberName}%'
+				and mi.logname like '%${memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
 		</where>
 	</select>
@@ -1145,16 +1152,16 @@
 		 	mi.Member_Type=0 and
 			(select count(1) from Member_BlackList mb where mb.member_id = mi.member_id and Remove_Date is null) > 0
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${memberName}%'
+				and mi.logname like '%${memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
 			<if test="startTime != '' and endTime != '' ">
-				 (SELECT count(1) FROM Member_BlackList WHERE member_id =mi.Member_ID and Record_Date BETWEEN #{startTime} and #{endTime} ) >0
+				and  (SELECT count(1) FROM Member_BlackList WHERE member_id =mi.Member_ID and Record_Date BETWEEN #{startTime} and #{endTime} ) >0
 			</if>	
 		</where>
  	</select>
@@ -1174,16 +1181,16 @@
 		 	 mi.Member_Type=1 and
 			 (select count(1) from Member_BlackList mb where mb.member_id = mi.member_id and Remove_Date is null) > 0
 			<if test="memberName != null and memberName!=''">
-				mi.logname like '%${memberName}%'
+				and mi.logname like '%${memberName}%'
 			</if>
 			<if test="userName != null and userName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
 			<if test="startTime != '' and endTime != '' ">
-				 (SELECT count(1) FROM Member_BlackList WHERE member_id =mi.Member_ID and Record_Date BETWEEN #{startTime} and #{endTime} ) >0
+				and  (SELECT count(1) FROM Member_BlackList WHERE member_id =mi.Member_ID and Record_Date BETWEEN #{startTime} and #{endTime} ) >0
 			</if>
 			</where>
  	</select>
@@ -1245,13 +1252,13 @@
 		<where>
 			 mi.Member_ID !=#{memberId} and mi.Member_ID  not in (select Member_Id from Member_Info mins  where mins.InvitateCode = mi.BeinvitateCode)
 			<if test="memberNo != null and memberNo!=''">
-				mi.Member_No like '%${memberNo}%'
+				and mi.Member_No like '%${memberNo}%'
 			</if>
 			<if test="realName != null and realName !='' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${realName}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${realName}%'
 			</if>
 			<if test="phone != null and phone != '' ">
-				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
 			</if>
 		</where>
  	</select>	
@@ -1290,4 +1297,13 @@
 	<update id="updateAdminPwd" parameterType="Map" >
 		update Admin set adminPwd = #{newpwd} where Admin_ID = #{adminId} 
 	</update>
+	
+		<!-- 修改我的邀请人 -->
+	<select id="updateMyInvite" resultType="Map" statementType="CALLABLE">
+		call updateMyInvite(
+			#{memberId,					mode=IN,				jdbcType=BIGINT},
+			#{inviteId,				    mode=IN,				jdbcType=BIGINT},
+			#{result,					mode=OUT,				jdbcType=INTEGER}
+		)
+	</select>
 </mapper>

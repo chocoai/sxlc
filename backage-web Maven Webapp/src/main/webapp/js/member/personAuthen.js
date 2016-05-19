@@ -32,8 +32,29 @@ $(function(){
 			$(".buttonCombination button:last-child").show();
 		}
 	});
+	
+	
 });
 
+
+/**
+ * 返回
+ * @param suffix
+ */
+function back(suffix){
+	var URL =  appPath+"/"+suffix; 
+	window.location.href  = URL;
+	
+	//window.history.back();
+}
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#table_id').DataTable().ajax.reload();
+	
+});
 
 /*  跳转页面控制按钮显示         */
 $(function(){
@@ -93,7 +114,7 @@ function IdentyList(attestTypeId){
 	var  arr =[];//控制需要隐藏的列
 	if(attestTypeId==1||attestTypeId==0){//实名认证
 		arr =[7,8,9,10,11,12,13,14,15];
-	}else if(attestTypeId==2||attestTypeId==3||attestTypeId==5||attestTypeId==6||attestTypeId==9){//其他一般认证
+	}else if(attestTypeId==2||attestTypeId==3||attestTypeId==5||attestTypeId==6||attestTypeId==9||attestTypeId==12 || attestTypeId==26 ){//其他一般认证
 		arr =[3,4,5,6,7,8,9,10,11,12,13,14,15];
 	}else if(attestTypeId==4){//住址认证
 		arr =[3,4,5,6,8,9,10,11,12,13,14,15];
@@ -212,5 +233,4 @@ function IdentyList(attestTypeId){
 		        },
 		        oTableTools:{"sRowSelect":"multi"}
 	});
-
 }

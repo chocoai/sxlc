@@ -1,3 +1,4 @@
+<%@page import="cn.sxlc.account.manager.model.RechargeReturnEntity"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%
 	String path = request.getContextPath();
@@ -21,7 +22,7 @@
    		<div class="register-box">
    			<div class="successBox">
    				<div class="congratulation">充值失败！</div>
-   				<div class="tiss">您的银行卡余额不足</div>
+   				<div class="tiss">${recharge. message}</div>
    			</div>
    		</div>
    	</div>

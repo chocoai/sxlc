@@ -133,7 +133,8 @@ function stopOrStart(btn){
 						layer.alert("启用成功。",{icon:1});
 					}
 				  	layer.close(index);
-				  	setTimeout('location.reload()',500);
+				  	var table = $('#table_id').DataTable();
+					table.ajax.reload();
 				}else {
 					if(stutus==1){
 						layer.alert("停用失败。",{icon:2});
@@ -216,7 +217,8 @@ function addThird(){
 			if(data >0){
 				layer.alert("添加成功。",{icon:1}); 
 				$(".layui-layer-btn1").click();
-				setTimeout('location.reload()',500);
+				var table = $('#table_id').DataTable();
+				table.ajax.reload();
 			}else{
 				layer.alert("添加失败。",{icon:2});  
 			}
@@ -256,7 +258,8 @@ function updateThird(){
 			if(data >0){
 				layer.alert("修改成功。",{icon:1}); 
 				$(".layui-layer-btn1").click();
-				setTimeout('location.reload()',500);
+				var table = $('#table_id').DataTable();
+				table.ajax.reload();
 			}else{
 				layer.alert("修改失败。",{icon:2});  
 			}

@@ -246,5 +246,10 @@ public class MemberManagerReadDaoImpl extends SqlSessionDaoSupport implements IM
 		 getSqlSession().selectOne("memberManagerDao.getAdminIdByPhone",param);
 		 return IntegerAndString.StringToInt(param.get("result").toString(), -1);
 	}
-	
+
+
+	@Override
+	public List<MemberAttestInfo> selectAuditList(Map<String, Object> map) {
+		return getSqlSession().selectList("memberManagerDao.twomemberConfInfo",map);
+	}
 }

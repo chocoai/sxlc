@@ -49,6 +49,7 @@
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>面积：</span></div>
 					   						<input class="inputText area" datatype="acountM"  type="text" lang="请输入房产面积" maxlength="10"/>
+					   						<span class="unitPrice">米<sup>2</sup></span>
 					   					</li>
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>市场价值：</span></div>

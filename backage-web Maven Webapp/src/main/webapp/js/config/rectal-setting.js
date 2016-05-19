@@ -54,7 +54,6 @@ $(function() {
 			  scrollXInner : "100%",
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          }
-	 
 	});//表格初始化完毕
 	 
 	//表格单选效果(有复选框)
@@ -96,7 +95,7 @@ function handleBtn(type){
 		title="添加";
 	}else if(type==2){
 		title="修改";
-		var data = $('#table_id').DataTable().rows('.selected').data();
+		var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的数据！",{icon:0});
 			return;
@@ -187,7 +186,7 @@ function addOrUpdate(type){
 function enableOrDisable(type,id){
 	$.ajax( {  
 		url: appPath+"/config/enableRewardSet.do",
-		data: {"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id)},
+		data: {"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id+"")},
 		type:'post',  
 		cache:false,  
 		dataType:'json',  

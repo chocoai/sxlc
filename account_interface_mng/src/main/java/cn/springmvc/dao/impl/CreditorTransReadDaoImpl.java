@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 import cn.springmvc.dao.CreditorTransReadDao;
 import cn.sxlc.account.manager.model.InvestAccountFeeEntity;
 import cn.sxlc.account.manager.model.LoanInfoBeanSubmit;
@@ -23,8 +24,8 @@ import cn.sxlc.account.manager.utils.InterfaceConstant;
 @Repository("creditorTransReadDaoImpl")
 public class CreditorTransReadDaoImpl extends AccountDaoSupport implements CreditorTransReadDao {
 
-    public static final String REMARK_FORMAT = "%d,%d,%d,%d,%d,%d,%d,%d";
-    public static final String FORMAT = "%d,%d,%d";
+    public static final String REMARK_FORMAT = "%dA%dA%dA%dA%dA%dA%d";
+    public static final String FORMAT = "%dA%dA%d";
     public static final String REMARK2_FORMAT = FORMAT;
 
     /**
@@ -98,8 +99,13 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
         
         getSqlSession().selectOne(DaoConstant.CREDITOR_TRANS_DAO_CHECK_CREDITOR_RECORD_BY_MEMBER, param);
         String sResult = "验证失败";
-        if(param.get("vResult")!=null){
-        	sResult =  param.get("vResult").toString();
+        if(param.get("result")!=null){
+        	if(IntegerAndString.StringToInt(param.get("result").toString(), 0)!=1){
+        		sResult =  param.get("vResult").toString();
+        	}else{
+        		sResult = "success";
+        	}
+        	
         }
         return sResult;
 //        return IntegerAndString.StringToInt(param.get(DaoConstant.PARAM_RESULT).toString(), 0);
@@ -179,7 +185,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
             beanEntity.setAmount(IntegerAndString.LongToString2(lRedPacketsAndVouchersCost));
             beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
             beanEntity.setTransferName("平台支付给转让人");
-            beanEntity.setRemark("A,平台支付给借款人，金额:" + IntegerAndString.LongToString2(lRedPacketsAndVouchersCost));
+            beanEntity.setRemark("ACTCT平台支付给借款人，金额:" + IntegerAndString.LongToString2(lRedPacketsAndVouchersCost));
             List<LoanInfoSecondaryBean> secondList = new ArrayList<LoanInfoSecondaryBean>();
 
             //红包和代金卷所占管理费
@@ -206,12 +212,12 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
             beanEntity.setAmount(IntegerAndString.LongToString2(lRealAmount));
             beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
             beanEntity.setTransferName("投资人支付给转让人");
-            beanEntity.setRemark("B,投资人支付给借款人，金额:" + IntegerAndString.LongToString2(lRealAmount));
+            beanEntity.setRemark("BCTCT投资人支付给借款人，金额:" + IntegerAndString.LongToString2(lRealAmount));
 
             List<LoanInfoSecondaryBean> secondList = new ArrayList<LoanInfoSecondaryBean>();
 
             // 投资人给平台：实际M(管理费)
-            if (lInvestManageFee > 0) {
+            if (lInvestManageFee > 100) {
                 LoanInfoSecondaryBean secondaryEntity = new LoanInfoSecondaryBean();
                 secondaryEntity.setAmount(IntegerAndString.LongToString2(lInvestManageFee));
                 secondaryEntity.setLoanInMoneymoremore(platformMark);
@@ -255,7 +261,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
     	
     	Map<String, Object> param = new HashMap<String, Object>();
         param.put("transId", lTransId);
-        
+        param.put("sKey", DbKeyUtil.GetDbCodeKey());
         sResult = getSqlSession().selectOne("CreditorTrans.GetCreditorTransAccount", param);
     	param = null;
         

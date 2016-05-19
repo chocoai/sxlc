@@ -10,7 +10,7 @@
 <html>
 <head>
 	<base href="<%=basePath%>">
-    <title>现场认证</title>
+    <title></title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
     <script type="text/javascript">
     	var appPath="<%=path%>";
@@ -78,9 +78,9 @@
 	   				<div class="authenContent">
 		   				<div class="authen clearfix">
 		   				    <div class="previewPictureDiv">
-		   				    <div class="wdateSelect" <c:if test="${t==2||t==3 || t==4 || t==5 || t==6 || t==9 ||t==1136091|| t==16 || t==17 || t==20 || t==21 || t==24 }"> style="display:block" </c:if> >
+		   				    <div class="wdateSelect" <c:if test="${t==2||t==3 || t==4 || t==5 || t==6 || t==9||t==11 ||t==1136091|| t==16 || t==17 || t==20 || t==21 || t==24 }"> style="display:block" </c:if> >
 	   							<span>有效期：</span>
-	   							<input class="inputText dateSelect Wdate" onfocus="WdatePicker({readOnly:true})" type="text"  lang="请选择有效期"/>
+	   							<input class="inputText dateSelect Wdate" onfocus="WdatePicker({readOnly:true,ychanged:showSubmit,Mchanged:showSubmit,dchanged:showSubmit})" type="text"  lang="请选择有效期"/>
 		   					</div>
 		   					<div class="previewPicture previewPicture_f" id="file" >
 		   						<img class="previewImg"   src="resource/img/account/common/opacity.png">
@@ -104,6 +104,7 @@
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification_pic.js"></script>
 	<script type="text/javascript">
 		expUpload(0);
+		document.title=$(".authenHeader span").html();
 	</script>
 </body>
 </html>

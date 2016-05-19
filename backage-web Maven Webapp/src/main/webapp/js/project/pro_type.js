@@ -23,12 +23,12 @@ $(function(){
 				          },
 				          { title:"id","data":"id"},  
 				          { title:"类型名称","data": "projectName"},  
-				          { title:"项目借款额度范围（万元）","data": "singleMin", 
+				          { title:"项目借款额度范围（元）","data": "singleMin", 
 				        	  "mRender": function (data, type, full) {
 				        		  return full.minAmounts+"~"+full.maxAmounts;
 				        	  }
 				          },  
-				          { title:"最小投资金额（万元）","data": "singleMin"},  
+				          { title:"最小投资金额（元）","data": "singleMin"},  
 				          { title:"年化利率范围（%）","data": "singleMin", 
 				        	  "mRender": function (data, type, full) {
 				        		  return full.minRates+"~"+full.maxRates;
@@ -142,7 +142,7 @@ function enableOrDisable(type,id){
 	
 	$.ajax( {  
 		url:appPath+"/project/enableProType.do",
-		data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id)},
+		data:{"statu":encrypt.encrypt(""+type),"id":encrypt.encrypt(id+"")},
 		type:'post',  
 		cache:false,  
 		dataType:'json',  

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.Upload.FtpClientUtil;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
@@ -452,7 +453,7 @@ public class LoanCheckController {
 		String startDate = req.getParameter("startDate");
 		param.put("startDate", startDate);
 		String endDate = req.getParameter("endDate");
-		param.put("endDate", endDate);
+		param.put("endDate2", endDate);
 		String affix = req.getParameter("affix");
 		param.put("affix", affix);
 		String ImageUrl = req.getParameter("ImageUrl");
@@ -463,7 +464,7 @@ public class LoanCheckController {
 		result = projectPublishService.publishProject(param,logEntity,sIpInfo);
 		if(result>0){
 			//生成该项目的还款计划
-			generateRepayListService.GenerateRepayList(Integer.parseInt(ApplyId));
+			generateRepayListService.GenerateRepayList(Long.parseLong(ApplyId));
 		}
 		return result;
 	}
@@ -504,7 +505,7 @@ public class LoanCheckController {
 		String repaySource = req.getParameter("repaySource");
 		param.put("repaySource", repaySource);
 		String amount = req.getParameter("amount");
-		param.put("amount", amount);
+		param.put("amount", StringToLong(amount,0));
 		String projectDescript = req.getParameter("projectDescript");
 		param.put("projectDescript", projectDescript);
 		String deadline = req.getParameter("deadline");
@@ -514,13 +515,13 @@ public class LoanCheckController {
 		String repayWay = req.getParameter("repayWay");
 		param.put("repayWay", repayWay);
 		String yearRate = req.getParameter("yearRate");
-		param.put("yearRate", yearRate);
+		param.put("yearRate", StringToLong(yearRate,0));
 		String minStart = req.getParameter("minStart");
-		param.put("minStart", minStart);
+		param.put("minStart", StringToLong(minStart,0));
 		String increaseRange = req.getParameter("increaseRange");
-		param.put("increaseRange", increaseRange);
+		param.put("increaseRange", StringToLong(increaseRange,0));
 		String investMax = req.getParameter("investMax");
-		param.put("investMax", investMax);
+		param.put("investMax", StringToLong(investMax,0));
 		String investCountMax = req.getParameter("investCountMax");
 		param.put("investCountMax", investCountMax);
 		String RepayGuarantee = req.getParameter("RepayGuarantee");
@@ -628,6 +629,27 @@ public class LoanCheckController {
 		int result=0;
 		result = projectAuitService.projectAudit(param,logEntity,sIpInfo);
 		return result;
+	}
+	
+	/**
+	 * @author 唐国峰 
+	 * @Description: string转化为long,乘以10000且有默认值。
+	 * @param value
+	 * @param iDefault
+	 * @return long  
+	 * @date 2016-5-19 上午11:58:18
+	 * @throws
+	 */
+	public long StringToLong(String value,int iDefault){
+		long iResult = iDefault;
+    	if(value == null || value.equals("")){
+    		return iResult;
+    	}
+    	try {
+			iResult = IntegerAndString.StringToLong(value);
+		} catch (Exception e) {
+		}
+    	return iResult;
 	}
 	
 	

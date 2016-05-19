@@ -7,9 +7,11 @@
 
 $(function(){
 	if(btn=="1"){
-		$("#submit").removeAttr("style");
-	}else{
-		$("#back").removeAttr("style");
+		$(".back").eq(0).removeAttr("style");
+	}else if(btn=="2"){
+		$(".back").eq(1).removeAttr("style");
+	}else if(btn=="3"){
+		$(".back").eq(2).removeAttr("style");
 	}
 });
 
@@ -17,6 +19,8 @@ $(function(){
  *  根据id 查询实名认证
  */
 function reanlNameIdentyList(memberId){
+	var hostPath = $("#hostPath").val();
+	
 	$.ajax( {  
 		 url:appPath+"/memberidety/realNameIdenty.do",
 			data:{
@@ -53,10 +57,11 @@ function reanlNameIdentyList(memberId){
 					var $img2 = $("#left_idcard");//身份证饭面
 					var profix = "";  //前缀
 					if(data.positive!=null && data.positive !=""){
-						$img1.src=data.positive;
+						$img1.src=hostPath + data.positive;
+						
 					}
 					if(data.reverse!=null && data.reverse !=""){
-						$img2.src=data.reverse;
+						$img2.src=hostPath +data.reverse;
 					}
 					
 				}
@@ -98,7 +103,8 @@ function submitIdentyList(){
 			success:function(data) { 
 				if(data!=null && data!=""){
 					if(data == 1){
-						layer.alert("审核成功。",{icon:1});  
+						layer.alert("审核成功。",{icon:1}); 
+						window.location.href = appPath+"/web/member/realNameAuthen.jsp?content="+typeId; 
 					}else if(data == 2){
 						layer.alert("该认证项已审核。",{icon:0}); 
 					}else {

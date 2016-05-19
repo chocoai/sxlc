@@ -28,7 +28,7 @@ public interface GenerateRepayListService {
 	 * @return int 返回类型  -1项目信息不存在，1成功
 	 * @date 2016-4-1 下午1:58:20
 	 */
-	int GenerateRepayList(int applyID);
+	int GenerateRepayList(long applyID);
 	
 	/**
 	 * 获取项目投资预期收益

@@ -6,14 +6,14 @@ var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
 $(function (){ 
 	$.ajax({
-		type :　'post',
+		type : 'post',
 		url : appPath + "/bankCard/queryBankInfo.do",
 		success : function (msg) {
 			var str = "";
 			$.each(msg, function (i, item) {
 				str += "<option value=\""+item.bankID+"\">"+item.bankName+"</option>";
 			});
-			$("#bank").html(str);
+			$("#mbank").html(str);
 		}
 	});
 });
@@ -24,14 +24,14 @@ $(function (){
 
 $(function (){ 
 	$.ajax({
-		type :　'post',
+		type : 'post',
 		url : appPath + "/bankCard/queryProvinceInfo.do",
 		success : function (msg) {
 			var str = "<option>请选择</option>";
 			$.each(msg, function (i, item) {
 				str += "<option value=\""+item.provinceId+"\">"+item.provinceName+"</option>";
 			});
-			$("#province").html(str);
+			$("#mprovince").html(str);
 		}
 	});
 });
@@ -40,11 +40,11 @@ $(function (){
  * 查询城市信息
  */
 
-$("#province").bind('change', function() {
+$("#mprovince").bind('change', function() {
 	var provinceId = $(this).val();
 	var result = encrypt.encrypt((provinceId + ""))
 	$.ajax({
-		type :　'post',
+		type : 'post',
 		url : appPath + "/bankCard/queryCityInfo.do",
 		data : {provinceId : result},
 		success : function (msg) {
@@ -52,13 +52,13 @@ $("#province").bind('change', function() {
 			$.each(msg, function (i, item) {
 				str += "<option value=\""+item.cityId+"\">"+item.cityName+"</option>";
 			});
-			$("#city").html(str);
+			$("#mcity").html(str);
 		}
 	});
 } );
 
-$(".commonbtn0").bind('click', function() {
-	$("#bankAdd").submit();
+$("#mod").bind('click', function() {
+	$("#bankMod").submit();
 });
 
 /**
@@ -66,30 +66,35 @@ $(".commonbtn0").bind('click', function() {
  * @returns
  */
 function modBank() {
-	
-	/*var rowdata = $('#table_id').DataTable().rows('.selected').data();*/
-	var bankCardId = encrypt.encrypt((1 + ""));
-	var bankName = encrypt.encrypt(($("#bank").val() + ""));
-	var provinceId  = encrypt.encrypt(($("#province").val() + ""));
-	var cityId = encrypt.encrypt(($("#city").val() + ""));
-	var branch = encrypt.encrypt(($("#branch").val() + ""));
-	var cardNo = encrypt.encrypt(($("#cardNo").val() + ""));
-	var cardNo2 = encrypt.encrypt(($("#cardNo2").val() + ""));
-	var phone = encrypt.encrypt(($("#phone").val() + ""));
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	var bankCardId = encrypt.encrypt((rowdata[0].bankCardId + ""));
+	var provinceId  = encrypt.encrypt(($("#mprovince").val() + ""));
+	var cityId = encrypt.encrypt(($("#mcity").val() + ""));
+	var branch = encrypt.encrypt(($("#mbranch").val() + ""));
+	var cardNo = encrypt.encrypt(($("#mcardNo").val() + ""));
+	var phone = encrypt.encrypt(($("#mphone").val() + ""));
+	var memberType = encrypt.encrypt((1 + ""));
 	
 	$.ajax({
 		type : 'post',
-		url : appPath + "",
+		url : appPath + "/bankCard/update.do",
 		data : {
 			provinceId : provinceId,
 			cityId : cityId,
 			branch : branch,
 			cardNo : cardNo,
 			phone : phone,
-			bankCardId : bankCardId
+			bankCardId : bankCardId,
+			memberType : memberType
 		},
 		success : function (msg) {
-			
+			if (msg == 1) {
+	  			layer.alert("操作成功!",{icon:1});
+	  			setTimeout('location.reload()',2000);
+	  		}else {
+	  			layer.alert("服务器异常!",{icon:2});
+	  			setTimeout('location.reload()',2000);
+	  		}
 		}
 	});
 }

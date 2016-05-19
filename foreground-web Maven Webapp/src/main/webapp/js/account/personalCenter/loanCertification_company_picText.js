@@ -568,7 +568,7 @@ $(function(){
 	 * @param attachPrefix
 	 */
 	function dealAccount(data,attachPrefix){
-		if(data!=null &&　data!=""){
+		if(data!=null && data!=""){
 			var accountOpeningCode=data.Permits_Code;//许可证
 			var opBank=data.Permits_Bank;//开户银行
 			var bankAccount=data.Bank_No;//帐号

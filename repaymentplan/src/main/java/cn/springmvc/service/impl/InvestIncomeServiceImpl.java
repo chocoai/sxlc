@@ -49,7 +49,7 @@ public class InvestIncomeServiceImpl implements InvestIncomeService {
 	@Resource(name="replayProjectDetailListDaoImpl")
 	private  ReplayProjectDetailListDao replayProjectDetailListDao; 
 	@Override
-	public int GenerateInvestIncomeList(int applyID) {
+	public int GenerateInvestIncomeList(long applyID) {
 		int result = 0;
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("projectID",             applyID);
@@ -173,7 +173,7 @@ public class InvestIncomeServiceImpl implements InvestIncomeService {
 	 * @return int 返回类型 
 	 * @date 2016-4-12 下午3:56:22
 	 */
-	public int RepayIncomePing(int applyID) {
+	public int RepayIncomePing(long applyID) {
 		int result = -1;
 		List<LoanRepayEntitys> RepayIDList= investIncomeListDao.selectLoanRepayIDByapplyID(applyID);
 		for(int i = 0;i < RepayIDList.size();i++){

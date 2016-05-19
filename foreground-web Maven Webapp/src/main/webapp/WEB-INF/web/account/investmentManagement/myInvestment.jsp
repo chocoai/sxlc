@@ -152,12 +152,12 @@
 							 <li>
    								<div class="productNum divOutside">
 		   							<div class="divIntside">
-		   								<div> infos.projectNo</div>
+		   								<div>{{infos.projectNo}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div>infos.projectTitle</div>
+		   								<div>{{infos.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="lender divOutside">
@@ -223,12 +223,12 @@
    								<li>
    								<div class="productNum divOutside">
 		   							<div class="divIntside">
-		   								<div> infos.projectNo</div>
+		   								<div>{{infos.projectNo}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div>infos.projectTitle</div>
+		   								<div>{{infos.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="lender divOutside">
@@ -299,12 +299,12 @@
    							 <li>
    								<div class="productNum divOutside">
 		   							<div class="divIntside">
-		   								<div> infos.projectNo</div>
+		   								<div>{{infos.projectNo}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div>infos.projectTitle</div>
+		   								<div>{{infos.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="lender divOutside">
@@ -419,16 +419,16 @@
    					</div>
    					<!-- 投标结束 模版 -->
    					<script id="bidEnd_list" type="text/html">
-						{{each infos as value index}}
+						{{each infos as infos index}}
 							<li>
    								<div class="productNum divOutside">
 		   							<div class="divIntside">
-		   								<div> infos.projectNo</div>
+		   								<div>{{infos.projectNo}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="productName divOutside">
 		   							<div class="divIntside">
-		   								<div>infos.projectTitle</div>
+		   								<div>{{infos.projectTitle}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="lender divOutside">

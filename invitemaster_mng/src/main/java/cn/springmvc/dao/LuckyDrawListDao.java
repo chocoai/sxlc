@@ -126,5 +126,16 @@ public interface LuckyDrawListDao {
 	 * @date 2016-5-12 上午10:34:27
 	 */
 	public List<PrizeInformationEntity>  selectPrizeTypes();
+	
+	
+	/**
+	 * 查询最近一期 抽奖活动 
+	 * @author 刘利   
+	 * @Description: TODO  
+	 * @param @return 设定文件 
+	 * @return LotteryActivityEntity 返回类型 
+	 * @date 2016-4-19 下午4:58:20
+	 */
+	public LotteryActivityEntity selectLotteryActivitylimit();
 }
 

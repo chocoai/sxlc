@@ -66,7 +66,7 @@ public interface CreditorTransInvestService {
      * @throws null
      */
     TransferSubmitEntity getCreditorTransInfo(short sIsAuto, long lMemberId, long lCreditorTransAppId,
-                                              long lAmount, long lRedPackets, long lVouchers, short sClient);
+                                              long lAmount, long lRedPackets, long lVouchers, short sClient,String sRedpackets);
     
     /**
      * 项目投资返回

@@ -21,7 +21,7 @@ $(function(){
 	} );
 	showProcess();
 		/*添加审批点*/
-		$(".obtn-proexam-point-add").on("click touchstart",function(){
+		/*$(".obtn-proexam-point-add").on("click touchstart",function(){
 			layer.open({
 			    type: 1,
 			    area: ['550px', '530px'], //高宽
@@ -35,7 +35,7 @@ $(function(){
 				  	//取消的回调
 				  }
 			});
-		});
+		});*/
 		/* 下拉框内字体颜色 */
 		$(".msginterfaceselect").css("color","#aaa");
 		$(".msginterfaceselect").change(function(){
@@ -62,16 +62,13 @@ $(function(){
  * statu 状态
  */
 function upOrDown(id,statu){
+		var stutus =statu;
 		var ms ="";
-		var statu = 0;
 		if(statu==0){
 			ms="确定下移？";
-			statu=1;
 		}else{
 			ms="确定上移？";
-			statu = 0;
 		}
-		var stutus =statu;
 		//result 为加密后参数
 		var statu = encrypt.encrypt(statu+"");
 		var id = encrypt.encrypt(id+"");
@@ -94,22 +91,24 @@ function upOrDown(id,statu){
 				success : function(data) {
 					if(data >0){
 						//执行完关闭
-						if(stutus==0){
-							layer.alert("停用成功。",{icon:1});  
+						if(stutus>0){
+							layer.alert("上移成功。",{icon:1});  
 						}else{
-							layer.alert("启用成功。",{icon:1});
+							layer.alert("下移成功。",{icon:1});  
+						  
 						}
-					  	layer.close(index);
-					  	setTimeout('location.reload()',500);
+						layer.close(index);
+						var table = $('#table_id').DataTable();
+						table.ajax.reload();
 					}else {
-						if(stutus==0){
-							layer.alert("审批流程约束，停用失败!",{icon:2});
+						if(stutus>0){
+							layer.alert("上移失败!",{icon:2});
 						}else{
-							layer.alert("启用失败!",{icon:2});
+							layer.alert("下移失败!",{icon:2});
 						}
-					}
-				}
-				});
+					 }
+			    	}
+			});
 				//执行完关闭
 			  	layer.close(index);
 			}, function(index){
@@ -147,9 +146,10 @@ function deleteProgress(id){
 				success : function(data) {
 					if(data >0){
 						//执行完关闭
-						layer.alert("停用成功。",{icon:1});  
+						layer.alert("删除成功。",{icon:1});  
 					  	layer.close(index);
-					  	setTimeout('location.reload()',500);
+					  	var table = $('#table_id').DataTable();
+						table.ajax.reload();
 					}else {
 						layer.alert("删除失败!",{icon:2});
 					}
@@ -214,7 +214,7 @@ function deleteProgress(id){
 			                  { title:"操作","mRender":function(data, type, full){
 			                	  var sReturn ="";
 		                		  sReturn+=  "<a href='javascript:upOrDown("+full.id+",1);' class='btn-disable'>上移</a>";
-		                		  sReturn+=  "&nbsp;&nbsp;&nbsp;<a href='javascript:upOrDown("+full.id+",0);' class='btn-disable'>下移</a>";
+		                		  sReturn+=  "&nbsp;&nbsp;&nbsp;<a href='javascript:upOrDown("+full.id+",-1);' class='btn-disable'>下移</a>";
 		                		  sReturn+=  "&nbsp;&nbsp;&nbsp;<a href='javascript:deleteProgress("+full.id+");' class='btn-disable'>删除</a>";
 		                		  return sReturn;
 			                  	}

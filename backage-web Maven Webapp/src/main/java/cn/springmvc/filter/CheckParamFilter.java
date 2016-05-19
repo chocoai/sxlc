@@ -1,5 +1,7 @@
 package cn.springmvc.filter;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -23,10 +25,15 @@ import cn.springmvc.httpRequest.DecryptHttpServletRequest;
  */
 public class CheckParamFilter implements Filter{
 	private Logger logger = Logger.getLogger(CheckParamFilter.class);
-
+	Set<String> exitRout = new HashSet<String>();
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		logger.info("ChechkParam_init");
+		exitRout.add("login");										//登录不拦截
+		exitRout.add("applyRequest");								//
+		exitRout.add("backURL");								    //第三方回调 页面返回地址  不拦截
+		exitRout.add("backServerURL");								//第三方回调 服务器返回地址  不拦截
 	}
 
 	@Override
@@ -34,9 +41,15 @@ public class CheckParamFilter implements Filter{
 		logger.info("ChechkParam_doFilter");
 		response.setCharacterEncoding("utf-8");
 		HttpServletRequest 	servletRequest 		= (HttpServletRequest) request;
-		String 				requestPath	 		= servletRequest.getRequestURI().replace("/backage-web/", "");
-		
-		if (requestPath.equals("applyRequest") || requestPath.equals("login")) {		//过滤不拦截的请求
+//		String 				requestPath	 		= servletRequest.getRequestURI().replace("/backage-web/", "");
+		String requestUrl = servletRequest.getRequestURI();
+		String requestPath="";//请求路径标识
+		if(requestUrl.lastIndexOf(".") > requestUrl.lastIndexOf("/")+1){
+			requestPath= requestUrl.substring(requestUrl.lastIndexOf("/")+1, requestUrl.lastIndexOf("."));
+		}else{
+			requestPath= requestUrl.substring(requestUrl.lastIndexOf("/")+1);
+		}
+		if(exitRout.contains(requestPath)){
 			chain.doFilter(request, response);
 		}else{
 			request = new DecryptHttpServletRequest(servletRequest);

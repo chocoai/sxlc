@@ -1,5 +1,7 @@
 package cn.springmvc.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -364,7 +366,6 @@ public class InvestmentManagementController {
 	}
 	
 	
-	
 	/***
 	* 投资管理-债权转让
 	* 
@@ -459,18 +460,39 @@ public class InvestmentManagementController {
 		long extras 	= IntegerAndString.StringToLong(request.getParameter("extras"));				//转让金额
 		long discount 	= IntegerAndString.StringToLong(request.getParameter("discount"));				//转让折扣
 		long iId		= IntegerAndString.StringToLong(request.getParameter("iId"), 0);				//投资记录编号
+		String maxTime	= request.getParameter("maxTime");												//最晚转让时间
+		Map<String,Object> resultMessage = new HashMap<String,Object>(); 
+		if(maxTime == null || maxTime.trim().length() == 0){
+			resultMessage.put("status", "-2");
+			resultMessage.put("message", "请选择最晚转让时间");
+		}else{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date maxDate = null;
+			try {
+				maxDate = sdf.parse(maxTime);
+			} catch (Exception e) {
+				resultMessage.put("status", "-2");
+				resultMessage.put("message", "请选择有效最晚转让时间");
+			}
+		}
+		if(resultMessage.keySet().size() > 0){
+			return JSONObject.toJSONString(resultMessage);
+		}
+		
+		
 		Map<String,Object> parma = new HashMap<String,Object>();
 		parma.put("logId", memberInfo.getId());															//会员编号
 		parma.put("investId", iId);
 		parma.put("transPrincipal", extras);
-		parma.put("transDiscount", discount);
-		parma.put("transMaxTime", 1);					//小朱说传1								
+		parma.put("transDiscount", discount);				//小朱说传1								
 		parma.put("surplusTime", 1);
 		parma.put("surplusTimeType", 1);
+		parma.put("transMaxTime", maxTime+" 23:59:59");													//小朱说传1								
+		parma.put("surplusTime", 1);																	//期限
+		parma.put("surplusTimeType", 1);																//期限类型
 		
 		//1：成功 -1该债权转让不是本人 -2转让金额大于最大可转让金额
 		int result = transferableCreditsService.creditorTransApp(parma);
-		Map<String,Object> resultMessage = new HashMap<String,Object>();
 		if(result  == 1){
 			resultMessage.put("message", "转让成功");
 			resultMessage.put("status", 1);

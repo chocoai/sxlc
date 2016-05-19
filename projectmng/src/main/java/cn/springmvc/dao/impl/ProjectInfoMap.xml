@@ -86,7 +86,9 @@
 		<result column="Hold_Date"     property="holdDate"/> 
 	</resultMap>	
      <!-- 查看账单详情 -->
-	<resultMap type="cn.springmvc.model.PostProjectEntity" id="BillingDetails">  
+	<resultMap type="cn.springmvc.model.PostProjectEntity" id="BillingDetails"> 
+		<id column="Repay_ID"          		property="repayID" /> 
+		<result column="Apply_Id"      property="applyId"/>
 		<result column="Project_No"           property="projectNo"/>
 		<result column="Project_Title"        property="projectTitle"/>
 		<result column="Personal_Name"        property="memberName"/>

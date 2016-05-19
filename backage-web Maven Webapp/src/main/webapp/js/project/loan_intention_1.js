@@ -46,7 +46,7 @@ $(function(){
 				        	    	}  
 				        	  }
 				          },  
-				          { title:"借款金额","data": "amount"},  
+				          { title:"借款金额(元)","data": "amountStr"},  
 				          { title:"借款期限","data": "deadline"},  
 				          { title:"还款方式","data": "repayWay", 
 				        	  "mRender": function (data, type, full) {
@@ -177,7 +177,7 @@ $(function(){
 		}
 		var params={};
 		var id = data[0].id;
-		params.id=encrypt.encrypt(id);
+		params.id=encrypt.encrypt(id+"");
 		
 		layer.confirm('确定拒绝借款？', {
 			btn: ['确定','取消'] //按钮

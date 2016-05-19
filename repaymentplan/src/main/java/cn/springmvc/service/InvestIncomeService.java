@@ -28,7 +28,7 @@ public interface InvestIncomeService {
 	 * @return int 返回类型 
 	 * @date 2016-4-12 下午2:24:28
 	 */
-	public int GenerateInvestIncomeList(int applyID);
+	public int GenerateInvestIncomeList(long applyID);
 //	/**
 //	 * 生成收益计划
 //	 * @author 刘利   

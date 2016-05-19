@@ -39,6 +39,7 @@ import cn.membermng.model.MyPoint;
 import cn.membermng.model.RealNameAuth;
 import cn.membermng.model.SecurityInfo;
 import cn.membermng.model.SendSetEntity;
+import cn.membermng.model.UntreatedMessageEntity;
 import cn.membermng.model.VIPPurchaseRecordsEntity;
 import cn.springmvc.dao.impl.sms.SendEmail;
 import cn.springmvc.dao.impl.sms.SendSmsUtil;
@@ -256,24 +257,24 @@ public class PersonalCenterController{
 		String cityId = request.getParameter("cityId");
 		String countyId = request.getParameter("countyId");
 		String contactName = request.getParameter("contactName");
-		String contactPhone = request.getParameter("contactPhone");
+//		String contactPhone = request.getParameter("contactPhone");
 		String contactQQ = request.getParameter("contactQQ");
-		String contactEmail = request.getParameter("contactEmail");
+//		String contactEmail = request.getParameter("contactEmail");
 		String companyProfile = request.getParameter("companyProfile");
 
 		Map<String, Object> message = new HashMap<String, Object>();
 		if ((contactName == null) || (!StringUtils.checkUserName(contactName))) {
 			message.put("contactName", "请输入联系人姓名");
 		}
-		if ((contactPhone == null) || (!StringUtils.checkPhone(contactPhone))) {
-			message.put("contactPhone", "请输入联系人电话号码");
-		}
+//		if ((contactPhone == null) || (!StringUtils.checkPhone(contactPhone))) {
+//			message.put("contactPhone", "请输入联系人电话号码");
+//		}
 		if ((contactQQ == null) || (!StringUtils.checkQQ(contactQQ))) {
 			message.put("contactQQ", "请输入联系人QQ号码");
 		}
-		if ((contactEmail == null) || (!StringUtils.checkMail(contactEmail))) {
-			message.put("contactEmail", "请输入联系邮箱地址");
-		}
+//		if ((contactEmail == null) || (!StringUtils.checkMail(contactEmail))) {
+//			message.put("contactEmail", "请输入联系邮箱地址");
+//		}
 		if (companyProfile.length() > 512) {
 			message.put("contactEmail", "公司简介信息超出512个字");
 		}
@@ -309,7 +310,7 @@ public class PersonalCenterController{
 
 		int result = this.memberService.editMemberComplanyInfo(loginMember
 				.getId().longValue(), iprovinceId, icityId, icountyId,
-				contactName, contactPhone, contactQQ, contactEmail,
+				contactName, "", contactQQ, "",
 				companyProfile);
 		if (result == 0) {
 			message.put("status", result);
@@ -498,7 +499,7 @@ public class PersonalCenterController{
  		Date   startDate	= null;
 		Date   cDate		= new Date();
 		try {
-			startDate		= sdf.parse(startTime + "23:59:59");
+			startDate		= sdf.parse(startTime + " 23:59:59");
 			if(startDate.before(cDate)){		//购买时间必须是在今天之后
 				message.put("startTime", "VIP开始时间无效");
 			}
@@ -791,7 +792,11 @@ public class PersonalCenterController{
 		Integer editType = IntegerAndString.StringToInt(request.getParameter("editType"), 0);//0--新增   1--修改 
 		
 		String userName = request.getParameter("userName");
-		int nationId = Integer.parseInt(request.getParameter("nationId"));
+		int nationId = 0;
+		try {
+			nationId = Integer.parseInt(request.getParameter("nationId"));
+		} catch (Exception e) {
+		}
 		String idCard = request.getParameter("idCard");
 		String homeTown = request.getParameter("homeTown");
 		String endTime = request.getParameter("endTime");
@@ -810,8 +815,8 @@ public class PersonalCenterController{
 		}
 		if (endTime == null) {
 			//message.put("message", "请选择有效期");
-		} else if(endTime.equals("请选择有效期")){
-			endTime="2222-12-30";
+		}else if(endTime.equals("请选择有效期") || endTime == null || endTime.trim().length() == 0){
+			endTime="";
 		}else {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try {
@@ -842,9 +847,15 @@ public class PersonalCenterController{
 		if(result == -1){
 			message.put("status", "-1");
 			message.put("message", "已存在申请记录");
-		}else{
+		}else if(result==-2){
+			message.put("status", "-2");
+			message.put("message", "身份证号已被注册");
+		}else if(result==0){
 			message.put("status", "0");
-			message.put("message", "提交申请成功");
+			message.put("message", "保存实名认证信息成功");
+		}else{
+			message.put("status", "-3");
+			message.put("message", "未知的错误，请联系我们的客服人员");
 		}
 		return JSONObject.toJSONString(message);
 	}
@@ -2196,8 +2207,88 @@ public class PersonalCenterController{
 		
 		return JSONObject.toJSONString(message);
 	}
-	
 
+	/**
+	 * 个人中心读取当前登录人的姓名，称号，信用等级，积分，签到次数，第三方账号,身份认证状态,手机绑定状态，邮箱绑定状态，第三方开通状态
+	* loadMemberInfo
+	* @author 邱陈东  
+	* * @Title: loadMemberInfo 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-18 上午11:47:26
+	* @throws
+	 */
+	@RequestMapping(value="loadMemberInfo", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadMemberInfo(HttpServletRequest request){
+		Map<String,Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		MemberInfo memberInfo = memberService.loadMemberInfo(lMemberInfo[0],(int)lMemberInfo[1]);
+		//对登录名做加密处理
+		String logname = memberInfo.getLogname();
+		logname = logname.charAt(0)+"***"+logname.charAt(logname.length()-1);
+		memberInfo.setLogname(logname);
+		message.put("statu", 0);
+		message.put("message", "查询成功");
+		message.put("data",memberInfo);
+		
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 * 用户签到
+	* sign
+	* @author 邱陈东  
+	* * @Title: sign 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-19 上午9:40:27
+	* @throws
+	 */
+	@RequestMapping(value="sign", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String sign(HttpServletRequest request){
+		Map<String,Object> message = new HashMap<String, Object>();
+		
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		int result = memberService.sign(lMemberInfo[0]);
+		if(result==-1){
+			message.put("message", "今日已经签到,不能重复签到");
+		}else if(result==1){
+			message.put("message", "签到成功");
+		}else{
+			message.put("messsage", "签到失败");
+		}
+		message.put("statu", result);
+		
+		return JSONObject.toJSONString(message);
+	}
+	/**
+	 * 读取未读站内信，站内消息，待处理好友申请数
+	* loadUntreatedMessage
+	* @author 邱陈东  
+	* * @Title: loadUntreatedMessage 
+	* @param @param request
+	* @return String 返回类型 
+	* @date 2016-5-19 上午9:42:52
+	* @throws
+	 */
+	@RequestMapping(value="loadUntreatedMessage", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadUntreatedMessage(HttpServletRequest request){
+		long[] lMemberInfo = new long[2] ;
+		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
+		
+		UntreatedMessageEntity entity = memberService.loadUntreatedMessage(lMemberInfo[0]);
+		
+		return JSONObject.toJSONString(entity);
+	}
 	/***
 	 * 设置会员登录验证方式
 	 * 
@@ -2377,7 +2468,7 @@ public class PersonalCenterController{
 		}else if ((phoneCode == null) || (phoneCode.trim().length() == 0)){
 			param.put("message", "请输入短信验证码");
 		}else if (!phoneCode.equals(Core.getEditBindPhoneCode(newPhone))) {
-			param.put("message", "短信验证码错误");
+			param.put("message", "手机验证码错误");
 		}
 
 		if ((oldPhone != null) && (newPhone != null)

@@ -59,7 +59,7 @@ jQuery.fn.layoutClick = function(str){
 	})
 	//金额取小数点后2位
 	template.helper("$toFixed",function(content){
-		return parseInt(content).toFixed(2);
+		return parseFloat(content).toFixed(2);
 	})
 	//去掉时间后的.0
 	template.helper("$toDelete",function(content){
@@ -78,10 +78,11 @@ jQuery.fn.layoutClick = function(str){
 						var data = {json:r};
 						var total = 0;
 						for (var i=0;i<data.json.length;i++){
-							total = total + parseInt(data.json[i].sdPrincipalInterests)
+							total = total + parseFloat(data.json[i].sdPrincipalInterests)
 						}
 						$(".moneyFormat1").html(total);
 						var html = template("repay_Plan",data);
+						$("#repaymentPlanTop").siblings().remove();
 						$("#repaymentPlan").append(html);	
 					}
 				})
@@ -93,12 +94,13 @@ jQuery.fn.layoutClick = function(str){
 					url:url,
 					dataType:"json",
 					success:function(r){
-						$("#moneyFormat2").html(parseInt(r.availableAmount).toFixed(2));
-						$("#moneyFormat3").html(parseInt(r.investTotals).toFixed(2));
-						$("#moneyFormat4").html(parseInt(r.shenYuKeTou).toFixed(2));
+						$("#moneyFormat2").html(parseFloat(r.availableAmount).toFixed(2));
+						$("#moneyFormat3").html(parseFloat(r.investTotals).toFixed(2));
+						$("#moneyFormat4").html(parseFloat(r.shenYuKeTou).toFixed(2));
 						var data = r
 						if (r.info.length>0){
 							var html = template("invest_List",r);
+							$("#investmentListTop").siblings().remove();
 							$("#investmentList").append(html)	
 						}
 					}
@@ -216,7 +218,7 @@ jQuery.fn.layoutClick = function(str){
 					dataType:"json",
 					success:function(r){
 						console.log(r)
-						if (num<=parseInt(r.userBalances)&&num<=parseInt(r.sSumAount)){
+						if (num<=parseFloat(r.userBalances)&&num<=parseFloat(r.sSumAount)){
 							var hei = 453 + Math.ceil(r.redPackList.length /3)*40;
 							layer.open({
 								title :'我要投资',//标题
@@ -239,7 +241,7 @@ jQuery.fn.layoutClick = function(str){
 									function(profit){
 										r.num = num;
 										r.profit = profit;
-										r.maxRedNum = parseInt(r.num)*r.proportion;
+										r.maxRedNum = parseFloat(r.num)*r.proportion;
 										//console.log(r)
 										var html = template("confirmInfo",r)
 										
@@ -250,13 +252,17 @@ jQuery.fn.layoutClick = function(str){
 										$(".input1").each(function(n){
 											var n = n;
 											$(this).mouseover(function(){
-												$(this).layoutClick("有效期至"+r.redPackList[n].sEndDate);
+												if (r.redPackList[n].sEndDate == null){
+													$(this).layoutClick("永久有效");
+												}else{
+													$(this).layoutClick("有效期至"+r.redPackList[n].sEndDate);
+												}
 											});
 											$(this).mouseout(function(){
 												$(this).parent().find(".tipClick").remove();
 											});
 											
-											if (parseInt($(this).text())>r.maxRedNum){
+											if (parseFloat($(this).text())>r.maxRedNum){
 												$(this).addClass("disabled");
 											};
 											
@@ -286,6 +292,12 @@ jQuery.fn.layoutClick = function(str){
 										});
 										
 										$("#useVouchers").on("keyup",function(){
+											if ($(this).val()>r.sVouchers){
+												layer.alert("代金券使用超出余额",function(index){
+													layer.close(index);
+													$("#useVouchers").val(r.sVouchers)
+												})
+											}
 											var re = /^[0-9]*[1-9][0-9]*$/; //正整数
 											var str = detail.getRedBags();
 											var thisVal = $(this).val()||"0";
@@ -305,7 +317,7 @@ jQuery.fn.layoutClick = function(str){
 									}
 							)
 						}else{
-							layer.alert("余额不足");
+							layer.alert("余额不足或超过本次可投金额");
 						}
 					}
 				})
@@ -333,11 +345,11 @@ jQuery.fn.layoutClick = function(str){
 				if($("#useVouchers").val()==""||$("#useVouchers").val()==undefined){
 					$("#nowVoucher").html("0.00");
 				}else{
-					$("#nowVoucher").html(parseInt($("#useVouchers").val()).toFixed(2));
+					$("#nowVoucher").html(parseFloat($("#useVouchers").val()).toFixed(2));
 				};
 				var str = detail.getRedBags();
 				$("#nowBag").html(str);
-				var useNum = parseInt($("#nowInvestNum").html())-$("#nowVoucher").html()-$("#nowBag").html();
+				var useNum = parseFloat($("#nowInvestNum").html())-$("#nowVoucher").html()-$("#nowBag").html();
 				if(useNum>=0){
 					$("#nowAccountBalance").html(useNum.toFixed(2));
 				}else{
@@ -350,7 +362,7 @@ jQuery.fn.layoutClick = function(str){
 				var str = 0;
 				$(".input1").each(function(){
 					if ($(this).hasClass("active")){
-						str += parseInt($(this).text());
+						str += parseFloat($(this).text());
 					}
 				});
 				return str;
@@ -358,9 +370,20 @@ jQuery.fn.layoutClick = function(str){
 	}
 $(function(){
 	var get_url = location.pathname;
-	var get_index = parseInt(get_url.lastIndexOf("/"))+1;
+	var get_index = parseFloat(get_url.lastIndexOf("/"))+1;
 	var get_index1 = get_url.lastIndexOf(".");
 	var applyId = get_url.substring(get_index, get_index1);
+	var moneyControl;
+	if (minStarts == "0" && increaseRanges == "0"){
+		moneyControl = "起投金额和加价幅度无限制";
+	}else if(minStarts != "0" && increaseRanges == "0"){
+		moneyControl = "起投金额"+minStarts+"元";
+	}else if (minStarts == "0" && increaseRanges != "0"){
+		moneyControl =  "起投金额无限制,加价幅度"+ increaseRanges;
+	}else{
+		moneyControl = "起投金额"+minStarts+"元,"+"加价幅度"+ increaseRanges;
+	}
+	$(".charge-input").val(moneyControl);
 	
 	/*标签的切换&顶部链接切换*/	
 	$(".tab-head li").each(function(index){
@@ -394,13 +417,15 @@ $(function(){
 	
 	$("#inv-now").bind("click",function(){
 		var num = $("#investMoney").val();
-		if (num!="50元起投且金额为整数"){
+		if (num!= moneyControl){
 			var re = /^[0-9]*[1-9][0-9]*$/ ; //正整数
-			if (re.test(num) && num>=50){
+			if (num >= minStarts && (num-parseFloat(minStarts))%increaseRanges == "0"){
 				detail.getaccountInfo(applyId,num);
 			}else{
-				layer.alert("50元起投且金额为整数")
+				layer.alert(moneyControl)
 			}
+		}else{
+			layer.alert("请填写投资金额")
 		}
 	});
 	

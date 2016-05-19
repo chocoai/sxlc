@@ -1,69 +1,11 @@
 $(function(){
 	$(".TE").addClass("down");
 	$(".TE1").addClass("down2");
-	/*弹出层*/	
-	/*待确认——查看详情*/
-	/*$('.viewDetails').on('click', function(){
-		layer.open({
-			title :'项目基本信息',//标题
-			skin: 'layer-ext-myskin',//皮肤
-	        type: 1,
-	        area: ['440px', '580px'],//大小宽*高
-	        shadeClose: true, //点击遮罩关闭
-	        content: $('.view-details')//内容，里边是包含内容的div的class
-	    });
-	});*/
-	/*待确认——发布待确认，提交审核待确认*/
-	/*$('.toConfirm').on('click', function(){
-		layer.open({
-			title :'项目基本信息',//标题
-			skin: 'layer-ext-myskin',//皮肤
-	        type: 1,
-	        area: ['440px', '620px'],//大小宽*高
-	        shadeClose: true, //点击遮罩关闭
-	        content: $('.to-confirm')//内容，里边是包含内容的div的class
-	    });
-	});*/
-	/*借款记录-融资中-投资记录*/
-	/*$('.invRecord').on('click', function(){
-		layer.open({
-			title :'查看投资记录',//标题
-			skin: 'layer-ext-myskin',//皮肤
-	        type: 1,
-	        area: ['645px', '470px'],//大小宽*高
-	        shadeClose: true, //点击遮罩关闭
-	        content: $('.inv-record')//内容，里边是包含内容的div的class
-	    });
-	});*/
-	/*借款记录-融资中-投资记录*/
-	/*$('.repay').on('click', function(){
-		layer.open({
-			title :'还款',//标题
-			skin: 'layer-ext-myskin',//皮肤
-	        type: 1,
-	        area: ['525px', '670px'],//大小宽*高
-	        shadeClose: true, //点击遮罩关闭
-	        content: $('.repay-content')//内容，里边是包含内容的div的class
-	    });
-	});*/
-	/*提前还款*/
-	/*$('.early-repay').on('click', function(){
-		layer.open({
-			title :'提前还款',//标题
-			skin: 'layer-ext-myskin',//皮肤
-	        type: 1,
-	        area: ['540px', '500px'],//大小宽*高
-	        shadeClose: true, //点击遮罩关闭
-	        content: $('.early-repay-content')//内容，里边是包含内容的div的class
-	    });
-	});*/
 });
-
 
 //function
 //我的账户-借款管理-我的借款：融资中、融资结束、还款中、已流标、已结清
 //我的账户-借款管理-我的借款：融资中
-
 var noData = '<li class="data-item noData"><div>暂无数据！</div></li>';
 
 function getFinancing(curr,length){
@@ -384,7 +326,7 @@ function creatRepay(data){
 					'</div>'+
 					'<div class="contentOut1 w70">'+
 						'<div class="c-content">'+
-							'<a href="loanManagement/repayPlan.html?projectId='+data.results[i].projectId+'">还款计划</a><br>'+
+							'<a href="loanManagement/repayPlan.html?projectId='+data.results[i].loanId+'">还款计划</a><br>'+
 							'<a href="" class="loan-agreement">借款协议</a><!--跳转未知  -->'+
 						'</div>'+
 					'</div>'+
@@ -802,13 +744,13 @@ function getApply(curr,length){
 		url:"loanManagement/TBCapply.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 1	//每页条数为预留数据，后台有默认值
+			"length":length || 5	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			//console.log(data);
+			console.log(data);
 			if(data.results.length > 0){
 				creatApply(data);
 				/*creatApply(data);//拼接数据
@@ -869,12 +811,12 @@ function creatApply(data){
 					'</div>'+
 					'<div class="contentOut4">'+
 						'<div class="c-content" title="'+data.results[i].termOfLoan+'">'+data.results[i].termOfLoan;
-						if(data.results[i].termOfLoanType != ""){
-							if(data.results[i].termOfLoanType == 0){//天标
+						if(data.results[i].termOfLoanType != null){
+							if(data.results[i].termOfLoanType == "0"){//天标
 								_html+="天";
-							}else if(data.results[i].termOfLoanType == 1){//月标
+							}else if(data.results[i].termOfLoanType == "1"){//月标
 								_html+="个月";
-							}else if(data.results[i].termOfLoanType == 2){//年标
+							}else if(data.results[i].termOfLoanType == "2"){//年标
 								_html+="年";
 							}
 						}
@@ -895,7 +837,15 @@ function creatApply(data){
 							}
 					_html+='</div>'+
 					'<div class="contentOut4">'+
-						'<div class="c-content viewDetails" data-projectId="'+data.results[i].projectId+'">'+data.results[i].statusName+'</div>'+
+						'<div class="c-content ';
+						if(data.results[i].status == 0){//借款人未确认
+							_html+='toConfirm publishToConfirm';
+						}else if(data.results[i].status == 1){//借款人确认中
+							_html+='toConfirm submitToConfirm';
+						}else if(data.results[i].status == 2 || data.results[i].status == -1){//借款人已确认  借款人已取消
+							_html+='viewDetails';
+						}
+						_html+='" data-projectId="'+data.results[i].projectId+'">'+data.results[i].statusName+'</div>'+
 					'</div>'+
 				'</li>';
 				
@@ -916,24 +866,24 @@ function creatApply(data){
 function getTBCDet(){
 	$(".c-content.viewDetails").click(function(){
 		var projectId = $(this).attr("data-projectId");
-		//console.log(projectId);
+		console.log(projectId);
 		/*if(projectId ==null || projectId == ""){
 			return;
 		}*/
 		//console.log("差查询");
-    	/*var url1 = "loanManagement/AdvcancePost_"+applyId+".html";
+    	var url1 = "loanManagement/ReplayDetail_"+projectId+".html";
     	$.ajax({
 			url:url1,
 			type:"get",
 			dataType:"json",
 			timeout:10000,
 			success:function(data){
-				////console.log(data);
+				console.log(data);//
 			},
 			error:function(){
 				layer.alert("请求异常，请稍后再试",{icon:2});
 			}
-		});*/
+		});
 		
 		
 		layer.open({
@@ -950,8 +900,45 @@ function getTBCDet(){
 //待确认借款申请-确认操作
 function toTBCConfirm(){
 	$(".c-content.toConfirm").click(function(){
-		//
-		//console.log("差查询");
+		
+		var projectId = $(this).attr("data-projectId");
+		console.log(projectId);
+		/*if(projectId ==null || projectId == ""){
+			return;
+		}*/
+    	var url1 = "loanManagement/confirmationLoanInfo_"+projectId+".html";
+    	$.ajax({
+			url:url1,
+			type:"get",
+			dataType:"json",
+			timeout:10000,
+			success:function(data){
+				console.log(data);//
+				var $target = $(".to-confirm");
+				if(data){
+					$target.find(".loanTypeName").text(data.loanTypeName);
+					$target.find(".loanTitle").text(data.loanTitle);
+					$target.find(".sLoanAmount").text(data.sLoanAmount);
+					var _dl = data.deadline;
+					if(data.deadlineType == 0){
+						_dl+= "天";
+					}else if(data.deadlineType == 1){
+						_dl+= "个月";
+					}else if(data.deadlineType == 2){
+						_dl+= "年";
+					}
+					$target.find(".deadline").text(_dl);
+					$target.find(".replayTypeName").text(data.replayTypeName);
+					$target.find(".proJectDetail").text(data.proJectDetail);
+					$target.find(".usageOfLoan").text(data.usageOfLoan);
+					$target.find(".paymentSource").text(data.paymentSource);
+				}
+			},
+			error:function(){
+				layer.alert("请求异常，请稍后再试",{icon:2});
+			}
+		});
+		
 		layer.open({
 			title :'项目基本信息',//标题
 			skin: 'layer-ext-myskin',//皮肤
@@ -961,8 +948,51 @@ function toTBCConfirm(){
 	        content: $('.to-confirm')//内容，里边是包含内容的div的class
 	    });
 	    
-	    //console.log("差执行");
-	    
+	    TBCConfirm(projectId);//绑定确认操作
+	});
+}
+
+//确认操作
+function TBCConfirm(projectId){
+	var optionval = "";//确认值
+	var data= {};
+	$(".btn-group input[type='button']").each(function(){
+		$(this).click(function(){
+			$("#optionvalue").val($(this).attr("data-val"));
+			
+			optionvalue = $("#optionvalue").val();
+			$(".btn-group input[type='button']").attr("disabled",true);//单击禁用
+			
+			var encrypt = new JSEncrypt();//加密
+			encrypt.setPublicKey(publickey);
+			
+			if(projectId != undefined){
+				data.applyId = encrypt.encrypt(projectId+"");
+			}
+			
+			if(optionval != undefined){
+				data.optionvalue = encrypt.encrypt(optionvalue+"");
+			}
+			var url = "loanManagement/confirmationLoan.html";
+	    	NetUtil.ajax(
+				url,
+				data,
+				function(r){ 
+					var rdb = JSON.parse(r);
+					if(rdb.result == 1){
+						layer.alert("操作成功",{icon:1});
+					}else{
+						layer.alert("操作失败",{icon:2});
+					}
+					
+					setTimeout(function(){
+						layer.closeAll();
+						window.location.reload();
+					},1000);
+				}
+			);
+			
+		});
 	});
 }
 

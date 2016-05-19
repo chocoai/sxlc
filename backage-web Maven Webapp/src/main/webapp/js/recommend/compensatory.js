@@ -34,20 +34,63 @@ $(document).ready(function() {
 });
 /* 代偿开始  */
 function compenFunction(){
-	layer.open({
-		type: 1,
-		area: ['500px', '300px'], //高宽
-		title: "代偿",
-		maxmin: true,
-		content: $("#compenfunction"),//DOM或内容
-		btn:['确定','返回'],
-		yes: function(index, layero){ //或者使用btn1
-		//确定的回调
-		//判断执行不同方法
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择要操作的记录！",{icon:0});
+		return;
+	}else {
+		$.ajax({
+			type : 'post',
+			url : appPath + "/compensatory/query4compensatory.do",
+			data : {
+				repayID : encrypt.encrypt((rowdata[0].applyId + ""))
+			},
+			success : function (msg) {
+				if (msg != null) {
+					$("#projectNo").val(msg.projectNo);
+					$("#projectTitle").val(msg.projectTitle);
+					$("#personalName").val(msg.personalName);
+					$("#logname").val(msg.logname);
+					$("#index").val(msg.index);
+					$("#sDRepayPrincipal").val(msg.sDRepayPrincipal);
+					$("#sDRepayInterest").val(msg.sDRepayInterest);
+					$("#repayOverdueInterest").val(msg.repayOverdueInterest);
+					$("#repayOverdue").val(msg.repayOverdue);
+				}
+			}
+		});
+		layer.open({
+			type: 1,
+			area: ['500px', '300px'], //高宽
+			title: "代偿",
+			maxmin: true,
+			content: $("#compenfunction"),//DOM或内容
+			btn:['确定','返回'],
+			yes: function(index, layero){ //或者使用btn1
+			//确定的回调
+			//判断执行不同方法
+				
+			
+		},cancel: function(index){//或者使用btn2（concel）
+			//取消的回调
+		}
+		});
+		sub();
 		
-	},cancel: function(index){//或者使用btn2（concel）
-		//取消的回调
 	}
+	
+}
+
+function sub() {
+	$(".layui-layer-btn0").on('click', function () {
+		var rowdata = $('#table_id').DataTable().rows('.selected').data();
+		var appplyId = encrypt.encrypt((rowdata[0].applyId + ""));
+		var repalyId = encrypt.encrypt((rowdata[0].repayID + ""));
+		var memberType = encrypt.encrypt((1 + ""));
+		$("#appplyId").val(appplyId);
+		$("#repalyId").val(repalyId);
+		$("#memberType").val(memberType);
+		$("#tocom").submit();
 	});
 }
 /* 代偿结束  */
@@ -84,6 +127,7 @@ $(function() {
 //                	  "sClass": "table-checkbox"
                   },
                   { title:"项目申请记录id","data": "applyId" },
+                  { title:"还款计划id","data": "repayID" },
                   { title:"项目编号","data": "projectNo" },
                   { title:"产品类型","data": "projectName" },  
                   { title:"项目名称","data": "projectTitle" },  

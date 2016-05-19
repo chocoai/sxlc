@@ -35,22 +35,25 @@ public class MyinvestServiceImpl implements MyinvestService{
 
 	@Override
 	public List<MyinvestEntity> selectMyinvestSettled(PageEntity pageEntity) {
-		
-		return myinvestListDaoImpl.selectMyinvestSettled(pageEntity);
+		List<MyinvestEntity> list = myinvestListDaoImpl.selectMyinvestSettled(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 		
 	}
 
 	@Override
 	public List<MyinvestEntity> selectMyinvesting(PageEntity pageEntity) {
-		
-		return myinvestListDaoImpl.selectMyinvesting(pageEntity);
+		List<MyinvestEntity> list = myinvestListDaoImpl.selectMyinvesting(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 		
 	}
 
 	@Override
 	public List<InvestIncomeEntity> selectRealincome(PageEntity pageEntity) {
-		
-		return myinvestListDaoImpl.selectRealincome(pageEntity);
+		List<InvestIncomeEntity> list = myinvestListDaoImpl.selectRealincome(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 		
 	}
 

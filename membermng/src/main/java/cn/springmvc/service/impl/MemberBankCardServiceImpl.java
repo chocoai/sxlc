@@ -76,6 +76,7 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 		}
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("bankNo", bankCardInfoEntity.getBankNo());
+		map.put("membertype", memberBankCardEntity.getMemberType());
 		map.put("receiveCard", 0); 
 		//查询银行卡是否已存在
 	    result = memberBankCardListDaoimpl.selectMemberBankCardByNo(map);
@@ -138,7 +139,7 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 		
 	}
 	@Override
-	public int updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity,Map<String,Object> map,long memberID) {
+	public int updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity,Map<String,Object> map,long memberID,int memberType) {
 		
 		int result = -1; 
 		
@@ -155,6 +156,7 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 	    Map<String,Object> map2 = new HashMap<String,Object>();
 	    map2.put("memberID", memberID);
 	    map2.put("bankCardId", bankCardInfoEntity.getBankCardId());
+	    map.put("membertype", memberType);
 	    result = memberBankCardListDaoimpl.selectMemberBankCardisExist(map2);
 	    if(result == 0){
 	    	return -3;

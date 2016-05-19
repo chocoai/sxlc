@@ -66,18 +66,18 @@ public class ProjectInvestWriteDaoImpl extends SqlSessionDaoSupport implements P
         param.put("iInvestId", lId);                    // 投资记录id
         param.put("iProjectId", IntegerAndString.StringToLong(sR1[0], 0));        //借款项目id
         param.put("lMemberId", IntegerAndString.StringToLong(sR1[1], 0));        //投资会员id
-        param.put("iMoney", IntegerAndString.StringToLong(sR1[2]));                //实际投资金额 投资总金额-使用红包-使用代金券
+        param.put("iMoney", IntegerAndString.StringToLong(sR1[2], 0));                //实际投资金额 投资总金额-使用红包-使用代金券
         param.put("iIsAuto", IntegerAndString.StringToLong(sR1[5], 0));            // 是否为自动投标
         param.put("iClient", IntegerAndString.StringToLong(sR1[6], 0));            // 投资客户端
         param.put("sKey", sKey);            // 加密解密key
-        param.put("lRedpackets", IntegerAndString.StringToLong(sR1[3]));            // 使用红包
-        param.put("lVouchers", IntegerAndString.StringToLong(sR1[5]));            // 使用代金券
-        param.put("lMngFee", IntegerAndString.StringToLong(sR2[0]));            // 本次投资分润管理费
-        param.put("lGuaranteeFee", IntegerAndString.StringToLong(sR2[1]));            // 本次投资分润的担保费
+        param.put("lRedpackets", IntegerAndString.StringToLong(sR1[3], 0));            // 使用红包
+        param.put("lVouchers", IntegerAndString.StringToLong(sR1[5], 0));            // 使用代金券
+        param.put("lMngFee", IntegerAndString.StringToLong(sR2[0], 0));            // 本次投资分润管理费
+        param.put("lGuaranteeFee", IntegerAndString.StringToLong(sR2[1], 0));            // 本次投资分润的担保费
         //TODO 有问题
-        param.put("lVouchers", IntegerAndString.StringToLong(sR2[2]));            // 本次投资分润的风险保证金
-        param.put("lBackRate", IntegerAndString.StringToLong(sR1[7]));            // 返现率
-        param.put("lBackAmount", IntegerAndString.StringToLong(sR1[8]));            // 返现金额
+        param.put("lRiskMarginFee", IntegerAndString.StringToLong(sR2[2], 0));            // 本次投资分润的风险保证金
+        param.put("lBackRate", IntegerAndString.StringToLong(sR1[7], 0));            // 返现率
+        param.put("lBackAmount", IntegerAndString.StringToLong(sR1[8], 0));            // 返现金额
 
         getSqlSession().selectOne("ProjectInvestDao.ProjectInvestBack", param);
         iResult = IntegerAndString.StringToInt(param.get("result").toString(), 0);
@@ -126,7 +126,7 @@ public class ProjectInvestWriteDaoImpl extends SqlSessionDaoSupport implements P
         param.put("sKey", sKey);
         param.put("result", 0);
 
-        getSqlSession().selectOne("ProjectInvestDao.InsertInvestTmp", param);
+        getSqlSession().selectOne("ProjectInvestDao.CheckInvestRedPackage", param);
 
         lResult = IntegerAndString.StringToLong(param.get("result").toString(), 0);
 		

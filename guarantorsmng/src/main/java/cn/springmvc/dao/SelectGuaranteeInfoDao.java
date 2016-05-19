@@ -309,5 +309,20 @@ public interface SelectGuaranteeInfoDao {
 	* @throws 
 	*/
 	public AdminGMEntity selectAdmin(long adminID); 
+	
+	
+	/** 
+	* OverduecompensationByid 根据 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: OverduecompensationByid 
+	* @Description: TODO 
+	* @param @param repayID 还款计划id
+	* @param @return 设定文件 
+	* @return OverdueCompensationEntity 返回类型 
+	* @date 2016-5-18 上午11:30:25
+	* @throws 
+	*/
+	public OverdueCompensationEntity OverduecompensationByid(long repayID); 
 }
 

@@ -472,7 +472,10 @@
    		</ul>
    		<input type="button" class="early-repay-confirm btn" value="确定" onclick=""><!-- layer.closeAll() -->
    	</div>
-   	
+   	<form action="loanManagement/RepaymentPost.html" id="form1" method="post" name="form1">
+			 	<input type="hidden" name="repalyId" id="repalyId" value="">
+			 	<input type="hidden" name="applyId"  id="applyId"  value=""> 
+   </form>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/myLoan.js"></script>
@@ -482,6 +485,9 @@
 	<script type="text/javascript" src="js/account/loanManagement/repayManagement.js"></script>
 	<script type="text/javascript">
 		getRepayPlan();
+		$(".early-repay").on("click",function(){
+			getEarlyRepayInfo();
+		});
 	</script>
 </body>
 </html>

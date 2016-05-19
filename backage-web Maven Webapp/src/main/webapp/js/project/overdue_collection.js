@@ -117,6 +117,7 @@ $(function(){
 				  $("#repayTime").val(data.repayTime);
 				  $("#overDay").val(data.overDay);
 				  $("#overdueAmounts").val(data.overdueAmounts);
+				  $("#projectBill").html(data.projectBill);
 				  
 				  layer.open({
 			            type: 1,
@@ -133,17 +134,67 @@ $(function(){
 		      }  
 		 });
 	});
-//生成账单	
+	
+	//生成账单	
 	$('.obtn-generate-bill').click(function(){
-    	layer.open({
-            type: 1,
-            title: '生成账单',
-            maxmin: true,
-            shadeClose: true, //点击遮罩关闭层
-            area : ['500px' , '300px'],
-            content: $(".generate_bill"),//DOM或内容
-		    btn:['发送', '取消']
-        });
+		var rdata = $('#table_id').DataTable().rows('.selected').data();
+		 if(rdata.length<1){
+				layer.alert("请选择项目！",{icon:0});
+				return;
+		 }
+		var repayID =  encrypt.encrypt(rdata[0].repayID+"");
+		$.ajax( {  
+			  url:appPath+"/project/getProjectBill",
+			  data: {"repayID":repayID},  
+			  type:'post',  
+			  cache:false,  
+			  dataType:'json',  
+			  success:function(data) { 
+				  $("#msgcontent").html(data.projectBill);
+				  layer.open({
+					  type: 1,
+					  title: '生成账单',
+					  maxmin: true,
+					  shadeClose: true, //点击遮罩关闭层
+					  area : ['500px' , '300px'],
+					  content: $(".generate_bill"),//DOM或内容
+					  btn:['发送', '取消'],yes: function(index, layero){ //或者使用btn1
+						  //确定的回调
+						  var data={};
+						  var urgedDetail = $("#msgcontent").val();
+						  data.urgedType = encrypt.encrypt("0");//0:电话 
+						  data.content = urgedDetail; 
+						  data.applyID = encrypt.encrypt(rdata[0].applyId+"");
+						  data.repayId = encrypt.encrypt(rdata[0].repayID+"");
+						  $.ajax( {  
+							  url:appPath+"/project/sendMessage",
+							  data:data,
+							  type:'post',  
+							  cache:false,  
+							  dataType:'json',  
+							  success:function(data) { 
+								  if(data==1){
+									  layer.alert("操作成功",{icon:1});
+									  $(".layui-layer-btn1").click();
+								  }else if(data==0){
+									  layer.alert("操作失败",{icon:2});  
+								  }
+							  },  
+							  error : function() {  
+								  layer.alert("服务器异常",{icon:2});  
+							  }  
+						  });
+					  },cancel: function(index){//或者使用btn2（concel）
+						  //取消的回调
+					  }
+				  });
+			  },  
+			  error : function() {  
+				  layer.alert("服务器异常!",{icon:2});  
+				  return;
+			  }  
+		 });
+		
 	});
 //电话回访	
 	$('.obtn-callback').click(function(){
@@ -161,7 +212,7 @@ $(function(){
             content: $(".callback"),//DOM或内容
 		    btn:['确认', '取消'] ,yes: function(index, layero){ //或者使用btn1
 			    //确定的回调
-				  var data={};
+				    var data={};
 				    var urgedDetail = $("#msgcontent").val();
 				    data.urgedType = encrypt.encrypt("0");//0:电话 
 				    data.urgedDetail = encrypt.encrypt(urgedDetail); 
@@ -191,3 +242,5 @@ $(function(){
 		});
 	});
 });
+
+

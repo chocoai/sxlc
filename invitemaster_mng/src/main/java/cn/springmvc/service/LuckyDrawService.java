@@ -37,7 +37,7 @@ public interface LuckyDrawService {
 	 *   {LotteryID:抽奖活动ID	
 	 *	 PrizeID:奖品ID	
 	 *	 grade:奖品等级
-	 *	 GradeOdds:等级基数
+	 *	 prizeQuantity:奖品剩余数量
 	 *	 WinningOdds:中奖概率基数
 	 *	 lID:新生成ID或需要修改的ID} 
 	 * @param @return 设定文件 
@@ -96,15 +96,14 @@ public interface LuckyDrawService {
 	 * @param map
 	 * {prizetype:字典：奖品类型DICT_JPLX
 	 *	prizename:奖品名称	
-	 *	prizeWorth:奖品价值（红包面值、实物市值、代金券面值、返现券面值）
-	 *	prizeQuantity:奖品剩余数量
+	 *	prizeWorth:奖品价值（红包面值、实物市值、代金券面值、返现券面值） 
 	 *	prizeUrl:奖品图片路径
 	 *	lId:新生成ID或需要修改的ID} 
 	 * @param @return 设定文件 
 	 * @return int 返回类型  0失败 ；1成功
 	 * @date 2016-4-15 下午1:37:30
 	 */
-	public int PrizeSet(Map<String,Object> map,InsertAdminLogEntity 
+	public long PrizeSet(Map<String,Object> map,InsertAdminLogEntity 
 			logentity,String[] sIpInfo);
 	/**
 	 * 列表查询抽奖活动
@@ -188,5 +187,15 @@ public interface LuckyDrawService {
 	 * @date 2016-5-12 上午10:34:27
 	 */
 	public List<PrizeInformationEntity>  selectPrizeTypes();
+
+	/**
+	 * 查询最近一期 抽奖活动 
+	 * @author 刘利   
+	 * @Description: TODO  
+	 * @param @return 设定文件 
+	 * @return LotteryActivityEntity 返回类型 
+	 * @date 2016-4-19 下午4:58:20
+	 */
+	public LotteryActivityEntity selectLotteryActivitylimit();
 }
 

@@ -134,7 +134,7 @@ function expMod(){
 	$("#portrai").attr("src","");
 	//操作
 	var  title="修改专家团队";
-		var data = $('#teamTb').DataTable().rows('.selected').data(); 
+		var data = $('#teamTb').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的管理团队！",{icon:0});
 			return;
@@ -164,7 +164,7 @@ function expMod(){
 }
 
 function updateExpertTeamByID(){
-	var data = $('#teamTb').DataTable().rows('.selected').data(); 
+	var data = $('#teamTb').DataTable().rows('.selected').data();
 	var	id=data[0].id;
 	var mngName = document.getElementById("mngNam").value;
 	var mngPost = document.getElementById("mngPos").value;
@@ -271,7 +271,7 @@ function enableMngTeam(type,id){
  * @returns
  */
 function viewPic(){
-	 var rdata = $('#teamTb').DataTable().rows('.selected').data(); 
+	 var data = $('#teamTb').DataTable().rows('.selected').data();
     console.log(rdata[0].portraitUrl);
 	$("#picView").attr("src",$("#hostPath").val()+rdata.portraitUrl);
 	layer.open({

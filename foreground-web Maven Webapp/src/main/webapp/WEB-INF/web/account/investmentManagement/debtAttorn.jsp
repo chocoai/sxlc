@@ -78,7 +78,7 @@
 		   						</div>
 		   						<div class="latestTransferTime divOutside">
 		   							<div class="divIntside">
-		   								<div>{{$toDeletevalue.transMaxTime}}</div>
+		   								<div>{{$toDelete value.transMaxTime}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="InvestmentProgress divOutside">
@@ -130,12 +130,12 @@
 		   						</div>
 		   						<div class="nextRepaymentTime divOutside">
 		   							<div class="divIntside">
-		   								<div>{{value.nextTime}}</div>
+		   								<div>{{$toDelete value.nextTime}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="dueTime divOutside">
 		   							<div class="divIntside">
-		   								<div>{{value.overTime}}</div>
+		   								<div>{{$toDelete value.overTime}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="operations divOutside">
@@ -197,12 +197,12 @@
 		   						</div>
 		   						<div class="transferTime divOutside">
 		   							<div class="divIntside">
-		   								<div>{{value.dealDate}}</div>
+		   								<div>{{$toDelete value.dealDate}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="investmentTime divOutside">
 		   							<div class="divIntside">
-		   								<div>{{value.holdDate}}</div>
+		   								<div>{{$toDelete value.holdDate}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="transferIncome divOutside">
@@ -319,12 +319,12 @@
 		   						</div>
 		   						<div class="transferTime divOutside">
 		   							<div class="divIntside">
-		   								<div>{{value.transTime}}</div>
+		   								<div>{{$toDelete value.transTime}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="fullTime divOutside">
 		   							<div class="divIntside">
-		   								<div>{{value.dealDate}}</div>
+		   								<div>{{$toDelete value.dealDate}}</div>
 		   							</div>
 		   						</div>
 		   						<div class="gainIncome divOutside">
@@ -352,12 +352,17 @@
 			<div>可转让金额：<span class="moneyFormat" id="transferableMoney">10000</span>元</div>
 			<div><label>转让金额：</label><input class="format" id="getTransNum" type="text" lang="请输入转让金额" maxlength="10">元</div>
 			<div><label>转让折扣：</label><input class="numberReg" id="getSaleNum" type="text" lang="请输入转让折扣(%)" maxlength="10"></div>
+			<div>
+				<label>最晚转出时间：</label>
+				<input type="text" class="select-time Wdate" id="maxTime" onfocus="WdatePicker({minDate: '%y-%M-%d' })" lang="请选择最晚转让时间">
+			</div>
 			<div class="attornProfit">转让成功预计所得收益：<span id="shouyi">0</span>元</div>
 		</div>
 		<div class="layerWindowBtn">
 			<div class="btn"  id="sureBtn">确定</div>
 		</div>
 	</div>
+	<script type="text/javascript" src="/foreground-web/plugs/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" src="js/account/investmentManagement/debtAttorn.js"></script>
 </body>

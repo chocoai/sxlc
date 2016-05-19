@@ -69,9 +69,9 @@ $(function(){
 				url,
 				data,
 				function(r){
-//					//console.log(r);
+					
 					var data = JSON.parse(r);
-					//console.log(data);
+					console.log(data);
 					
 						var html = template("investList",data);
 						document.getElementById("invest-list").innerHTML = html;
@@ -228,6 +228,5 @@ $(function(){
 	//名称，状态，奖励，借款类型，年利率，还款方式，借款期限，最小期限，最大期限，页码
 	investmentZone.getInvestmentList(wd,projectStatu,reward,loanType,annualInterest,repayment,deadlineType,
 									 deadlinemin,deadlinemax,page);
-	
 });
 

@@ -37,8 +37,8 @@
    
    <!-- 还款中的借款 -->
    <select id="repaymentIns" 	parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.RepaymentIn">
-   	select par.Project_No as projectNo,pbi.Project_Title as projectName,pbi.Amount,
-	(select sum(Invest_Amount) from Invest_Record where Apply_Id = par.Apply_Id and IsValid = 0) as sjAmount,
+   	select par.Apply_ID as loanId, par.Project_No as projectNo,pbi.Project_Title as projectName,pbi.Amount,
+	(select  sum(CAST(AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{map.skey}) as signed)) from Invest_Record where Apply_Id = par.Apply_Id and IsValid = 0) as sjAmount,
 	pbi.Year_Rate as yearRate, pap.End_Date as endTime, pap.Hold_Date as startTime,
 	ifnull((select  sum(CAST(AES_DECRYPT(UNHEX(Repay_Principal),#{map.skey}) as signed))  from Loan_Real_Repay where Apply_Id = par.Apply_Id),0) as sReturnedRrincipal,
 	ifnull((select  sum(CAST(AES_DECRYPT(UNHEX(Repay_Interest),#{map.skey}) as signed))   from Loan_Real_Repay where Apply_Id = par.Apply_Id),0) as sInterestPaid,
@@ -184,7 +184,7 @@
 	left join project_base_info 	pbi 	on pbi.Project_Base_ID 	= par.Project_Base_ID
 	left join projectbaseinfo 		prbi 	on prbi.Project_ID 		= par.Project_ID
 	left join dict 					di 		on di.tcode 			= 'DICT_XMFBZT' 		and di.code1 = par.Publish_Statu
-	where par.Member_ID = ${map.memberId} 
+	where par.Member_ID = ${map.memberId} and par.Publish_Statu = 1 
    </select>
    
    <!-- 还款管理+还款中的借款 -->
@@ -368,7 +368,7 @@
 	from Project_App_Record par
 	left join ProjectBaseInfo pbinfo on pbinfo.Project_Id = par.Project_Id
 	left join Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
-	where Member_ID = #{memberId} and Apply_Id = #{applyId} and Publish_Statu = 1
+	where Member_ID = #{memberId} and Apply_Id = #{applyId}
    </select>
    
    
@@ -379,11 +379,11 @@
     -->
    <select id="confirmationLoan" parameterType="Map" statementType="CALLABLE">
    		call confirmLoanInfo(
-   			memberId,				mode=IN,			jdbcType=BIGINT,
-   			applyId,				mode=IN,			jdbcType=BIGINT,
-   			optionvalue,			mode=IN,			jdbcType=INTEGER,
-   			sysId,					mode=IN,			jdbcType=INTEGER,
-   			result,					mode=OUT,			jdbcType=INTEGER
+   			#{memberId,				mode=IN,			jdbcType=BIGINT},
+   			#{applyId,				mode=IN,			jdbcType=BIGINT},
+   			#{optionvalue,			mode=IN,			jdbcType=INTEGER},
+   			#{sysId,				mode=IN,			jdbcType=INTEGER},
+   			#{result,				mode=OUT,			jdbcType=INTEGER}
    		)
    </select>
    

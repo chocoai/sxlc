@@ -49,6 +49,7 @@ function showMemberInviteList(memberId){
 		            "url": appPath+"/member/getInviteList.do",   
 		            "dataSrc": "results",   
 		            "data": function ( d ) {
+		            	d.memberId = memberId;
 		            } 
 		        },
 		        columns: [  

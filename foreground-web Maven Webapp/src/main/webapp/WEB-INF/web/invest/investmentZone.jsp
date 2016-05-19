@@ -160,7 +160,7 @@
 							<p>年化利率</p>
 						</div>
 						<div class="inv-item-amount">
-							<h1 class="moneyFormat">{{$toFixed data.projectBaseInfoentity.amounts}}</h1><span>元</span>
+							<h1 class="moneyFormat">{{$toFixed data.projectBaseInfoentity.amounts}} <span>元</span></h1>
 							<p>项目金额</P>
 						</div>
 						<div class="inv-time">
@@ -176,13 +176,13 @@
 							<p>项目期限</p>
 						</div>
 						<div class="inv-available-amount">
-							<h1 class="moneyFormat">{{$toFixed data.availableaAmounts}}</h1><span>元</span>
+							<h1 class="moneyFormat">{{$toFixed data.availableaAmounts}} <span>元</span></h1>
 							<p>可投金额</p>
 						</div>
 						<div class="inv-time-count">
 							{{if data.investStatu == "0"}}
 								<div class="progress">
-									<span class="progress_totle">{{data.investRate}}%</span>
+									<span class="progress_totle">{{data.investRates}}%</span>
 								<div class="barbox"> 
 								<div class="barline"></div> 
 								</div>

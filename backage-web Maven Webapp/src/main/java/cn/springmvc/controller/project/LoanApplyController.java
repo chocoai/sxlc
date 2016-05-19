@@ -1,12 +1,13 @@
 package cn.springmvc.controller.project; 
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import cn.springmvc.model.Admin;
 import cn.springmvc.model.ProjectAppAttachmentEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectBaseInfoEntity;
+import cn.springmvc.model.ProjectInvestRedPackageEntity;
 import cn.springmvc.model.ProjectPurposeEntity;
 import cn.springmvc.service.CertificationAuditService;
 import cn.springmvc.service.IMemberManangerService;
@@ -32,6 +34,8 @@ import cn.springmvc.service.ProjectAuitService;
 import cn.springmvc.service.ProjectBaseInfoService;
 import cn.springmvc.service.ProjectPurposeService;
 import cn.springmvc.util.LoadUrlUtil;
+
+import com.alibaba.fastjson.JSON;
 
 /** 
 * @author 唐国峰
@@ -124,7 +128,7 @@ public class LoanApplyController {
 		param.put("adminid", admin.getId());//当前登录者id
 		//设置排序参数
    		param.put("recordDate", 1);
-   		param.put("orderKey", 1);
+   		pager.setOrderKey("1");
 		pager.setMap(param);
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
@@ -197,7 +201,7 @@ public class LoanApplyController {
 		entity.setMemberID(memberID);
 		Integer memberType = Integer.parseInt(req.getParameter("memberType"));
 		entity.setMemberType(memberType);
-		Long amount = IntegerAndString.StringToLong(req.getParameter("amount"));
+		Long amount = StringToLong(req.getParameter("amount"),0);
 		entity.setAmount(amount);
 		String uses = req.getParameter("uses");
 		entity.setUses(uses);
@@ -211,11 +215,11 @@ public class LoanApplyController {
 		entity.setDeadlineType(deadlineType);
 		Integer repayWay = Integer.parseInt(req.getParameter("repayWay"));
 		entity.setRepayWay(repayWay);
-		Integer yearRate = IntegerAndString.StringToInt(req.getParameter("yearRate"));
+		Integer yearRate = (int)StringToLong(req.getParameter("yearRate"),0);
 		entity.setYearRate(yearRate);
 		entity.setAdminId(admin.getId());
 		
-//		param.put("maxRate",IntegerAndString.StringToInt(maxRate));
+//		param.put("maxRate",StringToLong(maxRate));
 		int result=0;
 		result = projectPurposeService.insertProjectPurpose(entity, logEntity, sIpInfo);
 		return result;
@@ -458,16 +462,35 @@ public class LoanApplyController {
 		//查询借款信息
 		Map<String,Object> param=new HashMap<String,Object>();
 		String id = req.getParameter("content");
-		param.put("id", id);
+		String skey = DbKeyUtil.GetDbCodeKey();
+		param.put("id", id); 
+		param.put("skey", skey); 
 		ProjectPurposeEntity proPurpose = projectAppRecordService.selectProjectPurposeById(param);
-		req.setAttribute("proPurpose", proPurpose);
 		//查询项目详情
 		Long applyid = Long.parseLong(req.getParameter("start"));
 		ProjectAppRecordEntity proRecord = projectAuitService.selectProjectDetailByID(applyid);
-		req.setAttribute("proRecord", proRecord);
+		//判断提交前还是提交后
+		//还款类型与期限
+		if(proRecord !=null ){
+			int deadlineAfter= proRecord.getProjectBaseInfoentity().getDeadline();//提交后的
+			int deadlinePre= proPurpose.getDeadline();//提交前
+			if(deadlineAfter!= 0 && deadlinePre != deadlineAfter){//已经第一步保存数据了
+				proPurpose.setDeadline(deadlineAfter);
+				proPurpose.setDeadlineType(proRecord.getProjectBaseInfoentity().getDeadlineType());
+			}
+			//还款方式
+			int repayWayAfter= proRecord.getProjectBaseInfoentity().getRepayWay();//提交后的
+			int repayWayPre= proPurpose.getRepayWay();//提交前
+			if(repayWayAfter!= 0 && repayWayPre != repayWayAfter){//已经第一步保存数据了
+				proPurpose.setRepayWay(repayWayAfter);
+			}
+		}
+		
 		//FTP服务器地址
 		String hostPath = FtpClientUtil.getFtpFilePath();
 		hostPath = hostPath.substring(0, hostPath.length()-1);
+		req.setAttribute("proPurpose", proPurpose);
+		req.setAttribute("proRecord", proRecord);
 		req.setAttribute("hostPath", hostPath);
 		return "project/pro-add/add_information";
 	}
@@ -482,10 +505,13 @@ public class LoanApplyController {
 	 */
 	@RequestMapping("/handleProjectAppRecord")
 	@ResponseBody
-	public int handleProjectAppRecord(HttpServletRequest req){
+	public int handleProjectAppRecord(HttpServletRequest req, HttpServletResponse response){
 		//操作日志参数
 		HttpSession session = req.getSession();
 		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		if(admin == null){
+			return -100;
+		}
 		//moduleID=302(借款申请管理)
 		//optID=30201(添加）
 		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
@@ -503,23 +529,25 @@ public class LoanApplyController {
 		String projectTitle = req.getParameter("projectTitle");
 		param.put("projectTitle", projectTitle);
 		String amount = req.getParameter("amount");
-		param.put("amount", amount);
+		param.put("amount", StringToLong(amount,0));
 		String deadline = req.getParameter("deadline");
 		param.put("deadline", deadline);
 		String deadlineType = req.getParameter("deadlineType");
 		param.put("deadlineType", deadlineType);
 		String investMax = req.getParameter("investMax");
-		param.put("investMax", investMax);
+		param.put("investMax",  StringToLong(investMax,0));
 		String yearRate = req.getParameter("yearRate");
-		param.put("yearRate", yearRate);
+		param.put("yearRate", StringToLong(yearRate,0));
 		String minStart = req.getParameter("minStart");
-		param.put("minStart", minStart);
+		param.put("minStart", StringToLong(minStart,0));
 		String increaseRange = req.getParameter("increaseRange");
-		param.put("increaseRange", increaseRange);
+		param.put("increaseRange", StringToLong(increaseRange,0));
 		String repayWay = req.getParameter("repayWay");
 		param.put("repayWay", repayWay);
 		String repayGuarantee = req.getParameter("repayGuarantee");
 		param.put("repayGuarantee", repayGuarantee);
+		String repaySource = req.getParameter("repaySource");
+		param.put("repaySource", repaySource);
 		String uses = req.getParameter("uses");
 		param.put("uses", uses);
 		String projectDescript = req.getParameter("projectDescript");
@@ -532,15 +560,15 @@ public class LoanApplyController {
 		String autoStart = req.getParameter("autoStart");
 		param.put("autoStart", autoStart);
 		String auotInvestMax = req.getParameter("auotInvestMax");
-		param.put("auotInvestMax", auotInvestMax);
+		param.put("auotInvestMax", StringToLong(auotInvestMax,0));
 		String rateAddRate = req.getParameter("rateAddRate");
-		param.put("rateAddRate", rateAddRate);
+		param.put("rateAddRate", StringToLong(rateAddRate,0));
 		String isDirect = req.getParameter("isDirect");
 		param.put("isDirect", isDirect);
 		String directPwd = req.getParameter("directPwd");
 		param.put("directPwd", directPwd);
 		String rewardRate = req.getParameter("rewardRate");
-		param.put("rewardRate", rewardRate);
+		param.put("rewardRate",  StringToLong(rewardRate,0));
 		String guaranteeID = req.getParameter("guaranteeID");
 		param.put("guaranteeID", guaranteeID);
 		String assetManagerID = req.getParameter("assetManagerID");
@@ -548,20 +576,35 @@ public class LoanApplyController {
 		String riskMarginType = req.getParameter("riskMarginType");
 		param.put("riskMarginType", riskMarginType);
 		String riskMarginRate = req.getParameter("riskMarginRate");
-		param.put("riskMarginRate", riskMarginRate);
+		param.put("riskMarginRate", StringToLong(riskMarginRate,0));
 		String riskMarginFee = req.getParameter("riskMarginFee");
-		param.put("riskMarginFee", riskMarginFee);
+		param.put("riskMarginFee", StringToLong(riskMarginFee,0));
 		String mngFeeRate = req.getParameter("mngFeeRate");
-		param.put("mngFeeRate", mngFeeRate);
+		param.put("mngFeeRate",  StringToLong(mngFeeRate,0));//管理费比例
 		String investCountMax = req.getParameter("investCountMax");
-		param.put("investCountMax", investCountMax);
+		param.put("investCountMax", IntegerAndString.StringToInt(investCountMax,0));
+		String guaranteeRate = req.getParameter("guaranteeRate");//担保费率
+		param.put("guaranteeRate", StringToLong(guaranteeRate,0));
+		String guaranteeFee = req.getParameter("guaranteeFee");//担保费
+		param.put("guaranteeFee", StringToLong(guaranteeFee,0));
+		String guaranteeType = req.getParameter("guaranteeType");//担保费类型 0：百分比 1：固定金额
+		param.put("guaranteeType", guaranteeType);
+		//红包惊喜标
+		String redPackJson = req.getParameter("start"); 
+		List<ProjectInvestRedPackageEntity> redPackageList = JSON.parseArray(redPackJson, ProjectInvestRedPackageEntity.class);
+		if(redPackageList != null){
+			try{
+				projectAppRecordService.insertProjectInvestRedPackage(redPackageList, logEntity, sIpInfo);
+			}catch(Exception e){
+				writeJson("-10",response);
+			}
+		}
+		
 		//未处理
-		String guaranteeRate = req.getParameter("guaranteeRate");//担保费率,选了担保机构就会让填这个值
-		param.put("guaranteeRate", guaranteeRate);
 		String mngFeeRateIncreace = req.getParameter("mngFeeRateIncreace");//管理费增量 
-		param.put("mngFeeRateIncreace", mngFeeRateIncreace);
+		param.put("mngFeeRateIncreace", StringToLong(mngFeeRateIncreace,0));
 		String mngFeeAmount = req.getParameter("mngFeeAmount");//管理费金额
-		param.put("mngFeeAmount", mngFeeAmount);
+		param.put("mngFeeAmount", StringToLong(mngFeeAmount,0));
 		String rewardIcon = req.getParameter("rewardIcon");//奖励标图标 空表示不单独配置，使用默认
 		param.put("rewardIcon", rewardIcon);
 		
@@ -576,11 +619,9 @@ public class LoanApplyController {
 		param.put("adminId", admin.getId());
 		String styp = req.getParameter("styp");
 		param.put("styp", styp);//styp:1：第一步只修改第一步的参数 2：第二步 只修改第二步的参数	
-		
-//		param.put("maxRate",IntegerAndString.StringToInt(maxRate));
-		int result=0;
-		result = projectAppRecordService.handleProjectAppRecord(param, logEntity, sIpInfo);
-		return result;
+		int data=0;
+		data = projectAppRecordService.handleProjectAppRecord(param, logEntity, sIpInfo);
+		return data;
 	}
 	
 	
@@ -622,10 +663,13 @@ public class LoanApplyController {
 	 */
 	@RequestMapping("/addAttachment")
 	@ResponseBody
-	public int addAttachment(HttpServletRequest req){
+	public int addAttachment(HttpServletRequest req,HttpServletResponse response){
 		//操作日志参数
 		HttpSession session = req.getSession();
 		Admin admin = (Admin)session.getAttribute("LoginPerson");
+		if(admin == null){
+			return -100;
+		}
 		//moduleID=302(借款申请管理)
 		//optID=30201(添加）
 		InsertAdminLogEntity logEntity = new InsertAdminLogEntity();
@@ -638,16 +682,61 @@ public class LoanApplyController {
 		logEntity.setsMac(null);
 		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
 		
-		List<ProjectAppAttachmentEntity> param = new ArrayList<ProjectAppAttachmentEntity>();
-		String memberId = req.getParameter("memberId");
-		String remark = req.getParameter("remark");
-		int iResult = projectAppRecordService.insertProjectAppAttachment(param,logEntity,sIpInfo);
-		return iResult;
+		String attachJson = req.getParameter("start"); 
+		List<ProjectAppAttachmentEntity> attachList = JSON.parseArray(attachJson, ProjectAppAttachmentEntity.class);
+		int result =0;
+		if(attachList != null){
+			try{
+			result = projectAppRecordService.insertProjectAppAttachment(attachList, logEntity, sIpInfo);
+			}catch(Exception e){
+				writeJson("-10",response);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * @author 唐国峰 
+	 * @Description: string转化为long,乘以10000且有默认值。
+	 * @param value
+	 * @param iDefault
+	 * @return long  
+	 * @date 2016-5-19 上午11:58:18
+	 * @throws
+	 */
+	public long StringToLong(String value,int iDefault){
+		long iResult = iDefault;
+    	if(value == null || value.equals("")){
+    		return iResult;
+    	}
+    	try {
+			iResult = IntegerAndString.StringToLong(value);
+		} catch (Exception e) {
+		}
+    	return iResult;
 	}
 	
 	
-	
-	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 返回json至页面
+	 * @param jsonContent
+	 * @param response  
+	 * @return void  
+	 * @date 2016-5-19 下午6:55:14
+	 * @throws 
+	 */
+	public void writeJson(String jsonContent, HttpServletResponse response) {
+		try {
+			response.setContentType("text/html;charset=utf-8");
+			response.setContentType("application/json");
+			response.getWriter().write(jsonContent);
+			response.getWriter().flush();
+			response.getWriter().close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
 

@@ -59,8 +59,8 @@
    <!-- 根据借款意向id查询借款信息 -->
    <select id="selectProjectPurposeById" resultMap="ProjectPurpose" parameterType="Map">
    		select pp.*,mi.Member_No,mi.Logname,paar.Apply_Id,
-   		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) Personal_Name,
-   		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) Personal_Phone,
+   		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
+   		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
    		(select count(*) from Member_Financial_Advisor where Member_ID = pp.Member_ID and (Remove_Date>now() or Remove_Date is null) ) Financial
    		,
    		(select Record_Date from Project_App_Record ppr left join Project_App_Process pas on pas.Apply_Id=ppr.Apply_Id  where pp.Purpose_ID = ppr.Purpose_ID limit 1) sendrecordDate
@@ -268,7 +268,7 @@
 		insert into Project_Invest_RedPackage(Apply_Id,Invest_RedPackage_Min,Invest_Num,RedPackage)
 		values <foreach collection="list" item="item" index="index"
 	  separator=",">
-	  ( #{item.applyId}, #{item.investRedPackageMin}, #{item.investNum},
+	  ( (select Apply_Id from Project_App_Record where Purpose_ID = #{item.purposeId} limit 1), #{item.investRedPackageMin}, #{item.investNum},
 	  #{item.redPackage})
 	  </foreach>
 	</insert>   
@@ -295,7 +295,7 @@
    		values
    		<foreach collection="list" item="item" index="index"
 	  separator=",">
-	  ( #{item.applyId}, #{item.attachInfoType}, #{item.attachTitle},#{item.attachUrl})
+	  ( (select Apply_Id from Project_App_Record where Purpose_ID = #{item.purposeId} limit 1), #{item.attachInfoType}, #{item.attachTitle},#{item.attachUrl})
 	  </foreach>
    </insert>
    <!-- 根据项目申请id 删除所有项目申请附件资料 -->

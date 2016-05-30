@@ -1,5 +1,6 @@
 package cn.springmvc.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
@@ -108,7 +110,7 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 
 	@Override
 	public ManagementInfoEntity selectManagementInfoById(Map<String, Object> map) {
-
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
 		return selectGuaranteeInfoDaoImpl.selectManagementInfoById(map);
 	}
@@ -137,11 +139,13 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 			InsertAdminLogEntity entity, String[] sIpInfo) {
 		int type = IntegerAndString
 				.StringToInt(map.get("types").toString(), -1);
+		
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		long guaranteeID = generatorUtil.GetId();
 		long personalId = generatorUtil.GetId();
-		map.put("guaranteeID", guaranteeID);
-		map.put("personalId", personalId);
 		if (type == 0) {
+			map.put("guaranteeID", guaranteeID);
+			map.put("personalId", personalId);
 			entity.setsDetail("添加担保机构信息  :" + map.toString());
 		} else {
 			entity.setsDetail("修改担保机构信息  :" + map.toString());
@@ -173,11 +177,14 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 	}
 
 	@Override
-	public int insertGuaranteeCertificate(
+	public int insertGuaranteeCertificate(long guaranteeID,
 			List<ManagementCertificateEntity> list,
 			InsertAdminLogEntity entity, String[] sIpInfo) {
 		entity.setsDetail("添加担保机构证件  :" + list.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		Map<String, Object> map = new HashMap<>();
+		map.put("guaranteeID", guaranteeID);
+		handleGuaranteeInfoDaoImpl.deleteGuaranteeCertificate(map);
 		// TODO Auto-generated method stub return 0;
 		return handleGuaranteeInfoDaoImpl.insertGuaranteeCertificate(list);
 	}
@@ -205,11 +212,12 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 			InsertAdminLogEntity entity, String[] sIpInfo) {
 		int type = IntegerAndString
 				.StringToInt(map.get("types").toString(), -1);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		long guaranteeID = generatorUtil.GetId();
 		long personalId = generatorUtil.GetId();
-		map.put("managementID", guaranteeID);
-		map.put("personalId", personalId);
 		if (type == 0) {
+			map.put("managementID", guaranteeID);
+			map.put("personalId", personalId);
 			entity.setsDetail("添加资产管理方信息  :" + map.toString());
 		} else {
 			entity.setsDetail("修改资产管理方信息  :" + map.toString());
@@ -274,12 +282,15 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 	}
 
 	@Override
-	public int insertGuaranteeBorrowing(Map<String, Object> map,
+	public int insertGuaranteeBorrowing(long guaranteeID,List<GuaranteeRelationalEntity> list,
 			InsertAdminLogEntity entity, String[] sIpInfo) {
-		entity.setsDetail("添加担保机构担保借款范围:" + map.toString());
+		entity.setsDetail("设置担保机构担保借款范围:" + list.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("guaranteeID", guaranteeID);
+		handleGuaranteeInfoDaoImpl.updateGuaranteeBorrowingByID(map);
 		// TODO Auto-generated method stub return 0;
-		return handleGuaranteeInfoDaoImpl.insertGuaranteeBorrowing(map);
+		return handleGuaranteeInfoDaoImpl.insertGuaranteeBorrowing(list);
 	}
 
 	@Override
@@ -292,18 +303,21 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 	}
 
 	@Override
-	public int insertGuaranteePeriod(Map<String, Object> map,
+	public int insertGuaranteePeriod(long guaranteeID,List<GuaranteePeriodEntity> list,
 			InsertAdminLogEntity entity, String[] sIpInfo) {
-		entity.setsDetail("添加担保机构期限范围:" + map.toString());
+		entity.setsDetail("设置担保机构期限范围:" + list.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("guaranteeID", guaranteeID);
+		handleGuaranteeInfoDaoImpl.updateGuaranteePeriodByID(map);
 		// TODO Auto-generated method stub return 0;
-		return handleGuaranteeInfoDaoImpl.insertGuaranteePeriod(map);
+		return handleGuaranteeInfoDaoImpl.insertGuaranteePeriod(list);
 	}
 
 	@Override
 	public int updateGuaranteePeriodByID(Map<String, Object> map,
 			InsertAdminLogEntity entity, String[] sIpInfo) {
-		entity.setsDetail("根据保荐机构id,期限类型修改担保机构担保借款范围" + map.toString());
+		entity.setsDetail("根据保荐机构id,期限类型修改担保机构担保期限范围" + map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
 		return handleGuaranteeInfoDaoImpl.updateGuaranteePeriodByID(map);
@@ -311,11 +325,16 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 
 	@Override
 	public int insertGuaranteeRelational(List<GuaranteeRelationalEntity> list,
-			InsertAdminLogEntity entity, String[] sIpInfo) {
-		entity.setsDetail("添加担保机构担保类型:" + list.toString());
-		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
-		// TODO Auto-generated method stub return 0;
-		return handleGuaranteeInfoDaoImpl.insertGuaranteeRelational(list);
+			InsertAdminLogEntity entity, String[] sIpInfo, Map<String, Object> map) {
+		int num = new GuaranteeInfoServiceImpl().deleteGuaranteeRelationalByID(map, entity, sIpInfo);
+		if (num == 1) {
+			entity.setsDetail("添加担保机构担保类型:" + list.toString());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+			// TODO Auto-generated method stub return 0;
+			return handleGuaranteeInfoDaoImpl.insertGuaranteeRelational(list);
+		}else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -366,7 +385,7 @@ public class GuaranteeInfoServiceImpl implements GuaranteeInfoService {
 	@Override
 	public List<InstitutionsRecordsEntity> InstitutionsToRaiseCashRecords(
 			PageEntity pageEntity) {
-		// pageEntity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
+		 pageEntity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
 		List<InstitutionsRecordsEntity> list = selectGuaranteeInfoDaoImpl
 				.InstitutionsToRaiseCashRecords(pageEntity);

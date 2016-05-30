@@ -44,6 +44,11 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 		exitRouts.add("memberInvestmentvoid");							//項目投資返回
 		exitRouts.add("ReplayCallBackReturn");							//項目还款返回
 		exitRouts.add("ReplayCallBackNotify");							//項目还款返回
+		exitRouts.add("buyVipCallBackPage");							//VIP购买转账回调
+		exitRouts.add("buyVipCallBack");								//VIP购买转账回调
+		exitRouts.add("loanWithdrawNotify");							//提现回调
+		exitRouts.add("loanWithdrawReturn");							//提现回调
+		exitRouts.add("authImage");										//验证码
 	}
 	
 
@@ -68,7 +73,6 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 		if(exitRouts.contains(requestPath)){	//授权直接走
 			return true;
 		}
-		
 		
 		HttpSession session = arg0.getSession();
 		optRecordWriteDaoImpl = (OptRecordWriteDaoImpl) SpringUtil.getBean(OptRecordWriteDaoImpl.class);
@@ -149,7 +153,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 			if(newMap.keySet().size() == 0){				//没有参数
 				return true;
 			}else{
-				return true;								//请改为false再使用 如果出现有参数但是没有签名的情况 直接失败当前请求
+				return false;								//请改为false再使用 如果出现有参数但是没有签名的情况 直接失败当前请求
 			}
 		}else{
 			String paramCheckCode = "";

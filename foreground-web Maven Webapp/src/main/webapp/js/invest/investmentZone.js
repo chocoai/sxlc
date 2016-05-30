@@ -47,49 +47,70 @@ $(function(){
 		getInvestmentList : function(wd,projectStatu,reward,loanType,
 									 annualInterest,repayment,deadlineType,
 									 deadlinemin,deadlinemax,page){
-//			String wd				=	request.getParameter("wd");						//赛选条件名称(项目名称)
-//			String projectStatu		= 	request.getParameter("projectStatu");			//项目状态
-//			String reward			=	request.getParameter("reward");					//奖励
-//			String loanType			=	request.getParameter("loanType");				//借款类型
-//			String annualInterest	=	request.getParameter("annualInterest");			//年利率
-//			String repayment 		=	request.getParameter("repayment");				//还款方式
-//			String deadlineType		= 	request.getParameter("deadlineType");			//借款期限
-//			String deadlinemin		= 	request.getParameter("deadlinemin");			//最小期限
-//			String deadlinemax		= 	request.getParameter("deadlinemax");			//最大期限
-//			int page				=	Integer.parseInt(request.getParameter("page"));	//页码
+			
+			
 			var url = "invest/fundList.html";
 			var data = {wd:wd,projectStatu:projectStatu,reward:reward,
 				loanType:loanType,annualInterest:annualInterest,
 				repayment:repayment,deadlineType:deadlineType,
 				deadlinemin:deadlinemin,deadlinemax:deadlinemax,page:page};
-			
-			//console.log(data);
-
 			NetUtil.ajax(
 				url,
 				data,
 				function(r){
-					
 					var data = JSON.parse(r);
-					console.log(data);
+					var html = template("investList",data);
+					document.getElementById("invest-list").innerHTML = html;
+					$('.J_CountDown').each(function () {
+					        var $this = $(this),
+					            data = $this.attr('data-config');
+					        $this.countDown(eval('(' + data + ')'));
+				    });
+					/*进度条*/
+					$(".progress").each(function(){
+						$(this).find(".barline").css("width",$(this).find(".progress_totle").html());
+					});
 					
-						var html = template("investList",data);
-						document.getElementById("invest-list").innerHTML = html;
-						$('.J_CountDown').each(function () {
-						        var $this = $(this),
-						            data = $this.attr('data-config');
-						        $this.countDown(eval('(' + data + ')'));
-					    });
-						/*进度条*/
-						$(".progress").each(function(){
-							$(this).find(".barline").css("width",$(this).find(".progress_totle").html());
-						});
-						
-						var tol = data.tol;
-						var cpage = data.cpage;
-						var pageSize = data.pageSize;
+					console.log(data)
+					var tol = data.tol;
+					var cpage = data.cpage;
+					var pageSize = data.pageSize;
 					if(tol>0){
-						investmentZone.byPage(tol,cpage,pageSize);
+						var totalRecords = tol;
+						var pageNo = cpage;
+						var pagesize = pagesize;
+						//总页数
+						var totalPage = Math.ceil(totalRecords/pageSize);
+						console.log([pageNo,totalPage,totalPage])
+						pager6.generPageHtml({
+							pno : pageNo,
+							//总页码
+							total : totalPage,
+							//总数据条数
+							totalRecords : totalRecords,
+							mode : 'click',//默认值是link，可选link或者click
+							click : function(n) {
+								if($("#wd").val()=="undefined"||$("#wd").val()=="null"||$("#wd").val()==""){
+									var wd = null;
+								}else{
+									var wd =$("#wd").val();
+								}
+								var projectStatu = $("input:radio[name='projectStatu']:checked").val();
+								var reward = $("input:radio[name='reward']:checked").val();
+								var loanType =  $("input:radio[name='loanType']:checked").val();
+								var annualInterest = $("input:radio[name='annualInterest']:checked").val();
+								var repayment = $("input:radio[name='repayment']:checked").val();
+								var deadlineType = investmentZone.determinePeriod()[0];
+								var deadlinemin = investmentZone.determinePeriod()[1];
+								var deadlinemax = investmentZone.determinePeriod()[2];
+								var page = n;
+								investmentZone.getInvestmentList(wd,projectStatu,reward,loanType,annualInterest,repayment,deadlineType,
+										 deadlinemin,deadlinemax,page);
+								
+								this.selectPage(n);
+								return false;
+							}
+						},true);
 					}else{
 						$("#pager").html("")
 					}
@@ -119,42 +140,6 @@ $(function(){
 				arr[2] = "-1";
 			}
 			return arr;
-		},
-		//分页 参数1 总条数 参数2 当前页 参数3 每页条数
-		byPage:function(tol,cpage,pagesize){
-			var totalRecords =tol;
-			var pageNo = cpage;
-			var pagesize = pagesize;
-			//总页数
-			var totalPage = Math.ceil(totalRecords/pagesize);
-			pager.generPageHtml({
-				pno : pageNo,
-				//总页码
-				total : totalPage,
-				//总数据条数
-				totalRecords : totalRecords,
-				mode : 'click',//默认值是link，可选link或者click
-				click : function(n) {
-					if($("#wd").val()=="undefined"||$("#wd").val()=="null"||$("#wd").val()==""){
-						var wd = null;
-					}else{
-						var wd =$("#wd").val();
-					}
-					var projectStatu = $("input:radio[name='projectStatu']:checked").val();
-					var reward = $("input:radio[name='reward']:checked").val();
-					var loanType =  $("input:radio[name='loanType']:checked").val();
-					var annualInterest = $("input:radio[name='annualInterest']:checked").val();
-					var repayment = $("input:radio[name='repayment']:checked").val();
-					var deadlineType = investmentZone.determinePeriod()[0];
-					var deadlinemin = investmentZone.determinePeriod()[1];
-					var deadlinemax = investmentZone.determinePeriod()[2];
-					var page = n;
-					investmentZone.getInvestmentList(wd,projectStatu,reward,loanType,annualInterest,repayment,deadlineType,
-							 deadlinemin,deadlinemax,page);
-					this.selectPage(n);
-					return false;
-				}
-			});
 		}
 	};
 	

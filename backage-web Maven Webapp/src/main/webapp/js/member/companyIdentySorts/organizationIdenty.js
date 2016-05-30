@@ -7,9 +7,11 @@
 
 $(function(){
 	if(btn=="1"){
-		$("#submit").removeAttr("style");
-	}else{
-		$("#back").removeAttr("style");
+		$(".back").eq(0).removeAttr("style");
+	}else if(btn=="2"){
+		$(".back").eq(1).removeAttr("style");
+	}else if(btn=="3"){
+		$(".back").eq(2).removeAttr("style");
 	}
 });
 

@@ -8,6 +8,8 @@ var pi = UE.getEditor('payguide');
 var guarantyDescribe = $("#guarantyDescribe").html();
 $(function(){
 	//初始化页面数据
+	var memberID = $("#memberID").val();
+	showMemberIdentyInfo(memberID);//展示会员认证
 	var rateAddRates = $(".rateAddRates").val();
 	if(rateAddRates !=0 && rateAddRates != null ){
 		$(".isAddRates").prop("checked",true);
@@ -25,6 +27,71 @@ $(function(){
 	if(redListSize!="" && redListSize != 0){
 		$(".check_select2").prop("checked",true);
 	}
+	
+//	//起投金额改变
+//	$(".startingIA").on("change",function(){
+//		var loanMoney = $(".loanMoney").val();//借款金额
+//		var investMax = $(".con-PP").val();//最大投资比例
+//		var startMoney = $(this).val();//起投金额
+//		if(Number(startMoney)>Number(loanMoney)){
+//			layer.alert("起投金额不能大于借款金额！",{icon:0});  
+//		}
+//		var maxMoney = Number(loanMoney)*Number(investMax)/100;
+//		if(Number(startMoney)> maxMoney){
+//			layer.alert("起投金额不能大于最大投资金额！",{icon:0});  
+//		}
+//	});
+//	
+	//加价幅度改变
+//	$(".conIncrease").on("change",function(){
+//		var loanMoney = $(".loanMoney").val();
+//		var conIncrease = $(this).val();
+//		if(Number(conIncrease) >= Number(loanMoney)){
+//			layer.alert("加价幅度必须小于借款金额！",{icon:0});  
+//		}
+//	});
+	
+	$(".chkInput").on("change",function(){
+		var loanMoney = $(".loanMoney").val();//借款金额
+		var investMax = $(".con-PP").val();//最大投资比例
+		var startMoney = $(".startingIA").val();//起投金额
+		var conIncrease = $(".conIncrease").val();//加价辐度
+		var maxMoney = Number(loanMoney)*Number(investMax)/100;//最大投资金额
+		if(startMoney!="" && loanMoney!="" && Number(startMoney)>Number(loanMoney)){
+			layer.alert("起投金额不能大于借款金额！",{icon:0}); 
+		}
+		if(startMoney!="" && loanMoney!="" && investMax!="" && maxMoney !=0 &&  Number(startMoney)> maxMoney){
+			layer.alert("起投金额不能大于最大投资金额(借款*最大投资比例)！",{icon:0});  
+		}
+		if(conIncrease!="" && loanMoney!="" && Number(conIncrease) >= Number(loanMoney)){
+			layer.alert("加价幅度必须小于借款金额！",{icon:0});
+		}
+	});
+	
+	//项目风险保证金填写方式改变
+    $(".riskMarginType").on("change",function(){
+    	var value = $(this).val();
+    	if(value == 0){//%
+    		$(".riskMarginValue").attr("dataTyValue","hundredNum");
+    		$(".riskMarginValue").val("");
+    	}else{//元
+    		$(".riskMarginValue").attr("dataTyValue","acountM");
+    		$(".riskMarginValue").val("");
+    	}
+    });
+    
+    //担保费率填写方式改变
+    $(".guaranteeType").on("change",function(){
+    	var value = $(this).val();
+    	if(value == 0){//%
+    		$(".guaranteeValue").attr("datatype","hundredNum");
+    		$(".guaranteeValue").val("");
+    	}else{//元
+    		$(".guaranteeValue").attr("datatype","acountM");
+    		$(".guaranteeValue").val("");
+    	}
+    });
+	
 	
 	//初始化editor插件数据
 	if(guarantyDescribe !=null && guarantyDescribe != ""){
@@ -63,15 +130,45 @@ $(function(){
 
 /* 验证 */
 $(function(){
-	validform5(".nextBtn","modInfo",false,"3");
-	validform5(".btn-pre","next_field",false,"3");
+	validform5(".nextBtn","modInfo",false,"5");
+	validform5(".btn-pre","next_field",false,"5");
 });
 /* 下一步跳转按钮 */
 function nextSave(){
+	var moneyA = Number($(".loanMoney").val());//借款金额
+	var moneyB = Number($(".startingIA").val());//起投金额
+	var moneyC = Number($(".conIncrease").val());//加价幅度
+	var investMax = Number($(".con-PP").val());//最大投资比例
+	if(moneyC >= moneyA){
+		layer.alert("加价幅度必须小于借款金额！",{icon:0}); 
+		$(".conIncrease").focus();
+		return;
+	}
+	if((moneyB+moneyC)>moneyA){
+		layer.alert("加价幅度与起投金额之和不能大于借款金额！",{icon:0}); 
+		$(".conIncrease").focus();
+		return;
+	}
+	if(moneyB > moneyA){
+		layer.alert("起投金额不能大于借款金额！",{icon:0});  
+		$(".startingIA").focus();
+		return;
+	}
+	var maxMoney = moneyA*investMax/100;
+	if(moneyB> maxMoney && maxMoney != 0){
+		layer.alert("起投金额不能大于最大投资金额！",{icon:0}); 
+		$(".startingIA").focus();
+		return;
+	}
+	
 	var data={};//保存参数对象
 	var projectTitle = $(".enterN-r").val();
 	if (projectTitle != null && projectTitle != "") {
 		data.projectTitle=encrypt.encrypt(projectTitle);
+	}
+	var projectId = $("#projectId").val();
+	if (projectId != null && projectId != "") {
+		data.projectId=encrypt.encrypt(projectId);
 	}
 	var amount = $(".loanMoney").val();
 	if (amount != null && amount != "") {
@@ -85,9 +182,9 @@ function nextSave(){
 	if (deadlineType != null && deadlineType != "") {
 		data.deadlineType=encrypt.encrypt(deadlineType);
 	}
-	var investMax = $(".con-PP").val();
-	if (investMax != null && investMax != "") {
-		data.investMax=encrypt.encrypt(investMax);
+	var investMaxA= $(".con-PP").val();
+	if (investMaxA != null && investMaxA != "") {
+		data.investMax=encrypt.encrypt(investMaxA);
 	}
 	var yearRate = $(".startTY").val();
 	if (yearRate != null && yearRate != "") {
@@ -123,7 +220,7 @@ function nextSave(){
 	}
 	var guarantyDescribe = pi.getContent();
 	if (guarantyDescribe != null && guarantyDescribe != "") {
-		data.guarantyDescribe=encrypt.encrypt(guarantyDescribe);
+		data.content=guarantyDescribe;
 	}
 	var ppid = $("#ppid").val();
 	if (ppid != null && ppid != "") {
@@ -189,6 +286,7 @@ function nextSave(){
  */
 function saveLast(){
 	var data={};//保存参数对象
+	var amount = $(".loanMoney").val();
 	var autoStart = $(".autoStart").val();
 	if (autoStart != null && autoStart != "") {
 		data.autoStart=encrypt.encrypt(autoStart);
@@ -225,23 +323,39 @@ function saveLast(){
 	if (riskMarginType != null && riskMarginType != "") {
 		data.riskMarginType=encrypt.encrypt(riskMarginType);
 	}
+	var riskMarginValue = $(".riskMarginValue").val();
+	
+	var maxRate = $("#riskRateMax").val();//最大风险保证金比例
+	var maxMoney = Number(maxRate)*Number(amount);//最大风险保证金金额
 	if($(".isRiskMargin").is(':checked')){//选中
 		if($(".riskMarginType").val()==0){
-			data.riskMarginRate = encrypt.encrypt($(".riskMarginValue").val());
+			if(maxRate !=0 && Number(riskMarginValue) > Number(maxRate)){
+				layer.alert("风险保证金已超过上限！",{icon:0});
+				return;
+			}
+			data.riskMarginRate = encrypt.encrypt(riskMarginValue);
 		}else if($(".riskMarginType").val()==1){
-			data.riskMarginFee = encrypt.encrypt($(".riskMarginValue").val());
+			if(maxMoney !=0 && Number(riskMarginValue) > Number(maxMoney)){
+				layer.alert("风险保证金已超过上限！",{icon:0});
+				return;
+			}
+			data.riskMarginFee = encrypt.encrypt(riskMarginValue);
 		}
 	}
 	if($(".isMngFeeRate").is(':checked')){//选中
 		var mngFeeRate = $(".mngFeeRate").val();
 		data.mngFeeRate=encrypt.encrypt(mngFeeRate);
-		var amount = $(".loanMoney").val();
-	    data.mngFeeAmount = encrypt.encrypt(Number(amount) * Number(mngFeeRate));
 	}
 	var investCountMax = $(".investCountMax").val();
 	if (investCountMax != null && investCountMax != "") {
 		data.investCountMax=encrypt.encrypt(investCountMax);
 	}
+//	var investMax = Number($(".con-PP").val());
+//	var invsetPeople = Math.ceil(100/investMax);//最少投资人数
+//	if(investMax * Number(investCountMax) <100){
+//		layer.alert("投标人数不能小于"+invsetPeople+"人，否则该项目不能满标！",{icon:0});
+//		return;
+//	}
 	var guaranteeType = $(".guaranteeType").val();
 	data.guaranteeType=encrypt.encrypt(guaranteeType);
 	var guaranteeValue = $(".guaranteeValue").val();
@@ -290,6 +404,10 @@ function saveLast(){
 				layer.alert("保存红包惊喜标异常："+data.msg,{icon:2});  
 			}else if(data == -100){
 				layer.alert("登录失效，请登录后再操作！",{icon:2});  
+			}else if(data == -8){
+				layer.alert("项目风险保证金超出上限！",{icon:0});  
+			}else if(data == -9){
+				layer.alert("查询系统设置项目风险保证金上限异常！",{icon:0});  
 			}
 		},  
 		error : function() {  
@@ -320,6 +438,18 @@ $(function(){
 	$(".preBack").click(function(){
 		var data={};
 		data.start = JSON.stringify(attachJson);
+		if(attachJson.length == 0){
+			layer.confirm('还没有上传附件，确定返回？', {
+				  btn: ['确定', '取消']
+				}, function(index, layero){
+					layer.close(index);
+					$(".appendix").hide();
+					$(".nextField").show();	
+				}, function(index){
+					
+				});
+			return;
+		}
 		$.ajax( {  
 			url:appPath+"/project/addAttachment",
 			data:data,
@@ -385,18 +515,26 @@ $(function(){
 		var $input = $(this).parent().siblings().find("input");
 		if($(this).is(':checked')){
 			$input.attr("disabled",false);
-			$input.attr("datatype",$input.attr("dataTyValue"));//增加验证类型
-			
+			$input.removeAttr("ignore");//增加验证
 		}else{
 			$input.attr("disabled",true);
-			$input.removeAttr("datatype");//删除验证类型
+			$input.attr("ignore","ignore");//忽略验证
+			$input.val("");
 		}
 	});
+	//红包惊喜标
 	$(".check_select2").click(function(){
+		var $input = $(this).parent().siblings().find("input");
 		if($(this).is(':checked')){
-			$(this).parent().siblings().find("input").attr("disabled",false);
+			$input.each(function(){
+				$input.attr("disabled",false);
+				$input.removeAttr("ignore");//增加验证
+			});
 		}else{
-			$(this).parent().siblings().find("input").attr("disabled",true);
+			$input.each(function(){
+				$input.attr("disabled",true);
+				$input.attr("ignore","ignore");//忽略验证
+			});
 		}
 	});
 });
@@ -445,9 +583,9 @@ $(function(){
 		server: appPath+'/UpdateBsnLicense',	//文件接收服务端。
 		// 选择文件的按钮。可选。
 		pick: '#filePicker',											//内部根据当前运行是创建，可能是input元素，也可能是flash.
-		fileNumLimit: 10,												//个数限制
+		fileNumLimit: 100,												//个数限制
 		//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
-		fileSingleSizeLimit: 1024*512,
+	    fileSingleSizeLimit: 5*1024*1024, //1M  
 		accept: {														//只允许选择图片文件
 			title: 'Images',
 			extensions: 'gif,jpg,jpeg,bmp,png',

@@ -346,7 +346,7 @@ public class MsgSetController {
 		logEntity.setsUrl(LoadUrlUtil.getFullURL(req));
 		
 		Map<String,Object> param=new HashMap<String,Object>();
-		String ids = req.getParameter("ids");
+		String ids = req.getParameter("content");
 		String type = req.getParameter("type");//操作类型
 		param.put("messagetypes", ids);
 		param.put("type", type);

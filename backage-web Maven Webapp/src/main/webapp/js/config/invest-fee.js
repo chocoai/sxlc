@@ -29,7 +29,7 @@ $(function () {
 
 /** 修改投资管理费百分比 **/
 function updateMange () {
-	validform5("btn","mange",true,"3");
+	validform5("btn","mange",true,"5");
 	var percent = $("#lastname").val();
 	//加密操作
 	var encrypt = new JSEncrypt();

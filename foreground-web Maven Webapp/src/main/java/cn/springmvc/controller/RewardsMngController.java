@@ -50,6 +50,9 @@ public class RewardsMngController {
 		MemberSessionMng.GetLoginMemberInfo(request,lMemberInfo); 
 		
 		MyRedPackage entity=memberService.myRedpackage((int)lMemberInfo[1], lMemberInfo[0]);
+		if(entity==null){
+			entity = new MyRedPackage();
+		}
 		if(entity.getsRedPackageSum()==null){
 			entity.setsRedPackageSum("0");
 		}
@@ -167,7 +170,7 @@ public class RewardsMngController {
 		
 		PageEntity entity = new PageEntity();
 		entity.setMap(param);
-		entity.setPageNum(start/length+1);
+		entity.setPageNum(start);
 		entity.setPageSize(length);
 		
 		 List<MemberVouchers> list =  memberService.vouchers(entity);
@@ -206,7 +209,7 @@ public class RewardsMngController {
 		
 		PageEntity entity = new PageEntity();
 		entity.setMap(param);
-		entity.setPageNum(start/length+1);
+		entity.setPageNum(start);
 		entity.setPageSize(length);
 		
 		 List<MemberVouchers> list =  memberService.useVouchers(entity);

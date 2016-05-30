@@ -2,7 +2,6 @@
 package cn.springmvc.controller.platformpromotion;
 
 
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -20,7 +19,6 @@ import product_p2p.kit.pageselect.PageEntity;
 
 import cn.invitemastermng.model.MemberRedpacketsSetEntity;
 import cn.invitemastermng.model.RedpacketsAffairEntity;
-import cn.invitemastermng.model.RedpacketsDetailRecordEntity;
 import cn.springmvc.model.Admin;
 import cn.springmvc.service.ExtensionModuleGiftService;
 import cn.springmvc.util.HttpSessionUtil;
@@ -116,7 +114,7 @@ public class RedManageController {
 		String scale = request.getParameter("scale");
 		String lId = request.getParameter("lId");
 		
-		req.put("invest_Amount", invsit);
+		req.put("invest_Amount", IntegerAndString.StringToInt(invsit));
 		req.put("rp_Rate", IntegerAndString.StringToInt(scale));
 		if (lId != null && !"".equals(lId)) {
 			req.put("lId", lId);
@@ -287,8 +285,8 @@ public class RedManageController {
 		String giftAmount = request.getParameter("giftAmount");
 		String quantity = request.getParameter("quantity");
 		
-		req.put("startDate", startDate);
-		req.put("endDate", endDate);
+		req.put("startDate", startDate + " 00:00:00");
+		req.put("endDate", endDate + " 23:59:59");
 		req.put("userendDate", userendDate);
 		req.put("affairName", affairName);
 		req.put("giftAmount", giftAmount);
@@ -338,14 +336,16 @@ public class RedManageController {
 		String giftAmount = request.getParameter("giftAmount");
 		String quantity = request.getParameter("quantity");
 		String affairID = request.getParameter("affairID");
+		String detailId = request.getParameter("detailId");
 		
-		req.put("startDate", startDate);
+		req.put("startDate", startDate +" 23:59:59");
 		req.put("endDate", endDate);
 		req.put("userendDate", userendDate);
 		req.put("affairName", affairName);
 		req.put("giftAmount", giftAmount);
 		req.put("quantity", quantity);
 		req.put("affairID", affairID);
+		req.put("detailID", detailId);
 		
 		String [] sIpInfo = new String[6];
 		if (userInfo != null) {
@@ -387,5 +387,42 @@ public class RedManageController {
 		return entity;
 	}
 	
+	/**
+	 * 
+	* RedpacketsAffairrelease发布红包
+	* TODO发布红包
+	* @author 杨翰林  
+	* * @Title: RedpacketsAffairrelease 
+	* @Description: 发布红包 
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-20 上午11:24:22
+	* @throws
+	 */
+	@RequestMapping("/publish")
+	@ResponseBody
+	public int RedpacketsAffairrelease(HttpServletRequest request) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String affairID = request.getParameter("affairID");
+		
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(100603);
+		entity.setlModuleId(1006);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = extensionModuleGiftService.RedpacketsAffairrelease(IntegerAndString.StringToLong(affairID, -1), entity, sIpInfo);
+		
+		return num;
+	}
 }
 

@@ -253,7 +253,7 @@
 	</select>
 	<!--  查询会员红包赠送配置表-->  
     <select id="selectMemberRedpacketsSet"  resultType="cn.invitemastermng.model.MemberRedpacketsSetEntity"> 
-	     select Open_Account_RP as openAccountRP,Open_Account_RP as firstRechargeRP 
+	     select Open_Account_RP as openAccountRP,First_Recharge_RP as firstRechargeRP 
 	     from  Member_Redpackets_Set limit 1
 	</select>
 	<!--  根据ID查询会员首次投资红包赠送配置-->  

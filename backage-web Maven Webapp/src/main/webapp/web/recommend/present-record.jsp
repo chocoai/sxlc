@@ -22,11 +22,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-			<jsp:param value="9" name="top_menu_index"/>
+			<jsp:param value="9" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-recommend.jsp"></jsp:include>
+			<jsp:include page="../common/cm-recommend.jsp">
+				<jsp:param value="909" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->

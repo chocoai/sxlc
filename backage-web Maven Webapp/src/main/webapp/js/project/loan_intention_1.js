@@ -48,6 +48,19 @@ $(function(){
 				          },  
 				          { title:"借款金额(元)","data": "amountStr"},  
 				          { title:"借款期限","data": "deadline"},  
+				          { title:"期限类型","data": "deadlineType", 
+				        	  "mRender": function (data, type, full) {
+				        		  if(data==0){
+				        			  return "天标";
+				        		  }else if(data==1){
+				        			  return "月标";
+				        		  }else if(data==2){
+				        			  return "年标";
+				        		  }else{
+				        			  return "";
+				        		  }
+				        	  }
+				          },  
 				          { title:"还款方式","data": "repayWay", 
 				        	  "mRender": function (data, type, full) {
 				        		  	if(data == 0){
@@ -63,30 +76,37 @@ $(function(){
 				        	    	}  
 				        	  }
 				          },  
-				          { title:"借款用途","data": "uses"},  
-				          { title:"还款来源","data": "repaySource"},  
-				          { title:"借款描述","data": "projectDescript", 
+				          { title:"借款用途","data": "uses", 
 				        	  "mRender": function (data, type, full) {
 				        		  	if(data==null){
 				        		  		return "";
 				        	  		}else if(data.length>8){//当内容长度大于8时隐藏详细信息
-				        	    		return ' <a href="javascript:;" onclick="showText(this)" title="借款描述">'+data.substring(0,7)+'...</a>';
+				        	    		return '<a href="javascript:;" onclick="showText(this,1)" title="借款用途">'+data.substring(0,7)+'...</a>';
 				        	    	}else {
 				        	    		return data;
 				        	    	} 
 				        	  }
 				          },  
-				          { title:"期限类型","data": "deadlineType", 
+				          { title:"还款来源","data": "repaySource", 
 				        	  "mRender": function (data, type, full) {
-				        		  if(data==0){
-				        			  return "天标";
-				        		  }else if(data==1){
-				        			  return full.deadline+"月标";
-				        		  }else if(data==2){
-				        			  return full.deadline+"年标";
-				        		  }else{
-				        			  return "";
-				        		  }
+				        		  	if(data==null){
+				        		  		return "";
+				        	  		}else if(data.length>8){//当内容长度大于8时隐藏详细信息
+				        	    		return '<a href="javascript:;" onclick="showText(this,2)" title="还款来源">'+data.substring(0,7)+'...</a>';
+				        	    	}else {
+				        	    		return data;
+				        	    	} 
+				        	  }
+				          },  
+				          { title:"借款描述","data": "projectDescript", 
+				        	  "mRender": function (data, type, full) {
+				        		  	if(data==null){
+				        		  		return "";
+				        	  		}else if(data.length>8){//当内容长度大于8时隐藏详细信息
+				        	    		return ' <a href="javascript:;" onclick="showText(this,3)" title="借款描述">'+data.substring(0,7)+'...</a>';
+				        	    	}else {
+				        	    		return data;
+				        	    	} 
 				        	  }
 				          },  
 				          { title:"提交意向时间","data": "recordDate"},  
@@ -111,9 +131,12 @@ $(function(){
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
 	          serverSide: true,//打开后台分页  
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+			  scrollXInner : "100%",scrollY:500,
+			  scrollY : 500,
+			  scrollYInner : 500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕
@@ -150,7 +173,7 @@ $(function(){
 	
 	
 	/*验证*/
-	validform5("layui-layer-btn0","saveNotice",true,"3");
+	validform5("layui-layer-btn0","saveNotice",true,"5");
 	//查看审批记录
 	$('#loan_exam_record').on('click', function(){
 		var data = $('#table_id').DataTable().rows('.selected').data();
@@ -174,6 +197,10 @@ $(function(){
 		if(data.length<1){
 				layer.alert("请选择要拒绝借款的会员！",{icon:0});
 				return;
+		}
+		if(data[0].dealStatu==1){
+			layer.alert("该意向借款已提交申请！",{icon:0});
+			return;
 		}
 		var params={};
 		var id = data[0].id;
@@ -241,6 +268,10 @@ function addInfo(){
 			layer.alert("请选择要操作的数据！",{icon:0});
 			return;
 	}
+	if(data[0].dealStatu==1){
+		layer.alert("该意向借款已提交申请！",{icon:0});
+		return;
+	}
 	var id = data[0].id;
 	var applyid = data[0].applyid;
 //	$(".right_col").load("project/toAddInformationPg",{"id":encrypt.encrypt(id+""),"applyid":encrypt.encrypt(applyid+"")});
@@ -267,24 +298,31 @@ function allocation(){
 			layer.alert("已分配理财顾问！",{icon:0});
 			return;
 		}
-		var Logname = data[0].Logname;
-		var PersonalName = data[0].PersonalName;
 		var memberID = data[0].memberID;
 //		$(".right_col").load("project/toDistributionPg",{"memberID":encrypt.encrypt(memberID),"Logname": encrypt.encrypt(Logname),"PersonalName":encrypt.encrypt(PersonalName)});
-		window.location.href=appPath+"/project/toDistributionPg?content="+memberID+"&start="+Logname+"&length="+PersonalName;
+		window.location.href=appPath+"/project/toDistributionPg?content="+memberID;
 }
 
 
 /**
  * 简介弹出框显示
  */
-function showText(btn){
+function showText(btn,type){
 	var data = $('#table_id').DataTable().row($(btn).parents('tr')).data();
+	var title = $(btn).attr("title");
+	var content="";
+	if(type==1){
+		content = data.uses;
+	}else if(type==2){
+		content = data.repaySource;
+	}else if(type==3){
+		content = data.projectDescript;
+	}
 	layer.open({
 	    type: 1,
 	    area: ['400px', '300px'], //高宽
-	    title: "借款描述",
-	    content: data.projectDescript,//DOM或内容
+	    title: title,
+	    content: content,//DOM或内容
 	    btn:['关闭']
 		  ,cancel: function(index){
 		  	//取消的回调

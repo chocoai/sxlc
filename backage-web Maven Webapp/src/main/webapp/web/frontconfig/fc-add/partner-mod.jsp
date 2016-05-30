@@ -30,7 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<tr>
 					<td class="tt" valign="top"><label>合作伙伴名称：</label></td>
 					<td class="con" id="partnermodname">
-						<input type="text" class="" placeholder="" value="" datatype="enterNameReg"/>
+						<input type="text" class="" placeholder="" value="" datatype="entername"/>
 					</td>
 				</tr>
 				<tr>
@@ -61,10 +61,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/upload.js"></script>
 	<script type="text/javascript">
 		$(function(){
-			validform5("layui-layer-btn0","partnermodname",false,"3");
+			validform5("layui-layer-btn0","partnermodname",false,"5");
 		});
 		$(function(){
-			validform5("layui-layer-btn0","partnermodlink",false,"3");
+			validform5("layui-layer-btn0","partnermodlink",false,"5");
 		});
 		var ag = UE.getEditor('partnerintro');
 	</script>

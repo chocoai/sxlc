@@ -51,12 +51,12 @@
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="1" name="top_menu_index" />
-				<jsp:param value="角色管理" name="loc1" />
+				<jsp:param value="1" name="_index_m1" />
 			</jsp:include>
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-left-menu.jsp">
-				<jsp:param value="role-1" name="role-index" />
+			<jsp:include page="../common/cm-role.jsp">
+				<jsp:param value="102" name="_index_m2" />
+				<jsp:param value="" name="_index_m3" />
 			</jsp:include>
 			<!-- 头部导航 -->
 
@@ -104,17 +104,17 @@
 										for(int i = 0;i < operations.size(); i++){
 											if(operations.get(i).getOptID() == 10201){
 								%>				
-											<button class="obtn glyphicon glyphicon-plus obtn-post-add" onclick="postAdd()">添加</button>
+											<button class="obtn glyphicon glyphicon-plus obtn-post-add" type="button" onclick="postAdd()">添加</button>
 								<%      
 							      			}
 							      			if(operations.get(i).getOptID() == 10202){
 								%>				
-											<button class="obtn glyphicon glyphicon-pencil obtn-post-mod" onclick="expMod()">修改</button>
+											<button class="obtn glyphicon glyphicon-pencil obtn-post-mod" type="button" onclick="expMod()">修改</button>
 								<%      
 							      			}
 							      			if(operations.get(i).getOptID() == 10203){
 								%>				
-											<button class="obtn glyphicon glyphicon-trash obtn-post-del">删除</button>
+											<button class="obtn glyphicon glyphicon-trash obtn-post-del" type="button">删除</button>
 								<%      
 							      			}
 								  		 }
@@ -126,77 +126,70 @@
 										<table id="post_id" class="display">
 										</table>
 									</div>
-			
-									<div class="w-content pic-add">
-									<form action="javascript:savePost()" id="dataForm" method="post" >
-										<table>
-											<tr>
-												<td class="tt"><label class="ineed">职务名称：</label></td>
-												<td class="con">
-												<input type="hidden"  name ="deptIds" id="deptIds"/>
-													<input type="text" class="" placeholder="职务名称"  datatype="z2_8"  id="postName_one"/>
-												</td>
-											</tr>
-											<tr>
-												<td class="tt"><label>选择所属部门：</label></td>
-												<td class="con">
-												<select name="deptId" class="" id="deptId" style="width:165px;height:30px">
-													<option  value="-1">请选择</option>
-													<c:forEach var="dept" items="${deptList}">
-														<option  value="${dept.id}">${dept.deptName}</option>
-													</c:forEach>
-										         </select>
-											</td>
-											</tr>
-											<tr>
-												<td class="tt"><label>职务描述：</label></td>
-												<td class="con">
-													<input type="text" class="" name="postRemark" datatype="unNormal" maxlength="30" id="postRemark" placeholder="职务描述" />
-												</td>
-											</tr>
-										</table>
-										</form>
-									</div>
-									
-									<div class="w-content pic-mod">
-									<form action="javascript:test()" id="dataFor" method="post">
-											<table>
-												<tr>
-													<td class="tt"><label class="ineed">职务名称：</label></td>
-													<td class="con">
-														<input type="text" class="" placeholder="" id ="postName_two" datatype="z2_8"/>
-													</td>
-												</tr>
-												<tr>
-												<td class="tt"><label>选择所属部门：</label></td>
-												<td class="con">
-												<select name="deptId1" class="" id="deptId1" style="width:165px;height:30px">
-													<option  value="-1">请选择</option>
-													<c:forEach var="dept" items="${deptList}">
-														<option  value="${dept.id}">${dept.deptName}</option>
-													</c:forEach>
-										         </select>
-											</td>
-											</tr>
-											<tr>
-												<td class="tt"><label>职务描述：</label></td>
-												<td class="con">
-													<input type="text" class="" name="postRemark1" datatype="unNormal" maxlength="30" id="postRemark1" placeholder="职务描述" />
-												</td>
-											</tr>
-											</table>
-										</form>
-									</div>
 								</div>
 							</div>
 						</td>
 					</tr>
 				</table>
-				
-
 			</div>
 		</div>
 	</div>
+	<div class="w-content pic-add">
+		<form action="javascript:savePost()" id="dataForm" method="post" >
+			<table>
+				<tr>
+					<td class="tt"><label class="ineed">职务名称：</label></td>
+					<td class="con">
+					<input type="hidden"  name ="deptIds" id="deptIds"/>
+						<input type="text" class="" placeholder="职务名称"  datatype="entername"  id="postName_one"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="tt"><label class="ineed">选择所属部门：</label></td>
+					<td class="con">
+					<select name="deptId" class="" id="deptId" style="width:165px;height:30px">
+						<option  value="-1">请选择</option>
+						<c:forEach var="dept" items="${deptList}">
+							<option  value="${dept.id}">${dept.deptName}</option>
+						</c:forEach>
+			         </select>
+				</td>
+				</tr>
+				<tr>
+					<td class="tt"><label class="ineed">职务描述：</label></td>
+					<td class="con">
+						<input type="text" class="" name="postRemark" datatype="unNormal" maxlength="30" id="postRemark" placeholder="职务描述" />
+					</td>
+				</tr>
+			</table>
+			</form>
+		</div>
+		
+		<div class="w-content pic-mod">
+		<form action="javascript:test()" id="dataFor" method="post">
+				<table>
+					<tr>
+						<td class="tt"><label class="ineed">职务名称：</label></td>
+						<td class="con">
+							<input type="text" class="" placeholder=""  style="width:200px"  id ="postName_two" datatype="entername"/>
+						</td>
+					</tr>
+					<tr>
+					<td class="tt"><label class="ineed">选择所属部门：</label></td>
+					<td class="con">
+					<select name="deptId1" class="" id="deptId1" style="width:200px;height:30px">
+			         </select>
+				</td>
+				</tr>
+				<tr>
+					<td class="tt"><label class="ineed">职务描述：</label></td>
+					<td class="con">
+						<input type="text" class="" name="postRemark1" style="width:200px"  datatype="unNormal" maxlength="30" id="postRemark1" placeholder="职务描述" />
+					</td>
+				</tr>
+				</table>
+			</form>
+		</div>
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="plugs/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
 	<script type="text/javascript" src="js/role/myZtree.js"></script>
@@ -216,7 +209,7 @@
 							dataType:"json",
 							success:function(data){
 								// 如果返回数据不为空，加载"业务模块"目录
-								if(data != null){
+								if(data != null && data.length>0){
 									// 将返回的数据赋给zTree
 								 	$.fn.zTree.init($("#"+treeObj), setting, data);
 								 	zTree = $.fn.zTree.getZTreeObj(treeObj);

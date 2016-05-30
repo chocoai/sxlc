@@ -33,10 +33,11 @@
 	
 	<!-- 获取列表 -->
 	<select id="getListByParam" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="deptResult">
-		select * from dept_info WHERE Dept_Statu = true 
+		select * from dept_info 
 		<where>
+		     1=1
 			<if test="map!=null and  map.spreDeptId >0 ">
-				and	PreDept_Id   =  #{map.spreDeptId};
+				and	PreDept_Id   =  #{map.spreDeptId}
 			</if>
 			<if test="map!=null and  map.deptNo != null and map.deptNo !=''">
 				and	Dept_No  LIKE '%${map.deptNo}%'
@@ -50,8 +51,8 @@
 			<if test="map!=null and map.principalPhone != null and map.principalPhone !='' ">
 				and	Principal_Phone LIKE '%${map.principalPhone}%'
 			</if>
-			<if test="map!=null and map.statu !=''">
-				and	 Dept_Statu = #{statu}
+			<if test="map!=null and map.deptStatu >-1">
+				and	 Dept_Statu = #{map.deptStatu}
 			</if>
 		</where>
 	</select>
@@ -96,12 +97,12 @@
 	
 	<!-- 获取所有部门列表 -->
 	<select id="findall" parameterType="Map" resultMap="deptResult">
-		select * from dept_info where Dept_Statu = 1
+		select * from dept_info <!-- where Dept_Statu  -->
 	</select>
 	
 	<!-- 根据上级部门查询下级部门 -->
 	<select id="findDeptListByParantId" parameterType="Map" resultMap="deptResult">
-		select * from dept_info where PreDept_Id = #{parentId} and Dept_Statu = 1
+		select * from dept_info where PreDept_Id = #{parentId} <!-- and Dept_Statu = 1 -->
 	</select>
 	
 	

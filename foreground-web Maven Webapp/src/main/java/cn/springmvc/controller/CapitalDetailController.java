@@ -108,38 +108,10 @@ public class CapitalDetailController {
 		entity.setPageSize(length);
 		
 		List<MemberTradingRecordsEntity> list = capitalbudgetdetailsService.selectMemberTradingRecords(entity);
-		//TODO 测试假数据
-		/*for (int i = 0; i < 6; i++) {
-			MemberTradingRecordsEntity entity2 = new MemberTradingRecordsEntity();
-			entity2.setTradeID(i*100+1);
-			entity2.setTradeTypeId(i+1);
-			entity2.setGetPay(i%2);
-			entity2.setTradeType("充值");
-			entity2.setAmount(500000*(i+1));
-			entity2.setRecordNo(i*15656+545+"");
-			entity2.setStatisticsAmount(i*16355);
-			entity2.setTotalAmount(i*i*i*i*i+56415614);
-			entity2.setStatisticsFrozenAmount(i+i*5456);
-			entity2.setTradeObjectType((i+1)%3);
-			entity2.setWillRecPrincipal(156);
-			entity2.setWillRecInterest(13514);
-			entity2.setUserBalance(62352345);
-			entity2.setWillPayPrincipal((i+1)%3);
-			entity2.setWillPayInterest(8325);
-			entity2.setWillPayOverdueInterest(625452);
-			entity2.setWillPayOverdue(100000);
-			entity2.setRecordDate("2016-05-11");
-
-			list.add(entity2);
-		}
-		entity.setResults(list);*/
 		
 		PageUtil.ObjectToPage(entity, list);
 		entity.getMap().remove("sKey");
-		
-		/*entity.setTotalPage(2);
-		entity.setRecordsTotal(12);
-		entity.setRecordsFiltered(6);*/
+
 		return JSONObject.toJSONString(entity);
 		
 	}
@@ -326,11 +298,11 @@ public class CapitalDetailController {
 		Map<String,Object> withdrawalData=capitalbudgetdetailsService.selectTotalWithdrawalInfo(param);
 		
 		Map<String,Object> data = new HashMap<String, Object>();
-		data.put("rechargeFee", rechargeData.get("totalfee"));							//充值手续费
-		data.put("rechargeMoney", rechargeData.get("totalrecharge"));				//实际到账充值总额
+		data.put("rechargeFee", IntegerAndString.LongToString(Long.parseLong(rechargeData.get("totalfee").toString())));							//充值手续费
+		data.put("rechargeMoney", IntegerAndString.LongToString(Long.parseLong(rechargeData.get("totalrecharge").toString())));				//实际到账充值总额
 		
-		data.put("withdrawalFee", withdrawalData.get("totalfee"));					//提现手续费
-		data.put("withdrawalMoney", withdrawalData.get("totalWithdrawal")); //实际到账提现总额
+		data.put("withdrawalFee", IntegerAndString.LongToString(Long.parseLong(withdrawalData.get("totalfee").toString())));					//提现手续费
+		data.put("withdrawalMoney", IntegerAndString.LongToString(Long.parseLong(withdrawalData.get("totalWithdrawal").toString()))); //实际到账提现总额
 		
 		return JSONObject.toJSONString(data);
 	}

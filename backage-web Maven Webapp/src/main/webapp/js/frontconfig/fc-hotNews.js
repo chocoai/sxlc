@@ -1,24 +1,10 @@
 /** 最新动态 **/
 
-//获取项目根目录全路径
-function getRootPath(){
-        var curWwwPath=window.document.location.href;
-        var pathName=window.document.location.pathname;
-        var pos=curWwwPath.indexOf(pathName);
-        var localhostPath=curWwwPath.substring(0,pos);
-        var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
-		if(/127.0.0.1|localhost/.test(localhostPath)){
-			return(localhostPath+projectName);
-		}else{
-			return(localhostPath);
-		}
-}
 /** 添加最新动态 **/
 //验证
 $(function () {
-	var appPath = getRootPath();//项目根路径
 	//验证
-	validform5("layui-layer-btn0","saveNews",true,"3");
+	validform5("layui-layer-btn0","saveNews",false,"5");
 	$(".obtn-hotNews-add").on("click touchstart",function(){
 		//初始化
 		var ue1 = UE.getEditor('editor');
@@ -52,10 +38,11 @@ function addNews() {
     encrypt.setPublicKey(publicKey_common);
     var result1 = encrypt.encrypt((content));
     var result2 = encrypt.encrypt((title));
+    $(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/news/save.do",
 		data : {
-			content : result1, 
+			content : content, 
 			title : result2 
 		},
 		type:'post',  
@@ -64,21 +51,25 @@ function addNews() {
 			if (data == 1) {
 				layer.alert("添加成功",{icon:1});  
 				document.getElementById("saveNews").reset();
-				setTimeout('location.reload()',2000);
+				$(".layui-layer-btn1").click();
+				var table = $('#table_id').DataTable();
+				table.ajax.reload();
 			}else {
-				layer.alert("服务器异常",{icon:2});
+				layer.alert("添加失败",{icon:2});
 				document.getElementById("saveNews").reset();
 			}
-		}
-		
+			$(".layui-layer-btn0").removeClass("disabled");
+		},
+		error : function() {  
+			layer.alert("服务器异常",{icon:2});  
+		}  
 	});
 }
 /** 修改最新动态 **/
 //验证
 $(function () {
-	var appPath = getRootPath();//项目根路径
 	//验证
-	validform5("layui-layer-btn0","updateNews",true,"3");
+	validform5("layui-layer-btn0","updateNews",false,"3");
 	$(".obtn-hotNews-mod").on("click",function(){
 		var ue2 = UE.getEditor('meditor');
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();
@@ -121,7 +112,6 @@ $(function () {
 
 //修改方法
 function modNews () {
-	var appPath = getRootPath();//项目根路径
 	var ue2 = UE.getEditor('meditor');
 	//获取ueditor内容
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
@@ -130,15 +120,16 @@ function modNews () {
 	//加密操作
 	var encrypt = new JSEncrypt();
     encrypt.setPublicKey(publicKey_common);
-    var result1 = encrypt.encrypt((rowdata[0].id));
+    var result1 = encrypt.encrypt((rowdata[0].id)+"");
+
     var result2 = encrypt.encrypt((title));
-    var result3 = encrypt.encrypt((content));
+    $(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/news/update.do",
 		data : {
 			newsId : result1,
 			title : result2,
-			content : result3
+			content : content
 		},
 		type:'post',  
 		cache:false,  
@@ -146,67 +137,38 @@ function modNews () {
 			if (data == 1) {
 				layer.alert("修改成功",{icon:1});  
 				document.getElementById("updateNews").reset();
-				setTimeout('location.reload()',2000);
+				$(".layui-layer-btn1").click();
+				var table = $('#table_id').DataTable();
+				table.ajax.reload();
 			}else {
-				layer.alert("服务器异常",{icon:2});
+				layer.alert("修改失败！",{icon:2});
 				document.getElementById("updateNews").reset();
 			}
-		}
-		
-	});
-}
-/** 启用/停用动态 **/
-//启用
-function openNews () {
-	var appPath = getRootPath();//项目根路径
-	//获取选取对象
-	layer.confirm('确定启用？', {
-	  btn: ['确定', '取消']
-	}, function(index, layero){
-	  //确定回掉
-	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
-	  //加密操作
-	  var encrypt = new JSEncrypt();
-	  encrypt.setPublicKey(publicKey_common);
-	  var result1 = encrypt.encrypt((rowdata[0].id + ""));
-	  var result2 = encrypt.encrypt((rowdata[0].statu + ""));
-	  $.ajax({
-	  	type : 'post',
-	  	url : appPath + "/news/ofOrOpenNews.do",
-	  	data : {
-			newsId : result1,
-			statu : result2
+			$(".layui-layer-btn0").removeClass("disabled");
 		},
-	  	success : function (msg) {
-	  		if (msg == 1) {
-	  			layer.alert("操作成功!",{icon:1});
-	  			setTimeout('location.reload()',2000);
-	  		}else {
-	  			layer.alert("操作失败!",{icon:2});
-	  		}
-	  	}
-	  });
+		error : function() {  
+			layer.alert("服务器异常",{icon:2});  
+		}  
 		
-		//执行完关闭
-	  	layer.close(index);
-	}, function(index){
-	  //按钮【按钮二】的回调
 	});
 }
-//停用
-function ofNews () {
-	var appPath = getRootPath();//项目根路径
+//启用停用
+function ofNews (id,statu) {
 	//获取选取对象
-	layer.confirm('确定停用？', {
+	var mess ="确认启用？";
+	if(statu == 0){
+		var mess ="确认停用？";
+	}
+	layer.confirm(mess, {
 	  btn: ['确定', '取消']
 	}, function(index, layero){
 	  //确定回掉
-	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
 	//加密操作
 	  var encrypt = new JSEncrypt();
+	  var status =statu;
 	  encrypt.setPublicKey(publicKey_common);
-	  var result1 = encrypt.encrypt((rowdata[0].id + ""));
-	  var result2 = encrypt.encrypt((rowdata[0].statu + ""));
+	  var result1 = encrypt.encrypt(id + "");
+	  var result2 = encrypt.encrypt(statu + "");
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/news/ofOrOpenNews.do",
@@ -215,12 +177,23 @@ function ofNews () {
 			statu : result2
 		},
 	  	success : function (msg) {
-	  		if (msg == 1) {
-	  			layer.alert("操作成功!",{icon:1});
-	  			setTimeout('location.reload()',2000);
-	  		}else {
-	  			layer.alert("操作失败!",{icon:2});
-	  		}
+		  	if(status ==1){
+		  		if (msg == 1) {
+		  			layer.alert("启用成功!",{icon:1});
+		  			var table = $('#table_id').DataTable();
+					table.ajax.reload();
+		  		}else {
+		  			layer.alert("启用失败!",{icon:2});
+		  		}
+		  	}else{
+		  		if (msg == 1) {
+		  			layer.alert("停用成功!",{icon:1});
+		  			var table = $('#table_id').DataTable();
+					table.ajax.reload();
+		  		}else {
+		  			layer.alert("停用失败!",{icon:2});
+		  		}
+		  	}	
 	  	}
 	  });
 		
@@ -252,7 +225,6 @@ function openImg(btn){
 
 }
 $(function() {
-	var appPath = getRootPath();//项目根路径
 	$('#table_id').DataTable(
 	{
 		autoWidth : false,
@@ -274,10 +246,8 @@ $(function() {
         ajax: {  
             "url": appPath + "/news/list.do",   
             "dataSrc": "results", 
+            "type":"post",
             "data": function ( d ) {  
-                var level1 = $('#level1').val();  
-                //添加额外的参数传给服务器  
-                d.extra_search = level1;
             } 
         },
         columns: [  
@@ -289,26 +259,37 @@ $(function() {
 //                	  "sClass": "table-checkbox"
                   },
                   { title:"最新动态id","data": "id" },
-                  { title:"添加时间","data": "createTime" },
+                  { title:"添加时间","mRender": function (data, type, full) {
+                	  var sReturn ="";
+                	  if(full.createTime!=null && full.createTime!=""){
+                		  var a = full.createTime;
+                		  sReturn = a.substring(0,a.length-2);
+                	  }
+                	  	  return sReturn;
+	              	  }
+	               },  
                   { title:"标题","data": "title" },  
-                  { title:"内容","data": "content",
-                	  "mRender": function (data, type, full) {
+                  { title:"内容","mRender": function (data, type, full) {
                  		 return "<a onclick=\"openImg(this);\" href=\"javascript:void(0);\">查看详情</a>";
                  	  }
                   },  
+                  { title:"最后一次管理员操作","data": "adminName" },
                   { title:"状态","data": "statu", 
                 	  "mRender": function (data, type, full) {
-                		 if (data == 0) {
+                		 if (full.statu==0) {
                 			 return "<font color='red'>无效</font>";
-                		 }else if (data == 1){
+                		 }else {
                 			 return "有效";
                 		 }
                 	  } 
                   },  
-                  { title:"最后一次管理员操作","data": "adminName" },  
                   { title:"操作","data": "deptStatu",
                   	"mRender": function (data, type, full) {
-                		  return "<a onclick=\"openNews();\" href=\"javascript:void(0);\">启用</a>" + "<a onclick=\"ofNews();\" href=\"javascript:void(0);\">停用</a>";
+                  		 if(full.statu==0){
+                  			return "<a onclick=\"ofNews("+full.id+",1);\" href=\"javascript:void(0);\">启用</a>";
+                  		 }else{
+                  			return "<a onclick=\"ofNews("+full.id+",0);\" href=\"javascript:void(0);\">停用</a>";
+                  		 }
                 	  } 
                   }
         ],
@@ -329,10 +310,20 @@ $(function() {
 //        		$(row).addClass('selected'); 
 //        	}
         }
-});
- var table = $('#table_id').DataTable();
-//设置选中change颜色
- $('#table_id tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
+	});
+	 $('#table_id tbody').on( 'click', 'tr', function () {
+		 var $this = $(this);
+			var $checkBox = $this.find("input:checkbox");
+			 if ( $(this).hasClass('selected') ) {
+				 $checkBox.prop("checked",false);
+					$(this).removeClass('selected');
+				}
+				else {
+					$('tr.selected').removeClass('selected');
+					$this.siblings().find("input:checkbox").prop("checked",false);
+					$checkBox.prop("checked",true);
+					$(this).addClass('selected');
+				}
+			
+	  });
 });

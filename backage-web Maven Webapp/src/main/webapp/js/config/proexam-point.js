@@ -4,8 +4,8 @@
  */
 $(function(){
 	//单选
-	validform5(".layui-layer-btn0","dataForm",true,3);
-	validform5(".layui-layer-btn0","dataForms",true,3);
+	validform5(".layui-layer-btn0","dataForm",false,5);
+	validform5(".layui-layer-btn0","dataForms",false,5);
 	$('#table_id tbody').on( 'click', 'tr', function () {
 		var $this = $(this);
 		var $checkBox = $this.find("input:checkbox");
@@ -24,6 +24,7 @@ $(function(){
 	showActivity();
 	/*添加审批点*/
 	$(".obtn-proexam-point-add").on("click touchstart",function(){
+		document.getElementById("dataForm").reset();
 		layer.open({
 		    type: 1,
 		    area: ['460px', '260px'], //高宽
@@ -40,6 +41,7 @@ $(function(){
 	});
 	/*修改审批点*/
 	$(".obtn-proexam-point-mod").on("click touchstart",function(){
+		document.getElementById("dataForms").reset();
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();
 		if(rowdata.length<1){
 			layer.alert("请选择要处理的事务！",{icon:0});
@@ -148,6 +150,8 @@ function addActivity(){
 				$(".layui-layer-btn1").click();
 				var table = $('#table_id').DataTable();
 				table.ajax.reload();
+			}else if(data =-1){
+				layer.alert("该审批活动点已存在1",{icon:2}); 
 			}else{
 				layer.alert("添加失败。",{icon:2});  
 			}
@@ -188,8 +192,10 @@ function updateActivity(){
 				$(".layui-layer-btn1").click();
 				var table = $('#table_id').DataTable();
 				table.ajax.reload();
+			}else if(data =-1){
+				layer.alert("该审批活动点已存在1",{icon:2}); 
 			}else{
-				layer.alert("修改失败。",{icon:2});  
+				layer.alert("添加失败。",{icon:2});  
 			}
 		}
 	});

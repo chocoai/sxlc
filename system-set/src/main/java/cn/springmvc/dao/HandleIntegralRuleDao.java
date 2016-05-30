@@ -85,5 +85,20 @@ public interface HandleIntegralRuleDao {
 	* @throws 
 	*/
 	public int insertIntegralRule(Map<String, Object> map);
+	
+	/** 
+	* deleteIntegralRule 根据id修改积分规则
+	* TODO 
+	* TODO(这里描述这个方法的执行流程 – 可选) 
+	* TODO(这里描述这个方法的使用方法 – 可选) 
+	* TODO(这里描述这个方法的注意事项 – 可选) 
+	* * @Title: deleteIntegralRule 
+	* @Description: TODO 
+	* @param @param map type 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 ;id;membertype
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @throws 
+	*/
+	public int updateIntegralRule(int membertype,int type,long amount,long points,long id);
 }
 

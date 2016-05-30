@@ -21,7 +21,7 @@ public class DeptInfoReadDaoImpl extends SqlSessionDaoSupport implements IDeptIn
 	@Override
 	public List<DeptInfo> getListByParam(PageEntity entity) {
 		
-		return getSqlSession().selectList("DeptInfoDaoImpl.getListByParam", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+		return getSqlSession().selectList("DeptInfoDaoImpl.getListByParam", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
 	
 	

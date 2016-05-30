@@ -20,7 +20,6 @@ $(function(){
  */
 function reanlNameIdentyList(memberId){
 	var hostPath = $("#hostPath").val();
-	
 	$.ajax( {  
 		 url:appPath+"/memberidety/realNameIdenty.do",
 			data:{
@@ -31,6 +30,7 @@ function reanlNameIdentyList(memberId){
 			dataType:'json',   
 			success:function(data) { 
 				if(data!=null){
+					//console.log(JSON.stringify(data));
 					$("#applyId").val(data.aid);
 					$("#memberId").val(memberId);
 					if(data.realName!=null && data.realName!=""){
@@ -48,7 +48,7 @@ function reanlNameIdentyList(memberId){
 						$("#native").text(data.homeTown);
 					}
 					if(data.sEndDate!=null && data.sEndDate!=""){
-						$("#sEndDate").text(data.sEndDate);
+						$("#sEndDate").val(data.sEndDate);
 					}
 					if(data.personalIDCard!="" && data.personalIDCard!=null){
 						$("#idcard").text(data.personalIDCard);
@@ -57,11 +57,10 @@ function reanlNameIdentyList(memberId){
 					var $img2 = $("#left_idcard");//身份证饭面
 					var profix = "";  //前缀
 					if(data.positive!=null && data.positive !=""){
-						$img1.src=hostPath + data.positive;
-						
+						$img1.attr("src",hostPath + data.positive);
 					}
 					if(data.reverse!=null && data.reverse !=""){
-						$img2.src=hostPath +data.reverse;
+						$img2.attr("src",hostPath +data.reverse);
 					}
 					
 				}

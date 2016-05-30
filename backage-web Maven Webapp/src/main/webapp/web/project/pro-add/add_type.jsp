@@ -47,45 +47,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<table>
 								<tr>
 									<input type="hidden" id="projectId" value="${project.id}"/>
-									<td class="tt"><label>类型名称：</label></td>
-									<td class="con" id="roleNamea"><input type="text" class="proKindName" value="${project.projectName}" datatype="roleNamea" maxlength="6"></td>
+									<td class="tt"><label class="ineed">类型名称：</label></td>
+									<td class="con" id="roleNamea"><input type="text" class="proKindName" value="${project.projectName}" datatype="proTypeName" maxlength="6"></td>
 								</tr>
 								<tr>
-									<td class="tt"><label>融资额度：</label></td>
+									<td class="tt"><label class="ineed">融资额度：</label></td>
 									<td class="con">
-									<input type="text" class="beginNum minAmount" datatype="nNum0" value="${project.minAmounts}" maxlength="8">
+									<input type="text" class="beginNum minAmount" datatype="acountM" value="${project.minAmounts}" maxlength="13">
 									<span>——</span>
-									<input type="text" class="endNum maxAmount" datatype="nNum0" value="${project.maxAmounts}" maxlength="8">
+									<input type="text" class="endNum maxAmount" datatype="acountM" value="${project.maxAmounts}" maxlength="13">
 									<span>元</span>
 									<span class="errorMsg" style="color:red"></span>
 									</td>
 								</tr>
 								<tr>
-									<td class="tt">年化利率：</td>
+									<td class="tt ineed">年化利率：</td>
 									<td class="con">
-									<input type="text" class="beginNum minRate" value="${project.minRates}" datatype="hundredNum" maxlength="5">
+									<input type="text" class="beginNum minRate" value="${project.minRates}" datatype="hundredNum" maxlength="8">
 									<span>——</span>
-									<input type="text"  class="endNum maxRate" value="${project.maxRates}" datatype="hundredNum" maxlength="5">
+									<input type="text"  class="endNum maxRate" value="${project.maxRates}" datatype="hundredNum" maxlength="8">
 									<span>%</span>
 									<span class="errorMsg" style="color:red"></span>
 									</td>					
 								</tr>
 								<tr>
-									<td class="tt">项目期限：</td>
+									<td class="tt ineed">项目期限：</td>
 									<td class="con">
-										<input type="text" class="beginNum minDaytimeY" value="${project.yminDaytime}" datatype="nNum0" maxlength="4">
+										<input type="text" class="minDayTime beginNum minDaytimeY" ignore="ignore" value="${project.yminDaytime}" datatype="nNum0" maxlength="4">
 										<span>——</span>
-										<input type="text" class="endNum maxDaytimeY" value="${project.ymaxDaytime}" datatype="nNum0" maxlength="4">
+										<input type="text" class="maxDayTime endNum maxDaytimeY" ignore="ignore"  value="${project.ymaxDaytime}" datatype="nNum0" maxlength="4">
 										<span>年</span>	
-										<span id="errorMsg" style="color:red"></span>			
+										<span class="errorMsg" style="color:red"></span>			
 									</td>
 								</tr>
 								<tr>
 									<td class="tt"></td>
 									<td class="con">
-										<input type="text" class="beginNum minDaytimeM" value="${project.mminDaytime}" datatype="nNum0" maxlength="4">
+										<input type="text" class="minDayTime beginNum minDaytimeM" ignore="ignore"  value="${project.mminDaytime}" datatype="nNum0" maxlength="4">
 										<span>——</span>
-										<input type="text" class="endNum maxDaytimeM" value="${project.mmaxDaytime}" datatype="nNum0" maxlength="4">
+										<input type="text" class="maxDayTime endNum maxDaytimeM" ignore="ignore"  value="${project.mmaxDaytime}" datatype="nNum0" maxlength="4">
 										<span>月</span>	
 										<span class="errorMsg" style="color:red"></span>		
 									</td>					
@@ -93,18 +93,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<tr>
 									<td class="tt"></td>
 									<td class="con">
-										<input type="text" class="beginNum minDaytimeD" value="${project.tminDaytime}" datatype="nNum0" maxlength="4">
+										<input type="text" class="minDayTime beginNum minDaytimeD" ignore="ignore"   value="${project.tminDaytime}" datatype="nNum0" maxlength="4">
 										<span>——</span>
-										<input type="text" class="endNum maxDaytimeD" value="${project.tmaxDaytime}" datatype="nNum0" maxlength="4">
+										<input type="text" class="maxDayTime endNum maxDaytimeD" ignore="ignore"  value="${project.tmaxDaytime}" datatype="nNum0" maxlength="4">
 										<span>天</span>		
 										<span class="errorMsg" style="color:red"></span>
 									</td>					
 								</tr>
 								<tr>
-									<td class="tt">是否要抵押：</td>
+									<td class="tt ineed" style="padding:0;">是否要抵押：</td>
 									<td class="con">
 										<select class="assettype" value="${project.isMortgage}">
-											<option>请选择</option>
 											<c:if test="${project.isMortgage == 1}">
 												<option value="1" selected="selected">是</option>
 												<option value="0" >否</option>
@@ -115,18 +114,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											</c:if>	
 											<c:if test="${project.isMortgage == null}">
 												<option value="1" >是</option>
-												<option value="0" >否</option>
+												<option value="0" selected="selected">否</option>
 											</c:if>	
-											
-												
 										</select>
 									</td>
 								</tr>
 								<tr>
-									<td class="tt">产品认证项：</td>
+									<td class="tt ineed" style="padding:0;">产品认证项：</td>
 									<td class="con">
 										<select class="identitySelection">
-											<option>请选择</option>
+											<option value="">请选择</option>
 											<option value="0">全部</option>
 											<option value="1">个人</option>
 											<option value="2">企业</option>		
@@ -157,7 +154,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</td>
 								</tr>
 								<tr>
-									<td class="tt">展示图片：</td>
+									<td class="tt ineed">展示图片：</td>
 									<td class="con">
 										<div >
 										    <!--用来存放item-->
@@ -170,11 +167,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<input type="hidden" id="picUrl" value="${project.picUrl}" />
 									<td class="tt" valign="top">图片预览：</td>
 									<td class="con">
-										<div class="filelist" id="fileList"></div>
+										<div class="fileList" id="fileList"></div>
 									</td>
 								</tr>
 								<tr>
-									<td class="tt">产品小图标：</td>
+									<td class="tt ineed" style="padding:0;">产品小图标：</td>
 									<td class="con">
 										<div >
 										    <!--用来存放item-->
@@ -188,7 +185,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<input type="hidden" id="hostPath" value="${hostPath}"/>
 									<td class="tt" valign="top">图片预览：</td>
 									<td class="con">
-										<div class="filelist" id="fileList1"></div>
+										<div class="fileList" id="fileList1"></div>
 									</td>
 								</tr>
 								<tr>
@@ -197,7 +194,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 								
 								<tr>
-									<td class="tt">申请指南：</td>
+									<td class="tt ineed">申请指南：</td>
 									<td class="con">
 										<div style="display: none" id="applyguideValue">
 											${project.contentG}
@@ -206,7 +203,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</td>
 								</tr>
 								<tr>
-									<td class="tt">还款指南：</td>
+									<td class="tt ineed">还款指南：</td>
 									<td class="con">
 										<div style="display: none" id="payguideValue">
 											${project.contentR}

@@ -33,7 +33,7 @@
                 and ib.Statu=#{map.statu}
             </if>  
         </where>   
-        order by ib.CreateTime desc
+        order by ib.Indexs desc
     </select> 
      <!-- 新增积分商城轮播图 -->  
 	<insert id="insertIntegralMallBanner"  parameterType="cn.springmvc.model.IntegralMallBannerEntity" >    

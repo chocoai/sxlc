@@ -9,7 +9,7 @@ $(function (){
 		type : 'post',
 		url : appPath + "/bankCard/queryBankInfo.do",
 		success : function (msg) {
-			var str = "";
+			var str = "<option>请选择</option>";
 			$.each(msg, function (i, item) {
 				str += "<option value=\""+item.bankID+"\">"+item.bankName+"</option>";
 			});
@@ -74,6 +74,7 @@ function modBank() {
 	var cardNo = encrypt.encrypt(($("#mcardNo").val() + ""));
 	var phone = encrypt.encrypt(($("#mphone").val() + ""));
 	var memberType = encrypt.encrypt((1 + ""));
+	var bank = encrypt.encrypt(($("#mbank").val() + ""));
 	
 	$.ajax({
 		type : 'post',
@@ -85,12 +86,14 @@ function modBank() {
 			cardNo : cardNo,
 			phone : phone,
 			bankCardId : bankCardId,
-			memberType : memberType
+			memberType : memberType,
+			bank : bank
 		},
 		success : function (msg) {
 			if (msg == 1) {
 	  			layer.alert("操作成功!",{icon:1});
-	  			setTimeout('location.reload()',2000);
+	  			var table = $('#table_id').DataTable();
+				table.ajax.reload();
 	  		}else {
 	  			layer.alert("服务器异常!",{icon:2});
 	  			setTimeout('location.reload()',2000);

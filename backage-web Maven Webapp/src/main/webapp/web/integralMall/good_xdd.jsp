@@ -72,8 +72,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<tr>
 							<td class="tt">规格型号</td>
 							<td class="con" id=""><input type="text" id="specifications" datatype="enterAddress" /></td>
-							<td class="tt ttt">总库存</td>
-							<td class="con" id=""><input type="text" id="stock"  datatype="acountM" /></td>
+							<!-- <td class="tt ttt">总库存</td>
+							<td class="con" id=""><input type="text" id="stock"  datatype="acountM" /></td> -->
+							<td class="tt ttt">市场价</td>
+							<td class="con"><input type="text" id="marketValue" datatype="acountM" /></td>
 						</tr>
 						<tr>
 							
@@ -87,8 +89,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<tr>
 							<td class="tt">代金券面额</td>
 							<td class="con" id=""><input type="text" id="denominationVouchers" datatype="acountM"  /></td>
-							<td class="tt ttt">市场价</td>
-							<td class="con"><input type="text" id="marketValue" datatype="acountM" /></td>
+							
 						</tr>
 						<tr>
 							<td class="tt">前台展示大图标</td>

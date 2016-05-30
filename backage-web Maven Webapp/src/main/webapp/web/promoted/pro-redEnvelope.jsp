@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>平台推广-关系年限</title>
+	<title>平台推广管理-红包活动管理</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -72,7 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="action_item">
 									<button class="obtn glyphicon glyphicon-plus obtn-dept-add" onclick="addRedE();">添加</button>
 									<button class="obtn glyphicon glyphicon-pencil obtn-dept-mod" onclick="alertRedE();">修改</button>
-									<button id="" class="obtn glyphicon glyphicon-plus obtn-export">发布</button>
+									<button id="fb" class="obtn glyphicon glyphicon-plus obtn-export">发布</button>
 									<button id="" class="obtn glyphicon glyphicon-plus obtn-export" onclick="getDetail()">领取明细</button>
 								</div>
 							</div>
@@ -121,7 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<span class="col"><input id="userendDate" type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
 							</div>
 							<div class="btnAdd">
-								<button id="addRecord" class="addBtn">添加</button>
+								<button type="button" id="addRecord" class="addBtn">添加</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>
@@ -133,11 +133,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<form id="alertRedEForm" action="javascript:modRed()">
 							<div>
 								<span class="tt">活动起止时间时间：</span>
-								<span class="col"><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
+								<span class="col"><input type="text" id="mstartDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="mendDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
 							</div>
 							<div>
 								<span class="tt">活动名称：</span>
-								<span class="col"><input class="notspecial" datatype="describeC"></span>
+								<span class="col"><input id="maffairName" class="notspecial" datatype="describeC"></span>
 							</div>
 							<div id = "redChange">
 								<div class="redEContent isActive2"  id = "RMC0">
@@ -145,6 +145,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="col">
 										<input datatype="acountM" class="moneyInput money">元
 										<input datatype="nNum1" class="moneyInput num">个
+										<input type="hidden" class='detail' value="" />
 										<a class="redEAdd">增加</a>
 									</span>
 								</div>
@@ -154,6 +155,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class='col'>
 										<input datatype='acountM' class='moneyInput money' >元
 										<input datatype='nNum1' class='moneyInput num' >个
+										<input type="hidden" class='detail' value="" />
 										<a class='redDelete'>删除</a>
 									</span>
 								</div>
@@ -161,10 +163,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div>
 								<span class="tt">活动有效期：</span>
-								<span class="col"><input type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
+								<span class="col"><input id="muserendDate" type="text" class="notspecial Wdate" onFocus="WdatePicker()"/></span>
 							</div>
 							<div class="btnAdd">
-								<button id="modRed" class="addBtn">确认修改</button>
+								<button type="button" id="modRed" class="addBtn">确认修改</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>
@@ -184,6 +186,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 		function getDetail() {
 			var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+			if (rowdata.length <= 0) {
+				layer.alert("请选择需要操作的记录！", {icon : 0});
+				return;
+			}
 			window.location.href='<%=path %>/web/promoted/pro-receiveDetail.jsp?content=' + rowdata[0].affairID;
 		}
 	</script>

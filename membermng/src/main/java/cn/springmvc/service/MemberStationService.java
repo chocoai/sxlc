@@ -36,7 +36,7 @@ public interface MemberStationService {
 	 * @return int 返回类型  0失败，大于0成功,-1数据为空
 	 * @date 2016-3-29 下午4:29:28
 	 */
-	public int deleteSendStationLetter(List<Integer> list);
+	public int deleteSendStationLetter(List<Integer> list,long memberId);
 	/**
 	 * 批量删除接收方信息 
 	 * @author 刘利   

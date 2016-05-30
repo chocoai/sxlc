@@ -10,6 +10,8 @@
 	早上好，欢迎<span class="left_name"></span>！今天你理财了吗？
 </div>
 <div class="accountCommonLeft">
+	<!-- 第三方开户状态 0开通 1未开通 -->
+	<input type="hidden" id="thirdStatu" value="1">
 	<div class="accountLeftTop">
 		<div class="ALT1">
 			<div class="userFace">
@@ -117,6 +119,6 @@
 <div class="sign-success">
 	<img src="resource/img/account/qdcg2_03.jpg">
 	<p>您已经签到<a class="recordNum">3</a>次</p>
-	<div class="btn" onclick="layer.closeAll()">确定</div>
+	<div class="btn btn_mr_l" onclick="layer.closeAll()">确定</div>
 </div>
 <script type="text/javascript" src="js/account/accountCommonLeft.js"></script>

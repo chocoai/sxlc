@@ -8,11 +8,13 @@ import cn.dictionaries.model.CityInfoEntity;
 import cn.dictionaries.model.CountyInfoEntity;
 import cn.dictionaries.model.NationInfoEntity;
 import cn.dictionaries.model.ProvinceInfoEntity;
+import cn.membermng.model.Agreement;
 import cn.membermng.model.CompanyInfo;
 import cn.membermng.model.ExchangeRecords;
 import cn.membermng.model.Friends;
 import cn.membermng.model.IntegralGETRecord;
 import cn.membermng.model.MemberInfo;
+import cn.membermng.model.MemberThirdAuthInfo;
 import cn.membermng.model.MemberVouchers;
 import cn.membermng.model.MyPoint;
 import cn.membermng.model.MyRedPackage;
@@ -489,4 +491,50 @@ public interface IMemberService {
 	* @throws
 	 */
 	public UntreatedMessageEntity loadUntreatedMessage(long memberId);
+
+	
+	/***
+	 * 根据参数获取email数量
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-23 下午5:13:16
+	 */
+	public int countEmail(String email);
+
+
+	/***
+	 * 获取协议
+	 * 
+	 * @author 李杰
+	 * @return
+	 */
+	public Agreement agreement();
+	
+	
+	
+	/***
+	 * 测试事物配置
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-24 下午2:21:45
+	 */
+	public int TestTransaction(boolean exit);
+
+	
+	/**
+	 * 获取会员设置自动投资状态
+	 * 
+	 * @author 李杰
+	 * @param memberId
+	 * @param memberType
+	 * @return
+	 * @date 2016-5-26 下午2:17:44
+	 */
+	public MemberThirdAuthInfo getAutoGiroStatu(Long memberId, int memberType);
+	
+	
+	
+	
 }

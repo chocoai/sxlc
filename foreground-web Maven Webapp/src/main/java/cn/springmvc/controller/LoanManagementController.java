@@ -19,6 +19,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
 
@@ -142,8 +143,9 @@ public class LoanManagementController {
 		PageEntity pageEntity = new PageEntity();
 		Map<String,Object> param =  new HashMap<String, Object>();
 		param.put("memberId", lMemberInfo[0]);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		pageEntity.setPageNum(start);
-		pageEntity.setPageSize(10);
+		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);
 		List<RepaymentIn> list = imyLoanService.repaymentIns(pageEntity);
 		PageUtil.ObjectToPage(pageEntity, list); 
@@ -304,7 +306,7 @@ public class LoanManagementController {
 	 * @return String 返回类型 
 	 * @date 2016-4-29 下午4:22:32
 	 */
-	@RequestMapping(value="/loanRepayend",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/loanRepayend",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String loanRepayend(HttpServletRequest request){
 		
@@ -316,6 +318,7 @@ public class LoanManagementController {
 		PageEntity pageEntity = new PageEntity();
 		Map<String,Object> param =  new HashMap<String, Object>();
 		param.put("applyId",applyId);
+		param.put("skey",DbKeyUtil.GetDbCodeKey());
 		pageEntity.setPageNum(start);
 		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);
@@ -427,16 +430,7 @@ public class LoanManagementController {
 		
 		long applyId	=  IntegerAndString.StringToLong(request.getParameter("applyId"), 0);	//项目申请ID  
 		AdvanceEntity advanceEntity = imyLoanService.getAdvanceReplay(applyId);
-		//平台收取违约金
-		advanceEntity.setPenaltyPingTai(advanceEntity.getRepayPrincipal()*advanceEntity.getPenaltyPingTaiRate()/1000000); 
-		//投资人收取违约金
-		advanceEntity.setPenaltyInvest(advanceEntity.getRepayPrincipal()*advanceEntity.getPenaltyInvestRate()/1000000);
-		//总的违约金
-		advanceEntity.setPenaltyTotal(advanceEntity.getPenaltyPingTai()+advanceEntity.getPenaltyInvest());
-		//总的还款金额
-		advanceEntity.setReplayTotal(advanceEntity.getRepayInterest()+advanceEntity.getRepayPrincipal()
-				+advanceEntity.getPenaltyTotal());
-		
+	
 		return JSONObject.toJSONString(advanceEntity);
 		
 	}
@@ -473,7 +467,7 @@ public class LoanManagementController {
 	 * @return String 返回类型 
 	 * @date 2016-4-29 下午5:55:46
 	 */
-	@RequestMapping(value="/investRecord",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/investRecord",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String investRecord(HttpServletRequest request){
 		
@@ -484,6 +478,7 @@ public class LoanManagementController {
 		PageEntity pageEntity    = new PageEntity();
 		Map<String,Object> param =  new HashMap<String, Object>();
 		param.put("applyId", applyId);
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		pageEntity.setPageNum(start);
 		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);
@@ -509,8 +504,8 @@ public class LoanManagementController {
 		long lonmemberId   =  lMemberInfo[0];
 		int  lonmembertype =  (int) lMemberInfo[1];
 		int[] results       =  new int[1];
-		RepayInterfaceEntity entity = repaymentInterfaceServer.RepaymentProcessing
-				(lonmemberId, lonmembertype, sprojectId,0, results);
+		RepayInterfaceEntity entity = repaymentInterfaceServer
+				.EarlyRepaymentProcessing(lonmemberId, lonmembertype, sprojectId, results);
 		LoanTransferEntity loanEntity = repaymentInterfaceServer.earlyRepaymentSubm(entity,request,"loanManagement/ReplayCallBackReturn.html","loanManagement/ReplayCallBackNotify.html");
 		if(results[0] == 0){
 		    request.setAttribute("loanTransferEntity", loanEntity);
@@ -538,7 +533,7 @@ public class LoanManagementController {
 	public String ReplayCallBackReturn(HttpServletRequest request,HttpServletResponse response) {
 		String results = repaymentInterfaceServer.testRepaymentReturn(request,response);
 		request.setAttribute("title", "还款");
-		if(results == "SUCCESS"){
+		if(results == "SUCCESS" || results.equals("SUCCESS")){
 			request.setAttribute("detail", "还款成功"); 
 			return "account/loanManagement/optionSuccess";
 		}else{
@@ -675,7 +670,7 @@ public class LoanManagementController {
  		entity.setMemberId(memberInfo.getId());
  		entity.setMemberType(memberInfo.getMemberType());  
 		entity.setAuthorizeTypeOpen("2"); 
-		interfaceServerTestI.testLoanAuthorize(entity);
+		interfaceServerTestI.testLoanAuthorize(entity,"personalCenter/authorizedCallBackPage.html","personalCenter/authorizedCallBack.html",request);
 		request.setAttribute("accountInterfaceEntity", entity);
 		return "dryLot/loanauthorizetest";
 		

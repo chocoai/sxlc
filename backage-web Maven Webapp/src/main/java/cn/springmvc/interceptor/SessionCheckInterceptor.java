@@ -20,7 +20,6 @@ import product_p2p.kit.StringUtil.StringUtils;
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.optrecord.InsertMemberLogEntity;
 import product_p2p.kit.spring.SpringUtil;
-
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
 import cn.springmvc.model.MemberInfo;
 

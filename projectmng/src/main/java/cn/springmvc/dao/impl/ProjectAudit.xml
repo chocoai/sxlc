@@ -101,7 +101,7 @@
 	   left join Guarantee_Info gua on gua.Guarantee_ID = par.Guarantee_ID
 	    <where> 
          <!--  par.Apply_Id=#{map.ID} -->
-           ppu.Deal_Statu = 1
+           ppu.Deal_Statu = 1 and par.Check_Statu != -1
            and 
 	       (
 		      par.Apply_Id in
@@ -165,6 +165,7 @@
 	       and  #{map.endTime} > pap.Record_Date 
 	     </if>
 	    </where>
+	     order by checkStatuNow asc,Record_Date desc
     </select>
      
      <!-- 根据项目申请ID查询借款项目详情 -->  
@@ -172,7 +173,7 @@
 	   select par.*,
 	   pbi.Project_Title,pbi.Amount,replayway.name1,pbi.Repay_Way,pbi.Uses,pbi.Project_Base_ID,
 	   pbi.Repay_Source,pbi.Deadline,pbi.Deadline_Type,pbi.Year_Rate,
-	   pbi.Project_Descript, pty.Project_Name,pap.Record_Date,mi.Logname,mi.Member_Type, pty.Project_Name
+	   pbi.Project_Descript, pty.Project_Name,pap.Record_Date,mi.Logname,mi.Member_Type
 	   from Project_App_Record par 
 	   left join Project_App_Process pap on  pap.Apply_Id=par.Apply_Id  
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID

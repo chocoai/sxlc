@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.pageselect.PageEntity;
+import cn.invitemastermng.model.AffairInfo;
 import cn.invitemastermng.model.LotteryManage;
 import cn.invitemastermng.model.LotteryRecords;
 import cn.invitemastermng.model.PrizeInformation;
@@ -41,12 +42,15 @@ public class RedPackageServiceImpl implements IRedPackageService {
 	public int grabRedPackage(long affairId, long memberId) {
 		List<RedpacketsDetailRecord> redPackage = redPackageDaoImpl.redPackageConf(affairId);
 		List<RedpacketsDetailRecord> newRecords = new ArrayList<RedpacketsDetailRecord>();
+		
+		int size = 0;					//红包剩余总个数
 		for (int i = 0; i < redPackage.size(); i++) {
 			if(redPackage.get(i).getRemainQuantity() > 0){
 				newRecords.add(redPackage.get(i));
+				size += redPackage.get(i).getRemainQuantity();
 			}
 		}
-		if(newRecords.size() == 0){
+		if(size == 0){
 			return -5; //红包已被领完
 		}
 		int sta = redPackageDaoImpl.BlackMemberJudgmentTow(memberId, 5);
@@ -61,7 +65,7 @@ public class RedPackageServiceImpl implements IRedPackageService {
 		param.put("mrId", id);
 		param.put("memberId", memberId);
 		param.put("affairId", affairId);
-		param.put("rdId", newRecords.get(random).getrPDetailId());
+		param.put("rdId", newRecords.get(random-1).getrPDetailId());
 		int result = redPackageWriteDaoImpl.grabRedPackage(param);
 		if(result == 1){
 			generatorUtil.SetIdUsed(id);
@@ -123,7 +127,10 @@ public class RedPackageServiceImpl implements IRedPackageService {
 		return 0;
 	}
 	
-	
+	@Override
+	public AffairInfo findLatelyInfo() {
+		return redPackageDaoImpl.findLatelyInfo();
+	}
 	
 	
 	

@@ -19,7 +19,7 @@
 	<form id="form1" name="form1" action="<%=member.getSubmitURL()%>" method="post">
 		<input id="LoanNoList" name="LoanNoList" value="<%=member.getLoanNoList()%>" type="hidden" />
 		<br/>
-<!-- 		<input id="LoanNoListFail" name="LoanNoListFail" value="<%=member.getLoanNoListFail()%>" type="hidden" /> -->
+<!-- 		<input id="LoanNoListFail" name="LoanNoListFail" value="" type="hidden" /> -->
 		<br/>
 		<input id="PlatformMoneymoremore" name="PlatformMoneymoremore" value="<%=member.getPlatformMoneymoremore()%>" type="hidden" />
 		<br/>

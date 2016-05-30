@@ -27,6 +27,7 @@ $(function() {
             	var endDate = $("#endDate").val();
             	var memberID = $("#memberID").val();
             	var type = $("#type").val();
+            	var stype = $("#stype").val();
             	
             	if (personalName != null && personalName != "") {
             		var result1 = encrypt.encrypt((personalName + ""));
@@ -52,6 +53,7 @@ $(function() {
                 	d.memberID = result5;
                 	d.type = result6;
                 	d.projectTitle = result7
+                	d.stype = encrypt.encrypt(stype);
             } 
         },
         columns: [  

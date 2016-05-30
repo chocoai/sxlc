@@ -13,7 +13,7 @@
 
 <head>
 <base href="<%=basePath%>">
-<title>配置中心--消息管理</title>
+<title>配置中心--短信设置-消息提醒设置</title>
 <!-- 公用meta -->
 <jsp:include page="../common/top-meta.jsp"></jsp:include>
 <!-- 公用css -->

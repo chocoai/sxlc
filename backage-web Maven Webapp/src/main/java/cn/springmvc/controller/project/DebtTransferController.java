@@ -127,7 +127,7 @@ public class DebtTransferController {
 		String ctaId = req.getParameter("ctaId");//债权转让申请ID
 		String checkstatu = req.getParameter("checkstatu");
 		String checkRemark = req.getParameter("checkRemark");
-		String transMaxTime = req.getParameter("transMaxTime");
+		String transMaxTime = req.getParameter("transMaxTime")+" 23:59:59";
 		
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("ctaId",ctaId);
@@ -169,7 +169,7 @@ public class DebtTransferController {
 		
 		//获取解密后参数
 		String ctaId = req.getParameter("ctaId");//债权转让申请ID
-		String transMaxTime = req.getParameter("transMaxTime");
+		String transMaxTime = req.getParameter("transMaxTime")+" 23:59:59";
 		
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("ctaId",ctaId);

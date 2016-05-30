@@ -354,7 +354,15 @@ public class AfterLoanController {
 		Integer repayID = Integer.parseInt(req.getParameter("repayID"));
 		PostProjectEntity details = new PostProjectEntity();
 		details = postLoanManageService.getBillingDetails(repayID);
-		String projectBill = postLoanManageService.getProjectBill(repayID);
+		String projectBill="";
+		try{
+			projectBill = postLoanManageService.getProjectBill(repayID);
+		}catch(Exception e){
+			if(details !=null){
+				details.setProjectBill("-1");//查询账单异常
+				details.setsPrincipal(e.getMessage());
+			}
+		}
 		if(details!=null){
 			details.setProjectBill(projectBill);
 			return details;

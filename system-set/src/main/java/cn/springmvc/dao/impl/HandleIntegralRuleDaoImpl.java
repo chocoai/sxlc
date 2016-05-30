@@ -1,6 +1,7 @@
 
 package cn.springmvc.dao.impl; 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +67,18 @@ public class HandleIntegralRuleDaoImpl extends SqlSessionDaoSupport implements H
 	
 	
 	
-	
+	@Override
+	public int updateIntegralRule(int membertype, int type, long amount,
+			long points, long id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("membertype", membertype);
+		map.put("type", type);
+		map.put("amount", amount);
+		map.put("points", points);
+		map.put("id", id);
+		// TODO Auto-generated method stub return 0;
+		return getSqlSession().update("IntegralRuleXML.deleteIntegralRule", map);
+	}
 
 }
 

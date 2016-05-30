@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-finance.jsp">
-				<jsp:param value="" name="_index_m2"/>
+				<jsp:param value="407" name="_index_m2"/>
 				<jsp:param value="" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->

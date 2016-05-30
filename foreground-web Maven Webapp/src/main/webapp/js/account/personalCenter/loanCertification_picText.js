@@ -10,13 +10,14 @@ $(function(){
 		var type=$(".saveSubmit").attr("id");
 		$(".person_Renzheng").each(function(){
 			$(this).Validform({
-				tiptype:3,//提示信息类型
+				tiptype:5,//提示信息类型
 				btnSubmit:".saveSubmit", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 				//btnReset:"#btnreset1",
 				datatype:extdatatype,//扩展验证类型
 				//showAllError:true,//提交前验证显示所有错误
 				ajaxPost:true,
 				beforeSubmit:function(curform){
+					$(".saveSubmit").attr("disabled","true");
 					switch(type){
 						case "7":
 							freeholdAddOrUpdate();
@@ -190,6 +191,7 @@ $(function(){
 				str_url,
 				{editType:editType,endTime:endTime,cid:cid,annex:annex,marriageType:marriageType,cid:cid},
 				function(r){
+					$(".saveSubmit").attr("disabled","false");
 					var r = JSON.parse(r);
 					if (r.status == 0){
 						layer.alert("操作成功",function(){

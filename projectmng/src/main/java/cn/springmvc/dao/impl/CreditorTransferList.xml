@@ -37,7 +37,12 @@
 		transStatu.name1  as transStatus,
 		par.Apply_Id,
 		cta.CTA_Id,
-		cta.Statu as transStatu,
+		case when cta.Check_Statu=1 and cta.Statu = 0 and cta.Trans_MaxTime >=now() then 0
+		     when cta.Check_Statu=1 and (cta.Statu = 1 or cta.Statu = -1) then 1
+		     when cta.Check_Statu=1 and (cta.Statu = 2 or (cta.Statu = 0  and ( cta.Trans_MaxTime&lt;=now()  or cta.Cta_Invest_Rate>=1000000))) then 2
+		     when cta.Check_Statu=1 and cta.Statu = 3 then 3
+		      when  cta.Check_Statu=1 and cta.Statu = 4 then 4
+		end  transStatu,
 		cta.End_Date,
 		cta.Deal_Date,
 		((par.Rate_Add_Rate + pbi.Year_Rate)*1000000/CAST((AES_DECRYPT(UNHEX(cta.Trans_Discount), #{map.sKey})) as signed)) as expectYearrate
@@ -56,7 +61,7 @@
 	            </if>  
                 <!-- 项目状态- 投标中 -->
 	            <if test = "map.investStatu !=null and map.investStatu == 0 ">  
-	                and  cta.Check_Statu=1 and cta.Statu = 0
+	                and  cta.Check_Statu=1 and cta.Statu = 0 and cta.Trans_MaxTime >=now() 
 	            </if> 
 	             <!-- 项目状态- 流标 -->
 	            <if test = "map.investStatu !=null and map.investStatu == 1 ">  
@@ -156,10 +161,10 @@
 	</select>
 	<!-- 查询债权转让剩余可投金额-已投资总额-转让本金-->  
 	<select id = "selectCreditorAvailableaAmount" parameterType = "Map"  resultMap = "resultCreditorTransfer"> 
-	select  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed) as Trans_Principal,
-	(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Principal),#{map.sKey})) as signed)),0) 
+	select  CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{sKey})) as signed) as Trans_Principal,
+	(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Principal),#{sKey})) as signed)),0) 
 	from Creditor_Trans  where CTA_Id=cta.CTA_Id )  as  InvestTotal,
-	(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{map.sKey})) as signed)-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Principal),#{map.sKey})) as signed)),0) 
+	(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{sKey})) as signed)-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Principal),#{sKey})) as signed)),0) 
 	from Creditor_Trans  where CTA_Id=cta.CTA_Id   )) availableaAmount 
 	from Creditor_Trans_App cta  
 	where  cta.CTA_Id= #{ctaId}

@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心</title>
+	<title>配置中心-协议配置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -24,6 +24,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/config.css" />
+	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
 	<script type="text/javascript">
 		var on_off =false; //停用启用权限标记
 		<%
@@ -129,8 +132,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<!-- 公用js -->
 		<jsp:include page="../common/cm-js.jsp"></jsp:include>
-		<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
-		<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 		<!-- 私用js -->
 		<script type="text/javascript" src="js/configCenter/agreeConfig.js"></script>
 		</div>

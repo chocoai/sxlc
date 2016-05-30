@@ -1,10 +1,10 @@
 /* CSS Document */
 @charset "UTF-8";
-/* ÉèÖÃ¶¥²¿Á´½ÓÑùÊ½ */
+/* ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .mainPageTop .mainPageTop3{
 	color:#72c0f3;
 }
-/* ulÄ£Äâselect¹²ÓÃÑùÊ½ */
+/* ulÄ£ï¿½ï¿½selectï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .selectArea{
 	height:41px;
 	position:relative;
@@ -50,7 +50,7 @@
 	color:#2f2f2f !important;
 	font-weight:bold;
 }
-/* ÎÒÒª½è¿îÑùÊ½    ñã¸£ÐÇ   2016-03-27*/
+/* ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Ê½    ï¿½ã¸£ï¿½ï¿½   2016-03-27*/
 .nowPosition{
 	width:100%;
 	min-width:1200px;
@@ -83,7 +83,7 @@
 	height:90px;
 	margin-bottom:15px;
 }
-/* µ±Íê³ÉÒ»¸ö²½ÖèÊ±£¬ÒÆ³ý.processStep*Àà£¬¼Ó.processStep*SuccessÀà  */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Æ³ï¿½.processStep*ï¿½à£¬ï¿½ï¿½.processStep*Successï¿½ï¿½  */
 .processStep1{
 	background:url(../../resource/img/loan/smrz.png) no-repeat;
 }
@@ -162,7 +162,7 @@
 	margin:30px 10px 0 10px;
 	background:url(../../resource/img/loan/arrowL.jpg) no-repeat;
 }
-/* ¿ìËÙ½è¿î²¿·Ö */
+/* ï¿½ï¿½ï¿½Ù½ï¿½î²¿ï¿½ï¿½ */
 .loan{
 	margin-top:15px;
 	padding-bottom:25px;
@@ -292,7 +292,7 @@ label{
 	top:11px;
 	right:49%;
 }
-/* ½è¿î·½Ê½ÃèÊö */
+/* ï¿½ï¿½î·½Ê½ï¿½ï¿½ï¿½ï¿½ */
 .borrowModeDiv{
 	display:inline-block;
 	width:383px;
@@ -305,7 +305,8 @@ label{
 	border:1px solid #ffffff;
 }
 .borrowMode1{
-	margin-left:21px;
+	margin-right:5px;
+	margin-left: 5px;
 }
 .borrowMode img{
 	display:block;
@@ -354,7 +355,7 @@ label{
 	left:0;
 	padding:55px 38px;
 	background:rgba(255,255,255,0.5);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7Fffffff,endColorstr=#7Fffffff);    /*IE8Ö§³Ö*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7Fffffff,endColorstr=#7Fffffff);    /*IE8Ö§ï¿½ï¿½*/
 	display:none;
 }
 .flowTopHover p{
@@ -376,7 +377,7 @@ label{
 .borrowModeHover{
 	border:1px solid #73c0f4;
 }
-/* ÐÅÓÃ´ûµÄÄÚÈÝ */
+/* ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .back{
 	float:right;
 	line-height:67px;
@@ -539,7 +540,7 @@ label{
 	width:100px;
 	background:red;
 }
-/* 2016-04-06 ñã¸£ÐÇ input±êÇ©µÄ¹«ÓÃÑùÊ½ */
+/* 2016-04-06 ï¿½ã¸£ï¿½ï¿½ inputï¿½ï¿½Ç©ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 input[type="text"]{
 	border:1px solid #d2d2d2;
 	outline:none;

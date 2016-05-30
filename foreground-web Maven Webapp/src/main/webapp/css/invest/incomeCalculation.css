@@ -1,0 +1,130 @@
+.content{
+	width:1200px;
+	background-color:white;
+	border:1px solid #e4e4e4;
+	height:722px;
+	padding:0 38px;
+}
+.top-nav{
+	margin-top:36px;
+}
+.blueLine{
+	display:inline-block;
+	width:2px;
+	height:22px;
+	background-color:#00a1ec;
+	line-height:27px;
+	vertical-align: text-bottom;
+}
+.top-text{
+	margin-left:10px;
+	display:inline-block;
+	line-height:27px;
+	font-size:18px;
+	font-weight:600;
+}
+.form-inputList{
+	display:inline-block;
+	
+}
+.tb1{
+	width:1140px
+}
+.tb1 td{
+	heigth:54px;
+	line-height:54px;
+	font-size:14px;
+	
+}
+.img1{
+	vertical-align: sub;
+	margin-right:8px
+}
+.tb1 td input{
+	width:202px;
+	height:34px;
+	background-color:#f5f5f5;
+	font-size:14px;
+	border:1px solid #dcdcdc;
+	padding-left:14px;
+	margin-left:8px
+}
+.form-inputList{
+	position:relative;
+}
+.floText{
+	position:absolute;
+	left:180px;
+	top:-8px;
+	color:#888888;
+	line-height:54px
+}
+.tb1 td .calBtn{
+	width:290px;
+	height:52px;
+	line-height: 52px;
+    text-align: center;
+    font-size: 18px;
+    color: #fff;
+    background-color: #72c0f3;
+    border: 1px solid #72c0f3;
+    cursor: pointer;
+}
+.line{
+	width:100%;
+	height:1px;
+	background-color:#ececec;
+	margin-top:30px
+}
+.tb2{
+	width:100%;
+	text-align:center;
+	margin-top:20px;
+	font-size:14px
+}
+#investArea{
+	width:130px
+}
+.selectArea input.selectInput{
+	width:58px;
+	background-color: #f5f5f5;
+    border: 1px solid #dcdcdc;
+}
+.select{
+	top:32px;
+	margin-left:8px;
+}
+.selectOption{
+	line-height: 26px;
+}
+.selectArea input.proType{
+	width:202px
+}
+.proType1{
+	width:202px
+}
+.tb2 td{
+	line-height:40px;
+}
+.tb2 thead{
+	background-color:#f5f5f5
+}
+.selectArea{
+	width:70px;
+}
+.tag{
+	position: absolute!important;
+    left: 220!important;
+    top: 0!important;
+}
+.disabled{
+	opacity:0.5;
+	pointer-events:none
+}
+.mainPageTop .mainPageTop4{
+	color:#1c1c1c
+}
+.hei_340 {
+	height:340px;
+	overflow: auto;
+}

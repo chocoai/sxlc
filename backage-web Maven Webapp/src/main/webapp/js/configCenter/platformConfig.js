@@ -7,7 +7,13 @@
 	 * 初始化
 	 */
 	$(function(){
-		validform5('#btn','platform',false,3);
+		$(".filePicker").each(function(i,obj){
+			 var filePicker ="filePicker"+(i+1);
+			 var fileListObj = $(this).next("div");
+			 var inputObj = $(this).prev("input");
+			 UploadImg(filePicker,fileListObj,1,inputObj,220,110);
+		});
+		validform5('#btn','platform',false,5);
 		showPlantConfig();
 		//保存
 	});
@@ -123,6 +129,7 @@ function submitPlatCofig(){
 	expectYearRate = encrypt.encrypt(expectYearRate);
 	integralAlias = encrypt.encrypt(integralAlias);
 	welcomeTitle = encrypt.encrypt(welcomeTitle);
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/platform/savePlatConfig.do",
 		data:{
@@ -152,6 +159,7 @@ function submitPlatCofig(){
 			}else {
 				layer.alert("保存失败！",{icon:2});  
 			}
+			$(".layui-layer-btn0").removeClass("disabled");
 		},  
 		error : function() {  
 			layer.alert("服务器异常",{icon:2});  
@@ -172,7 +180,7 @@ function appendImg(imgURL,fileListObj){
 		imgRealURL+=imgURL;
 	}
 	var html = '<div  class="file-item thumbnail">' +
-                '<img src="'+imgRealURL+'" style="width:200px;height:100px"/>' +
+                '<img src="'+imgRealURL+'" style="width:220px;height:110px"/>' +
                 '<div class="file-panel"><span class="cancel"></span></div>'+
             '</div>';
 	fileListObj.append(html );

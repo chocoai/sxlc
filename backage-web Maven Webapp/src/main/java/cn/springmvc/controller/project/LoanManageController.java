@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.Upload.FtpClientUtil;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
+import cn.membermng.model.RepaymentOfBorrowingsRM;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.ProjectCheckAttachEntity;
 import cn.springmvc.service.BorrowingManagementService;
@@ -201,8 +204,8 @@ public class LoanManageController {
 		String skey = DbKeyUtil.GetDbCodeKey();
 		param.put("skey", skey);
 		param.put("Project_No", Project_No);
-		param.put("Amount_Min", Amount_Min);
-		param.put("Amount_Max", Amount_Max);
+		param.put("Amount_Min", IntegerAndString.StringToInt(Amount_Min, -1));
+		param.put("Amount_Max", IntegerAndString.StringToInt(Amount_Max, -1));
 		param.put("Personal_Name", Personal_Name);
 		param.put("Record_Date_Min", Record_Date_Min);
 		param.put("Record_Date_Max", Record_Date_Max);
@@ -336,7 +339,8 @@ public class LoanManageController {
 		pager.setMap(param);
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
-		iMyLoanService.loanRepayback(pager);
+		List<RepaymentOfBorrowingsRM> list = iMyLoanService.loanRepayback(pager);
+		PageUtil.ObjectToPage(pager, list);
 		return pager;
 	}
 	

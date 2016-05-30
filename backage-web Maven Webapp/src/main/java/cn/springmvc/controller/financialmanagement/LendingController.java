@@ -17,6 +17,7 @@ import cn.springmvc.service.TransferableCreditsService;
 import cn.sxlc.account.manager.model.AuditEntity;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity;
 
 /**
@@ -27,7 +28,7 @@ import product_p2p.kit.pageselect.PageEntity;
 * @date 2016-5-17 上午9:22:52
  */
 @Controller
-@RequestMapping("/lending")
+@RequestMapping("/finance")
 public class LendingController {
 	
 	@Resource(name="loanServiceImpl")
@@ -38,6 +39,32 @@ public class LendingController {
 
 	@Resource(name="transferableCreditsServiceImpl")
 	private TransferableCreditsService transferableCreditsService;
+	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 项目放款页面
+	 * @param req
+	 * @return String  
+	 * @date 2016-5-20 下午12:54:14
+	 * @throws 
+	 */
+	@RequestMapping("/toFnProLendingPg")
+	public String toFnProLendingPg(HttpServletRequest req){
+		return "finance/fn-pro-lending";
+	}
+	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 债权转让放款页面
+	 * @param req
+	 * @return String  
+	 * @date 2016-5-20 下午12:54:14
+	 * @throws 
+	 */
+	@RequestMapping("/toFnTransLendingPg")
+	public String toFnTransLendingPg(HttpServletRequest req){
+		return "finance/fn-trans-lending";
+	}
 	
 	/**
 	 * 
@@ -100,6 +127,21 @@ public class LendingController {
 
 		String length = request.getParameter("length");
 		String start = request.getParameter("start");
+		String projectName = request.getParameter("projectName");
+		String loanMemberName = request.getParameter("loanMemberName");
+		String transferMemberName = request.getParameter("transferMemberName");
+		String status = request.getParameter("status");
+		String startfangkuanTime = request.getParameter("startfangkuanTime");
+		String endfangkuanTime = request.getParameter("endfangkuanTime");
+		String sKey = DbKeyUtil.GetDbCodeKey();
+		
+		req.put("skey", sKey);
+		req.put("projectName", projectName);
+		req.put("loanMemberName", loanMemberName);
+		req.put("transferMemberName", transferMemberName);
+		req.put("status", status);
+		req.put("startfangkuanTime", startfangkuanTime);
+		req.put("endfangkuanTime", endfangkuanTime);
 		
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));
@@ -129,12 +171,21 @@ public class LendingController {
 		String projectId = request.getParameter("projectId");
 		String stype = request.getParameter("stype");
 		String auditType = request.getParameter("auditType");
-		
+		String url = "";
+		if("1".equals(stype)){//项目
+			url = "/finance/backServerURL.do";
+		}else if("2".equals(stype)){//债权
+			url = "/finance/transCreditorBack.do";
+		}
 		AuditEntity auditEntity = managedInterfaceServerTestI
-				.ProjectSubmitDataProcessing(IntegerAndString.StringToInt(stype), IntegerAndString.StringToLong(projectId),
-						auditType, "/lending/backURL.do", "/lending/backServerURL.do", request);
+				.ProjectSubmitDataProcessing(IntegerAndString.StringToInt(stype,0), IntegerAndString.StringToLong(projectId,0),
+						auditType, "/finance/backURL.do",url, request);
 		request.setAttribute("transferAudit", auditEntity);
-		return "dryLot/loantransyhl";
+		if(auditEntity.getStatu() == -1){
+			return "recommend/success";
+		}else{
+			return "dryLot/loantransyhl";
+		}
 	}
 	
 	/**
@@ -177,5 +228,24 @@ public class LendingController {
 	public void notifyURL(HttpServletRequest request, HttpServletResponse response) {
 		managedInterfaceServerTestI.testLoanTransferAuditNotify(request, response);
 	}
+	
+	
+	
+	/** 
+	 * @author 唐国峰 
+	 * @Description: 债权转让放款 第三方回调 服务器返回地址
+	 * @param request
+	 * @param response  
+	 * @return void  
+	 * @date 2016-5-23 上午9:10:07
+	 * @throws 
+	 */
+	@RequestMapping("/transCreditorBack")
+	public void transCreditorBack(HttpServletRequest request, HttpServletResponse response) {
+		managedInterfaceServerTestI.TransferOfCreditorsFangkuanBack(request, response);
+	}
+	
+	
+	
 }
 

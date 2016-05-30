@@ -98,7 +98,7 @@ public class AllMemberController {
 	@ResponseBody
 	public PageEntity getAllMembers(HttpServletRequest req){
 		//查询条件
-		String memberName = req.getParameter("memberName");
+		//String memberName = req.getParameter("memberName");
 		String personalName = req.getParameter("personalName");
 		String personalPhone = req.getParameter("personalPhone");
 		int  automaticBidding = IntegerAndString.StringToInt(req.getParameter("automaticBidding"),-1);
@@ -107,7 +107,7 @@ public class AllMemberController {
 		String memberType =  req.getParameter("memberType");	
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("memberType", memberType);
-		map.put("memberName", memberName);
+		//map.put("memberName", memberName);
 		map.put("personalName", personalName);
 		map.put("personalPhone", personalPhone);
 		map.put("automaticBidding", automaticBidding);
@@ -175,6 +175,7 @@ public class AllMemberController {
 		String userName = req.getParameter("userName");
 		String phone = req.getParameter("phone");
 		String idcard = req.getParameter("idcard");
+		String businessNo = req.getParameter("businessNo");//营业执照号码
 		String startDate = req.getParameter("startDate");
 		String endDate  = req.getParameter("endDate");
 		String memberType =  req.getParameter("memberType");	
@@ -186,6 +187,7 @@ public class AllMemberController {
 		map.put("idcard", idcard);
 		map.put("regDate", startDate);
 		map.put("endDate", endDate);
+		map.put("businessNo", businessNo);
 		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		int start = Integer.parseInt(req.getParameter("start"));
 		int length = Integer.parseInt(req.getParameter("length"));
@@ -589,6 +591,7 @@ public class AllMemberController {
 			info.setLoanCount(0);
 			info.setOverdueRepaymentCount(0);
 			info.setRepaymentCount(0);
+			info.setyZOverdueRepaymentCount(0);
 		}
 		return info;
 	}
@@ -609,7 +612,12 @@ public class AllMemberController {
 		MemberInvestmentInfo investment= memberManangerService.investment(memberId, 0);
 		if(investment==null){
 			investment = new MemberInvestmentInfo();
+			investment.setIncomeReceived(0);
+			investment.setIncomeReceived(0);
 			investment.setInvestmentCount(0);
+			investment.setInvestmentSum(0);
+			investment.setRecvInterest(0);
+			investment.setRecvPrincipal(0);
 		}
 		return investment;
 	}

@@ -36,7 +36,7 @@
 	<!-- 查询该标题的最新动态是否存在 -->  
 	<select id="selectNewEventIsExistByNAme"  parameterType="cn.springmvc.model.NewEventEntity" resultMap="resultListNewEvent" >
 	   select New_ID,   TitleS,   Content,   Statu,   CreateTime,  Opt_Date, admin_ID
-	   from  New_Event where  Title=#{title}  and New_ID != #{id} 
+	   from  New_Event where  TitleS=#{title}  and New_ID != #{id} 
     </select> 
     <!-- 修改最新动态信息 -->  
 	<update id="updateNewEventByID"  parameterType="cn.springmvc.model.NewEventEntity">

@@ -40,7 +40,7 @@ public class BorrowingCertificationReadDaoImpl extends SqlSessionDaoSupport impl
 	@Override
 	public CurrencyAuth showCurrencyAuth(Map<String,Object> param) {
 		
-		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showCurrencyAuth",param);
+		return getSqlSession().selectOne("borrowingCertificationDaoImpl.showCurrencyAuthById",param);
 	}
 	
 

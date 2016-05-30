@@ -21,7 +21,13 @@ import cn.springmvc.model.Admin;
 import cn.springmvc.service.ExtensionModuleService;
 import cn.springmvc.util.HttpSessionUtil;
 import cn.springmvc.util.LoadUrlUtil;
-
+/**
+ * 
+* @author 杨翰林 
+* @Description: 推荐达人控制层 
+* @since 
+* @date 2016-5-24 下午4:49:58
+ */
 @Controller
 @RequestMapping("/talent")
 public class TalentController {
@@ -161,6 +167,53 @@ public class TalentController {
 		
 		extensionModuleService.getIMapply(pager);
 		return pager;
+	}
+	
+	/**
+	 * 
+	* inviteMasterApplyCheck推荐达人审核 
+	* TODO推荐达人审核
+	* @author 杨翰林  
+	* * @Title: inviteMasterApplyCheck 
+	* @Description: 推荐达人审核 
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-24 下午5:09:49
+	* @throws
+	 */
+	@RequestMapping("/verify")
+	@ResponseBody
+	public int inviteMasterApplyCheck(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String imApplyID = request.getParameter("imApplyID");
+		String checkStatu = request.getParameter("checkStatu");
+		String remark = request.getParameter("remark");
+		
+		req.put("apply_ID", imApplyID);
+		req.put("checkStatu", checkStatu);
+		req.put("remark", remark);
+		req.put("attach_Name", "");
+		req.put("attach_Url", "");
+		req.put("aimID", 0);
+		req.put("adminID", userInfo.getId());
+		
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(100301);
+		entity.setlModuleId(1003);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = extensionModuleService.inviteMasterApplyCheck(req, entity, sIpInfo);
+		return num;
 	}
 
 }

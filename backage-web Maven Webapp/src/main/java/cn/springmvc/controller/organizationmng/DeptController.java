@@ -83,6 +83,7 @@ public class DeptController {
 		int start = Integer.valueOf(request.getParameter("start"));
 		int length = Integer.valueOf(request.getParameter("length"));
 		long spreDeptId = IntegerAndString.StringToLong(request.getParameter("spreDeptId"),0);
+		int statu = IntegerAndString.StringToInt(request.getParameter("statu"),-1);
 		if(deptNo != null && deptNo != "") {
 			req.put("deptNo", deptNo);
 		}
@@ -95,8 +96,9 @@ public class DeptController {
 		if (principalPhone != null && principalPhone != "") {
 			req.put("principalPhone", principalPhone);
 		}
-		req.put("deptStatu", -1);
 		req.put("spreDeptId", spreDeptId);
+		req.put("deptStatu", statu);
+		req.put("", spreDeptId);
 		pager.setPageNum(start / length + 1);
 		pager.setPageSize(length);
 		pager.setMap(req);

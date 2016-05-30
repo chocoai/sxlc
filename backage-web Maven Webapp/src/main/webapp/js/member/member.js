@@ -186,11 +186,12 @@ $(function () {
 		encrypt.setPublicKey(publicKey_common);
 		//result 为加密后参数
 		memberId = encrypt.encrypt(memberId+"");
-		layer.confirm('确定修改邀请人？', {
+		layer.confirm('确定拉黑该会员？', {
 			btn:['确定', '取消']
 		  ,yes: function(index, layero){ //或者使用btn1
 		    //确定的回调
 		  	//判断执行不同方法
+			  $(".layui-layer-btn0").addClass("disabled");
 			  $.ajax({
 				  	type : 'post',
 				  	url : appPath + "/member/pullBlackMember.do",
@@ -206,6 +207,7 @@ $(function () {
 				  		}else{
 				  			layer.alert("拉黑失败!",{icon:2});
 				  		}
+				  		 $(".layui-layer-btn0").removeClass("disabled");
 				  	},
 				  	error : function() {  
 				          layer.alert("操作失败!",{icon:2});  
@@ -242,6 +244,7 @@ function cancelBlackList(){
 		,yes: function(index, layero){ //或者使用btn1
 		//确定的回调
 		//判断执行不同方法
+		$(".layui-layer-btn0").addClass("disabled");
 		var remark =$("#cancelBlack").val();
 		  $.ajax({
 			  	type : 'post',
@@ -259,6 +262,7 @@ function cancelBlackList(){
 			  		}else{
 			  			layer.alert("取消拉黑失败!",{icon:2});
 			  		}
+			  		 $(".layui-layer-btn0").removeClass("disabled");
 			  	},
 			  	error : function() {  
 			          layer.alert("操作失败!",{icon:2});  
@@ -303,6 +307,7 @@ function messageSendPer(title,page,type){
 			,yes: function(index, layero){ //或者使用btn1
 				//确定的回调
 				//判断执行不同方法
+				$(".layui-layer-btn0").addClass("disabled");
 				var body = layer.getChildFrame('body', index);
 				var type = body.find(":radio:checked").val();
 				
@@ -347,6 +352,7 @@ function messageSendPer(title,page,type){
 					  		}else{
 					  			layer.alert("发送失败!",{icon:2});
 					  		}
+					  		 $(".layui-layer-btn0").removeClass("disabled");
 					  	},
 					  	error : function() {  
 					          layer.alert("操作失败!",{icon:2});  
@@ -389,7 +395,7 @@ function prohibitedItem(){
 	layer.open({
 		type: 1,
 		area: ['400px', '200px'], //高宽
-		title: "黑名单受限设置",
+		title: "黑名单会员受限设置",
 		maxmin: true,
 		content: $("#prohibitedItem"),//DOM或内容
 		btn:['确定', '取消']
@@ -397,6 +403,7 @@ function prohibitedItem(){
 		//确定的回调
 		//判断执行不同方法
 		var  limit ="";
+		$(".layui-layer-btn0").addClass("disabled");
 		$(".checkList").each(function(){
 			if($(this).prop("checked")){
 				limit+=$(this).val()+",";
@@ -417,6 +424,7 @@ function prohibitedItem(){
 			  		}else{
 			  			layer.alert("保存失败!",{icon:2});
 			  		}
+			  		 $(".layui-layer-btn0").removeClass("disabled");
 			  	},
 			  	error : function() {  
 			          layer.alert("操作失败!",{icon:2});  

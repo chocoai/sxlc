@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心--财务配置</title>
+	<title>配置中心-逾期配置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -27,12 +27,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-config.jsp">
-				<jsp:param value="config-0" name="config-index" />
+				<jsp:param value="601" name="_index_m2"/>
+				<jsp:param value="60105" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -42,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	<ul class="nav nav-tabs">
 			 		<li role="presentation" class="active"><a href="<%=basePath%>config/toOverdueLimit.do">逾期严重程度配置</a>
 			 		</li>
-					<li role="presentation" class=""><a href="<%=basePath%>config/toOverdueList.do">逾期费用设置</a>
+					<li role="presentation" class=""><a href="<%=basePath%>config/tolateFeePg.do">逾期费用设置</a>
 					</li>
 				</ul>
 			 	<!-- 逾期配置 -->
@@ -82,7 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publicKey_common);
 		$(function(){
-			validform5("#submitBtn","dataForm",false,3);
+			validform5("#submitBtn","dataForm",false,5);
 		});
 		//增加或修改逾期程度
 		function addOverdueLimit(){

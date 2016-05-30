@@ -65,7 +65,11 @@ $(function() {
 /* 2016-4-12 */
 $(function() {
 	$(".iEDContentHeadC").click(function() {
-		window.location.href = "recharge.html";
+		if($(this).hasClass("cash")){
+			window.location.href = "fundManagement/cash.html";
+		}else{
+			window.location.href = "fundManagement/recharge.html";
+		}
 	});
 });
 $(function(){
@@ -124,6 +128,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
+							$(".cleanLi").remove();
 							if (data.totalPage>0){
 								var html = template("all_list",data);
 								$("#all_list_top").siblings().remove();
@@ -203,6 +208,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
+							$(".cleanLi").remove();
 							if (data.totalPage>0){
 								var html = template("recharge_list",data);
 								$("#recharge_top").siblings().remove();
@@ -272,6 +278,7 @@ $(function(){
 						data,
 						function(r){
 							var data = JSON.parse(r);
+							$(".cleanLi").remove();
 							if (data.totalPage>0){
 								var html = template("recharge_list",data);
 								$("#withdraw_top").siblings().remove();

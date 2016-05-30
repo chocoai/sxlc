@@ -110,14 +110,14 @@
    				<div class="selectArea">
    					<input class="selectValue provinceId" value="0" >
 					<input class="selectInput" type="text" lang="请选择省" readOnly="true"/>
-				    <ul class="select" id="provinceSelect" onselectstart="return false">
+				    <ul class="select" id="provinceSelect" onselectstart="return false" style="height:188px;overflow:auto">
 				        
 				    </ul>
 				</div> 
 				<!-- 这里是查询省份名字的模板 -->
 				<script id="provinceName" type="text/html">
 					{{each data as value index}}
-						<li class="selectOption" value={{value.provinceId}}>{{value.provinceName}}</li>
+						<li class="selectOption" value={{value.id}}>{{value.cityName}}</li>
 					{{/each}}
    				</script>
 				<div class="selectArea">
@@ -130,7 +130,7 @@
 				<!-- 这里是查询出城市的模板 -->
 				<script id="cityName" type="text/html">
 					{{each data as value index}}
-						<li class="selectOption" value={{value.cityId}}>{{value.cityName}}<li>
+						<li class="selectOption" value={{value.id}}>{{value.cityName}}<li>
 					{{/each}}
 				</script>
    			</div>
@@ -199,11 +199,11 @@
    			</div>
    			<div class="input-group">
    				<div class="left-title">开户行支行:</div>
-   				<input type="text" datatype="enteraddr" class="select1 zbank_u" >
+   				<input type="text" datatype="enteraddr" class="select1 zbank_u" maxlength="25">
    			</div>
    			<div class="input-group">
    				<div class="left-title">银行卡号:</div>
-   				<input type="text" datatype="zbankNum" class="select1 passID_card_u " >
+   				<input type="text" datatype="zbankNum" class="select1 passID_card_u " maxlength="19">
    			</div> 		
    			<div class="input-group">
    				<div class="left-title">开户手机号:</div>
@@ -211,7 +211,7 @@
    			</div>
    		</div>
    		<div class="bankcard-bottom">
-   			<input type="button" class="btn btn_tian" value="立即添加" ">
+   			<input type="button" class="btn btn_tian" value="立即修改" ">
    		</div>
    		</form>
    	</div>

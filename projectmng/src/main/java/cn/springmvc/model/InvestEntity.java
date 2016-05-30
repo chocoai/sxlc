@@ -50,7 +50,7 @@ public class InvestEntity {
 	/**
 	 * 投资总金额
 	 */
-	private int investAmount;
+	private long investAmount;
 	/**
 	 * 投资总金额
 	 */
@@ -118,7 +118,7 @@ public class InvestEntity {
 	/**
 	 * 有效投资金额 = 投资总金额-转让总金额
 	 */
-	private int investAmountValid;
+	private long investAmountValid;
 	/**
 	 * 有效投资金额 = 投资总金额-转让总金额
 	 */
@@ -235,10 +235,10 @@ public class InvestEntity {
 	public void setMerbillNo(String merbillNo) {
 		this.merbillNo = merbillNo;
 	}
-	public int getInvestAmount() {
+	public long getInvestAmount() {
 		return investAmount;
 	}
-	public void setInvestAmount(int investAmount) {
+	public void setInvestAmount(long investAmount) {
 		this.investAmount = investAmount;
 		this.investAmounts= IntegerAndString.LongToString(investAmount);
 	}
@@ -266,6 +266,7 @@ public class InvestEntity {
 	}
 	public void setInvestVouchersAmount(int investVouchersAmount) {
 		this.investVouchersAmount = investVouchersAmount;
+		this.investVouchersAmounts= IntegerAndString.IntToString(investVouchersAmount);
 	}
 	public String getInvestVouchersAmounts() {
 		return investVouchersAmounts;
@@ -339,10 +340,10 @@ public class InvestEntity {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	public int getInvestAmountValid() {
+	public long getInvestAmountValid() {
 		return investAmountValid;
 	}
-	public void setInvestAmountValid(int investAmountValid) {
+	public void setInvestAmountValid(long investAmountValid) {
 		this.investAmountValid = investAmountValid;
 	}
 	public String getInvestAmountValids() {

@@ -38,7 +38,7 @@ function IdentyDetails(memberId,typeId){
 			type:'post',  
 			cache:false,  
 			dataType:'json',   
-			success:function(data) { 
+			success:function(data) {
 				if(data!=null){
 					$("#applyId").val(data.rid);
 					if(data.logName!=null){

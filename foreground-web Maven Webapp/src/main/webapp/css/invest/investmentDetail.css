@@ -871,6 +871,7 @@ body .main{
 	height:347px;
 	border:1px dashed #72c0f3;
 	border-radius:10px;
+	overflow:auto;
 }
 .table{
 	margin-top:16px;

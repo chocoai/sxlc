@@ -42,7 +42,7 @@
 		   							<b class="moneyFormat2" id="sRedPackageSum">0</b>
 		   						</div>
 		   						<div class="awardDivAll awardExpired">
-		   							<p>已过期总额</p>
+		   							<p>已过期总额(元)</p>
 		   							<b class="moneyFormat2" id="sExpiredSum">0</b>
 		   						</div>
 		   						<div class="awardDivAll awardAlreadyUsed">
@@ -73,60 +73,56 @@
 			   						<script id="redList" type="text/html">
 									{{each results as info index }}
 		   							<li class="awardTableRegister">
-		   								<div class="awardTableHead1 moneyFormat"><span>100</span></div>
-	   									<div class="awardTableHead2"><span>注册</span></div>
-   										<div class="awardTabCuA3-1">
-											<div class="contentA">
-											 	2016-08-07
-	   											14:12:00
-											</div>
-										</div>
-   										<div class="awardTabCuA3-1">
-											<div class="contentA">
-											 	2016-08-07
-	   											14:12:00
-											</div>
-										</div>
-   										<div class="awardTableHead5a">
-   											...
-   										</div>
-	   									<div class="awardTableHead6"><span>可用于投资使用</span></div>
-	   									<div class="awardTableHead7 awardTableHead7a"><i class="awardTabelIstyle">未使用</i></div>
-		   							</li>
-		   							
-		   							<li class="awardTableRegister">
 	   									<div class="awardTableHead1 moneyFormat"><span>{{info.sgiftAmount}}</span></div>
-	   									<div class="awardTableHead2"><span>{{info.giftType}}</span></div>
+	   									<div class="awardTableHead2"><span>
+											{{if info.gifTypeName==null}}
+												...	
+											{{else}}
+												{{info.gifTypeName}}
+											{{/if}}
+										</span></div>
    										<div class="awardTabCuA3-1">
 											<div class="contentA">
 											 	{{info.receiveDate}}
 											</div>
 										</div>
-   										<div class="awardTabCuA3-1">
+   										<div class="awardTabCuA4-2">
 											<div class="contentA">
-											 	{{info.endDate}}
+											{{if info.useDate==null}}
+												...	
+											{{else}}
+											 	{{info.useDate}}
+											{{/if}}
 											</div>
 										</div>
    										<div class="awardTableHead5a">
-   											{{if info.statu=="0"}}
-											...
+											<div class="contentA">
+   											{{if info.endDate==null}}
+												...	
+											{{else}}
+											 	{{info.endDate}}
 											{{/if}}
-   											{{if info.statu=="1"}}
-											{{info.useDate}}
-											{{/if}}
-   											{{if info.statu=="2"}}
-											...
-											{{/if}}
+											</div>
    										</div>
-	   									<div class="awardTableHead6"><span>{{info.remark}}</span></div>
+	   									<div class="awardTableHead6">
+											<span>
+											{{if info.statuName==null}}
+												...	
+											{{else}}
+												{{info.statuName}}
+											{{/if}}
+											</span></div>
 	   									<div class="awardTableHead7 awardTableHead7a">
 	   											{{if info.statu=="0"}}
 	   											<i class="awardTabelIstyle">未使用</i>
 	   											{{/if}}
 	   											{{if info.statu=="1"}}
-	   											<i>已使用</i>
+	   											<i>部分使用</i>
 	   											{{/if}}
 	   											{{if info.statu=="2"}}
+												<i>已使用</i>
+	   											{{/if}}
+												{{if info.statu=="2"}}
 	   											<i class="awardTgq"></i>
 	   											{{/if}}
 	   									</div>

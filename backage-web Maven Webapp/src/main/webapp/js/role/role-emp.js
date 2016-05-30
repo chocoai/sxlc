@@ -41,14 +41,14 @@ $(function() {
 		        		  }else if(data ==1){
 		        			  return "女";
 		        		  }else{
-		        			  return data;
+		        			  return "";
 		        		  }
 		        	  } 
 		          },  
 		          { title:"身份证号","data": "baseInfo.personalIDCard" },  
 		          { title:"出生日期","data": "baseInfo.personalIDCard" , 
 		        	  "mRender": function (data, type, full) {
-		        		  return  getBirthday(data);
+		        		  return  getInfoByIdCard(data,1);
 		        	  } 
 		          },  
 		          { title:"民族","data": "baseInfo.nationId", 
@@ -88,9 +88,12 @@ $(function() {
 		          pagingType: "simple_numbers",//设置分页控件的模式  
 		          processing: true, //打开数据加载时的等待效果  
 		          serverSide: true,//打开后台分页  
+				  scrollY : 500,
+				  scrollYInner : 500,
+		          searching: false,
 		          scrollCollapse: true,//表格高度自动调节
 		          scrollX : "100%",//超出屏幕宽度显示水平滚动条
-		          scrollXInner : "100%",
+		          scrollXInner : "100%",scrollY:500,
 //		          ordering:false,
 //		          aaSorting : [ [ 5, "desc" ],[ 12, "desc" ],[ 14, "desc" ] ],//默认第几个排序
 		          aoColumnDefs : [
@@ -147,7 +150,7 @@ $(function() {
 	$(".obtn-emp-add").on("click touchstart",function(){
 		document.getElementById("dataForm").reset();
 		
-		validform5(".layui-layer-btn0","dataForm",false,3);
+		validform5(".layui-layer-btn0","dataForm",false,5);
 		var errorMsg = $("#errorMsg").val();
 		if(errorMsg !=null && errorMsg != ""){
 			layer.alert("redis服务异常，查询字典失败！<br>"+errorMsg,{icon:0});
@@ -160,9 +163,7 @@ $(function() {
 		    content: $(".emp-add"),//DOM或内容
 		    btn:['确定', '取消']
 			  ,yes: function(index, layero){ //或者使用btn1
-//				  $.post(appPath+"/role/addStaff.do",$("#dataForm").serialize(),function(data){
-//					  layer.alert("操作成功！",{icon:1});
-//				  });
+				  $(".layui-layer-btn0").addClass("disabled");
 				  $("#dataForm").submit();
 			  },cancel: function(index){//或者使用btn2（concel）
 			  	//取消的回调
@@ -181,7 +182,8 @@ $(function() {
 	$(".obtn-emp-mod").on("click touchstart",function(){
 		//获得选取的对象
 		document.getElementById("dataForm").reset();
-		validform5(".layui-layer-btn0","dataForm",true,3);
+		
+		validform5(".layui-layer-btn0","dataForm",true,5);
 		var data = $('#staffListTb').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的员工信息！",{icon:0});
@@ -196,9 +198,10 @@ $(function() {
 			layer.alert("redis服务异常，查询字典失败！<br>"+errorMsg,{icon:0});
 			return;
 		}
+		
 		$(".emp-add #personalName").val(data[0].baseInfo.personalName);
 		$(".emp-add #personalIDCard").val(data[0].baseInfo.personalIDCard);
-		$(".emp-add #birthday").val(getBirthday(data[0].baseInfo.personalIDCard));
+		$(".emp-add #birthday").val(getInfoByIdCard(data[0].baseInfo.personalIDCard,1));
 		$(".emp-add #nationId").val(data[0].baseInfo.nationId);
 		$(".emp-add #personalPhone").val(data[0].baseInfo.personalPhone);
 		$(".emp-add #qq").val(data[0].baseInfo.qq);
@@ -212,20 +215,29 @@ $(function() {
 		$(".emp-add #postName").val(data[0].postName);
 		$(".emp-add #staffId").val(data[0].id);
 		$(".emp-add #personalId").val(data[0].baseInfo.id);
-		$("#postName").prop("deptId",data[0].deptId);
 		$("#postName").prop("postId",data[0].postId);
 		
 		//之后
 		layer.open({
 		    type: 1,
 		    area: ['700px', '420px'], //高宽
-		    title: "修改职务",
+		    title: "修改员工",
 		    content: $(".emp-add"),//DOM或内容
 		    btn:['确定', '取消']
 			  ,yes: function(index, layero){ //或者使用btn1
+				  $(".layui-layer-btn0").addClass("disabled");
+				  var param = getEncryptData(2);
+				  if(param == -1){
+					  layer.alert("请选择职务！",{icon:0});
+					  return;
+				  }
+				  if(data == -2){
+					  layer.alert("请选择毕业时间！",{icon:0});
+					  return;
+				  }
 				  $.ajax( {  
 					  url:appPath+"/role/addOrUpdateStaff.do",
-					  data: getEncryptData(2),  
+					  data: param,  
 					  type:'post',  
 					  cache:false,  
 					  dataType:'json',  
@@ -240,6 +252,7 @@ $(function() {
 				         }else if(data==-1){
 								layer.alert("身份证已存在",{icon:2});  
 						 }    
+						 $(".layui-layer-btn0").removeClass("disabled");
 				      },  
 				      error : function() {  
 				           layer.alert("服务器异常!",{icon:2});  
@@ -301,7 +314,7 @@ $(function() {
 	 */
 	$(".idCard").on("change",function(){
 		var idCard = $(this).val();
-		$("#birthday").val(getBirthday(idCard));
+		$("#birthday").val(getInfoByIdCard(idCard,1));
 		$("#birthday").prop("disabled",true);
 		
 	});
@@ -315,22 +328,35 @@ $(function() {
 			area: ['500px', '300px'], //高宽
 			title: "职务列表",
 			content: $(".dept-select"),//DOM或内容
-			btn:['添加', '关闭']
-		,yes: function(index, layero){ //或者使用btn1
+			btn:['添加','关闭', '清空']
+		,btn1: function(index, layero){ //或者使用btn1
 			var data = $('#deptTbList').DataTable().rows('.selected').data();
 			if(data.length<1){
 				layer.alert("请选择职务！",{icon:0});
 				return;
 			}
-			$this.parent().find(".postId").prop("postId",data[0].id);
-			$this.parent().find(".postId").prop("deptId",data[0].deptId);
-			$this.parent().find(".postId").val(data[0].postName);
+			var postIds = "";//部门、职位拼接字符串
+			var postNames = "";//展示职务名
+			for(var i = 0;i<data.length;i++){
+				var postId = data[i].id;
+				var deptId = data[i].deptId;
+				postIds += deptId+":"+postId+",";
+				if(data[i].postName != ""){
+					postNames += data[i].postName+",";
+				}
+			}
+			postIds = postIds.substring(0, postIds.length-1);
+			postNames = postNames.substring(0, postNames.length-1);
+			$this.parent().find(".postId").prop("postId",postIds);
+			$this.parent().find(".postId").val(postNames);
 			layer.close(index);
-		},cancel: function(index){//或者使用btn2（concel）
-			//取消的回调
+		},btn2: function(index){//或者使用btn2（concel）
+			
+		},btn3:function(index){
+			//清空
 			$this.parent().find(".postId").prop("postId","");
-			$this.parent().find(".postId").prop("deptId","");
 			$this.parent().find(".postId").val("");
+			layer.close(index);
 		}
 		});
 	});
@@ -340,7 +366,6 @@ $(function() {
 		$('#deptTbList').DataTable().ajax.reload();
 		
 	 });
-	
 	
 	//职务列表初始化
 	$('#deptTbList').DataTable(
@@ -357,7 +382,7 @@ $(function() {
 		            }  
 		        },
 		        columns: [  
-		                  {title:'',sWidth:"10%", 
+		                  {title:'<input type="checkbox" class="table-checkbox1"  value="1" />',sWidth:"10%", 
 		                	  "mRender": function (data, type, full) {
 		                		  sReturn = '<input type="checkbox" class="tr-checkbox" value="1" />';
 		                		  return sReturn;
@@ -369,6 +394,7 @@ $(function() {
 //		        pagingType: "simple_numbers",//设置分页控件的模式  
 		        processing: true, //打开数据加载时的等待效果  
 //		        serverSide: true,//打开后台分页  
+		        searching: false,
 		        info:false,
 		        searching: false,//关闭搜索
 		        paging:false,//关闭分页栏
@@ -383,40 +409,73 @@ $(function() {
                 }
 	});
 	
-	//表格单选效果(有复选框)
+	
+	 //表格多选效果
 	 $('#deptTbList tbody').on( 'click', 'tr', function () {
-		    var $this = $(this);
-		    var $checkBox = $this.find("input:checkbox");
-	        if ( $this.hasClass('selected') ) {
-	        	 $checkBox.prop("checked",false);
-	        	$this.removeClass('selected');
-	        } else {
-	        	$(".tr-checkbox").prop("checked",false);
-	        	$checkBox.prop("checked",true);
-	        	$('#deptTbList tr.selected').removeClass('selected');
-	        	$this.addClass('selected');
-	        }
-	  });
-	
-	
+		 var $this = $(this);
+		 var $checkBox = $this.find("input:checkbox");
+		 if($this.hasClass('selected')){
+			 $checkBox.prop("checked",false);
+			 $(".table-checkbox1").prop("checked",false);
+		 }else{
+			 $checkBox.prop("checked",true);
+		 }
+		 $this.toggleClass('selected');
+	 });
+	 
+	 //全选效果
+	 $(".table-checkbox1").on('click',function(){
+		var $this = $(".table-checkbox1");
+		 if($this.prop('checked')){
+			 $(".tr-checkbox").prop("checked",true);
+			 $('#deptTbList tr').addClass("selected");
+			 
+		 }else{
+			 $(".tr-checkbox").prop("checked",false);
+			 $('#deptTbList tr').removeClass("selected");
+		 }
+		 
+	 });
 	
 });
+
 	/**
-	 * 根据身份证抓取出生日期 
-	 * @param idCard 
+	 * 根据身份证获取出生日期、性别、年龄信息
+	 * @param idCard 身份证号码
+	 * @param type 信息类型 1：出生日期 2：性别 3：年龄
+	 * @returns
 	 */
-	function getBirthday(idCard){
-		var birthday = "";  
-		if(idCard != null && idCard != ""){  
-			if(idCard.length == 15){  
-				birthday = "19"+idCard.substr(6,6);  
-			} else if(idCard.length == 18){  
-				birthday = idCard.substr(6,8);  
-			}  
-			birthday = birthday.replace(/(.{4})(.{2})/,"$1-$2-");  
-		}
-		return birthday;
+	function getInfoByIdCard(idCard,type){
+		   if(type==1){
+		       //获取出生日期
+		       birth=idCard.substring(6, 10) + "-" + idCard.substring(10, 12) + "-" + idCard.substring(12, 14);
+		       return birth;
+		   }
+		   if(type==2){
+		       //获取性别
+		       if (parseInt(idCard.substr(16, 1)) % 2 == 1) {
+		           //男
+		    	   return "0";
+		       } else {
+		           //女
+		    	   return "1";
+		       }
+		   }
+		   if(type==3){
+		        //获取年龄
+		        var myDate = new Date();
+		        var month = myDate.getMonth() + 1;
+		        var day = myDate.getDate();
+		        var age = myDate.getFullYear() - idCard.substring(6, 10) - 1;
+		        if (idCard.substring(10, 12) < month || idCard.substring(10, 12) == month && idCard.substring(12, 14) <= day) {
+		            age++;
+		        }
+		        return age;
+		 }
 	}
+	
+	
+	
 	
 /**
  * 转换毫秒值字符串为日期
@@ -430,9 +489,18 @@ function getDateByStr(data){
  * 添加员工 
  */
 function addStaff(){
+		var data = getEncryptData(1);
+		if(data == -1){
+			 layer.alert("请选择职务！",{icon:0});
+			return;
+		}
+		if(data == -2){
+			layer.alert("请选择毕业时间！",{icon:0});
+			return;
+		}
 		$.ajax( {  
 			url:appPath+"/role/addOrUpdateStaff.do",
-			data:getEncryptData(1),
+			data:data,
 			type:'post',  
 			cache:false,  
 			dataType:'json',  
@@ -447,6 +515,7 @@ function addStaff(){
 				}else if(data==-1){
 					layer.alert("身份证已存在",{icon:2});  
 				}
+				 $(".layui-layer-btn0").removeClass("disabled");
 			},  
 			error : function() {  
 				layer.alert("服务器异常",{icon:2});  
@@ -462,10 +531,10 @@ function getEncryptData(type){
 	var data={};
 	var personalName = encrypt.encrypt($("#personalName").val());
 	data.personalName=personalName;
-	var sexId = encrypt.encrypt($("input[name='baseInfo.sexId']:checked").val());
-	data.sexId=sexId;
-	var personalIDCard = encrypt.encrypt($("#personalIDCard").val());
-	data.personalIDCard=personalIDCard;
+	var personalIDCard = $("#personalIDCard").val();
+	data.personalIDCard= encrypt.encrypt(personalIDCard);
+	var sexId = getInfoByIdCard(personalIDCard,2);
+	data.sexId= encrypt.encrypt(sexId+"");
 	var nationId = encrypt.encrypt($("#nationId").val());
 	data.nationId=nationId;
 	var personalPhone = encrypt.encrypt($("#personalPhone").val());
@@ -480,23 +549,31 @@ function getEncryptData(type){
 	data.houseAddress=houseAddress;
 	var education = encrypt.encrypt($("#education").val());
 	data.education=education;
-	var graduatedDate = encrypt.encrypt($("#graduatedDate").val());
-	data.graduatedDate=graduatedDate;
+	var graduatedDate = $("#graduatedDate").val();
+	if(graduatedDate == ""){
+		return "-2";
+	}
+	data.graduatedDate= encrypt.encrypt(graduatedDate);
 	var emerName = encrypt.encrypt($("#emerName").val());
 	data.emerName=emerName;
 	var emerPhone = encrypt.encrypt($("#emerPhone").val());
 	data.emerPhone=emerPhone;
 	var postId = $("#postName").prop("postId");
 	if(typeof(postId)!="undefined" && postId!=''){
-		 postId = encrypt.encrypt(postId+"");
+		 data.content= postId;
+	}else{
+		 return "-1";
 	}
-	data.postId=postId;
-	var deptId = $("#postName").prop("deptId");
-	if(typeof(deptId)!="undefined" && deptId!=''){
-		deptId = encrypt.encrypt(deptId+"");
-	}
-	data.deptId=deptId;
+//	var deptId = $("#postName").prop("deptId");
+//	if(typeof(deptId)!="undefined" && deptId!=''){
+//		deptId = encrypt.encrypt(deptId+"");
+//		data.deptId=deptId;
+//	}else{
+//		return "-1";
+//	}
 	data.type=encrypt.encrypt(""+type);
+	var id = $("#staffId").val();
+	data.id = encrypt.encrypt(id);
 	return data;
 }
 

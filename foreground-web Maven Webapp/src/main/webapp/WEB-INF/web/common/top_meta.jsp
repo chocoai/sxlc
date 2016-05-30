@@ -13,7 +13,7 @@
 	<!-- 输入验证 -->
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/plugs/valid/Validform_v5.3.2/Validform_v5.3.2/demo/css/style.css">
-<!-- 	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/check/formatCheck.js"></script> -->
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/plugs/check/formatCheck.js"></script> -->
 
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/common/jquery-1.11.1.min.js"></script>

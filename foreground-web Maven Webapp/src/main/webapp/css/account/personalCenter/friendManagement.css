@@ -280,9 +280,30 @@
 	height:40px;
 }
 .delete-deal{
+	display:inline-block;
 	text-decoration:underline;
 	color:#fe7407;
 	cursor:pointer;
+}
+.transferDiv{
+	display: inline-block;
+    margin-right: 14px;
+    vertical-align: middle;
+}
+.transferBtn{
+	display:inline-block;
+	width:75px;
+	height:25px;
+	line-height:25px;
+	color:#34afff;
+	border:1px solid #34afff;
+	text-align:center;
+	border-radius:2px;
+}
+.transferBtn:hover{
+	background:#72c0f3;
+	border-color:#72c0f3;
+	color:#fff;
 }
 /*表格样式结束*/
 /*弹出层  */
@@ -456,4 +477,89 @@
 /*弹出层结束  */
 .dn{
 	display: none;
+}
+
+
+
+
+/*   好友管理--转账   */
+/*  头部   */
+.transferHeader{
+	line-height:55px;
+	border-bottom:1px solid #ececec;
+	padding:0 20px;
+}
+.transferHeader span{
+	display:inline-block;
+	line-height:55px;
+	margin-left:26px;
+	font-size:18px;color:#45a7e6 !important;
+	border-bottom:2px solid #45a7e6 !important;
+	font-weight:bold;
+}
+.transferHeader span a{
+	color:#45a7e6;
+}
+.inputArea{
+	margin:30px 0;
+}
+.inputList{
+	margin:24px 0;
+}
+.mustLabel{
+	display:inline-block;
+	width:295px;
+	text-align:right;
+	margin-right:18px;
+	color:#575757;
+	font-size:16px;
+	vertical-align:top;
+	margin-top:7px;
+}
+.mustLabel samp{
+	display:inline-block;
+	width:13px;
+	text-align:left;
+	color:#ff5a00;
+}
+.inputText{
+	width:244px;
+}
+.resiveName{
+	display:inline-block;
+	font-size:16px;
+	color:#333;
+	vertical-align:bottom;
+}
+.phoneCode,
+.dynamicValidationPhone,
+.codeBtn{
+	display:inline-block;
+}
+.codeBtn,
+.codeImg{
+	width:110px;
+	height:41px;
+	margin-left:5px;
+	vertical-align:middle;
+}
+.imgCode,
+.dynamicCode{
+	width:125px;
+	font-weight:normal;
+}
+.codeBtn{
+	text-align: center;
+    background: #ff9c00;
+    color: #fff;
+    line-height: 41px;
+    cursor: pointer;
+}
+.transferBtn1{
+	width:244px;
+	margin-left:320px;
+}
+.dynamicValidationPhone,
+.phoneCode{
+	width:600px;
 }

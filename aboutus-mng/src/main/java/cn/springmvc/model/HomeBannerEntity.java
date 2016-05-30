@@ -1,4 +1,9 @@
 package cn.springmvc.model;
+
+import java.util.Date;
+
+import product_p2p.kit.datatrans.TimestampAndString;
+
 /**
  * 首页轮播图实体类
  * @author 刘利
@@ -32,7 +37,8 @@ public class HomeBannerEntity {
 	/**
 	 * 添加时间
 	 */
-	private String createTime;	
+	private String sCreateTime;	
+	private Date    createTime;
 	/**
 	 * 最后一次操作时间
 	 */
@@ -75,11 +81,16 @@ public class HomeBannerEntity {
 	public void setStatu(int statu) {
 		this.statu = statu;
 	}
-	public String getCreateTime() {
+	
+	public String getsCreateTime() {
+		return sCreateTime;
+	}
+	public Date getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+		this.sCreateTime = TimestampAndString.DateToString(createTime);
 	}
 	public String getOptDate() {
 		return optDate;

@@ -42,7 +42,7 @@ public class MemberStationServiceImpl implements MemberStationService {
 	private MemberStationListDaoImpl memberStationListDaoImpl;
 	
 	@Override
-	public int deleteSendStationLetter(List<Integer> list) {
+	public int deleteSendStationLetter(List<Integer> list,long memberId) {
 
 		if(list == null) {
 			return -1;

@@ -4,6 +4,7 @@ request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 String content = request.getParameter("content");
+String pAuthCode = request.getParameter("pAuthCode");
 %>
 <jsp:include page="../../common/cm-addr.jsp"></jsp:include>
 <div class="search">
@@ -21,6 +22,7 @@ String content = request.getParameter("content");
 		<div class="panel-body">
 			<form id="" class="" action="">
 			<input id="memberID" type="hidden" value="<%=content %>" />
+			<input id="stype" type="hidden" value="<%=pAuthCode %>" />
 				<div>
 					<span class="con-item">
 						<span>借款名称</span><input id="projectTitle" type="text" class="" placeholder="" />

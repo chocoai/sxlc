@@ -13,6 +13,7 @@
     <title>好友管理</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
     <script type="text/javascript">
+    	var baseUrl = '<%=basePath%>';
     	var publickey = '<%=session.getAttribute("publicKey")%>';
     </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
@@ -153,14 +154,19 @@
 										</div>
 									</div>
 									<div class="contentOut2">
-										<div class="content1 delete-deal">
-											删除
+										<div class="content1">
+											<div class="transferDiv " onclick="friendTransfer('{{value.friendId}}','{{value.userName}}');">
+												<div class="transferBtn">转账</div>
+												<input type="hidden" class="friendId" value="{{value.id}}">
+												<input type="hidden" class="friendName" value="{{value.userName}}">
+											</div>
+											<div class="delete-deal">删除</div>
 										</div>
 									</div>																				
 			   					</li>
 								{{/each}}
 			   					</script>
-		   					</ul>
+		   					</ul> 
 		   					<div id="pager1"></div>
 						</div>
 					</div>   				

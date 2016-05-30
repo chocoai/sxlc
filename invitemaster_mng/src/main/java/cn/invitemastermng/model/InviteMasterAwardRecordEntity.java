@@ -20,6 +20,12 @@ import product_p2p.kit.datatrans.IntegerAndString;
  * @since 
  * @date 2016-4-28 下午8:05:59  */
 
+
+/** 
+ * @author 刘利 
+ * @Description: TODO 
+ * @since 
+ * @date 2016-5-30 上午11:37:03  */
 public class InviteMasterAwardRecordEntity {
 	private String 			logname;//被推荐人用户名
 	private String 			memberName;//被推荐人名称
@@ -42,6 +48,32 @@ public class InviteMasterAwardRecordEntity {
 	private String          totalPayVIPs;//推荐购买VIP总额
 	private long            awardTotal;//提奖总额
 	private String          awardTotals;//提奖总额
+ 
+	public InviteMasterAwardRecordEntity(){
+		
+	}
+	/** 
+	 * 创建一个新的实例 InviteMasterAwardRecordEntity. 
+	 *  
+	 *  */
+	
+	public InviteMasterAwardRecordEntity(   
+			long loanTotalAmount,  long investTotalAmountValid, 
+			long countPayVIP,      long replayPrincipal,  	
+			long loanAward,        long investAward,   long vipAward, 
+			long repayAward,       long totalPayVIP,   long awardTotal) {
+		super();  
+		this.setLoanTotalAmount(loanTotalAmount); 
+		this.setInvestTotalAmountValid(investTotalAmountValid); 
+		this.setCountPayVIP(countPayVIP);
+		this.setReplayPrincipal(replayPrincipal); 
+		this.setLoanAward(loanAward); 
+		this.setInvestAward(investAward); 
+		this.setVipAward(vipAward); 
+		this.setRepayAward(repayAward); 
+		this.setTotalPayVIP(totalPayVIP); 
+		this.setAwardTotal(awardTotal); 
+	}
 	public long getTotalPayVIP() {
 		return totalPayVIP;
 	}

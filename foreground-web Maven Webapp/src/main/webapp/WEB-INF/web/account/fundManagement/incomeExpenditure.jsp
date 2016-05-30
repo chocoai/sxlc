@@ -75,9 +75,9 @@
    								</div>
    								<div class="iEDTrecordTypeLeft">
    									<label class="iEDleft">时间范围：</label>
-   									<input id="startTime1" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'endTime1\')}'})" type="text" lang="请选择">
+   									<input id="startTime1" readonly="readonly" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endTime1\')}'})" type="text">
    									<i></i>
-   									<input id="endTime1" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startTime1\')}'})" type="text" lang="请选择">
+   									<input id="endTime1" readonly="readonly" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startTime1\')}'})" type="text">
    								</div>
    								<!-- <div class="iEDTrecordTypeLeft iEDDivCunt"> -->
 	   								<div class="iEDTrecordTypeLeft iEDDiv "><em class="active " value="1">今天</em>
@@ -95,19 +95,19 @@
 		  								<div class="awardTableHead3">交易金额<em class="btnUp"></em></div>
 		  								<div class="awardTableHead4">总金额<em class="btnUp"></em></div>
 		  								<div class="awardTableHead5">冻结金额<em class="btnUp"></em></div>
-		  								<div class="awardTableHead6">待收本金<em class="btnUp"></em></div>
-		  								<div class="awardTableHead7">待收利息<em class="btnUp"></em></div>
+		  								<!-- <div class="awardTableHead6">待收本金<em class="btnUp"></em></div>
+		  								<div class="awardTableHead7">待收利息<em class="btnUp"></em></div> -->
 		  								<div class="awardTableHead8">可用余额<em class="btnUp"></em></div>
-		  								<div class="awardTableHead9">待还本金<em class="btnUp"></em></div>
+		  								<!-- <div class="awardTableHead9">待还本金<em class="btnUp"></em></div>
 		  								<div class="awardTableHead10">待还利息<em class="btnUp"></em></div>
-		  								<div class="awardTableHead11">待还逾期利息/罚金<em class="btnUp"></em></div>
+		  								<div class="awardTableHead11">待还逾期利息/罚金<em class="btnUp"></em></div> -->
 		  								<div class="awardTableHead12">交易对方</div>
 		  								<div class="awardTableHead13">交易时间</div>
 			   						</li>
 			   						<!-- 全部交易记录 -->
 		   							<script id="all_list" type="text/html">
 									{{each results as info index}}
-		   							<li class="awardTableRegister">
+		   							<li class="awardTableRegister cleanLi">
 		   								<div class="awardTabRegister">
 		   									<div class="awardTableHead1 "><span>{{info.tradeID}}</span></div>
 											{{if info.tradeType==null}}
@@ -117,24 +117,11 @@
 		   									<div class="awardTableHead2 "><span>{{info.tradeType}}<span></div>
 											{{/if}}		
 		   									<div class="awardTableHead3a "><span class="moneyFormat">{{info.amounts}}</span></div>
-		   									<div class="awardTableHead4 awardDistance "><span class="moneyFormat">{{info.totalAmounts}}</span></div>
-		   									<div class="awardTableHead5a awardDistance "><span class="moneyFormat">{{info.frozenBalances}}</span></div>
-		   									<div class="awardTableHead6 awardDistance "><span class="moneyFormat">{{info.willRecPrincipals}}</span></div>
-		   									<div class="awardTableHead7 awardDistance "><span class="moneyFormat">{{info.willRecInterests}}</span></div>
-		   									<div class="awardTableHead8 awardDistance "><span class="moneyFormat">{{info.userBalances}}</span></div>
-		   									<div class="awardTableHead9 awardDistance "><span class="moneyFormat">{{info.willPayPrincipals}}</span></div>
-		   									<div class="awardTableHead10 awardDistance "><span class="moneyFormat">{{info.willPayInterests}}</span></div>
-		   									<div class="awardTableHead11 awardDistance "><span class="moneyFormat">{{info.willPayOverdueInterests}}</span>/<span class="moneyFormat">{{info.willPayOverdues}}</span></div> 
+		   									<div class="awardTableHead4  "><span class="moneyFormat">{{info.totalAmounts}}</span></div>
+		   									<div class="awardTableHead5a  "><span class="moneyFormat">{{info.frozenBalances}}</span></div>
+		   									<div class="awardTableHead8  "><span class="moneyFormat">{{info.userBalances}}</span></div>
 		   									<div class=" awardTableHead12-1">
-												{{if info.tradeObjectType=="0"}}
-												<span>平台</span>
-												{{/if}}
-												{{if info.tradeObjectType=="1"}}
-												<span>会员</span>
-												{{/if}}
-												{{if info.tradeObjectType=="2"}}
-												<span>担保机构</span>
-												{{/if}}
+												{{info.tradeObjectName}}
 											</div>
 	   										<div class="awardTableHead13-1 "> 
 		   										<div class="contentA">
@@ -144,7 +131,7 @@
 		   								</div>
 		   								<div class="iEDTrecordInfo">
 		   									<div class="iEDTrecordInfoDiv">
-		   										<span>序号：{{info.recordNo}}</span>
+		   										<span>序号：{{info.tradeID}}</span>
 		   										<span>地区：{{info.provinceName}} {{info.cityName}}</span>
 		   										<span>交易时间：{{info.recordDate}}</span>
 		   									</div>
@@ -155,7 +142,7 @@
 		   									<div class="iEDTrecordInfoDiv2">
 		   										<p class="iEDTrecordInfoP1"><span>总金额：</span><i class="moneyFormat">{{info.totalAmounts}}</i> <span class="iEDTrecordInfofuha">=</span></p> 
 		   										<p class="iEDTrecordInfoP2"><span>可用余额：<em class="moneyFormat">{{info.userBalances}}</em></span>
-		   										<span class="iEDTrecordInfofuha">+</span><span>冻结金额：<em class="moneyFormat">{{info.statisticsFrozenAmounts}}</em></span><span>+</span><span >待收本金：<em class="moneyFormat">{{info.willRecPrincipals}}</em></span>
+		   										<span class="iEDTrecordInfofuha">+</span><span>冻结金额：<em class="moneyFormat">{{info.frozenBalances}}</em></span><span>+</span><span >待收本金：<em class="moneyFormat">{{info.willRecPrincipals}}</em></span>
 		   										<span class="iEDTrecordInfofuha">+</span><span>待收利息：<em  class="moneyFormat">{{info.willRecInterests}}</em></span><span class="iEDTrecordInfofuha">-</span><span>待还本金：<em class="moneyFormat">{{info.willPayPrincipals}}</em></span>
 		   										<span class="iEDTrecordInfofuha">-</span><span>待还利息：<em  class="moneyFormat">{{info.willPayInterests}}</em></span><span class="iEDTrecordInfofuha">-</span><span>待还逾期利息：<em class="moneyFormat">{{info.willPayOverdueInterests}}</em></span>
 		   										<span class="iEDTrecordInfofuha">-</span><span>待还逾期罚金：<em  class="moneyFormat">{{info.willPayOverdues}}</em></span></p>
@@ -165,6 +152,12 @@
 		   							{{/each}}
 									<li class="page"><div id="pager"></div></li>
    									</script>
+   									<!-- 从列表中剔除的数据 -->
+   									<!-- <div class="awardTableHead6 awardDistance "><span class="moneyFormat">{{info.willRecPrincipals}}</span></div>
+		   							<div class="awardTableHead7 awardDistance "><span class="moneyFormat">{{info.willRecInterests}}</span></div>
+		   							<div class="awardTableHead9 awardDistance "><span class="moneyFormat">{{info.willPayPrincipals}}</span></div>
+   									<div class="awardTableHead10 awardDistance "><span class="moneyFormat">{{info.willPayInterests}}</span></div>
+   									<div class="awardTableHead11 awardDistance "><span class="moneyFormat">{{info.willPayOverdueInterests}}</span>/<span class="moneyFormat">{{info.willPayOverdues}}</span></div>  -->
 		   						</ul>
    							</div>
  							<!-- 分页标签 -->
@@ -190,9 +183,9 @@
    								
    								<div class="iEDTrecordTypeLeft iEDTrecordTypeLeftJ">
    									<label class="iEDleft">时间范围：</label>
-   									<input id="startTime2" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'endTime2\')}'})" type="text" lang="请选择">
+   									<input id="startTime2" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'endTime2\')}'})" type="text">
    									<i></i>
-   									<input id="endTime2" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startTime2\')}'})" type="text" lang="请选择">
+   									<input id="endTime2" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startTime2\')}'})" type="text">
    								</div>
    								<div class="iEDTrecordTypeLeft">
 	   								<label class="iEDTrecordTypeLeft">状态：</label>
@@ -211,31 +204,31 @@
    							<div class="iEDTrecord">
    								<ul id="recharge_ul">
 			   						<li class="awardTableHeada" id="recharge_top">
-		  								<div class="awardTableCu1 ">充值金额<em class="btnUp"></em></div>
-		  								<div class="awardTableCu2">充值时间<em class="btnUp"></em></div>
-		  								<div class="awardTableCu3">充值手续费</div>
-		  								<div class="awardTableCu4">充值方式</div>
-		  								<div class="awardTableCu5">实际到账金额<em class="btnUp"></em></div>
-		  								<div class="awardTableCu6">第三方交易流水号</div>
-		  								<div class="awardTableCu7">状态</div>
+		  								<div class="awardTableCu1-2 ">充值金额<em class="btnUp"></em></div>
+		  								<div class="awardTableCu2-2">充值时间<em class="btnUp"></em></div>
+		  								<div class="awardTableCu3-2">充值手续费</div>
+		  								<div class="awardTableCu4-2">充值方式</div>
+		  								<div class="awardTableCu5-2">实际到账金额<em class="btnUp"></em></div>
+		  								<div class="awardTableCu6-2">第三方交易流水号</div>
+		  								<div class="awardTableCu7-2">状态</div>
 			   						</li>
 			   						<!-- 充值记录 -->
 			   						<script id="recharge_list" type="text/html">
 									{{each results as info index}}
-		   							 <li class="awardTableRegister awardTableRegisterH clearfix">
-		   								<div class="awardTableCu1"><span class="moneyFormat">{{info.withdrawalMoneys}}</span></div>
-		   								<div class="awardTableCu2-1 ">  
+		   							 <li class="awardTableRegister awardTableRegisterH clearfix cleanLi">
+		   								<div class="awardTableCu1-2"><span class="moneyFormat">{{info.withdrawalMoneys}}</span></div>
+		   								<div class="awardTableCu2-2 ">  
 	   										<div class="contentB">
 												{{info.sReceiveDate}}
 											</div>
 	   									</div>
-	   									<div class="awardTableCu3"><span class="moneyFormat">{{info.totalfee}}</span></div>
-	   									<div class="awardTableCu4">
+	   									<div class="awardTableCu3-2"><span class="moneyFormat">{{info.totalfee}}</span></div>
+	   									<div class="awardTableCu4-2">
 												<span>{{info.rechargeTypes}}</span>
 										</div>
-	   									<div class="awardTableCu5"><span class="moneyFormat">{{info.realMoneys}}</span></div>
-	   									<div class="awardTableCu6-1"><div class="contentB awardTableAllSpan">{{info.thirdMerBillno}}</div></div>
-	   									<div class="awardTableCu7">
+	   									<div class="awardTableCu5-2"><span class="moneyFormat">{{info.realMoneys}}</span></div>
+	   									<div class="awardTableCu6-2"><div class="contentB awardTableAllSpan">{{info.thirdMerBillno}}</div></div>
+	   									<div class="awardTableCu7-2">
 											{{if info.statu=="0"}}
 											<span>失败</span>
 											{{/if}}
@@ -245,7 +238,6 @@
 										</div>
 		   							</li>
 									{{/each}}
-									<!-- 分页标签 -->
 									<li class="page"><div id="pager1"></div></li>
    									</script>
 		   						</ul>
@@ -259,16 +251,16 @@
    								<div class="iEDContentHeadTop">
    									<span>●</span><span>实际到账总金额：</span><b id="withdrawalMoney" class="iEDContentHeadTopBb moneyFormat2">0</b><span class="iEDContentHeadTopSpan3">元</span>
    								</div>
-   								<div class="iEDContentHeadC">
-   									<span>充值</span>
+   								<div class="iEDContentHeadC cash">
+   									<span>提现</span>
    								</div>
    							</div>
    							<div class="iEDTrecordType clearfix">
    								<div class="iEDTrecordTypeLeft">
    									<label class="iEDleft">时间范围：</label>
-   									<input id="startTime3" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'endTime3\')}'})" type="text" lang="请选择">
+   									<input id="startTime3" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'endTime3\')}'})" type="text">
    									<i></i>
-   									<input id="endTime3" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startTime3\')}'})" type="text" lang="请选择">
+   									<input id="endTime3" class="iEDInput iEDInputBack Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'startTime3\')}'})" type="text">
    								</div>
    								<div id="withdrawalSearch" class="iEDTrecordTypeLeft iEDDiv2"><span class="btn btnHeight" onselectstart="return false">搜索</span></div>
    							</div>
@@ -288,7 +280,7 @@
 			   						<!-- 提现记录 -->
 			   						<script id="withdraw_list" type="text/html">
 									{{each results as info index}}
-		   							<li class="awardTableRegister awardTableRegisterH1">
+		   							<li class="awardTableRegister awardTableRegisterH1 cleanLi">
 	   									<div class="awardTabCuA1"><span class="moneyFormat">{{info.withdrawalMoney}}</span></div>
 	   									<div class="awardTabCuA2-1">
 											<div class="contentC">
@@ -316,7 +308,6 @@
 		   							</li>
 		   							
 									{{/each}}
-									<!-- 分页标签 -->
 									<li class="page"><div id="pager2"></div></li>
    									</script>
 		   							

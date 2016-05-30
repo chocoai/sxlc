@@ -117,9 +117,12 @@ function addBoot () {
 		success : function(msg) {
 			if (msg == 1) {
 	  			layer.alert("操作成功!",{icon:1});
-	  			setTimeout('location.reload()',2000);
+	  			var table = $('#bottomnavtable').DataTable();
+				table.ajax.reload();
+	  		}else if (msg == -1) {
+	  			layer.alert("底部导航条已存在!",{icon:0});  
 	  		}else {
-	  			layer.alert("操作失败!",{icon:2});  
+	  			layer.alert("操作失败!",{icon:0});
 	  		}
 		}
 	});
@@ -193,7 +196,8 @@ function modBoot() {
 		success : function(msg) {
 			if (msg == 1) {
 	  			layer.alert("操作成功!",{icon:1});
-	  			setTimeout('location.reload()',2000);
+	  			var table = $('#bottomnavtable').DataTable();
+				table.ajax.reload();
 	  		}else {
 	  			layer.alert("操作失败!",{icon:2});  
 	  		}
@@ -272,9 +276,23 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#bottomnavtable').DataTable();
-//设置选中change颜色
- $('#bottomnavtable tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
+});
+
+$(function() {
+	//单选
+	$('#bottomnavtable tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

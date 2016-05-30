@@ -30,7 +30,7 @@ $(function(){
 	});
 	
 	//倒计时
-		
+//		
 	$('.J_CountDown').each(function () {
 		var $this = $(this),
         data = $this.attr('data-config');
@@ -62,18 +62,31 @@ jQuery.fn.layoutClick = function(str){
 
 	//只要日期，不要时间
 	template.helper("$timeFixed",function(content){
+		if (content == null){
+			return null
+		}
 		var index = content.indexOf(" ");
 		return content.substring(0,index)
 	})
 	//金额取小数点后2位
 	template.helper("$toFixed",function(content){
-		return parseInt(content).toFixed(2);
+		if (content == null){
+			return null
+		}
+		return parseFloat(content).toFixed(2);
 	})
 	//去掉时间后的.0
 	template.helper("$toDelete",function(content){
+		if (content == null){
+			return null
+		}
 		var index = content.indexOf(".");
 		return content.substring(0,index)
 	})
+	
+	//红包最多使用金额,初始化0
+	var redMax = 0;
+	
 		var detail = {
 			repaymentPlan:function(applyId){
 				var url = "invest/repaymentPlan/"+applyId+".html";
@@ -86,7 +99,7 @@ jQuery.fn.layoutClick = function(str){
 						
 						var total = 0;
 						for (var i=0;i<data.json.length;i++){
-							total = total + parseInt(data.json[i].sdPrincipalInterests)
+							total = total + parseFloat(data.json[i].sdPrincipalInterests)
 						}
 						$(".moneyFormat1").html(total);
 						var html = template("repay_Plan",data);
@@ -103,9 +116,9 @@ jQuery.fn.layoutClick = function(str){
 					dataType:"json",
 					success:function(r){
 						
-						$("#moneyFormat2").html(parseInt(r.availableAmount).toFixed(2));
-						$("#moneyFormat3").html(parseInt(r.investTotals).toFixed(2));
-						$("#moneyFormat4").html(parseInt(r.shenYuKeTou).toFixed(2));
+						$("#moneyFormat2").html(parseFloat(r.availableAmount).toFixed(2));
+						$("#moneyFormat3").html(parseFloat(r.investTotals).toFixed(2));
+						$("#moneyFormat4").html(parseFloat(r.shenYuKeTou).toFixed(2));
 						var data = r
 						if (r.info.length>0){
 							var html = template("invest_List",r);
@@ -123,12 +136,12 @@ jQuery.fn.layoutClick = function(str){
 					url:url,
 					dataType:"json",
 					success:function(r){
-						
+						console.log(r)
 						if (r!=null){
 							data = r;
 							$.ajax({
 								type:"GET",
-								url:"invest/repaymentPlan/"+applyId+".html",
+								url:"invest/projectCourseRepayment/"+applyId+".html",
 								dataType:"json",
 								success:function(r){
 									if (r.toString()!=""){
@@ -190,8 +203,8 @@ jQuery.fn.layoutClick = function(str){
 					dataType:"json",
 					success:function(r){
 						//console.log(r)
-						if (num<=parseInt(r.userBalances)&&num<=parseInt(r.sSumAount)){
-							var hei = 453 + Math.ceil(r.redPackList.length /3)*40;
+						if (num<=parseFloat(r.userBalances)&&num<=parseFloat(r.sSumAount)){
+							var hei = 473 + Math.ceil(r.redPackList.length /3)*40;
 							layer.open({
 								title :'我要投资',//标题
 								skin: 'layer-ext-myskin',//皮肤
@@ -214,8 +227,9 @@ jQuery.fn.layoutClick = function(str){
 									function(profit){
 										r.num = num;
 										r.profit = profit;
-										r.maxRedNum = parseInt(r.num)*r.proportion;
-										//console.log(r)
+										r.maxRedNum = parseFloat(r.num)*r.proportion;
+										r.surplusNum = parseFloat(r.num)*parseFloat(transDiscounts)*0.01;
+										redMax = r.maxRedNum;
 										var html = template("confirmInfo",r)
 										
 										$("#red-packets-top").html(html);
@@ -230,22 +244,24 @@ jQuery.fn.layoutClick = function(str){
 												}else{
 													$(this).layoutClick("有效期至"+r.redPackList[n].sEndDate);
 												}
-												
 											});
 											$(this).mouseout(function(){
 												$(this).parent().find(".tipClick").remove();
 											});
 											
-											if (parseInt($(this).text())>r.maxRedNum){
+											if (parseFloat($(this).text())>redMax){
 												$(this).addClass("disabled");
 											};
 											
+											if (parseFloat($(this).text())>$("#orangeNum").text()){
+												$(this).addClass("disabled");
+											}
 										});
 								
 										
 										$(".input1").on("click",function(e){
 											var eve = e.srcElement||e.target;
-											var inputVal = $("#useVouchers").val()||"0";
+											var inputVal = parseFloat($("#useVouchers").val())||0;
 											if (eve.nodeName == "LABEL"){
 												if ($(this).hasClass("active")){
 													$(this).removeClass("active");
@@ -253,13 +269,11 @@ jQuery.fn.layoutClick = function(str){
 													$(this).addClass("active");
 												};
 												detail.calculation();
-												if (detail.getRedBags()>=r.maxRedNum-inputVal){
+												if (detail.getRedBags()>=redMax||(detail.getRedBags()+inputVal)>=$("#orangeNum").html()){		
 													$(".input1").each(function(){
-														//console.log(1)
 														if (!($(this).hasClass("active"))){
-															
 															$(this).addClass("disabled");
-														}
+														};
 													});
 												}
 											};
@@ -274,12 +288,11 @@ jQuery.fn.layoutClick = function(str){
 											}
 											var re = /^[0-9]*[1-9][0-9]*$/; //正整数
 											var str = detail.getRedBags();
-											var thisVal = $(this).val()||"0";
-											//console.log(num-str);
-											if (thisVal>num-str){
+											var thisVal = $(this).val()||0;
+											if (thisVal>r.surplusNum-str){
 												layer.alert("超出本次投资总金额",function(index){
 													layer.close(index);
-													$("#useVouchers").val(num-str);
+													$("#useVouchers").val(r.surplusNum-str);
 												});
 											}
 											if (re.test($(this).val())||$(this).val()==""||$(this).val()=="0"){
@@ -291,7 +304,7 @@ jQuery.fn.layoutClick = function(str){
 									}
 							)
 						}else{
-							layer.alert("余额不足或本次可投金额");
+							layer.alert("余额不足或超过本次可投金额");
 						}
 					}
 				})
@@ -308,21 +321,25 @@ jQuery.fn.layoutClick = function(str){
 						url,
 						data,
 						function(r){
-							$("#pageProfit").html(parseInt(r).toFixed(2));
+							$("#pageProfit").html(parseFloat(r).toFixed(2));
 						}
 				)
 			},
 			//计算
 			calculation:function(){
-				$("#nowInvestNum").html($("#orangeNum").html());
+				$("#nowInvestNum").html($("#orangeNum1").html());
 				if($("#useVouchers").val()==""||$("#useVouchers").val()==undefined){
 					$("#nowVoucher").html("0.00");
 				}else{
-					$("#nowVoucher").html(parseInt($("#useVouchers").val()).toFixed(2));
+					$("#nowVoucher").html(parseFloat($("#useVouchers").val()).toFixed(2));
 				};			
 				var str = detail.getRedBags();
-				$("#nowBag").html(str);
-				var useNum = parseInt($("#nowInvestNum").html())-$("#nowVoucher").html()-$("#nowBag").html();
+				if (str>=redMax){
+					$("#nowBag").html(redMax);
+				}else{
+					$("#nowBag").html(str);
+				}
+				var useNum = parseFloat($("#nowInvestNum").html())-$("#nowVoucher").html()-$("#nowBag").html();
 				if(useNum>=0){
 					$("#nowAccountBalance").html(useNum.toFixed(2));
 				}else{
@@ -335,7 +352,7 @@ jQuery.fn.layoutClick = function(str){
 				var str = 0;
 				$(".input1").each(function(){
 					if ($(this).hasClass("active")){
-						str += parseInt($(this).text());
+						str += parseFloat($(this).text());
 					}
 				});
 				return str;
@@ -378,14 +395,47 @@ $(function(){
 	});
 	
 	
+	var moneyControl;
+	if (minStarts == "0" && increaseRanges == "0"){
+		moneyControl = "起投金额和加价幅度无限制";
+	}else if(minStarts != "0" && increaseRanges == "0"){
+		moneyControl = minStarts+"元起投";
+	}else if (minStarts == "0" && increaseRanges != "0"){
+		moneyControl =  "起投金额无限制,加价幅度"+ increaseRanges;
+	}else{
+		moneyControl = minStarts+"元起投"+"加价幅度"+ increaseRanges;
+	}
+	$(".charge-input").val(moneyControl);
+	
+	$(".charge-input").bind("focus",function(){
+		if ($(this).val()==moneyControl){
+			$(this).val("");
+			$(this).css("color","#000")
+		}
+	});
+	$(".charge-input").bind("blur",function(){
+		if ($(this).val()==""){
+			$(this).val(moneyControl);
+			$(this).css("color","#bfbfbf")
+		}
+	});
+	
+	
+	
 	$("#inv-now").bind("click",function(){
 		var num = $("#investMoney").val();
-		if (num!="50元起投且金额为整数"){
-			var re = /^[0-9]*[1-9][0-9]*$/ ; //正整数
-			if (re.test(num) && num>=50){
+		console.log((num-parseFloat(minStarts)));
+		console.log((num-parseFloat(minStarts)));
+		console.log((num-parseFloat(minStarts))%increaseRanges);
+		if (num!= moneyControl){
+			if (num >= parseFloat(minStarts) && (num-parseFloat(minStarts))%increaseRanges == 0){
+				detail.getaccountInfo(applyId,ctId,num);
+			}else if(num >= parseFloat(minStarts) && increaseRanges == 0){
+				detail.getaccountInfo(applyId,ctId,num);
+			}else if(num == parseFloat($(".inv-available span").text())&&num <= parseFloat($(".amount-available span").text())){
 				detail.getaccountInfo(applyId,ctId,num);
 			}else{
-				layer.alert("50元起投且金额为整数")
+				layer.alert(moneyControl)
 			}
 		}else{
 			layer.alert("请填写投资金额")
@@ -393,14 +443,12 @@ $(function(){
 	});
 	
 	
-	
 	$("#investMoney").on("keyup",function(){
 		var num = $(this).val();
-		if (num!="50元起投且金额为整数"&&num){
-			var re = /^[0-9]*[1-9][0-9]*$/ ; //正整数
-			if (re.test(num) && num>=50){
-				detail.getInvestMoney(applyId,num)
-			}
+		if (num!= moneyControl && num >= parseFloat(minStarts) && (num-parseFloat(minStarts))%increaseRanges == 0 ){
+			detail.getInvestMoney(applyId,num);
+		}else if(num!= moneyControl && num >= parseFloat(minStarts) && increaseRanges == 0 ){
+			detail.getInvestMoney(applyId,num);
 		}
 	});
 	
@@ -409,26 +457,27 @@ $(function(){
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publickey);
 		var data = {};
-/*		var sDirectPwd;*/
-/*		if($("#codeContent").html()==undefined){
-			
-		}else{
-			if ($("#directionalCode").val()){
-				sDirectPwd = encrypt.encrypt($("#directionalCode").val()+"");
-			}else{
-				layer.alert("请填写定向标密码");
-				return false;
-			}
-		}*/
 		
 		var slVouchers = encrypt.encrypt($("#nowVoucher").html());
-		var lAmount = encrypt.encrypt($("#nowInvestNum").html());
+		var lAmount = encrypt.encrypt($("#orangeNum").html());
 		var arr = [];
+		var arr1 = [];
 		$(".input1").each(function(n){
 			if ($(this).hasClass("active")){
 				arr.push($(this).children().val());
+				arr1.push($(this).attr("data-userNum"));
 			}
 		});
+		var clickRed = detail.getRedBags();
+		if (clickRed>redMax){
+			var needNum = clickRed - redMax;
+			arr1[arr.length-1] = arr1[arr.length-1] - needNum;
+		}
+		
+		for (var i=0;i<arr.length;i++){
+			arr[i] = arr[i]+","+arr1[i];
+		}
+
 		var redPacks = encrypt.encrypt(arr.join(",")+"");
 		var projectId = encrypt.encrypt(applyId+"");
 

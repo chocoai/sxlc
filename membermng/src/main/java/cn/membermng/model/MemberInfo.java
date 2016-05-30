@@ -33,6 +33,8 @@ public class MemberInfo {
 	private String		confirmPassword;		//会员密码
 	private String		safePwd;				//会员安全密码
 	private Long		companyId;				//企业信息编号
+	private String     companyeBLN;				//营业执照号码
+	
 	private CompanyInfo	companyInfo;
 	private Long		personalId;				//个人信息编号
 	private PersonalBaseInfo personalBaseInfo;
@@ -709,5 +711,13 @@ public class MemberInfo {
 
 	public void setRecordNum(int recordNum) {
 		this.recordNum = recordNum;
+	}
+
+	public String getCompanyeBLN() {
+		return companyeBLN;
+	}
+
+	public void setCompanyeBLN(String companyeBLN) {
+		this.companyeBLN = companyeBLN;
 	}
 }

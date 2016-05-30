@@ -15,6 +15,7 @@ import cn.springmvc.service.SafetyCertificationSetService;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity; 
+import product_p2p.kit.pageselect.PageUtil;
 @Service("safetyCertificationSetServiceImpl")
 public class SafetyCertificationSetServiceImpl implements SafetyCertificationSetService {
 	@Resource(name="safetyCertificationSetDaoImpl")
@@ -75,7 +76,8 @@ public class SafetyCertificationSetServiceImpl implements SafetyCertificationSet
 			PageEntity pageEntity) {
 		List<SafetyCertificationSetEntity> safetyCertificationSetList=null;    
 	 	safetyCertificationSetList = safetyCertificationSetListDaoImpl.selectSafetyCertificationSetAllpage(pageEntity);  
-		return safetyCertificationSetList; 
+		PageUtil.ObjectToPage(pageEntity, safetyCertificationSetList);
+	 	return safetyCertificationSetList; 
 	}
 
 	@Override

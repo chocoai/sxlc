@@ -50,6 +50,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<button class="obtn" onclick="termRange()">允许担保借款期限起止范围</button>
 								<button class="obtn" onclick="documentManagement()">担保证件管理</button>
 								<button class="obtn" onclick="accOnOff()">开启/关闭自动代偿</button>
+								<button class="obtn" onclick="openAcount()">开户</button>
 							</div>
 						</div>
 					</div>
@@ -60,28 +61,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			   					<div>
 					   				<div class="item">
 					   					<div class="label">第三方账户号：</div>
-					   					<div class="con">第三方账户号</div>
+					   					<div id="thirdPartyAccount" class="con">第三方账户号</div>
 					   				</div>
 					   				<div class="item">
 					   					<div class="label">当前余额：</div>
-					   					<div class="con"><label class="moneyFormat">1000</label>元</div>
+					   					<div class="con"><label id="userBalances" class="moneyFormat">1000</label>元</div>
 					   				</div>
 					   				<div class="item">
 					   					<div class="label">代偿总金额：</div>			   				
-								   		<div class="con"><label class="moneyFormat">1000</label>元</div>
+								   		<div class="con"><label id="totalCompensationAmount" class="moneyFormat">1000</label>元</div>
 										
 					   				</div>
 					   				<div class="item">
 					   					<div class="label">代偿回款总金额：</div>
-					   					<div class="con"><label class="moneyFormat">1000</label>元</div>
+					   					<div class="con"><label id="allCompensatoryPayment" class="moneyFormat">1000</label>元</div>
 					   				</div>
 					   				<div class="item">
 					   					<div class="label">代偿未回款总金额：</div>
-					   					<div class="con"><label class="moneyFormat">1000</label>元</div>
+					   					<div class="con"><label id="noCompensatoryPayment" class="moneyFormat">1000</label>元</div>
 					   				</div>
 					   				<div class="item">
 					   					<div class="label">担保费收取总金额：</div>
-					   					<div class="con"><label class="moneyFormat">1000</label>元</div>
+					   					<div class="con"><label id="" class="moneyFormat">1000</label>元</div>
 					   				</div>
 				   				</div>
 			   				</fieldset>
@@ -90,19 +91,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<!-- 担保借款金额范围部分开始 -->
 				<div class="w-content" id="loanamount">
-					<form role="form" class="" id="loanamountform">
+					<form role="form" class="" action="javascript:addRange()" id="loanamountform">
 						<div class="form-group"> 
-							<label>最大借款金额：</label><input type="text" value="" datatype="amcountM"/><samp>元</samp>
+							<label>最大借款金额：</label><input id="minAmount" type="text" value="" datatype="acountM"/><samp>元</samp>
 						</div>
 						<div class="form-group"> 
-							<label>最小借款金额：</label><input type="text" value="" datatype="amcountM"/><samp>元</samp>
+							<label>最小借款金额：</label><input id="maxAmount" type="text" value="" datatype="acountM"/><samp>元</samp>
 						</div>
 						<div class="cmbtncontainer loanamountcon">
-							<a class="commonbtn0">添加</a>
+							<a id="add" class="commonbtn0">添加</a>
 							<a class="commonbtn1">取消</a>
 						</div>
 					</form>
 				</div>
+				<form id="openForm" action="guarant/openAcount.do" type="post"></form>
+				<form id="openOrOff" action="guarant/Authorize.do" type="post"></form>
 				<!-- 担保借款金额范围部分结束 -->
 				<!-- 担保产品类型部分开始 -->
 				<div class="w-content" id="producttype">
@@ -110,19 +113,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<table>
 							<tr>
 								<td>担保产品类型</td>
-								<td>
-									<span class="producttypechk">
-										<input type="checkbox" name="optionsRadios" id="" value=""> 
-						 				<label class="checkbox-inline">信用贷</label>
-									</span>
-									<span class="producttypechk">
-										<input type="checkbox" name="optionsRadios" id="" value=""> 
-						 				<label class="checkbox-inline">担保贷</label>
-									</span>
-									<span class="producttypechk">
-										<input type="checkbox" name="optionsRadios" id="" value=""> 
-						 				<label class="checkbox-inline">抵押贷</label>
-									</span>
+								<td id="guType">
 								</td>
 							</tr>
 						</table>
@@ -131,18 +122,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 担保产品类型部分结束 -->
 				<!-- 允许担保借款期限起止范围部分开始 -->
 				<div class="w-content" id="termrange">
-					<form role="form" class="" id="termRangeform">
+					<form role="form" class="" id="termRangeform" action="javascript:add()">
 						<div class="form-group"> 
-							<label>天标：</label><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" >
+							<label>天标：</label><input id="daystartDate" type="text" datatype="days" maxlength="2"/><span class="line"></span><input id="dayendDate" type="text" datatype="days" maxlength="2"/>
 						</div>
 						<div class="form-group"> 
-							<label>月标：</label><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" >
+							<label>月标：</label><input id="monthstartDate" type="text" datatype="days" maxlength="2"><span class="line"></span><input id="monthendDate" type="text" datatype="days" maxlength="2"/>
 						</div>
 						<div class="form-group"> 
-							<label>年标：</label><input type="text" id="startDate1" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate1\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate1" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate1\')}' ,maxDate:'2020-10-01' })" >
+							<label>年标：</label><input id="yearstartDate" type="text" datatype="days" maxlength="2"><span class="line"></span><input id="yearendDate" type="text" datatype="days" maxlength="2"/>
 						</div>
 						<div class="cmbtncontainer loanamountcon">
-							<a class="commonbtn0">添加</a>
+							<a id="add" class="commonbtn0">添加</a>
 							<a class="commonbtn1">取消</a>
 						</div>
 					</form>
@@ -164,7 +155,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			layer.closeAll(); //再执行关闭  
 		});
 		$(function(){
-			validform5(".commonbtn0","loanamountform",false,"3");
+			validform5(".commonbtn0","loanamountform",false,"5");
+			validform5(".commonbtn0","termRangeform",false,"5");
 		});
 		$(function() {
 			$('#table_id').DataTable({
@@ -189,6 +181,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 		});
 	</script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>	
 </body>
 
 </html>

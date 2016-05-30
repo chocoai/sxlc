@@ -45,7 +45,7 @@ jQuery.fn.layoutClick = function(str){
 	var m = '<div class="tipClick"><div class="contentTip">' + s + '<img class="imgTip" src="resource/img/invest/wytz_tip1.png"></div></div>';
 	this.parent().css('position','relative');
 	this.parent().append(m);
-	this.parent().find(".tipClick").css("left",this.offset().left - this.parent().offset().left - this.innerWidth()/2);
+	this.parent().find(".tipClick").css("left",this.offset().left - this.parent().offset().left - this.innerWidth()/2+10);
 	this.parent().find(".tipClick").css("top",this.offset().top - this.parent().offset().top + this.innerHeight() + 15 );
 };
 
@@ -54,19 +54,31 @@ jQuery.fn.layoutClick = function(str){
 //2016-5-3 付晨早
 	//只要日期，不要时间
 	template.helper("$timeFixed",function(content){
+		if (content == null){
+			return null
+		}
 		var index = content.indexOf(" ");
 		return content.substring(0,index)
 	})
 	//金额取小数点后2位
 	template.helper("$toFixed",function(content){
+		if (content == null){
+			return null
+		}
 		return parseFloat(content).toFixed(2);
 	})
 	//去掉时间后的.0
 	template.helper("$toDelete",function(content){
+		if (content == null){
+			return null
+		}
 		var index = content.indexOf(".");
 		return content.substring(0,index)
 	})
 
+	//红包最多使用金额,初始化0
+	var redMax = 0;
+	
 	var detail = {
 			repaymentPlan:function(applyId){
 				var url = "invest/repaymentPlan/"+applyId+".html";
@@ -118,7 +130,7 @@ jQuery.fn.layoutClick = function(str){
 							data = r;
 							$.ajax({
 								type:"GET",
-								url:"invest/repaymentPlan/"+applyId+".html",
+								url:"invest/projectCourseRepayment/"+applyId+".html",
 								dataType:"json",
 								success:function(r){
 									if (r.toString()!=""){
@@ -174,7 +186,7 @@ jQuery.fn.layoutClick = function(str){
 											if (r!=null){
 												var html = "";
 												for (var i=0;i<r.length;i++){
-													html = "<img  class='text-img' src='"+r[i].attachUrl+ "'>";
+													html = "<img  class='text-img' src='"+imgProfix+r[i].attachUrl+ "'>";
 												}
 												html += "<h2>"+r[0].attachTitle+"</h2><p>"+r[0].projectAfterLoanInfoEntity.detail+"</p>";
 
@@ -217,7 +229,6 @@ jQuery.fn.layoutClick = function(str){
 					url:url,
 					dataType:"json",
 					success:function(r){
-						console.log(r)
 						if (num<=parseFloat(r.userBalances)&&num<=parseFloat(r.sSumAount)){
 							var hei = 453 + Math.ceil(r.redPackList.length /3)*40;
 							layer.open({
@@ -242,7 +253,8 @@ jQuery.fn.layoutClick = function(str){
 										r.num = num;
 										r.profit = profit;
 										r.maxRedNum = parseFloat(r.num)*r.proportion;
-										//console.log(r)
+										redMax = r.maxRedNum;
+										
 										var html = template("confirmInfo",r)
 										
 										$("#red-packets-top").html(html);
@@ -262,16 +274,19 @@ jQuery.fn.layoutClick = function(str){
 												$(this).parent().find(".tipClick").remove();
 											});
 											
-											if (parseFloat($(this).text())>r.maxRedNum){
+											if (parseFloat($(this).text())>redMax){
 												$(this).addClass("disabled");
 											};
 											
+											if (parseFloat($(this).text())>$("#orangeNum").text()){
+												$(this).addClass("disabled");
+											}
 										});
 								
 										
 										$(".input1").on("click",function(e){
 											var eve = e.srcElement||e.target;
-											var inputVal = $("#useVouchers").val()||"0";
+											var inputVal = parseFloat($("#useVouchers").val())||0;
 											if (eve.nodeName == "LABEL"){
 												if ($(this).hasClass("active")){
 													$(this).removeClass("active");
@@ -279,13 +294,11 @@ jQuery.fn.layoutClick = function(str){
 													$(this).addClass("active");
 												};
 												detail.calculation();
-												if (detail.getRedBags()>=r.maxRedNum-inputVal){
+												if (detail.getRedBags()>=redMax||(detail.getRedBags()+inputVal)>=$("#orangeNum").html()){		
 													$(".input1").each(function(){
-														//console.log(1)
 														if (!($(this).hasClass("active"))){
-															
 															$(this).addClass("disabled");
-														}
+														};
 													});
 												}
 											};
@@ -300,8 +313,7 @@ jQuery.fn.layoutClick = function(str){
 											}
 											var re = /^[0-9]*[1-9][0-9]*$/; //正整数
 											var str = detail.getRedBags();
-											var thisVal = $(this).val()||"0";
-											//console.log(num-str);
+											var thisVal = $(this).val()||0;
 											if (thisVal>num-str){
 												layer.alert("超出本次投资总金额",function(index){
 													layer.close(index);
@@ -340,7 +352,6 @@ jQuery.fn.layoutClick = function(str){
 			},
 			//计算
 			calculation:function(){
-				
 				$("#nowInvestNum").html($("#orangeNum").html());
 				if($("#useVouchers").val()==""||$("#useVouchers").val()==undefined){
 					$("#nowVoucher").html("0.00");
@@ -348,7 +359,12 @@ jQuery.fn.layoutClick = function(str){
 					$("#nowVoucher").html(parseFloat($("#useVouchers").val()).toFixed(2));
 				};
 				var str = detail.getRedBags();
-				$("#nowBag").html(str);
+				if (str>=redMax){
+					$("#nowBag").html(redMax);
+				}else{
+					$("#nowBag").html(str);
+				}
+				
 				var useNum = parseFloat($("#nowInvestNum").html())-$("#nowVoucher").html()-$("#nowBag").html();
 				if(useNum>=0){
 					$("#nowAccountBalance").html(useNum.toFixed(2));
@@ -377,14 +393,26 @@ $(function(){
 	if (minStarts == "0" && increaseRanges == "0"){
 		moneyControl = "起投金额和加价幅度无限制";
 	}else if(minStarts != "0" && increaseRanges == "0"){
-		moneyControl = "起投金额"+minStarts+"元";
+		moneyControl = minStarts+"元起投";
 	}else if (minStarts == "0" && increaseRanges != "0"){
 		moneyControl =  "起投金额无限制,加价幅度"+ increaseRanges;
 	}else{
-		moneyControl = "起投金额"+minStarts+"元,"+"加价幅度"+ increaseRanges;
+		moneyControl = minStarts+"元起投"+"加价幅度"+ increaseRanges;
 	}
 	$(".charge-input").val(moneyControl);
 	
+	$(".charge-input").bind("focus",function(){
+		if ($(this).val()==moneyControl){
+			$(this).val("");
+			$(this).css("color","#000")
+		}
+	});
+	$(".charge-input").bind("blur",function(){
+		if ($(this).val()==""){
+			$(this).val(moneyControl);
+			$(this).css("color","#bfbfbf")
+		}
+	});
 	/*标签的切换&顶部链接切换*/	
 	$(".tab-head li").each(function(index){
 		var liNode =$(this);
@@ -418,8 +446,11 @@ $(function(){
 	$("#inv-now").bind("click",function(){
 		var num = $("#investMoney").val();
 		if (num!= moneyControl){
-			var re = /^[0-9]*[1-9][0-9]*$/ ; //正整数
-			if (num >= minStarts && (num-parseFloat(minStarts))%increaseRanges == "0"){
+			if (num >= parseFloat(minStarts) && (num-parseFloat(minStarts))%increaseRanges == 0){
+				detail.getaccountInfo(applyId,num);
+			}else if(num >= parseFloat(minStarts) && increaseRanges == 0){
+				detail.getaccountInfo(applyId,num);
+			}else if(num == parseFloat($(".inv-available span").text())&&num <= parseFloat($(".amount-available span").text())){
 				detail.getaccountInfo(applyId,num);
 			}else{
 				layer.alert(moneyControl)
@@ -433,12 +464,10 @@ $(function(){
 	
 	$("#investMoney").on("keyup",function(){
 		var num = $(this).val();
-		if (num!="50元起投且金额为整数"&&num){
-			var re = /^[0-9]*[1-9][0-9]*$/ ; //正整数
-			if (re.test(num) && num>=50){
-				//console.log(num)
-				detail.getInvestMoney(applyId,num)
-			}
+		if (num!= moneyControl && num >= parseFloat(minStarts) && (num-parseFloat(minStarts))%increaseRanges == 0 ){
+			detail.getInvestMoney(applyId,num);
+		}else if(num!= moneyControl && num >= parseFloat(minStarts) && increaseRanges == 0 ){
+			detail.getInvestMoney(applyId,num);
 		}
 	});
 	
@@ -461,12 +490,24 @@ $(function(){
 		var slVouchers = encrypt.encrypt($("#nowVoucher").html());
 		var lAmount = encrypt.encrypt($("#nowInvestNum").html());
 		var arr = [];
+		var arr1 = [];
 		$(".input1").each(function(n){
 			if ($(this).hasClass("active")){
 				arr.push($(this).children().val());
+				arr1.push($(this).attr("data-userNum"));
 			}
 		});
-		var redPacks = encrypt.encrypt(arr.join(",")+"");
+		var clickRed = detail.getRedBags();
+		if (clickRed>redMax){
+			var needNum = clickRed - redMax;
+			arr1[arr.length-1] = arr1[arr.length-1] - needNum;
+		}
+		
+		for (var i=0;i<arr.length;i++){
+			arr[i] = arr[i]+","+arr1[i];
+		}
+		
+		var redPacks = encrypt.encrypt(arr.join(";")+"");
 		var projectId = encrypt.encrypt(applyId+"");
 		
 		$("input[name='slVouchers']").val(slVouchers);

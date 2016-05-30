@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 
 import cn.springmvc.model.Admin;
@@ -76,7 +77,7 @@ public class AutomaticbidController {
 		
 		String autoBackRate = request.getParameter("autoBackRate");
 		if (autoBackRate != null && autoBackRate != "") {
-			systemSetEntity.setSautoBackRate(autoBackRate);
+			systemSetEntity.setAutoBackRate(IntegerAndString.StringToInt(autoBackRate, -1));
 		}
 		systemSetEntity.setEndDateRemind(-1);
 		systemSetEntity.setExpirationReminderSet(-1);

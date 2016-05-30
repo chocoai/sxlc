@@ -20,21 +20,21 @@ public class WithdrawsEntity {
 	private int iCardType;			//银行卡类型
 	private String sBankCode;		//银行卡代码
 	private String sBankName;		//开户行支行名称
-	private int iProvince;			//省份
+	private long iProvince;			//省份
 	private String sProvince;		//开户省份
-	private int iCity;				//开户城市
+	private long iCity;				//开户城市
 	private String sCity;			//开户城市
 	private String sDate;			//时间戳
-	public int getiProvince() {
+	public long getiProvince() {
 		return iProvince;
 	}
-	public void setiProvince(int iProvince) {
+	public void setiProvince(long iProvince) {
 		this.iProvince = iProvince;
 	}
-	public int getiCity() {
+	public long getiCity() {
 		return iCity;
 	}
-	public void setiCity(int iCity) {
+	public void setiCity(long iCity) {
 		this.iCity = iCity;
 	}
 	public int getiMemberType() {

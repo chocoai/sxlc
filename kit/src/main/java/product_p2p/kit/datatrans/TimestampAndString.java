@@ -60,7 +60,7 @@ public class TimestampAndString {
   	}
 	
   	/**
-  	 * date to string 格式：2016-04-06 10:48:52
+  	 * date to string 格式：2016-04-06 10-48-52
   	 * TODO
   	 * 创建日期：2016-4-6上午10:47:53
   	 * 修改日期：
@@ -86,6 +86,29 @@ public class TimestampAndString {
   		sResult = datafFormat.format(date);
   		return sResult;
   	}
+  	/**
+  	 * 将字符串转换为日期
+  	 * TODO
+  	 * 创建日期：2016-5-23上午10:34:51
+  	 * 修改日期：
+  	 * 作者：pengran
+  	 * @param
+  	 * return Date
+  	 */
+	public static Date  StringToDate(String str){
+  		Date sDate = new Date();
+  		if(str == null && !"".equals(str)){
+  			return sDate;
+  		}
+  		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  		try {
+			sDate = dateFormat.parse(str);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  		return sDate;
+  	} 
   	/**
   	 * 计算两个时间相差几个月又几天
   	* getDateSubMonthDay	计算两个时间相差几个月又几天 

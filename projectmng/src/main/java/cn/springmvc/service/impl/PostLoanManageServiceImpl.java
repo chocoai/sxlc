@@ -58,6 +58,16 @@ public class PostLoanManageServiceImpl implements PostLoanManageService {
 			PageEntity pageEntity) {
 
 		List<PostProjectEntity> list = postLoanManageListDao.getOverdueCollection(pageEntity);
+		if(list == null) {
+			return;
+		}
+		if(list.size() > 0) {
+			for(int i = 0;i<list.size();i++) {
+				long[] lOverFee = {0,0};
+				postLoanManageListDao.GetLoanRepayOverdueInfo(list.get(i).getRepayID(), lOverFee); 
+				list.get(i).setOverdueAmount(lOverFee[0]+lOverFee[1]);
+			}
+		}
 		PageUtil.ObjectToPage(pageEntity, list);
 		
 	}

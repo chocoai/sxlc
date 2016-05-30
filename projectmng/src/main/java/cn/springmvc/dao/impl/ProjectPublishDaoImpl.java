@@ -58,9 +58,9 @@ public class ProjectPublishDaoImpl extends SqlSessionDaoSupport implements proje
 
  	@Override
 	public int updateEndtime(ProjectAppProcessEntity projectAppProcessEntity) {
-		
- 		int result = getSqlSession().update("projectPublish.updateEndDate",projectAppProcessEntity);
-		return result;
+ 		
+ 		getSqlSession().selectOne("projectPublish.updateEndDate",projectAppProcessEntity);  
+		return projectAppProcessEntity.getResult();
 		
 	}
 

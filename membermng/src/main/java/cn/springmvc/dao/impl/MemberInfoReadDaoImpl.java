@@ -3,6 +3,8 @@ package cn.springmvc.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -11,10 +13,12 @@ import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.membermng.model.Agreement;
 import cn.membermng.model.ExchangeRecords;
 import cn.membermng.model.Friends;
 import cn.membermng.model.IntegralGETRecord;
 import cn.membermng.model.MemberInfo;
+import cn.membermng.model.MemberThirdAuthInfo;
 import cn.membermng.model.MemberVouchers;
 import cn.membermng.model.MyPoint;
 import cn.membermng.model.MyRedPackage;
@@ -195,10 +199,28 @@ public class MemberInfoReadDaoImpl extends SqlSessionDaoSupport implements IMemb
 		entity = getSqlSession().selectOne("memberInfoDaoImpl.loadUntreatedMessage",param);
 		return entity;
 	}
-
-
-	@Autowired
+	
+	
 	@Override
+	public int countEmail(Map<String,Object> param) {
+		return getSqlSession().selectOne("memberInfoDaoImpl.countEmail", param);
+	}
+	
+	
+	@Override
+	public Agreement agreement() {
+		return getSqlSession().selectOne("memberInfoDaoImpl.agreement");
+	}
+
+	
+	@Override
+	public MemberThirdAuthInfo getAutoGiroStatu(Map<String, Object> param) {
+		return getSqlSession().selectOne("memberInfoDaoImpl.getAutoGiroStatu",param);	
+	}
+	
+
+	@Override
+	@Resource(name="sqlSessionFactoryR")
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		
 		super.setSqlSessionFactory(sqlSessionFactory);

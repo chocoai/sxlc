@@ -5,7 +5,7 @@ var ftp = "";
 $(function(){
 	$(".openNew").change(function(){
 		if($(this).val().match("是")){
-			validform5(".addBt","formInput",false,3);
+			validform5(".addBt","formInput",false,5);
 		}
 	});
 });

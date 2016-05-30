@@ -10,7 +10,7 @@ package cn.invitemastermng.model;
 public class CommissionPaymentRecordsEntity {
 	private String personalName;//姓名
 	private String logname;//用户名（会员用户名）
-	private Long memberID;//会员ID
+	private long memberID;//会员ID
 	private String memberNo;//会员编号
 	private String personalPhone;//联系电话
 	private String personalIDCard;//身份证号
@@ -20,7 +20,7 @@ public class CommissionPaymentRecordsEntity {
 	private long investAward;//推荐投资提奖
 	private long vipAward;//推荐购买VIP提奖
 	private long repayAward;//推荐还本提奖
-	private long allmonay;//应发总金额
+	private long allmoney;//应发总金额
 	private long realAmount;//实际发放金额
 	private String payDate;//佣金发放时间
 	public String getPersonalName() {
@@ -95,11 +95,11 @@ public class CommissionPaymentRecordsEntity {
 	public void setPayDate(String payDate) {
 		this.payDate = payDate;
 	}
-	public long getAllmonay() {
-		return allmonay;
+	public long getAllmoney() {
+		return allmoney;
 	}
-	public void setAllmonay(long allmonay) {
-		this.allmonay = allmonay;
+	public void setAllmoney(long allmoney) {
+		this.allmoney = allmoney;
 	}
 	public String getMemberNo() {
 		return memberNo;
@@ -107,10 +107,10 @@ public class CommissionPaymentRecordsEntity {
 	public void setMemberNo(String memberNo) {
 		this.memberNo = memberNo;
 	}
-	public Long getMemberID() {
+	public long getMemberID() {
 		return memberID;
 	}
-	public void setMemberID(Long memberID) {
+	public void setMemberID(long memberID) {
 		this.memberID = memberID;
 	}
 	

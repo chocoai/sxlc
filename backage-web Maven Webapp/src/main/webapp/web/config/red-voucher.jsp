@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 			<legend>红包、代金券到期提醒</legend>
 			 			<form class="form-horizontal" role="form" name="" action="javascript:addRedV()" type="post" id="red">
 			 				<div class="form-group redvoucherdiv">
-			 					<label for="lastname" class="i-fl control-label col3">到期前N提醒：</label>
+			 					<label for="lastname" class="i-fl control-label col3">到期前N天提醒：</label>
 			 					<div class="i-fl" id="redvoucherdiv">
 			 						<input id="days" type="text" class="form-control" datatype="nNum1" name="endDateRemind" placeholder="">
 			 					</div>
@@ -76,7 +76,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script>
 		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 		 $(function(){
-			validform5(".commonbtn0","red",false,"3");
+			validform5(".commonbtn0","red",false,"5");
 		});
 	</script>
 </body>

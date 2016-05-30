@@ -105,6 +105,10 @@ function addLink(){
 /* 友情链接修改部分开始 */
 function modLink(){
 	var rowdata = $('#fltable').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择需要操作的记录！", {icon : 0});
+		return;
+	}
 	$("#mtitle").val(rowdata[0].name);
 	$("#murl").val(rowdata[0].url);
 	var friendLinkId = rowdata[0].id;
@@ -150,6 +154,10 @@ function modLink(){
 /* 删除部分开始 */ 
 function delLink(){
 	var rowdata = $('#fltable').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择需要操作的记录！", {icon : 0});
+		return;
+	}
 	layer.confirm('确定删除？', {
 		  btn: ['确定', '取消'],
 		  yes: function(index, layero){
@@ -173,3 +181,22 @@ function delLink(){
 		});
 }	
 /* 删除部分结束*/ 
+
+$(function() {
+	//单选
+	$('#fltable tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
+});

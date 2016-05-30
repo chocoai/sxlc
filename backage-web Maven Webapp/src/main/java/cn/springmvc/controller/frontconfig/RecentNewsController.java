@@ -72,9 +72,7 @@ public class RecentNewsController {
 		pager.setPageNum(start / length + 1);
 		pager.setPageSize(length);
 		pager.setMap(req);
-		
-		List<NewEventEntity> results = newEventService.selectNewEventListpage(pager);
-		pager.setResults(results);
+		newEventService.selectNewEventListpage(pager);
 		
 		return pager;
 	}

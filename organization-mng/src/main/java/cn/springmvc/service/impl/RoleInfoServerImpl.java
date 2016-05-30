@@ -92,10 +92,10 @@ public class RoleInfoServerImpl implements IRoleInfoServer{
 	
 	@Override
 	public int remove(RoleInfo info,InsertAdminLogEntity entity,String[] sIpInfo) {
-		int result = infoDao.remove(info);
 		List<RoleInfo> list = roleInfoReadDao.getRoleInfoById(info.getId());
 		RoleInfo info2 = list.get(0);
 		entity.setsDetail("删除角色信息：角色名称["+info2.getRoleName()+"]");
+		int result = infoDao.remove(info);
 		if(result == 0){
 			entity.setsDetail(entity.getsDetail()+",操作状态[成功]");
 		}else{

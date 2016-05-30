@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>保荐机构管理-担保机构管理</title>
+	<title>保荐机构管理-银行卡管理</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -77,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</select>
 										<span class="line"></span>
 										<select id="city" class="cityoption">
-											<option>请选择省</option>
+											<option>请选择</option>
 										</select>
 									</td>
 								</tr>
@@ -87,11 +87,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 								<tr>
 									<td class="tt">银行卡卡号</td> 
-									<td class="con" id=""><input id="cardNo" type="text" datatype="bankNum" /></td>
+									<td class="con" id=""><input id="cardNo" type="text" datatype="bankNum" name="bankNum" /></td>
 								</tr>
 								<tr>
 									<td class="tt">确认银行卡卡号</td>
-									<td class="con" id=""><input id="cardNo2" type="text" datatype="bankNum" /></td>
+									<td class="con" id=""><input id="cardNo2" type="text" datatype="bankNum" recheck="bankNum" /></td>
 								</tr>
 								<tr>
 									<td class="tt">开户手机号</td>
@@ -139,11 +139,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 								<tr>
 									<td class="tt">银行卡卡号</td> 
-									<td class="con" id=""><input id="mcardNo" type="text" datatype="bankNum" /></td>
+									<td class="con" id=""><input id="mcardNo" type="text" datatype="bankNum" name="bankNum" /></td>
 								</tr>
 								<tr>
 									<td class="tt">确认银行卡卡号</td>
-									<td class="con" id=""><input id="mcardNo2" type="text" datatype="bankNum" /></td>
+									<td class="con" id=""><input id="mcardNo2" type="text" datatype="bankNum" recheck="bankNum" /></td>
 								</tr>
 								<tr>
 									<td class="tt">开户手机号</td>
@@ -151,8 +151,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</tr>
 							</table>
 							<div class="cmbtncontainer containerbtndiv">
-								<a id="mod" class="commonbtn0">添加</a>
-								<a class="commonbtn1">取消</a>
+								<a id="mod" class="commonbtn0">确定</a>
+								<a id="cancle" class="commonbtn1">取消</a>
 							</div>
 						</form>
 					</div>
@@ -161,6 +161,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 尾部 -->
 			<div class="all"></div>
 		</div>
+	</div>
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	

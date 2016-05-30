@@ -1,4 +1,4 @@
-/*Îé³ÉÈ»2016-4-7*/
+/*ï¿½ï¿½ï¿½È»2016-4-7*/
 .main{
 	height:1344px;
 	width:1500px;
@@ -7,7 +7,7 @@
 	background-position:0;
 	position:relative;
 }
-/*Ê±¼ä  */
+/*Ê±ï¿½ï¿½  */
 .time{
 	height:55px;
 	width:443px;
@@ -17,16 +17,16 @@
 	top:414px;
 	left:560px;
 }
-/*Ê±¼ä½áÊø  */
-/*°´Å¥  */
+/*Ê±ï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*ï¿½ï¿½Å¥  */
 .btn{
 	position:absolute;
 	bottom:100px;
 	left:390px;
 	cursor:pointer;
 }
-/*°´Å¥½áÊø*/
-/* ÖÐ½±¹ö¶¯²¿·Ö¿ªÊ¼ */
+/*ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½*/
+/* ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¿ï¿½Ê¼ */
 .reward ul{
 	color:#4d4d4d;
 	height:273px;
@@ -58,4 +58,6 @@
 	height:230px; 
 	overflow: hidden; 
 }
-/* ÖÐ½±¹ö¶¯²¿·Ö½áÊø */
+.disabled{
+	pointer-events: none;
+}

@@ -8,6 +8,55 @@ $(function(){
 	$(".accountOverviewM label").mouseout(function(){
 		$(this).addClass("tipOrigin").removeClass("tipChange");
 	});
+	/**
+	 * 充值按钮
+	 */
+	$(".rechargeBtn").on("click",function(){
+		var thirdStatu = $("#thirdStatu").attr("value");
+		if(thirdStatu==0){
+			window.location="fundManagement/recharge.html";
+		}else{
+			layer.confirm("您还没有开通第三方账户，无法进行充值！",{
+					btn:["现在去开通","取消"]
+			},function(){
+					window.location="personalCenter/securityCenter.html";
+			},function(){
+					layer.closeAll();
+			});
+		}
+	});
+	/**
+	 * 提现按钮
+	 */
+	$(".withdrawalsBtn").on("click",function(){
+		var thirdStatu = $("#thirdStatu").attr("value");
+		if(thirdStatu==0){
+			window.location="fundManagement/cash.html";
+		}else{
+			layer.confirm("您还没有开通第三方账户，无法进行提现！",{
+					btn:["现在去开通","取消"]
+			},function(){
+					window.location="personalCenter/securityCenter.html";
+			},function(){
+					layer.closeAll();
+			});
+		}
+	});
+	$(".friendTransfer").on("click",function(){
+		var thirdStatu = $("#thirdStatu").attr("value");
+		if(thirdStatu==0){
+			window.location="personalCenter/friendManagement.html";
+		}else{
+			layer.confirm("您还没有开通第三方账户，无法进行转账！",{
+					btn:["现在去开通","取消"]
+			},function(){
+					window.location="personalCenter/securityCenter.html";
+			},function(){
+					layer.closeAll();
+			});
+		}
+	});
+	
 	/*label背景切换部分结束*/
 	$(".planMSecond").hide();
 	$(".planHCont>div").each(function(i){
@@ -22,9 +71,9 @@ $(function(){
 		});
 		$(".more").click(function(){
 			if($(".payment").hasClass("active")){
-				window.location = "myInvestment.html";
+				window.location = "investmentManagement/myInvestment.html";
 			}else if($(".repayment").hasClass("active")){
-				window.location = "repayPlan.html";
+				window.location = "loanManagement/LR_financing.html";
 			}
 		});
 	});
@@ -49,35 +98,35 @@ function selectMyAccountHome(){
 		success:function(message){
 			if(message.code==200){
 				data = message.data;
-				$(".totalAmount").html(data.totalAmount);
-				$(".totalRecharge span").html(data.chargemoney);
-				$(".totalWithdrawals span").html(data.withdrawalMoney);
+				$(".totalAmount").html(data.totalAmounts);
+				$(".totalRecharge span").html(data.chargemoneys);
+				$(".totalWithdrawals span").html(data.withdrawalMoneys);
 				
 				$(".userBalances").html(data.userBalances);
-				$(".frozen").html(data.frozen);
-				$(".willRecPrincipal").html(data.willRecPrincipal);
-				$(".willRecInterest").html(data.willRecInterest);
-				$(".repayAmount").html(data.repayAmount);
+				$(".frozen").html(data.frozens);
+				$(".willRecPrincipal").html(data.willRecPrincipals);
+				$(".willRecInterest").html(data.willRecInterests);
+				$(".repayAmount").html(data.repayAmounts);
 				//加载饼状图
 				if(data.totalAmount==0){
 					loadMyaccount(1, 1, 1, 1, 1);
 				}else{
-					loadMyaccount(data.userBalances,data.frozen,data.willRecPrincipal,data.willRecInterest,data.repayAmount);
+					loadMyaccount(data.userBalances,data.frozens,data.willRecPrincipals,data.willRecInterests,data.repayAmounts);
 				}
 				$(".giftUserBalances").html(data.giftUserBalances);
-				$(".giftAmount").html(data.giftAmount);
+				$(".giftAmount").html(data.giftAmounts);
 				$(".integralResidue").html(data.integralResidue+"<a class=\"integralResidue_a \" href=\"integralMall/mallIndex.html\">兑换</a>");
 				$(".friends").html(data.friends);
 				
-				$(".investAmountValid").html(data.investAmountValid);
-				$(".realAmount").html(data.realAmount);
-				$(".backAmount").html(data.backAmount);
-				$(".investVouchersAmount").html(data.investVouchersAmount);
-				$(".investGiftAmount").html(data.investGiftAmount);
-				$(".amount").html(data.amount);
-				$(".willRepayPrincipal").html(data.willRepayPrincipal);
-				$(".willRepayInterest").html(data.willRepayInterest);
-				$(".overdue").html(data.overdue);
+				$(".investAmountValid").html(data.investAmountValids);
+				$(".realAmount").html(data.realAmounts);
+				$(".backAmount").html(data.backAmounts);
+				$(".investVouchersAmount").html(data.investVouchersAmounts);
+				$(".investGiftAmount").html(data.investGiftAmounts);
+				$(".amount").html(data.amounts);
+				$(".willRepayPrincipal").html(data.willRepayPrincipals);
+				$(".willRepayInterest").html(data.willRepayInterests);
+				$(".overdue").html(data.overdues);
 				$(".lastDate").html(data.lastDate);
 			}else{
 				layer.alert(message.message);

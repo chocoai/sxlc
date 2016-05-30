@@ -249,9 +249,12 @@
 					</div>		
 				</li>
 			{{/each}}
-			<li><div id="pager1" class="pager-box"></div></li>
+			<div id="pager1" class="pager-box"></div>
 		</script>
    	</div>
+   	<script type="text/javascript">
+		var publickey = '<%=session.getAttribute("publicKey")%>';
+	</script>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<!-- <script type="text/javascript" charset="utf-8" src="plugs/laypage/laypage.js"></script> -->
 	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>

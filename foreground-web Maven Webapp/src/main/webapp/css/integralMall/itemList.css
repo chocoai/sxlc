@@ -1,11 +1,11 @@
 /* CSS Document */
 @charset "UTF-8";
-/* ÉèÖÃ¶¥²¿Á´½ÓÑùÊ½ */
-/* »ý·ÖÉÌ³ÇÉÌÆ·ÁÐ±íÑùÊ½        ñã¸£ÐÇ        2016-3-29 */
+/* ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
+/* ï¿½ï¿½ï¿½ï¿½Ì³ï¿½ï¿½ï¿½Æ·ï¿½Ð±ï¿½ï¿½ï¿½Ê½        ï¿½ã¸£ï¿½ï¿½        2016-3-29 */
 .intergralMallCommon .mainPageTop2{
 	color:#72c0f3;
 }
-/* ·ÖÒ³µÄ¼ä¾àÉèÖÃ   */
+/* ï¿½ï¿½Ò³ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   */
 #pager{
 	padding:5px 0 35px 0 !important;
 }
@@ -26,7 +26,7 @@
 .nowPositionContent span{
 	color:#111 !important;
 }
-/* ÉÌÆ·ÁÐ±í¾ßÌå²¿·Ö */
+/* ï¿½ï¿½Æ·ï¿½Ð±ï¿½ï¿½ï¿½å²¿ï¿½ï¿½ */
 .productListArea{
 	width:100%;
 	min-width:1200px;
@@ -35,7 +35,7 @@
 	width:1200px;
 	margin:0 auto 20px auto;
 }
-/* Ñ¡Ôñ»ý·Ö²¿·Ö */
+/* Ñ¡ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ */
 .filter{
 	background:#ffffff;
 	padding:10px 20px;
@@ -68,12 +68,14 @@
 .integralFilter ul{
 	margin-bottom:-5px;
 	margin-left:30px;
+	vertical-align: middle;
 }
 .integralFilter ul li{
 	float:left;
 	color:#2c2c2c;
 	cursor:pointer;
 	margin-left:2px;
+	line-height: 35px;
 }
 .integralFilter ul li span{
 	padding:6px 15px;
@@ -121,7 +123,7 @@
 .order:hover{
 	color:#72c0f3;
 }
-/* µ±É¸Ñ¡²¿·ÖµÄli±»µã»÷Ê±Ìí¼ÓµÄÑùÊ½ */
+/* ï¿½ï¿½É¸Ñ¡ï¿½ï¿½ï¿½Öµï¿½liï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Óµï¿½ï¿½ï¿½Ê½ */
 .filterLi li span{
 	border:1px solid #fff;
 	-moz-border-radius:15px;
@@ -135,7 +137,7 @@
 	color:#72c0f3;
 	border-color:#72c0f3 !important;
 }
-/* ÉÌÆ·ÁÐ±íÏêÏ¸ÏÔÊ¾²¿·Ö */
+/* ï¿½ï¿½Æ·ï¿½Ð±ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ */
 .productIntegral{
 	margin-top:40px;
 }
@@ -165,10 +167,10 @@
     padding:0 50px;
     position:relative;
     cursor:pointer;
-    margin:10px 0;
+    margin:5px 0;
 }
 .productImg1{
-	margin-left:15px;
+	margin-left:10px;
 }
 .detailProduct p{
 	font-size:16px;
@@ -231,6 +233,7 @@
 	height:184px;
 	text-align:center;
 }
+.productImg img{width: 200px;height: 184px;}
 .productCard{
 	border-top:2px solid #b285ef;
 }
@@ -294,7 +297,7 @@
 	font-size:16px;
 	color:#484848;
 }
-/* ¹Ì¶¨µÄÁ¬½Ó */
+/* ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .link{
 	display:block;
 	width:117px;
@@ -305,3 +308,4 @@
 	z-index:1;
 	background:url(../../resource/img/integralMall/jfsc_3.png) no-repeat;
 }
+.typelist{width: 1030px;}

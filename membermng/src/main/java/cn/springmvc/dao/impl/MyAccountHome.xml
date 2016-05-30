@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">     
 <mapper namespace="MyAccountHome">  
     <!-- 我的账户首页-->  
-    <select id="selectMyAccountHome"  statementType="CALLABLE" parameterType="Map"> 
+    <select id="selectMyAccountHome"  statementType="CALLABLE"  parameterType="Map"> 
    
 	     {call HomePage(
 				#{Member_ID_IN ,        mode=IN,	jdbcType=BIGINT},

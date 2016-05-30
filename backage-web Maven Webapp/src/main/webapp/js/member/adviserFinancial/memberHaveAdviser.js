@@ -78,6 +78,10 @@ $(function(){
 						return;
 					}
 					var planerId = rowdata[0].fAID;
+					if(planerId == oldplanerId ){
+						layer.alert("理财顾问未改变，不能变更！",{icon:0});  
+						return;
+					}
 					var encrypt = new JSEncrypt();
 			    	encrypt.setPublicKey(publicKey_common);
 			    	//result 为加密后参数
@@ -100,11 +104,11 @@ $(function(){
 						},
 						success : function(data) {
 							//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
-							if(data == 0){
+							if(data == 1){
 								//执行完关闭
 								layer.alert("变更成功",{icon:1});  
-							  	layer.close(index);
-							  	setTimeout('location.reload()',500);
+								layer.close(index);
+							    $('#table_id').DataTable().ajax.reload();
 							}else if(data == -2){
 								layer.alert("没有原始理财顾问，不能变更！",{icon:0});  
 							}
@@ -187,7 +191,7 @@ function showMemberHaveAdviserList(){
 		                		  return sReturn;
 		                	  }
 		                  },
-		                  { title:"会员编码","data": "memberNo"},   
+		                  { title:"会员编号","data": "memberNo"},   
 		                  { title:"用户名","data": "logName" },
 		                  { title:Name,"data": "personalName" }, 
 		                  { title:"注册时间","data": "sRegDate" },

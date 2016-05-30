@@ -23,14 +23,15 @@
 	   from  Member_Attest_Type mat
 	   LEFT JOIN Admin a on a.Admin_ID=mat.Admin_ID
            <where>  
-	            <if test="map!=null and map.attestTypeName != null">  
-	                mat.Attest_TypeName like  '%${map.attestTypeName}%'  
+                 1=1
+	            <if test="map!=null and map.attestTypeName != null and map.attestTypeName !='' ">  
+	                and   mat.Attest_TypeName like  '%${map.attestTypeName}%'  
 	            </if>   
 	            <if test="map!=null and map.statu != -1">  
 	                and mat.Statu=#{map.statu}
 	            </if>  
 	            <if test="map!=null and map.memberType != -1">  
-	                and mat.memberType=#{map.memberType}
+	                and mat.Member_Type=#{map.memberType}
 	            </if>   
            </where>  
     </select>       

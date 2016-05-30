@@ -22,6 +22,7 @@
    	<script type="text/javascript">
     	var publickey = '<%=session.getAttribute("publicKey")%>';
     	var basePath = '<%=basePath%>';
+    	var vipYearMoney = '${vipYearMoney }';
     </script>
    	<div class="main">
    		<div class="clearfix">
@@ -64,8 +65,14 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<!-- 弹出层 -->
    	<div class="buyVip">
+	   	<form action="personalCenter/vipApply.html" method="post" name="form1" id="form1">
+ 				<input type="hidden" name="startTime" id="get1" value=""> 
+ 				<input type="hidden" name="years" id="get2" value=""> 
+ 				<input type="hidden" name="sign" value="" id="get3">
+ 		</form>
    	<form id="buyBox">
    		<div class="buy-top">
+   			
    			<div class="buy-input">
    				<div class="left-title">开始时间：</div>
    				<input type="text" class="select-time Wdate" id="startYear"  onfocus="WdatePicker({minDate: '%y-%M-%d' })" lang="请选择开始时间">

@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心</title>
+	<title>配置中心-托管平台管理</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->

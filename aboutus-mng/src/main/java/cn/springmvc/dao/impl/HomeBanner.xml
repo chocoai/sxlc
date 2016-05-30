@@ -20,8 +20,9 @@
 	   from  Home_Banner  hb
 	   LEFT JOIN Admin a on a.Admin_ID=hb.Admin_ID
 	    <where>  
+	          1=1
             <if test="map.bannerTitle != null and map.bannerTitle != ''">  
-                hb.Banner_Title like  '%${map.bannerTitle}%'  
+                and  hb.Banner_Title like  '%${map.bannerTitle}%'  
             </if>  
             <if test="map.startTime != null and map.startTime != ''">  
                 and hb.CreateTime>=#{map.startTime}
@@ -33,13 +34,13 @@
                 and hb.Statu=#{map.statu}
             </if>  
         </where>  
-         order by hb.CreateTime desc 
+         order by  hb.Indexs desc 
     </select> 
      <!-- 新增首页轮播图 -->  
 	<insert id="insertHomeBanner"  parameterType="cn.springmvc.model.HomeBannerEntity" >    
 		insert into 
 		Home_Banner( HomeBanner_ID,   Banner_Title,   Url,   Links,   Indexs,   Statu,  Admin_ID) 
-		    values (#{id},           #{bannerTitle},#{url},#{links},#{indexs},#{statu}, #{optId})    
+		    values (#{id}, #{bannerTitle},#{url},#{links},#{indexs},#{statu}, #{optId})    
 	</insert> 
 	<!-- 查询该标题的首页轮播图是否存在 -->  
 	<select id="selectHomeBannerIsExistByNAme"  parameterType="cn.springmvc.model.HomeBannerEntity" resultMap="resultListHomeBanner" >
@@ -98,6 +99,6 @@
 	   select hb.HomeBanner_ID,   hb.Banner_Title,   hb.Url,   hb.Links,   hb.Indexs,  
 	   hb.Statu,  hb.CreateTime,  hb.Opt_Date
 	   from  Home_Banner  hb 
-	   where hb.Statu = 1  limit 3
-    </select> 
+	   where hb.Statu = 1 order by hb.Indexs desc limit 3
+    </select>  
 </mapper>

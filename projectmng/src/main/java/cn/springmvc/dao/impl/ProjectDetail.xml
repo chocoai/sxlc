@@ -70,7 +70,7 @@
 	   par.Increase_Range,par.MinStart,par.Invest_Max,
 	   
 	   pap.Record_Date,pap.Real_End_Date,pap.Hold_Date, 
-	   
+	   par.Is_Direct,
 	   (pbi.Amount-(select ifnull(sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount_Valid),#{sKey})) as signed)),0) 
 	   from Invest_Record  where Apply_Id=par.Apply_Id and IsValid=0 )) availableaAmount,
 	   
@@ -170,7 +170,16 @@
 	   pam.RiskMargin_Fee      as riskMarginFee,
 	   pam.RiskMargin_Rate     as riskMarginRate,
 	   pam.RiskMargin_Type     as riskMarginType,
-	   pam.MngFee_Amount       as mngFeeAmount
+	   mi.Member_Type          as memberType,
+	   mi.Member_ID            as memberId,
+	   pam.MngFee_Amount       as mngFeeAmount,
+	   pam.MngFee_Rate       as mngFeeRate,
+	   pam.MngFee_Rate_Increace       as mngFeeRateIncreace,
+	   par.Check_Statu         as checkStatu,
+	   (select count(MemberID)    from Member_VIP_Record where 
+	    Member_ID=MemberID and now()>Certify_SDate and (now()&lt;Certify_EDate or Certify_EDate is null)
+	    ) as isVip,
+	   ifnull((select BorrowMng_Rate  from VIP_Set_Sub ),0) as  vipBorrowMngRate
 	   from  Project_Purpose pp
 	   left join Project_App_Record par  on  par.Purpose_ID = pp.Purpose_ID
 	   left join Project_App_Process pap on  pap.Apply_Id=par.Apply_Id
@@ -179,6 +188,7 @@
 	   left join Management_Info mana on mana.Management_ID = par.Management_ID
 	   left join Guarantee_Info gua on gua.Guarantee_ID = par.Guarantee_ID
 	   left join Project_App_MngFee pam on pam.Apply_Id = par.Apply_Id
+	   left join Member_Info mi on mi.Member_ID = par.Member_ID
 	   where  par.Apply_Id=#{applyId}
     </select>
 </mapper>

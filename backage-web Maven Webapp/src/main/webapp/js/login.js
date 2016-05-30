@@ -2,6 +2,7 @@
 function Reset() {
 	$("#adminName").val("");
 	$("#adminPwd").val("");
+	$("#code").val("");
 }
 
 //登录
@@ -12,7 +13,7 @@ function login() {
 			$.ajax({
 				url : "checkAuthCode.do",
 				data : {
-					pAuthCode:code,
+					pAuthCode:code
 				},
 				type : "post",
 				dataType:"text",
@@ -61,8 +62,9 @@ function login() {
 						});
 					} else if (data == 0) {
 						layer.alert("验证码错误！",{icon:2});  
+						refreshImg('vCodeImg');//刷新验证码
 					}
-				},
+				}
 			});
 		}else {
 			layer.alert("请输入验证码！",{icon:0});  
@@ -102,8 +104,11 @@ function codeIdenty(_index) {
 	}
 }*/
 //回车登录
-function keyLogin(){
-	if (event.keyCode==13){
+var flag = true;
+function keyLogin(e){
+	var event = window.event || e;
+	if (event.keyCode==13 && flag ==true){
+		flag = false;
 		setTimeout(login,100);
 	}
 }
@@ -128,6 +133,37 @@ function userNameval() {
 	return true;
 }
 
+/**
+ * 用户名验证
+ * @returns {Boolean}
+ */
+function nameIdenty(){
+	var userName = $("#adminName").val();
+	var userNames = /^[A-z\d]{5,16}$/;
+	if (userName == "" || userName == null) {
+		layer.alert("用户名不能为空！",{icon:0});  
+		return false;
+	}
+	if (!userNames.exec(userName)) {
+		layer.alert("请输入5-16位数字或字母组成的用户名！",{icon:0});  
+		return false;
+	}
+}
+/**
+ * 密码验证
+ */
+function pwdIdenty(){
+	var userPwd = $("#adminPwd").val();
+	var pwds =/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
+	if (userPwd == "" || userPwd == null) {
+		layer.alert("密码不能为空！",{icon:0});  
+		return false;
+	}
+	if (!pwds.exec(userPwd)) {
+		layer.alert("请输入6~16位的数字和字母的组合！",{icon:0});  
+		return false;
+	}
+}
 /**
  * 加载执行
  */

@@ -189,9 +189,9 @@ public class AuthCodeController {
 			//字体
 			g.setFont(font);  
 	        //颜色
-	        int rc = random.nextInt(255);  
-	        int gc = random.nextInt(255);  
-	        int bc = random.nextInt(255);  
+	        int rc = random.nextInt(125);  
+	        int gc = random.nextInt(125);  
+	        int bc = random.nextInt(125);  
 	        g.setColor(new Color(rc, gc, bc));  
 	        //设置画笔的起点
 	        int x = random.nextInt(3);  
@@ -237,11 +237,18 @@ public class AuthCodeController {
 	                 suChinese.append("+");  
 	                 suChinese.append(xx);  
 	             }  
-	         }else if(Randomoperands ==2){  
-	                 this.xyresult = yy - xx;  
-	                 suChinese.append(yy);  
-	                 suChinese.append("-");  
-	                 suChinese.append(xx);  
+	         }else if(Randomoperands ==2){ 
+	        	 	if(yy >= xx){
+	        	 		this.xyresult = yy - xx;  
+	        	 		suChinese.append(yy);  
+	        	 		suChinese.append("-");  
+	        	 		suChinese.append(xx);  
+	        	 	}else{
+	        	 		this.xyresult = yy + xx;  
+	        	 		suChinese.append(yy);  
+	        	 		suChinese.append("+");  
+	        	 		suChinese.append(xx);  
+	        	 	}
 	         }else{  
 	                 this.xyresult = yy + xx;  
 	                 suChinese.append(yy);  

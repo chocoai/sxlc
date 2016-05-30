@@ -44,7 +44,7 @@
 			   						<div class="introduceContent">2019-01-01</div>
 			   					</li>
 			   					<li class="inputList">
-			   						<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
+			   						<div class="mustLabel"><span><samp></samp>附件：</span></div>
 			   						<!-- <div class="previewPicture">
 			   							<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
 			   							<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput" onchange="preImg(this.id,'previewImg')" onblur="if(document.getElementById('previewImg').src=='null')document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" >

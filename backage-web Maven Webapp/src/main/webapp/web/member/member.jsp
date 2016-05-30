@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" />  -->
 	<base href="<%=basePath%>">
-	<title>会员管理全部会员</title>
+	<title>会员管理-个人会员-全部会员</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -59,7 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="panel-body">
 								<form id="" class="" action="">
 									<span class="con-item"><span>会员姓名</span><input type="text" name="member_Name" id="member_Name" class="notspecial" /></span>
-									<span class="con-item"><span>用户名</span><input type="text" name="user_Name" id="user_Name" class="notspecial" /></span>
+									<!-- <span class="con-item"><span>用户名</span><input type="text" name="user_Name" id="user_Name" class="notspecial" /></span> -->
 									<span class="con-item"><span>手机号</span><input type="text" name="phone_Num" id="phone_Num" class="notspecial" /></span>
 									<span class="con-item"><span>开启自动投标</span><select name="auto_tou" id="auto_tou"><option value="-1">请选择</option><option value="1">是</option><option value="0">否</option></select></span>
 									<span class="con-item"><span>开启自动还款</span><select name="auto_return" id="auto_return"><option value="-1">请选择</option><option value="1">是</option><option value="0">否</option></select></span>

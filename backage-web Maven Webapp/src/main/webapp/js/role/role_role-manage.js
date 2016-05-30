@@ -4,7 +4,7 @@
  * 内容介绍：角色管理
  */
 $(function(){
-	validform5(".layui-layer-btn0","dataForm",false,3);
+	validform5(".layui-layer-btn0","dataForm",false,5);
 	showRoleList();//显示角色列表
 	//模块全选 添加
 	$("[name='moduleCls']").change(function() {
@@ -79,12 +79,15 @@ $(function(){
 		clearCheck();
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();
 		var roleId =0;
-		if(!isEmptyObject(rowdata[0])){ //判断是否选择
-			roleId=rowdata[0].id;
-		}else{
-			layer.alert("请选择要处理的事务！",{icon:0});  
+	    if(rowdata.length<1){
+			layer.alert("请选择要处理的事务！",{icon:0});
 			return;
-		}
+	    }
+	    if(rowdata[0].roleStatu==1){
+	    	layer.alert("该角色无效，不能修改！",{icon:0});
+			return;
+	    }
+	    roleId=rowdata[0].id;
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publicKey_common);
 		//result 为加密后参数
@@ -162,12 +165,11 @@ $(function(){
 		//获得选取的对象
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();
 		var roleId =0;
-		if(!isEmptyObject(rowdata[0])){ //判断是否选择
-			roleId=rowdata[0].id;
-		}else{
-			layer.alert("请选择要处理的事务！",{icon:0});  
+		if(rowdata.length<1){
+			layer.alert("请选择要处理的事务！",{icon:0});
 			return;
-		}
+	    }
+		roleId=rowdata[0].id;
 		//result 为加密后参数
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publicKey_common);
@@ -193,9 +195,9 @@ $(function(){
 						//执行完关闭
 						layer.alert("删除成功！",{icon:1});
 					  	layer.close(index);
-						setTimeout('location.reload()',500);
+					  	$('#table_id').DataTable().ajax.reload();
 					}else if(data == -1){
-						layer.alert("删除失败！改角色已被管理员使用！",{icon:1});
+						layer.alert("删除失败,该角色已被管理员使用！",{icon:2});
 					}
 				}
  			});
@@ -323,7 +325,7 @@ function showRoleList(){
 		                		  return sReturn;
 		                	  }
 		                  },
-		                  { title:"角色编码","data": "roleNo"},   
+		                  { title:"角色编号","data": "roleNo"},   
 		                  { title:"角色名称","data": "roleName" },  
 		                  { title:"生成日期","data": "sAddDate" },  
 		                  { title:"描述","data": "roleRemark" },  
@@ -411,7 +413,7 @@ function showMess(id){
 		    var operationList =data.operationList;
 		    if(moduleList.length>0){
 		    	for(var i=0,len=moduleList.length;i<len;i++){
-		    		html +="<div class='role_limit' style='margin:8px'><span style='font-size:14px'>"+moduleList[i].moduleNamel+"</span>"+
+		    		html +="<div class='role_limit' style='margin:8px'><span style='font-size:14px'>"+moduleList[i].moduleNamel+"</span></div>"+
 		    		'<ul style="font-size: 14px;background-color: #f4f4f4">';
 		    		for(var j=0;j<operationList.length;j++){
 		    			if(moduleList[i].moduleId == operationList[j].moduleID ){
@@ -421,7 +423,7 @@ function showMess(id){
 		    				html +="</br>";
 		    			}
 		    		}
-		    		html +="</ul></div>";
+		    		html +="</ul>";
 		    	}
 		    }
 		}
@@ -478,12 +480,12 @@ function stopOrStart(id,statu){
 						layer.alert("启用成功。",{icon:1});
 					}
 				  	layer.close(index);
-				  	setTimeout('location.reload()',500);
+				  	$('#table_id').DataTable().ajax.reload();
 				}else if(data == -1){
 					if(status==1){
-						layer.alert("停用失败!",{icon:0});  
+						layer.alert("停用失败!",{icon:2});  
 					}else{
-						layer.alert("启用失败!",{icon:0});
+						layer.alert("启用失败!",{icon:2});
 					}
 				}
 			}
@@ -505,7 +507,7 @@ function AddOrUpdateRole(){
 	  var auth = "";
 	  auth = checkboxStr("moduleCls","checkAutoCls");
 		if(auth=="" ||auth==null){
-			layer.alert("请选择角色权限。",{icon:2});  
+			layer.alert("请选择角色权限。",{icon:0});  
 			return;
 		}
 		var encrypt = new JSEncrypt();
@@ -513,6 +515,7 @@ function AddOrUpdateRole(){
 		//result 为加密后参数
 		roleName = encrypt.encrypt(roleName);
 		rolediscribe = encrypt.encrypt(rolediscribe);
+		$(".layui-layer-btn0").addClass("disabled");
 		if(addOrUpdate==0){//添加
 			$.ajax({
  				url : appPath+"/saveRole.do",
@@ -533,10 +536,11 @@ function AddOrUpdateRole(){
 						//执行完关闭
 						layer.alert("添加成功。",{icon:1});  
 						$(".layui-layer-btn1").click();
-					  	setTimeout('location.reload()',500);
+						$('#table_id').DataTable().ajax.reload();
 					}else if(data == -1){
 						layer.alert("角色名称已存在！",{icon:0});  
 					}
+					$(".layui-layer-btn0").removeClass("disabled");
 				}
  			});
 		}else{//修改
@@ -562,14 +566,14 @@ function AddOrUpdateRole(){
 						//执行完关闭
 						layer.alert("修改成功。",{icon:1});  
 						$(".layui-layer-btn1").click();
-					  	setTimeout('location.reload()',500);
+						$('#table_id').DataTable().ajax.reload();
 					}else if(data == -1){
 						layer.alert("角色名称已存在！",{icon:0});  
 					}
+					$(".layui-layer-btn0").removeClass("disabled");
 				}
 			});
 		}
-		
 }
 /**
  * 判断对象是否为空

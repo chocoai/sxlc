@@ -251,7 +251,7 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 				RepayInterfaceEntity repayInterfaceEntity=new RepayInterfaceEntity();
 				// TODO Auto-generated method stub return null;
 				Map<String, Object> mapsMap=new HashMap<String, Object>();
-				//判断是否满足提前还款
+				//判断是否满足正常还款
 				mapsMap.put("repayId", repalyId);
 				long result=selectThreePartyDaoImpl.RepayStatu(mapsMap);
 				results[0]=(int)result;
@@ -449,6 +449,9 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 						repayInterfaceEntity.setsMark(selectThreePartyDaoImpl.findMemberThirdPartyMark(lomap));
 						repayInterfaceEntity.setRemark2(lonmembertype+"A"+lonmemberId);
 						repayInterfaceEntity.setRemark3(repalyId+"A"+appplyId);
+						
+						//根据还款计划id修改当前还款为还款中
+						
 					}
 					//
 					//
@@ -471,12 +474,13 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 		pmark=selectThreePartyDaoImpl.findThirdPartyMark(maps);
 		//转账提交列表
 		List<LoanInfoBean> loanReturnInfoBeans=new ArrayList<LoanInfoBean>();
-		LoanInfoBean loanInfoBean = new LoanInfoBean();
+		LoanInfoBean loanInfoBean = null;
 		String ordernumber = handleThreePartyDaoImpl.generateorderNo("HK");
 		RepayDetailEntity repayDetailEntity = new RepayDetailEntity();
 		if(repayInterfaceEntity.getDetailList().size()>0){
 			for (int i = 0; i < repayInterfaceEntity.getDetailList().size(); i++) {
 				repayDetailEntity=repayInterfaceEntity.getDetailList().get(i);
+				loanInfoBean = new LoanInfoBean();
 				loanInfoBean.setAdvanceBatchNo("");
 				if (repayDetailEntity.getlAmount()>0) {
 					loanInfoBean.setAmount(repayDetailEntity.getsAmount());
@@ -562,7 +566,7 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 		map.put("detailEncrypt", SignInfo);//加密后数据
 		map.put("remark", "");//备注
 		handleThreePartyDaoImpl.insertThirdInterfaceRecord(map);
-		generatorUtil.SetIdUsed(id);
+		//generatorUtil.SetIdUsed(id);
 		loanTransferEntity.setStatu(0);//提交信息处理成功
 		// TODO Auto-generated method stub return null;
 		return loanTransferEntity;
@@ -589,21 +593,21 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 			if(loanTransferReturnEntity.getResultCode()!=null){
 				if (loanTransferReturnEntity.getResultCode().equals("88")) {
 					loanTransferReturnEntity.setStatu(0);
-					loanTransferReturnEntity
-					.setLoanJsonList(request.getParameter("LoanJsonList"));
-					String fah = request.getParameter("LoanJsonList");
-					fah = Common.UrlDecoder(fah, "utf-8");
-					List<Object> loaninfolist = Common.JSONDecodeList(fah,
-							LoanReturnInfoBean.class);
-					loanTransferReturnEntity.setLoaninfolists(loaninfolist);//需要处理的转账信息
-					loanTransferReturnEntity
-					.setPlatformMoneymoremore(request.getParameter("PlatformMoneymoremore"));
-					loanTransferReturnEntity
-					.setRemark1(request.getParameter("Remark1"));
-					loanTransferReturnEntity
-					.setRemark2(request.getParameter("Remark2"));
-					loanTransferReturnEntity
-					.setRemark3(request.getParameter("Remark3"));
+//					loanTransferReturnEntity
+//					.setLoanJsonList(request.getParameter("LoanJsonList"));
+//					String fah = request.getParameter("LoanJsonList");
+//					fah = Common.UrlDecoder(fah, "utf-8");
+//					List<Object> loaninfolist = Common.JSONDecodeList(fah,
+//							LoanReturnInfoBean.class);
+//					loanTransferReturnEntity.setLoaninfolists(loaninfolist);//需要处理的转账信息
+//					loanTransferReturnEntity
+//					.setPlatformMoneymoremore(request.getParameter("PlatformMoneymoremore"));
+//					loanTransferReturnEntity
+//					.setRemark1(request.getParameter("Remark1"));
+//					loanTransferReturnEntity
+//					.setRemark2(request.getParameter("Remark2"));
+//					loanTransferReturnEntity
+//					.setRemark3(request.getParameter("Remark3"));
 				}else {
 					loanTransferReturnEntity.setStatu(1);
 				}
@@ -611,13 +615,13 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 				loanTransferReturnEntity.setStatu(1);
 			}
 			if(loanTransferReturnEntity.getStatu()==0){//还款成功
-				if(loanTransferReturnEntity.getLoaninfolist().size()>0){
-				}
+//				if(loanTransferReturnEntity.getLoaninfolists().size()>0){
+//				}
 			}else {//还款失败
 				loanTransferReturnEntity.getMessage();//失败原因
 				retur="FAIL";
 			}
-			
+			request.setAttribute("accountInterfaceReturnEntity",loanTransferReturnEntity);
 		} catch (Exception e) {
 			retur="ERRO";
 			// TODO Auto-generated catch block e.printStackTrace();
@@ -710,8 +714,22 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 					map.put("repalyId", IntegerAndString.StringToLong(idString[0].toString(), 0));//
 					map.put("skey", DbKeyUtil.GetDbCodeKey());//秘钥
 					int result=handleThreePartyDaoImpl.RepayBackQianduoduo(map);
+					String [] iStrings = idsa.split(",");
+					for (int i = 0; i < iStrings.length; i++) {
+						if (result>0) {
+							generatorUtil.SetIdUsed(IntegerAndString.StringToLong(iStrings[i], 0));
+							generatorUtil.SetIdUsed(IntegerAndString.StringToLong(iStrings[i], 0)*10);
+							generatorUtil.SetIdUsed(IntegerAndString.StringToLong(iStrings[i], 0)*20);
+						}else {
+							generatorUtil.SetIdUsedFail(IntegerAndString.StringToLong(iStrings[i], 0));
+						}
+					}
 					if (result>0) {
-						
+						generatorUtil.SetIdUsed(realRepayID);
+						generatorUtil.SetIdUsed(repaythredId);
+					}else {
+						generatorUtil.SetIdUsedFail(realRepayID);
+						generatorUtil.SetIdUsedFail(repaythredId);
 					}
 				}
 				
@@ -785,13 +803,16 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 					int protype=selectThreePartyDaoImpl.projectDurationType(mapsMap);//期限类型
 					long linver=selectThreePartyDaoImpl.findInterestByMember(smap);//当期还款总需收取利息
 					long times=selectThreePartyDaoImpl.findTimesByMember(smap);//剩余几天到还款日
-					if (protype==0) {//月标
+					if (protype==1) {//月标
 						linver=linver-(linver/30*times);
+					}
+					if (linver<100) {
+						linver=0;
 					}
 					lInterest+=linver;
 					liDetailEntities.get(i).setlInterest(linver);//应收当期截止收益
 					//计算出利息管理费
-					long lmng=0;//管理费费率
+					long lmng=selectThreePartyDaoImpl.findInterestMngFee();//管理费费率
 					long as=linver*lmng/100;
 					lMngFee+=as;
 					liDetailEntities.get(i).setlMngFee(as);
@@ -818,9 +839,12 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 					
 					
 					
-					
-					liDetailEntities.get(i).setsOrderNo(handleThreePartyDaoImpl.generateorderNo("TQ"));//随机订单号生成
+					String order=handleThreePartyDaoImpl.generateorderNo("TQ");
+					liDetailEntities.get(i).setsOrderNo(order+i);//随机订单号生成
 					sInfo = liDetailEntities.get(i).getsDetail();
+					if(sInfo==null){
+						sInfo ="";
+					}
 					// 投资记录id+本金+利息+总逾期费+平台收取违约金+投资人收取违约金+投资管理费+0+投资人收取逾期费+平台收取逾期费+投资会员id+投资会员类型+该笔平台订单号
 					sInfo = sInfo + liDetailEntities.get(i).getiInvestId() + "A" 
 					+ lPrincipal + "A" + lInterest + "A" + "0" 
@@ -853,7 +877,8 @@ public class RepaymentInterfaceServerImpl implements RepaymentInterfaceServer{
 				lomap.put("memberType", lonmembertype);//会员类型
 				lomap.put("memberID", lonmemberId);//会员id
 				repayInterfaceEntity.setsMark(selectThreePartyDaoImpl.findMemberThirdPartyMark(lomap));
-				
+				repayInterfaceEntity.setRemark2(lonmembertype+"A"+lonmemberId);
+				repayInterfaceEntity.setRemark3(0+"A"+appplyId);
 			}
 			//
 			//

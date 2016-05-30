@@ -83,7 +83,7 @@
 	    select  count(1) from Loan_Repay lr 
 	    left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
 	    where  par.Member_ID=#{membereID} and lr.IsValid=0  and  lr.Statu != 3
-	    and  lr.Repay_MaxTime >now() 
+	    and  lr.Repay_MaxTime &lt;now() 
     </select>
      <!-- 查询会员逾期未还款笔数 -->  
 <!--      successLoan成功借款N笔、 -->
@@ -109,7 +109,7 @@
 	    
 	    (select  count(1) from  Loan_Repay lr 
 	    left join  Project_App_Record par on par.Apply_Id=lr.Apply_Id
-	    where  par.Member_ID=#{membereID} and lr.Statu=3  and lr.IsValid=0) as successReplay,
+	    where  par.Member_ID=#{membereID} and lr.Statu=2  and lr.IsValid=0) as successReplay,
 	    
 	    (select  count(1) from Invest_Record ir 
 	    left join Project_App_Record par on par.Apply_Id=ir.Apply_Id
@@ -121,13 +121,13 @@
 	    
 	    (select  count(1) from Loan_Repay lr 
 	    left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
-	    where  par.Member_ID=#{membereID} and lr.IsValid=0 and lr.Statu=3
+	    where  par.Member_ID=#{membereID} and lr.IsValid=0 and lr.Statu=2
 	    and (select count(1) from Loan_Real_Repay lrr where lr.Repay_Id=lrr.Repay_Id and lrr.Repay_Time>lr.Repay_MaxTime  )>0
 	    ) as overReplay,
          
         (select  count(*) from Loan_Repay lr
 	    left join Project_App_Record par on  par.Apply_Id=lr.Apply_Id
-	    where  par.Member_ID=#{membereID} and lr.Statu=3 and lr.IsValid=1
+	    where  par.Member_ID=#{membereID} and lr.Statu=2 and lr.IsValid=1
 	    and (
 	     select count(*) from Loan_Real_Repay lrr where 
 	     lr.Repay_Id=lrr.Repay_Id and lrr.Repay_Time>lr.Repay_MaxTime  
@@ -136,8 +136,8 @@
 	     
 	     (select  count(1) from Loan_Repay lr 
 	     left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
-	     where  par.Member_ID=#{membereID} and lr.IsValid=0  and  lr.Statu != 3
-	     and  lr.Repay_MaxTime >now() ) as overnotreplay
+	     where  par.Member_ID=#{membereID} and lr.IsValid=0  and  lr.Statu != 2
+	     and  lr.Repay_MaxTime &lt;now() ) as overnotreplay
     </select>
      <resultMap type = "cn.membermng.model.InvestmentstatisticsEntity" id ="resultInvestmentstatistics"> 
 			<result property = "successInvest"               column = "successInvest" /> 

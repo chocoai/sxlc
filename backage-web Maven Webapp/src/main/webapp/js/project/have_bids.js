@@ -53,19 +53,19 @@ $(function() {
 				          { title:"产品类型","data": "projectName"},  
 				          { title:"借款期限","data": "projectBaseInfoentity", 
 				        	  "mRender": function (data, type, full) {
-				        		  	if(data.deadlineTypes == 0){
+				        		  	if(data.deadlineType == 0){
 				        	    		return data.deadline+"天";
-				        	    	}else if(data.deadlineTypes == 1){
+				        	    	}else if(data.deadlineType == 1){
 				        	    		return data.deadline+"月";
-				        	    	}else if(data.deadlineTypes == 2){
+				        	    	}else if(data.deadlineType == 2){
 				        	    		return data.deadline+"年";
 				        	    	}else{
 				        	    		return "";
 				        	    	}  
 				        	  }
 				          },  
-				          { title:"借款金额","data": "projectBaseInfoentity.amount"},  
-				          { title:"年化利率","data": "projectBaseInfoentity.yearRate"},  
+				          { title:"借款金额(元)","data": "projectBaseInfoentity.amounts"},  
+				          { title:"年化利率(%)","data": "projectBaseInfoentity.yearRates"},  
 				          { title:"项目发布日期","data": "releaseDate"},  
 				          { title:"投标开始结束日期","data": "checkDate", 
 				        	  "mRender": function (data, type, full) {
@@ -84,10 +84,11 @@ $(function() {
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
-	          serverSide: true,//打开后台分页  
+	          serverSide: true,//打开后台分页 
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕

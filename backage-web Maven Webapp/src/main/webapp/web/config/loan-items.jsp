@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心</title>
+	<title>配置中心-借款认证项配置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		%>
 	</script>
 </head>
-<!-- 配置中心--------会员信用等级配置-->
+<!-- 配置中心--------借款认证项配置-->
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
@@ -169,10 +169,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 	<script type="text/javascript">
 		$(function(){
 			/* 添加 */
-			validform5("layui-layer-btn0","addpercent",false,"3");
-			validform5("layui-layer-btn0","addname",false,"3");
-			validform5("layui-layer-btn0","modname",false,"3");
-			validform5("layui-layer-btn0","modpercent",false,"3");
+			validform5("layui-layer-btn0","addpercent",false,"5");
+			validform5("layui-layer-btn0","addname",false,"5");
+			validform5("layui-layer-btn0","modname",false,"5");
+			validform5("layui-layer-btn0","modpercent",false,"5");
 			/* 添加 */
 		});
 			</script> -->

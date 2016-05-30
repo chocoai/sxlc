@@ -1,6 +1,8 @@
 
 package cn.springmvc.model; 
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /** 
  * 积分规则设置
 * @author ZZY 
@@ -16,25 +18,29 @@ public class IntegralRuleEntity {
 	
 	//项目投资积分规则
 	private int proID;	//
-	private int proinvest_Amount;	//投资金额
+	private long proinvest_Amount;	//投资金额
+	private String proinvest_Amounts;
 	private int proinvest_Points;	//赠送积分
 	private int prostatu;	//状态 0：无效 1：有效
 	
 	//债权转让投资积分规则
 	private int traID;	
-	private int traInvestAmount;//投资金额	
+	private long traInvestAmount;//投资金额	
+	private String traInvestAmounts;
 	private int traInvestPoints;//赠送积分	
 	private int traStatu;//状态 0：无效 1：有效	
 	
 	//充值积分规则
 	private int recID;	
-	private int recRechargeAmount;//	充值金额
+	private long recRechargeAmount;//	充值金额
+	private String recRechargeAmounts;
 	private int recRechargePoints;//	充值赠送积分
 	private int recStatu;//	状态 0：无效 1：有效
 	
 	//借款积分规则
 	private int loaID;
-	private int loaLoan_Amount;	//借款金额
+	private long loaLoan_Amount;	//借款金额
+	private String loaLoan_Amounts;
 	private int loaLoan_Points;	//借款赠送积分
 	private int loaStatu;	//状态 0：无效 1：有效
 	public int getType() {
@@ -67,11 +73,16 @@ public class IntegralRuleEntity {
 	public void setProID(int proID) {
 		this.proID = proID;
 	}
-	public int getProinvest_Amount() {
+	public long getProinvest_Amount() {
 		return proinvest_Amount;
 	}
-	public void setProinvest_Amount(int proinvest_Amount) {
+	public void setProinvest_Amount(long proinvest_Amount) {
 		this.proinvest_Amount = proinvest_Amount;
+		this.proinvest_Amounts = IntegerAndString.LongToString(proinvest_Amount);
+	}
+	
+	public String getProinvest_Amounts() {
+		return proinvest_Amounts;
 	}
 	public int getProinvest_Points() {
 		return proinvest_Points;
@@ -91,11 +102,15 @@ public class IntegralRuleEntity {
 	public void setTraID(int traID) {
 		this.traID = traID;
 	}
-	public int getTraInvestAmount() {
+	public long getTraInvestAmount() {
 		return traInvestAmount;
 	}
-	public void setTraInvestAmount(int traInvestAmount) {
+	public void setTraInvestAmount(long traInvestAmount) {
 		this.traInvestAmount = traInvestAmount;
+		this.traInvestAmounts =IntegerAndString.LongToString(traInvestAmount);
+	}
+	public String getTraInvestAmounts() {
+		return traInvestAmounts;
 	}
 	public int getTraInvestPoints() {
 		return traInvestPoints;
@@ -115,11 +130,16 @@ public class IntegralRuleEntity {
 	public void setRecID(int recID) {
 		this.recID = recID;
 	}
-	public int getRecRechargeAmount() {
+	
+	public long getRecRechargeAmount() {
 		return recRechargeAmount;
 	}
-	public void setRecRechargeAmount(int recRechargeAmount) {
+	public void setRecRechargeAmount(long recRechargeAmount) {
 		this.recRechargeAmount = recRechargeAmount;
+		this.recRechargeAmounts = IntegerAndString.LongToString(recRechargeAmount);
+	}
+	public String getRecRechargeAmounts() {
+		return recRechargeAmounts;
 	}
 	public int getRecRechargePoints() {
 		return recRechargePoints;
@@ -139,11 +159,16 @@ public class IntegralRuleEntity {
 	public void setLoaID(int loaID) {
 		this.loaID = loaID;
 	}
-	public int getLoaLoan_Amount() {
+
+	public long getLoaLoan_Amount() {
 		return loaLoan_Amount;
 	}
-	public void setLoaLoan_Amount(int loaLoan_Amount) {
+	public void setLoaLoan_Amount(long loaLoan_Amount) {
 		this.loaLoan_Amount = loaLoan_Amount;
+		this.loaLoan_Amounts =  IntegerAndString.LongToString(loaLoan_Amount);
+	}
+	public String getLoaLoan_Amounts() {
+		return loaLoan_Amounts;
 	}
 	public int getLoaLoan_Points() {
 		return loaLoan_Points;

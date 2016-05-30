@@ -47,7 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<jsp:include page="../common/mc-companyTable.jsp"></jsp:include> 
 						<div class="w-content ishow detailAuthen realnameAuthen">
 							<fieldset>
-								<legend class="titleLen"></legend>
+								<legend class="titleLen">营业执照认证</legend>
 								<div class="introduce">
 								<input type="hidden" id="hostPath" value="${ImgProfix}"/>
 									<span><samp>企业名称：</samp><label id="company"></label></span>
@@ -83,8 +83,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<button class="backAuthen" onclick="window.history.back()">返回</button>
 									</div>
 								</div>
-								
-								
 							</fieldset>
 						</div>
 					</div>

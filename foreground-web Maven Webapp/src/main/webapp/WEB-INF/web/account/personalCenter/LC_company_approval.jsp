@@ -47,14 +47,14 @@
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>颁发时间：</span></div>
-				   						<input class="inputText dateSelect Wdate issueDate " onfocus="WdatePicker()" type="text" lang="请输入颁发时间"/>
+				   						<input class="inputText dateSelect Wdate issueDate " onfocus="WdatePicker({readOnly:true,maxDate:'%y-%M-%d'})" type="text" />
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span>有效期：</span></div>
-				   						<input class="inputText dateSelect Wdate endTime " onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择有效期"/>
+				   						<input class="inputText dateSelect Wdate endTime " onfocus="WdatePicker({readOnly:true,minDate:'%y-%M-%d'})" type="text"/>
 				   					</li>
 				   					<li class="inputList">
-					   						<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
+					   						<div class="mustLabel"><span><samp></samp>附件：</span></div>
 					   						<div class="previewPicture" id="file" style="float: none;" >
 					   							<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
 												<input type='hidden' class='previewHide' id="0" >			

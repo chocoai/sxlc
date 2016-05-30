@@ -54,7 +54,7 @@
 			 					<label for="firstname" class="col3 i-fl control-label">平台名称设置：</label>
 			 					<div class="i-fl">
 			 						<input type="hidden" id="hostPath" value="${ImgProfix}"/>
-			 						<input type="text" class="form-control" name="systemName"  id="systemName"  datatype="unNormal" placeholder="平台名称设置">
+			 						<input type="text" class="form-control" name="systemName"  id="systemName"  datatype="unNormal" maxlength="20" placeholder="平台名称设置">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -66,7 +66,7 @@
 									<div class="filelist" id="fileList1"></div>
 			 					</div>
 			 					
-							</div>
+								</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">平台前台log设置：</label>
@@ -96,7 +96,7 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">新浪微博：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" name="weiboName" id="weiboName" datatype="unNormal"  placeholder="新浪微博">
+			 						<input type="text" class="form-control" name="weiboName" id="weiboName" maxlength="50" datatype="strRegex"  placeholder="新浪微博">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -114,7 +114,7 @@
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">投资QQ群：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" name="qQGroupCode" datatype="qq" id="qQGroupCode"  placeholder="投资QQ群"/>
+			 						<input type="text" class="form-control" name="qQGroupCode" maxlength="15" datatype="qq" id="qQGroupCode"  placeholder="投资QQ群"/>
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -132,7 +132,7 @@
 			 				<div class="form-group">
 			 					<label for="lastname" class="i-fl control-label col3">微信公众号：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="weChatCode" datatype="qq" name="weChatCode" placeholder="微信公众号">
+			 						<input type="text" class="form-control" id="weChatCode" datatype="qq|email|weixinCode" errormsg="微信号格式错误" name="weChatCode" placeholder="微信公众号">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
@@ -162,13 +162,13 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">风险备付金金额设置：</label>
 			 					<div class="i-fl"> 
-			 						<input type="text" class="form-control" name="riskReserveFund" id="riskReserveFund"  datatype="acountM" placeholder="风险备付金金额设置">
+			 						<input type="text" class="form-control" name="riskReserveFund" id="riskReserveFund"  maxlength="8" datatype="acountM" placeholder="风险备付金金额设置">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">平台预期年化设置：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" name="expectYearRate" id="expectYearRate" datatype="hundredNum"  placeholder="平台预期年化设置">
+			 						<input type="text" class="form-control" name="expectYearRate" id="expectYearRate" maxlength="8" datatype="hundredNum"  placeholder="平台预期年化设置">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign">%<i>*</i></span>
@@ -226,18 +226,18 @@
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">积分别名：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" name="integralAlias" id="integralAlias" datatype="unNormal" placeholder="积分别名">
+			 						<input type="text" class="form-control" name="integralAlias" maxlength="30" id="integralAlias" datatype="unNormal" placeholder="积分别名">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<label for="firstname" class="col3 i-fl control-label">网站top欢迎语设置：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" name="welcomeTitle" id="welcomeTitle" maxlength="50" placeholder="网站top欢迎语设置">
+			 						<input type="text" class="form-control" name="welcomeTitle" id="welcomeTitle" maxlength="30" placeholder="网站top欢迎语设置">
 			 					</div>
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">
-			 						<button type="submit" id="btn" class="btn btn-default">保存</button>
+			 						<button type="submit" id="btn" class="btn btn-default layui-layer-btn0">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		

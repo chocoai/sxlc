@@ -112,7 +112,7 @@
 			left join Member_Info mi ON mi.Member_ID=mai.Member_ID
 			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
 			left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_Id
-			LEFT JOIN Enterprise_Estate_Check ela ON ela.Certification_ID=mai.Certification_ID
+			LEFT JOIN Member_Estate_Check ela ON ela.Certification_ID=mai.Certification_ID
 
 			<where>
 				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
@@ -137,7 +137,7 @@
 			left join Member_Info mi ON mi.Member_ID=mai.Member_ID
 			LEFT JOIN Member_Attest_Type mat ON mat.Attest_Type_ID=mai.Attest_Type_ID
 			left join Personal_Base_Info pbi on pbi.Personal_Id = mi.Personal_Id
-			LEFT JOIN Enterprise_Car_Check ela ON ela.Certification_ID=mai.Certification_ID
+			LEFT JOIN Member_Car_Check ela ON ela.Certification_ID=mai.Certification_ID
 			<where>
 				mi.Member_Type=#{map.memberType} and mat.Attest_Type_ID=#{map.attestTypeID}
 				and mai.Status=#{map.status}
@@ -795,6 +795,15 @@
     </select>
     
     
+    <!-- 根据项目类型id 查询还款方式 -->
+    <select id="findHKFS" resultType="Map" statementType="CALLABLE">
+    	<![CDATA[{call findHKFS(
+				#{status,	 mode=IN,	jdbcType=VARCHAR},
+				#{result,	 mode=OUT,	jdbcType=VARCHAR}
+    		)}
+    	]]>
+    </select>
+    
     <!-- 自动投标设置 -->
      <select id="AutomaticBidSetting" resultType="Map" statementType="CALLABLE">
     <!--result ：-1：已存在自动投标设置  -2：还未开户  -3：还未进行自动投标授权 0：成功-->
@@ -903,7 +912,7 @@
 		(SELECT count(*) from Member_Third_Info mti WHERE mti.Member_ID = mi.Member_ID AND mti.Member_Type=0) therStatu,
 		(SELECT CONVERT((AES_DECRYPT(UNHEX(pbis.Personal_Name),#{map.skey})) using utf8) userName FROM Member_Financial_Advisor mfa 
 			LEFT JOIN Financial_Advisor fa ON mfa.FA_ID = FA.FA_ID
-				LEFT JOIN Member_Info mei ON mei.Member_ID = mfa.Member_ID
+				LEFT JOIN Member_Info mei ON mei.Member_ID = fa.Member_ID
 					LEFT JOIN Personal_Base_Info pbis ON pbis.Personal_Id = mei.Personal_Id 
 						WHERE mi.Member_ID=mfa.Member_ID LIMIT 1) fAName,
 		(SELECT mfa.FA_ID FROM Member_Financial_Advisor mfa 
@@ -942,9 +951,9 @@
     
     <select id="ChangeHistory" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.ExistingFinancialAdvisorEntity">
     	select CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) as fAName,mfa.Remove_Date regDate from Member_Financial_Advisor mfa left join Financial_Advisor fa
-    		on mfa.FA_ID = fa.FA_ID
-    		left join Staff_Info si on si.Staff_Id = fa.Staff_Id
-    		left join Personal_Base_Info pbi on si.Personal_Id = pbi.Personal_Id
+    		ON mfa.FA_ID = fa.FA_ID
+    		LEFT JOIN Member_Info si ON si.Member_Id = fa.Member_Id
+    		LEFT JOIN Personal_Base_Info pbi ON si.Personal_Id = pbi.Personal_Id
     		where mfa.Member_ID = #{map.memberID} and mfa.Remove_Date is not null
     </select>
 </mapper>   

@@ -9,10 +9,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	/* 	if(session.getAttribute("LoginPerson")==null){
-	pageContext.forward("login.html");
-		return;
-	} */
+	
 	
 	/* 登录人模块权限 */
 	/* List<Module> modules = null;
@@ -45,7 +42,7 @@
 
 <head>
 <base href="<%=basePath%>">
-<title>角色管理</title>
+<title>角色管理-角色管理</title>
 <!-- 公用meta -->
 <jsp:include page="../common/top-meta.jsp"></jsp:include>
 <!-- 公用css -->
@@ -73,13 +70,14 @@
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="1" name="top_menu_index" />
-				<jsp:param value="角色管理" name="loc1" />
+				<jsp:param value="1" name="_index_m1" />
 			</jsp:include>
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-left-menu.jsp">
-				<jsp:param value="role-4" name="role-index" />
+			<jsp:include page="../common/cm-role.jsp">
+				<jsp:param value="105" name="_index_m2" />
+				<jsp:param value="" name="_index_m3" />
 			</jsp:include>
+			<!-- 头部导航 -->
 			<!-- 头部导航 -->
 
 			<!-- 主要内容 -->
@@ -99,7 +97,7 @@
 						</div>
 						<div class="panel-body">
 							<form id="" class="" action="">
-								<span class="con-item"><span>角色编码</span><input type="text" name="roleNo" id="roleNo" class="" placeholder="角色编码" /></span>
+								<span class="con-item"><span>角色编号</span><input type="text" name="roleNo" id="roleNo" class="" placeholder="角色编号" /></span>
 								<span class="con-item"><span>角色名称</span><input type="text" name="roleName" id="roleName" class="" placeholder="角色名称" /></span>
 								<span class="con-item"><span>生成时间范围</span><input readonly="readonly"  id="start" name="start" class="Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'end\')}'})"></span>
 								<span class="con-item"><span>至 </span><input readonly="readonly"  id="end" name="end" class="Wdate" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'start\')}'})"></span>
@@ -161,7 +159,7 @@
 								<tr>
 									<td class="tt"><label>角色描述:</label></td>
 									<td class="con">
-										<input type="text" class="" name="rolediscribe1" datatype="unNormal" maxlength="50" id="rolediscribe1" placeholder="" />
+										<input type="text" class="" name="rolediscribe1"  maxlength="50" id="rolediscribe1" placeholder="" />
 									</td>
 								</tr>
 								<tr>

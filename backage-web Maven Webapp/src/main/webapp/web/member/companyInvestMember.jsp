@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>企业投资会员</title>
+	<title>会员管理-企业会员-投资会员</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -63,7 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="panel-heading">
 								<div class="action_item">
 									<button class="obtn glyphicon" onclick="companyDetailView();">查看会员详情</button>
-									<button class="obtn glyphicon" onclick="companyBTRecord()">债权转让记录</button>
+									<button class="obtn glyphicon" onclick="bondTransforRecord()">债权转让记录</button>
 									<button class="obtn glyphicon" onclick="investView();">投资项目查询</button>
 									<button class="obtn glyphicon" onclick="transactionRecord();">交易记录</button>
 									<button class="obtn glyphicon" onclick="inviteView();">查看邀请会员列表</button><button class="obtn glyphicon" onclick="messageSendPer('发送信息','web/member/allMembers/per-messageSend.jsp','2');">发送消息</button>

@@ -1,6 +1,8 @@
 
 package cn.springmvc.model; 
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /** 
  * 担保机构充值交易记录
 * @author 朱祖轶 
@@ -41,6 +43,7 @@ public class InstitutionsRecordsEntity {
 	}
 	public void setAmount(long amount) {
 		this.amount = amount;
+		this.samount=IntegerAndString.LongToString2(amount);
 	}
 	public String getSamount() {
 		return samount;
@@ -53,6 +56,7 @@ public class InstitutionsRecordsEntity {
 	}
 	public void setFeeAmount(long feeAmount) {
 		this.feeAmount = feeAmount;
+		this.sfeeAmount=IntegerAndString.LongToString2(feeAmount);
 	}
 	public int getStatu() {
 		return statu;
@@ -71,6 +75,7 @@ public class InstitutionsRecordsEntity {
 	}
 	public void setRealAmount(long realAmount) {
 		this.realAmount = realAmount;
+		this.srealAmount=IntegerAndString.LongToString2(realAmount);
 	}
 	public String getSrealAmount() {
 		return srealAmount;

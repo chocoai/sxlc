@@ -47,6 +47,9 @@ public class VipConfigController {
 	@ResponseBody
 	public VIPSetSubEntity  getVipConfig(){
 		VIPSetSubEntity entity =  vipSetSubService.selectVIPSetSubList();
+		if(entity!=null && entity.getInvestMngRate()>0){
+			entity.setInvestMngRates(IntegerAndString.IntToString(entity.getInvestMngRate()));
+		}
 		if(entity==null){
 			entity = new VIPSetSubEntity();
 		}

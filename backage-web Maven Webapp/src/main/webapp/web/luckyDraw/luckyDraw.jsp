@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>平台推广-关系年限</title>
+	<title>幸运抽奖-抽奖设置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -41,18 +41,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				<div class="nav-tabs-con active">
 					<div class="drawSet">
-						<span><label>单次抽奖所需积分：</label><input type="text" class="notspecial"></span>
+						<span><label>单次抽奖所需积分：</label><input id="integra" type="text" class="notspecial"></span>
 						<span>
 							<label>是否开启本期抽奖：</label>
-							<select>
-								<option>是</option>
-								<option>否</option>
+							<select id="status">
+								<option value="1">是</option>
+								<option value="0">否</option>
 							</select>
 						</span>
 						<span><label>开始结束时间范围：</label><input type="text" id="startDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })"/>-&nbsp;&nbsp;<input type="text" id="endDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })"/></span>
 						
-						<span class="periodes"><label>抽奖期数：</label>2期</span>
-						<button  type ="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+						<span class="periodes">抽奖期数：<label id="period">2</label>期</span>
+						<button id="set"  type ="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+						<input id="lotteryID" type="hidden" value="" />
 					</div>
 					<div class="data_display">
 						<div class="panel panel-success">
@@ -79,7 +80,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td class="tt">奖品等级：</td>
 									<td class="col">
 										<select id="grade">
-											
+											<option value="1">第一级</option>
+											<option value="2">第二级</option>
+											<option value="3">第三级</option>
+											<option value="4">第四级</option>
+											<option value="5">第五级</option>
+											<option value="6">第六级</option>
 										</select>				
 									</td>
 								</tr>
@@ -87,25 +93,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td class="tt">奖品类型：</td>
 									<td class="col">
 										<select id="prizeType">
-											
+											<option value="0">红包</option>
+											<option value="1">代金卷</option>
+											<option value="2">实物</option>
+											<option value="3">积分</option>
 										</select>	
 									</td>
 								</tr>
 								<tr class="con-item">
 									<td class="tt">奖品名称：</td>
-									<td class="col"><input ignore="ignore" datatype="roleNameb" class="moneyInput"></td>
+									<td class="col"><input id="prizeName" ignore="ignore" datatype="roleNameb" class="moneyInput"></td>
 								</tr>
 								<tr class="con-item">
 									<td class="tt">奖品价值：</td>
-									<td class="col"><input datatype="acountM" class="moneyInput">元</td>
+									<td class="col"><input id="prizeWorths" datatype="acountM" class="moneyInput">元</td>
 								</tr>
 								<tr class="con-item">
 									<td class="tt">奖品数量：</td>
-									<td class="col"><input datatype="nNum1" class="moneyInput"></td>
+									<td class="col"><input id="prizeQuantity" datatype="nNum1" class="moneyInput"></td>
 								</tr>
 								<tr class="con-item">
 									<td class="tt">中奖概率基数：</td>
-									<td class="col"><input datatype="hundredNum" class="moneyInput"></td>
+									<td class="col"><input id="winningOdds" datatype="hundredNum" class="moneyInput"></td>
 								</tr>
 								<tr class="con-item">
 									<td class="tt">奖品图片：</td>
@@ -124,7 +133,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</table>
 							
 							<div class="btnAdd">
-								<button id="add" class="addBtn">添加</button>
+								<button type="button" id="add" class="addBtn">添加</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>

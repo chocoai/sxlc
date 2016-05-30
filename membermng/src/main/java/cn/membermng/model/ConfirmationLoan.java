@@ -82,6 +82,7 @@ public class ConfirmationLoan {
 	}
 	public void setInterestRates(int interestRates) {
 		this.interestRates = interestRates;
+		this.sInterestRates = IntegerAndString.IntToString(interestRates);
 	}
 	public String getsInterestRates() {
 		return sInterestRates;

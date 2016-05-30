@@ -40,9 +40,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="nav-tabs-con active">
 					<div class="data_display">
 						<div class="selectMember">
-							<input id="memberID" type="hidden" value="${memberID}">
-							<span><samp>选择会员：</samp>${Logname}</span>
-							<span><samp>姓名：</samp>${PersonalName}</span>
+							<input id="memberID" type="hidden" value="${memberId}">
+							<span><samp>选择会员：</samp>${logname}</span>
+							<span><samp>姓名：</samp>${personalName}</span>
 						</div>
 						<div class="search">
 							<div class="panel panel-success">
@@ -110,7 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							        		  return sReturn;
 							        	  }
 							          },
-							          { title:"姓名","data": "staffName"},  
+							          { title:"姓名","data": "realName"},  
 							          { title:"编号","data": "serviceNo"},  
 							          { title:"手机号","data": "servicePhone"},  
 							          { title:"会员登录名","data": "logName"},  
@@ -124,11 +124,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                          ],
 				          pagingType: "simple_numbers",//设置分页控件的模式  
 				          processing: true, //打开数据加载时的等待效果  
-				          serverSide: true,//打开后台分页  
+				          serverSide: true,//打开后台分页 
+				          searching: false,
 				//          info:false,
 				          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 				          }
-				 
 				});//表格初始化完毕
 				 
 				//表格单选效果(有复选框)
@@ -159,13 +159,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 * 确定按钮
 			 */
 			function distributeAdviser(){
-				var rData =  $("#table_id").DataTable().rows('.selected').data();
+				var rData = $("#table_id").DataTable().rows('.selected').data();
 				if(rData.length<1){
 					layer.alert("请选择要分配的理财顾问！",{icon:0});
 					return;
 				}
 				var data={};
-				var advisorId = encrypt.encrypt(data[0].id+"");
+				var advisorId = encrypt.encrypt(rData[0].fAID+"");
 				var memberID = encrypt.encrypt($("#memberID").val());
 				data.advisorId=advisorId;
 				data.memberID=memberID;
@@ -177,8 +177,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						if(data == 1){
 							layer.alert("操作成功",{icon:1});
 							window.location.href="project/toLoanApplyList";
-						}else if(data==0){
-							layer.alert("操作失败",{icon:2});  
+						}else if(data== -1){
+							layer.alert("已存在理财顾问!",{icon:2});  
+						}else if(data == 0){
+							layer.alert("操作失败!",{icon:2});  
 						}
 					} 
 				);

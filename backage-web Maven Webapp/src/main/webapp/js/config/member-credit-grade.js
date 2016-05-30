@@ -44,9 +44,10 @@ $(function(){
 	  pagingType: "simple_numbers",//设置分页控件的模式  
 	  processing: true, //打开数据加载时的等待效果  
 	  serverSide: true,//打开后台分页  
+	  searching: false,
 	  scrollCollapse: true,
       scrollX : "100%",
-	  scrollXInner : "100%",
+      scrollXInner : "100%",scrollY:500,
 	  rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	  }
 	});
@@ -87,12 +88,24 @@ $(function(){
 				  var creditScoreMin = $("#creditScoreMin").val();
 				  var creditScoreMax = $("#creditScoreMax").val();
 				  var levelDetail = $("#levelDetail").val();
-				  var reg = new RegExp("^[1-9][0-9]{0,4}$");  
+				  var reg = new RegExp("^[0-9]{0,5}$");  
+				  if(levelMark==""){
+					  layer.alert("请输入会员信用等级",{icon:0});
+					  return;
+				  }
+				  if(creditScoreMin==""){
+					  layer.alert("请输入开始分数",{icon:0});
+					  return;
+				  }
+				  if(creditScoreMax==""){
+					  layer.alert("请输入结束分数",{icon:0});
+					  return;
+				  }
 				  if(!reg.test(creditScoreMin) || !reg.test(creditScoreMax)){  
 					 layer.alert("分数输入错误,请输入5位内的整数",{icon:0});
 					 return;
 				  }
-				  if(Number(creditScoreMin)>Number(creditScoreMax)){
+				  if(Number(creditScoreMin) >= Number(creditScoreMax)){
 					  layer.alert("输入错误,开始分数应小于结束分数",{icon:0});
 					  return;
 				  }

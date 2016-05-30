@@ -129,54 +129,58 @@
   </resultMap>
   <!-- 分页查询佣金统计 -->
   <select id="CommissionStatisticsCount" resultMap="CommissionStatisticsCountEntity" parameterType="product_p2p.kit.pageselect.PageEntity">
-  	SELECT *,jktj+tztj+hbtj+vipgm allmoney from ( SELECT
+  	SELECT *,jktj+tztj+hbtj+vipgm allmoney from ( 
+  	<if test="map.stype==1">
+  	SELECT
 	(SELECT SUM(Award_Amount) FROM InviteMaster_Award_Record iar 
 				WHERE iar.Award_Type=0  AND Pay_Statu = #{map.payStatu}
-					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) jktj,
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D') AND Member_ID=mi.Member_ID) jktj,
 	(SELECT SUM(Award_Amount) FROM InviteMaster_Award_Record iar 
 				WHERE iar.Award_Type=1  AND Pay_Statu = #{map.payStatu}
-					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) tztj,
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D') AND Member_ID=mi.Member_ID) tztj,
 	(SELECT SUM(Award_Amount) FROM InviteMaster_Award_Record iar 
 				WHERE iar.Award_Type=2  AND Pay_Statu = #{map.payStatu}
-					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) hbtj,
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D') AND Member_ID=mi.Member_ID) hbtj,
 	(SELECT SUM(Award_Amount) FROM InviteMaster_Award_Record iar 
 				WHERE iar.Award_Type=3  AND Pay_Statu = #{map.payStatu}
-					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) vipgm,
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D') AND Member_ID=mi.Member_ID) vipgm,
 	mi.Logname,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone 
 	FROM Member_Info mi
 	LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id=mi.Personal_ID 
 	WHERE mi.Member_ID 
 			in (SELECT Member_ID from InviteMaster_Award_Record 
-						WHERE Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D')  AND Pay_Statu = #{map.payStatu}) 
-	UNION ALL
+						WHERE Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D')  AND Pay_Statu = #{map.payStatu}) 
+	</if>
+	<if test="map.stype==2">
 	SELECT 
 	(SELECT SUM(Award_Amount) FROM FinancialAdvisor_Award_Record iar 
 				WHERE iar.Award_Type=0 AND Pay_Statu = #{map.payStatu}
-					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) jktj,
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D') AND Member_ID=mi.Member_ID) jktj,
 	(SELECT SUM(Award_Amount) FROM FinancialAdvisor_Award_Record iar 
 				WHERE iar.Award_Type=1  AND Pay_Statu = #{map.payStatu}
-					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) tztj,
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D') AND Member_ID=mi.Member_ID) tztj,
 	(SELECT SUM(Award_Amount) FROM FinancialAdvisor_Award_Record iar 
 				WHERE iar.Award_Type=2  AND Pay_Statu = #{map.payStatu}
-					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) hbtj,
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D') AND Member_ID=mi.Member_ID) hbtj,
 	(SELECT SUM(Award_Amount) FROM FinancialAdvisor_Award_Record iar 
 				WHERE iar.Award_Type=3  AND Pay_Statu = #{map.payStatu}
-					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D') AND Member_ID=mi.Member_ID) vipgm,
+					AND Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D') AND Member_ID=mi.Member_ID) vipgm,
 	mi.Logname,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone
 	FROM Member_Info mi
 	LEFT JOIN Personal_Base_Info pbi ON pbi.Personal_Id=mi.Personal_ID 
 	WHERE mi.Member_ID 
 			in (SELECT Member_ID from FinancialAdvisor_Award_Record 
-						WHERE Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y%m%D') AND  STR_TO_DATE(#{map.endDate},'%Y%m%D')  AND Pay_Statu = #{map.payStatu})
+						WHERE Award_Date BETWEEN STR_TO_DATE(#{map.startDate},'%Y-%m-%D') AND  STR_TO_DATE(#{map.endDate},'%Y-%m-%D')  AND Pay_Statu = #{map.payStatu})
+  	</if>
   	) newTab
   	<where>
-  		<if test="map.PersonalName!=null">
+  		<if test="map.PersonalName!=null and map.PersonalName != ''">
   			Personal_Name like '%${map.PersonalName}%'
   		</if>
-  		<if test="map.PersonalPhone!=null">
+  		<if test="map.PersonalPhone!=null and map.PersonalPhone != ''">
   			Personal_Phone like '%${map.PersonalPhone}%'
   		</if>
-  		<if test="map.memberNo!=null">
+  		<if test="map.memberNo!=null and map.memberNo != ''">
 			Member_No like '%${map.memberNo}%'
 		</if>
   	</where> 

@@ -66,6 +66,8 @@
     	<div class="loan">
     		<div class="quickLoan"><span>快速借款</span></div>
     		<div class="prompt"><span>温馨提示：</span>请仔细填写您的真实信息，以便我们及时与你取得联系。</div>
+    		<input id="minAmount" value="0" type="hidden"/>
+    		<input id="maxAmount" value="0" type="hidden"/>
     		<form class="personInfo" id="personInfo">
     			<div class="inputArea">
 	    			<label class="modeSelectL">借款类型</label>
@@ -75,7 +77,12 @@
 					    <ul class="select" id="typeSelect" onselectstart="return false">
 					        <script id="typeSelectList" type="text/html">
 					        {{each data as value index}}
-					        	<li class="selectOption"  value="{{value.id}}">{{value.projectName}}</li>
+					        	<li class="selectOption selectLi" id="li_{{value.id}}"  value="{{value.id}}" minAmount="{{value.minAmounts}}" maxAmount="{{value.maxAmounts}}"
+									tminDaytime="{{value.tminDaytime}}" tmaxDaytime="{{value.tmaxDaytime}}" 
+									mminDaytime="{{value.mminDaytime}}" mmaxDaytime="{{value.mmaxDaytime}}"
+									yminDaytime="{{value.yminDaytime}}" ymaxDaytime="{{value.ymaxDaytime}}"
+									minRates="{{value.minRates}}" maxRates="{{value.maxRates}}" 
+									>{{value.projectName}}</li>
 					        {{/each}}
 							</script>
 					    </ul>
@@ -83,7 +90,7 @@
     			</div>
     			<div class="inputArea">
 	    			<label>借款金额</label>
-	    			<input class="loanSum" datatype="acountM" type="text" lang="请输入借款金额" maxlength="10"/>
+	    			<input class="loanSum" datatype="acountM" type="text" lang="请输入借款金额" maxlength="15"/>
 	    			<samp>元</samp>
     			</div>
     			<div class="inputArea">
@@ -109,13 +116,13 @@
     			<div class="inputArea">
 	    			<label class="modeSelectL">还款方式</label>
 	    			<div class="selectArea selectArea1">
-	    				<input class="selectValue repaymentMethod" value="1" >
-					    <input class="selectInput selectInput1" type="text" lang="等额本金" readOnly="true"/>
+	    				<input class="selectValue repaymentMethod" value="0" >
+					    <input class="selectInput selectInput1" type="text" lang="等额本息" readOnly="true"/>
 					    <ul class="select" onselectstart="return false">
-					        <li class="selectOption" value="1">等额本金</li>
-					        <li class="selectOption" value="2">等额本息</li>
-					        <li class="selectOption" value="3">先息后本</li>
-					        <li class="selectOption" value="4">到期还本付息</li>
+					        <li class="selectOption" value="0">等额本息</li>
+					        <li class="selectOption" value="1">先息后本</li>
+					        <li class="selectOption" value="2">到期还本付息</li>
+					        <li class="selectOption" value="3">等额本金</li>
 					    </ul>
 					</div>
     			</div>

@@ -38,10 +38,10 @@
   		<if test="check_Type!=null">
   			Check_Type = #{check_Type},
   		</if>
-  		<if test="payment_Member_Type !=null">
-  			Payment_Member_Type = #{payment_Member_Type}
-  		</if>
   	</set> 
+  	<where>
+  		Payment_Member_Type = #{payment_Member_Type}
+  	</where>
   </update>
   
   

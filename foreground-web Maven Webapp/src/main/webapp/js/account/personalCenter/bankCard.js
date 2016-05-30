@@ -143,17 +143,30 @@ $(function(){
 	});
 	//验证
 	$("#bankId").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		//btnSubmit:".btn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		datatype:extdatatype,
 		ajaxPost:true,
 		beforeSubmit:function(curform){
+			$("input[type='submit']").attr("disabled","true");
 			var passID_card=$("#passID_card").val();//银行卡号
 			var zbank=$("#zbank").val();//支行
 			var zPhone=$("#zPhone").val();//绑定手机号
 			var bankId=$("#addCard_bankValue").attr("value");//银行编号
+			if(bankId==0 || bankId==""){
+				layer.alert("请选择开户银行");
+				return false;
+			}
 			var provinceId=$(".provinceId").attr("value");//银行卡省份ID
 			var cardCity=$(".cityId").attr("value");//银行卡城市ID
+			if(provinceId==0 || provinceId==""){
+				layer.alert("请选择开户行所在省份");
+				return false;
+			}
+			if(cardCity==0 || cardCity==""){
+				layer.alert("请选择开户行所在城市");
+				return false;
+			}
 			var branchAddress="n";
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
@@ -170,13 +183,14 @@ $(function(){
 					str_url,
 					{bankNo:passID_card,branch:zbank,bankPhone:zPhone,bankId:bankId,cardProvince:provinceId,cardCity:cardCity,branchAddress:branchAddress},
 					function(r){
+						$("input[type='submit']").attr("disabled","false");
 						var r = JSON.parse(r);
 						if (r.code == 200){
 							layer.alert("添加成功",function(){
 								window.location.reload();
 							})
 						}else{
-							layer.alert(r.message)
+							layer.alert(r.message);
 						}
 					}
 				)	
@@ -186,7 +200,7 @@ $(function(){
 	});
 	////debugger;
 	$("#xiuGai_Kard").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".btn_tian", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,

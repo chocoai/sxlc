@@ -4,6 +4,8 @@ package cn.springmvc.dao;
 import java.util.List;
 import java.util.Map;
 
+import product_p2p.kit.pageselect.PageEntity;
+
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.IntegralRuleEntity;
 import cn.springmvc.model.OverdueEntity;
@@ -30,7 +32,7 @@ public interface SelectIntegralRuleDao {
 	* @return List<IntegralRuleEntity> 返回类型 
 	* @throws 
 	*/
-	public List<IntegralRuleEntity> findAllIntegralRule(Map<String, Object> map);
+	public List<IntegralRuleEntity> findAllIntegralRule(PageEntity entity);
 	
 }
 

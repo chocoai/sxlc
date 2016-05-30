@@ -51,12 +51,12 @@
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="1" name="top_menu_index" />
-				<jsp:param value="角色管理" name="loc1" />
+				<jsp:param value="1" name="_index_m1" />
 			</jsp:include>
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-left-menu.jsp">
-				<jsp:param value="role-4" name="role-index" />
+			<jsp:include page="../common/cm-role.jsp">
+				<jsp:param value="106" name="_index_m2" />
+				<jsp:param value="" name="_index_m3" />
 			</jsp:include>
 			<!-- 头部导航 -->
 
@@ -64,10 +64,10 @@
 			<div class="right_col role-content">
 				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
 				
-				<!-- tab切换 -->
+				 <!-- tab切换 -->
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="web/role/role-manage-in.jsp">内部管理员</a></li>
-					<li><a href="web/role/role-manage-out.jsp">外部管理员</a></li>
+					<!--<li><a href="web/role/role-manage-out.jsp">外部管理员</a></li> -->
 				</ul>
 				
 				<div class="search">

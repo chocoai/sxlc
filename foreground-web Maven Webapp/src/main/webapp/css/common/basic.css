@@ -138,3 +138,8 @@ i {margin:0 5px;}
 	background-color:#fff;
 }
 .w109{width: 109px!important;}
+/* 禁止鼠标点击 */
+.disabled{
+	pointer-events:none;
+	opacity:0.5;
+}

@@ -53,10 +53,15 @@
    
    <!-- 投资记录 -->
    <select id="investRecord"	parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.InvestmentRecord">
-   	select ir.Invest_Date as investDate,mi.logname as memberName ,pbi.personal_name as userName,ir.Invest_Amount as investmentAmount
+   	select ir.Invest_Date as investDate,mi.logname as memberName ,
+   	  case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  
+            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) end 
+            as userName, 
+   	CAST(AES_DECRYPT(UNHEX(ir.Invest_Amount),#{map.skey}) as signed)   as investmentAmount
 	from Invest_Record ir
 	left join member_info mi on mi.member_id = ir.Member_ID
 	left join personal_base_info pbi on pbi.personal_id = mi.personal_id
+    left join Company_Info  ci  on ci.Company_ID = mi.Company_ID  
 	where Apply_Id = #{map.applyId} and IsValid = 0
    </select>
    
@@ -284,11 +289,19 @@
        ifnull((select CAST(((AES_DECRYPT(UNHEX(SDRepay_Interest),#{skey}))) as signed)  
        from Loan_Repay 
        where Apply_Id=#{applyId} and IsValid=0 and IsCompensatory=0 and Statu=0
-       order by Repay_MaxTime desc limit 1),0) as repayInterest,
+       order by Repay_MaxTime asc limit 1),0) as repayInterest,
        
        ifnull((select Penalty_Invest_Rate   from System_Set limit 1),0) as penaltyInvestRate,
        
        ifnull((select  Penalty_PingTai_Rate from System_Set limit 1),0) as penaltyPingTaiRate,
+         ifnull((select datediff(Repay_MaxTime, NOW())   
+       from Loan_Repay 
+       where Apply_Id=#{applyId} and IsValid=0 and IsCompensatory=0 and Statu=0
+       order by Repay_MaxTime asc limit 1),0)  as remaintimes,
+       
+       (select  pbi.Deadline_Type  from project_app_record par 
+        join project_base_info pbi on par.Project_Base_ID = pbi.Project_Base_ID 
+        where par.Apply_ID = #{applyId} ) as deadlineType,
        #{applyId} applyId
  
    </select> 
@@ -346,7 +359,7 @@
 	ifnull(CAST(AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{map.skey}) as signed),0)  ) as sdReplayTotal,
 	lr.Repay_MaxTime as loanTime,
 	lr.Statu as statu, 
-	(case when statu != 2 and Repay_MaxTime > now() then 0 else 1 end)   as isYuQi,
+	(case when statu != 2 and Repay_MaxTime > now() then 0 else 1 end)   as isYuQi
 	from Loan_Repay lr 
 	where Apply_Id = #{map.applyId} and IsValid = 0
    </select>

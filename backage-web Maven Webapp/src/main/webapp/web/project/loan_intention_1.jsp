@@ -61,7 +61,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="con-item col-md-3 col-sm-5 col-xs-5"><span>会员编号</span><input id="memberNo" type="text" class="notspecial"  /></span>
 									<span class="con-item col-md-3 col-sm-5 col-xs-5"><span>会员用户名</span><input id="logname" type="text" class="notspecial" /></span>
 									<span class="con-item col-md-3 col-sm-5 col-xs-5"><span>会员联系号码</span><input id="personalPhone" type="text" class="notspecial"  /></span>
-									<span class="con-item col-md-3 col-sm-5 col-xs-5"><span>还款方式</span><input id="repayWay" type="text" class="notspecial" /></span>
+									<span class="con-item col-md-3 col-sm-5 col-xs-5"><span>还款方式</span>
+										<select id="repayWay" >
+											<option value="" >==选择==</option>
+											<option value="3" >等额本金</option>
+											<option value="0" >等额本息</option>
+											<option value="1" >每月还息，到期还本</option>
+											<option value="2" >到期还本息</option>
+										</select>
+									</span>
 									<span class="col-md-12"><button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button></span>
 								</form>
 						  	</div>

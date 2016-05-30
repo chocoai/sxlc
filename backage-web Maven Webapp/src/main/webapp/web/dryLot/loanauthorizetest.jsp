@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
-<%@page import="sxlc.thirdAccountInterface.MemberEntity"%>
+<%@page import="cn.sxlc.account.manager.model.AuthorizeInterfaceEntity"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-cache" /> 
 <meta http-equiv="Expires" content="0" /> 
 <%
-	MemberEntity member=(MemberEntity)request.getAttribute("author");
+	AuthorizeInterfaceEntity member=(AuthorizeInterfaceEntity)request.getAttribute("accountInterfaceEntity");
  %>
 <title>网贷授权 - 乾多多</title>
 <script type="text/javascript">

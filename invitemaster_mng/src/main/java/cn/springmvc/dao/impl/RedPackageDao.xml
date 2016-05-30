@@ -4,16 +4,27 @@
 <mapper namespace="redPackageDao">     
 	
 	
+	<!-- 获取最新红包活动信息 -->
+	<select id="findLatelyInfo" resultType="cn.invitemastermng.model.AffairInfo">
+		select 
+			Affair_Id			as affairId,
+			Affair_Name			as affairName,
+			Affair_Account		as affairAccount,
+			Start_Date			as startDate,
+			end_Date 			as endDate
+		from Redpackets_Affair 
+		where statu = 1 order By CreateTime desc limit 1
+	</select>
 	
 	<!-- 获取红包领取记录 -->
-	<select id="redRecord" parameterType="Map" resultType="cn.invitemastermng.model.RedRecord">
+	<select id="redRecord" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.invitemastermng.model.RedRecord">
 		select 
 		mi.logName				as userName,
 		mr.Gift_Amount			as amount,
-		mr.Receive_Date			as recordDate
+		mr.Receive_Date			as srecordDate
 		from Member_Redpackets mr
 		left join member_info mi on mi.member_id = mr.Member_id
-		order by mr.Receive_Date desc		
+		order by mr.Receive_Date desc
 	</select>
 	
 	<!-- 抢红包 -->
@@ -85,8 +96,10 @@
 			#{result,				mode=OUT,					jdbcType=INTEGER}
 		)
 	</select>
+	
+	
 	<!-- 黑名单判断 -->
-	 <select id="BlackMemberJudgmentTow" resultType="Map" statementType="CALLABLE">
+	<select id="BlackMemberJudgmentTow" resultType="Map" statementType="CALLABLE">
     	<!--result ：1:可执行 ；-1; 不可继续执行-->
     	<![CDATA[{call BlackMemberJudgment(
 				#{memberId,	 mode=IN,	jdbcType=BIGINT},

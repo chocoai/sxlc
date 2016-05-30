@@ -94,12 +94,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}  
 				},
 				columns: [  
-				          { title:"投资完成时间","data": "holdDate"},  
+				          { title:"投资时间","data": "investDate"},  //investDate
 				          { title:"会员用户名","data": "logname"},  
 				          { title:"会员姓名","data": "membername"},  
-				          { title:"投资金额","data": "investAmount"},  
-				          { title:"使用红包抵扣金额","data": "investGiftAmount"},  
-				          { title:"使用代金券抵扣金额","data": "investVouchersAmount"},  
+				          { title:"投资金额","data": "investAmounts"},  
+				          { title:"使用红包抵扣金额","data": "investGiftAmounts"},  
+				          { title:"使用代金券抵扣金额","data": "investVouchersAmounts"},  
 				          { title:"是否使用返现券","data": "isBack", 
 				        	  "mRender": function (data, type, full) {
 				        		  	if(data==0){
@@ -122,10 +122,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
-	          serverSide: true,//打开后台分页  
+	          serverSide: true,//打开后台分页
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕

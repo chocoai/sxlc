@@ -11,7 +11,7 @@ function loadUntreatedMessage(){
 		type:"get",
 		dataType:"json",
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			$(".messageNum").html(data.stationMessageNum+data.letterNum);
 			if(data.stationMessageNum>0){
 				$(".messageNum").on("click",function(){

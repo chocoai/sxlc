@@ -11,6 +11,7 @@
 		<result property = "recordDate"    	    column = "Record_Date" />
 		<result property = "checkDate"    	    column = "Check_Date" />
 		<result property = "checkRemark"    	column = "Check_Remark" />  
+		 
 	    <association property="projectBaseInfoentity" column="id" resultMap="resultBaseInfoentity"> 
 	    </association>
 	</resultMap> 
@@ -20,7 +21,8 @@
 			<result property = "amount" 		 column = "Amount" /> 
 			<result property = "deadline" 		 column = "Deadline" /> 
 			<result property = "yearRate"        column = "Year_Rate" />  
-			<result property = "deadlineTypes" 	 column = "name1" />  
+			<result property = "deadlineTypes" 	 column = "name1" />
+			<result property = "deadlineType"    	column = "Deadline_Type" />  
      </resultMap>
 	<!-- 查询申请失败列表 
 	    Apply_Id,项目申请记录ID
@@ -53,6 +55,7 @@
 		  END Personal_Name,	
 		  pb.Project_Name,
 		  pp.Deadline,
+		  pp.Deadline_Type,
 		  (select d.name1 from dict d where d.code1 = pp.Deadline_Type AND d.tcode = 'DICT_QXLX') name1,
 		  pp.Amount,
 		  pp.Year_Rate,
@@ -285,7 +288,7 @@
 				  AND IF(#{Record_Date_Max} IS NULL OR #{Record_Date_Max} = '', 1=1, pp.Record_Date&lt;=#{Record_Date_Max}) 
 				  AND IF(#{Amount_Min} IS NULL OR #{Amount_Min} = '', 1=1, pp.Amount>=#{Amount_Min})
 				  AND IF(#{Amount_Max} IS NULL OR #{Amount_Max} = '', 1=1, pp.Amount&lt;=#{Amount_Max}) 
-				  AND prp.Batch = (select max(prp.Batch)-1 from Process_Project prp)	<!--申请未通过且倒数第二步审核已经通过的记录为未发布-->
+				  AND prp.indexs = (select prp.Indexs from Process_Project prp where prp.Statu=1 order by Indexs DESC limit 1,1)	<!--申请未通过且倒数第二步审核已经通过的记录为未发布-->
 			) subq  
 		ON pc.App_Check_Id = subq.App_Check_Id
 		LEFT JOIN personal_base_info pbi	<!--同时连接个人与企业信息，查询时根据会员类型确认显示字段-->
@@ -971,6 +974,7 @@
 		<result property = "investGiftAmount"     column = "Invest_Gift_Amount" /> 
 		<result property = "investVouchersAmount" column = "Invest_Vouchers_Amount" /> 
 		<result property = "isBack"    	          column = "Is_Back" />   
+		<result property = "investDate"    	          column = "Invest_Date" /> 
 	</resultMap>
 	 
 	<!-- 查看投资记录
@@ -990,14 +994,15 @@
 		SELECT
 		  ir.Invest_Id,
 		  ir.Hold_Date,
+		  ir.Invest_Date,
 		  mi.Logname,
 		  CASE
 			  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8)
 			  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8)
 		  END Personal_Name,
 		  CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount),#{skey})) AS SIGNED) Invest_Amount,
-		  CAST((AES_DECRYPT(UNHEX(ir.Invest_Gift_Amount),#{skey})) AS SIGNED) Invest_Gift_Amount,
-		  CAST((AES_DECRYPT(UNHEX(ir.Invest_Vouchers_Amount),#{skey})) AS SIGNED) Invest_Vouchers_Amount,
+		 ifnull(CAST((AES_DECRYPT(UNHEX(ir.Invest_Gift_Amount),#{skey})) AS SIGNED),0) Invest_Gift_Amount,
+		 ifnull( CAST((AES_DECRYPT(UNHEX(ir.Invest_Vouchers_Amount),#{skey})) AS SIGNED),0) Invest_Vouchers_Amount,
 		  (CASE CAST((AES_DECRYPT(UNHEX(ir.Back_Amount),#{skey})) AS SIGNED)
 			WHEN 0 THEN 0
 			ELSE 1
@@ -1009,8 +1014,7 @@
 			ON mi.Personal_Id = pbi.Personal_Id
 		  LEFT JOIN Company_Info ci
 			ON mi.Personal_Id = ci.Company_ID
-		WHERE ir.IsValid = 0	<!--0代表有效-->
-			  AND IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
+		WHERE IF(#{Logname} IS NULL, 1=1, LOCATE(#{Logname},mi.Logname)>0)
 			  AND IF(#{Personal_Name} IS NULL, 1=1, LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8))>0 or LOCATE(#{Personal_Name},CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey})) using utf8))>0)
 			  AND IF(#{Hold_Date_Min} IS NULL OR #{Hold_Date_Min} = '', 1=1, ir.Hold_Date>=#{Hold_Date_Min})
 			  AND IF(#{Hold_Date_Max} IS NULL OR #{Hold_Date_Max} = '', 1=1, ir.Hold_Date&lt;=#{Hold_Date_Max})

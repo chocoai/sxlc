@@ -6,11 +6,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.SelectIntegralRuleDao;
 import cn.springmvc.dao.SelectOverdueDao;
@@ -43,20 +45,20 @@ public class SelectIntegralRuleDaoImpl extends SqlSessionDaoSupport implements S
 	 */
 	/* *  *  * @return * @see cn.springmvc.dao.SelectIntegralRuleDao#findAllIntegralRule(java.util.Map) */
 	@Override
-	public List<IntegralRuleEntity> findAllIntegralRule(Map<String, Object> map) {
+	public List<IntegralRuleEntity> findAllIntegralRule(PageEntity pageEntity) {
 		
-		int iType = IntegerAndString.StringToInt(map.get("type").toString(), 0);
+		int iType = IntegerAndString.StringToInt(pageEntity.getMap().get("type").toString(), 0);
 		// TODO Auto-generated method stub return null;
 		if(iType==1){
-			return getSqlSession().selectList("IntegralRuleXML.selectIntegralRule", map);
+			return getSqlSession().selectList("IntegralRuleXML.selectIntegralRule", pageEntity.getMap(),new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		}else if (iType==2) {
-			return getSqlSession().selectList("IntegralRuleXML.selectproIntegralRule", map);
+			return getSqlSession().selectList("IntegralRuleXML.selectproIntegralRule", pageEntity.getMap(),new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		}else if (iType==3) {
-			return getSqlSession().selectList("IntegralRuleXML.selecttraIntegralRule", map);
+			return getSqlSession().selectList("IntegralRuleXML.selecttraIntegralRule", pageEntity.getMap(),new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		}else if (iType==4) {
-			return getSqlSession().selectList("IntegralRuleXML.selectrecIntegralRule", map);
+			return getSqlSession().selectList("IntegralRuleXML.selectrecIntegralRule", pageEntity.getMap(),new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		}else if (iType==5) {
-			return getSqlSession().selectList("IntegralRuleXML.selectloaIntegralRule", map);
+			return getSqlSession().selectList("IntegralRuleXML.selectloaIntegralRule", pageEntity.getMap(),new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		}else {
 			return null;
 		}

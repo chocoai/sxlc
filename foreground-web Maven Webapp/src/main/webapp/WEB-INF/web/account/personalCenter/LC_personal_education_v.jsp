@@ -11,8 +11,13 @@
 	<base href="<%=basePath%>">
     <title>学历认证</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var appPath="<%=path%>";
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/loanCertification.css">
+	<link rel="stylesheet" type="text/css" href="plugs/webuploader/webuploader.css">
 </head>
 <body> 
     <jsp:include page="../../common/top.jsp"></jsp:include>
@@ -30,17 +35,33 @@
 	   				</div>
 	   				<div class="authenContent">
 		   				<div class="authen">
-				   			<ul class="inputArea">
-				   				<li class="inputList">
-				   					<div class="mustLabel"><span>附件：</span></div>
-				   					<div class="previewPicture">图片预览部分</div>
-				   					<!-- <div class="previewPicture">
-				   						<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
-				   						<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput" onchange="preImg(this.id,'previewImg')" onblur="if(document.getElementById('previewImg').src=='null')document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" >
-				   					</div>
-				   					<span class="hint">（请上传附件图片）</span> -->
-				  				</li>
-				  			</ul>
+		   					<form class="authEducation">
+					   			<ul class="inputArea">
+									<li class="inputList">
+										<div class="mustLabel">
+											<span><samp></samp>学历：</span>
+										</div>
+										<div class="selectArea nationSelect">
+											<input class="selectValue" value="0"> <input
+												class="selectInput" type="text"  readOnly="readonly">
+										</div>
+									</li>
+									<li class="inputList">
+				   						<div class="mustLabel"><span><samp></samp>有效期：</span></div>
+				   						<input class="inputText dateSelect Wdate" readonly="readonly" type="text" lang="请选择有效期"/>
+					   				</li>
+									<li class="inputList clearfix">
+				   						<div class="mustLabel"><span><samp></samp>附件：</span></div>
+				   					
+				   						<div class="authPreviDiv_u"></div>
+		   								<!-- <span class="hint">（请上传附件图片）</span> -->
+					   				</li>
+									<li class="inputList">
+					   					<input class="cid" name="cid" type="hidden">
+					   					<input class="editType" id="editType" name="editType" type="hidden" value="0">
+					   				</li>
+				  				</ul>
+				  			</form>
 		   				</div>
 		   			</div>
    				</div>
@@ -48,7 +69,13 @@
    		</div>
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
+   	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
+		<script type="text/javascript" src="plugs/webuploader/webuploader.js" ></script>
+   	<script type="text/javascript" src="js/exp-upload.js"></script>
 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
+	<script type="text/javascript" src="js/account/personalCenter/loanCertification_education.js"></script>
+	<script type="text/javascript">
+	</script>
 </body>
 </html>

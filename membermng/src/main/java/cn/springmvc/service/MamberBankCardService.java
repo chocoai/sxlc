@@ -18,6 +18,7 @@ import java.util.Map;
 import cn.membermng.model.BankCardInfoEntity;
 import cn.membermng.model.BankCodeEntity;
 import cn.membermng.model.CityDictionaryEntity;
+import cn.membermng.model.CityInfoEntity;
 import cn.membermng.model.MemberBankCardEntity;
 import cn.membermng.model.ProvinceDictionaryEntity;
 
@@ -53,6 +54,21 @@ public interface MamberBankCardService {
 	 * @date 2016-3-28 下午2:34:01
 	 */
 	public List<CityDictionaryEntity> selectCityDictionary(int provinceId);
+	/**
+	 *  查询省份信息------银行卡专用
+	 * @author 邱陈东
+	 * @return List<ProvinceDictionaryEntity> 返回类型 
+	 * @date 2016年5月30日14:26:32
+	 */
+	public List<CityInfoEntity> selectBankProvinceDictionary();
+	/**
+	 *  根据省份ID查询市区信息------银行卡专用
+	 * @author 邱陈东   
+	 * @param provinceId 省份ID 
+	 * @return List<CityDictionaryEntity> 返回类型 
+	 * @date 2016年5月30日14:26:32
+	 */
+	public List<CityInfoEntity> selectBankCityDictionary(int provinceId);
 	/**
 	 *  新增会员银行卡
 	 * @author 刘利   

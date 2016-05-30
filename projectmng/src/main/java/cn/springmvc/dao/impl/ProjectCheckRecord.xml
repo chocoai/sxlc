@@ -7,21 +7,25 @@
      <result property = "adminID"    column = "Admin_ID" />
      <result property = "processID"  column = "Process_ID" /> 
      <result property = "checkDate"  column = "Check_Date" />
-     <result property = "checkStatu" column = "Check_Statu" />
+     <result property = "checkStatu"  column = "Check_Statu" />
      <result property = "checkRemark" column = "Check_Remark" /> 
      <result property = "adminName"   column = "adminName" />  
-     <result property = "checkStatus"      column = "name1" /> 
+     <result property = "checkStatus" column = "name1" /> 
      <result property = "apName"      column = "AP_Name" /> 
+     <result property = "projectName" column = "Project_Title" /> 
  </resultMap>
  
     <!-- 根据项目申请ID查询审核记录-->  
 	<select id="selectProjectCheckRecord"  parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="resultProjectCheckRecord" >
-	    select ad.adminName,pcr.Check_Date,CH.name1,pcr.Check_Remark, ap.AP_Name
+	    select ad.adminName,pcr.Check_Date,CH.name1,pcr.Check_Remark, ap.AP_Name,pcr.Check_Statu,
+	    pbi.Project_Title 
 	   from  Project_Check_Record pcr
 	   left join Admin ad on ad.Admin_ID = pcr.Admin_ID 
        left join  DICT  ch on CH.tcode='DICT_SHJLZT' and  CH.code1=pcr.Check_Statu
        left join  Activities_Project ap on ap.Process_ID = pcr.Process_ID
-       where  Apply_Id=#{map.applyId}
+       join   Project_App_Record par on par.Apply_ID = pcr.Apply_ID
+       join   Project_Base_Info pbi on pbi.Project_Base_ID = par.Project_Base_ID
+       where  pcr.Apply_Id=#{map.applyId}
    </select>
    
  

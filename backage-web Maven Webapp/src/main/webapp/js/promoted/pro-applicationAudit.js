@@ -66,6 +66,7 @@ $(function() {
                 		  return sReturn;
                 	  }
                   },
+                  { title:"推荐达人申请ID","data": "imApplyID" },
                   { title:"会员编号","data": "memberNo" }, 
                   { title:"会员用户名","data": "logname" },
                   { title:"会员类型","data": "memberType" },
@@ -96,24 +97,56 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#applicationAudit').DataTable();
-//设置选中change颜色
- $('#applicationAudit tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
 });
 //审核弹出层2016-05-11伍成然
 $(".obtn-exam").click(function(){
+	var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选中需要操作的记录！", {icon : 0});
+		return;
+	}
+	putValue();
+	
 	layer.open({
         type: 1,
         title: '审核',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['400px' , '250px'],
+        area : ['360px' , '310px'],
         content: $(".layerExam"),//DOM或内容
 	    btn:['确认', '取消']
+	,yes: function(index, layero){ //或者使用btn1
+	    //确定的回调
+		$.ajax({
+			type : 'post',
+			url : appPath + "/talent/verify.do",
+			data : {
+				imApplyID : encrypt.encrypt(rowdata[0].imApplyID + ""),
+				checkStatu : encrypt.encrypt($("#checkStatu").val() + ""),
+				remark : encrypt.encrypt($("#remark").val() + "")
+			},
+			success : function (msg) {
+				if (msg == 1) {
+					layer.alert("审核成功", {icon : 1});
+					setTimeout('location.reload()',2000);
+				}else {
+					layer.alert("审核失败！", {icon : 0});
+				}
+			}
+		});
+	    layer.close(index);
+	  	
+	  }
     });
 });
+
+function putValue() {
+	var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+	$("#memberNo1").html(rowdata[0].memberNo);
+	$("#logname1").html(rowdata[0].logname);
+	$("#personalName1").html(rowdata[0].personalName);
+	$("#personalPhone1").html(rowdata[0].personalPhone);
+}
 
 /**
  * 查询按钮
@@ -121,4 +154,23 @@ $(".obtn-exam").click(function(){
 $(".glyphicon-search").on("click",function(){
 	$('#applicationAudit').DataTable().ajax.reload();
 	
+});
+
+$(function() {
+	//单选
+	$('#applicationAudit tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

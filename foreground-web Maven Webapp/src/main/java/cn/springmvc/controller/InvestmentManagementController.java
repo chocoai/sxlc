@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,16 +23,20 @@ import product_p2p.kit.pageselect.PageEntity;
 import cn.membermng.model.AutomaticBidSettingEntity;
 import cn.membermng.model.InvestIncomeEntity;
 import cn.membermng.model.MemberInfo;
+import cn.membermng.model.MemberThirdAuthInfo;
 import cn.membermng.model.MemberThirdAuthInfoEntity;
 import cn.membermng.model.MyinvestEntity;
 import cn.springmvc.model.ProjectBaseInfoEntity;
 import cn.springmvc.model.TransferableCreditsEntity;
 import cn.springmvc.service.CertificationAuditService;
+import cn.springmvc.service.IMemberService;
 import cn.springmvc.service.InvestmentManagementService;
+import cn.springmvc.service.ManagedInterfaceServerTestI;
 import cn.springmvc.service.MyinvestService;
 import cn.springmvc.service.ProjectBaseInfoService;
 import cn.springmvc.service.RecordsBalanceService;
 import cn.springmvc.service.TransferableCreditsService;
+import cn.sxlc.account.manager.model.AuthorizeInterfaceEntity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -71,13 +76,19 @@ public class InvestmentManagementController {
 	@Autowired
 	private CertificationAuditService auditService;
 	
+	@Autowired
+	private ManagedInterfaceServerTestI interfaceServerTestI;
+	
+	@Autowired
+	private IMemberService memberService;
+	
 	/**
-	* 我的投资
-	* 
-	* @author 李杰
-	* @Title: myInvestment
-	* @return
-	* @date 2016-4-29 下午4:05:07
+	 * 我的投资
+	 * 
+	 * @author 李杰
+	 * @Title: myInvestment
+	 * @return
+	 * @date 2016-4-29 下午4:05:07
 	 */
 	@RequestMapping("/myInvestment")
 	public String myInvestment(){
@@ -86,13 +97,13 @@ public class InvestmentManagementController {
 	
 	
 	/***
-	* 我的投资-回收中 
-	* 
-	* @author 李杰
-	* @Title: recycling
-	* @param request
-	* @return
-	* @date 2016-4-29 下午4:27:52
+	 * 我的投资-回收中 
+	 * 
+	 * @author 李杰
+	 * @Title: recycling
+	 * @param request
+	 * @return
+	 * @date 2016-4-29 下午4:27:52
 	 */
 	@RequestMapping(value="recycling",produces = "text/html;charset=UTF-8")
 	@ResponseBody
@@ -126,11 +137,11 @@ public class InvestmentManagementController {
 	
 	
 	/***
-	* 回收中的投资-查看收益计划
-	* 
-	* @author 李杰
-	* @return
-	* @date 2016-5-4 下午2:01:26
+	 * 回收中的投资-查看收益计划
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-4 下午2:01:26
 	 */
 	@RequestMapping(value="revenuePlan/{investId:[0-9]+}/{cpage:[0-9]+}",produces = "text/html;charset=UTF-8")
 	public String revenuePlan(HttpServletRequest request,@PathVariable long investId,@PathVariable int cpage){
@@ -154,14 +165,14 @@ public class InvestmentManagementController {
 	
 	
 	/***
-	* 我的投资-已结清
-	* 
-	* @author 李杰
-	* @Title: settled
-	* @param request
-	* @return
-	* @date 2016-4-29 下午4:37:10
-	*/
+	 * 我的投资-已结清
+	 * 
+	 * @author 李杰
+	 * @Title: settled
+	 * @param request
+	 * @return
+	 * @date 2016-4-29 下午4:37:10
+	 */
 	@RequestMapping(value="settled",produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String settled(HttpServletRequest request){
@@ -188,12 +199,12 @@ public class InvestmentManagementController {
 	
 	
 	/***
-	* 已结清的投资-收益记录
-	* 
-	* @author 李杰
-	* @return
-	* @date 2016-5-9 下午2:13:56
-	*/
+	 * 已结清的投资-收益记录
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-9 下午2:13:56
+	 */
 	@RequestMapping(value="/revenueRecord/{investId:[0-9]+}/{cpage:[0-9]+}")
 	public String revenueRecord(HttpServletRequest request,@PathVariable long investId,@PathVariable int cpage){
 		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
@@ -217,13 +228,11 @@ public class InvestmentManagementController {
 	
 	
 	/***
-	* 我的投资-投标中
-	* statu			0投标中,1已流标,2 投标完成
-	* @author 李杰
-	* @Title: bidding
-	* @param request
-	* @return
-	* @date 2016-4-29 下午4:47:50
+	 * 我的投资-投标中
+	 * statu			0投标中,1已流标,2 投标完成
+	 * @author 李杰
+	 * @return
+	 * @date 2016-4-29 下午4:47:50
 	 */
 	@RequestMapping(value="bidding",produces = "text/html;charset=UTF-8")
 	@ResponseBody
@@ -256,11 +265,11 @@ public class InvestmentManagementController {
 	
 	
 	/***
-	* 自动投标
-	* 
-	* @author 李杰
-	* @return
-	* @date 2016-4-29 下午4:52:10
+	 * 自动投标
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-4-29 下午4:52:10
 	 */
 	@RequestMapping("/autoBid")
 	public String autoBid(HttpServletRequest request){
@@ -268,43 +277,89 @@ public class InvestmentManagementController {
 		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
 		AutomaticBidSettingEntity automaticBidSettingEntity = auditService.QueryMemberAutomaticBidSetting(memberInfo.getId());
 		request.setAttribute("automaticBidSettingEntity", automaticBidSettingEntity);
+		
 		//查询出借款类型列表
 		List<ProjectBaseInfoEntity> projectTypes = baseInfoService.selectProjectBaseInfoCombox();
 		request.setAttribute("projectTypes",projectTypes);
+		
 		//查询出可用余额
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("memberID", memberInfo.getId());
 		param.put("memberType", memberInfo.getMemberType());
 		MemberThirdAuthInfoEntity authInfoEntity = balanceService.selectMemberThirdAuthInfo(param);
 		request.setAttribute("authInfoEntity", authInfoEntity);
+		
+		//查询出当前会员是否开启自动转账
+		MemberThirdAuthInfo authInfo = memberService.getAutoGiroStatu(memberInfo.getMemberId(),memberInfo.getMemberType());
+		if(automaticBidSettingEntity != null ){
+			request.setAttribute("openStatu","-2");								//已设置			
+		}else if(authInfo == null){
+			request.setAttribute("openStatu","-1");								//未开户
+		}else{
+			request.setAttribute("openStatu",authInfo.getOpenAutoInvest());		//0否、1是
+		}
 		return "account/investmentManagement/autoBid";
 	}
 	
 	
 	/***
-	* 设置自动投标
-	* 
-	* @author 李杰
-	* @param request
-	* @return
-	* @date 2016-5-6 下午2:55:58
+	 * 开启第三方自动转账
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-26 上午9:44:03
+	 */
+	@RequestMapping("openAutoGiro")
+	public String openAutoGiro(HttpServletRequest request,HttpServletResponse response){
+		AuthorizeInterfaceEntity entity = new AuthorizeInterfaceEntity();
+		MemberInfo memberInfo = (MemberInfo)request.getSession().getAttribute(Constant.LOGINUSER);
+		entity.setMemberId(memberInfo.getId());
+		entity.setMemberType(memberInfo.getMemberType());
+		entity.setAuthorizeTypeOpen("1");
+		interfaceServerTestI.testLoanAuthorize(entity,"personalCenter/authorizedCallBackPage.html","personalCenter/authorizedCallBack.html",request);
+		request.setAttribute("accountInterfaceEntity", entity);
+		return "dryLot/loanauthorizetest";
+	}
+	
+	
+	
+	/***
+	 * 设置自动投标
+	 * 
+	 * @author 李杰
+	 * @param request
+	 * @return
+	 * @date 2016-5-6 下午2:55:58
 	 */
 	@RequestMapping(value="/autoBidConfig",method=RequestMethod.POST,produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String autoBidConfig(HttpServletRequest request){
 		String	proType 	= request.getParameter("proType");											//借款类型多个逗号隔开
 		String  loanType	= request.getParameter("loanType");											//还款方式多个逗号隔开
-		long	everyMoney	= IntegerAndString.StringToLong(request.getParameter("everyMoney"));	//每次投资金额
-		long	rateMin		= IntegerAndString.StringToLong(request.getParameter("rateMin"));		//年化利率最小值
-		long	rateMax		= IntegerAndString.StringToLong(request.getParameter("rateMax"));		//年化利率最大值
-		long	yearMin		= IntegerAndString.StringToLong(request.getParameter("yearMin"),-1);	//年最小值
-		long	yearMax		= IntegerAndString.StringToLong(request.getParameter("yearMax"),-1);	//年最大值
-		long	monthMin	= IntegerAndString.StringToLong(request.getParameter("monthMin"),-1);	//月最小值
-		long	monthMax	= IntegerAndString.StringToLong(request.getParameter("monthMax"),-1);	//月最大值
-		long	dayMin		= IntegerAndString.StringToLong(request.getParameter("dayMin"), -1);	//最小天
-		long	dayMax		= IntegerAndString.StringToLong(request.getParameter("dayMax"), -1);	//最大天
-		long	reservedMoney= IntegerAndString.StringToLong(request.getParameter("reservedMoney"));//账户预留金额
+		long	everyMoney	= IntegerAndString.StringToLong(request.getParameter("everyMoney"));		//每次投资金额
+		long	rateMin		= IntegerAndString.StringToLong(request.getParameter("rateMin"),0);			//年化利率最小值
+		long	rateMax		= IntegerAndString.StringToLong(request.getParameter("rateMax"),0);			//年化利率最大值
+		long	yearMin		= IntegerAndString.StringToLong(request.getParameter("yearMin"),-1);		//年最小值
+		long	yearMax		= IntegerAndString.StringToLong(request.getParameter("yearMax"),-1);		//年最大值
+		long	monthMin	= IntegerAndString.StringToLong(request.getParameter("monthMin"),-1);		//月最小值
+		long	monthMax	= IntegerAndString.StringToLong(request.getParameter("monthMax"),-1);		//月最大值
+		long	dayMin		= IntegerAndString.StringToLong(request.getParameter("dayMin"), -1);		//最小天
+		long	dayMax		= IntegerAndString.StringToLong(request.getParameter("dayMax"), -1);		//最大天
+		long	reservedMoney= IntegerAndString.StringToLong(request.getParameter("reservedMoney"));	//账户预留金额
 		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
+		
+		
+		Map<String,Object> message = new HashMap<String,Object>();
+		if(rateMin > rateMax){
+			message.put("message", "最小年利率不能超过最大年利率");
+		}else if(rateMax > 20){
+			message.put("message", "最大年利率不能超过20%");
+		}
+		
+		if(message.keySet().size() > 0){
+			message.put("status", "-4");
+			return JSONObject.toJSONString(message);
+		}
 		
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("memberId", memberInfo.getId());
@@ -320,9 +375,9 @@ public class InvestmentManagementController {
 		param.put("dayMin", dayMin);
 		param.put("dayMax", dayMax);
 		param.put("reservedMoney", reservedMoney);
+		
 		int result = auditService.AutomaticBidSetting(param);
 		
-		Map<String,Object> message = new HashMap<String,Object>();
 		if(result == -1){
 			message.put("status", "-1");
 			message.put("message", "已存在自动投标设置");
@@ -340,12 +395,14 @@ public class InvestmentManagementController {
 	}
 	
 	
+
+	
 	/***
-	* 删除自动投标设置
-	* 
-	* @author 李杰
-	* @return
-	* @date 2016-5-10 上午9:54:38
+	 * 删除自动投标设置
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-10 上午9:54:38
 	 */
 	@RequestMapping(value="removeAutoBidConf",produces = "text/html;charset=UTF-8")
 	@ResponseBody
@@ -366,12 +423,14 @@ public class InvestmentManagementController {
 	}
 	
 	
+
+	
 	/***
-	* 投资管理-债权转让
-	* 
-	* @author 李杰
-	* @return
-	* @date 2016-5-5 下午7:46:19
+	 * 投资管理-债权转让
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-5 下午7:46:19
 	 */
 	@RequestMapping("/debtAttorn")
 	public String debtAttorn(){
@@ -379,12 +438,14 @@ public class InvestmentManagementController {
 	}
 	
 	
+	
+	
 	/***
-	* 投资管理-债权转让-转让中
-	* 
-	* @author 李杰
-	* @return
-	* @date 2016-5-5 下午7:48:33
+	 * 投资管理-债权转让-转让中
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-5 下午7:48:33
 	 */
 	@RequestMapping(value="transferIn",produces = "text/html;charset=UTF-8")
 	@ResponseBody
@@ -411,13 +472,15 @@ public class InvestmentManagementController {
 	}
 	
 	
+	
+	
 	/***
-	* 投资管理-债权转让-可转出
-	* 
-	* @author 李杰
-	* @param request
-	* @return
-	* @date 2016-5-5 下午8:25:34
+	 * 投资管理-债权转让-可转出
+	 * 
+	 * @author 李杰
+	 * @param request
+	 * @return
+	 * @date 2016-5-5 下午8:25:34
 	 */
 	@RequestMapping(value="canTurnOut",produces = "text/html;charset=UTF-8")
 	@ResponseBody
@@ -446,13 +509,15 @@ public class InvestmentManagementController {
 	}
 	
 	
+	
+	
 	/***
-	* 投资管理-债权转让-可转让-转让
-	* 
-	* @author 李杰
-	* @return
-	* @date 2016-5-5 下午8:51:26
-	*/
+	 * 投资管理-债权转让-可转让-转让
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-5 下午8:51:26
+	 */
 	@RequestMapping(value="turnOutDebts",method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String turnOutDebts(HttpServletRequest request){
@@ -463,7 +528,6 @@ public class InvestmentManagementController {
 		String maxTime	= request.getParameter("maxTime");												//最晚转让时间
 		Map<String,Object> resultMessage = new HashMap<String,Object>(); 
 		if(maxTime == null || maxTime.trim().length() == 0){
-			resultMessage.put("status", "-2");
 			resultMessage.put("message", "请选择最晚转让时间");
 		}else{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -471,11 +535,15 @@ public class InvestmentManagementController {
 			try {
 				maxDate = sdf.parse(maxTime);
 			} catch (Exception e) {
-				resultMessage.put("status", "-2");
 				resultMessage.put("message", "请选择有效最晚转让时间");
 			}
 		}
+		if(discount > 1300000 || discount < 700000){
+			resultMessage.put("message", "转让折扣应在70~130之间");
+		}
+		
 		if(resultMessage.keySet().size() > 0){
+			resultMessage.put("status", "-2");
 			return JSONObject.toJSONString(resultMessage);
 		}
 		
@@ -484,7 +552,7 @@ public class InvestmentManagementController {
 		parma.put("logId", memberInfo.getId());															//会员编号
 		parma.put("investId", iId);
 		parma.put("transPrincipal", extras);
-		parma.put("transDiscount", discount);				//小朱说传1								
+		parma.put("transDiscount", discount);															//小朱说传1								
 		parma.put("surplusTime", 1);
 		parma.put("surplusTimeType", 1);
 		parma.put("transMaxTime", maxTime+" 23:59:59");													//小朱说传1								
@@ -510,14 +578,16 @@ public class InvestmentManagementController {
 	}
 	
 	
+	
+	
 	/***
-	* 投资管理-债权转让-已转出
-	* 
-	* @author 李杰
-	* @param request
-	* @return
-	* @date 2016-5-5 下午8:03:18
-	*/
+	 * 投资管理-债权转让-已转出
+	 * 
+	 * @author 李杰
+	 * @param request
+	 * @return
+	 * @date 2016-5-5 下午8:03:18
+	 */
 	@RequestMapping(value="turnOut",produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String turnOut(HttpServletRequest request){
@@ -543,14 +613,16 @@ public class InvestmentManagementController {
 	}
 	
 	
+	
+	
 	/***
-	* 投资管理-债权转让-已转入
-	* 
-	* @author 李杰
-	* @param request
-	* @return
-	* @date 2016-5-5 下午8:05:18
-	*/
+	 * 投资管理-债权转让-已转入
+	 * 
+	 * @author 李杰
+	 * @param request
+	 * @return
+	 * @date 2016-5-5 下午8:05:18
+	 */
 	@RequestMapping(value="changeInto",produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String changeInto(HttpServletRequest request){
@@ -576,13 +648,15 @@ public class InvestmentManagementController {
 	}
 	
 	
+	
+	
 	/***
-	* 投资管理-债权转让-已结清
-	* 
-	* @author 李杰
-	* @param request
-	* @return
-	* @date 2016-5-5 下午8:08:42
+	 * 投资管理-债权转让-已结清
+	 * 
+	 * @author 李杰
+	 * @param request
+	 * @return
+	 * @date 2016-5-5 下午8:08:42
 	 */
 	@RequestMapping(value="debtsSettled",produces = "text/html;charset=UTF-8")
 	@ResponseBody
@@ -609,12 +683,14 @@ public class InvestmentManagementController {
 	}
 	
 	
+	
+	
 	/***
-	*已转入-收益列表
-	* 
-	* @author 李杰
-	* @return
-	* @date 2016-5-5 下午8:12:01
+	 *已转入-收益列表
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-5 下午8:12:01
 	 */
 	@RequestMapping("/incomeList/{investmentId:[0-9]+}/{cpage:[0-9]+}")
 	public String incomeList(HttpServletRequest request,@PathVariable long investmentId,@PathVariable int cpage){

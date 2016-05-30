@@ -33,7 +33,7 @@
 			   				<ul class="inputArea">
 			   					<li class="inputList">
 			   						<div class="mustLabel"><span>有效期：</span></div>
-			   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker()" type="text" lang="请选择有效期"/>
+			   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker({minDate:'%y-%M-{%d+1}'})" type="text" lang="请选择有效期"/>
 			   					</li>
 			   					<li class="inputList">
 				   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>

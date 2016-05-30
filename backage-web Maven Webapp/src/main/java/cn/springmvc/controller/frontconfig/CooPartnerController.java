@@ -76,8 +76,7 @@ public class CooPartnerController {
 		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
 		
-		List<PartnersEntity> results = partnersService.selectPartnersList(pager);
-		pager.setResults(results);
+	    partnersService.selectPartnersList(pager);
 		
 		return pager;
 	}
@@ -107,13 +106,13 @@ public class CooPartnerController {
 		PartnersEntity partNer = new PartnersEntity();
 		HttpSession session = HttpSessionUtil.getSession(request);
 		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
 		
 		String title = request.getParameter("title");
 		String logo = request.getParameter("logo");
 		String url = request.getParameter("url");
 		String introduction = request.getParameter("introduction");
 		String indexs = request.getParameter("indexs");
-		String optId = request.getParameter("optId");
 		if (title != null && title != "") {
 			partNer.setName(title);
 		}
@@ -129,12 +128,9 @@ public class CooPartnerController {
 		if (indexs != null && indexs != "") {
 			partNer.setIndexs(Integer.valueOf(indexs));
 		}
-		if (optId != null && optId != "") {
-			partNer.setOptId(Long.valueOf(optId));
-		}
+			partNer.setOptId(userInfo.getId());
 		
 		String [] sIpInfo = new String[6];
-		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
 		if (userInfo != null) {
 			entity.setiAdminId(userInfo.getId());
 		}
@@ -218,7 +214,7 @@ public class CooPartnerController {
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
-		int num = partnersService.updatePartners(partNer, null, null);
+		int num = partnersService.updatePartners(partNer, entity, sIpInfo);
 		return num;
 	}
 	
@@ -246,7 +242,11 @@ public class CooPartnerController {
 		
 		String statu = request.getParameter("statu");
 		String partNerId = request.getParameter("partNerId");
-			partNer.setStatu(Boolean.valueOf(statu));
+		if("1".equals(statu)){
+			partNer.setStatu(true);
+		}else{
+			partNer.setStatu(false);
+		}
 		if (partNerId != null && partNerId != "") {
 			partNer.setId(Long.valueOf(partNerId));
 		}

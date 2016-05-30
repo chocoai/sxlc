@@ -15,7 +15,7 @@
 		left join Project_App_Process pap on pap.Apply_ID = par.Apply_ID
 		where par.member_ID = bmi.Member_ID and par.Invest_Statu >= 3
 		and mfp.Record_Date &lt;pap.Record_Date and ( pap.Record_Date&lt;mfp.Remove_Date  or  mfp.Remove_Date is null)
-		<if test="startTime != null and startTime !=''">
+		<if test="startTime != null and startTime !=''">  
 		    and pap.Hold_Date > #{startTime}
 		  </if>
 		  <if test="endTime != null and endTime !=''">
@@ -234,26 +234,26 @@
 		) as repayAward,
 		(select ifnull(sum(iar.Award_Amount),0) from FinancialAdvisor_Award_Record iar 
 		 where  iar.Member_ID = bmi.Member_ID and  iar.Pay_Statu =2
-		 <if test="map.startTime != null and map.startTime !=''">
+		 <if test="startTime != null and startTime !=''">
 		    and iar.Award_Date > #{startTime}
 		 </if>
-		 <if test="map.endTime != null and map.endTime !=''">
+		 <if test="endTime != null and endTime !=''">
 		    and iar.Award_Date &lt; #{endTime}
 		 </if>
           <!-- 		    今天 -->
-		  <if test="map.dateStart != null and  map.dateStart ==1">
+		  <if test="dateStart != null and  dateStart ==1">
 		    and  to_days(iar.Award_Date) = to_days(now())
 		  </if>
 		  <!-- 	近一周 -->
-		  <if test="map.dateStart != null and map.dateStart ==2">
+		  <if test="dateStart != null and dateStart ==2">
 		    and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(iar.Award_Date)
 		  </if>
 		  <!-- 	近一月 -->
-		  <if test="map.dateStart != null and map.dateStart ==3">
+		  <if test="dateStart != null and dateStart ==3">
 		    and  DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt; date(iar.Award_Date)
 		  </if>
 		  <!-- 	近六月 -->
-		  <if test="map.dateStart != null and map.dateStart ==4">
+		  <if test="dateStart != null and dateStart ==4">
 		    and  DATE_SUB(CURDATE(), INTERVAL 180 DAY) &lt; date(iar.Award_Date)
 		  </if>
 		) as awardTotal

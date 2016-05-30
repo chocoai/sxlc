@@ -1,29 +1,44 @@
 //加密设置
 var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
-var appPath = getRootPath();//项目根路径
 //启用停用
-function ableDisable() {
+function ofableDisable(id,statu) {
 	//获取选取对象
-	layer.confirm('确定执行该操作？', {
+	var mess ="确认启用？";
+	if(statu == 0){
+		var mess ="确认停用？";
+	}
+	var status =statu;
+	//获取选取对象
+	layer.confirm(mess, {
 		btn: ['确定', '取消']
 	}, function(index, layero){
 		//按钮【按钮一】的回调
-		var rowdata = $('#partnerTb').DataTable().rows('.selected').data();
 		$.ajax({
 			type : 'post',
 			url : appPath + "/coop/ofOrOpen.do",
 			data : {
-				partNerId : encrypt.encrypt("" + rowdata[0].id), 
-				statu : encrypt.encrypt("" + rowdata[0].statu)
+				partNerId : encrypt.encrypt("" + id), 
+				statu : encrypt.encrypt("" +statu)
 			},
 			success : function (msg) {
-				if (msg == 1) {
-					layer.alert("操作成功!",{icon:1});
-					setTimeout('location.reload()',2000);
-				}else {
-					layer.alert("操作失败!",{icon:2});  
-				}
+				if(status ==1){
+			  		if (msg == 1) {
+			  			layer.alert("启用成功!",{icon:1});
+			  			var table = $('#partnerTb').DataTable();
+						table.ajax.reload();
+			  		}else {
+			  			layer.alert("启用失败!",{icon:2});
+			  		}
+			  	}else{
+			  		if (msg == 1) {
+			  			layer.alert("停用成功!",{icon:1});
+			  			var table = $('#partnerTb').DataTable();
+						table.ajax.reload();
+			  		}else {
+			  			layer.alert("停用失败!",{icon:2});
+			  		}
+			  	}	
 			}
 		});
 		//执行完关闭
@@ -32,6 +47,10 @@ function ableDisable() {
 		//按钮【按钮二】的回调
 	});
 }
+
+$(function () {
+	validform5("layui-layer-btn0","savePartner",false,"5");
+});
 
 		
 /**
@@ -64,7 +83,7 @@ function addOrUpdate(type){
 	}else if(type==2){
 		title="修改合作伙伴";
 		var data = $('#partnerTb').DataTable().rows('.selected').data();
-		if(data.length<1){
+		if(data.length <= 0){
 			layer.alert("请选择要修改的数据！",{icon:0});
 			return;
 		}
@@ -81,9 +100,8 @@ function addOrUpdate(type){
 			ue.setContent(data[0].content);
 		}
 		$("#showImg").attr("src",$("#hostPath").val()+data[0].logo);
-			
 	}
-	validform5("layui-layer-btn0","savePartner",true,"3");
+	
 	layer.open({
 	    type: 1,
 	    area: ['1100px', '600px'], //高宽
@@ -104,7 +122,7 @@ function addOrUpdate(type){
 				data.logo = logo;
 				var content = ue.getContent();
 				data.content = encrypt.encrypt(content);
-				
+				 $(".layui-layer-btn0").addClass("disabled");
 				if (type == 1) {
 					$.ajax( {  
 						url:appPath+"/coop/save.do",
@@ -115,20 +133,21 @@ function addOrUpdate(type){
 						success:function(data) { 
 							if(data==1){
 								layer.alert("操作成功",{icon:1});
-								$(".layui-layer-btn0").click();
+								$(".layui-layer-btn1").click();
 								 var table = $('#partnerTb').DataTable();
 								 table.ajax.reload();
 							}else{
 								layer.alert("操作失败",{icon:2});  
 							}
+							 $(".layui-layer-btn0").removeClass("disabled");
 						},  
 						error : function() {  
 							layer.alert("服务器异常",{icon:2});  
 						}  
 					});
 				}else {
-					var coopId = encrypt.encrypt($("#coopId").val());
-					data.coopId = coopId;
+					var coopId = encrypt.encrypt($("#coopId").val()+"");
+					data.partnerId = coopId;
 					$.ajax( {  
 						url:appPath+"/coop/update.do",
 						data:data,
@@ -137,13 +156,14 @@ function addOrUpdate(type){
 						dataType:'json',  
 						success:function(data) { 
 							if(data==1){
-								layer.alert("操作成功",{icon:1});
-								$(".layui-layer-btn0").click();
+								layer.alert("修改成功",{icon:1});
+								$(".layui-layer-btn1").click();
 								 var table = $('#partnerTb').DataTable();
 								 table.ajax.reload();
 							}else{
-								layer.alert("操作失败",{icon:2});  
+								layer.alert("修改失败",{icon:2});  
 							}
+							 $(".layui-layer-btn0").removeClass("disabled");
 						},  
 						error : function() {  
 							layer.alert("服务器异常",{icon:2});  
@@ -160,22 +180,8 @@ function addOrUpdate(type){
 }
 
 /** 合作伙伴 **/
-//获取项目根目录全路径
-function getRootPath(){
-      var curWwwPath=window.document.location.href;
-      var pathName=window.document.location.pathname;
-      var pos=curWwwPath.indexOf(pathName);
-      var localhostPath=curWwwPath.substring(0,pos);
-      var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
-		if(/127.0.0.1|localhost/.test(localhostPath)){
-			return(localhostPath+projectName);
-		}else{
-			return(localhostPath);
-		}
-}
 
 $(function() {
-	var appPath = getRootPath();//项目根路径
 	$('#partnerTb').DataTable(
 	{
 		autoWidth : false,
@@ -192,6 +198,7 @@ $(function() {
         ajax: {  
             "url": appPath + "/coop/list.do",   
             "dataSrc": "results", 
+            "type":"post",
             "data": function ( d ) {  
                 var level1 = $('#level1').val();  
                 //添加额外的参数传给服务器  
@@ -207,21 +214,42 @@ $(function() {
 //                	  "sClass": "table-checkbox"
                   },
                   { title:"合作伙伴id","data": "id" },
-                  { title:"添加时间","data": "createTime" },
-                  { title:"合作伙伴图片","data": "logo" },  
+                  { title:"添加时间","mRender": function (data, type, full) {
+                	  var sReturn ="";
+                	  if(full.createTime!=null && full.createTime!=""){
+                		  var a = full.createTime;
+                		  sReturn = a.substring(0,a.length-2);
+                	  }
+                	  	  return sReturn;
+	              	  }
+	               },  
+                  { title:"合作伙伴图片","data": "logo", 
+    	        	  "mRender": function (data, type, full) {
+    	        		  return '<a href="javascript:void(0);" class="btn-det" onclick="viewPic(this)">查看图片</a>';
+    	        	  }
+    	          }, 
                   { title:"合作伙伴名称","data": "name" },
                   { title:"合作伙伴链接","data": "url" },
                   { title:"合作伙伴简介","data": "introduction" },
+                  { title:"最后一次管理员操作","data": "adminName" }  ,
                   { title:"状态","data": "statu", 
                 	  "mRender": function (data, type, full) {
-                		 if (data == 0) {
+                		 if (full.statu==0) {
                 			 return "<font color='red'>无效</font>";
-                		 }else if (data == 1){
+                		 }else {
                 			 return "有效";
                 		 }
                 	  } 
                   },  
-                  { title:"最后一次管理员操作","data": "adminName" }  
+                  { title:"操作","data": "deptStatu",
+                  	"mRender": function (data, type, full) {
+                  		 if(full.statu==false){
+                  			return "<a onclick=\"ofableDisable("+full.id+",1);\" href=\"javascript:void(0);\">启用</a>";
+                  		 }else{
+                  			return "<a onclick=\"ofableDisable("+full.id+",0);\" href=\"javascript:void(0);\">停用</a>";
+                  		 }
+                	  } 
+                  }
                   
         ],
         aoColumnDefs : [
@@ -238,9 +266,47 @@ $(function() {
 //        	}
         }
 });
- var table = $('#partnerTb').DataTable();
-//设置选中change颜色
- $('#partnerTb tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
+});
+
+function viewPic(btn) {
+	var imgRealURL =$("#hostPath").val();
+    var data = $('#partnerTb').DataTable().row($(btn).parents('tr')).data();
+    var url = data.logo;
+    if(data!=""){
+    	$("#picView").attr("src",imgRealURL+url);
+    	$(".hideHtml").hide();
+    }else{
+    	$(".hideHtml").show();
+    	$("#picView").attr("src","");
+    }
+	layer.open({
+	    type: 1,
+	    area: ['500px', '400px'], //高宽
+	    title: "查看头像",
+//	    maxmin: true,
+	    content: $(".pic-view"),//DOM或内容
+	    btn:['关闭']
+		  ,cancel: function(index){
+		  	//取消的回调
+		  }
+	});
+}
+
+$(function() {
+	//单选
+	$('#partnerTb tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

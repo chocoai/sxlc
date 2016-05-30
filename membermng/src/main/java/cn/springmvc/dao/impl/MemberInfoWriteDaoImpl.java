@@ -1,7 +1,10 @@
 
 package cn.springmvc.dao.impl; 
 
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -68,8 +71,18 @@ public class MemberInfoWriteDaoImpl extends SqlSessionDaoSupport implements IMem
 		
 	}
 	
-	@Autowired
+	
 	@Override
+	public int TestTransaction(char chars, int chars2) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("userName", chars+"_"+chars);
+		param.put("userAge", chars2);
+		getSqlSession().selectOne("memberInfoDaoImpl.testTransaction",param);
+		return IntegerAndString.StringToInt(param.get("result").toString());
+	}
+	
+	@Override
+	@Resource(name="sqlSessionFactory")
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}

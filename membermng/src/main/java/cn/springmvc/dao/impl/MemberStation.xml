@@ -53,7 +53,7 @@
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end 
             as membername, 
 			mi.Member_ID,mi.Member_Type ,mi.Logname,msl.Detail,msl.Letter_ID,
-			msl.Title,msl.Read_Date
+			msl.Title,msl.Read_Date,msl.Send_Date
 			from Member_Station_Letter msl
 			left join member_info mi on mi.Member_ID = msl.Member_ID_Rec
 			left join personal_base_info pbi on mi.Personal_ID =  pbi.Personal_Id and mi.Member_Type=0

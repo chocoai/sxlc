@@ -31,7 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</tr>
 				</table>
 				<div class="cmbtncontainer">
-					<a class="commonbtn0">添加</a>
+					<a id="add" class="commonbtn0">添加</a>
 					<a href="web/recommend/account-center.jsp">取消</a>
 				</div>							
 			</fieldset>
@@ -40,3 +40,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用js -->
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 	<script type="text/javascript" src="js/recommend/re-guamanage.js"></script>
+	<script type="text/javascript">
+		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+	</script>	

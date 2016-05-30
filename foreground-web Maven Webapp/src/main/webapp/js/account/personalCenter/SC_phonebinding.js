@@ -18,10 +18,13 @@ $(function(){
 						if (data.status == "1"){
 							$(".newphone").removeProp("disabled");
 						}else{
-							layer.alert(data.message,function(index){
-								layer.close(index);
-								$(".newphone").prop("disabled",true);
-							});
+//							layer.alert(data.message,function(index){
+//								layer.close(index);
+//								
+//							});
+							$(".newphone").prop("disabled",true);
+							$(".codeBtn").addClass("disabled");
+							$this.errorPrompt(data.message);
 						}
 					}
 			)
@@ -39,14 +42,15 @@ $(function(){
 					{phone:phone},
 					function(r){
 						var data = JSON.parse(r);
-						console.log(data)
 						if (data.status == "y"){
-							$(".codeBtn").removeClass("disabled")
+							$(".codeBtn").removeClass("disabled");
 						}else{
-							layer.alert(data.info,function(index){
-								layer.close(index);
-								$(".codeBtn").addClass("disabled")
-							});
+//							layer.alert(data.info,function(index){
+//								layer.close(index);
+//								
+//							});
+							$this.errorPrompt(data.info);
+							$(".codeBtn").addClass("disabled")
 						}
 					})
 			}
@@ -70,6 +74,7 @@ $(function(){
 			phone = encrypt.encrypt(phone+"");
 			var str_Url = "personalCenter/sendEditBindPhoneCheckCode.html";
 			var json_Data = {phone:phone,imgCheckCode:encrypt.encrypt(imgCode+"")};
+			$item.addClass("disabled").html("发送中");
 			NetUtil.ajax(
 				str_Url, 
 				json_Data, 
@@ -94,6 +99,7 @@ $(function(){
 						layer.alert(json.message,function(index){
 							layer.close(index);
 							$(".codeBtn").html("重新发送");
+							$item.removeClass("disabled");
 							$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
 						})
 					}
@@ -110,10 +116,17 @@ $(function(){
 	
 	//修改手机号码
 	$("#securityCheck1").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".qwertyu", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,
+		beforeCheck:function(){
+			if ($(".Validform_wrong").size()>0){
+				return false
+			}else{
+				return true
+			}
+		},
 		beforeSubmit:function(){
 			
 			
@@ -130,7 +143,7 @@ $(function(){
 			sphoneCode = encrypt.encrypt(sphoneCode+"");
 			
 			var str_Url = "personalCenter/editBindPhone.html";
-			
+			$(".qwertyu").html("修改中").addClass("disabled");
 			NetUtil.ajax(
 				str_Url,
 				{oldPhone:soldPhone,newPhone:snewPhone,imgCheckCode:simgCheckCode,phoneCode:sphoneCode},
@@ -142,6 +155,7 @@ $(function(){
 						});
 					}else {
 						layer.alert(json.message);
+						$(".qwertyu").html("确定").removeClass("disabled");
 						$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
 					}
 				}

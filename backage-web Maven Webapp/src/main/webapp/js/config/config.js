@@ -18,7 +18,7 @@ $(function(){
 	$(".obtn-master-del").on("click touchstart",function(){
 		//获得选取的对象
 		
-		layer.confirm('确定删除该条信息？', {
+		layer.confirm('确定删除该时间段信息？', {
 		  btn: ['确定', '取消']
 		}, function(index, layero){
 		  //按钮【按钮一】的回调

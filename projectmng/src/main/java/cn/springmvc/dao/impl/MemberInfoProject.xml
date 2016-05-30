@@ -39,15 +39,13 @@
 	   pd.Province_Name,cd.City_Name ,pbi.SexID,ei.EducationName,pbicom.Personal_Name as contactName,
 	   pji.Company_Industry as pbiCompany_Industry,pji.Company_Size as pbiCompany_Size,
 	   pji.Position,pji.Start_Date,mif.MaritalName,pbi.House_Address,
-	   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{keys})) using utf8), 
+	   CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{keys})) using utf8) as Personal_IDCard, 
 	   ci.Company_Industry,ci.Company_Size,ci.Company_Life,ci.Establishments,ci.Company_Address,ci.Companye_BLN,
 	   ci.Company_Capital,pji.Monthly_Income,
 	   case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{keys})) using utf8)  
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{keys})) using utf8) end 
             as Personal_Name,
-       case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{keys})) using utf8)  
-            when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(pbicom.Personal_Phone),#{keys})) using utf8) end 
-            as Personal_Phone,
+       CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{keys})) using utf8)   as Personal_Phone,
        PERIOD_DIFF( date_format( now( ),'%Y' ) , date_format( pji.Start_Date, '%Y' ) ) as workYear 
 	   from Project_App_Record par  
 	   left join Member_Info mi  on  par.Member_ID=mi.Member_ID

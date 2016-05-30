@@ -26,22 +26,21 @@
    				<!-- 在此处写入代码 -->
    					<!-- 收件箱详情信息 -->
    					<div class="th" onselectstart="return false">
-   						<span class="thClick">收件箱</span>
-   						<span onclick="window.location.href='personalCenter/mail.html'">发件箱</span>
+   						<span onclick="window.location.href='personalCenter/mail.html'" class="thClick">收件箱</span>
+   						<span onclick="window.location.href='personalCenter/M_sent.html'">发件箱</span>
    						<a class="write" href="personalCenter/M_write.html">写信息</a>
    					</div>
    					<div class="inboxDetail">
    						<form id="receiveDetail">
    							<div class="sendDetail">
-	   							<div class="send"><samp>发件人：</samp>理财达人小张</div>
+	   							<div class="send"><samp>发件人：</samp>${mail.membername }</div>
 	   							<div class="date">
-	   								<samp>时间：</samp>2015-12-12 20:12:20
+	   								<samp>时间：</samp>${mail.sendDate }
 	   								<a class="backBtn" href="javascript:history.back();">返回</a>
 	   								<a class="replayBtn">回复</a>
 	   							</div>
 	   							<div class="messageDetail">
-	   								<p class="bold">Hi,xxx：</p>
-	   								<p>不会理财？你还敢称土豪！上四象金融，秒变土豪不是梦！</p>
+	   								${mail.detail }
 	   							</div>
 	   							<div class="replayDetail">
 	   								<div id="writeContent"></div>
@@ -60,7 +59,6 @@
 	
 	
 	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
-	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">

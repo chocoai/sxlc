@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>认证会员</title>
+	<title>会员管理-企业会员-认证会员</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -94,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/member/member.js"></script>
-	<!-- <script type="text/javascript" src="js/member/companyMembers.js"></script> -->
+	<script type="text/javascript" src="js/member/companyMembers.js"></script>
 	<script type="text/javascript" src="js/member/identymember.js"></script>
 	
 </body>

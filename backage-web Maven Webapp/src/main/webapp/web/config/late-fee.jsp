@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心--财务配置</title>
+	<title>配置中心-财务设置-逾期配置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -17,9 +17,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
 	<link href="css/config.css" rel="stylesheet" />
-	<script type="text/javascript">
-		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
-	</script>
 </head>
 <!-- 配置中心-------------------财务设置  逾期配置-->
 <body class="nav-md">
@@ -27,12 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-config.jsp">
-				<jsp:param value="config-0" name="config-index" />
+				<jsp:param value="601" name="_index_m2"/>
+				<jsp:param value="60105" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -47,7 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 		<ul class="nav nav-tabs">
 						<li role="presentation" class=""><a href="<%=basePath%>config/toOverdueLimit.do">逾期严重程度配置</a>
 				 		</li>
-						<li role="presentation" class="active"><a href="<%=basePath%>config/toOverdueList.do">逾期费用设置</a>
+						<li role="presentation" class="active"><a href="<%=basePath%>config/tolateFeePg.do">逾期费用设置</a>
 						</li>
 					</ul>
 					<!-- 推荐达人提奖规则设置 -->
@@ -71,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<tr>
 										<td class="tt"><label class="ineed">逾期起算天数：</label></td>
 										<td class="con">
-											<input type="text" name = "overdueMin" dataType="days" id="overdueMin" placeholder=""  />
+											<input type="text" readonly="readonly" name = "overdueMin" dataType="days" id="overdueMin" placeholder=""  />
 										</td>
 									</tr>
 									<tr>
@@ -95,18 +93,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	</div>
-		
+	</div>	
 	<!-- 尾部 -->
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script src="js//config/config.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript">
-		//加密设置
-		var encrypt = new JSEncrypt();
-		encrypt.setPublicKey(publicKey_common);
 		$(function(){
-			validform5(".layui-layer-btn0","dataForm",false,3);//合法性检验
+			validform5(".layui-layer-btn0","dataForm",false,5);//合法性检验
 			//表格初始化
 			$('#table-id').DataTable({
 				ajax: {  
@@ -141,9 +136,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  pagingType: "simple_numbers",//设置分页控件的模式  
 			  processing: true, //打开数据加载时的等待效果  
 			  serverSide: true,//打开后台分页  
+			  searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 			  rowCallback:function(row,data){//添加单击事件，改变行的样式      
 			  }
 			});
@@ -173,7 +169,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}, function(index, layero){
 					$.ajax( {  
 						url:appPath+"/config/deleteOverdue.do",
-						data:{"overdueMin":encrypt.encrypt(param)},
+						data:{"overdueMin":encrypt.encrypt(param+"")},
 						type:'post',  
 						cache:false,  
 						dataType:'json',  
@@ -201,14 +197,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 */
 		$(".obtn-invest-fee-modify").on("click touchstart",function(){
 			document.getElementById("dataForm").reset();
+			$.ajax({
+				type : 'post',
+				url : appPath + "/config/findMax.do",
+				success : function (msg) {
+					if (msg > 0) {
+						$("#overdueMin").val(msg);
+					}else {
+						$("#overdueMin").val(1);
+					}
+				}
+			});
 			layer.open({
 			    type: 1,
 			    area: ['500px', '300px'], //高宽
-			    title: "添加",
+			    title: "增加",
 			    maxmin: true,
 			    content: $(".invest-fee-modify"),//DOM或内容
 			    btn:['确定', '取消']
 				  ,yes: function(index, layero){ //或者使用btn1
+					  $(".layui-layer-btn1").attr("disabled","disabled");
 					  $("#dataForm").submit();
 				  },cancel: function(index){//或者使用btn2（concel）
 				  }

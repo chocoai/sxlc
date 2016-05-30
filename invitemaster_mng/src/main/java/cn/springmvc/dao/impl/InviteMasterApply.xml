@@ -479,8 +479,9 @@
 		           Logname like '%${map.name}%' or 
 		           Personal_Name like '%${map.name}%'
 		    )
-		 </if>
-		  <!-- 		     预期收益时间降序 -->
+		 </if> 
+		 </where>
+		   <!-- 		     预期收益时间降序 -->
 		  <if test="map.order != null and map.order == 1">
 		    order by   nextReplayDay desc
 		 </if>
@@ -488,7 +489,6 @@
 		  <if test="map.order != null and map.order == 2">
 		    order by   nextReplayDay asc
 		 </if>
-		 </where>
     </select>
     
     <!--           推荐达人VIP购买明细 -->
@@ -503,7 +503,7 @@
 		  END Personal_Name,	
 		  mvr.Certify_SDate,
 		  mvr.Certify_EDate, 
-		  ifnull(sum(CAST((AES_DECRYPT(UNHEX(mvp.Amount),#{map.skey})) as signed)),0) as Amount,
+		  ifnull(CAST((AES_DECRYPT(UNHEX(mvp.Amount),#{map.skey})) as signed),0) as Amount,
 		  mvp.Record_Date
 		  FROM Member_VIP_Pay_Record mvp 
 		  join Member_VIP_Record mvr ON mvp.MV_Pay_ID = mvr.MV_Pay_ID
@@ -557,6 +557,7 @@
 	  pa.Apply_Id,
 	  prbi.Project_Title,
 	  mi.Logname,
+	  prbi.Amount,
 	  CASE
 		  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)
 		  WHEN mi.Member_Type = 1 THEN CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8)

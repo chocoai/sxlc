@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
  
  
 import cn.springmvc.dao.NewEventDao;
@@ -31,14 +32,15 @@ public class NewEventServiceImpl implements NewEventService {
 		if(entity == null) {
 			return 0;
 		} 
+		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+		long id = generatorUtil.GetId();
+		entity.setId(id);
 		// 查询该名称的最新动态是否存在,如果已存在则不插入  
 		NewEventEntity mngTeamEntity = newEventListDaoImpl.selectNewEventIsExistByNAme(entity);
 		if(mngTeamEntity != null) {
 			return -1;
 		} 
-		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
-		long id = generatorUtil.GetId();
-		entity.setId(id);
+		
 		
 		int result = newEventDaoImpl.insertNewEvent(entity);
 		
@@ -94,12 +96,6 @@ public class NewEventServiceImpl implements NewEventService {
 		if(entity == null) {
 			return 0;
 		} 
-		if(entity.getStatu() == 1) {
-			
-			entity.setStatu(0);
-		}else {
-			entity.setStatu(1);
-		}
 		int result = newEventDaoImpl.updateNewEventStatuByID(entity); 
 		if(result == 1 && entity.getStatu() == 1) { 
 				
@@ -120,7 +116,8 @@ public class NewEventServiceImpl implements NewEventService {
 		
 		List<NewEventEntity> newEventList = null;   
 	 	newEventList = newEventListDaoImpl.selectNewEventList(pageEntity);  
-		return newEventList; 
+		PageUtil.ObjectToPage(pageEntity, newEventList);
+	 	return newEventList; 
 	}
 
  

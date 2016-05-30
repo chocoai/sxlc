@@ -91,9 +91,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  		<div class="panel-heading">
 					  			<div class="action_item">
 					  				<button id="post" class="obtn glyphicon glyphicon-plus" onclick="proPost()">发布</button></a>
-									<button id="refuse" class="obtn glyphicon glyphicon-pencil">拒绝</button>
+									<button id="refuse" class="obtn glyphicon glyphicon-trash">拒绝</button>
 									<button id="post_pro_detail" class="obtn glyphicon glyphicon-pencil" onclick="view_detail()">项目详情</button>
-									<button id="end_time_along" class="obtn glyphicon glyphicon-trash">项目借款结束日期延长</button>
+									<button id="end_time_along" class="obtn glyphicon glyphicon-pencil">项目借款结束日期延长</button>
 								</div>
 							</div>
 							<div class="panel-body">

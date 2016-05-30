@@ -18,6 +18,7 @@ public class RewardSetEntity {
 	private int repayReward;//		借款还本金提奖点数 保留4位小数
 	private int investReward;//		投资收益提奖点数 单位 百万分之
 	private int statu;//			状态 0：无效 1：有效
+	private int investIncomeReward;//投资提奖百分比 单位 百万分之
 	public int getType() {
 		return type;
 	}
@@ -85,6 +86,12 @@ public class RewardSetEntity {
 				+ gradeRemark + ", vIPReward(VIP提成设置)=" + vIPReward + ", borrowReward(借款提奖点数 保留4位小数)="
 				+ borrowReward + ", repayReward(借款还本金提奖点数)=" + repayReward
 				+ ", investReward(投资收益提奖点数 )=" + investReward + ", statu(状态 0：无效 1：有效)=" + statu + "]";
+	}
+	public int getInvestIncomeReward() {
+		return investIncomeReward;
+	}
+	public void setInvestIncomeReward(int investIncomeReward) {
+		this.investIncomeReward = investIncomeReward;
 	}
 
 }

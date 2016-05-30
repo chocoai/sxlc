@@ -59,9 +59,23 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#applicationAudit').DataTable();
-//设置选中change颜色
- $('#applicationAudit tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
+});
+
+$(function() {
+	//单选
+	$('#applicationAudit tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

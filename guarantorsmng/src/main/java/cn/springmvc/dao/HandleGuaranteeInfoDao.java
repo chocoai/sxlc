@@ -10,6 +10,7 @@ import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoEntity;
+import cn.springmvc.model.GuaranteePeriodEntity;
 import cn.springmvc.model.GuaranteeRelationalEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
@@ -158,7 +159,7 @@ public interface HandleGuaranteeInfoDao {
 	* @date 2016-3-21 下午5:11:37
 	* @throws 
 	*/
-	public int insertGuaranteeBorrowing(Map<String, Object> map);
+	public int insertGuaranteeBorrowing(List<GuaranteeRelationalEntity> list);
 	
 	/** 
 	* updateGuaranteeBorrowingByID(根据保荐机构id修改担保机构担保借款范围) 
@@ -186,7 +187,7 @@ public interface HandleGuaranteeInfoDao {
 	* @date 2016-3-21 下午5:13:26
 	* @throws 
 	*/
-	public int insertGuaranteePeriod(Map<String, Object> map);
+	public int insertGuaranteePeriod(List<GuaranteePeriodEntity> list);
 	
 	/** 
 	* updateGuaranteePeriodByID(根据保荐机构id,期限类型修改担保机构担保借款范围) 

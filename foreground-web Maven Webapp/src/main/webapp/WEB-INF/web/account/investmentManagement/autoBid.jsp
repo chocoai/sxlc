@@ -9,7 +9,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
-	<base href="<%=basePath%>">s
+	<base href="<%=basePath%>">
     <title>自动投标</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
@@ -19,7 +19,8 @@
     <jsp:include page="../../common/top.jsp"></jsp:include>
    	<jsp:include page="../../common/mainPageTop.jsp"></jsp:include>
    	<script type="text/javascript">
-    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    	var publickey 	= '<%=session.getAttribute("publicKey")%>';
+    	var optionStatu = '${openStatu}';
     </script>
    	<div class="main">
    		<div class="clearfix">
@@ -88,7 +89,7 @@
 				   					</div>
 				   					<div class="scheduledPaymentDate divOutside">
 				   						<div class="divIntside">
-				   							<div>${automaticBidSettingEntity.proType }</div>
+				   							<div>${automaticBidSettingEntity.status }</div>
 				   						</div>
 				   					</div>
 				   					<div class="principalInterestPaid divOutside">
@@ -124,10 +125,12 @@
 	   		</div>
 	   		<div class="info-input info  clearfix">
 	   			<div class="left-title ">借款类型:</div>
+	   			<div style="overflow: hidden;"  id="info-dong">
 	   			<label class="quanBu att1 active"><input type="checkbox" class="proType" value="-1" checked>全部</label>
-	   			<c:forEach items="${projectTypes }" var="pt">
-					<label class="att1 active"><input type="checkbox" class="proType" value="${pt.id }" checked>${pt.projectName }</label>
-	   			</c:forEach>
+		   			<c:forEach items="${projectTypes }" var="pt">
+						<label class="att1 active"><input type="checkbox" class="proType" value="${pt.id }" checked>${pt.projectName }</label>
+		   			</c:forEach>
+	   			</div>
 	   		</div>
 	   		<div class="info-input1 info clearfix">
 	   			<div class="left-title ">还款方式:</div>
@@ -173,7 +176,7 @@
 	   		</div>
 	   		<div class="info-input3 info-input33">
 	   			<div class="left-title">每次投标金额:</div>
-	   			<input datatype="acountM" class="format" type="text" id="everyMoney" lang="请输入每次投标金额" maxlength="10">
+	   			<input datatype="acountM" type="text" id="everyMoney" lang="请输入每次投标金额" maxlength="10">
 	   			<span>元</span>
 	   		</div>
 	   		<div class="remind">

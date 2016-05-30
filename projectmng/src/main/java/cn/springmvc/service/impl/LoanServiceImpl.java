@@ -70,7 +70,7 @@ public class LoanServiceImpl implements LoanService {
 
 	@Override
 	public List<LoanProjectEntity> selectLoanList(PageEntity pageEntity) {
-		
+		pageEntity.getMap().put("keys", DbKeyUtil.GetDbCodeKey());
 		List<LoanProjectEntity> list = loanDaoList.selectLoanList(pageEntity);
 		
 		PageUtil.ObjectToPage(pageEntity, list);

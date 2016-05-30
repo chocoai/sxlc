@@ -42,7 +42,7 @@ $(function() {
 			layer.alert("请选择要处理的事务！",{icon:0});
 			return;
 		}
-		validform5(".layui-layer-btn0","dataForm",true,3);
+		validform5(".layui-layer-btn0","dataForm",false,5);
 		$("#title").val(rowdata[0].asTitle);
 		$("#imgPath").val(rowdata[0].sgPic);
 		$("#imgUrl").val(rowdata[0].sgUrl);
@@ -113,7 +113,7 @@ function stopOrStart(id,statu){
 						layer.alert("启用成功。",{icon:1});
 					}
 				  	layer.close(index);
-				  	setTimeout('location.reload()',500);
+					$('#partnerTb').DataTable().ajax.reload();
 				}else if(data == 0){
 					if(status==1){
 						layer.alert("停用失败。",{icon:2});
@@ -250,7 +250,7 @@ function appendImg(imgURL,fileListObj){
  */
 function viewPic(btn){
 	var _w = parseInt($(window).width());//获取浏览器的宽度 
-	var imgRealURL ="http://cdsxlc.com:21000/";
+	var imgRealURL =$("#hostPath").val();//"http://cdsxlc.com:21000/";
     var data = $('#partnerTb').DataTable().row($(btn).parents('tr')).data();
     var url = data.sgPic;
     var $img = $("#picView"); 
@@ -329,6 +329,7 @@ function modifySafe(){
 	title = encrypt.encrypt(title);
 	imgPath = encrypt.encrypt(imgPath);
     imgUrl =encrypt.encrypt(imgUrl);
+    $(".layui-layer-btn0").addClass("disabled");
 	$.ajax({
 		url : appPath+"/firstSecurity/UpdateFirstSecurity.do",
 			data:{
@@ -350,10 +351,11 @@ function modifySafe(){
 				//执行完关闭
 				layer.alert("修改成功。",{icon:1});
 				$(".layui-layer-btn1").click();
-			  	setTimeout('location.reload()',500);
+				$('#partnerTb').DataTable().ajax.reload();
 			}else {
 				ayer.alert("修改失败！",{icon:2});
 			}
+			$(".layui-layer-btn0").removeClass("disabled");
 		}
 	});
 }

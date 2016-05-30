@@ -39,11 +39,11 @@ String content = request.getParameter("content");
 				</div>
 				<div class="fieldsetitem">
 					<span>密码：</span>
-					<input id="pwd" type="password" class="" placeholder="" datatype="logPass"/>
+					<input id="pwd" type="password" class="" placeholder="" datatype="regpass"/>
 				</div>
 				<div class="fieldsetitem">
 					<span>确认密码：</span>
-					<input type="password" class="" placeholder="" datatype="logPass"/>
+					<input type="password" class="" placeholder="" datatype="regpass"/>
 				</div>
 				<div class="fieldsetitem">
 					<span class="remark">备注：</span>
@@ -70,11 +70,11 @@ String content = request.getParameter("content");
 				</div>
 				<div class="fieldsetitem">
 					<span>密码：</span>
-					<input id="mpwd" type="text" class="password" placeholder=""  datatype="logPass"/>
+					<input id="mpwd" type="text" class="password" placeholder=""  datatype="regpass"/>
 				</div>
 				<div class="fieldsetitem">
 					<span>确认密码：</span>
-					<input id="mrpwd" type="text" class="" placeholder="" datatype="logPass"/>
+					<input id="mrpwd" type="text" class="" placeholder="" datatype="regpass"/>
 				</div>
 				<div class="fieldsetitem">
 					<span class="remark">备注：</span>
@@ -96,8 +96,8 @@ String content = request.getParameter("content");
 			layer.closeAll(); //再执行关闭  
 		});
 		$(function(){
-			validform5(".commonbtn0","manageAdd",false,"3");
-			validform5(".commonbtn1","manageMod",false,"3");
+			validform5(".commonbtn0","manageAdd",false,"5");
+			validform5(".commonbtn1","manageMod",false,"5");
 		});
 	</script>
 	<script type="text/javascript">

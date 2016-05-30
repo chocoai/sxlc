@@ -46,6 +46,8 @@ public class AdvanceEntity {
 	private long   replayTotal;//应还款总额
 	private String replayTotals;//应还款总额
 	private long    applyId;//项目申请ID
+	private int     remaintimes;//剩余几天到还款日
+	private int     deadlineType;//借款期限类型
 	public long getRepayPrincipal() {
 		return repayPrincipal;
 	}
@@ -157,6 +159,18 @@ public class AdvanceEntity {
 	}
 	public void setApplyId(long applyId) {
 		this.applyId = applyId;
+	}
+	public int getRemaintimes() {
+		return remaintimes;
+	}
+	public void setRemaintimes(int remaintimes) {
+		this.remaintimes = remaintimes;
+	}
+	public int getDeadlineType() {
+		return deadlineType;
+	}
+	public void setDeadlineType(int deadlineType) {
+		this.deadlineType = deadlineType;
 	}
  
 }

@@ -11,8 +11,8 @@ $(function(){
 			$(this).css("color","#aaa");
 		}
 	});
-	validform5(".layui-layer-btn0","dataForm",true,3);
-	validform5(".layui-layer-btn0","dataForms",true,3);
+	validform5(".layui-layer-btn0","dataForm",false,5);
+	validform5(".layui-layer-btn0","dataForms",false,5);
 	//单选
 	$('#table_id tbody').on( 'click', 'tr', function () {
 		var $this = $(this);
@@ -29,10 +29,12 @@ $(function(){
 			}
 		
 	} );
-	showInterfaceList();
 	showInterface();
 	/*添加接口配置*/
 	$(".obtn-test-inter-add").on("click touchstart",function(){
+		document.getElementById("dataForm").reset();
+		showInterfaceList();
+		$("#dataForm").attr("action","javascript:addThird()");
 		layer.open({
 			type: 1,
 			area: ['565px', '260px'], //高宽
@@ -79,10 +81,11 @@ $(function(){
 		});
 	});
 });
+
 /**
- * 
- * @param id   协议id
- * @param statu 协议状态
+ * 停用启用
+ * @param id   id
+ * @param statu 状态
  */
 function stopOrStart(btn){
 	var data = $('#table_id').DataTable().row($(btn).parents('tr')).data();
@@ -219,6 +222,8 @@ function addThird(){
 				$(".layui-layer-btn1").click();
 				var table = $('#table_id').DataTable();
 				table.ajax.reload();
+			}else if(data ==-1){
+				layer.alert("该接口对应操作类型已存在！",{icon:2}); 
 			}else{
 				layer.alert("添加失败。",{icon:2});  
 			}
@@ -260,6 +265,8 @@ function updateThird(){
 				$(".layui-layer-btn1").click();
 				var table = $('#table_id').DataTable();
 				table.ajax.reload();
+			}else if(data ==-1){
+				layer.alert("该接口对应操作类型已存在！",{icon:2}); 
 			}else{
 				layer.alert("修改失败。",{icon:2});  
 			}

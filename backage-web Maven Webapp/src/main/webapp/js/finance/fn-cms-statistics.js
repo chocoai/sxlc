@@ -11,23 +11,39 @@ $(function(){
 /* 页面load */
 /* 推荐借款提奖记录 */
 function borrowRecord(){
-	//var rowdata = $('#table_id').DataTable().rows('.selected').data();//rowdata[0].memberID
-	$(".right_col").load("web/finance/fn-add/borrowRecord.jsp?content=" + 1);
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	var types = $("#types").val();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择需要操作的记录！", {icon : 0});
+	}
+	$(".right_col").load("web/finance/fn-add/borrowRecord.jsp?content=" + rowdata[0].memberID + "&pAuthCode=" + types);
 }
 /* 推荐投资提奖记录 */
 function invRecord(){
-	//var rowdata = $('#table_id').DataTable().rows('.selected').data();rowdata[0].memberID
-	$(".right_col").load("web/finance/fn-add/invRecord.jsp?content=" + 1);
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	var types = $("#types").val();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择需要操作的记录！", {icon : 0});
+	}
+	$(".right_col").load("web/finance/fn-add/invRecord.jsp?content=" + rowdata[0].memberID + "&pAuthCode=" + types);
 }
 /* 推荐购买VIP提奖记录 */
 function vipRecord(){
-	//var rowdata = $('#table_id').DataTable().rows('.selected').data();rowdata[0].memberID
-	$(".right_col").load("web/finance/fn-add/vipRecord.jsp?content=" + 1);
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	var types = $("#types").val();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择需要操作的记录！", {icon : 0});
+	}
+	$(".right_col").load("web/finance/fn-add/vipRecord.jsp?content=" + rowdata[0].memberID + "&pAuthCode=" + types);
 }
 /* 推荐还本提奖记录 */
 function debtRecord(){
-	//var rowdata = $('#table_id').DataTable().rows('.selected').data();rowdata[0].memberID
-	$(".right_col").load("web/finance/fn-add/debtRecord.jsp?content=" + 1);
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	var types = $("#types").val();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择需要操作的记录！", {icon : 0});
+	}
+	$(".right_col").load("web/finance/fn-add/debtRecord.jsp?content=" + rowdata[0].memberID + "&pAuthCode=" + types);
 }
 
 /* 取消确定返回 */
@@ -38,6 +54,10 @@ $(function(){
 });
 function sendCms(){//发放佣金的部分
 	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择需要操作的记录！", {icon : 0});
+		return;
+	}
 	$("#borrowAward").val(rowdata[0].borrowAward);
 	$("#investAward").val(rowdata[0].investAward);
 	$("#vipAward").val(rowdata[0].vipAward);
@@ -68,7 +88,7 @@ function sendCms(){//发放佣金的部分
 		//此处完成数据操作
 		layer.closeAll();
 	});
-	validform5(".commonbtn0","rechargeform",false,"3");
+	validform5(".commonbtn0","rechargeform",false,"5");
 }
 
 function setAlert(){//设置提醒的部分
@@ -117,6 +137,8 @@ $(function() {
             	var logname = $("#logname").val();
             	var startDate = $("#startDate").val();
             	var endDate = $("#endDate").val();
+            	var payStatu = $("#payStatu").val();
+            	var stype = $("#types").val();
             	
             	if (projectTitle != null && projectTitle != "") {
             		var result1 = encrypt.encrypt((projectTitle + ""));
@@ -130,12 +152,17 @@ $(function() {
             	if (startDate != null && startDate != "") {
             		var result4 = encrypt.encrypt((startDate + ""));
                 }
-            		var result5 = encrypt.encrypt((payStatu + ""));
+            	if (endDate != null && endDate != "") {
+            		var result5 = encrypt.encrypt((endDate + ""));
+                }
+            		var result6 = encrypt.encrypt((payStatu + ""));
                 	d.memberNo = result1;
                 	d.personalName = result2;
                 	d.personalPhone = result3;
                 	d.startDate = result4;
-                	d.payStatu = result5;
+                	d.endDate = result5;
+                	d.payStatu = result6;
+                	d.stype = encrypt.encrypt(stype + "");
             } 
         },
         columns: [  
@@ -171,11 +198,6 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#table_id').DataTable();
-//设置选中change颜色
- $('#table_id tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
 });
 
 /**
@@ -184,5 +206,24 @@ $(function() {
 $(".glyphicon-search").on("click",function(){
 	$('#table_id').DataTable().ajax.reload();
 	
+});
+
+$(function() {
+	//单选
+	$('#table_id tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });
 

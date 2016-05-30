@@ -9,7 +9,6 @@
 			+ path + "/";
 	long memberId =IntegerAndString.StringToLong(request.getParameter("content"), 0);
 	String index3 = request.getParameter("_index_m3");
-	String index2 = request.getParameter("_index_m2");
 %>
 
 <!DOCTYPE html>
@@ -36,7 +35,7 @@
 			</jsp:include>
 			<!-- 左侧菜单 -->
 			<jsp:include page="../../common/cm-member.jsp">
-				<jsp:param value="<%=index2 %>" name="_index_m2"/>
+				<jsp:param value="201" name="_index_m2"/>
 				<jsp:param value="<%=index3%>" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
@@ -143,8 +142,8 @@
 							<td class="tt">严重逾期还款<samp id="yZOverdueRepaymentCount"></samp>笔</td>
 						</tr>
 						<tr>
-							<td class="tt">逾期未还<samp id="suc_b"></samp>笔</td>
-							<td class="tt">提前还款<samp id="suc_b"></samp>笔</td>
+							<td class="tt">逾期未还<samp id="overdueNonReturn"></samp>笔</td>
+							<td class="tt">提前还款<samp id="advanceReturn"></samp>笔</td>
 						</tr>
 					</table>
 				</div>
@@ -155,14 +154,14 @@
 				<div class="w-content ishow">
 					<table>
 						<tr>
-							<td class="tt"><label>成功投资笔数：</label><span id="investmentCount"></span></td>
-							<td class="tt"><label>成功投资金额：</label><span class="moneyFormat" id="sInvestmentSum"></span><samp>元</samp></td>
-							<td class="tt"><label>累计已收本金：</label><span class="moneyFormat" id="sRecvPrincipal"></span><samp>元</samp></td>
-							<td class="tt"><label>累计已收利息：</label><span class="moneyFormat" id="sRecvInterest"></span><samp>元</samp></td>
+							<td class="tt"><label>成功投资笔数：</label><samp id="investCount"></samp>笔</td>
+							<td class="tt"><label>成功投资金额：</label><samp class="moneyFormat" id="sInvestmentSum"></samp>元</td>
+							<td class="tt"><label>累计已收本金：</label><samp class="moneyFormat" id="sRecvPrincipal"></samp>元</td>
+							<td class="tt"><label>累计已收利息：</label><samp class="moneyFormat" id="sRecvInterest"></samp><samp>元</samp></td>
 						</tr>
 						<tr>
-							<td class="tt"><label>待收本金：</label><span class="moneyFormat" id="sExpectRecvPrincipal"></span><samp>元</samp></td>
-							<td class="tt"><label>待收收益：</label><span class="moneyFormat" id="sIncomeReceived"></span><samp>元</samp></td>
+							<td class="tt"><label>待收本金：</label><samp class="moneyFormat" id="sExpectRecvPrincipal"></samp>元</td>
+							<td class="tt"><label>待收收益：</label><samp class="moneyFormat" id="sIncomeReceived"></samp>元</td>
 						</tr>
 					</table>
 				</div>

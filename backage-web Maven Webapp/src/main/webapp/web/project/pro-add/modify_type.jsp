@@ -11,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<table style="width:100%;">
 				<tr>
 					<td class="tt"><label class="ineed">类型名称：</label></td>
-					<td class="con" id="roleNamea"><input type="text" class="proKindName" datatype="roleNamea" maxlength="6"></td>
+					<td class="con" id="roleNamea"><input type="text" class="proKindName" datatype="proTypeName" maxlength="6"></td>
 				</tr>
 				<tr>
 					<td class="tt"><label class="ineed">融资额度：</label></td>
@@ -195,13 +195,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 	});
 	$(function(){
-		validform5("layui-layer-btn0","roleNamea",false,"3");
-		validform5("layui-layer-btn0","account",false,"3");
-		validform5("layui-layer-btn0","theYear",false,"3");
-		validform5("layui-layer-btn0","con-time",false,"3");
-		validform5("layui-layer-btn0","con-timeY",false,"3");
-		validform5("layui-layer-btn0","con-timeM",false,"3");
-		validform5("layui-layer-btn0","con-timeD",false,"3");
+		validform5("layui-layer-btn0","roleNamea",false,"5");
+		validform5("layui-layer-btn0","account",false,"5");
+		validform5("layui-layer-btn0","theYear",false,"5");
+		validform5("layui-layer-btn0","con-time",false,"5");
+		validform5("layui-layer-btn0","con-timeY",false,"5");
+		validform5("layui-layer-btn0","con-timeM",false,"5");
+		validform5("layui-layer-btn0","con-timeD",false,"5");
 	});
 	$(function(){
 		/* 类型名称 */

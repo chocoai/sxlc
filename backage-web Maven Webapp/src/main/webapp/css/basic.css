@@ -248,7 +248,7 @@ body.nav-sm .profile {
 	list-style: none;
 	display: inline-block;
 	vertical-align: middle;
-	min-width: 80px;
+	min-width: 75px;
 	color: #fff;
 	padding: .5em;
 }
@@ -270,7 +270,7 @@ body.nav-sm .profile {
 .left_col{/* 左侧菜单背景 */
 	background: #3E75B8;/* #3E75B8 #F1F1F1 F7F7F7 EFEFEF*/
 	/* border: 1px solid #f00; */
-	border-right: 1px solid #eee;
+	/* border-right: 1px solid #eee; */
 /* 	-webkit-box-shadow:inset -2px -2px 2px #dfdfdf;  
 	   -moz-box-shadow:inset -2px -2px 2px #dfdfdf;  
 	        box-shadow:inset -2px -2px 2px #dfdfdf;   */
@@ -501,6 +501,11 @@ textarea{
 input:disabled{
 	background: #f8f8f8;
 	color: #888;
+}
+/* 双击按钮禁用样式  */
+.disabled{
+	pointer-events:none;
+	opacity:0.5;
 }
 
 /* 搜索部分列布局 */

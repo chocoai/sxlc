@@ -40,7 +40,7 @@ public class CreditorTransWriteDaoImpl extends SqlSessionDaoSupport implements C
         if (ArrayUtils.isEmpty(sR) || sR.length < 2) {
             return iResult;
         }
-        if (ArrayUtils.isEmpty(sR1) || sR1.length < 7) {
+        if (ArrayUtils.isEmpty(sR1) || sR1.length < 8) {
             return iResult;
         }
         if (ArrayUtils.isEmpty(sR2) || sR2.length < 3) {
@@ -53,6 +53,8 @@ public class CreditorTransWriteDaoImpl extends SqlSessionDaoSupport implements C
         }
 
         long lId = IdGeneratorUtil.GetIdGeneratorInstance().GetId();
+        // 投资本金
+        long lAmount = IntegerAndString.StringToLong(sR1[7], 0);		
         String sKey = DbKeyUtil.GetDbCodeKey();
         Map<String, Object> param = new HashMap<String, Object>();
         //投资状态 0成功 1失败
@@ -77,6 +79,7 @@ public class CreditorTransWriteDaoImpl extends SqlSessionDaoSupport implements C
         param.put(DaoConstant.PARAM_RED_PACKETS, IntegerAndString.StringToLong(sR1[3], 0));            // 使用红包
         param.put(DaoConstant.PARAM_VOUCHERS, IntegerAndString.StringToLong(sR1[4], 0));            // 使用代金券
         param.put(DaoConstant.PARAM_MANAGE_FEE, IntegerAndString.StringToLong(sR2[0], 0));            // 本次分润管理费
+        param.put("lInvestPrincipal", lAmount);
 
         getSqlSession().selectOne(DaoConstant.CREDITOR_TRANS_DAO_PROCESS_CREDITOR_TRANS_RESULT, param);
         iResult = IntegerAndString.StringToInt(param.get(DaoConstant.PARAM_RESULT).toString(), 0);

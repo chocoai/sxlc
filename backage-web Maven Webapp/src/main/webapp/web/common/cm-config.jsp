@@ -12,7 +12,7 @@
                     <div class="navbar nav_title">
                         <a href="javascript:;" class="site_title">
                         	<i class="fa fa-cog"></i>
-                        	<span><!-- 产品后台管理 --></span>
+                        	<span>配置中心</span>
                         </a>
                     </div>
 					<!-- /父级菜单 -->

@@ -6,24 +6,16 @@ var ptype = null;
 var mpay = null;
 var opay = null;
 var ppay = null;
-//获取项目根目录全路径
-function getRootPath(){
-        var curWwwPath=window.document.location.href;
-        var pathName=window.document.location.pathname;
-        var pos=curWwwPath.indexOf(pathName);
-        var localhostPath=curWwwPath.substring(0,pos);
-        var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
-		if(/127.0.0.1|localhost/.test(localhostPath)){
-			return(localhostPath+projectName);
-		}else{
-			return(localhostPath);
-		}
-}
+
+$(function () {
+	$("#memberMod").bind('click', function () {
+		$("#member").submit();
+	});
+});
 
 /** 修改 充值手续费 **/
 //会员
 function mchargefee () {
-	//validform5("btn","auto",true,"3");
 	$.ajax({
 		type : 'post',
 		url : appPath + "/withdraw/update4charge.do",
@@ -41,9 +33,15 @@ function mchargefee () {
 	});
 }
 
+$(function () {
+	$("#orgMod").bind('click', function () {
+		$("#orgnization").submit();
+	});
+});
+
 //机构
 function ochargefee () {
-	//validform5("btn","auto",true,"3");
+	//validform5("btn","auto",true,"5");
 	$.ajax({
 		type : 'post',
 		url : appPath + "/withdraw/update4charge.do",
@@ -61,9 +59,15 @@ function ochargefee () {
 	});
 }
 
+$(function () {
+	$("#platMod").bind('click', function () {
+		$("#station").submit();
+	});
+});
+
 //平台
 function pchargefee () {
-	//validform5("btn","auto",true,"3");
+	//validform5("btn","auto",true,"5");
 	$.ajax({
 		type : 'post',
 		url : appPath + "/withdraw/update4charge.do",
@@ -81,6 +85,37 @@ function pchargefee () {
 	});
 }
 $(function () {
+	
+	$.ajax({
+		type : 'post',
+		url : appPath + "/withdraw/feeList.do",
+		success : function (msg) {
+			if (msg.length > 0) {
+				$.each(msg, function (i, item) {
+					if (item.paymentMemberType == 0) {
+						$("#mdiv input[type='radio']").each(function(index){
+							if ($(this).val() == item.feePaymentMethod) {
+								$(this).attr("checked","checked");
+							}
+						});
+					}else if (item.paymentMemberType == 1) {
+						$("#odiv input[type='radio']").each(function(index){
+							if ($(this).val() == item.feePaymentMethod) {
+								$(this).attr("checked","checked");
+							}
+						});
+					}else if (item.paymentMemberType == 2) {
+						$("#sdiv input[type='radio']").each(function(index){
+							if ($(this).val() == item.feePaymentMethod) {
+								$(this).attr("checked","checked");
+							}
+						});
+					}
+				});
+			}
+		}
+	});
+	
 	$("#mdiv input[type='radio']").each(function(index){
 		$(this).on('click',function(){
 			$(this).attr("checked",true).parent(".checkbox-inline").siblings().children("input[type='radio']").attr("checked",false);
@@ -95,7 +130,6 @@ $(function () {
 		});
 	});
 	
-	$(function () {
 		$("#odiv input[type='radio']").each(function(index){
 			$(this).on('click',function(){
 				$(this).attr("checked",true).parent(".checkbox-inline").siblings().children("input[type='radio']").attr("checked",false);
@@ -109,9 +143,7 @@ $(function () {
 				}
 			});
 		});
-	});
 	
-	$(function () {
 		$("#sdiv input[type='radio']").each(function(index){
 			$(this).on('click',function(){
 				$(this).attr("checked",true).parent(".checkbox-inline").siblings().children("input[type='radio']").attr("checked",false);
@@ -125,5 +157,4 @@ $(function () {
 				}
 			});
 		});
-	});
 });

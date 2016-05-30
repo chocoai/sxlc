@@ -28,12 +28,28 @@ $(function(){
 		$(this).next().hide();
 	});
 	
+
+	
 	/**查询下拉借款类型**/
 	qurySelectType();
 	
 	/**查询借款类型列表及介绍**/
 	queryLoanList();
 	
+	$(".loanSum").on("blur",function(){
+		var min = $("#minAmount").val();
+		var max = $("#maxAmount").val();
+		var amount = $(this).val();
+		//console.log(amount+"****"+min+"*****"+max);
+		if(Number(amount)<Number(min)){
+			//var str = "借款金额不能小于最低借款金额 "+min+"元";
+			//$(this).next().errorPrompt(str)
+			$(this).val(min);
+		}else if(Number(max)!=0&&Number(amount)>Number(max)){
+			//var str = "借款金额不能大于最高借款金额 "+min+"元";
+			$(this).val(max);
+		}
+	});
 });
 
 /**
@@ -49,6 +65,23 @@ function qurySelectType(){
 			if(data.code == 200){
 				var html = template('typeSelectList', data);
 		        document.getElementById('typeSelect').innerHTML = html;	
+		        
+		        //点击后 把借款金额范围限制赋值到input
+		    	$(".selectLi").on("click",function(){
+		    		var minAmount = $(this).attr("minAmount");
+		    		if(minAmount==""){
+		    			minAmount=0;
+		    		}
+		    		var maxAmount = $(this).attr("maxAmount");
+		    		if(maxAmount==""){
+		    			maxAmount=0;
+		    		}
+		    		//console.log(minAmount+"----"+maxAmount);
+		    		$("#minAmount").val(minAmount);
+		    		$("#maxAmount").val(maxAmount);
+		    	});
+		    	$("#minAmount").val(data.data[0].minAmounts);
+	    		$("#maxAmount").val(data.data[0].maxAmounts);
 		        inputSelect();
 			}
 		}
@@ -224,12 +257,15 @@ $(function(){
 		});
 		$(this).blur(function(){
 			if(this.value != ""){
-				if(parseFloat(this.value) <= 18.00 && parseFloat(this.value) >= 10.00){
+				var id = "li_"+$(".selectType").attr("value");
+				var minRates = $("#"+id).attr("minRates");
+				var maxRates = $("#"+id).attr("maxRates");
+				if(parseFloat(this.value) <= maxRates && parseFloat(this.value) >= minRates){
 					this.value = parseFloat(this.value).toFixed(2);
-				}else if(parseFloat(this.value) < 10){
-					this.value = parseFloat(10).toFixed(2);
-				}else if(parseFloat(this.value) > 18){
-					this.value = parseFloat(18).toFixed(2);
+				}else if(parseFloat(this.value) < minRates){
+					this.value = parseFloat(minRates).toFixed(2);
+				}else if(parseFloat(this.value) > maxRates){
+					this.value = parseFloat(maxRates).toFixed(2);
 				}
 			}
 		});
@@ -243,7 +279,30 @@ $(function(){
 		$(this).focus(function(){
 			$(this).keyup(function(){
 				if(this.value.length > 0){
-					this.value = this.value.replace(/[^0-9]/g,'');
+					var id = "li_"+$(".selectType").attr("value");
+					var dayType = $(".selectDateUnit").attr("value");
+					var minTime;
+					var maxTime;
+					if(dayType==1){/*月*/
+						minTime = $("#"+id).attr("mminDaytime");
+						maxTime = $("#"+id).attr("mmaxDaytime");
+					}else if(dayType==2){/*日*/
+						minTime = $("#"+id).attr("tminDaytime");
+						maxTime = $("#"+id).attr("tmaxDaytime");
+					}else if(dayType==3){/*年*/
+						minTime = $("#"+id).attr("yminDaytime");
+						maxTime = $("#"+id).attr("ymaxDaytime");
+					}
+					if(this.value>minTime && this.value<maxTime){
+						this.value = this.value.replace(/[^0-9]/g,'');
+					}else if(this.value<minTime && minTime>0){
+						this.value = minTime.replace(/[^0-9]/g,'');
+					}else if(this.value>maxTime && maxTime>0){
+						this.value = maxTime.replace(/[^0-9]/g,'');
+					}else{
+						this.value = this.value.replace(/[^0-9]/g,'');
+					}
+					
 				}
 			});
 		});
@@ -352,7 +411,7 @@ function inputSelect(){
 /* 点击查看详情时指南标题改变   胥福星      20160412    */
 $(function(){
 	$("#personInfo").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".submit", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,

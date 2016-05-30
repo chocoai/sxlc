@@ -39,7 +39,7 @@ public class RadPackage {
 		return useDate;
 	}
 	public void setUseDate(String useDate) {
-		this.useDate = useDate;
+		this.useDate = useDate.substring(0, 19);
 	}
 	public Long getMemberRpId() {
 		return memberRpId;
@@ -57,13 +57,13 @@ public class RadPackage {
 		return receiveDate;
 	}
 	public void setReceiveDate(String receiveDate) {
-		this.receiveDate = receiveDate;
+		this.receiveDate = receiveDate.substring(0, 19);
 	}
 	public String getEndDate() {
 		return endDate;
 	}
 	public void setEndDate(String endDate) {
-		this.endDate = endDate;
+		this.endDate = endDate.substring(0, 19);
 	}
 	public Integer getGiftType() {
 		return giftType;
@@ -76,6 +76,7 @@ public class RadPackage {
 	}
 	public void setGiftAmount(Long giftAmount) {
 		this.giftAmount = giftAmount;
+		this.sgiftAmount = IntegerAndString.LongToString(giftAmount);
 	}
 	public String getSgiftAmount() {
 		return sgiftAmount;

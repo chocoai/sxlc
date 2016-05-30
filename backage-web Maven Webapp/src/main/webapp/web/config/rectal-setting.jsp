@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心--财务配置</title>
+	<title>配置中心-财务设置-推荐达人提奖设置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -24,12 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-config.jsp">
-				<jsp:param value="config-0" name="config-index" />
+				<jsp:param value="601" name="_index_m2"/>
+				<jsp:param value="60106" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -61,7 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">等级投资总金额</label></td>
-							<td class="con" ><input type="text" class="totalInvest" placeholder="" datatype="amcountM"></td>
+							<td class="con" ><input type="text" class="totalInvest" placeholder="" datatype="acountM"></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">等级描述</label></td>
@@ -69,7 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">推荐VIP提奖金额</label></td>
-							<td class="con" ><input type="text" class="vIPReward" placeholder="" datatype="amcountM"></td>
+							<td class="con" ><input type="text" class="vIPReward" placeholder="" datatype="acountM"></td>
 						</tr>
 						<tr>
 							<td class="tt"><label class="ineed">推荐借款提奖百分比</label></td>

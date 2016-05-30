@@ -1,14 +1,4 @@
 var uploadUrl = "";//服务器图片保存路径,全局变量
-	//初始化
-	$(function(){
-		$(".filePicker").each(function(i,obj){
-			 var filePicker ="filePicker"+(i+1);
-			 var fileListObj = $(this).next("div");
-			 var inputObj = $(this).prev("input");
-			 UploadImg(filePicker,fileListObj,1,inputObj,220,110);
-		});
-	});
-
 
 /**
  * 图片上传公共方法
@@ -31,7 +21,9 @@ function UploadImg(filePicker,fileListObj,imgNum,inputObj,imgWidth,imgHeight) {
 			    pick: piker,											//内部根据当前运行是创建，可能是input元素，也可能是flash.
 			    fileNumLimit: imgNum,												//个数限制
 				//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
-				fileSingleSizeLimit: 1024*512,
+			    fileNumLimit: 300,  
+		        fileSizeLimit: 50*1024*1024,//5M  
+		        fileSingleSizeLimit: 5*1024*1024, //1M  
 			    accept: {														//只允许选择图片文件
 			        title: 'Images',
 			        extensions: 'gif,jpg,jpeg,bmp,png',

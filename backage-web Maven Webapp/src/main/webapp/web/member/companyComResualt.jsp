@@ -46,8 +46,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<!-- tab切换 -->
 						<jsp:include page="../common/mc-companyTable.jsp"></jsp:include> 
 						<div class="w-content ishow detailAuthen realnameAuthen">
-							<fieldset>
-								<legend class="titleLen"></legend>
+								<fieldset>
+								<%
+									if(typeId == 16){
+								%>
+								<legend>企业银行流水认证</legend>
+								<%
+									}else if(typeId == 17){
+								%>
+								<legend>实地考察认证</legend>
+								<%	
+									}else if(typeId == 19){
+								%>
+								<legend>批文认证</legend>
+								<%	
+									}else if(typeId == 20){
+								%>
+								<legend>财务资料认证</legend>
+								<%	
+									}else if(typeId ==21){
+								%>
+								<legend>监管单位认证</legend>
+								<%	
+									}else if(typeId ==24){
+								%>
+								<legend>担保考察认证</legend>
+								<%	
+									}else if(typeId ==25){
+								%>
+								<legend>法人身份证认证</legend>
+								<%	
+									}
+								 %>
 								<div class="introduce">
 								<input type="hidden" id="hostPath" value="${ImgProfix}"/>
 									<span><samp>企业名称：</samp><label id="company"></label></span>
@@ -65,13 +95,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div><samp>审核意见：</samp><select class="verifySelect" id="statu"><option value="2">同意</option><option value="3">打回</option></select></div>
 								<div>
-									<div id="submit" style="display: none">
+									<div id="submit"  class="back" style="display: none">
 										<input type="hidden" id="applyId">
 										<input type="hidden" id="memberId">
 										<button class="submitAuthen" onclick="submitIdentyList()">提交</button>
 									</div>
-									<div id="back"   style="display: none">
+									<div id="back"  class="back"  style="display: none">
 										<button class="backAuthen" onclick="back('web/member/companyCommonAuthen.jsp?content=<%=typeId%>')">返回</button>
+									</div>
+									<div  class="back"  style="display: none">
+										<button class="backAuthen" onclick="window.history.back()">返回</button>
 									</div>
 								</div>
 							</fieldset>

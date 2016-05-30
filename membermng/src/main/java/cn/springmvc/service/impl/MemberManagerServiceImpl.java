@@ -233,7 +233,7 @@ public class MemberManagerServiceImpl implements IMemberManangerService{
 		
 		List<MyRecommand> list = memberManagerDao.ExceptMyRecommandMan(entity);
 		PageUtil.ObjectToPage(entity, list);
-		return null;
+		return list;
 	}
 	@Override
 	public void  blackRecord(PageEntity entity){
@@ -269,7 +269,11 @@ public class MemberManagerServiceImpl implements IMemberManangerService{
 		if(count>0){
 			managerWriteDao.deleteLimitList();
 		}
-		int result = managerWriteDao.addLimitList(strings);
+		int result  = 1;
+		if(strings != null){
+			 result = managerWriteDao.addLimitList(strings);
+		}
+		
 		if(result >0){
 			entity.setsDetail(entity.getsDetail()+",操作状态[成功]");
 		}else{

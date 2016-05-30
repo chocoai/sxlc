@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心</title>
+	<title>配置中心-短信设置-消息接口配置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -88,7 +88,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<tr>
 								<td class="tt"><label>密码：</label></td>
 								<td class="con" id="addpassword">
-									<input type="password" class="smsPassword" placeholder="" datatype="logPass"/>
+									<input type="password" class="smsPassword" placeholder="" datatype="regpass"/>
 								</td>
 							</tr>
 						</table>
@@ -115,12 +115,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 				</div>
 				 				<div class="form-group">
 				 					<label for="firstname" class="i-fl control-label col3">邮箱地址：</label>
-				 					<div class="i-fl" ><input type="text" class="form-control" value="${mailSet.emailAddress}" id="firstname" placeholder="" datatype="mail"></div>
+				 					<div class="i-fl" ><input type="text" class="form-control" value="${mailSet.emailAddress}" id="firstname" placeholder="" datatype="email"></div>
 				 				</div>
 				 				<div class="form-group">
 				 					<label for="lastname" class="i-fl control-label col3">邮箱密码：</label>
 				 					<div class="i-fl">
-				 						<input type="password" class="form-control" id="lastname" placeholder="" value="${mailSet.emailPassword}" datatype="logPass">
+				 						<input type="password" class="form-control" id="lastname" placeholder="" value="${mailSet.emailPassword}" datatype="regpass">
 				 					</div>
 				 				</div>
 				 				<div class="form-group">
@@ -132,6 +132,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 		</fieldset>
 				 	</div>	
 				</div>
+			</div>
 		</div>
 	</div>
 	<!-- 尾部 -->

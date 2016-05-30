@@ -72,18 +72,17 @@ public class InviteHistoryBackExcelController implements OutExcel{
 		param.put("endTime",       endTime);
 		param.put("month",           month); 
 		List<AwardPaymentRecordEntity> list = inviteMasterApplyService.getInviteMasterHistoryBackExcel(param);
-
 		if(list == null){
 			return;
 		}
 		if(list.size() > 0) {
-	 
 			//1
 			ExcelKit<AwardPaymentRecordEntity> kit = new ExcelKit<AwardPaymentRecordEntity>();
 			//2
 			kit.out(response, list, "推荐达人历史返现", this);
 			kit.close();
 		}
+	 
 	}
  
 	@Override

@@ -67,14 +67,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span class="con-item">
 										<span>发放状态</span>
 										<select id="payStatu" class="rechargeoption">
-											<option value="2">已发放</option>
 											<option value="0">未发放</option>
+											<option value="2">已发放</option>
 										</select>
 									</span>
 									<span class="con-item">
 										<span>推广类型</span>
 										<select id="types" class="rechargeoption choType">
-											<option value="0">理财顾问</option>
+											<option value="2">理财顾问</option>
 											<option value="1">推荐达人</option>
 										</select>
 									</span>
@@ -114,7 +114,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<p><label>推荐购买VIP提奖金额：</label><span id="vipAward">1000</span>元</p>
 			<p><label>推荐还本金额：</label><span id="repayAward">1000</span>元</p>
 			<p><label>推荐提奖总额：</label><span id="allmonay">1000</span>元</p>
-			<div><label>实发金额：</label><input id="realMoney" name="realMoney" type="text" class="rechargeinput" placeholder="" datatype="amcountM"><span>元</span></div>
+			<div><label>实发金额：</label><input id="realMoney" name="realMoney" type="text" class="rechargeinput" placeholder="" datatype="acountM"><span>元</span></div>
 			<input id="memberId" type="hidden" name="memberId" value="" />
 			<input id="type" type="hidden" name="type" value="" />
 			<input id="startTime" type="hidden" name="startTime" value="" />

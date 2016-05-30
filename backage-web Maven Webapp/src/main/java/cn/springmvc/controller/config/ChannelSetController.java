@@ -127,12 +127,12 @@ public class ChannelSetController {
 		int escrowID = IntegerAndString.StringToInt(request.getParameter("escrowID"),0);
 		int interfaceID = IntegerAndString.StringToInt(request.getParameter("interfaceID"),0);
 		String interfaceUrl = request.getParameter("interfaceUrl");
-		int  statu = IntegerAndString.StringToInt(request.getParameter("statu"),0);
+		//int  statu = IntegerAndString.StringToInt(request.getParameter("statu"),0);
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("escrowID", escrowID);
 		map.put("interfaceID", interfaceID);
 		map.put("interfaceUrl", interfaceUrl);
-		map.put("statu", statu);
+		map.put("statu", 1);
 		InsertAdminLogEntity  entity = new InsertAdminLogEntity(); //以后加
 		HttpSession session = request.getSession();
 	    Admin admin = (Admin)session.getAttribute("LoginPerson");

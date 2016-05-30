@@ -38,6 +38,7 @@ $(function() {
 		    btn:['确定', '取消']
 			  ,yes: function(index, layero){ //或者使用btn1
 				//获得选取的对象
+				  $(".layui-layer-btn0").addClass("disabled");
 					var rowdata = $('#staffListTb').DataTable().rows('.selected').data();
 					var staffId =0;
 					if(!isEmptyObject(rowdata[0])){ //判断是否选择
@@ -49,7 +50,7 @@ $(function() {
 					var encrypt = new JSEncrypt();
 			    	encrypt.setPublicKey(publicKey_common);
 			    	//result 为加密后参数
-			    	staffId = encrypt.encrypt(staffId);
+			    	staffId = encrypt.encrypt(staffId+"");
 				  $.ajax({
 						url : appPath+"/savaPlannerAdvise.do",
 							data:{
@@ -63,11 +64,12 @@ $(function() {
 						},
 						success : function(data) {
 							//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
+							$(".layui-layer-btn0").removeClass("disabled");
 							if(data == 0){
 								//执行完关闭
 								layer.alert("添加成功",{icon:1});  
 							  	layer.close(index);
-							  	setTimeout('location.reload()',500);
+							  	$('#table_id').DataTable().ajax.reload();
 							}else if(data == -1){
 								layer.alert("添加失败， 该员工未注册前台会员！",{icon:0});  
 							}
@@ -115,7 +117,7 @@ $(function() {
 					if(data == 0){
 						//执行完关闭
 					  	layer.close(index);
-					  	setTimeout('location.reload()',500);
+					  	$('#table_id').DataTable().ajax.reload();
 					}else if(data == -1){
 						
 					}

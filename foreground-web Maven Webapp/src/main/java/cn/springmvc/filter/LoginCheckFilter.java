@@ -37,6 +37,10 @@ public class LoginCheckFilter implements Filter{
 		exitRouts.add("memberInvestmentvoid");							//項目投資返回
 		exitRouts.add("ReplayCallBackReturn");							//項目还款返回
 		exitRouts.add("ReplayCallBackNotify");							//項目还款返回
+		exitRouts.add("buyVipCallBackPage");							//VIP购买转账回调
+		exitRouts.add("buyVipCallBack");								//VIP购买转账回调
+		exitRouts.add("loanWithdrawNotify");							//提现回调
+		exitRouts.add("loanWithdrawReturn");							//提现回调
 	}
 	
 	
@@ -44,6 +48,7 @@ public class LoginCheckFilter implements Filter{
 	public void doFilter(ServletRequest request, ServletResponse response,FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request2 = (HttpServletRequest) request;
 		String requestUrl = request2.getRequestURI();
+		
 		String requestPath= requestUrl.substring(requestUrl.lastIndexOf("/")+1, requestUrl.lastIndexOf("."));
 		if(!exitRouts.contains(requestPath)){
 			MemberInfo memberInfo = (MemberInfo) ((HttpServletRequest)request).getSession().getAttribute(Constant.LOGINUSER);
@@ -53,11 +58,7 @@ public class LoginCheckFilter implements Filter{
 					String resultJson = "{\"status\":-100,\"det\":用户未登录}";
 					response.getWriter().write(resultJson);
 				}else{
-					if(requestUrl.contains("foreground-web")){
-						((HttpServletResponse)response).sendRedirect("/foreground-web/login.html");
-					}else{
-						((HttpServletResponse)response).sendRedirect("/login.html");
-					}
+					((HttpServletResponse)response).sendRedirect(request2.getContextPath()+"/login.html");
 				}
 			}else{
 				chain.doFilter(request, response);

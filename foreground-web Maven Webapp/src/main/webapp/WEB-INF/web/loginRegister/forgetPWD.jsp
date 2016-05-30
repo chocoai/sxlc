@@ -51,7 +51,7 @@
 						</div>
 					</div>
 					<div class="inputTelCheck clearfix">
-						<div class="left-title">手机验证:</div>
+						<div class="left-title">手机验证码:</div>
 						<div class="telCode">
 							<input type="text" class="tel-check" datatype="Z6" maxlength="6">
 							<input type="button" class="get-tel-check"

@@ -49,17 +49,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="panel-body">
 								<form id="" class="" action="">
-									<span class="con-item"><span>项目名称</span><input type="text" class="notspecial"></span>
-									<span class="con-item"><span>借款会员</span><input type="text" class="notspecial"></span>
-									<span class="con-item"><span>转让会员</span><input type="text" class="notspecial"></span>
+									<span class="con-item"><span>项目名称</span><input type="text" class="notspecial projectName"></span>
+									<span class="con-item"><span>借款会员</span><input type="text" class="notspecial loanMemberName"></span>
+									<span class="con-item"><span>转让会员</span><input type="text" class="notspecial transferMemberName"></span>
 									<span class="con-item"><span>转让金额</span><input type="text" class="notspecial"></span>
 									<span class="con-item"><span>转让价格</span><input type="text" class="notspecial"></span>
 									<span class="con-item">
 										<span>项目状态</span>
-										<select class="w3">
-											<option>请选择</option>
-											<option>待放款</option>
-											<option>已完成</option>
+										<select class="w3 status">
+											<option value="-1">请选择</option>
+											<option value="2">未放款</option>
+											<option value="1">已流标</option>
+											<option value="3">已放款</option>
 										</select>
 									</span>
 									<span class="con-item"><span>放款时间</span><input type="text" id="loanStartDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'loanEndDate\')||\'2020-10-01\'}' })">-&nbsp;&nbsp;<input type="text" id="loanEndDate" class="notspecial Wdate dateInput" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'loanStartDate\')}' ,maxDate:'2020-10-01' })"></span>
@@ -76,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							  		<button id="loan" class="obtn glyphicon glyphicon-plus obtn-export">放款</button>
 						  			<button id="pass" class="obtn glyphicon glyphicon-plus tobe_lending_invest_record">流标</button>
 								</div>
-								<form id="form1" action="lending/loan.do" type="post">
+								<form id="form1" action="finance/loan.do" type="post">
 									<input id="stype" name="stype" type="hidden" value="" />
 									<input id="projectId" name="projectId" type="hidden" value="" />
 									<input id="auditType" name="auditType" type="hidden" value="" />

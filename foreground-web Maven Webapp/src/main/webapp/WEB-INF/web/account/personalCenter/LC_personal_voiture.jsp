@@ -35,12 +35,13 @@
 	   				</div>
 	   				<div class="authenContent">
 	   					<div class="clearfix"><div class="addAuthen" onselectstart="return false">添加车产认证</div></div>
-	   					<div class="cloneDiv">
+	   					
+	   					<!-- 添加修改 窗口 -->
+	   					<div class="cloneDiv" style="display:none">
 		   					<div class="authen">
-			   					<div class="authenScale">
-			   						<p class="authenScaleBtn" onselectstart="return false" onclick="scale(this);">车产认证</p>
-			   					</div>
-	   							<form class="person_Renzheng">
+	   							<form class="car" id="car">
+	   								<input class="editType" type="hidden">
+		   							<input class="cid" type="hidden">
 					   				<ul class="inputArea">
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>车辆品牌：</span></div>
@@ -61,12 +62,12 @@
 					   					</li>
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>首次登记日期：</span></div>
-					   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择首次登记日期"/>
+					   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker({maxDate:'%y-%M-%d',readOnly:true})" type="text" />
 					   					</li>
 					   					<li class="inputList">
-						   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
-						   					<div class="previewPicture" id="file" style="float: none;" >
-						   						<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
+						   					<div class="mustLabel"><span><samp></samp>附件：</span></div>
+						   					<div class="file"  style="float: none;">
+						   						<img class="previewImg previewPicture"  src="resource/img/account/common/opacity.png">
 						   					</div>
 						   					<div class="authPreviDiv_u"></div>
 						   					<!-- <span class="hint">（请上传附件图片）</span> -->
@@ -80,6 +81,78 @@
 	   							</form>
 			   				</div>
 		   				</div>
+						<!-- 只读窗口 -->
+						<div class="cloneDiv_show" style="display:none">
+		   					<div class="authen">
+	   							<form class="car_show" id="car_show">
+					   				<ul class="inputArea">
+					   					<li class="inputList">
+					   						<div class="mustLabel"><span><samp>*</samp>车辆品牌：</span></div>
+					   						<input readonly="readonly" class="inputText brand " type="text" datatype="titleRemarks" lang="请输入车辆品牌" maxlength="40"/>
+					   					</li>
+					   					<li class="inputList">
+					   						<div class="mustLabel"><span><samp>*</samp>型号：</span></div>
+					   						<input readonly="readonly" class="inputText model" type="text" datatype="*" lang="请输入车辆型号" maxlength="40"/>
+					   					</li>
+					   					<li class="inputList">
+					   						<div class="mustLabel"><span><samp>*</samp>车牌号：</span></div>
+					   						<input readonly="readonly" class="inputText licensePlate " type="text" datatype="cartNumber" lang="请输入车牌号" maxlength="20"/>
+					   					</li>
+					   					<li class="inputList">
+					   						<div class="mustLabel"><span><samp>*</samp>发票价格：</span></div>
+					   						<input readonly="readonly" class="inputText value" type="text" datatype="acountM" lang="请输入发票价格" maxlength="10"/>
+					   						<span class="unitPrice">元</span>
+					   					</li>
+					   					<li class="inputList">
+					   						<div class="mustLabel"><span><samp>*</samp>首次登记日期：</span></div>
+					   						<input readonly="readonly" class="inputText dateSelect Wdate" type="text" lang="请选择首次登记日期"/>
+					   					</li>
+					   					<li class="inputList">
+						   					<div class="mustLabel"><span><samp></samp>附件：</span></div>
+						   					<div class="authPreviDiv_u"></div>
+						   					<!-- <span class="hint">（请上传附件图片）</span> -->
+						   				</li>
+					   				</ul>
+	   							</form>
+			   				</div>
+		   				</div>
+
+						<table id="vo_table" cellspacing="0" style="width:100%">
+							<thead>
+								<tr>
+									<td>车辆品牌</td>
+									<td>型号</td>
+									<td>车牌号</td>
+									<td>发票价格</td>
+									<td>首次登记日期</td>
+									<!-- <td>附件</td> -->
+									<td>操作</td>
+								</tr>
+							</thead>
+							
+								<!-- 我的车产认证列表 -->
+								<script id="car_list"  type="text/html">
+								{{each data as info index}}
+								<tr class="tr_{{info.rid}}">
+									<td class="td_brand">{{info.brand}}</td>
+									<td class="td_model">{{info.model}}</td>
+									<td class="td_licensePlate">{{info.licensePlate}}</td>
+									<td class="td_value">{{info.value}}</td>
+									<td class="td_endDate">{{info.sEndDate}}</td>
+									<td>
+										<a href="javascript:showCar({{info.rid}});" class="see">查看</a>
+										<a href="javascript:modifyCar({{info.rid}});" class="modify">修改</a>
+									</td>
+									<input class="td_cid" type="hidden" value="{{info.rid}}"/>
+									<input class="td_attachPath" type="hidden" value="{{info.attachPath}}"/>
+								</tr>
+								{{/each }}
+								</script>
+							<tbody id="car_body">
+							
+							</tbody>
+						</table>
+						<input class="attachPrefix" type="hidden"/>
 	   				</div>
    				</div>
    				</div>
@@ -91,36 +164,8 @@
    	<script type="text/javascript" src="plugs/webuploader/webuploader.js" ></script>
    	<script type="text/javascript" src="js/exp-upload.js" ></script>	
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
-	<script type="text/javascript" src="js/account/personalCenter/loanCertification_picText.js"></script>	
-	<script>
-	expUpload(0);
-		/* 验证     */
-		/* $(function(){checkCAR();});
-			function checkCAR(){
-				$(".companyVoiture").each(function(){
-					$(this).Validform({
-						tiptype:3,//提示信息类型
-						btnSubmit:".saveSubmit", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
-						//btnReset:"#btnreset1",
-						datatype:extdatatype,//扩展验证类型
-						//showAllError:true,//提交前验证显示所有错误
-						ajaxPost:{//使用ajax提交时
-							url:"",
-							datatype:"json",
-							success:function(data,obj){
-					            //data是返回的json数据;
-					            //obj是当前表单的jquery对象;
-					        },
-					        error:function(data,obj){
-					            //data是{ status:**, statusText:**, readyState:**, responseText:** };
-					            //obj是当前表单的jquery对象;
-					            console.log(data.status);
-					        }
-						}
-					});
-				});
-			} */
-	</script>
+	<script type="text/javascript" src="js/account/personalCenter/addMore.js"></script>
+<!-- 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script> -->
+<!--	<script type="text/javascript" src="js/account/personalCenter/loanCertification_picText.js"></script>  -->	
 </body>
 </html>

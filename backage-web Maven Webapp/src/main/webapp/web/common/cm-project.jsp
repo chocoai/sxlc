@@ -9,7 +9,7 @@
                 	<div class="navbar nav_title">
                         <a class="site_title">
                         	<i class="fa fa-cog"></i>
-                        	<span>产品后台管理</span>
+                        	<span>项目管理</span>
                         </a>
                     </div>
                     <!-- sidebar menu -->

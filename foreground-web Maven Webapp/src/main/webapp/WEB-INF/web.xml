@@ -26,7 +26,7 @@
   </context-param>
   
   
-  <!-- 自定义检查用户请求参数控制器Filter -->
+  <!-- 自定义检查用户登录Filter -->
 	<filter>
 		<filter-name>loginCheckFilter</filter-name>
 		<filter-class>cn.springmvc.filter.LoginCheckFilter</filter-class>

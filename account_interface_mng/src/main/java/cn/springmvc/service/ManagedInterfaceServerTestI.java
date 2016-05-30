@@ -1,11 +1,9 @@
 package cn.springmvc.service;
 
 
-import javax.jws.WebService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.springmvc.model.InvestRecordInfoEntity;
 import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 import cn.sxlc.account.manager.model.AuditEntity;
 import cn.sxlc.account.manager.model.AuthorizeInterfaceEntity;
@@ -20,7 +18,7 @@ import cn.sxlc.account.manager.model.WithdrawsInterdaceEntity;
 * @Description: TODO 
 * @since 
 * @date 2016-3-7 下午2:17:23  */
-@WebService
+//@WebService
 public interface ManagedInterfaceServerTestI {
 	/** 
 	* testAccountInterfaceQDD 乾多多开户提交数据处理
@@ -35,7 +33,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return AccountInterfaceEntity 返回类型 
 	* @throws 
 	*/
-	public AccountInterfaceEntity testAccountInterfaceQDD(AccountInterfaceEntity account);
+	public AccountInterfaceEntity testAccountInterfaceQDD(AccountInterfaceEntity account,String returnURL,String notifyURL,HttpServletRequest request);
 	
 	
 	/** 
@@ -177,7 +175,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return AuthorizeInterfaceEntity 返回类型 
 	* @throws 
 	*/
-	public AuthorizeInterfaceEntity testLoanAuthorize(AuthorizeInterfaceEntity authorizeInterfaceEntity);
+	public AuthorizeInterfaceEntity testLoanAuthorize(AuthorizeInterfaceEntity authorizeInterfaceEntity,String returnURL,String notifyURL,HttpServletRequest request);
 	
 	
 	/** 
@@ -514,7 +512,7 @@ public interface ManagedInterfaceServerTestI {
 	* @date 2016-4-19 上午9:58:47
 	* @throws 
 	*/
-	public LoanTransferEntity FriendTransfer(long inMemberId,long outMemberId,long amount);
+	public LoanTransferEntity FriendTransfer(long inMemberId,long outMemberId,long amount,HttpServletRequest request,String returnURL,String notifyURL);
 	
 	
 	
@@ -602,7 +600,7 @@ public interface ManagedInterfaceServerTestI {
 	* @return LoanTransferEntity 返回类型 
 	* @date 2016-4-20 下午3:21:55
 	*/
-	public LoanTransferEntity PurchaseVIP(long memberId,int years,String startTime);
+	public LoanTransferEntity PurchaseVIP(long memberId,int years,String startTime,HttpServletRequest request,String returnURL,String notifyURL);
 	
 	
 	/** 
@@ -726,5 +724,5 @@ public interface ManagedInterfaceServerTestI {
 	*/
 	public void TransferOfCreditorsFangkuanBack(HttpServletRequest request,HttpServletResponse response);
 	
-
+	public long findYearMoney();
 }

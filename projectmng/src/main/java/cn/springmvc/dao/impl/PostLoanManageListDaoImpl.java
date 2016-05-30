@@ -168,12 +168,12 @@ public class PostLoanManageListDaoImpl extends SqlSessionDaoSupport implements
 		}
 		String sKey = DbKeyUtil.GetDbCodeKey();
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("", lId);
-		param.put("", sKey);
+		param.put("lId", lId);
+		param.put("sKey", sKey);
 		
 		getSqlSession().selectOne("Post_Loan_Manage.GetLoanRepayOverdueInfo", param);
-		lResult[0] = IntegerAndString.StringToLong((String)param.get("lOverdueInterest"), 0);
-		lResult[1] = IntegerAndString.StringToLong((String)param.get("lOverdue"), 0);
+		lResult[0] = IntegerAndString.StringToLong(param.get("lOverdueInterest").toString(), 0);
+		lResult[1] = IntegerAndString.StringToLong(param.get("lOverdue").toString(), 0);
 		
 		param = null;
 		

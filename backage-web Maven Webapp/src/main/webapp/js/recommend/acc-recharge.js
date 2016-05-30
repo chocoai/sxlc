@@ -18,18 +18,18 @@ $(function () {
 		var amount = $("#amounts").val();
 		if (rechargeType == "") {
 			$("#rechargeC").text(0);
-			$("#realMoney").text(parseInt(amount) - 0);
+			$("#realMoney").text(Number(amount) - 0);
 		}else if (rechargeType == 2) {
-			if (parseInt(amount) >= 1000) {
-				$("#rechargeC").text((parseInt(amount) / 1000));
-				$("#realMoney").text(parseInt(amount) - ((parseInt(amount) / 1000)));
+			if (Number(amount) >= 1000) {
+				$("#rechargeC").text((Number(amount) / 1000));
+				$("#realMoney").text(Number(amount) - ((Number(amount) / 1000)));
 			}else {
 				$("#rechargeC").text(1);
-				$("#realMoney").text(parseInt(amount) - 1);
+				$("#realMoney").text(Number(amount) - 1);
 			}
 		}else {
 			$("#rechargeC").text(20);
-			$("#realMoney").text(parseInt(amount) - 20);
+			$("#realMoney").text(Number(amount) - 20);
 		}
 		
 		rechargeType = encrypt.encrypt((rechargeType + ""));
@@ -45,18 +45,18 @@ $(function () {
 		var amount = $(this).val();
 		if (rechargeType == "") {
 			$("#rechargeC").text(0);
-			$("#realMoney").text(parseInt(amount) - 0);
+			$("#realMoney").text(Number(amount) - 0);
 		}else if (rechargeType == 2) {
-			if (parseInt(amount) >= 1000) {
-				$("#rechargeC").text((parseInt(amount) / 1000));
-				$("#realMoney").text(parseInt(amount) - ((parseInt(amount) / 1000)));
+			if (Number(amount) >= 1000) {
+				$("#rechargeC").text((Number(amount) / 1000));
+				$("#realMoney").text(Number(amount) - ((Number(amount) / 1000)));
 			}else {
 				$("#rechargeC").text(1);
-				$("#realMoney").text(parseInt(amount) - 1);
+				$("#realMoney").text(Number(amount) - 1);
 			}
 		}else {
 			$("#rechargeC").text(20);
-			$("#realMoney").text(parseInt(amount) - 20);
+			$("#realMoney").text(Number(amount) - 20);
 		}
 		
 		rechargeType = encrypt.encrypt((rechargeType + ""));

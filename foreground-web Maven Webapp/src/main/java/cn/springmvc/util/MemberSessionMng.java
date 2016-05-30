@@ -19,7 +19,7 @@ public class MemberSessionMng {
 	* @param @param lMemberInfo					new long 数组，长度1或2，赋值顺序：会员id，会员类型
 	* @return void 返回类型 
 	* @date 2016-4-25 下午6:25:54
-	* @throws
+	* @throws 
 	 */
 	public static void GetLoginMemberInfo(HttpServletRequest request,long[] lMemberInfo){
 		if(request == null || lMemberInfo==null || lMemberInfo.length<1){

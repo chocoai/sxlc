@@ -1,5 +1,6 @@
 package cn.springmvc.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
-import cn.springmvc.Util.StringUtils;
+import cn.organization.util.StringUtils;
 import cn.springmvc.dao.IStaffInfoDao;
 import cn.springmvc.dao.IStaffInfoReadDao;
 import cn.springmvc.dao.impl.OptRecordWriteDaoImpl;
@@ -45,7 +46,8 @@ public class StaffInfoServiceImpl implements IStaffInfoService{
 	
 	@Override
 	public int saveStaff(StaffInfo info,String deptId,String postId,Date joinDate,InsertAdminLogEntity entity,String[] sIpInfo) {
-		String joinDate2 = StringUtils.fromtDate(null, joinDate);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String joinDate2 = dateFormat.format(joinDate == null ? new Date():joinDate);
 		int result = staffInfoDao.saveStaff(info, deptId,postId,joinDate2, DbKeyUtil.GetDbCodeKey());
 		entity.setsDetail("添加员工:姓名["+info.getBaseInfo().getPersonalName()+"]");
 		if(result == 0){
@@ -67,7 +69,8 @@ public class StaffInfoServiceImpl implements IStaffInfoService{
 	
 	@Override
 	public int editStaff(StaffInfo info, String deptId, String posId,Date joinDate,InsertAdminLogEntity entity,String[] sIpInfo) {
-		String joinDate2 = StringUtils.fromtDate(null, joinDate);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String joinDate2 = dateFormat.format(joinDate == null ? new Date():joinDate);
 		int result = staffInfoDao.editStaff(info, deptId, posId, joinDate2, DbKeyUtil.GetDbCodeKey());
 		entity.setsDetail("修改员工信息:姓名["+info.getBaseInfo().getPersonalName()+"]");
 		if(result == 0){

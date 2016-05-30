@@ -78,8 +78,8 @@ function showMembervipList(){
 		            	phone_Num = encrypt.encrypt(phone_Num);
 		            	d.memberType = memberType;
 		            	d.memberName=member_Name;
-		            	d.personalName=user_Name;
-		            	d.personalPhone=phone_Num;
+		            	d.userName=user_Name;
+		            	d.phone=phone_Num;
 		            } 
 		        },
 		        columns: [  
@@ -91,8 +91,8 @@ function showMembervipList(){
 		                  },
 		                  { title:"会员编号","data": "memberNo"},   
 		                  { title:Name,"data": "personalName" },
-		                  { title:"用户名","data": "memberName" },
-		                  { title:"手机号码","data": "personalPhone"},   
+		                  { title:"用户名","data": "logname" },
+		                  { title:"手机号","data": "personalPhone"},   
 		                  { title:"所属地区","mRender": function(data, type, full){
 		                  		var str="";
 		                  		 if(full.provinceName!=null &&full.provinceName!=""){

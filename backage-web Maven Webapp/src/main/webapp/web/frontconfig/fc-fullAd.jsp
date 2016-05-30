@@ -1,8 +1,15 @@
+<%@page import="cn.springmvc.model.Operation"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	/* 登录人操作权限 */
+	List<Operation> operations = null;
+	if(session.getAttribute("operationList") != null){
+		operations = (List<Operation>)session.getAttribute("operationList");
+
+	}
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -17,6 +24,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用css -->
 	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
 	<link rel="stylesheet" href="css/upload.css" />
+	<script type="text/javascript">
+		var on_off =false; //停用启用权限标记
+		<%
+			if(operations.size()>0){
+				for(int j=0;j<operations.size();j++){
+					if(operations.get(j).getOptID()==51603){
+		%>
+			   		on_off =true;
+		<%
+					}
+				}
+			}
+		%>
+	</script>
 </head>
 <body class="nav-md">
 	<div class="container body">
@@ -36,43 +57,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="data_display">
 				<div class="panel panel-success">
 					<div class="panel-heading">
-						<div class="action_item">
-							<button class="obtn glyphicon glyphicon-plus obtn-fullAd-add" onclick="picAdd('添加首页全屏弹出公告','web/frontconfig/fc-add/fullAd-add.jsp','1')" type="button">添加</button>
-							<button class="obtn glyphicon glyphicon-pencil obtn-fullAd-mod" onclick="picAdd('修改首页全屏弹出公告','web/frontconfig/fc-add/fullAd-mod.jsp','1')" type="button">修改</button>							
+						<div class="panel-heading">
+							<div class="action_item">
+							<%
+						if(operations.size()>0){
+							for(int i = 0;i < operations.size(); i++){
+								
+				      			if(operations.get(i).getOptID() == 51801){
+					%>				
+									<button class="obtn glyphicon glyphicon-plus obtn-pic-add" type="button" onclick="addOrUpdate(1)">添加</button>
+					<%      
+				      			}
+				      			if(operations.get(i).getOptID() == 51802){
+					%>				
+									<button class="obtn glyphicon glyphicon-pencil obtn-pic-mod" type="button" onclick="addOrUpdate(2)">修改</button>
+					<%      
+				      			}
+					  		 }
+						 }
+				     %>	
+							</div>
 						</div>
 					</div>
 					<div class="panel-body">
-						<table id="partnerTb" class="display">
+						<table id="table_id" class="display">
 							<thead>
-								<tr>
-									<th class="table-checkbox"></th>
-									<th>添加时间</th>
-									<th>公告图片</th>
-									<th>公告链接</th>
-									<th>弹出总次数</th>
-									<th>开始日期</th>
-									<th>截止日期</th>
-									<th>最近一次操作管理员</th>	
-									<th>操作</th>																
-								</tr>
 							</thead>
 							<tbody>
-							<%for (int i=0;i<5;i++){ %>
-								<tr>
-									<td><input type="checkbox" /></td>
-									<td>添加时间</td>
-									<td>公告图片</td>
-									<td>公告链接</td>
-									<td>弹出总次数</td>
-									<td>开始日期</td>
-									<td>截止日期</td>																
-									<td>最近一次操作管理员</td>
-									<td>
-										<a href="javascript:;" class="btn-enable">启用</a>
-										<a href="javascript:;" class="btn-disable">停用</a>
-									</td>	
-								</tr>
-								<%}%>
 							</tbody>
 						</table>
 					</div>
@@ -80,12 +91,58 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	</div>
-	<!-- 弹出层修改页 -->
+		<div class="w-content pic-add">
+		<form action="javascript:addOrModify()" id="dataForm" method="post">
+			<table>
+					<tr>
+						<td class="tt"><label style="width:107px;">公告链接：</label></td>
+						<td class="con" id="fullAdLink1">
+							<input type="text" id="url" class="" datatype="strRegex">
+						</td>
+					</tr>
+					<tr>
+						<td class="tt"><label>公告弹出开始时间：</label></td>
+						<td class="con">
+							<input type="text" id="startDate" class="dateInput Wdate"  datatype="unNormal" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" >
+						</td>
+					</tr>
+					<tr>
+						<td class="tt"><label>公告弹出结束时间：</label></td>
+						<td class="con">
+							<input type="text" id="endDate" class="dateInput Wdate"   datatype="unNormal" onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
+						</td>
+					</tr>
+					<tr>
+						<td class="tt"><label>上传图片：</label></td>
+						<td class="con">
+							<div id="uploader">
+						    <!--用来存放item-->
+						    <div id="filePicker">选择图片</div>
+						     <span class="rec-dimensions">建议尺寸：580*280</span>
+						     <input type="hidden" name="imgPath" id="imgPath" />
+						     <input type="hidden" name="bannerId" id="bannerId" />
+						    <input type="hidden" id="hostPath" value="${ImgProfix}"/>
+						</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="tt" valign="top">图片预览：</td>
+						<td class="con" id="fileList"></td>
+					</tr>																
+				</table>
+		</form>
+	</div>
+	<div class="w-content pic-view">
+		<div class="w-content hideHtml">暂无图片</div>
+		<img id="picView" src="">
+	</div>
+	
 	<!-- 弹出层添加页 -->
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
-	<script type="text/javascript" src="js/frontconfig/fc-fullAd.js"></script>
+	<script type="text/javascript" src="js/exp-upload.js"></script>
+	<script type="text/javascript" src="js/frontconfig/frontfulladd.js"></script>
 </body>
 </html>

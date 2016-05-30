@@ -14,13 +14,14 @@
     </resultMap> 
     <!-- 分页查询首页全屏弹出框配置列表 -->  
 	<select id="selectSafetyCertificationSetList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultMap="resultListSafetyCertificationSet">
-	   select sc.Safety_ID,sc.Certification_Picture,sc.Certification_Url,sc.Certification_StartTime,
+	   select sc.Safety_ID,sc.Certification_Picture,sc.Certification_Url,sc.Certification_StartTime,sc.Certification_AddTime,
 	   sc.Certification_EndTime,sc.Admin_ID,sc.Statu,a.adminName 
 	   from  Safety_CertificationSet sc
 	   LEFT JOIN Admin a on a.Admin_ID=sc.Admin_ID
-           <where>  
+           <!-- <where>  
+                  1=1
 	            <if test="map.startTime != null and map.startTime != ''">  
-	                sc.Certification_AddTime >#{map.startTime}  
+	                and sc.Certification_AddTime >#{map.startTime}  
 	            </if>
 	            <if test="map.endTime != null and map.endTime != ''">  
 	                and #{map.endTime} > sc.Certification_AddTime 
@@ -28,7 +29,8 @@
 	            <if test="map.statu != -1">  
 	                and sc.Statu=#{map.statu}
 	            </if>   
-           </where>  
+           </where>   -->
+           order by Certification_AddTime DESC
     </select>       
 	<!-- 新增首页全屏弹出框配置 -->  
 	<insert id="insertSafetyCertificationSet"  parameterType="cn.springmvc.model.SafetyCertificationSetEntity">    
@@ -41,16 +43,16 @@
 	<update id="updateSafetyCertificationSetByID"  parameterType="cn.springmvc.model.SafetyCertificationSetEntity">
 	   update  Safety_CertificationSet 
 	   <set>
-	       <if test="certificationPicture != null" >
+	       <if test="certificationPicture != null and certificationPicture !='' "  >
 	         Certification_Picture=#{certificationPicture},
 	       </if> 
-	       <if test="certificationUrl != null" >
+	       <if test="certificationUrl != null and certificationUrl != '' " >
 	         Certification_Url=#{certificationUrl},
 	       </if> 
-	       <if test="certificationStartTime != null" >
+	       <if test="certificationStartTime != null and certificationStartTime !='' " >
 	         Certification_StartTime=#{certificationStartTime},
 	       </if> 
-	       <if test="certificationEndTime != null" >
+	       <if test="certificationEndTime != null and certificationEndTime != '' " >
 	         Certification_EndTime=#{certificationEndTime},
 	       </if>  
 	       <if test="adminId != 0" >
@@ -68,7 +70,7 @@
 	   update  Safety_CertificationSet  set   Statu=#{statu} where Safety_ID=#{id}   
     </update>  
     <!-- 根据id查询首页全屏弹出框配置 -->  
-	<select id="selectSafetyCertificationSetbyid" parameterType="int"  resultMap="resultListSafetyCertificationSet">
+	<select id="selectSafetyCertificationSetbyid" parameterType="long"  resultMap="resultListSafetyCertificationSet">
 	   select sc.Safety_ID,sc.Certification_Picture,sc.Certification_Url,sc.Certification_StartTime,
 	   sc.Certification_EndTime,sc.Admin_ID,sc.Statu 
 	   from  Safety_CertificationSet sc  where  Safety_ID=#{id} 

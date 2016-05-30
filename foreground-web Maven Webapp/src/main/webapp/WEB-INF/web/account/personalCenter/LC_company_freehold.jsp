@@ -53,7 +53,7 @@
 						   					</li>
 						   					<li class="inputList">
 						   						<div class="mustLabel"><span><samp>*</samp>登记时间：</span></div>
-						   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker()" type="text" lang="请选择登记时间"/>
+						   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker({minDate:'%y-%M-%d',readOnly:true})" type="text"/>
 						   					</li>
 						   					<li class="inputList">
 							   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>

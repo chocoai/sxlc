@@ -297,7 +297,7 @@
 		  left join  Invite_Master fa 	on fa.IM_ID = fap.IM_ID
 		  where fa.Member_ID = #{memberID}
 		  <!-- 		     提奖统计月份 -->
-		  <if test="month != null and month !=''">
+		  <if test="month != null and month !='' and month !=-1">
 		    and  (date_format(fap.Start_Date , '%m' ) = #{month}
 		         or date_format(fap.End_Date , '%m' ) = #{month})
 		  </if> 

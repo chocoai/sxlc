@@ -19,30 +19,65 @@ function getRootPath(){
  * 添加部门验证
  */
 $(function () {
-	validform5("layui-layer-btn0","saveDept",true,"3");
-	$(".obtn-dept-add").on("click touchstart",function(){
-		layer.open({
-		    type: 1,
-		    area: ['480px', '320px'], //高宽
-		    title: "添加部门",
-		    content: $(".dept-add"),//DOM或内容
-		    btn:['确定', '取消']
-			  ,yes: function(index, layero){ //或者使用btn1
-			    //确定的回调
-			    $("#saveDept").submit();
-			    layer.close(index);
-			  	
-			  },cancel: function(index){//或者使用btn2（concel）
-			  	//取消的回调
-			  }
-		});
+	validform5("layui-layer-btn0","saveDept",false,"5");
+});
+
+$(".obtn-dept-add").on("click touchstart",function(){
+	layer.open({
+	    type: 1,
+	    area: ['450px', '420px'], //高宽
+	    title: "添加部门",
+	    content: $(".dept-add"),//DOM或内容
+	    btn:['确定', '取消']
+		  ,yes: function(index, layero){ //或者使用btn1
+		    //确定的回调
+			  $("#saveDept").submit();
+		  },cancel: function(index){//或者使用btn2（concel）
+		  	//取消的回调
+		  }
+	});
+});
+
+$(".obtn-dept-mod").on("click touchstart",function(){
+	validform5("layer-btn0","updateDept",false,"5");
+	document.getElementById("updateDept").reset();
+	$("#updateDept").attr("action","javascript:updateDept()");
+	var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	//属性赋值
+	if(rowdata.length<1){
+		layer.alert("请选择要处理的事务！",{icon:0});
+		return;
+	}
+	if(rowdata[0].deptStatu==0){
+    	layer.alert("该部门无效，不能修改！",{icon:0});
+		return;
+    }
+	$("#dId").val(rowdata[0].id);
+	$("#dName").val(rowdata[0].deptName);
+	$("#dpName").val(rowdata[0].principalName);
+	$("#dpPhone").val(rowdata[0].principalPhone);
+	$("#dRemark").val(rowdata[0].deptRemark);
+	$("#pdId").val(rowdata[0].preDeptId);
+	//获得选取的对象
+	layer.open({
+		type: 1,
+		area: ['450px', '380px'], //高宽
+		title: "修改部门",
+		content: $(".dept-mod"),//DOM或内容
+		btn:['确定', '取消']
+	,yes: function(index, layero){ //或者使用btn1
+		//确定的回调
+		$("#updateDept").submit();
+	},cancel: function(index){//或者使用btn2（concel）
+		//取消的回调
+	}
 	});
 });
 /**
  * 添加部门方法
  */
 function addDept() {
-	var appPath = getRootPath();//项目根路径
+	
 	var deptName = $("#sdeptName").val();
 	var principalName = $("#sprincipalName").val();
 	var principalPhone = $("#sprincipalPhone").val();
@@ -56,6 +91,7 @@ function addDept() {
     var result3 = encrypt.encrypt((principalPhone));
     var result4 = encrypt.encrypt((preDeptId));
     var result5 = encrypt.encrypt((deptRemark));
+    $(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/role/save.do",
 		data : {
@@ -70,12 +106,13 @@ function addDept() {
 		success:function(data) { 
 			if (data == 1) {
 				layer.alert("添加成功",{icon:1});  
-				document.getElementById("saveDept").reset();
+				$(".layui-layer-btn1").click();
 				setTimeout('location.reload()',2000);
 			}else {
 				layer.alert("服务器异常",{icon:2});
 				document.getElementById("saveDept").reset();
 			}
+			$(".layui-layer-btn0").removeClass("disabled");
 		}
 		
 	});
@@ -83,33 +120,6 @@ function addDept() {
 /**
  * 修改部门验证
  */
-$(function () {
-		$(".obtn-dept-mod").on("click touchstart",function(){
-			var rowdata = $('#table_id').DataTable().rows('.selected').data();
-			//属性赋值
-			$("#dId").val(rowdata[0].id);
-			$("#dName").val(rowdata[0].deptName);
-			$("#dpName").val(rowdata[0].principalName);
-			$("#dpPhone").val(rowdata[0].principalPhone);
-			$("#dRemark").val(rowdata[0].deptRemark);
-			$("#pdId").val(rowdata[0].preDeptId);
-			//获得选取的对象
-			validform5("layer-btn0","updateDept",true,"3");
-			layer.open({
-				type: 1,
-				area: ['480px', '320px'], //高宽
-				title: "修改部门",
-				content: $(".dept-mod"),//DOM或内容
-				btn:['确定', '取消']
-			,yes: function(index, layero){ //或者使用btn1
-				//确定的回调
-				$("#updateDept").submit();
-			},cancel: function(index){//或者使用btn2（concel）
-				//取消的回调
-			}
-			});
-		});
-});
 /**
  * 修改部门方法
  */
@@ -127,6 +137,7 @@ function updateDept() {
     var result3 = encrypt.encrypt((principalName));
     var result4 = encrypt.encrypt((principalPhone));
     var result5 = encrypt.encrypt((deptRemark));
+    $(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/role/update.do",
 		data : {
@@ -143,11 +154,12 @@ function updateDept() {
 		success:function(data) { 
 			if (data == 0) {
 				layer.alert("修改成功",{icon:1});  
-				document.getElementById("updateDept").reset();
-				setTimeout('location.reload()',2000);
+				$(".layui-layer-btn1").click();
+				$('#table_id').DataTable().ajax.reload();
 			}else {
 				layer.alert("服务器异常",{icon:2}); 
 			}
+			$(".layui-layer-btn0").removeClass("disabled");
 		}
 		
 	});
@@ -156,28 +168,38 @@ function updateDept() {
  * 删除部门
  */
 $(function () {
-	var appPath = getRootPath();//项目根路径
 	//删除部门
 	$(".obtn-dept-del").on("click touchstart",function(){
 		//获得选取的对象
-		
+		 var rowdata = $('#table_id').DataTable().rows('.selected').data();
+		 
+		  if(rowdata.length<1){
+				layer.alert("请选择要删除的事务！",{icon:0});
+				return;
+		 }
 		layer.confirm('确定删除该部门？', {
 		  btn: ['确定', '取消']
 		}, function(index, layero){
 		  //确定的回调
-		  var rowdata = $('#table_id').DataTable().rows('.selected').data();
+		 
 		  //加密操作
 		  var encrypt = new JSEncrypt();
 		  encrypt.setPublicKey(publicKey_common);
 		  var result = encrypt.encrypt(rowdata[0].id + "");
 		  $.ajax({
-		  	type : 'post',
-		  	url : appPath + "/role/delete.do",
+		    type:'post',  
+		  	url : appPath+"/role/delete.do",
 		  	data : {deptId : result},
+		  	cache:false,  
+			dataType:'json', 
 		  	success : function (msg) {
 		  		if (msg == 0) {
 		  			layer.alert("删除成功!",{icon:1});
-		  			setTimeout('location.reload()',2000);
+					setTimeout('location.reload()',2000);
+		  		}else if(msg == 1){
+		  			layer.alert("部门存在下级部门，删除失败!",{icon:2});
+		  		}else if(msg == 2){
+		  			layer.alert("部门下面存在职务，删除失败!",{icon:2});
 		  		}
 		  	},
 		  	error : function() {  
@@ -185,7 +207,6 @@ $(function () {
 		    } 
 		  });
 			
-			layer.close(index);
 		}, function(index){
 		  //按钮【按钮二】的回调
 		});
@@ -195,18 +216,23 @@ $(function () {
  * 停用启用部门
  */
 //启用部门
-function openDept () {
+function ofDept (id,statu) {
 	//获取选取对象
-	layer.confirm('确定启用？', {
+	var mess="确认停用";
+	if(statu==1){
+		mess ="确认启用";
+	}
+	var status = statu;
+	layer.confirm(mess, {
 	  btn: ['确定', '取消']
 	}, function(index, layero){
 	  //确定回掉
-	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
+	 // var rowdata = $('#table_id').DataTable().rows('.selected').data();
 	  //加密操作
 	  var encrypt = new JSEncrypt();
 	  encrypt.setPublicKey(publicKey_common);
-	  var result = encrypt.encrypt(rowdata[0].id + "");
-	  var result2 = encrypt.encrypt((rowdata[0].deptStatu + ""));
+	  var result = encrypt.encrypt(id + "");
+	  var result2 = encrypt.encrypt((statu+ ""));
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/role/ofOrOpenDept.do",
@@ -215,50 +241,18 @@ function openDept () {
 				deptStatu : result2 
 		},
 	  	success : function (msg) {
-	  		layer.alert("操作成功!",{icon:1});
-	  		setTimeout('location.reload()',2000);
+	  		if(status ==0){
+	  			layer.alert("停用成功!",{icon:1});
+	  		}else{
+	  			layer.alert("启用成功!",{icon:1});
+		  		
+	  		}
+	  		$('#table_id').DataTable().ajax.reload();
 	  	},
 	  	error : function() {  
 	           layer.alert("操作失败!",{icon:2});  
 	    }
 	  });
-		
-		//执行完关闭
-	  	layer.close(index);
-	}, function(index){
-	  //按钮【按钮二】的回调
-	});
-}
-//停用部门
-function ofDept () {
-	var appPath = getRootPath();//项目根路径
-	//获取选取对象
-	layer.confirm('确定停用？', {
-	  btn: ['确定', '取消']
-	}, function(index, layero){
-	  //确定回掉
-	  var rowdata = $('#table_id').DataTable().rows('.selected').data();
-	  //加密操作
-	  var encrypt = new JSEncrypt();
-	  encrypt.setPublicKey(publicKey_common);
-	  var result1 = encrypt.encrypt(rowdata[0].id + "");
-	  var result2 = encrypt.encrypt((rowdata[0].deptStatu + ""));
-	  $.ajax({
-	  	type : 'post',
-	  	url : appPath + "/role/ofOrOpenDept.do",
-	  	data : {
-				deptId : result1,
-				deptStatu : result2 
-		},
-	  	success : function (msg) {
-	  		layer.alert("操作成功!",{icon:1});
-	  		setTimeout('location.reload()',2000);
-	  	},
-	  	error : function() {  
-	          layer.alert("操作失败!",{icon:2});  
-	    }
-	  });
-		
 		//执行完关闭
 	  	layer.close(index);
 	}, function(index){
@@ -291,25 +285,33 @@ $(function() {
  * 显示职务列表或者刷新
  */
 var flag = true;
-function showListOfDataTable(dePtId){
-	$("#spreDeptId").val(dePtId);
-	/*	$("#deptId").attr("value",dePtId);
-	$("#deptId").val(dePtId);
-	$("#deptId").get(0).value = dePtId;
-	$("#deptId").prop("disabled",true);
-*/	if(flag){
-		showDept(dePtId);
+function showListOfDataTable(dePtId,deptName){
+	$("#spreDeptId").empty();
+	$("#spreDeptId").append("<option value="+dePtId+">"+deptName+"</option><option value='0'><font color='red'>无上一级部门</font></option>");
+	$("#deptIds").val(dePtId);
+	/*$("#spreDeptId").val(dePtId);
+	$("#spreDeptId").get(0).value = dePtId;
+	$("#spreDeptId").prop("disabled",true);*/
+	if(flag){
+		showDept();
 	}else{
 		$('#table_id').DataTable().ajax.reload();
 	}
 	flag = false;
 }
 
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#table_id').DataTable().ajax.reload();
+	
+});
 
 /**
  * 显示列表
  */	
-function showDept(dePtId){
+function showDept(){
 	$('#table_id').DataTable(
 		{
 			autoWidth : false,
@@ -335,7 +337,7 @@ function showDept(dePtId){
             "url": appPath + "/role/role-dept.do",   
             "dataSrc": "results", 
             "data": function ( d ) { 
-            	var spreDeptId = dePtId;
+            	var spreDeptId = $("#deptIds").val();//所属部门id
                 var deptNo = $("#deptNo").val();
                 var deptName = $('#deptName').val(); 
                 var principalName = $('#deptPerson').val(); 
@@ -391,9 +393,9 @@ function showDept(dePtId){
                   { title:"操作","data": "deptStatu",
                   	"mRender": function (data, type, full) {
                   		  if(full.deptStatu ==1){
-                  			 return "<a onclick=\"ofDept();\" href=\"javascript:void(0);\">停用</a>";
+                  			 return "<a onclick=\"ofDept("+full.id+",0);\" href=\"javascript:void(0);\">停用</a>";
                   		  }else{
-                  			  return "<a onclick=\"openDept();\" href=\"javascript:void(0);\">启用</a>" ;
+                  			  return "<a onclick=\"ofDept("+full.id+",1);\" href=\"javascript:void(0);\">启用</a>" ;
                   		  }
                 	  } 
                   }

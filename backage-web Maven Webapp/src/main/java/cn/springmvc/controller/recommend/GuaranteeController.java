@@ -1,28 +1,41 @@
 
 package cn.springmvc.controller.recommend; 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.AdminGMEntity;
+import cn.springmvc.model.GuaranteeBorrowingEntity;
+import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoDetailsEntity;
+import cn.springmvc.model.GuaranteePeriodEntity;
+import cn.springmvc.model.GuaranteeRelationalEntity;
+import cn.springmvc.model.ManagementCertificateEntity;
+import cn.springmvc.model.ProjectBaseInfoEntity;
 import cn.springmvc.service.GuaranteeAgenciesService;
 import cn.springmvc.service.GuaranteeInfoService;
-import cn.springmvc.service.IAdminService;
+import cn.springmvc.service.ManagedInterfaceServerTestI;
+import cn.springmvc.service.ProjectBaseInfoService;
 import cn.springmvc.util.HttpSessionUtil;
 import cn.springmvc.util.LoadUrlUtil;
+import cn.sxlc.account.manager.model.AccountInterfaceEntity;
+import cn.sxlc.account.manager.model.AuthorizeInterfaceEntity;
 
 import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
@@ -43,8 +56,11 @@ public class GuaranteeController {
 	@Resource(name="guaranteeAgenciesServiceImpl")
 	private GuaranteeAgenciesService guaranteeAgenciesService;
 	
-	@Autowired
-	private IAdminService adminService;
+	@Resource(name="projectBaseInfoServiceImpl")
+	private ProjectBaseInfoService projectBaseInfoService;
+	
+	@Resource(name="managedInterfaceTestIImpl")
+	private ManagedInterfaceServerTestI managedInterfaceServerTestI;
 	
 	/**
 	 * 
@@ -81,6 +97,7 @@ public class GuaranteeController {
 			req.put("contactName", contactName);
 			req.put("contactPhone", contactPhone);
 			req.put("recordStatus", IntegerAndString.StringToInt(recordStatus, -1));
+			req.put("skey", DbKeyUtil.GetDbCodeKey());
 		
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));
@@ -165,7 +182,7 @@ public class GuaranteeController {
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
-		int num = guaranteeInfoService.handleGuaranteeInfo(req, entity, sIpInfo);
+   		int num = guaranteeInfoService.handleGuaranteeInfo(req, entity, sIpInfo);
 		
 		return num;
 	}
@@ -570,6 +587,537 @@ public class GuaranteeController {
 		
 		return num;
 	}
+	
+	/**
+	 * 
+	* selectGuaranteeBorrowing根据Id查询担保机构借款范围 
+	* TODO根据Id查询担保机构借款范围
+	* @author 杨翰林  
+	* * @Title: selectGuaranteeBorrowing 
+	* @Description: 根据Id查询担保机构借款范围 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return List<GuaranteeBorrowingEntity> 返回类型 
+	* @date 2016-5-23 下午1:50:25
+	* @throws
+	 */
+	@RequestMapping("/range")
+	@ResponseBody
+	public List<GuaranteeBorrowingEntity> selectGuaranteeBorrowing(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		req.put("guaranteeID", userInfo.getStaffId());
+		
+		List<GuaranteeBorrowingEntity> list = guaranteeInfoService
+				.selectGuaranteeBorrowing(req);
+		
+		return list;
+	}
+	
+	/**
+	 * 
+	* insertGuaranteeBorrowing添加借款范围 
+	* TODO添加借款范围
+	* @author 杨翰林  
+	* * @Title: insertGuaranteeBorrowing 
+	* @Description: 添加借款范围 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-23 下午2:43:54
+	* @throws
+	 */
+	@RequestMapping("/addrange")
+	@ResponseBody
+	public int insertGuaranteeBorrowing(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String minAmount = request.getParameter("minAmount");
+		String maxAmount = request.getParameter("maxAmount");
+		
+		req.put("guaranteeID", userInfo.getStaffId());
+		req.put("minAmount", minAmount);
+		req.put("maxAmount", maxAmount);
+		
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(90304);
+		entity.setlModuleId(903);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		//int num = guaranteeInfoService
+				//.insertGuaranteeBorrowing(req, entity, sIpInfo);
+		
+		return 0;
+	}
+	
+	/**
+	 * 
+	* updateGuaranteeBorrowingByID修改借款范围 
+	* TODO修改借款范围
+	* @author 杨翰林  
+	* * @Title: updateGuaranteeBorrowingByID 
+	* @Description: 修改借款范围 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-23 下午2:45:01
+	* @throws
+	 */
+	@RequestMapping("/updaterange")
+	@ResponseBody
+	public int updateGuaranteeBorrowingByID(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String minAmount = request.getParameter("minAmount");
+		String maxAmount = request.getParameter("maxAmount");
+		
+		req.put("guaranteeID", userInfo.getStaffId());
+		req.put("minAmount", minAmount);
+		req.put("maxAmount", maxAmount);
+		
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(90304);
+		entity.setlModuleId(903);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = guaranteeInfoService
+				.updateGuaranteeBorrowingByID(req, entity, sIpInfo);
+		
+		return num;
+	}
+	
+	/**
+	 * 
+	* selectProjectBaseInfoCombox查询项目类型 
+	* TODO查询项目类型
+	* @author 杨翰林  
+	* * @Title: selectProjectBaseInfoCombox 
+	* @Description: 查询项目类型 
+	* @param @return 设定文件 
+	* @return List<ProjectBaseInfoEntity> 返回类型 
+	* @date 2016-5-23 下午3:41:19
+	* @throws
+	 */
+	@RequestMapping("/queryselect")
+	@ResponseBody
+	public List<ProjectBaseInfoEntity> selectProjectBaseInfoCombox() {
+		
+		List<ProjectBaseInfoEntity> list = projectBaseInfoService.selectProjectBaseInfoCombox();
+		
+		return list;
+	}
+	
+	/**
+	 * 
+	* insertGuaranteeRelational设置担保机构类型 
+	* TODO设置担保机构类型 
+	* @author 杨翰林  
+	* * @Title: insertGuaranteeRelational 
+	* @Description:设置担保机构类型
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-23 下午4:44:06
+	* @throws
+	 */
+	@RequestMapping("/setType")
+	@ResponseBody
+	public int insertGuaranteeRelational(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		List<GuaranteeRelationalEntity> list 
+			= new ArrayList<GuaranteeRelationalEntity>();
+		
+		String ids = request.getParameter("content");
+		String[] idArray = ids.split(",");
+		req.put("guaranteeID", userInfo.getStaffId());
+		
+		for (String string : idArray) {
+			
+			if (string != null && !"".equals(string)) {
+				
+				GuaranteeRelationalEntity guaranteeRelationalEntity
+					= new GuaranteeRelationalEntity();
+				
+				guaranteeRelationalEntity.setProjectID(IntegerAndString
+						.StringToLong(string, -1));
+				list.add(guaranteeRelationalEntity);
+			}
+		}
+
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(90301);
+		entity.setlModuleId(903);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = guaranteeInfoService.insertGuaranteeRelational(list, entity, sIpInfo, req);
+		
+		return num;
+	}
+	
+	/**
+	 * 
+	* selectGuaranteePeriod查询借款期限起止范围 
+	* TODO查询借款期限起止范围
+	* @author 杨翰林  
+	* * @Title: selectGuaranteePeriod 
+	* @Description: 查询借款期限起止范围 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return List<GuaranteePeriodEntity> 返回类型 
+	* @date 2016-5-23 下午5:34:37
+	* @throws
+	 */
+	@RequestMapping("/rangeLimit")
+	@ResponseBody
+	public List<GuaranteePeriodEntity> selectGuaranteePeriod(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		req.put("guaranteeID", userInfo.getStaffId());
+		
+		List<GuaranteePeriodEntity> list = guaranteeInfoService.selectGuaranteePeriod(req);
+		
+		return list;
+	}
+	
+	
+	/**
+	 * 
+	* insertGuaranteePeriod添加起止范围 
+	* TODO添加起止范围
+	* @author 杨翰林  
+	* * @Title: insertGuaranteePeriod 
+	* @Description: 添加起止范围 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-23 下午6:13:24
+	* @throws
+	 */
+	@RequestMapping("/addStartAndEnd")
+	@ResponseBody
+	public int  insertGuaranteePeriod(HttpServletRequest request) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		List<GuaranteePeriodEntity> list = 
+				new ArrayList<GuaranteePeriodEntity>();
+		
+		String daystartDate = request.getParameter("daystartDate");
+		String dayendDate = request.getParameter("dayendDate");
+		String monthstartDate = request.getParameter("monthstartDate");
+		String monthendDate = request.getParameter("monthendDate");
+		String yearstartDate = request.getParameter("yearstartDate");
+		String yearendDate = request.getParameter("yearendDate");
+		
+		GuaranteePeriodEntity guaranteePeriodEntity1 = new GuaranteePeriodEntity();
+		guaranteePeriodEntity1.setMinDeadline(
+				IntegerAndString.StringToInt(daystartDate, -1));
+		guaranteePeriodEntity1.setMaxDeadline(
+				IntegerAndString.StringToInt(dayendDate, -1));
+		guaranteePeriodEntity1.setGuaranteeID(userInfo.getStaffId());
+		guaranteePeriodEntity1.setDeadlineType(0);
+		list.add(guaranteePeriodEntity1);
+		
+		GuaranteePeriodEntity guaranteePeriodEntity2 = new GuaranteePeriodEntity();
+		guaranteePeriodEntity2.setMinDeadline(
+				IntegerAndString.StringToInt(monthstartDate, -1));
+		guaranteePeriodEntity2.setMaxDeadline(
+				IntegerAndString.StringToInt(monthendDate, -1));
+		guaranteePeriodEntity2.setGuaranteeID(userInfo.getStaffId());
+		guaranteePeriodEntity2.setDeadlineType(1);
+		list.add(guaranteePeriodEntity2);
+		
+		
+		GuaranteePeriodEntity guaranteePeriodEntity3 = new GuaranteePeriodEntity();
+		guaranteePeriodEntity3.setMinDeadline(
+				IntegerAndString.StringToInt(yearstartDate, -1));
+		guaranteePeriodEntity3.setMaxDeadline(
+				IntegerAndString.StringToInt(yearendDate, -1));
+		guaranteePeriodEntity3.setGuaranteeID(userInfo.getStaffId());
+		guaranteePeriodEntity3.setDeadlineType(2);
+		list.add(guaranteePeriodEntity3);
+		
+		
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(90304);
+		entity.setlModuleId(903);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = guaranteeInfoService.insertGuaranteePeriod(userInfo.getStaffId(), list, entity, sIpInfo);
+		
+		return num;
+	}
+	
+	/**
+	 * 
+	* testAccountInterfaceQDD开户
+	* TODO开户
+	* @author 杨翰林  
+	* * @Title: testAccountInterfaceQDD 
+	* @Description: 开户 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return AccountInterfaceEntity 返回类型 
+	* @date 2016-5-23 下午7:34:31
+	* @throws
+	 */
+	@RequestMapping("/openAcount")
+	public String testAccountInterfaceQDD(HttpServletRequest request) {
+		
+		AccountInterfaceEntity accountInterfaceEntity = new AccountInterfaceEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		accountInterfaceEntity.setMemberType(2);
+
+		//accountInterfaceEntity.setId(6613037);//userInfo.getStaffId()
+
+		accountInterfaceEntity.setId(userInfo.getStaffId());
+
+		
+		accountInterfaceEntity = managedInterfaceServerTestI
+				.testAccountInterfaceQDD(accountInterfaceEntity, "guarant/pbackURL.do", "guarant/pbackServerURL.do", request);
+		request.setAttribute("accountInterfaceEntity", accountInterfaceEntity);
+		
+		return "dryLot/loanregisterbindtest";
+	}
+	
+	/**
+	 * 
+	* returnURL第三方回调 开户页面返回地址 
+	* TODO第三方回调 页面返回地址
+	* @author 杨翰林  
+	* * @Title: returnURL 
+	* @Description: 第三方回调 页面返回地址 
+	* @param  设定文件 
+	* @return void 返回类型 
+	* @date 2016-5-17 上午11:02:50
+	* @throws
+	 */
+	@RequestMapping("/pbackURL")
+	public String preturnURL(HttpServletRequest request, HttpServletResponse response) {
+		
+		String isSuccess = managedInterfaceServerTestI.testLoanRegisterBindReturn(request, response);
+		
+		if ("SUCCESS".equals(isSuccess)) {
+			return "recommend/openAccountFail";
+		}else {
+			return "recommend/openAccountFail";
+		}
+	}
+	
+	/**
+	 * 
+	* notifyURL第三方回调提现 服务器返回地址 
+	* TODO第三方回调 服务器返回地址
+	* @author 杨翰林  
+	* * @Title: notifyURL 
+	* @Description: 第三方回调 服务器返回地址 
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-17 上午11:06:01
+	* @throws
+	 */
+	@RequestMapping("/pbackServerURL")
+	public void pnotifyURL(HttpServletRequest request, HttpServletResponse response) {
+		managedInterfaceServerTestI.testLoanRegisterBindNotify(request, response);
+	}
+	
+	
+	/**
+	 * 
+	* testLoanAuthorize授权
+	* TODO授权
+	* @author 杨翰林  
+	* * @Title: testLoanAuthorize 
+	* @Description: 授权 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-23 下午8:29:17
+	* @throws
+	 */
+	@RequestMapping("/Authorize")
+	public String testLoanAuthorize(HttpServletRequest request) {
+		
+		AuthorizeInterfaceEntity authorizeInterfaceEntity = new AuthorizeInterfaceEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		authorizeInterfaceEntity.setMemberId(userInfo.getStaffId());
+		authorizeInterfaceEntity.setMemberType(3);
+		
+		authorizeInterfaceEntity = managedInterfaceServerTestI
+				.testLoanAuthorize(authorizeInterfaceEntity, "guarant/backURL.do", "guarant/backServerURL.do", request);
+		request.setAttribute("author", authorizeInterfaceEntity);
+		return "dryLot/loanauthorizetest";
+	}
+	
+	/**
+	 * 
+	* returnURL第三方回调 授权页面返回地址 
+	* TODO第三方回调 页面返回地址
+	* @author 杨翰林  
+	* * @Title: returnURL 
+	* @Description: 第三方回调 页面返回地址 
+	* @param  设定文件 
+	* @return void 返回类型 
+	* @date 2016-5-17 上午11:02:50
+	* @throws
+	 */
+	@RequestMapping("/backURL")
+	public String returnURL(HttpServletRequest request, HttpServletResponse response) {
+		
+		String isSuccess = managedInterfaceServerTestI.testLoanAuthorizeReturn(request, response);
+		
+		if ("SUCCESS".equals(isSuccess)) {
+			return "recommend/success";
+		}else {
+			return "recommend/fail";
+		}
+	}
+	
+	/**
+	 * 
+	* notifyURL第三方回调授权 服务器返回地址 
+	* TODO第三方回调 服务器返回地址
+	* @author 杨翰林  
+	* * @Title: notifyURL 
+	* @Description: 第三方回调 服务器返回地址 
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-17 上午11:06:01
+	* @throws
+	 */
+	@RequestMapping("/backServerURL")
+	public void notifyURL(HttpServletRequest request, HttpServletResponse response) {
+		managedInterfaceServerTestI.testLoanAuthorizeNotify(request, response);
+	}
+	
+	/**
+	 * 
+	* selectGuaranteeCertificate根据担保机构ID查询证件信息 
+	* TODO根据担保机构ID查询证件信息
+	* @author 杨翰林  
+	* * @Title: selectGuaranteeCertificate 
+	* @Description: 根据担保机构ID查询证件信息 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return List<GuaranteeCertificateEntity> 返回类型 
+	* @date 2016-5-24 上午10:25:35
+	* @throws
+	 */
+	@RequestMapping("/certificate")
+	@ResponseBody
+	public List<GuaranteeCertificateEntity> selectGuaranteeCertificate(HttpServletRequest  request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		req.put("guaranteeID", userInfo.getStaffId());
+		
+		List<GuaranteeCertificateEntity> list = guaranteeInfoService
+				.selectGuaranteeCertificate(req);
+		
+		return list;
+	}
+	
+	/**
+	 * 
+	* insertGuaranteeCertificate添加担保机构证件 
+	* TODO添加担保机构证件
+	* @author 杨翰林  
+	* * @Title: insertGuaranteeCertificate 
+	* @Description: 添加担保机构证件 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-24 上午10:28:53
+	* @throws
+	 */
+	@RequestMapping("addcertificate")
+	@ResponseBody
+	public int insertGuaranteeCertificate(HttpServletRequest request) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		List<ManagementCertificateEntity> list = 
+				new ArrayList<ManagementCertificateEntity>();
+		
+		String managementURLs = request.getParameter("content");
+		String[] managementURL = managementURLs.split(",");
+		
+		for (String string : managementURL) {
+			if (string != null && !"".equals(string)) {
+				ManagementCertificateEntity managementCertificateEntity 
+				= new ManagementCertificateEntity();
+				managementCertificateEntity.setManagementID(userInfo.getStaffId());
+				managementCertificateEntity.setManagementURL(string);
+				list.add(managementCertificateEntity);
+			}
+		}
+		
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(90306);
+		entity.setlModuleId(903);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = guaranteeInfoService.insertGuaranteeCertificate(userInfo.getStaffId(), list, entity, sIpInfo);
+		
+		return num;
+	}
+	
 	
 }
 

@@ -220,6 +220,9 @@
    		</div>
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
+   	<script type="text/javascript">
+		var publickey = '<%=session.getAttribute("publicKey")%>';
+	</script>
 	<script type="text/javascript" src="js/account/account.js"></script>
 	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/loanManagement/myLoan.js"></script>

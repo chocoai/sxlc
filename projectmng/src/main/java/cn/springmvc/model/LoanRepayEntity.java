@@ -74,6 +74,7 @@ public class LoanRepayEntity {
 	 * 已还金额
 	 */
 	private String replayTotals;
+	private String repayTime;//实际还款时间
 	private long			overdueInterest;			//逾期利息
 	private String			sOverdueInterest;	
 	private long			oberdueFine;				//逾期罚金
@@ -237,6 +238,7 @@ public class LoanRepayEntity {
 	}
 	public void setTotalSDRepay(long totalSDRepay) {
 		this.totalSDRepay = totalSDRepay;
+		this.totalSDRepays= IntegerAndString.LongToString(totalSDRepay);
 	}
 	public String getTotalSDRepays() {
 		return totalSDRepays;
@@ -280,6 +282,12 @@ public class LoanRepayEntity {
 				+ ", totalSDRepays=" + totalSDRepays + ", loanStatu="
 				+ loanStatu + ", sdPrincipalInterest=" + sdPrincipalInterest
 				+ ", sdPrincipalInterests=" + sdPrincipalInterests + "]";
+	}
+	public String getRepayTime() {
+		return repayTime;
+	}
+	public void setRepayTime(String repayTime) {
+		this.repayTime = repayTime;
 	} 
 
 }

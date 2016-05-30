@@ -54,7 +54,6 @@
 		  AND IF(#{Reg_Date_Max} IS NULL OR #{Reg_Date_Max} = '', 1=1, mi.Reg_Date&lt;=#{Reg_Date_Max})
 		  AND IF(#{Experience_Date_Min} IS NULL OR #{Experience_Date_Min} = '', 1=1, ner.Experience_Date>=#{Experience_Date_Min})
 		  AND IF(#{Experience_Date_Max} IS NULL OR #{Experience_Date_Max} = '', 1=1, ner.Experience_Date&lt;=#{Experience_Date_Max})
-		  AND IF(#{Statu} IS NULL OR #{Statu} = '', 1=1, eir.Statu = #{Statu})
 		ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
 				WHEN 'EXPERIENCE_DATE' THEN ner.Experience_Date
 				WHEN 'REG_DATE' THEN mi.Reg_Date

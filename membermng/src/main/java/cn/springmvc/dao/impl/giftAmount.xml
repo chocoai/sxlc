@@ -12,7 +12,7 @@
 	   (select mru.Gift_Amount from  Member_Redpackets_UseRecord mru where 
 	     mru.Member_RP_ID=mr.Member_RP_ID and mru.Statu!=-1) as useGiftAmount
 	   from  Member_Redpackets   mr   
-       where mr.Member_ID=#{memberID} and  mr.Statu !=2 and mr.End_Date > now() 
+       where mr.Member_ID=#{memberID} and  mr.Statu !=2 and (mr.End_Date > now()  or mr.End_Date is null)
     </select> 
     <!-- 查询会员红包个数-->  
 	<select id="selectMembergiftCount" parameterType="int"  resultType="int">

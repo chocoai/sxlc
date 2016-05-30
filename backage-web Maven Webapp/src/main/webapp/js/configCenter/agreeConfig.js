@@ -6,7 +6,7 @@
  */
 
 $(function() {
-	validform5("layui-layer-btn0","addagreementName",false,"3");
+	validform5("layui-layer-btn0","addagreementName",false,"5");
 	/* 自行编辑协议配置 */
 	ue = UE.getEditor('agreementadd');
 	AgreementList();	//
@@ -44,17 +44,17 @@ $(function() {
  */
 function addOrModify(type){
 	//清除数据
-	validform5(".layui-layer-btn0","dataForm",true,3);
+	validform5(".layui-layer-btn0","dataForm",false,3);
 	//清除数据
 	document.getElementById("dataForm").reset();
 	$("#select_type").prop("disabled",false);
-	ue.addListener("ready", function () {
-    	ue.setContent("");//('insertHtml', rowdata[0].sgContent);
-    });
 	//操作
 	var title="";
 	if(type==0){
 		title="添加协议";
+		ue.addListener("ready", function () {
+	    	ue.setContent("");//('insertHtml', rowdata[0].sgContent);
+	    });
 		$("#dataForm").attr("action","javascript:addOrUpdate(0)");
 	}else if(type==1){
 		title="修改协议";
@@ -65,15 +65,11 @@ function addOrModify(type){
 			return;
 		}
 		var type =rowdata[0].agreementType;
-		$("#select_type option[value='"+type+"']").attr({
-			"selected":"selected",
-		});
+		$("#select_type").val(type);
 		ue.addListener("ready", function () {
         	ue.setContent(rowdata[0].agreementDetail);//('insertHtml', rowdata[0].sgContent);
 	    });
-		
 	}
-	var title =title;
 	layer.open({
 	    type: 1,
 	    area: ['750px', '550px'], //高宽
@@ -100,6 +96,7 @@ function addAgreement(){
 	encrypt.setPublicKey(publicKey_common);
 	//result 为加密后参数
 	agreeType = encrypt.encrypt(agreeType+"");
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		 url:appPath+"/agreement/saveAgreeConfig.do",
 		data:{
@@ -113,10 +110,11 @@ function addAgreement(){
 			 if(data==1){
 				layer.alert("添加成功",{icon:1});
 				$(".layui-layer-btn1").click();
-				setTimeout('location.reload()',500);
+				$('#table_id').DataTable().ajax.reload();
 			}else if(data==-1){
-				layer.alert("该关联操作已存在",{icon:2});  
+				layer.alert("该协议已存在！",{icon:2});  
 			}
+			$(".layui-layer-btn0").removeClass("disabled");
 		},  
 		error : function() {  
 			layer.alert("服务器异常",{icon:2});  
@@ -146,12 +144,13 @@ function addAgreement(){
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publicKey_common);
 		//result 为加密后参数
-		id = encrypt.encrypt(id+"");    
+		id = encrypt.encrypt(id+"");   
+		$(".layui-layer-btn0").addClass("disabled");
 		$.ajax( {  
 			url:appPath+"/agreement/updateConfig.do",
 			data:{
 				id:id,
-				content:content,
+				content:content
 			},
 			type:'post',  
 			cache:false,  
@@ -160,10 +159,11 @@ function addAgreement(){
 				if(data==1){
 					layer.alert("修改成功",{icon:1});
 					$(".layui-layer-btn1").click();
-					setTimeout('location.reload()',500);
+					$('#table_id').DataTable().ajax.reload();
 				}else{
 					layer.alert("修改失败",{icon:2});  
 				}
+				$(".layui-layer-btn0").removeClass("disabled");
 			},  
 			error : function() {  
 				layer.alert("操作失败!",{icon:2});  
@@ -217,7 +217,8 @@ function stopOrStart(id,statu){
 						layer.alert("启用成功。",{icon:1});
 					}
 				  	layer.close(index);
-				  	setTimeout('location.reload()',500);
+				  	$(".layui-layer-btn1").click();
+					$('#table_id').DataTable().ajax.reload();
 				}else if(data == 0){
 					if(status==1){
 						layer.alert("停用失败。",{icon:2});
@@ -279,13 +280,13 @@ function AgreementList(){
 		                	  if(full.agreementType==0){
 		                		  	sReturn= "注册协议";
 			            		}else if(full.agreementType==1){
-			            			sReturn= "借款协议";
+			            			sReturn= "投资协议";
 			            		}else if(full.agreementType==2){
-			            			sReturn = "投资协议";
+			            			sReturn = "借款协议";
 			            		}else if(full.agreementType==3){
 			            			sReturn = "债权转让协议";
 			            		}else if(full.agreementType==4){
-			            			sReturn = "债权转让投资";
+			            			sReturn = "债权转让投资协议";
 			            		}
 		                	  return sReturn;
 			                  }
@@ -318,13 +319,13 @@ function AgreementList(){
 		                	  }
 		                		  return sReturn;
 		                  	}
-		                }, 
+		                }
 		                  
 		        ],
 		        aoColumnDefs : [
 		        				{"bVisible": false, "aTargets": []}, //控制列的隐藏显示
 		        				{
-		        					orderable : false,
+		        					orderable : false
 		        					/*aTargets : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 		        							13, 14, 15 ]*/
 		        				} // 制定列不参与排序

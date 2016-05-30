@@ -21,14 +21,14 @@ $(function () {
 		success : function (msg) {
 			for (var i = 0; i < msg.length; i ++) {
 				if (msg[i].payment_Member_Type == 0) {
-					$("#mFee").val(msg[i].withdrawal_Fee_Pingtai);
-					$("#mpFee").val(msg[i].withdrawal_Fee_Third);
+					$("#mFee").val(msg[i].swithdrawal_Fee_Third);
+					$("#mpFee").val(msg[i].swithdrawal_Fee_Pingtai);
 				}else if (msg[i].payment_Member_Type == 1) {
-					$("#ofee").val(msg[i].withdrawal_Fee_Pingtai);
-					$("#opfee").val(msg[i].withdrawal_Fee_Third);
+					$("#ofee").val(msg[i].swithdrawal_Fee_Third);
+					$("#opfee").val(msg[i].swithdrawal_Fee_Pingtai);
 				}else {
-					$("#pfee").val(msg[i].withdrawal_Fee_Pingtai);
-					$("#ppfee").val(msg[i].withdrawal_Fee_Third);
+					$("#pfee").val(msg[i].swithdrawal_Fee_Third);
+					$("#ppfee").val(msg[i].swithdrawal_Fee_Pingtai);
 				}
 			}
 		}
@@ -39,7 +39,7 @@ $(function () {
 /** 修改 提现返回百分比 **/
 //会员
 function mwithdralsfee () {
-	//validform5("btn","auto",true,"3");
+	//validform5("btn","auto",true,"5");
 	var percent = $("#mFee").val();
 	var ppercent = $("#mpFee").val();
 	//加密操作
@@ -53,13 +53,13 @@ function mwithdralsfee () {
 			url : appPath + "/withdraw/update.do",
 			data : {
 						payment_Member_Type : result3, 
-						withdrawal_Fee_Pingtai : result1, 
-						withdrawal_Fee_Third : result2
+						withdrawal_Fee_Third : result1, 
+						withdrawal_Fee_Pingtai : result2
 					},
 			success : function (msg) {
-				if (msg == 3) {
+				if (msg > 0) {
 					layer.alert("操作成功",{icon:1});
-					setTimeout('location.reload()',2000);
+					setTimeout('location.reload()',1000);
 				}else {
 					layer.alert("操作失败",{icon:2});
 				}
@@ -70,7 +70,7 @@ function mwithdralsfee () {
 
 //机构
 function owithdralsfee () {
-	//validform5("btn","auto",true,"3");
+	//validform5("btn","auto",true,"5");
 	var percent = $("#ofee").val();
 	var ppercent = $("#opfee").val();
 	//加密操作
@@ -84,13 +84,13 @@ function owithdralsfee () {
 			url : appPath + "/withdraw/update.do",
 			data : {
 				payment_Member_Type : result3, 
-				withdrawal_Fee_Pingtai : result1, 
-				withdrawal_Fee_Third : result2
+				withdrawal_Fee_Pingtai : result2, 
+				withdrawal_Fee_Third : result1
 			},
 			success : function (msg) {
-				if (msg == 3) {
+				if (msg > 0) {
 					layer.alert("操作成功",{icon:1});
-					setTimeout('location.reload()',2000);
+					setTimeout('location.reload()',1000);
 				}else {
 					layer.alert("操作失败",{icon:2});
 				}
@@ -101,7 +101,7 @@ function owithdralsfee () {
 
 //平台
 function pwithdralsfee () {
-	//validform5("btn","auto",true,"3");
+	//validform5("btn","auto",true,"5");
 	var percent = $("#pfee").val();
 	var ppercent = $("#ppfee").val();
 	//加密操作
@@ -115,13 +115,13 @@ function pwithdralsfee () {
 			url : appPath + "/withdraw/update.do",
 			data : {
 						payment_Member_Type : result3, 
-						withdrawal_Fee_Pingtai : result1, 
-						withdrawal_Fee_Third : result2
+						withdrawal_Fee_Pingtai : result2, 
+						withdrawal_Fee_Third : result1
 					},
 			success : function (msg) {
-				if (msg == 3) {
+				if (msg > 0) {
 					layer.alert("操作成功",{icon:1});
-					setTimeout('location.reload()',2000);
+					setTimeout('location.reload()',1000);
 				}else {
 					layer.alert("操作失败",{icon:2});
 				}

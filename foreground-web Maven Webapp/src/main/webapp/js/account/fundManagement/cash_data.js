@@ -8,11 +8,24 @@ $(function(){
  * 查询提现信息
  */
 function quryWithdrawData(){
+	
 	$.ajax({
 		url:"loanWithdraw/loadWithdrawData.html",
 		success:function(r){
 			var object=JSON.parse(r);
-			if(object.code==200){
+			if(object.code==-1){
+				layer.confirm("您的可提现金额不足，请充值",
+				function(){
+					window.location.href="fundManagement/recharge.html";
+				},
+				function(){
+					window.location.href="fundManagement/recharge.html";
+				});
+			}else if(object.code==200){
+				//提现手续费
+				$(".feeType").val(object.withdrawal_Type_Third);
+				$(".fee").val(object.withdrawal_Fee_Third);
+				$(".feePingtai").val(object.withdrawal_Fee_Pingtai);
 				//银行卡
 				var html = template('withdrawBankList',object);
 		        document.getElementById('withdrawBank').innerHTML = html;	
@@ -27,7 +40,7 @@ function quryWithdrawData(){
 function withdraw(){
 	
 	$("#tiXian").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		datatype:extdatatype,//扩展验证类型
 		callback:function(curform){
 			var cashInput2=$('.cashInput1').val();//提现金额
@@ -71,12 +84,30 @@ function getPhoneCode(){
 		url:"loanWithdraw/sendWithdrawPhoneVarCode.html",
 		async:false,
 		success:function(r){
-			var object=JSON.parse(r);
-			if(object.statu==1){
+			var data=JSON.parse(r);
+			if(data.statu==1){
+				settime($(".codeGet"));
 				flag=true;
+			}else{
+				flag=false;
 			}
+			layer.alert(data.message);
 		}
 	});	
 	
 	return flag;
+}
+
+function settime(val) {
+	var countdown = 180;
+	val.addClass("disabled");
+	var run = setInterval(function(){
+		val.html(countdown+"s");
+		countdown--;
+		if (countdown<=0){
+			clearInterval(run);
+			val.html("重新发送");
+			val.removeClass("disabled");
+		}
+	},1000);
 }

@@ -100,7 +100,7 @@ public class BorrowIdentyController {
 	    Admin admin = (Admin)session.getAttribute("LoginPerson");
 		if(admin !=null && admin.getId()>0){
 			entity.setiAdminId(admin.getId());
-			memberAttestTypeEntity.setOptId(admin.getId());
+			memberAttestTypeEntity.setOptId(1L);
 		}
 		String[] sIpInfo = new String[6];
 		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
@@ -144,7 +144,6 @@ public class BorrowIdentyController {
 	    Admin admin = (Admin)session.getAttribute("LoginPerson");
 		if(admin !=null && admin.getId()>0){
 			entity.setiAdminId(admin.getId());
-			memberAttestTypeEntity.setOptId(admin.getId());
 		}
 		String[] sIpInfo = new String[6];
 		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));

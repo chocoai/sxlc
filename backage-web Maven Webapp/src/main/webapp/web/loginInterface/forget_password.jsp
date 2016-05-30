@@ -3,24 +3,6 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-	Cookie cookies[]=request.getCookies(); 
-		Cookie sCookie=null; 
-		String svalue=null; 
-		String sname=null; 
-		if(cookies!=null){
-			for(int i=0;i<cookies.length;i++){ 
-				sCookie=cookies[i]; 
-				sname=sCookie.getName();
-				if(sname.equals("UserName")){
-					svalue=sCookie.getValue(); 
-					 break;
-				}
-			}
-		}
-		if(svalue==null){
-			svalue="";
-		} 
-		svalue = URLDecoder.decode(svalue, "utf-8");
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -68,7 +50,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<form action="" id="forget_pass">
 						<div class="admUser">
 							<i class="loginIcon user"></i>
-							<input type="text"  placeholder="手机号" name="adminPhone" id="adminPhone" maxlength="11" value="<%=svalue %>" onkeyup='this.value=this.value.replace(/\D/gi,"")'>
+							<input type="text"  placeholder="手机号" name="adminPhone" id="adminPhone" maxlength="11"  onkeyup='this.value=this.value.replace(/\D/gi,"")'>
 						</div>
 						<div class="admPhoneCode">
 							<i class="loginIcon phone"></i>
@@ -79,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="admPasword">
 							<i class="loginIcon phone1"></i>
 							<input type="text"  name="adminPwd" id="adminPwd" maxlength="6" placeholder="手机验证码" onkeyup='this.value=this.value.replace(/\D/gi,"")'>
-							<img alt="获取验证码" id="yanzheng" style="width: 110px;height:30px;top:248px" class="img"  src="" onclick="Yanzheng()">
+							<div  id="yanzheng" style="width: 110px;height:30px;top:248px;line-height: 30px" class="img"   onclick="Yanzheng()">获取验证码</div>
 						</div>
 						<div class="admPhoneCode1">
 							<i class="loginIcon pwd"></i>

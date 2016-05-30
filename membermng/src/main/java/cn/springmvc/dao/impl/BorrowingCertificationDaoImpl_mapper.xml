@@ -120,7 +120,15 @@
 		mai.End_Date as endDate,
 		group_concat(paa.Attach_Name) as attachName,
 		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath,
-		status
+		(select case 
+			when (End_Date &lt; now() and status = 2) then 4 
+			when `status` is null then '0' 
+			else `status` end
+			from member_attest_info mai 
+			where mai.Attest_Type_ID = #{typeId} 
+			and mai.Member_ID = #{memberId}
+			and mai.Member_Type = #{memberType} order by Record_Date desc limit 0,1
+		) as status 
 		from Member_Attest_Info mai 
 		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
 		left join  Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
@@ -128,7 +136,28 @@
 		where mai.Member_ID = #{memberId} and mai.Member_Type = #{memberType} and Attest_Type_ID = #{typeId} 
 		order by mai.Record_Date desc limit 0,1
 	</select>
-	
+		<!-- 通过认证id查看个人通用认证 -->
+	<select id="showCurrencyAuthById" parameterType="Map" resultType="cn.membermng.model.CurrencyAuth">
+		select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as realName,
+		mai.End_Date as endDate,
+		group_concat(paa.Attach_Name) as attachName,
+		paa.Attach_Type,group_concat(paa.Attach_Path) as attachPath,
+		(select case 
+			when (End_Date &lt; now() and status = 2) then 4 
+			when `status` is null then '0' 
+			else `status` end
+			from member_attest_info mai 
+			where mai.Attest_Type_ID = #{typeId} 
+			and mai.Member_ID = #{memberId}
+			and mai.Member_Type = #{memberType} order by Record_Date desc limit 0,1
+		) as status 
+		from Member_Attest_Info mai 
+		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
+		left join  Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
+		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID
+		where mai.Certification_Id = #{memberId}
+	</select>
 	<!-- 修改企业个人通用认证 -->
 	<select id="editCurrencyAuth" statementType="CALLABLE" parameterType="Map">
 		call editCurrencyAuth(
@@ -194,6 +223,7 @@
 		call authHousing(
 			#{cid,				mode=IN,				jdbcType=BIGINT},
 			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{mType,				mode=IN,				jdbcType=INTEGER},
 			#{iaddress,			mode=IN,				jdbcType=VARCHAR},
 			#{iArea,			mode=IN,				jdbcType=INTEGER},
 			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
@@ -215,7 +245,7 @@
 		left join  Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
 		left join Member_Estate_Check mec on mec.Certification_ID = mai.Certification_ID 
-		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 7 GROUP BY mai.Certification_ID
+		where mai.Member_ID = #{memberId} and mai.Member_Type in (0,1) and Attest_Type_ID in (7,22) GROUP BY mai.Certification_ID
 	</select>
 	
 	
@@ -239,6 +269,7 @@
 		call editAuthHousing(
 			#{cid,				mode=IN,				jdbcType=BIGINT},
 			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{mType,				mode=IN,				jdbcType=INTEGER},
 			#{iaddress,			mode=IN,				jdbcType=VARCHAR},
 			#{iArea,			mode=IN,				jdbcType=INTEGER},
 			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
@@ -256,6 +287,7 @@
 		call authProduction(
 			#{cid,				mode=IN,				jdbcType=BIGINT},
 			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{mType,				mode=IN,				jdbcType=INTEGER},
 			#{iBrand,			mode=IN,				jdbcType=VARCHAR},
 			#{iModel,			mode=IN,				jdbcType=VARCHAR},
 			#{iLicensePlate,	mode=IN,				jdbcType=VARCHAR},
@@ -277,7 +309,7 @@
 		left join Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
 		left join Member_Car_Check mcc on mcc.Certification_ID = mai.Certification_ID 
-		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 8 GROUP BY mai.Certification_ID
+		where mai.Member_ID = #{memberId} and mai.Member_Type in (0,1) and Attest_Type_ID in (8,23) GROUP BY mai.Certification_ID
 	</select>
 	
 	
@@ -301,6 +333,7 @@
 		call editAuthProduction(
 			#{cid,				mode=IN,				jdbcType=BIGINT},
 			#{memberId,			mode=IN,				jdbcType=BIGINT},
+			#{mType,				mode=IN,				jdbcType=INTEGER},
 			#{iBrand,			mode=IN,				jdbcType=VARCHAR},
 			#{iModel,			mode=IN,				jdbcType=VARCHAR},
 			#{iLicensePlate,	mode=IN,				jdbcType=VARCHAR},
@@ -364,6 +397,7 @@
 			#{memberId,			mode=IN,				jdbcType=BIGINT},
 			#{education,		mode=IN,				jdbcType=INTEGER},
 			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
 			#{result,			mode=OUT,				jdbcType=INTEGER}
 		)
 	</select>
@@ -373,7 +407,8 @@
 	select mi.Member_ID as memberId,mai.Certification_Id as rid,mi.Logname as logName,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey}) using utf8) as realName,
 		group_concat(paa.Attach_Name) as attachName,group_concat(paa.Attach_Path) as attachPath,mai.status,mec.Education as education,
-		ei.EducationName as educationName
+		ei.EducationName as educationName,
+		DATE_FORMAT(mai.End_Date,'%Y-%m-%d') as endDate 
 		from member_attest_info mai
 		left join Member_Info mi on mi.Member_ID =mai.Member_ID 
 		left join Personal_Base_Info pbi on mi.Personal_ID=pbi.Personal_ID
@@ -390,6 +425,7 @@
 			#{memberId,			mode=IN,				jdbcType=BIGINT},
 			#{education,		mode=IN,				jdbcType=INTEGER},
 			#{enclosure,		mode=IN,				jdbcType=VARCHAR},
+			#{endTime,			mode=IN,				jdbcType=VARCHAR},
 			#{result,			mode=OUT,				jdbcType=INTEGER}
 		)
 	</select>
@@ -700,11 +736,12 @@
 	
 	 
 	 
-	<!-- 个人会员房产认证 -->
+	<!-- 企业会员房产认证 -->
 	<select id="complayAuthHousing" statementType="CALLABLE" parameterType="Map">
 		call authHousing(
 			#{cid,				mode=IN,				jdbcType=BIGINT},
 			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{mType,				mode=IN,				jdbcType=INTEGER},
 			#{iaddress,			mode=IN,				jdbcType=VARCHAR},
 			#{iArea,			mode=IN,				jdbcType=INTEGER},
 			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
@@ -724,7 +761,7 @@
 		from Member_Attest_Info mai 
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
 		left join Member_Estate_Check mec on mec.Certification_ID = mai.Certification_ID 
-		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 7 GROUP BY mai.Certification_ID
+		where mai.Member_ID = #{memberId} and mai.Member_Type in (0,1) and Attest_Type_ID in (7,22) GROUP BY mai.Certification_ID
 	</select>
 	
 	<!-- 个人会员房产认证修改 -->
@@ -732,6 +769,7 @@
 		call editAuthHousing(
 			#{cid,				mode=IN,				jdbcType=BIGINT},
 			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{mType,				mode=IN,				jdbcType=INTEGER},
 			#{iaddress,			mode=IN,				jdbcType=VARCHAR},
 			#{iArea,			mode=IN,				jdbcType=INTEGER},
 			#{ivalue,			mode=IN,				jdbcType=VARCHAR},
@@ -744,11 +782,12 @@
 	
 	
 	
-	<!-- 个人会员车产认证 -->
+	<!-- 企业会员车产认证 -->
 	<select id="complayAuthProduction" statementType="CALLABLE" parameterType="Map">
 		call authProduction(
 			#{cid,				mode=IN,				jdbcType=BIGINT},
 			#{mid,				mode=IN,				jdbcType=BIGINT},
+			#{mType,				mode=IN,				jdbcType=INTEGER},
 			#{iBrand,			mode=IN,				jdbcType=VARCHAR},
 			#{iModel,			mode=IN,				jdbcType=VARCHAR},
 			#{iLicensePlate,	mode=IN,				jdbcType=VARCHAR},
@@ -769,14 +808,15 @@
 		from Member_Attest_Info mai 
 		left join Personal_Attest_Attach paa on paa.Attest_ID = mai.Certification_ID 
 		left join Member_Car_Check mcc on mcc.Certification_ID = mai.Certification_ID 
-		where mai.Member_ID = #{memberId} and mai.Member_Type = 0 and Attest_Type_ID = 8 GROUP BY mai.Certification_ID
+		where mai.Member_ID = #{memberId} and mai.Member_Type in (0,1) and Attest_Type_ID in (8,23) GROUP BY mai.Certification_ID
 	</select>
 	
-	<!-- 个人会员车产认证修改 -->
+	<!-- 企业会员车产认证修改 -->
 	<select id="complayEditAuthProduction" statementType="CALLABLE" parameterType="Map" >
 		call editAuthProduction(
 			#{cid,				mode=IN,				jdbcType=BIGINT},
 			#{memberId,			mode=IN,				jdbcType=BIGINT},
+			#{mType,				mode=IN,				jdbcType=INTEGER},
 			#{iBrand,			mode=IN,				jdbcType=VARCHAR},
 			#{iModel,			mode=IN,				jdbcType=VARCHAR},
 			#{iLicensePlate,	mode=IN,				jdbcType=VARCHAR},

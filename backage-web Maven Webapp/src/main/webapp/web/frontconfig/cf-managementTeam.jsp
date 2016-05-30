@@ -37,11 +37,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="5" name="top_menu_index"/>
+				<jsp:param value="5" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-frontconfig.jsp"></jsp:include>
+			<jsp:include page="../common/cm-frontconfig.jsp">
+				<jsp:param value="504" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -137,9 +140,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 					</div>
 				</div>
-				
-				
-				
 			</div>
 		</div>
 	</div>
@@ -148,7 +148,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
-	<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
 	<script type="text/javascript" src="js/exp-upload.js"></script>
 	<!-- 私用js -->
 	<script type="text/javascript" src="js/frontconfig/cf-manage.js"></script>

@@ -21,18 +21,25 @@ import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
+import cn.membermng.model.ComplanyInfoEntity;
+import cn.membermng.model.MemberAll;
+import cn.membermng.model.MemberDetaileInfo;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.ProjectAppAttachmentEntity;
 import cn.springmvc.model.ProjectAppRecordEntity;
 import cn.springmvc.model.ProjectBaseInfoEntity;
 import cn.springmvc.model.ProjectInvestRedPackageEntity;
 import cn.springmvc.model.ProjectPurposeEntity;
+import cn.springmvc.model.SystemSetEntity;
 import cn.springmvc.service.CertificationAuditService;
 import cn.springmvc.service.IMemberManangerService;
+import cn.springmvc.service.MemberInfoService;
 import cn.springmvc.service.ProjectAppRecordService;
 import cn.springmvc.service.ProjectAuitService;
 import cn.springmvc.service.ProjectBaseInfoService;
 import cn.springmvc.service.ProjectPurposeService;
+import cn.springmvc.service.SystemSetService;
 import cn.springmvc.util.LoadUrlUtil;
 
 import com.alibaba.fastjson.JSON;
@@ -55,17 +62,20 @@ public class LoanApplyController {
 	@Resource(name="projectBaseInfoServiceImpl")
 	private ProjectBaseInfoService projectBaseInfoService;
 	
-	@Autowired
-	private IMemberManangerService memberManangerService;
-	
 	@Resource(name="projectAuditServiceImpl")
 	private ProjectAuitService projectAuitService;
 	
 	@Resource(name="certificationAuditServiceImpl")
 	private CertificationAuditService certificationAuditService;
 	
+	@Autowired
+	private IMemberManangerService iMemberManangerService;
 	
+	@Resource(name="memberInfoServicrImpl")
+	private MemberInfoService memberInfoService;
 	
+	@Resource(name="systemSetServiceImpl")
+	private SystemSetService systemSetService;
 	/** 
 	 * @author 唐国峰 
 	 * @Description: 跳转到借款意向列表查询页面
@@ -156,14 +166,14 @@ public class LoanApplyController {
 		map.put("memberName", memberName);
 		map.put("personalPhone", personalPhone);
 		
-		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		int start = Integer.parseInt(req.getParameter("start"));
 		int length = Integer.parseInt(req.getParameter("length"));
 		PageEntity pager = new PageEntity();
 		pager.setPageNum(start/length+1);
 		pager.setPageSize(length);
 		pager.setMap(map);
-		memberManangerService.getMembersByParam(pager);
+		List<MemberAll> list = memberInfoService.getMemberList(pager);
+		PageUtil.ObjectToPage(pager, list);
 		return pager;
 	}
 	
@@ -236,9 +246,19 @@ public class LoanApplyController {
 	 */
 	@RequestMapping("/toDistributionPg")
 	public String toDistributionPg(HttpServletRequest req){
-		req.setAttribute("Logname", req.getParameter("start"));
-		req.setAttribute("PersonalName", req.getParameter("length"));
-		req.setAttribute("memberID", req.getParameter("content"));
+		Long memberID = Long.parseLong(req.getParameter("content"));
+		MemberDetaileInfo member = iMemberManangerService.memberInfoById(memberID); 
+		ComplanyInfoEntity company = iMemberManangerService.companyInfo(memberID); 
+		if(member != null){
+			req.setAttribute("memberId", member.getMemberId());
+			req.setAttribute("logname", member.getMemberName());
+			req.setAttribute("personalName", member.getUserName());
+		}
+		if(company != null){
+			req.setAttribute("memberId", company.getMemberId());
+			req.setAttribute("logname", company.getMemberName());
+			req.setAttribute("personalName", company.getComplanyName());
+		}
 		return "project/pro-add/loan_intention_allocation";
 	}
 	
@@ -321,32 +341,6 @@ public class LoanApplyController {
 		String applyId= req.getParameter("content");
 		req.setAttribute("applyId", applyId);
 		return "project/pro-add/loan_exam_record";
-	}
-	
-	/** 
-	 * @author 唐国峰 
-	 * @Description: 获取审批记录分页数据
-	 * @param req
-	 * @return PageEntity  
-	 * @date 2016-5-5 下午12:48:30
-	 * @throws 
-	 */
-	@RequestMapping("/getChkRecordData")
-	@ResponseBody
-	public PageEntity getChkRecordData(HttpServletRequest req){
-		//获取解密后参数
-		int start = Integer.parseInt(req.getParameter("start"));
-		int length = Integer.parseInt(req.getParameter("length"));
-		String applyId = req.getParameter("content");
-		//设置查询参数
-		PageEntity pager = new PageEntity();
-		Map<String,Object> param=new HashMap<String,Object>();
-		param.put("applyId", applyId);
-		pager.setMap(param);
-		pager.setPageNum(start/length+1);
-		pager.setPageSize(length);
-		projectAuitService.selectProjectCheckRecord(pager);
-		return pager;
 	}
 	
 	
@@ -444,7 +438,7 @@ public class LoanApplyController {
 		param.put("memberId", memberId);
 		param.put("remark", remark);//拉黑原因
 		param.put("aid", admin.getId());//操作者id
-		int iResult = memberManangerService.pullBlack(param,logEntity,sIpInfo);
+		int iResult = iMemberManangerService.pullBlack(param,logEntity,sIpInfo);
 		return iResult;
 	}
 	
@@ -485,10 +479,12 @@ public class LoanApplyController {
 				proPurpose.setRepayWay(repayWayAfter);
 			}
 		}
-		
 		//FTP服务器地址
 		String hostPath = FtpClientUtil.getFtpFilePath();
 		hostPath = hostPath.substring(0, hostPath.length()-1);
+		//系统配置
+		SystemSetEntity sysInfo =  systemSetService.findSystemSet();
+		req.setAttribute("sysInfo", sysInfo);
 		req.setAttribute("proPurpose", proPurpose);
 		req.setAttribute("proRecord", proRecord);
 		req.setAttribute("hostPath", hostPath);
@@ -552,10 +548,10 @@ public class LoanApplyController {
 		param.put("uses", uses);
 		String projectDescript = req.getParameter("projectDescript");
 		param.put("projectDescript", projectDescript);
-		String guarantyDescribe = req.getParameter("guarantyDescribe");
+		String guarantyDescribe = req.getParameter("content");
 		param.put("guarantyDescribe", guarantyDescribe);
-		//暂时写死
-		param.put("projectType", 1);//项目类型id
+		String projectId = req.getParameter("projectId");
+		param.put("projectType", projectId);//项目类型id
 		//第二步参数
 		String autoStart = req.getParameter("autoStart");
 		param.put("autoStart", autoStart);
@@ -710,7 +706,7 @@ public class LoanApplyController {
     		return iResult;
     	}
     	try {
-			iResult = IntegerAndString.StringToLong(value);
+			iResult = IntegerAndString.StringToLong(value.trim());
 		} catch (Exception e) {
 		}
     	return iResult;
@@ -737,6 +733,4 @@ public class LoanApplyController {
 			e.printStackTrace();
 		}
 	}
-	
 }
-

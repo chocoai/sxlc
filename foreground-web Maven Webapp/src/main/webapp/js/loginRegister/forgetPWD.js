@@ -102,7 +102,7 @@ var isExit = false;
 /* 验证     */
 $(function(){
 	$("#forgetPWDbox").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".next-btn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		//btnReset:"#btnreset1",
 		datatype:extdatatype,//扩展验证类型
@@ -147,7 +147,7 @@ $(function(){
 
 $(function(){
 	$("#setNewPWD_form").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".submit-btn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,

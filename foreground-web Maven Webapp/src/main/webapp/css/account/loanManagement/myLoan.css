@@ -58,7 +58,8 @@
 .my-loan-group{
 	float:left;
 	width:935px;
-	padding:30px;
+	/* padding:30px; */
+	padding:30px 30px 0px 30px;
 }
 .my-loan-state{
 	height:35px;
@@ -86,7 +87,7 @@
 .my-loan-table{
 	width:100%;
 	float:left;
-	margin-bottom:30px;
+	margin-bottom:15px;
 }
 .my-loan-table li{
 	height:80px;
@@ -468,3 +469,8 @@
 .my-loan-table .w80{width: 80px;}
 .my-loan-table .w88{width: 88px;}
 .my-loan-table .w110{width: 110px;}
+.inv-record-info .pager-box,
+#loanRepayendUl .pager-box{
+	margin-top: 10px!important;
+}
+#loanRepayendUl 

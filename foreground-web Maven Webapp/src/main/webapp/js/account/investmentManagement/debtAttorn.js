@@ -123,12 +123,11 @@ $(function(){
 										title :'转让',//标题
 										skin: 'layer-ext-myskin',//皮肤
 								        type: 1,
-								        area: ['541px', '499px'],//大小宽*高
+								        area: ['541px', '440px'],//大小宽*高
 								        shadeClose: true, //点击遮罩关闭
 								        content: $('.layerWindow')//内容，里边是包含内容的div的class
 								    });
 									var index = $(this).parent().parent().parent().parent().index()-1;
-									console.log(index)
 									$("#transferableMoney").html(data.infos[index].sMoney);
 									$("#inputInvestId").val(data.infos[index].investId);
 								});
@@ -296,50 +295,47 @@ $(function(){
 		};
 	});
 	
-	$("#getSaleNum").on("keyup",function(){
-		var num = $("#getSaleNum").val()*$("#getTransNum").val()*0.01;
-		//console.log($("#getSaleNum").val()*$("#getTransNum").val()*0.01);
-		$("#shouyi").html(num);
-	});
-	
-	
-	$("#sureBtn").on("click",function(){
-		if (parseInt($("#getTransNum").val())>parseInt($("#transferableMoney").html())){
-			layer.alert("您最多转让"+$("#transferableMoney").html()+"元");
-			return false
-		}
-		var data = {};
-		var encrypt = new JSEncrypt();
-		encrypt.setPublicKey(publickey);
-		data.iId = encrypt.encrypt($("#inputInvestId").val()+"");
-		data.discount = encrypt.encrypt($("#getSaleNum").val()+"");
-		data.extras = encrypt.encrypt($("#getTransNum").val()+"");
-		data.maxTime = encrypt.encrypt($("#maxTime").val()+"");
-		var url = "investmentManagement/turnOutDebts.html";
-		//console.log(data);
-		NetUtil.ajax(
-				url,
-				data,
-				function(r){
-					var data = JSON.parse(r);
-					//console.log(data)
-					if (data.status == 1){
-						layer.alert("转让成功",function(index){
-							layer.closeAll();
-						})
-					}else{
-						layer.alert(data.message);
+	$("#form1").Validform({
+		tiptype:5,
+		datatype:extdatatype,
+		btnSubmit:"#sureBtn",
+		ajaxPost:true,
+		beforeSubmit:function(){
+			if (parseInt($("#getTransNum").val())>parseInt($("#transferableMoney").html())){
+				layer.alert("您最多转让"+$("#transferableMoney").html()+"元");
+				return false
+			}
+			if ($("#maxTime").val()=="请选择最晚转出时间"||$("#maxTime").val()==undefined||$("#maxTime").val()==""){
+				layer.alert("请选择最晚转出时间")
+				return false
+			}
+			
+			var data = {};
+			var encrypt = new JSEncrypt();
+			encrypt.setPublicKey(publickey);
+			data.iId = encrypt.encrypt($("#inputInvestId").val()+"");
+			data.discount = encrypt.encrypt($("#getSaleNum").val()+"");
+			data.extras = encrypt.encrypt($("#getTransNum").val()+"");
+			data.maxTime = encrypt.encrypt($("#maxTime").val()+"");
+			var url = "investmentManagement/turnOutDebts.html";
+			//console.log(data);
+			NetUtil.ajax(
+					url,
+					data,
+					function(r){
+						var data = JSON.parse(r);
+						//console.log(data)
+						if (data.status == 1){
+							layer.alert("转让申请成功",function(index){
+								layer.closeAll();
+							})
+						}else{
+							layer.alert(data.message);
+						}
 					}
-				}
-			)
-		
+				)
+		}
 	})
-	
-	
-	
-	
-	
-	
 	
 	
 });

@@ -24,6 +24,7 @@ $(function(){
  */
 function IdentyDetails(memberId){
 	var encrypt = new JSEncrypt();
+	$("#memberId").val(memberId);
 	encrypt.setPublicKey(publicKey_common);
 	memberId = encrypt.encrypt(memberId+"");
 	var hostPath = $("#hostPath").val();
@@ -37,7 +38,6 @@ function IdentyDetails(memberId){
 			dataType:'json',   
 			success:function(data) { 
 				if(data!=null){
-					$("#memerId").val(memberId);
 					$("#applyId").val(data.rid);
 					if(data.logName!=null){
 						$("#logName").text(data.logName);
@@ -49,7 +49,7 @@ function IdentyDetails(memberId){
 						$("#sEndDate").val(data.sEndDate);
 					}
 					if(data.educationName!=null){
-						$("#graduateName").val(educationName);
+						$("#graduateName").val(data.educationName);
 					}
 					if(data.attachPath!=null && data.attachPath!=""){
 						var arrPath = data.attachPath.split(",");

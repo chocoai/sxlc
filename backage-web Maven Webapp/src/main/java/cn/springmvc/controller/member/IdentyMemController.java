@@ -477,7 +477,7 @@ public class IdentyMemController {
 		map.put("endDate", endDate);
 		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		map.put("personalID", memberId);
-		
+		map.put("education", 0);
 		IdGeneratorUtil idGeneratorUtil = new IdGeneratorUtil();
 		map.put("creditIntegralID", idGeneratorUtil.GetId());
 		InsertAdminLogEntity entity = new InsertAdminLogEntity();
@@ -492,7 +492,7 @@ public class IdentyMemController {
 		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
-	    Map<String, Object> Ma=  certificationAuditService.handlemarriage(map, entity, sIpInfo);
+	    Map<String, Object> Ma=  certificationAuditService.handlequalification(map, entity, sIpInfo);
 	    int iResult =(int) Ma.get("rulest");
 		return iResult;
 	}

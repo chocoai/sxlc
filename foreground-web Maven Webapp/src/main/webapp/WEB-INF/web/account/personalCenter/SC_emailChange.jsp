@@ -39,7 +39,7 @@
 		   					</li>
 		   					<li class="contetnList">
 		   						<label>新邮箱号码：</label>
-		   						<input class="email newEmail emailNew" type="text" datatype="email" lang="请输入您的新邮箱号" maxlength="25">
+		   						<input class="email newEmail emailNew" disabled type="text" datatype="email" lang="请输入您的新邮箱号" maxlength="25">
 		   					</li>
 		   					<li class="contetnList">
 		   						<label>验证码：</label>
@@ -52,7 +52,7 @@
 		   						<label>邮箱验证码：</label>
 		   						<div class="dynamicValidationChange">
 		   							<input class="code codeGet dynamicCode" type="text" datatype="Z6" lang="请输入验证码" maxlength="6" >
-		   							<div class="codeBtn">获取验证码</div>
+		   							<div class="codeBtn disabled">获取验证码</div>
 		   						</div>
 		   					</li>
 		   					<li class="contetnList">

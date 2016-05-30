@@ -138,7 +138,7 @@
 	<select id="selectPrizeInformation" parameterType="product_p2p.kit.pageselect.PageEntity" 
 	resultType="cn.invitemastermng.model.PrizeInformationEntity">
 	   select Prize_ID as prizeID,Prize_Type as prizeType,Prize_Name as prizeName,
-	   Prize_Worth as prizeWorth,Prize_Quantity as prizeQuantity,Prize_Url as prizeUrl,Status as status
+	   Prize_Worth as prizeWorth,Prize_Url as prizeUrl,Status as status
 	   from  Prize_Information 
 	</select>
 	
@@ -155,7 +155,7 @@
 	<select id="selectPrizeInformationByID" parameterType="long" 
 	 resultType="cn.invitemastermng.model.PrizeInformationEntity">
 	   select Prize_ID as prizeID,Prize_Type as prizeType,Prize_Name as prizeName,
-	   Prize_Worth as prizeWorth,Prize_Quantity as prizeQuantity,Prize_Url as prizeUrl,Status as status
+	   Prize_Worth as prizeWorth,Prize_Url as prizeUrl,Status as status
 	   from  Prize_Information 
 	   where Prize_ID = #{prizeID}
 	</select>

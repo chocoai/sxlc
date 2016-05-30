@@ -57,7 +57,19 @@ $(function(){
 				          { title:"借款人姓名","data": "memberName"},  
 				          { title:"借款项目名称","data": "projectBaseInfoentity.projectTitle"},  
 				          { title:"借款产品类型","data": "projectName"},  
-				          { title:"借款期限","data": "projectBaseInfoentity.deadline"},  
+				          { title:"借款期限","data": "projectBaseInfoentity", 
+				        	  "mRender": function (data, type, full) {
+				        		  	if(data.deadlineType == 0){
+				        	    		return data.deadline+"天";
+				        	    	}else if(data.deadlineType == 1){
+				        	    		return data.deadline+"月";
+				        	    	}else if(data.deadlineType == 2){
+				        	    		return data.deadline+"年";
+				        	    	}else{
+				        	    		return "";
+				        	    	}  
+				        	  }
+				          },  
 				          { title:"借款金额(元)","data": "projectBaseInfoentity.amounts"},  
 				          { title:"年化利率(%)","data": "projectBaseInfoentity.yearRates"},  
 				          { title:"还款方式","data": "projectBaseInfoentity.repayWay", 
@@ -94,10 +106,11 @@ $(function(){
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
-	          serverSide: true,//打开后台分页  
+	          serverSide: true,//打开后台分页
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕

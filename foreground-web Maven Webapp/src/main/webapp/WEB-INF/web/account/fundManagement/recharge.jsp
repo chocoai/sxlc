@@ -33,17 +33,19 @@
    						<span class="rechargeHeadFont">我要充值</span>
    					</div>
    					<div class="rechargeContent">
+   						<input id="feeNum" type="hidden">
+   						<input id="feeType" type="hidden">
 						<form id="chongZhi" action="loanRecharge/loanRecharge.html" method="post" target="_blank">
 							<ul>
 							<li class="rechargeContentLi_one">
 								<label>充值方式：</label>
 								<div class="selectArea rechargeSelect clearfix">
 									<input class="selectValue regchType" type="text" value="" >
-   									<input class="selectInput rechargeMethod" type="text" lang="" readOnly="true"/>
+   									<input class="selectInput rechargeMethod" type="text" lang="" value="个人网银" readOnly="true"/>
 								    <ul class="select" onselectstart="return false">
 								        <li class="selectOption selectOptionAab" value="">个人网银<li>
-								        <li class="selectOption selectOptionAab" value="2">汇款充值<li>
-								        <li class="selectOption selectOptionAab" value="3">快捷支付<li>
+								        <li class="selectOption selectOptionAab" value="2">快捷支付<li>
+								        <li class="selectOption selectOptionAab" value="3">汇款充值<li>
 								        <li class="selectOption selectOptionAab" value="4">企业网银<li>
 								    </ul>
 								    <input type="hidden"  name="rechargeType" />

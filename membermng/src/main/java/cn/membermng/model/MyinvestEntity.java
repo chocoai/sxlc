@@ -98,6 +98,7 @@ public class MyinvestEntity {
 	}
 	public void setYearRate(int yearRate) {
 		this.yearRate = yearRate;
+		this.yearRates = IntegerAndString.IntToString(yearRate);
 	}
 	public String getYearRates() {
 		return yearRates;

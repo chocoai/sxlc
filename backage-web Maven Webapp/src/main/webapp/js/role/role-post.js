@@ -3,26 +3,9 @@
  * 职务管理
  */
 
-/**===================================================================*/
-/**
- * 获取项目根目录全路径
- * @returns
- */
-function getRootPath(){
-        var curWwwPath=window.document.location.href;
-        var pathName=window.document.location.pathname;
-        var pos=curWwwPath.indexOf(pathName);
-        var localhostPath=curWwwPath.substring(0,pos);
-        var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
-		if(/127.0.0.1|localhost/.test(localhostPath)){
-			return(localhostPath+projectName);
-		}else{
-			return(localhostPath);
-		}
-}
-
 $(function() {
-	
+	validform5("layer-btn0","dataForm",false,"5");
+	validform5("layer-btn0","dataFor",false,"5");
 	//单选
 	$('#post_id tbody').on( 'click', 'tr', function () {
 		var $this = $(this);
@@ -44,11 +27,12 @@ $(function() {
 
 //添加职务
 function postAdd(){
-	validform5("layer-btn0","dataForm",true,"3");
+	//document.getElementById("dataForm").reset();
+	$("#dataForm").attr("action","javascript:savePost()");
 	//操作
 	layer.open({
 	    type: 1,
-	    area: ['400px', '270px'], //高宽
+	    area: ['450px', '270px'], //高宽
 	    title: "添加职务",
 	    maxmin: true,
 	    content: $(".pic-add"),//DOM或内容
@@ -56,32 +40,35 @@ function postAdd(){
 		  ,yes: function(index, layero){ //或者使用btn1
 		    //确定的回调
 		  	//判断执行不同方法
-			  $("#dataForm").submit();
+			 $("#dataForm").submit();
 		  },cancel: function(index){//或者使用btn2（concel）
 		  	//取消的回调
 		  }
 	});
 }
 
-
-
+/**
+ * 修改职务
+ */
 function expMod(){
 	//清除数据
 	//document.getElementById("dataFor").reset();
 	//操作
 	var  title="修改职务";
 	var rowdata = $('#post_id').DataTable().rows('.selected').data();
-	validform5("layer-btn0","dataFor",true,"3");
+	$("#dataFor").attr("action","javascript:test()");
 	if(rowdata.length<1){
 		layer.alert("请选择要处理的事务！",{icon:0});
 		return;
 	}
+	if(rowdata[0].postStatu==0){
+    	layer.alert("该职务无效，不能修改！",{icon:0});
+		return;
+    }
 	$("#postName_two").val(rowdata[0].postName);	
 	$("#postRemark1").val(rowdata[0].postRemark);
 	var value=rowdata[0].deptId;
-	$("#deptId1").attr("value",value);
-	$("#deptId1").val(value);
-	$("#deptId1").get(0).value = value;
+	$("#deptId1").append("<option value="+value+">"+rowdata[0].deptName+"</option>");
 	layer.open({
 	    type: 1,
 	    area: ['400px', '270px'], //高宽
@@ -112,6 +99,7 @@ function savePost(){
 	postName = encrypt.encrypt(postName);
 	postRemark = encrypt.encrypt(postRemark);
 	deptId = encrypt.encrypt(deptId+"");
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax({  
 		url:appPath+"/PostController/savePost.do",
 		data:{
@@ -123,17 +111,18 @@ function savePost(){
 		cache:false,  
 		dataType:'json',  
 		success:function(data) { 
+			$(".layui-layer-btn0").removeClass("disabled");
 			 if(data==0){
 					layer.alert("添加成功",{icon:1});
 					$(".layui-layer-btn1").click();
-					document.getElementById("dataForm").reset();
-					setTimeout('location.reload()',500);
-					 
+					$("#postName_one").val("");
+					$("#postRemark").val("");
+					$(".layui-layer-btn1").click();
+					$('#post_id').DataTable().ajax.reload();
 				}else {
 					layer.alert("添加失败",{icon:2});  
-					document.getElementById("dataForm").reset();
+					//document.getElementById("dataForm").reset();
 				}
-			 document.getElementById("dataForm").reset();
 		},  
 		error : function() {  
 			layer.alert("操作失败!",{icon:0});  
@@ -152,7 +141,6 @@ function test(){
 		return;
 	}
     var	id=rowdata[0].id;
-  
     var postName = $("#postName_two").val();
 	var postRemark 	=$("#postRemark1").val();
 	var deptId = $("#deptId1").val();
@@ -161,8 +149,8 @@ function test(){
 	postName = encrypt.encrypt(postName);
 	postRemark = encrypt.encrypt(postRemark);
 	deptId = encrypt.encrypt(deptId+"");
-	
 	id = encrypt.encrypt(id+"");
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/PostController/editPost.do",
 		data:{
@@ -178,14 +166,11 @@ function test(){
 			 if(data==0){
 					layer.alert("修改成功",{icon:1});
 					$(".layui-layer-btn1").click();
-					document.getElementById("dataFor").reset();
-					setTimeout('location.reload()',500);
-					 
+					$('#post_id').DataTable().ajax.reload();
 				}else {
 					layer.alert("修改失败",{icon:2}); 
-					document.getElementById("dataFor").reset();
 				}
-			 document.getElementById("dataForm").reset();
+			 $(".layui-layer-btn0").removeClass("disabled");
 		},  
 		error : function() {  
 			layer.alert("操作失败!",{icon:2});  
@@ -354,6 +339,7 @@ function showPost(){
 	            	var deptName = $("#deptName").val();//所属部门
 	            	var postName =  $("#postName").val();//职务名称
 	            	var startTime =  $("#start").val();//开始时间
+	            	var statu = $("#statu").val;//状态
 	            	var endTime =  $("#end").val();//结束时间
 	            	var encrypt = new JSEncrypt();
 	            	encrypt.setPublicKey(publicKey_common);
@@ -361,6 +347,7 @@ function showPost(){
 	            	deptName = encrypt.encrypt(deptName);
 	            	postName = encrypt.encrypt(postName);
 	            	startTime = encrypt.encrypt(startTime);
+	            	statu = encrypt.encrypt(statu+"");
 	            	endTime = encrypt.encrypt(endTime);
 	            	deptId = encrypt.encrypt(deptId+"");
 	            	d.deptName=deptName;
@@ -368,6 +355,7 @@ function showPost(){
 	            	d.startTime=startTime;
 	            	d.endTime=endTime;
 	            	d.deptId = deptId;
+	            	d.statu = statu;
 	            }  
 	        },
 	   columns: [  

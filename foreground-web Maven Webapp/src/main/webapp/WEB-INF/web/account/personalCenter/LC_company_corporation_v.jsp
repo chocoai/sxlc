@@ -48,7 +48,7 @@
 			   						<div class="introduceContent">2015-01-01</div>
 			   					</li>
 			   					<li class="inputList">
-			   						<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
+			   						<div class="mustLabel"><span><samp></samp>附件：</span></div>
 			   						<div class="previewPicture"></div>
 			   						<!-- <div class="mustLabel"><span><samp>*</samp>附件：</span></div>
 			   						<div class="previewPicture">

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.pageselect.PageEntity; 
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.CreditorTransferListDao;
 import cn.springmvc.model.CreditorTransferListEntity;
 import cn.springmvc.model.InvestEntity;
@@ -37,10 +38,11 @@ public class CreditorTransferServiceImpl implements CreditorTransferService {
 	@Resource(name="creditorTransferListDaoImpl")
 	private CreditorTransferListDao creditorTransferListDao;  
 	@Override
-	public List<CreditorTransferListEntity> selectCreditorTransferList(
-			PageEntity pageEntity) {
+	public List<CreditorTransferListEntity> selectCreditorTransferList(PageEntity pageEntity) {
 		pageEntity.getMap().put("sKey", DbKeyUtil.GetDbCodeKey());
-		return creditorTransferListDao.selectCreditorTransferList(pageEntity);
+		List<CreditorTransferListEntity> list = creditorTransferListDao.selectCreditorTransferList(pageEntity);
+		PageUtil.ObjectToPage(pageEntity, list);
+		return list;
 
 	}
 	@Override

@@ -3,7 +3,7 @@
 	<div class="aside_effect">
 		<label class="qq" onclick="window.location='index.html';"></label>
 	</div>
-	<div class="aside_effect" onclick="window.location='index.html';">
+	<div class="aside_effect" onclick="window.location='incomeCalculation.html';">
 		<label class="jsq"></label>
 	</div>
 	<div class="aside_effect" onclick="window.location='login.html';">

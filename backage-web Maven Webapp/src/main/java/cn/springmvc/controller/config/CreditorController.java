@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 
 import cn.springmvc.model.Admin;
@@ -94,7 +95,7 @@ public class CreditorController {
 			int interestDay = Integer.parseInt(req.getParameter("interestDay"));
 			param.setInterestDay(interestDay);
 			map.put("interestDay", interestDay);
-			int mngFee = Integer.parseInt(req.getParameter("mngFee"));
+			int mngFee = IntegerAndString.StringToInt(req.getParameter("mngFee"));
 			param.setMngFee(mngFee);
 			map.put("mngFee",mngFee);
 			int mngType = Integer.parseInt(req.getParameter("mngType"));

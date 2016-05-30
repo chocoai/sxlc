@@ -3,18 +3,39 @@ $(function(){
 	$(".TD3").addClass("down2");
 	/*弹出层伍成然2016-4-6*/
 	$('.allowBidBtn').on('click', function(){
+		if (optionStatu=="-1"){
+			layer.alert("您还未开户,点击确定跳转至开户界面",function(){
+				window.location.href = "personalCenter/openAccount.html"
+			});
+			return false
+		}
+		if (optionStatu=="0"){
+			layer.alert("您还未进行自动转账授权",function(){
+				window.location.href = "investmentManagement/openAutoGiro.html"
+			});
+			return false
+		}
+		if (optionStatu=="-2"){
+			layer.alert("您已经设置过自动投标",function(index){
+				layer.close(index)
+			});
+			return false
+		}
+
+		
+		
 		layer.open({
 			title :'自动投标设置',//标题
 			skin: 'layer-ext-myskin',//皮肤
 	        type: 1,
-	        area: ['583px', '768px'],//大小宽*高
+	        area: ['583px','768px'],//大小宽*高
 	        shadeClose: true, //点击遮罩关闭
 	        content: $('.autoBidSet')//内容，里边是包含内容的div的class
 	    });
 	});
 	
 	$('.numberReg').focus(function(){
-		$(this).parent().siblings().children('.numberReg').attr('disabled',true);
+//		$(this).parent().siblings().children('.numberReg').attr('disabled',true);
 		$('.numberReg').blur(function(){
 			var dangQ=$(this).val();
 			if(dangQ == ''){
@@ -22,8 +43,7 @@ $(function(){
 				$('.numberReg').focus(function(){
 					$(this).parent().layoutWarning("请输入项目期限");
 				});
-			}
-			else{
+			}else{
 				$(this).parent().layoutClean();
 			}
 		});
@@ -40,6 +60,10 @@ $(function(){
 			if ($(this).val()!="-1"){
 				$(".proType").eq(0).prop("checked",true);
 				$(".proType").eq(0).parent().removeClass("active");
+			};
+			if ($(this).val()=="-1"){
+				$(".proType").prop("checked",false);
+				$(".proType").parent().removeClass("active");
 			}
 		}
 	});
@@ -57,6 +81,10 @@ $(function(){
 				$(".loanType").eq(0).prop("checked",true);
 				$(".loanType").eq(0).parent().removeClass("active");
 			}
+			if ($(this).val()=="-1"){
+				$(".loanType").prop("checked",false);
+				$(".loanType").parent().removeClass("active");
+			}
 		}
 	});
 	
@@ -66,6 +94,13 @@ $(function(){
 		btnSubmit:".autoBtn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,
+		beforeCheck:function(){
+			if ($(".tipError").size()>0){
+				return false
+			}else{
+				return true
+			}
+		},
 		beforeSubmit:function(){
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
@@ -155,6 +190,8 @@ $(function(){
 							layer.alert(r.message,function(){
 								location.reload()
 							})
+						}else if(r.status == "-3"){
+							location.href = "investmentManagement/openAutoGiro.html";
 						}else{
 							layer.alert(r.message);
 						}

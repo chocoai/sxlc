@@ -130,9 +130,9 @@ public class MemberManagerReadDaoImpl extends SqlSessionDaoSupport implements IM
 	@Override
 	public List<VIPMemberInfos> vipMembersByParam(PageEntity entity) {
 		if(entity.getMap().get("memberType") !=null && entity.getMap().get("memberType").equals("1")){
-			return getSqlSession().selectList("memberManagerDao.complayVipMembers",entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.complayVipMembers",entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}else{
-			return getSqlSession().selectList("memberManagerDao.vipMembers",entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.vipMembers",entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}
 	}
 	
@@ -140,9 +140,9 @@ public class MemberManagerReadDaoImpl extends SqlSessionDaoSupport implements IM
 	@Override
 	public List<MemberInfo> registers(PageEntity entity) {
 		if(entity.getMap().get("memberType") != null && entity.getMap().get("memberType").equals("1")){
-			return getSqlSession().selectList("memberManagerDao.companlyRegisters", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.companlyRegisters", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}else{
-			return getSqlSession().selectList("memberManagerDao.registers", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.registers", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}
 	}
 	
@@ -150,36 +150,36 @@ public class MemberManagerReadDaoImpl extends SqlSessionDaoSupport implements IM
 	@Override
 	public List<MemberInfo> authenticationMember(PageEntity entity) {
 		if(entity.getMap().get("memberType") != null && entity.getMap().get("memberType").equals("1")){
-			return getSqlSession().selectList("memberManagerDao.companlyAuthenticationMember", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.companlyAuthenticationMember", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}else{
-			return getSqlSession().selectList("memberManagerDao.authenticationMember", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.authenticationMember", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}
 	}
 	
 	@Override
 	public List<MemberInfo> loanMember(PageEntity entity) {
 		if(entity.getMap().get("memberType") != null && entity.getMap().get("memberType").equals("1")){
-			return getSqlSession().selectList("memberManagerDao.complanyLoanMember", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.complanyLoanMember", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}else{
-			return getSqlSession().selectList("memberManagerDao.loanMember", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.loanMember", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}
 	}
 	
 	@Override
 	public List<MemberInfo> investmentMember(PageEntity entity) {
 		if(entity.getMap().get("memberType") != null && entity.getMap().get("memberType").equals("1")){
-			return getSqlSession().selectList("memberManagerDao.complanyInvestmentMember",  entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.complanyInvestmentMember",  entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}else{
-			return getSqlSession().selectList("memberManagerDao.investmentMember",  entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.investmentMember",  entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}
 	}
 	
 	@Override
 	public List<MemberInfo> componentMembers(PageEntity entity) {
 		if(entity.getMap().get("memberType") != null && entity.getMap().get("memberType").equals("1")){
-			return getSqlSession().selectList("memberManagerDao.complanyComponentMember",  entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.complanyComponentMember",  entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}else{
-			return getSqlSession().selectList("memberManagerDao.componentMember",  entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+			return getSqlSession().selectList("memberManagerDao.componentMember",  entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 		}
 	}
 	

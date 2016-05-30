@@ -2,6 +2,7 @@ package cn.springmvc.service;
 
 import java.util.List;
 
+import cn.invitemastermng.model.AffairInfo;
 import cn.invitemastermng.model.LotteryRecords;
 import cn.invitemastermng.model.PrizeInformation;
 import cn.invitemastermng.model.RedRecord;
@@ -38,7 +39,7 @@ public interface IRedPackageService {
 	* @param affairId				活动编号
 	* @param memberId				会员边海
 	* @return
-	* 1领取成功、0领取失败、-1当前活动不存在、-2活动未开始、-3活动已结束、-4你已经领过了、-5红包被领完了  -6;//黑名单会员禁止抢红包
+	* 1领取成功、0领取失败、-1当前活动不存在、-2活动未开始、-3活动已结束、-4你已经领过了、-5红包被领完了 、-6黑名单会员禁止抢红包
 	* @date 2016-4-19 下午3:01:38
 	 */
 	public int grabRedPackage(long affairId, long memberId);
@@ -80,6 +81,15 @@ public interface IRedPackageService {
 	* @date 2016-4-13 上午11:03:38
 	*/
 	public int lottery(long lid);
+
+
+	/***
+	 * 获取最新一条活动信息
+	 * 
+	 * @author 李杰
+	 * @date 2016-5-27 下午2:03:44
+	 */
+	public AffairInfo findLatelyInfo();
 	
 	
 	

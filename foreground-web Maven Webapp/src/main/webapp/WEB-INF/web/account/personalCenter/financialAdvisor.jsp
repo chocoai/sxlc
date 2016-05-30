@@ -230,7 +230,7 @@
 										        <li class="selectOption" value="07">7月<li>
 										        <li class="selectOption" value="08">8月<li>
 										        <li class="selectOption" value="09">9月<li>
-										        <li class="selectOption"value="10">10月<li>
+										        <li class="selectOption" value="10">10月<li>
 										        <li class="selectOption" value="11">11月<li>
 										        <li class="selectOption" value="12">12月<li>
 										    </ul>
@@ -477,7 +477,7 @@
 	   										<div class="ContListTitle">
 			   									<div class="VIPName">会员名</div>
 				   								<div class="userName">用户名</div>
-				   								<div class="registerRecord">注册时间<em class="iconDown"></em></div>
+				   								<div class="registerRecord" id="registerRecord">注册时间<em class="iconDown"></em></div>
 				   								<div class="accountStatus">开户状态</div>
 	   										</div>
 	   									</li>
@@ -582,7 +582,7 @@
 				   								<div class="yearProfit">年化利率</div>
 				   								<div class="loanVName">会员名</div>
 				   								<div class="userName">用户名</div>
-				   								<div class="lendingTime">放款时间<em class="iconDown"></em></div>
+				   								<div class="lendingTime" id="lendingTime">放款时间<em class="iconDown"></em></div>
 	   										</div>
 	   									</li>
 	   									<%-- <%for(int i=0;i<8;i++){%>
@@ -711,7 +711,7 @@
 				   								<div class="investuserName">用户名</div>
 				   								<div class="expectOrigionMoney">预期本金</div>
 				   								<div class="expectProfit">预期收益</div>
-				   								<div class="expectProfitTime">预期收益时间<em class="iconDown"></em></div>
+				   								<div class="expectProfitTime" id="expectProfitTime">预期收益时间<em class="iconDown"></em></div>
 	   										</div>
 	   									</li>
 	   									<%-- <%for(int i=0;i<8;i++){%>
@@ -857,7 +857,7 @@
 			   									<div class="userName">用户名</div>
 			   									<div class="repaymentPrincipal">本次还款本金</div>
 			   									<div class="InterestRepayment">本次还款利息</div>
-			   									<div class="repaymentTime">还款时间<em class="iconDown"></em></div>
+			   									<div class="repaymentTime" id="repaymentTime">还款时间<em class="iconDown"></em></div>
 			   									<div class="expectedRepaymentTime">预期还款时间</div>
 			   									<div class="overDue">是否逾期</div>
 	   										</div>

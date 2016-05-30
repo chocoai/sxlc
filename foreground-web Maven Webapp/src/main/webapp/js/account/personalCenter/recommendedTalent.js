@@ -542,8 +542,8 @@ $(function(){
 	});
 	//提奖统计导出excel
 	$("#inviteAwardexcel").on("click",function(){ 
-	 var startTime = $("#startDate").val();
-	 var endTime   = $("#endDate").val(); 
+	 var startTime = $("#startDate").val() == "请选择" ? "" : $("#startDate").val(); 
+     var endTime   = $("#endDate").val() == "请选择" ? "" : $("#endDate").val(); 
 	 var dateStarts = $(".chooseTime span.active").attr("data-time");
 	 var encrypt = new JSEncrypt();
 	 encrypt.setPublicKey(publickey);  

@@ -206,7 +206,7 @@ public class MyLoanReadDaoImpl extends SqlSessionDaoSupport implements IMyLoanRe
 	@Override
 	public MemberThirdAuthInfoEntity selectMemberIsOpenAutoPay(Map<String,Object> map) {
 		
-		return getSqlSession().selectOne("myLoanReadDaoImpl.selectMemberIsOpenAutoPay");
+		return getSqlSession().selectOne("myLoanReadDaoImpl.selectMemberIsOpenAutoPay",map);
 		
 	}
 

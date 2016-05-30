@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import product_p2p.kit.pageselect.PageEntity;
+import cn.membermng.model.Agreement;
 import cn.membermng.model.ExchangeRecords;
 import cn.membermng.model.Friends;
 import cn.membermng.model.IntegralGETRecord;
 import cn.membermng.model.MemberInfo;
+import cn.membermng.model.MemberThirdAuthInfo;
 import cn.membermng.model.MemberVouchers;
 import cn.membermng.model.MyPoint;
 import cn.membermng.model.MyRedPackage;
@@ -323,4 +325,39 @@ public interface IMemberReadDao {
 	* @throws
 	 */
 	public UntreatedMessageEntity loadUntreatedMessage(Map<String, Object> param);
+
+
+
+	/***
+	 * 根据邮箱地址获取数量
+	 * 
+	 * @author 李杰
+	 * @param email
+	 * @return
+	 * @date 2016-5-23 下午5:16:55
+	 */
+	public int countEmail(Map<String,Object> param);
+
+
+
+	
+	/***
+	 * 查看注册协议
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-23 下午8:32:23
+	 */
+	public Agreement agreement();
+
+
+	/***
+	 * 获取会员第三方账户设置状态
+	 * 
+	 * @author 李杰
+	 * @param param
+	 * @return
+	 * @date 2016-5-26 下午2:28:54
+	 */
+	public MemberThirdAuthInfo getAutoGiroStatu(Map<String, Object> param);
 }

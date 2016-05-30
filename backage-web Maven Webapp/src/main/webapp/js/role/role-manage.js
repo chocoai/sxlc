@@ -241,7 +241,7 @@ function manageAdd(title,type){
 		STAFF_NUM++;
 	}
 	document.getElementById("form-admin").reset();
-	validform5(".layui-layer-btn0","form-admin",true,3);
+	validform5(".layui-layer-btn0","form-admin",true,5);
 	layer.open({
 	    type: 1,
 	    area: ['950px', '550px'], //高宽
@@ -288,15 +288,23 @@ function manageMod(title,type){
 		layer.alert("请选择要处理的事务！",{icon:0});
 		return;
 	}
+	
+	if(rowdata[0].adminStatu==1){
+    	layer.alert("该管理员无效，不能修改！",{icon:0});
+		return;
+    }
 	$('#form-admin input').each(function(){	
 			$(this).val("");	
 	});
 	//获取管理员id
 	document.getElementById("form-admin").reset();
-	validform5(".layui-layer-btn0","form-admin",true,3);
+	validform5(".layui-layer-btn0","form-admin",true,5);
 	$("#addOrUpdate").val(1); //修改
 	$("#adminId").val(adminId);
-	$("input[name=userName]").val(obj.personalName).attr("disabled",true);
+	if(obj!=null && obj.personalName!=null){
+		$("input[name=userName]").val(obj.personalName);
+	}
+	$("input[name=userName]").attr("disabled",true);
 	$("input[name=adminName]").val(adminName).attr("disabled",true);
 	$("#adminName").val(adminName);
 	$("input[name=staffId]").val(staffId);
@@ -438,7 +446,7 @@ function stopOrStart(id,statu){
 						layer.alert("启用成功。",{icon:1});
 					}
 				  	layer.close(index);
-				  	setTimeout('location.reload()',500);
+				  	$('#tb-manage-in').DataTable().ajax.reload();
 				}else if(data == -1){
 					if(status==1){
 						alert("停用失败！");
@@ -576,6 +584,9 @@ function showAddAdmin(){
 	var name = "";
 	if(!isEmptyObject(rowdata[0])){ //判断是否选择
 		staffId=rowdata[0].id;
+		if(rowdata[0].baseInfo.personalName!= "undefined" && rowdata[0].baseInfo.personalName!=null){
+			name = rowdata[0].baseInfo.personalName;
+		}
 		name = rowdata[0].baseInfo.personalName;
 	}else{
 		layer.alert("请选择员工！",{icon:0});
@@ -622,8 +633,7 @@ function sumitAdmin(){
 	var adminRemark = $("#adminRemark").val();
 	var encrypt = new JSEncrypt();
 	encrypt.setPublicKey(publicKey_common);
-	
-	
+	var types = type;
 	staffId = encrypt.encrypt(staffId+"");
 	adminName = encrypt.encrypt(adminName);
 	adminPwd = encrypt.encrypt(adminPwd);
@@ -631,6 +641,7 @@ function sumitAdmin(){
 	adminId = encrypt.encrypt(adminId+"");
 	adminRole = encrypt.encrypt(adminRole+"");
 	adminRemark = encrypt.encrypt(adminRemark);
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/saveOrEditAdmin.do",
 		data:{
@@ -646,13 +657,15 @@ function sumitAdmin(){
 		cache:false,  
 		dataType:'json',  
 		success:function(data) { 
-			if(type == 0 ){
+			$(".layui-layer-btn0").removeClass("disabled");
+			if(types == 0 ){
 				if(data==0){
 					layer.alert("添加成功",{icon:1});
 					$(".layui-layer-btn1").click();
 					 /*var table = $('#staffListTb').DataTable();
 					 table.ajax.reload();*/
-				  	setTimeout('location.reload()',500);
+				  	//setTimeout('location.reload()',500);
+				  	$('#tb-manage-in').DataTable().ajax.reload();
 				}else if(data==-2){
 					layer.alert("此管理员名称已被使用！",{icon:2});  
 				}else if(data==-1){
@@ -663,7 +676,7 @@ function sumitAdmin(){
 				 $(".layui-layer-btn1").click();
 				/* var table = $('#staffListTb').DataTable();
 				 table.ajax.reload();*/
-				 setTimeout('location.reload()',500);
+				 $('#tb-manage-in').DataTable().ajax.reload();
 			}
 		},  
 		error : function() {  

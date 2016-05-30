@@ -10,7 +10,11 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
+import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 
+import cn.springmvc.dao.HandleIntegralRuleDao;
+import cn.springmvc.dao.SelectIntegralRuleDao;
 import cn.springmvc.dao.impl.HandleCreditorDaoImpl;
 import cn.springmvc.dao.impl.HandleIntegralRuleDaoImpl;
 import cn.springmvc.dao.impl.HandleOverdueDaoImpl;
@@ -39,10 +43,10 @@ import cn.springmvc.service.QuickRechargeFeeService;
 @Service("integralRuleServiceImpl")
 public class IntegralRuleServiceImpl implements IntegralRuleService {
 	@Resource(name="selectIntegralRuleDaoImpl")
-	private SelectIntegralRuleDaoImpl  selectIntegralRuleDaoImpl;
+	private SelectIntegralRuleDao selectIntegralRuleDao;
 
 	@Resource(name="handleIntegralRuleDaoImpl")
-	private HandleIntegralRuleDaoImpl  handleIntegralRuleDaoImpl;
+	private HandleIntegralRuleDao handleIntegralRuleDao;
 	@Resource(name="optRecordWriteDaoImpl")
 	private OptRecordWriteDaoImpl optRecordWriteDaoImpl;
 	/* * 
@@ -51,47 +55,57 @@ public class IntegralRuleServiceImpl implements IntegralRuleService {
 	 */
 	/* *  *  * @return * @see cn.springmvc.service.IntegralRuleService#findAllIntegralRule(java.util.Map) */
 	@Override
-	public List<IntegralRuleEntity> findAllIntegralRule(Map<String, Object> map) {
+	public List<IntegralRuleEntity> findAllIntegralRule(PageEntity entity) {
 		
 		// TODO Auto-generated method stub return null;
-		return selectIntegralRuleDaoImpl.findAllIntegralRule(map);
+		List<IntegralRuleEntity> list = selectIntegralRuleDao.findAllIntegralRule(entity);
+		PageUtil.ObjectToPage(entity, list);
+		return list;
 	}
 
 
 	@Override
 	public int updateRegPointsIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
 		entity.setsDetail("修改邀请注册积分规则 :"+map.toString());
-		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		//optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
-		return handleIntegralRuleDaoImpl.updateRegPointsIntegralRule(map);
+		return handleIntegralRuleDao.updateRegPointsIntegralRule(map);
 	}
 
 
 	@Override
 	public int deleteIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
 		entity.setsDetail("根据id删除积分规则 :"+map.toString());
-		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		//optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
-		return handleIntegralRuleDaoImpl.deleteIntegralRule(map);
+		return handleIntegralRuleDao.deleteIntegralRule(map);
 	}
 
 
 	@Override
 	public int insetRegPointsIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
 		entity.setsDetail("添加  邀请注册积分规则 :"+map.toString());
-		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		//optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
-		return handleIntegralRuleDaoImpl.insetRegPointsIntegralRule(map);
+		return handleIntegralRuleDao.insetRegPointsIntegralRule(map);
 	}
 
 
 	@Override
 	public int insertIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
 		entity.setsDetail("添加 项目投资积分membertype 0:推荐达人  1:理财顾问 2:会员 ;type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 "+map.toString());
-		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		//optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
-		return handleIntegralRuleDaoImpl.insertIntegralRule(map);
+		return handleIntegralRuleDao.insertIntegralRule(map);
 	}
 
+	@Override
+	public int updateIntegralRule(int membertype, int type, long amount,
+			long points, long id,InsertAdminLogEntity entity,String[] sIpInfo) {
+		entity.setsDetail("修改 项目投资积分");
+		//optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		// TODO Auto-generated method stub return 0;
+		return handleIntegralRuleDao.updateIntegralRule(membertype, type, amount, points, id);
+	}
 }
 

@@ -27,30 +27,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="css/upload.css" />
 	<!-- 私用css -->
 	<link rel="stylesheet" href="css/frontconfig/fc-safety.css" type="text/css"/>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
+	
+	
 	<script type="text/javascript">
-	var on_off =false; //停用启用权限标记
-	<%
-		if(operations.size()>0){
-			for(int j=0;j<operations.size();j++){
-				if(operations.get(j).getOptID()==52102){
-	%>
-		   		on_off =true;
-	<%
+		var on_off =false; //停用启用权限标记
+		<%
+			if(operations.size()>0){
+				for(int j=0;j<operations.size();j++){
+					if(operations.get(j).getOptID()==52102){
+		%>
+			   		on_off =true;
+		<%
+					}
 				}
 			}
-		}
-	%>
-	
-</script>
+		%>
+	</script>
 </head>
 <body class="nav-md">
 	<div class="container body">
 		<!-- 头部 -->
 		<jsp:include page="../common/cm-top.jsp">
-		<jsp:param value="5" name="top_menu_index"/>
-		</jsp:include>		
+			<jsp:param value="5" name="_index_m1"/>
+		</jsp:include>
+		
 		<!-- 左侧菜单 -->
-		<jsp:include page="../common/cm-frontconfig.jsp"></jsp:include>
+		<jsp:include page="../common/cm-frontconfig.jsp">
+			<jsp:param value="521" name="_index_m2"/>
+			<jsp:param value="" name="_index_m3"/>
+		</jsp:include>
 		<!-- 主要内容 -->
 		<div class="right_col" role="main">	
 			<!-- 地址导航 -->
@@ -104,11 +112,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="modify w-content" >
 		<form method="post" action="javascript:modifySafe()" id="dataForm">
 		<input type="hidden" name="lId" id="lId"/>
+		<input type="hidden" id="hostPath" value="${ImgProfix}"/>
 		<table>
 			<tr>
 				<td class="tt"><label>保障标题：</label></td>
 				<td class="con">
-					<input type="text" class="" datatype="unNormal" id="title" name="title" placeholder="保障标题" value="" />
+					<input type="text" class="" datatype="unNormal" maxlength="25" id="title" name="title" placeholder="保障标题" value="" />
 				</td>
 			</tr>
 			<tr>
@@ -148,11 +157,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
-	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
-	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
-	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
 	<script type="text/javascript" src="js/exp-upload.js"></script>	
-	<script type="text/javascript" src="js/valid.js"></script>	
 	<!-- 私用js -->
 
 	<script type="text/javascript" src="js/frontconfig/fc-safe.js"></script>

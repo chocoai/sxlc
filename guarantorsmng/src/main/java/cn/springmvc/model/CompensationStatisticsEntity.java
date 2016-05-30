@@ -14,6 +14,7 @@ public class CompensationStatisticsEntity {
 	private int numberOfSuccessful;//成功担保笔数
 	private int successfulCompensation;//成功代偿笔数
 	private int compensatoryPaymentNumber;//代偿成功回款笔数
+	private long sxfee;//担保手续费收取
 	public long getTotalCompensationAmount() {
 		return totalCompensationAmount;
 	}
@@ -49,6 +50,12 @@ public class CompensationStatisticsEntity {
 	}
 	public void setCompensatoryPaymentNumber(int compensatoryPaymentNumber) {
 		this.compensatoryPaymentNumber = compensatoryPaymentNumber;
+	}
+	public long getSxfee() {
+		return sxfee;
+	}
+	public void setSxfee(long sxfee) {
+		this.sxfee = sxfee;
 	}
 	
 }

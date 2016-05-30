@@ -59,14 +59,17 @@
 										</label>
 									</li>
 									{{/each}}
-								</script>	
 									<li class="addBank cashBankLiSolid">
 										<img class="cashImgSign" alt="这是图片" src="resource/img/account/fundManagement/zjgl_plus_03.png">
 										<span><a href="personalCenter/bankCard.html">添加银行卡</a></span>
 									</li>
+								</script>	
 								</ul>
 							</div>
-							<form id="tiXian" action="loanWithdraw/loanWithdraw.html" method="post"  >
+							<input class="feeType" type="hidden">
+							<input class="fee" type="hidden">
+							<input class="feePingtai" type="hidden">
+							<form id="tiXian" action="loanWithdraw/loanWithdraw.html" method="post"   target="_blank">
 							<div class="cashDivDistance cashClear">
 								<label class="cashLabel">可提现金额：</label>
 	  							<span class="cashSpan cashAllFont moneyFormat userBalance ">0</span>
@@ -78,7 +81,7 @@
 							</div>
 							<div class="cashDivDistance">
 								<label class="cashLabel ">手续费：</label>
-								<span class="cashAllFont cashAllFont moneyFormat moneyFormat1">2</span>
+								<span class="cashAllFont cashAllFont moneyFormat moneyFormat1 feeAmount">2</span>
 	  							<span>元</span>
 							</div>
 							<div class="cashDivDistance cashFontStyle">

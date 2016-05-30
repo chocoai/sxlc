@@ -27,7 +27,7 @@ var RE = {
 	zbank:			/^[\u4E00-\u9FA5\uf900-\ufa2d]{4,50}$/,//开户支行
 	zbankNum:		/^\d{16,19}$/,//银行卡号,16-19位
 	cartNumber:		/^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/,//车牌号：省（汉字）+市（A-Z）+组合（数字、字母）
-	amcountM:		/^[1-9]([0-9]{0,26})(\.[0-9]{1,2})?$/, //金额
+	amcountM:		/^(([1-9]\d{0,9})|0)(\.\d{1,2})?$/, //金额
 	//zphone:			/^(^13\d{9}$)|(^14)[5,7]\d{8}$|(^15[0,1,2,3,5,6,7,8,9]\d{8}$)|(^17)[6,7,8]\d{8}$|(^18\d{9}$)/, //最新手机号验证，目前手机验证支持中国大陆地区13*、14*、15*、17*、18*号段；不支持小灵通号码。
 	zphone:			/^1\d{10}$/, //手机号验证，只验证11位数字
 	tellPhone:		/^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$|(^(13[0-9]|15[0|3|6|7|8|9]|18[8|9])\d{8}$)/,//电话
@@ -255,10 +255,10 @@ var lognameOrPhone = function(gets,obj,curform,datatype){
 		return "用户名不可为空";
 	}
 	if(!RE.lognameOrPhone.test(gets)){  
-	    return "请输入6~16位的数字、字母或汉字的两两组合或11位手机号码";
+	    return "请输入正确的用户名或11位手机号码";
 	}
 	return true;
-}
+};
 
 var logname = function(gets,obj,curform,datatype) {
 				var value = obj.attr("lang");
@@ -270,6 +270,33 @@ var logname = function(gets,obj,curform,datatype) {
 				}
 				return true;
 		};
+		
+//	
+//var lognameAndAjax = function(gets,obj,curform,datatype){
+//	var value = obj.attr("lang");
+//	if(!gets || gets == value){
+//		return "用户名不可为空";
+//	}
+//	if(!RE.logName.test(gets)){  
+//	    return "请输入6~16位的数字、字母或汉字的两两组合";
+//	}
+//	var flag;
+//	NetUtil.ajaxAsyncFalse(
+//			"checkName.html",
+//			{param:gets},
+//			function(r){
+//				console.log(1)
+//				var data = JSON.parse(r);
+//				if (data.status == "y"){
+//					flag = true;
+//				}else{
+//					flag = data.info
+//				}
+//			}
+//		)
+//	return flag;
+//}
+		
 var zbank = function(gets,obj,curform,datatype) {
 			var value = obj.attr("lang");
 			if(!gets || gets == value){
@@ -306,7 +333,7 @@ var regpass = function(gets,obj,curform,datatype) {
 					return "密码不可为空";
 				}
 				if(!RE.logPass.test(gets)){  
-			    	return "请输入6~16位的数字和字母";  
+			    	return "请输入6~16位的数字和字母的组合";  
 				}
 				return true;
 			};
@@ -326,7 +353,7 @@ var zPhone = function (gets,obj,curform,datatype) {
 					return "手机号不可为空";
 				}
 				if(!RE.zphone.test(gets)){  
-				    return "11位手机号";  
+				    return "请输入正确的11位手机号";  
 				}
 				return true;
 		};
@@ -374,7 +401,7 @@ var entername = function(gets,obj,curform,datatype) {
 var reMarks = function(gets,obj,curform,datatype) {
 	var value = obj.attr("lang");
 	if(!gets || gets == value){
-		return "请输入内容"
+		return "请输入内容";
 	}
 	if(!RE.remarks.test(gets)) {
 		return "请输入50字以内除特殊字符以外的任意字符";
@@ -386,7 +413,7 @@ var reMarks = function(gets,obj,curform,datatype) {
 var titleRemarks = function(gets,obj,curform,datatype) {
 	var value = obj.attr("lang");
 	if(!gets || gets == value){
-		return "请输入内容"
+		return "请输入内容";
 	}
 	if(!RE.titleRemarks.test(gets)) {
 		return "请输入40字以内除特殊字符以外的任意字符";
@@ -418,7 +445,7 @@ var enteraddr = function(gets,obj,curform,datatype) {
 var rolename = function(gets,obj,curform,datatype) {
 	var value = obj.attr("lang");
 	if(!gets || gets == value){
-		return "角色名称不能为空"
+		return "角色名称不能为空";
 	}
 	if(!RE.roleName.test(gets)) {
 		return "1~10个中文";
@@ -450,7 +477,7 @@ var unNormal = function(gets,obj,curform,datatype) {
 var hundredNum = function(gets,obj,curform,datatype) {
 	var value = obj.attr("lang");
 	if(!gets || gets == value){
-		return "请输入信息";
+		return "请填写信息";
 	}
 	if(!RE.hundrednum.test(gets)) {
 		return "0.00~100.00之间";
@@ -461,7 +488,7 @@ var hundredNum = function(gets,obj,curform,datatype) {
 var qq = function(gets,obj,curform,datatype) {
 	var value = obj.attr("lang");
 	if(!gets || gets == value){
-		return "请输入信息";
+		return "请填写信息";
 	}
 	if(!RE.QQ.test(gets)) {
 		return "格式不正确";
@@ -472,17 +499,54 @@ var qq = function(gets,obj,curform,datatype) {
 var acountM = function(gets,obj,curform,datatype) {
 	var value = obj.attr("lang");
 	if(!gets || gets == value){
-		return "请输入信息";
+		return "请填写信息";
 	}
 	if(!RE.amcountM.test(gets)) {
 		return "金额格式不正确";
 	}
 	return true;
 };
+var acountNum = function(gets,obj,curform,datatype) {
+	var value = obj.attr("lang");
+	if(!gets || gets == value){
+		return "请填写信息";
+	}
+	if(!RE.amcountM.test(gets)) {
+		return "期限格式不正确";
+	}
+	return true;
+};
+
+var acountNum1 = function(gets,obj,curform,datatype) {
+	var value = obj.attr("lang");
+	if(!gets || gets == value){
+		return "请填写信息";
+	}
+	if(!RE.amcountM.test(gets)) {
+		return "格式不正确";
+	}
+	return true;
+};
+
+//有范围的70~130de 
+var acountM1 = function(gets,obj,curform,datatype) {
+	var value = obj.attr("lang");
+	if(!gets || gets == value){
+		return "请填写信息";
+	}
+	if(!RE.amcountM.test(gets)) {
+		return "金额格式不正确";
+	}
+	if(!(gets>=70&&gets<=130)){
+		return "范围70~130"
+	}
+	return true;
+};
+
 var tell = function(gets,obj,curform,datatype) {
 	var value = obj.attr("lang");
 	if(!gets || gets == value){
-		return "请输入信息";
+		return "请填写信息";
 	}
 	if(!RE.tellPhone.test(gets)) {
 		return "例如：021-40000000";
@@ -492,7 +556,7 @@ var tell = function(gets,obj,curform,datatype) {
 var inviteCode = function (gets,obj,curform,datatype) {
 	var value = obj.attr("lang");
 	if(gets != "" && gets != "请输入邀请码" && !RE.inviteCode.test(gets)){  
-	    return "邀请码为12位数字或是不存在";  
+	    return "请输入长度为12的正确邀请码";  
 	}
 	return true;
 };
@@ -574,7 +638,10 @@ var extdatatype = {
 	"accountOpen":accountOpen,
 	"cartNumber":cartNumber,
 	"businessNum":businessNum,
-	"lognameOrPhone":lognameOrPhone
+	"lognameOrPhone":lognameOrPhone,
+	"acountM1":acountM1,
+	"acountNum":acountNum,
+	"acountNum1":acountNum1
 };
 
 
@@ -599,6 +666,7 @@ function validform5(btn,formId,postonce,tipsType) {
 		tiptype:tipsType,//提示信息类型
 		postonce:postonce,//防止重复提交
 		datatype:{
+			"amcountM":amcountM,
 			"logname":logname,
 			"regpass":regpass,
 			"imgcode":imgcode,

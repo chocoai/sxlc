@@ -33,7 +33,7 @@
 			   				<ul class="inputArea">
 			   					<li class="inputList">
 			   						<div class="mustLabel"><span>到期日：</span></div>
-			   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker()" type="text" lang="请选择到期日"/>
+			   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker({minDate:'%y-%M-{%d+1}',readOnly:true})" type="text"/>
 			   					</li>
 			   					<li class="inputList">
 				   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>

@@ -60,6 +60,7 @@ function submitPlatCofig(){
 		}
 	});
 	var checkList = encrypt.encrypt((list));
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/front/saveFrontConfig.do",
 		data:{
@@ -74,6 +75,7 @@ function submitPlatCofig(){
 			}else {
 				layer.alert("保存失败！",{icon:2});  
 			}
+			$(".layui-layer-btn0").removeClass("disabled");
 		},  
 		error : function() {  
 			layer.alert("服务器异常",{icon:2});  

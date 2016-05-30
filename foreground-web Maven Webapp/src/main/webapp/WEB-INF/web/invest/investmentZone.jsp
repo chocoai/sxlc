@@ -19,6 +19,9 @@
     <jsp:include page="../common/top.jsp"></jsp:include>
    	<jsp:include page="../common/mainPageTop.jsp"></jsp:include>
 	<script type="text/javascript" src="js/common/template.js"></script>
+	<script  type="text/javascript" >
+		var imgProfix = '${imgProfix}';
+	</script>
     <!-- 此处加入代码 -->
     <!--伍成然2016-3-28-->
     <div class="main">
@@ -83,10 +86,12 @@
 					</div>
 					<div class="tags-list-type tags-list">
 						<div class="left-title">借款类型:</div>
-						<label class="active"><input type="radio" name="loanType" value="-1" checked>全部</label>
-						<c:forEach items="${projectBaseInfos }" var="pb">
-							<label><input type="radio" name="loanType" value="${pb.id }">${pb.projectName }</label>
-						</c:forEach>
+						<div style="width:380px">
+							<label class="active"><input type="radio" name="loanType" value="-1" checked>全部</label>
+							<c:forEach items="${projectBaseInfos }" var="pb">
+								<label><input type="radio" name="loanType" value="${pb.id }">${pb.projectName }</label>
+							</c:forEach>
+						</div>
 					</div>
 					<div class="tags-list-rate tags-list">
 						<div class="left-title">年化利率:</div>
@@ -142,7 +147,7 @@
 				<li class="inv-li">
 					<div class="inv-head clearfix">
 						<div class="inv-head-left">
-							<img src={{data.picIcon}}>
+							<img src=${imgProfix}{{data.picIcon}} style="width:20px;height:20px">
 							<a href="invest/investmentDetail/{{data.applyId}}.html">{{data.projectBaseInfoentity.projectTitle}}</a>
 							<span>【{{data.projectNo}}】</span>
 						</div>
@@ -151,9 +156,9 @@
 							{{data.projectBaseInfoentity.replayWays}}
 						</div>
 					</div>
-					<div class="inv-info">
+					<div class="inv-info clearfix">
 						<div class="photo">
-							<img src={{data.imageUrl}} class="img">
+							<img src=${imgProfix}{{data.imageUrl}} class="img" style="width:210px;height:120px">
 						</div>
 						<div class="inv-rate">
 							<h1>{{data.projectBaseInfoentity.yearRates}}<span>%</span></h1>
@@ -192,7 +197,7 @@
 							{{if data.investStatu == "1"}}
 								<div class="pro-fault"></div>
 								<div class="progress">
-								<span class="progress_totle">100%</span>
+								<span class="progress_totle">{{data.investRates}}%</span>
 								<div class="barbox"> 
 									<div class="barline"></div> 
 								</div>	
@@ -202,7 +207,7 @@
 							{{if data.investStatu == "2"}}
 								<div class="pro-all"></div>
 								<div class="progress">
-								<span class="progress_totle">100%</span>
+								<span class="progress_totle">{{data.investRates}}%</span>
 								<div class="barbox"> 
 									<div class="barline"></div> 
 								</div>	
@@ -212,7 +217,7 @@
 							{{if data.investStatu == "3"}}
 								<div class="pro-repaying"></div>
 								<div class="progress">
-								<span class="progress_totle">100%</span>
+								<span class="progress_totle">{{data.investRates}}%</span>
 								<div class="barbox"> 
 									<div class="barline"></div> 
 								</div>	
@@ -222,7 +227,7 @@
 							{{if data.investStatu == "4"}}
 								<div class="pro-finish"></div>
 								<div class="progress">
-								<span class="progress_totle">100%</span>
+								<span class="progress_totle">{{data.investRates}}%</span>
 								<div class="barbox"> 
 									<div class="barline"></div> 
 								</div>	
@@ -251,7 +256,7 @@
 		<ul class="invest-list" id="invest-list">
 			
 		</ul>
-		<div id="pager"></div>	
+		<div id="pager6"></div>	
     </div><!--main  -->
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
    	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>

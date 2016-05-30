@@ -12,7 +12,7 @@
  %>
 <title>网贷转账 - 乾多多</title>
 <script type="text/javascript">
-	window.onload=function(){document.form1.submit();}
+		window.onload=function(){document.form1.submit();}
 </script>
 </head>
 <body>

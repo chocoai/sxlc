@@ -39,11 +39,11 @@ String content = request.getParameter("content");
 					</div>
 					<div class="fieldsetitem">
 						<span>密码：</span>
-						<input id="pwd" type="password" class="password" placeholder="" datatype="logPass"/>
+						<input id="pwd" type="password" class="password" placeholder="" datatype="regpass"/>
 					</div>
 					<div class="fieldsetitem">
 						<span>确认密码：</span>
-						<input type="password" class="" placeholder="" datatype="logPass"/>
+						<input type="password" class="" placeholder="" datatype="regpass"/>
 					</div>
 					<div class="fieldsetitem">
 						<span class="remark">备注：</span>
@@ -69,11 +69,11 @@ String content = request.getParameter("content");
 					</div>
 					<div class="fieldsetitem">
 						<span>密码：</span>
-						<input id="mpwd" type="password" class="password" placeholder="" datatype="logPass"/>
+						<input id="mpwd" type="password" class="password" placeholder="" datatype="regpass"/>
 					</div>
 					<div class="fieldsetitem">
 						<span>确认密码：</span>
-						<input id="mrpwd" type="password" class="username" placeholder="" datatype="logPass"/>
+						<input id="mrpwd" type="password" class="username" placeholder="" datatype="regpass"/>
 					</div>
 					<div class="fieldsetitem">
 						<span class="remark">备注：</span>
@@ -97,8 +97,8 @@ String content = request.getParameter("content");
 	</script>
 	<script type="text/javascript">
 		$(function(){
-			validform5("layui-layer-btn0","manageAdmainAdd",false,"3");
-			validform5("layui-layer-btn0","manageAdmainMod",false,"3");
+			validform5("layui-layer-btn0","manageAdmainAdd",false,"5");
+			validform5("layui-layer-btn0","manageAdmainMod",false,"5");
 		});
 	</script>
 

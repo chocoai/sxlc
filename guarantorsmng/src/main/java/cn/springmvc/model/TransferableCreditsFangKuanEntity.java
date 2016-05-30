@@ -21,6 +21,7 @@ public class TransferableCreditsFangKuanEntity {
 	private int  transferzk;//转让折扣
 	private String  transferzks;//转让折扣
 	private long investSe;//投资进度
+	private String investSes;//投资进度
 	private String invEndtime;//投资结束时间
 	private int status;//项目状态
 	private String statusName;//项目状态
@@ -55,7 +56,7 @@ public class TransferableCreditsFangKuanEntity {
 	}
 	public void setMount(long mount) {
 		this.mount = mount;
-		this.mounts = IntegerAndString.LongToString(mount);
+		this.mounts = IntegerAndString.LongToString(mount/1000000);
 	}
 	public long getTransferMount() {
 		return transferMount;
@@ -76,6 +77,7 @@ public class TransferableCreditsFangKuanEntity {
 	}
 	public void setInvestSe(long investSe) {
 		this.investSe = investSe;
+		this.setInvestSes(IntegerAndString.LongToString(investSe));
 	}
 	public String getInvEndtime() {
 		return invEndtime;
@@ -124,6 +126,12 @@ public class TransferableCreditsFangKuanEntity {
 	}
 	public void setTransferzks(String transferzks) {
 		this.transferzks = transferzks;
+	}
+	public String getInvestSes() {
+		return investSes;
+	}
+	public void setInvestSes(String investSes) {
+		this.investSes = investSes;
 	}
 	
 }

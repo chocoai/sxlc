@@ -1,5 +1,7 @@
 package cn.springmvc.dao.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Repository;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
 
-import cn.springmvc.Util.StringUtils;
+import cn.organization.util.StringUtils;
 import cn.springmvc.dao.IStaffInfoDao;
 import cn.springmvc.model.PostInfo;
 import cn.springmvc.model.StaffInfo;
@@ -32,7 +34,9 @@ public class StaffInfoDaoImpl extends SqlSessionDaoSupport implements IStaffInfo
 		
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		Long id = generatorUtil.GetId();
-		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = info.getStartDate();
+		String StartDate = dateFormat.format(date == null ? new Date():date);
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("sKey", 				sKey);
 		param.put("id", 				id);
@@ -50,7 +54,7 @@ public class StaffInfoDaoImpl extends SqlSessionDaoSupport implements IStaffInfo
 		param.put("emerName", 			info.getEmerName());
 		param.put("emerPhone", 			info.getEmerPhone());
 		param.put("staffNo", 			"123456");
-		param.put("startDate", 			StringUtils.fromtDate(null, info.getStartDate()));
+		param.put("startDate", 			StartDate);
 		param.put("endDate", 			null);
 		param.put("result", 			1);
 		
@@ -75,9 +79,14 @@ public class StaffInfoDaoImpl extends SqlSessionDaoSupport implements IStaffInfo
 	
 	@Override
 	public int editStaff(StaffInfo info,String deptId,String postId,String joinDate,String sKey) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = info.getStartDate();
+		String StartDate = dateFormat.format(date == null ? new Date():date);
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("sKey", sKey);
 		param.put("id", info.getId());
+		param.put("personalName", info.getBaseInfo().getPersonalName());
+		param.put("sexId", info.getBaseInfo().getSexId());
 		param.put("personalName", info.getBaseInfo().getPersonalName());
 		param.put("personalIdCard", info.getBaseInfo().getPersonalIDCard());
 		param.put("nationId", info.getBaseInfo().getNationId());
@@ -91,7 +100,7 @@ public class StaffInfoDaoImpl extends SqlSessionDaoSupport implements IStaffInfo
 		param.put("emerName", info.getEmerName());
 		param.put("emerPhone", info.getEmerPhone());
 		param.put("staffNo", info.getStaffNo());
-		param.put("startDate", StringUtils.fromtDate(null, info.getStartDate()));
+		param.put("startDate", StartDate);
 		param.put("endDate", null);
 		
 		param.put("deptId", 			deptId);

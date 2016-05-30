@@ -34,6 +34,8 @@ public class CheckParamFilter implements Filter{
 		exitRout.add("applyRequest");								//
 		exitRout.add("backURL");								    //第三方回调 页面返回地址  不拦截
 		exitRout.add("backServerURL");								//第三方回调 服务器返回地址  不拦截
+		exitRout.add("pbackURL");									//担保机构开户
+		exitRout.add("pbackServerURL");									//担保机构开户
 	}
 
 	@Override

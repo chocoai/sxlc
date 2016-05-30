@@ -1,4 +1,4 @@
-/*Îé³ÉÈ»2016-3-27  */
+/*ï¿½ï¿½ï¿½È»2016-3-27  */
 @charset "UTF-8";
 .main{
 	width:1500px;
@@ -8,9 +8,9 @@
 	background-position: 0 4px;
 	padding-top:50px;
 }
-.main a:link {color:#72c0f3;text-decoration:none;}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.main a:visited {color:#72c0f3}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.main a:hover {text-decoration:underline}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
+.main a:link {color:#72c0f3;text-decoration:none;}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.main a:visited {color:#72c0f3}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.main a:hover {text-decoration:underline}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
 .register-box{
 	width:855px;
 	height:655px;
@@ -18,8 +18,8 @@
 	margin:0 auto;
 	padding:0 40px;
 }
-/*µ¥Ñ¡¿ò  */
-/*  È¥µôËùÓÐinput¿òµÄoutline   */
+/*ï¿½ï¿½Ñ¡ï¿½ï¿½  */
+/*  È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½inputï¿½ï¿½ï¿½outline   */
 input{
 	outline:none;
 }
@@ -68,13 +68,13 @@ input{
 .register-box .activeUp{
 	display:block;
 }
-/*µ¥Ñ¡¿ò½áÊø  */
+/*ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½  */
 .rlink{
 	color:#565656;
 	font-size:16px;
 	float:right;
 }
-/*ÊäÈë¿ò×é  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
 .input-group{
 	font-size:14px;
 	margin-top:10px;
@@ -110,6 +110,7 @@ input{
 	border:1px solid #ddd;
 	font-size:14px;
 	vertical-align:top;
+	float: left;/* 0523 */
 }
 .get-tel-check{
 	width:100px;
@@ -122,11 +123,14 @@ input{
 	color:#191818;
 	font-size:14px;
 	cursor:pointer;
+	margin-right: 5px;
 }
 .input-group img{
 	width:100px;
 	height:40px;
 	margin-left:30px;
+	float: left;
+	margin-right: 9px;/* 0523 */
 }
 .checkbox-link{
 	margin-left:150px;
@@ -163,7 +167,7 @@ input{
 	bottom:0;
 	right:-42px;
 }
-/*ÃÜÂë¿É¼û²»¿É¼û  */
+/*ï¿½ï¿½ï¿½ï¿½É¼ï¿½É¼ï¿½  */
 .inputPassword,
 .inputPassword2{
 	position:relative;
@@ -191,7 +195,7 @@ input{
 .inputPassword .show{
 	display:block;
 }
-/*¼Ç×¡Ìõ¿òµ¥Ñ¡¿òÑùÊ½  */
+/*ï¿½ï¿½×¡ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½Ê½  */
 .checkBox{
 	float: left;
 	color:#1c1c1c;
@@ -223,7 +227,7 @@ input{
 	display:inline-block;
 	margin:10px 0;
 }
-/* 2016-04-06 ñã¸£ÐÇ  ÃÜÂë¿òµÄÌáÊ¾spanÄ£Äâ*/
+/* 2016-04-06 ï¿½ã¸£ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾spanÄ£ï¿½ï¿½*/
 .hint{
 	position:absolute;
 	top: 19px;
@@ -294,4 +298,7 @@ input{
 .disabled{
 	pointer-events:none;
 	opacity:0.5;
+}
+.addXY{
+	padding:10px 20px;
 }

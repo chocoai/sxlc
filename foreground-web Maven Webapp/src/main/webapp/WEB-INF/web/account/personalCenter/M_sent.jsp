@@ -11,6 +11,9 @@
 	<base href="<%=basePath%>">
     <title>站内信</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/mail.css">
 	<link rel="stylesheet" href="plugs/pager/pager_def.css" type="text/css">
@@ -27,7 +30,7 @@
    				<!-- 在此处写入代码 -->
    					<div class="th" onselectstart="return false">
    						<span class="mail" onclick="window.location.href='personalCenter/mail.html'">收件箱</span>
-   						<span class="thClick mail">发件箱</span>
+   						<span class="thClick mail" >发件箱</span>
    						<a class="write" href="personalCenter/M_write.html">写信息</a>
    					</div>
    					<!-- 发件箱   -->
@@ -42,90 +45,24 @@
 								<div class="title">标题</div>
 								<div class="time">时间</div>
 							</div>
-							<ul class="messageList">
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">理财达人张三</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-14</div>
-								</li>
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">爱理财的乖宝宝</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-13</div>
-								</li>
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">理财达人赵四</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-14</div>
-								</li>
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">理财达人王五</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-14</div>
-								</li>
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">理财达人王五</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-14</div>
-								</li>
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">理财达人王五</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-14</div>
-								</li>
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">理财达人王五</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-14</div>
-								</li>
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">理财达人王五</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-14</div>
-								</li>
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">理财达人王五</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-14</div>
-								</li>
-								<li class="messageLi">
-									<div class="messageBtn">
-										<label class="selectLi" onselectstart="return false"></label><input class="checkbox" value="0">
-									</div>
-									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">理财达人王五</div>
-									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html'">一般人我不告诉他哦！</div>
-									<div class="timeDetail">2016-01-14</div>
-								</li>
+							<ul class="messageList" id="send_list_ul">
+								
+								
 							</ul>
+							<script id="send_list" type="text/html">
+								{{each results as info index}}
+								<li class="messageLi">
+									<div class="messageBtn">
+										<label class="selectLi" onselectstart="return false" letterId="{{info.letterID}}"></label><input class="checkbox" value="0">
+									</div>
+									<div class="senderDetail"  onclick="window.location='personalCenter/M_sentDetail.html?start={{info.letterID}}'">{{info.membername}}</div>
+									<div class="titleDetail"  onclick="window.location='personalCenter/M_sentDetail.html?start={{info.letterID}}'">{{info.title}}</div>
+									<div class="timeDetail">{{info.sendDate}}</div>
+								</li>
+								{{/each}}
+								<li class="page"><div id="pager1"></div></li>
+   								</script>
    						</div>
-   						<div id="pager1"></div>
    					</div>
    				</div>
    			</div>
@@ -134,6 +71,6 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" src="js/account/personalCenter/mail.js"></script>
+	<script type="text/javascript" src="js/account/personalCenter/mail_send.js"></script>
 </body>
 </html>

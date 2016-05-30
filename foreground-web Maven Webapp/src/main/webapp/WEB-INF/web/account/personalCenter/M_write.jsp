@@ -11,6 +11,9 @@
 	<base href="<%=basePath%>">
     <title>写信息</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/mail.css">
 </head>
@@ -28,11 +31,11 @@
 	   					<span>写信息</span>
 	   					<a class="back" href="javascript:history.back();">返回</a>
 	   				</div>
-	   				<form id="receiveDetail">
+	   				<form id="sendMail">
 		   				<div class="writeDetail">
 		   					<div class="resiveDiv">
 		   						<label>收件人：</label>
-		   						<input class="resiver" type="text" datatype="email" lang="请输入收件人邮箱" maxlength="30">
+		   						<input id="recName" class="resiver" type="text" datatype="lognameOrPhone" lang="请输入收件人登录名" maxlength="30">
 		   					</div>
 		   					<div class="resiveDiv">
 		   						<label>标题：</label>
@@ -42,13 +45,13 @@
 		   					<div class="resiveDiv">
 		   						<label>正文：</label>
 		   						<div id="resiverText" maxlength="200"></div>
-		   						<span class="float">200/200</span>
+		   						<!-- <span class="float">200/200</span> -->
 		   					</div>
 		   					<div class="resiveDiv codeDiv">
 		   						<label>验证码：</label>
 		   						<div class="phoneCode">
-		   							<input class="resiverCode code" datatype="imgcode" type="text">
-		   							<img class="codeImg" src="resource/img/account/personalCenter/grzx_47.png" >
+		   							<input id="imgCode" class="resiverCode code" datatype="imgcode" type="text">
+		   							<img class="codeImg" src="authImage.html?type=2" >
 		   						</div>
 		   					</div>
 		   					<div class="btn sentSubmit">发送</div>
@@ -60,19 +63,11 @@
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" src="js/account/personalCenter/mail.js"></script>
-	
-	
+	<script type="text/javascript" src="js/account/personalCenter/mail_write.js"></script>
 	
 	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
 	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
 	<!-- 私用js -->
-	<script type="text/javascript">
-		$(function(){
-		//编辑器实例化
-			var ue1 = UE.getEditor('resiverText');
-		});
-	</script>
 </body>
 </html>

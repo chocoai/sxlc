@@ -48,8 +48,18 @@ public class CheckParamFilter implements Filter{
 		exitRout.add("setNewPassWord");								//设置新密码
 		exitRout.add("memberInvestmentPage");						//項目投資返回
 		exitRout.add("memberInvestmentvoid");						//項目投資返回
-		exitRout.add("ReplayCallBackReturn");							//項目还款返回
-		exitRout.add("ReplayCallBackNotify");							//項目还款返回
+		exitRout.add("ReplayCallBackReturn");						//項目还款返回
+		exitRout.add("ReplayCallBackNotify");						//項目还款返回
+		exitRout.add("buyVipCallBackPage");							//VIP购买转账回调
+		exitRout.add("buyVipCallBack");								//VIP购买转账回调
+
+		exitRout.add("friendTransferReturn"); 						//好友转账回调页面
+		exitRout.add("friendTransferNotify");							//好友转账回调接口
+		exitRout.add("loanWithdrawNotify");							//提现回调
+		exitRout.add("loanWithdrawReturn");							//提现回调
+
+		exitRout.add("loadGainCalculator");							//收益计算器
+
 	}
 
 	@Override

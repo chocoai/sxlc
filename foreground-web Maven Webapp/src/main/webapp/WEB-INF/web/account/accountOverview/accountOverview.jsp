@@ -48,12 +48,12 @@
 	   								</div> -->
 	   							</div>
 	   							<div class="secondaryTitle">
-	   								<div class="totalRecharge">累计充值<span class="moneyFormat">1000</span></div>
+	   								<div class="totalRecharge">累计充值<span class="moneyFormat">0</span></div>
 	   								<div class="totalWithdrawals">累计提现<span class="moneyFormat">0</span></div>
 	   								<div class="secondaryTitleOperate">
-	   									<div class="btn rechargeBtn" onselectstart="return false" onclick="window.location='fundManagement/recharge.html';">充值</div>
-		   								<div class="btn withdrawalsBtn" onselectstart="return false" onclick="window.location='fundManagement/cash.html';">提现</div>
-		   								<div class="btn friendTransfer" onselectstart="return false" onclick="window.location='personalCenter/friendManagement.html';">好友转账</div>
+	   									<div class="btn rechargeBtn" onselectstart="return false">充值</div>
+		   								<div class="btn withdrawalsBtn" onselectstart="return false">提现</div>
+		   								<div class="btn friendTransfer" onselectstart="return false">好友转账</div>
 	   								</div>
 	   								<div class="secondaryTitleInfo">
 	   									<span class="secondarySharp"></span>
@@ -71,8 +71,6 @@
 										                echarts: '<%=basePath%>/plugs/dist'
 										            }
 										        });
-										        
-										       
 								            </script>
 											</div>
 											<div class="secondaryTitleInfoMiddle">
@@ -88,17 +86,17 @@
 												</div>
 												<div>
 													<label class="circle green"></label>待收本金
-													<label class="whatever tipOrigin"></label>
+													<label class="whatever tipOrigin whatever3"></label>
 													<span class="moneyFormat willRecPrincipal">0</span>
 												</div>
 												<div>
 													<label class="circle orangeCircle"></label>待收收益
-													<label class="whatever tipOrigin"></label>
+													<label class="whatever tipOrigin whatever4"></label>
 													<span class="moneyFormat willRecInterest">0</span>
 												</div>
 												<div>
 													<label class="circle grey"></label>待还总额
-													<label class="whatever tipOrigin"></label>
+													<label class="whatever tipOrigin whatever5"></label>
 													<span class="moneyFormat repayAmount">0</span>
 												</div>
 											</div>

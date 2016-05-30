@@ -4,6 +4,7 @@ request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 String content = request.getParameter("content");
+String pAuthCode = request.getParameter("pAuthCode");
 %>
 <jsp:include page="../../common/cm-addr.jsp"></jsp:include>
 <div class="search">
@@ -21,6 +22,7 @@ String content = request.getParameter("content");
 		<div class="panel-body">
 			<form id="" class="" action="">
 			<input id="memberID" type="hidden" value="<%=content %>" />
+			<input id="stype" type="hidden" value="<%=pAuthCode %>" />
 				<div>
 					<span class="con-item">
 						<span>借款名称</span><input id="projectTitle" type="text" class="" placeholder="" />
@@ -34,7 +36,7 @@ String content = request.getParameter("content");
 					<span class="con-item">
 						<span>放款时间段</span><input type="text" id="startDate" class="dateInput Wdate notspecial" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
 					</span>
-					<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+					<button type="button" class="obtn obtn-query glyphicon glyphicon-search">查询</button>
 				</div>
 			</form>
 		</div>

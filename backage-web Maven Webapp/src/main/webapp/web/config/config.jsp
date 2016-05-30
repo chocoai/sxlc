@@ -151,9 +151,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script>
 		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 		$(function(){
-			validform5(".cfmemberbtn","member",false,"3");
-			validform5(".cforgnizationbtn","orgnization",false,"3");
-			validform5(".fcstationbtn","station",false,"3");
+			validform5(".cfmemberbtn","member",false,"5");
+			validform5(".cforgnizationbtn","orgnization",false,"5");
+			validform5(".fcstationbtn","station",false,"5");
 		});
 	</script>
 </body>

@@ -45,7 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group investfeediv">
 			 					<label for="lastname" class="i-fl control-label col3">投资管理费：</label>
 			 					<div class="i-fl" id="investfee">
-			 						<input type="text" class="form-control" name="priceDatum" id="lastname" placeholder="" datatype="hundrednum">
+			 						<input type="text" class="form-control" name="priceDatum" id="lastname" placeholder="" datatype="hundredNum">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i></i></span>
@@ -75,7 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script>
 		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 		 $(function(){
-			validform5(".commonbtn0","mange",false,"3");
+			validform5(".commonbtn0","mange",false,"5");
 		});
 	</script>
 </body>

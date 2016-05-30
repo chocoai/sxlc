@@ -34,7 +34,7 @@ $(function() {
 				          { title:"借款项目名称","data": "projectTitle"},  
 				          { title:"借款人","data": "memberName"},  
 				          { title:"账单编号","data": "merbillNo"},  
-				          { title:"账单金额","data": "amounts"},  
+				          { title:"账单金额(元)","data": "amounts"},  
 				          { title:"账单期数","data": "indexs"},  
 				          { title:"还款时间","data": "repayMaxTime"},
 				          { title:"实际还款时间","data": "repayTime"}
@@ -49,9 +49,10 @@ $(function() {
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
 	          serverSide: true,//打开后台分页  
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕

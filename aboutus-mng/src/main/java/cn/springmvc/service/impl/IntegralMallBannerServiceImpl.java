@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity; 
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.IntegralMallBannerDao;
 import cn.springmvc.dao.IntegralMallBannerListDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil; 
@@ -60,7 +61,7 @@ public class IntegralMallBannerServiceImpl implements IntegralMallBannerService 
 			logentity.setsDetail("添加积分商城轮播图:"+entity.getBannerTitle());
 			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 		}
-		return integralMallBannerDaoImpl.insertIntegralMallBanner(entity);
+		return result;
 	}
 
 	@Override
@@ -124,7 +125,8 @@ public class IntegralMallBannerServiceImpl implements IntegralMallBannerService 
 		
 		List<IntegralMallBannerEntity> loginBannerList = null;   
 	 	loginBannerList = integralMallBannerListDaoImpl.selectIntegralMallBannerAllpage(pageEntity);     
-		return loginBannerList; 
+		PageUtil.ObjectToPage(pageEntity, loginBannerList);
+	 	return loginBannerList; 
 	}
 
 	@Override

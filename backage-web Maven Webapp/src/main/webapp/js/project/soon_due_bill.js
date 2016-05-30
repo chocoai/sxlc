@@ -36,7 +36,7 @@ $(function() {
 				          { title:"借款项目编号","data": "projectNo"},  
 				          { title:"借款项目名称","data": "projectTitle"},  
 				          { title:"借款人","data": "memberName"},  
-				          { title:"账单金额","data": "amounts"},  
+				          { title:"账单金额(元)","data": "amounts"},  
 				          { title:"账单期数","data": "indexs"},  
 				          { title:"还款时间","data": "repayMaxTime"}
 				          ],
@@ -49,10 +49,11 @@ $(function() {
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
-	          serverSide: true,//打开后台分页  
+	          serverSide: true,//打开后台分页
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕
@@ -77,7 +78,6 @@ $(function() {
 	  */
 	 $(".glyphicon-search").on("click",function(){
 		$('#table_id').DataTable().ajax.reload();
-		
 	 });
 	
 });
@@ -153,13 +153,17 @@ $(function(){
 			  cache:false,  
 			  dataType:'json',  
 			  success:function(data) { 
-				  $("#projectNo").val(data.projectNo);
-				  $("#merbillNo").val(data.merbillNo);
-				  $("#projectTitle").val(data.projectTitle);
-				  $("#memberName").val(data.memberName);
-				  $("#amounts").val(data.amounts);
-				  $("#indexs").val(data.indexs);
-				  $("#repayMaxTime").val(data.repayMaxTime);
+				  if(data.projectBill == -1){
+					  layer.alert("查询账单异常:"+data.sPrincipal,{icon:2});  
+					  return;
+				  }
+				  $("#projectNo").html(data.projectNo);
+				  $("#merbillNo").html(data.repayID);
+				  $("#projectTitle").html(data.projectTitle);
+				  $("#memberName").html(data.memberName);
+				  $("#amounts").html(data.amounts);
+				  $("#indexs").html(data.indexs);
+				  $("#repayMaxTime").html(data.repayMaxTime);
 				  $("#projectBill").html(data.projectBill);
 				  
 				  layer.open({
@@ -167,7 +171,7 @@ $(function(){
 			            title: '账单详情',
 			            maxmin: true,
 			            shadeClose: true, //点击遮罩关闭层
-			            area : ['500px' , '300px'],
+			            area : ['600px' , '400px'],
 			            content: $(".bill_detail")
 			        });
 				  

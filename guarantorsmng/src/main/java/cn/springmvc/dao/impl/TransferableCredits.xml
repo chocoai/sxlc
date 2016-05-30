@@ -34,12 +34,19 @@
 	  	ir.Invest_Id,
 	  	pbi.Project_Title,
 	  	pbi.Year_Rate,
-	  	
-	  	CAST(((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.skey}))) as signed) AS money,
+	  	ifnull(CAST(((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.skey}))) as signed),0)
+	  	-
+	  	ifnull((SELECT SUM(CAST(((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{map.skey})))AS SIGNED)) 
+	  	FROM Invest_Income ii
+		LEFT JOIN Invest_Real_Income iri ON iri.Income_Id =  ii.Income_Id
+		WHERE ii.Invest_Id=ir.Invest_Id AND Statu IN (1 , 2) AND IsValid=0),0)
+		-
+		ifnull((select SUM(CAST(((AES_DECRYPT(UNHEX(cpa.Trans_Principal),#{map.skey})))AS SIGNED)) from Creditor_Trans_App cpa where cpa.Invest_Id=ir.Invest_Id and cpa.Statu IN(0,2,-1) ),0)
+	  	 AS money,
 		(SELECT name1 from DICT WHERE code1=pbi.Deadline_Type AND tcode='DICT_QXLX' LIMIT 1) AS DeadlineTypeName,
-		(SELECT COUNT(1) FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 or 2) AND IsValid=0) AS cou,
-		(SELECT SDRecv_MaxTime FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 or 2) ORDER BY SDRecv_MaxTime DESC LIMIT 1) AS nextTime,
-		(SELECT SDRecv_MaxTime FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 or 2) ORDER BY SDRecv_MaxTime asc LIMIT 1) AS overTime 
+		(SELECT COUNT(1) FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 , 2) AND IsValid=0) AS cou,
+		(SELECT SDRecv_MaxTime FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 , 2) ORDER BY SDRecv_MaxTime DESC LIMIT 1) AS nextTime,
+		(SELECT SDRecv_MaxTime FROM Invest_Income WHERE Invest_Id=ir.Invest_Id AND Statu in (0 , 2) ORDER BY SDRecv_MaxTime asc LIMIT 1) AS overTime 
 	from Invest_Record ir 
 	left join Project_App_Record pi on pi.Apply_Id = ir.Apply_Id
 	LEFT JOIN Project_Base_Info pbi ON pbi.Project_Base_ID = pi.Project_Base_ID 

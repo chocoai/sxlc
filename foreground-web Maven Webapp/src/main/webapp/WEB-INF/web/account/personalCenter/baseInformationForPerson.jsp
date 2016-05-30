@@ -46,19 +46,19 @@
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">性别：</div>
-			   					<div class="con">${userInfo.baseInfo.sexName }</div>
+			   					<div class="con">${memberInfoSex }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">出生日期：</div>
-			   					<div class="con">${userInfo.baseInfo.birthday }</div>
+			   					<div class="con">${memberInfoBirthDay }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">年龄：</div>
-			   					<div class="con">${userInfo.baseInfo.age }</div>
+			   					<div class="con">${memberInfoAge }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">籍贯：</div>
-			   					<div class="con">${userInfo.baseInfo.homeTown }</div>
+			   					<div class="con">${userInfo.baseInfo.census }</div>
 			   				</div>
 			   				<div class="item">
 			   					<div class="label">身份证：</div>
@@ -168,7 +168,7 @@
 				   						<input type="text" lang="请输入户籍地址" datatype="enteraddr" value="${userInfo.baseInfo.census }" class="input-homeTown" maxlength= "12">
 				   					</div>
 				   				</div>
-				   				<div class="item">
+				   				<div class="item" style="width:100%">
 				   					<div class="label">居住地址：</div>
 				   					<div class="con">
 				   						<input type="text" lang="请输入居住地址" datatype="enteraddr" class="input-location" maxlength="50">
@@ -180,30 +180,18 @@
 				   						<input class="selectValue" value="0" >
 	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
 	    								<ul class="select province" onselectstart="return false">
-	        								<li class="selectOption" value="1">北京</li>
-	        								<li class="selectOption" value="2">上海</li>
-	       									<li class="selectOption" value="3">江西</li>
-	        								<li class="selectOption" value="4">云南</li>
 	    								</ul>
 									</div>
 									<div class="selectArea">
 										<input class="selectValue" value="0" >
 	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
 	    								<ul class="select city" onselectstart="return false">
-	        								<li class="selectOption" value="1">北京<li>
-	        								<li class="selectOption" value="2">上海<li>
-	       									<li class="selectOption" value="3">江西<li>
-	        								<li class="selectOption" value="4">云南<li>
 	    								</ul>
 									</div>
 									<div class="selectArea">
 										<input class="selectValue" value="0" >
 	   				 					<input class="selectInput" type="text" lang="请选择" readOnly="true">
 	    								<ul class="select county" onselectstart="return false">
-	        								<li class="selectOption" value="1">北京<li>
-	        								<li class="selectOption" value="2">上海<li>
-	       									<li class="selectOption" value="3">江西<li>
-	        								<li class="selectOption" value="4">云南<li>
 	    								</ul>
 									</div>
 				   				</div>

@@ -25,6 +25,7 @@ import product_p2p.kit.dbkey.DbKeyUtil;
 import cn.membermng.model.BankCardInfoEntity;
 import cn.membermng.model.BankCodeEntity;
 import cn.membermng.model.CityDictionaryEntity;
+import cn.membermng.model.CityInfoEntity;
 import cn.membermng.model.MemberBankCardEntity;
 import cn.membermng.model.ProvinceDictionaryEntity;
 import cn.springmvc.dao.MamberBankCardDao;
@@ -64,6 +65,20 @@ public class MemberBankCardServiceImpl implements MamberBankCardService{
 		return memberBankCardListDaoimpl.selectCityDictionary(provinceId);
 		
 	}
+	
+	@Override
+	public List<CityInfoEntity> selectBankProvinceDictionary() {
+		
+		return memberBankCardListDaoimpl.selectBankProvinceDictionary();
+		
+	}
+	@Override
+	public List<CityInfoEntity> selectBankCityDictionary(int provinceId) {
+		
+		return memberBankCardListDaoimpl.selectBankCityDictionary(provinceId);
+		
+	}
+	
 	@Override
 	public int insertMemberBackCard(BankCardInfoEntity bankCardInfoEntity,
 			MemberBankCardEntity memberBankCardEntity) {

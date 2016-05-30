@@ -121,17 +121,27 @@ public class SelectCertificationAuditDaoImpl extends SqlSessionDaoSupport implem
 				String ss="";
 				for (int i = 0; i < sty.length; i++) {
 					Map<String, Object> map1 = new HashMap<String, Object>();
+					map1.put("projectID", sty[i]);
 					String pbi="";
 					//查询借款类型
 					pbi=getSqlSession().selectOne("EnterpriseCAXML.findProjectBaseInfo",map1);
 					if (ss!="") {
 						ss+=","+pbi;
 					}else {
-						ss+=pbi+",";
+						ss+=pbi;
 					}
 				}
 				aEntity.setProTypesString(ss);
 			}
+			if(aEntity.getStatus()!=null && !aEntity.getStatus().equals("")){
+				Map<String, Object> map2 = new HashMap<String, Object>();
+				map2.put("status", aEntity.getStatus());
+				getSqlSession().selectOne("EnterpriseCAXML.findHKFS",map2);
+				if(map2.get("result")!=null){
+					aEntity.setStatus(map2.get("result").toString());
+				}
+			}
+			
 		}
 		// TODO Auto-generated method stub return null;
 		return aEntity;

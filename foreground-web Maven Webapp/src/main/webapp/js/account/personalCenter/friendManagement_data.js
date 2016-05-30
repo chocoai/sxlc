@@ -18,7 +18,7 @@ function quryFriendInviteList(){
 				var html = template('friendList', object);
 		        document.getElementById('friend').innerHTML = html;					
 			}
-		)
+		);
 }
 
 /**
@@ -35,7 +35,7 @@ function quryFriendList(){
 				var html = template('frindLineList', object);
 		        document.getElementById('frindLine').innerHTML = html;					
 			}
-		)	
+		);
 }
 
 /**
@@ -54,7 +54,7 @@ function quryConfirmFriend(){
 		        sureConfirmFriend();
 		        
 			}
-		)	
+		);
 	
 }
 
@@ -64,8 +64,8 @@ function quryConfirmFriend(){
 function sureConfirmFriend(){
 	
 	$(".agree").click(function(){
+		var fId=$(this).attr("id");
 		layer.confirm('确认添加为好友?', {icon: 3, title:'提示'}, function(index){
-			var fId=$(this).attr("id");
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);		
 			fId=encrypt.encrypt(fId+"");
@@ -82,7 +82,7 @@ function sureConfirmFriend(){
 							layer.alert(object.message);
 						}
 					}
-				)				
+				);
 		});			
 	});
 }
@@ -112,7 +112,7 @@ function serachMemberByParam(){
 		        applyAddFriends();
 		        
 			}
-		)	
+	);
 	
 }
 
@@ -141,9 +141,19 @@ function applyAddFriends(){
 							layer.alert(object.message);
 						}
 					}
-				)			
+				);	
 			});
 		
 	});
 	
+}
+function friendTransfer(friendId,friendName){
+	var url=baseUrl + "friendTransfer/friendManagementTransfer.html";
+	var data = {};
+	var encrypt = new JSEncrypt();
+	encrypt.setPublicKey(publickey);
+	data.friendId=encrypt.encrypt(friendId);
+	data.friendName=encrypt.encrypt(friendName);
+	
+	window.location.href=url+"?start="+friendId+"&content="+friendName;
 }

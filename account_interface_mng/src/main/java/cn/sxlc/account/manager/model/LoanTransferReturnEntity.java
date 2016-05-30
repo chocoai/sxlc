@@ -10,17 +10,17 @@ import java.util.List;
  * @date 2016-3-10 下午7:34:43
  */
 public class LoanTransferReturnEntity {
-    private String LoanJsonList;//转账列表
-    private String PlatformMoneymoremore;//平台乾多多标识
-    private String Action;//操作类型
-    private String RandomTimeStamp;//
-    private String Remark1;//
-    private String Remark2;//
-    private String Remark3;//
-    private String ResultCode;//返回码
-    private String Message;//返回信息
-    private String ReturnTimes;
-    private String SignInfo;//签名信息
+    private String loanJsonList;//转账列表
+    private String platformMoneymoremore;//平台乾多多标识
+    private String action;//操作类型
+    private String randomTimeStamp;//
+    private String remark1;//
+    private String remark2;//
+    private String remark3;//
+    private String resultCode;//返回码
+    private String message;//返回信息
+    private String returnTimes;
+    private String signInfo;//签名信息
     private List<LoanReturnInfoBean> loaninfolist;//转账参数集合
     private List<Object> loaninfolists;//转账参数集合
     public List<Object> getLoaninfolists() {
@@ -71,94 +71,95 @@ public class LoanTransferReturnEntity {
 	}*/
 
     public String getLoanJsonList() {
-        return LoanJsonList;
+        return loanJsonList;
     }
 
     public void setLoanJsonList(String loanJsonList) {
-        LoanJsonList = loanJsonList;
+        this.loanJsonList = loanJsonList;
     }
 
     public String getPlatformMoneymoremore() {
-        return PlatformMoneymoremore;
+        return platformMoneymoremore;
     }
 
     public void setPlatformMoneymoremore(String platformMoneymoremore) {
-        PlatformMoneymoremore = platformMoneymoremore;
+        this.platformMoneymoremore = platformMoneymoremore;
     }
 
     public String getAction() {
-        return Action;
+        return action;
     }
 
     public void setAction(String action) {
-        Action = action;
+        this.action = action;
     }
 
     public String getRandomTimeStamp() {
-        return RandomTimeStamp;
+        return randomTimeStamp;
     }
 
     public void setRandomTimeStamp(String randomTimeStamp) {
-        RandomTimeStamp = randomTimeStamp;
+        this.randomTimeStamp = randomTimeStamp;
     }
 
+    
     public String getRemark1() {
-        return Remark1;
-    }
+		return remark1;
+	}
 
-    public void setRemark1(String remark1) {
-        Remark1 = remark1;
-    }
+	public void setRemark1(String remark1) {
+		this.remark1 = remark1;
+	}
 
-    public String getRemark2() {
-        return Remark2;
-    }
+	public String getRemark2() {
+		return remark2;
+	}
 
-    public void setRemark2(String remark2) {
-        Remark2 = remark2;
-    }
+	public void setRemark2(String remark2) {
+		this.remark2 = remark2;
+	}
 
-    public String getRemark3() {
-        return Remark3;
-    }
+	public String getRemark3() {
+		return remark3;
+	}
 
-    public void setRemark3(String remark3) {
-        Remark3 = remark3;
-    }
+	public void setRemark3(String remark3) {
+		this.remark3 = remark3;
+	}
 
-    public String getResultCode() {
-        return ResultCode;
-    }
+	public String getResultCode() {
+		return resultCode;
+	}
 
-    public void setResultCode(String resultCode) {
-        ResultCode = resultCode;
-    }
+	public void setResultCode(String resultCode) {
+		this.resultCode = resultCode;
+	}
 
-    public String getMessage() {
-        return Message;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setMessage(String message) {
-        Message = message;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public String getReturnTimes() {
-        return ReturnTimes;
-    }
+	public String getReturnTimes() {
+		return returnTimes;
+	}
 
-    public void setReturnTimes(String returnTimes) {
-        ReturnTimes = returnTimes;
-    }
+	public void setReturnTimes(String returnTimes) {
+		this.returnTimes = returnTimes;
+	}
 
-    public String getSignInfo() {
-        return SignInfo;
-    }
+	public String getSignInfo() {
+		return signInfo;
+	}
 
-    public void setSignInfo(String signInfo) {
-        SignInfo = signInfo;
-    }
+	public void setSignInfo(String signInfo) {
+		this.signInfo = signInfo;
+	}
 
-    public List<LoanReturnInfoBean> getLoaninfolist() {
+	public List<LoanReturnInfoBean> getLoaninfolist() {
         return loaninfolist;
     }
 
@@ -174,15 +175,16 @@ public class LoanTransferReturnEntity {
         this.statu = statu;
     }
 
+    
 	@Override
 	public String toString() {
-		return "LoanTransferReturnEntity [LoanJsonList=" + LoanJsonList
-				+ ", PlatformMoneymoremore=" + PlatformMoneymoremore
-				+ ", Action=" + Action + ", RandomTimeStamp=" + RandomTimeStamp
-				+ ", Remark1=" + Remark1 + ", Remark2=" + Remark2
-				+ ", Remark3=" + Remark3 + ", ResultCode=" + ResultCode
-				+ ", Message=" + Message + ", ReturnTimes=" + ReturnTimes
-				+ ", SignInfo=" + SignInfo + ", loaninfolist=" + loaninfolist
+		return "LoanTransferReturnEntity [loanJsonList=" + loanJsonList
+				+ ", platformMoneymoremore=" + platformMoneymoremore
+				+ ", action=" + action + ", randomTimeStamp=" + randomTimeStamp
+				+ ", remark1=" + remark1 + ", remark2=" + remark2
+				+ ", remark3=" + remark3 + ", resultCode=" + resultCode
+				+ ", message=" + message + ", returnTimes=" + returnTimes
+				+ ", signInfo=" + signInfo + ", loaninfolist=" + loaninfolist
 				+ ", loaninfolists=" + loaninfolists + ", statu=" + statu + "]";
 	}
 

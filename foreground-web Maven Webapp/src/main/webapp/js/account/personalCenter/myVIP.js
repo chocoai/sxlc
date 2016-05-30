@@ -1,7 +1,13 @@
 $(function(){
 	$(".TB").addClass("down");
 	$(".TB4").addClass("down2");
+	
 	$(".buy-VIP").click(function(){
+		$("#startYear").val("");
+		$("#sellYear").val("");
+		$("#needMoney").val("");
+		$(".endT").html("");
+		$(".beginT").html("");
 		layer.open({
 			title :'购买VIP',//标题
 			skin: 'layer-ext-myskin',//皮肤
@@ -11,6 +17,7 @@ $(function(){
 	        content: $('.buyVip')//内容，里边是包含内容的div的class
 	    });
 	});
+
 });
 /******弹出层计算日期*******/
 $(function(){
@@ -33,7 +40,7 @@ $(function(){
 
 $(function(){
 	$("#sellYear").on("keyup",function(){
-		var num = parseInt($(this).val())*1000;
+		var num = parseFloat($(this).val())*parseFloat(vipYearMoney);
 		$("#needMoney").html(num);
 	});
 	//分页
@@ -71,30 +78,46 @@ $(function(){
 		//showAllError:true,//提交前验证显示所有错误
 		ajaxPost:true,
 		beforeSubmit:function(){
-			if ($("#sellYear").val()==undefined){
-				layer.alert("请输入年份");
+			console.log(1)
+			if ($("#startYear").val()=="请选择开始时间"){
+				layer.alert("请选择开始时间");
 				return false
 			}
+			if ($("#sellYear").val()=="请输入购买年份"){
+				layer.alert("请输入购买年份");
+				return false
+			}
+			
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
 			var data = {};
 			data.startTime = encrypt.encrypt($("#startYear").val()+"");
 			data.years = encrypt.encrypt($("#sellYear").val()+"");
-			var url = "personalCenter/vipApply.html";
-			NetUtil.ajax(
-					url,
-					data,
-					function(r){
-						var data = JSON.parse(r);
-						if (data.status == "-2"){
-							layer.alert(data.startTime);
-						}else{
-							layer.alert("成功",function(){
-								window.location.reload();
-							})
-						}
-					}
-			)
+			
+			var obj = eval(data);
+			var sign = NetUtil.createSign(obj);
+			
+			$("#get1").val(data.startTime);
+			$("#get2").val(data.years);
+			$("#get3").val(sign);
+			
+//			var url = "personalCenter/vipApply.html";
+			
+			$("#form1").submit();
+//			NetUtil.ajax(
+//					url,
+//					data,
+//					function(r){
+//						var data = JSON.parse(r);
+//						if (data.status == "-2"){
+//							layer.alert(data.startTime);
+//						}else{
+//							layer.alert("成功",function(){
+//								window.location.reload();
+//							})
+//						}
+//					}
+//			)
 			return false;
 		}
 	});

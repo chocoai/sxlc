@@ -29,14 +29,16 @@ $(function(){
 	})
 	//去掉时间后的.0
 	template.helper("$toDelete",function(content){
-		var index = content.indexOf(".");
-		console.log(index)
-		if (index>=0){
-			return content.substring(0,index)
-		}else{
+		if (content == null){
 			return content
+		}else{
+			var index = content.indexOf(".");
+			if (index>=0){
+				return content.substring(0,index)
+			}else{
+				return content
+			}
 		}
-		
 	})
 
 	var myInvestment = {

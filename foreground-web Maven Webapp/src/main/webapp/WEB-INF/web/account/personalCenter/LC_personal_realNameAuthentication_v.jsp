@@ -5,13 +5,19 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
 	<base href="<%=basePath%>">
     <title>实名认证</title>
     <jsp:include page="../../common/top_meta.jsp"></jsp:include>
+    <script type="text/javascript">
+    	var appPath="<%=path%>";
+    	var publickey = '<%=session.getAttribute("publicKey")%>';
+    </script>
 	<link rel="stylesheet" type="text/css" href="css/account/account.css">
+	<link rel="stylesheet" type="text/css" href="plugs/webuploader/webuploader.css">
 	<link rel="stylesheet" type="text/css" href="css/account/personalCenter/loanCertification.css">
 </head>
 <body> 
@@ -30,41 +36,52 @@
 	   				</div>
    					<div class="authenContent">
 	   					<div class="authen">
-			   				<ul class="inputArea">
-			   					<li class="inputList">
-			   						<div class="mustLabel"><span>姓名：</span></div>
-			   						<div class="introduceContent">朱哈哈</div>
-			   					</li>
-			   					<li class="inputList">
-			   						<div class="mustLabel"><span>民族：</span></div>
-			   						<div class="introduceContent">汉族</div>
-			   					</li>
-			   					<li class="inputList">
-			   						<div class="mustLabel"><span>身份证号：</span></div>
-			   						<div class="introduceContent">500221199602141254</div>
-			   					</li>
-			   					<li class="inputList">
-			   						<div class="mustLabel"><span>籍贯：</span></div>
-			   						<div class="introduceContent">四川</div>
-			   					</li>
-			   					<li class="inputList">
-			   						<div class="mustLabel"><span>性别：</span></div>
-			   						<div class="introduceContent">男</div>
-			   					</li>
-			   					<li class="inputList">
-			   						<div class="mustLabel"><span>有效期：</span></div>
-			   						<div class="introduceContent">2015-09-28</div>
-			   					</li>
-			   					<li class="inputList">
-			   						<div class="mustLabel"><span>附件：</span></div>
-			   						<div class="previewPicture"></div>
-			   						<!-- <div class="previewPicture">
-			   							<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
-			   							<input type="file"accept=".png,.jpg" class="previewInput" id="previewInput" onchange="preImg(this.id,'previewImg')" onblur="if(document.getElementById('previewImg').src=='null')document.getElementById('previewImg').src='resource/img/account/common/opacity.png'" >
-			   						</div>
-			   						<span class="hint">（请上传附件图片）</span> -->
-			   					</li>
-			   				</ul>
+	   						<p class="toolTips">请填写您本人真实有效的身份信息，一旦认证成功，信息将不可更改。</p>
+	   						<form id="shiMing1">
+		   						<ul class="inputArea">
+				   					<li class="inputList">
+				   						<div class="mustLabel"><span><samp>*</samp>姓名：</span></div>
+				   						<input class="inputText realName" type="text" datatype="enterperson" lang="请输入姓名" maxlength="8" readonly="readonly"/>
+				   					</li>
+				   					<li class="inputList">
+				   						<div class="mustLabel"><span><samp>*</samp>身份证号：</span></div>
+				   						<input class="inputText personId" datatype="IDCard" type="text" lang="请输入您的身份证号" maxlength="18" readonly="readonly"/>
+				   					</li>
+				   					<li class="inputList">
+				   						<div class="mustLabel"><span><samp></samp>民族：</span></div>
+				   						<div class="selectArea nationSelect">
+				   							<input class="selectValue" value="0">
+				   							<input class="selectInput" type="text" lang="请选择民族" readOnly="true" >
+				   						</div>
+				   					</li>
+				   					<li class="inputList">
+				   						<div class="mustLabel"><span><samp></samp>籍贯：</span></div>
+				   						<input class="inputText homeTown" type="text" lang="请输入籍贯" maxlength="20" readonly="readonly"/>
+				   					</li>
+				   					<li class="inputList">
+				   						<div class="mustLabel"><span><samp></samp>性别：</span></div>
+				   						<div class="gender" readonly="readonly">男</div>
+				   					</li>
+				   					<li class="inputList">
+				   						<div class="mustLabel"><span><samp></samp>有效期：</span></div>
+				   						<input class="inputText dateSelect Wdate" readonly="readonly" type="text" lang="请选择有效期"/>
+				   					</li>
+				   					<li class="inputList">
+				   						<div class="mustLabel"><span><samp></samp>附件：</span></div>
+				   						<div class="previewPicture" id="file1">
+				   							<img class="previewImg" id="previewImg1" src="resource/img/account/common/opacity.png">
+				   							<input value="" type="hidden" class="previewHide">
+				   						</div>
+				   						<div class="previewPicture" id="file2">
+				   							<img class="previewImg" id="previewImg2" src="resource/img/account/common/opacity.png">
+				   							<input value="" type="hidden" class="previewHide">
+				   						</div>
+				   					</li>	
+		   					        <li class="inputList">
+				   						<div class="btn btn1">确认并保存</div>
+				   					</li>
+				   				</ul>
+	   						</form>
 	   					</div>
 	   				</div>
    				</div>
@@ -74,7 +91,7 @@
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" src="js/account/personalCenter/loanCertification
-	.js"></script>
+	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
+	<script type="text/javascript" src="js/account/personalCenter/LC_personal_realNameAuthentication.js"></script>
 </body>
 </html>

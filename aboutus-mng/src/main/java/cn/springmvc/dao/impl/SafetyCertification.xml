@@ -14,13 +14,14 @@
     </resultMap> 
 	<!-- 分页查询底部网站认证-->  
 	<select id="selectSafetyCertificationList"  resultMap="resultListSafetyCertification" parameterType="product_p2p.kit.pageselect.PageEntity" >
-	    select fNB.Certification_ID,fNB.Title,fNB.URL,fNB.Statu ,
+	    select fNB.Certification_ID,fNB.Title,fNB.URL,fNB.Statu ,fNB.Logo,
 	    fNB.CreateTime,fNB.Opt_Date,fNB.Admin_ID,a.adminName 
 	    from   Safety_Certification  fNB 
 		LEFT JOIN Admin a on a.Admin_ID=fNB.Admin_ID
         <where>  
+        	1=1
             <if test="map.title != null and map.title != ''">  
-                Title like  '%${map.title}%'  
+               and Title like  '%${map.title}%'  
             </if>  
             <if test="map.statu != -1">  
                 and fNB.Statu=#{map.statu}
@@ -70,7 +71,7 @@
 	<select id="selectSafetyCertificationByID"  resultMap="resultListSafetyCertification" parameterType="long" >
 	    select fNB.Certification_ID,fNB.Title,fNB.URL,fNB.Statu ,
 	    fNB.CreateTime,fNB.Opt_Date,fNB.Admin_ID 
-	    from   Safety_Certification  fNB  wehre fNB.Certification_ID= #{id}
+	    from   Safety_Certification  fNB  where fNB.Certification_ID= #{id}
     </select> 
     
     <!-- 前台查询底部网站认证-->  

@@ -1,24 +1,10 @@
 /**网站公告**/
-
-//获取项目根目录全路径
-function getRootPath(){
-        var curWwwPath=window.document.location.href;
-        var pathName=window.document.location.pathname;
-        var pos=curWwwPath.indexOf(pathName);
-        var localhostPath=curWwwPath.substring(0,pos);
-        var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
-		if(/127.0.0.1|localhost/.test(localhostPath)){
-			return(localhostPath+projectName);
-		}else{
-			return(localhostPath);
-		}
-}
 /** 添加网站公告 **/
 //验证
 $(function () {
 	var appPath = getRootPath();//项目根路径
 	//验证
-	validform5("layui-layer-btn0","saveNotice",true,"3");
+	validform5("layui-layer-btn0","saveNotice",true,"5");
 	$(".obtn-notice-add").on("click touchstart",function(){
 		//初始化
 		var ue1 = UE.getEditor('editor');
@@ -41,7 +27,6 @@ $(function () {
 }); 
 //添加方法
 function addNotice() {
-	var appPath = getRootPath();//项目根路径
 	//获取ueditor内容
 	var ue1 = UE.getEditor('editor');
 	var content = ue1.getContent();
@@ -50,12 +35,11 @@ function addNotice() {
 	//加密操作
 	var encrypt = new JSEncrypt();
     encrypt.setPublicKey(publicKey_common);
-    var result1 = encrypt.encrypt((content));
     var result2 = encrypt.encrypt((title));
 	$.ajax( {  
 		url:appPath+"/frontconfig/save.do",
 		data : {
-			content : result1, 
+			content : content, 
 			title : result2 
 		},
 		type:'post',  
@@ -63,8 +47,8 @@ function addNotice() {
 		success:function(data) { 
 			if (data == 1) {
 				layer.alert("添加成功",{icon:1});  
-				document.getElementById("saveNotice").reset();
-				setTimeout('location.reload()',2000);
+				var table = $('#table_id').DataTable();
+				table.ajax.reload();
 			}else {
 				layer.alert("服务器异常",{icon:2});
 				document.getElementById("saveNotice").reset();
@@ -76,12 +60,15 @@ function addNotice() {
 /** 修改广告 **/
 //验证
 $(function () {
-	var appPath = getRootPath();//项目根路径
 	//验证
-	validform5("layui-layer-btn0","modNotice",true,"3");
+	validform5("layui-layer-btn0","modNotice",true,"5");
 	$(".obtn-notice-mod").on("click",function(){
-		var ue2 = UE.getEditor('meditor');
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();
+		if (rowdata.length <= 0) {
+			layer.alert("请选择需要操作的记录！", {icon : 0});
+			return;
+		}
+		var ue2 = UE.getEditor('meditor');
 		$("#mtitle").val(rowdata[0].title);
 		//加密操作
 		var encrypt = new JSEncrypt();
@@ -171,7 +158,7 @@ function openAnnoce () {
 	  var encrypt = new JSEncrypt();
 	  encrypt.setPublicKey(publicKey_common);
 	  var result1 = encrypt.encrypt((rowdata[0].id + ""));
-	  var result2 = encrypt.encrypt((rowdata[0].statu + ""));
+	  var result2 = encrypt.encrypt((1 + ""));
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/frontconfig/ofOrOpenNotice.do",
@@ -208,7 +195,7 @@ function ofAnnoce () {
 	  var encrypt = new JSEncrypt();
 	  encrypt.setPublicKey(publicKey_common);
 	  var result1 = encrypt.encrypt((rowdata[0].id + ""));
-	  var result2 = encrypt.encrypt((rowdata[0].statu + ""));
+	  var result2 = encrypt.encrypt((0 + ""));
 	  $.ajax({
 	  	type : 'post',
 	  	url : appPath + "/frontconfig/ofOrOpenNotice.do",
@@ -323,9 +310,23 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#table_id').DataTable();
-//设置选中change颜色
- $('#table_id tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
+});
+
+$(function() {
+	//单选
+	$('#table_id tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

@@ -60,7 +60,7 @@ public interface OverdueService {
 	* @return int 返回类型 
 	* @throws 
 	*/
-	public Integer findMaxOverdue();
+	public int findMaxOverdue();
 	
 	
 	/** 

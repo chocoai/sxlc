@@ -34,7 +34,7 @@ function showMemberList(){
 	
 	var memberType = $("#memberType").val();
 	var Name = "姓名";
-	var Phone = "联系电话";
+	var Phone = "手机号";
 	if(memberType ==1){
 		Name ="企业名称";
 		Phone ="联系人电话";
@@ -65,7 +65,7 @@ function showMemberList(){
 		            "data": function ( d ) {
 		            	var memberType = $("#memberType").val();
 		            	var member_Name = $("#member_Name").val();//会员姓名
-		            	var user_Name =  $("#user_Name").val();//用户名
+		            	//var user_Name =  $("#user_Name").val();//用户名
 		            	var phone_Num =  $("#phone_Num").val();//电话
 		            	var auto_tou =  $("#auto_tou").val();//是否自动通标
 		            	var auto_return = $("#auto_return").val();//是否自动还款
@@ -75,12 +75,12 @@ function showMemberList(){
 		            	//result 为加密后参数
 		            	memberType = encrypt.encrypt(memberType+"");
 		            	member_Name = encrypt.encrypt(member_Name);
-		            	user_Name = encrypt.encrypt(user_Name);
+		            	//user_Name = encrypt.encrypt(user_Name);
 		            	phone_Num = encrypt.encrypt(phone_Num);
 		            	auto_tou = encrypt.encrypt(auto_tou+"");
 		            	auto_return = encrypt.encrypt(auto_return+"");
 		            	d.memberType = memberType;
-		            	d.memberName=user_Name;
+		            	//d.memberName=user_Name;
 		            	d.personalName=member_Name;
 		            	d.personalPhone=phone_Num;
 		            	d.automaticBidding=auto_tou;

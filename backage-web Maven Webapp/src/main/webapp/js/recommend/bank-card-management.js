@@ -15,7 +15,7 @@ $(function (){
 		type : 'post',
 		url : appPath + "/bankCard/queryBankInfo.do",
 		success : function (msg) {
-			var str = "";
+			var str = "<option>请选择</option>";
 			$.each(msg, function (i, item) {
 				str += "<option value=\""+item.bankID+"\">"+item.bankName+"</option>";
 			});
@@ -94,6 +94,13 @@ $(function () {
 	$("#add").bind('click', function () {
 		$("#bankAdd").submit();
 	});
+	$(".commonbtn1").click(function(){
+		layer.closeAll(); //再执行关闭  
+	});
+	
+	$(".cancle").click(function(){
+		layer.closeAll(); //再执行关闭  
+	});
 });
 
 /**
@@ -107,6 +114,7 @@ function addBank() {
 	var cardNo = encrypt.encrypt(($("#cardNo").val() + ""));
 	var phone = encrypt.encrypt(($("#phone").val() + ""));
 	var memberType = encrypt.encrypt(1 + "");
+	var bank = encrypt.encrypt($("#bank").val());
 	
 	$.ajax({
 		type : 'post',
@@ -117,12 +125,14 @@ function addBank() {
 			branch : branch,
 			cardNo : cardNo,
 			phone : phone,
-			memberType : memberType
+			memberType : memberType,
+			bank : bank
 		},
 		success : function (msg) {
 			if (msg == 1) {
 	  			layer.alert("添加成功!",{icon:1});
-	  			setTimeout('location.reload()',2000);
+	  			var table = $('#table_id').DataTable();
+				table.ajax.reload();
 	  		}else if(msg == -2){
 	  			layer.alert("该银行卡已存在!",{icon:2});
 	  			setTimeout('location.reload()',2000);
@@ -175,6 +185,11 @@ function bankManagementMod(title,page,type,id){
 							}
 						});
 				}});
+				$("#mbank option").each(function () {
+					if ($(this).val() == msg.bankId){
+						$(this).attr('selected','selected');
+					}
+				});
 			}
 		});
 		layer.open({
@@ -200,7 +215,7 @@ $(function () {
 			layer.alert("请选择要删除的银行卡！",{icon:0});
 			return;
 		}else {
-			var bankCardId = encrypt.encrypt((rowdata[0].bankCardId + ""));
+			var bankCardId = encrypt.encrypt((rowdata[0].receiveCard + ""));
 			layer.confirm('确定删除该银行卡？', {
 			  btn: ['确定', '取消']
 			,yes: function(index, layero){ //或者使用btn1
@@ -212,7 +227,8 @@ $(function () {
 			  		success : function (msg) {
 			  			if (msg == 1) {
 				  			layer.alert("删除成功!",{icon:1});
-				  			setTimeout('location.reload()',2000);
+				  			var table = $('#table_id').DataTable();
+							table.ajax.reload();
 				  		}else {
 				  			layer.alert("服务器异常!",{icon:2});
 				  			setTimeout('location.reload()',2000);
@@ -238,8 +254,8 @@ $(function(){
 		"border":"1px solid #ccc",
 		"cursor":"pointer"
 	});
-	validform5(".commonbtn0","bankAdd",false,"3");
-	validform5("#mod","bankMod",false,"3");
+	validform5(".commonbtn0","bankAdd",false,"5");
+	validform5("#mod","bankMod",false,"5");
 });
 
 
@@ -278,6 +294,7 @@ $(function() {
 //                	  "sClass": "table-checkbox"
                   },
                   { title:"银行卡id","data": "bankCardId" },
+                  { title:"会员银行卡id","data": "receiveCard" },
                   { title:"银行卡类型","data": "carType" },  
                   { title:"开户银行","data": "bankName" },  
                   { title:"开户行城市","data": "bankCity" },  
@@ -303,11 +320,6 @@ $(function() {
 //        	}
         }
 });
- var table = $('#table_id').DataTable();
-//设置选中change颜色
- $('#table_id tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
 });
 
 /**
@@ -316,4 +328,23 @@ $(function() {
 $(".glyphicon-search").on("click",function(){
 	$('#table_id').DataTable().ajax.reload();
 	
+});
+
+$(function() {
+	//单选
+	$('#table_id tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

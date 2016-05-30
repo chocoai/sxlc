@@ -20,6 +20,7 @@ import cn.springmvc.dao.HandleGuaranteeInfoDao;
 import cn.springmvc.dao.SelectGuaranteeInfoDao;
 import cn.springmvc.model.GuaranteeCertificateEntity;
 import cn.springmvc.model.GuaranteeInfoEntity;
+import cn.springmvc.model.GuaranteePeriodEntity;
 import cn.springmvc.model.GuaranteeRelationalEntity;
 import cn.springmvc.model.ManagementCertificateEntity;
 import cn.springmvc.model.ManagementInfoEntity;
@@ -78,7 +79,7 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 
 	@Override
 	public Map<String, Object> handleManagementInfo(Map<String, Object> map) {
-		
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
 		getSqlSession().selectOne("GuaranteeInfoXML.handleManagementInfo",map);
 		return map;
@@ -100,10 +101,10 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 	}
 
 	@Override
-	public int insertGuaranteeBorrowing(Map<String, Object> map) {
+	public int insertGuaranteeBorrowing(List<GuaranteeRelationalEntity> list) {
 		
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().insert("GuaranteeInfoXML.insertGuaranteeBorrowing", map);
+		return getSqlSession().insert("GuaranteeInfoXML.insertGuaranteeBorrowing", list);
 	}
 
 	@Override
@@ -114,10 +115,10 @@ public class HandleGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 	}
 
 	@Override
-	public int insertGuaranteePeriod(Map<String, Object> map) {
+	public int insertGuaranteePeriod(List<GuaranteePeriodEntity> list) {
 		
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().insert("GuaranteeInfoXML.insertGuaranteePeriod", map);
+		return getSqlSession().insert("GuaranteeInfoXML.insertGuaranteePeriod", list);
 	}
 
 	@Override

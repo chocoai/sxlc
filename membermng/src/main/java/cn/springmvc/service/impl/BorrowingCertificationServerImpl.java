@@ -203,13 +203,14 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	
 
 	@Override
-	public int authHousing(Long mid, String iaddress, String iArea,
+	public int authHousing(Long mid,int memberType, String iaddress, String iArea,
 			String ivalue, String endTime, String enclosure) {
 		Map<String,Object> param = new HashMap<String,Object>();
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		Long cid = generatorUtil.GetId();
 		param.put("cid", cid);
 		param.put("mid", mid);
+		param.put("mType",memberType);
 		param.put("iaddress", iaddress);
 		param.put("iArea", iArea);
 		param.put("ivalue", ivalue);
@@ -244,10 +245,11 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	
 	
 	@Override
-	public int editAuthHousing(long memberId, long cid, String iaddress,String iArea, String ivalue, String endTime, String enclosure) {
+	public int editAuthHousing(long memberId,int memberType, long cid, String iaddress,String iArea, String ivalue, String endTime, String enclosure) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("cid", cid);
 		param.put("mid", memberId);
+		param.put("mType",memberType);
 		param.put("iaddress", iaddress);
 		param.put("iArea", iArea);
 		param.put("ivalue", ivalue);
@@ -265,7 +267,7 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	
 	
 	@Override
-	public int authProduction(Long mid, String iBrand, String iModel,String iLicensePlate, 
+	public int authProduction(Long mid, int memberType,String iBrand, String iModel,String iLicensePlate, 
 			String ivalue, String endTime,String enclosure) {
 		
 		Map<String,Object> param = new HashMap<String, Object>();
@@ -274,6 +276,7 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 		
 		param.put("cid", cid);
 		param.put("mid", mid);
+		param.put("mType",memberType);
 		param.put("iBrand", iBrand);
 		param.put("iModel", iModel);
 		param.put("iLicensePlate", iLicensePlate);
@@ -304,9 +307,10 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	}
 	
 	@Override
-	public int editAuthProduction(long memberId, long cid, String iBrand,String iModel, String iLicensePlate, String ivalue, String endTime,String enclosure) {
+	public int editAuthProduction(long memberId, int memberType, long cid, String iBrand,String iModel, String iLicensePlate, String ivalue, String endTime,String enclosure) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("memberId", memberId);
+		param.put("mType",memberType);
 		param.put("cid", cid);
 		param.put("iBrand", iBrand);
 		param.put("iModel", iModel);
@@ -365,13 +369,14 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 	
 	
 	@Override
-	public int authEducation(long memberId, int education, String enclosure) {
+	public int authEducation(long memberId, int education, String enclosure,String endTime) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		Long cid = generatorUtil.GetId();
 		param.put("memberId", memberId);
 		param.put("education", education);
 		param.put("enclosure", enclosure);
+		param.put("endTime", endTime);
 		param.put("cid", cid);
 		
 		int result = borrowingCertificationWritedao.authEducation(param);
@@ -392,11 +397,12 @@ public class BorrowingCertificationServerImpl implements IBorrowingCertification
 		return borrowingCertificationdao.showAuthEducation(param);
 	}
 	
-	public int editAuthEducation(long memberId, int education, String enclosure) {
+	public int editAuthEducation(long memberId, int education, String enclosure,String endTime) {
 		Map<String,Object> param = new HashMap<String, Object>();
 		param.put("memberId", memberId);
 		param.put("education", education);
 		param.put("enclosure", enclosure);
+		param.put("endTime", endTime);
 		return borrowingCertificationWritedao.editAuthEducation(param);
 	}
 	

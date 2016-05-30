@@ -1,6 +1,7 @@
 
 package cn.springmvc.service.impl; 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,10 +37,20 @@ public class FinancialSettingServiceImpl implements FinancialSettingService{
 	/* *  *  * @return * @see cn.springmvc.service.FinancialSettingService#updateWithdrawalsFee(cn.springmvc.model.WithdrawalsFeeEntity) */
 	@Override
 	public int updateWithdrawalsFee(WithdrawalsFeeEntity withdrawalsFeeEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
-		entity.setsDetail("修改提现手续费："+withdrawalsFeeEntity.toString());
+		entity.setsDetail("设置提现手续费："+withdrawalsFeeEntity.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
+		Map<String, Object> map = new HashMap<>();
+		map.put("paymentMemberType", withdrawalsFeeEntity.getPayment_Member_Type());
+		int coun= financialSettingDaoImpl.findWithdrawalsFee(map);
+		if(coun>0){
+			coun=financialSettingDaoImpl.updateWithdrawalsFee(withdrawalsFeeEntity);
+		}else{
+			coun=financialSettingDaoImpl.insertWithdrawalsFee(withdrawalsFeeEntity);
+		}
+			
+		
 		// TODO Auto-generated method stub return 0;
-		return financialSettingDaoImpl.updateWithdrawalsFee(withdrawalsFeeEntity);
+		return coun;
 	}
 	
 	/* * 

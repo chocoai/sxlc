@@ -79,7 +79,7 @@ function showMemberLoanList(){
 		            	d.memberType = memberType;
 		            	d.memberName=member_Name;
 		            	d.userName=user_Name;
-		            	d.personalPhone=phone_Num;
+		            	d.phone=phone_Num;
 		            } 
 		        },
 		     

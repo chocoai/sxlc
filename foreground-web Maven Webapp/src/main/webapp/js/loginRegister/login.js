@@ -78,11 +78,11 @@ $(function(){
 
 
 function getCookie(name){
-　　var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
-　　if(arr != null){
-	return arr[2];
-　　}　　　　
-　　return null;
+	var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+	if(arr != null){
+			return arr[2];
+	}
+	return null;
 }
 
 
@@ -211,7 +211,7 @@ var isExit = false;
 /* 验证     */
 $(function(){
 	$("#loginCheck").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".login-btn", 
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,
@@ -225,11 +225,12 @@ $(function(){
 				irememberMe = 1;
 			}
 			userpassword = hex_md5(userpassword);
-			
+			$(".login-btn").addClass("disabled").val("登录中");
 			NetUtil.ajax(
 					"login.html",
 					{memberType:imemberType,memberName:userName,password:userpassword,checkCode:imgCheck,rememberMe:irememberMe},
 					function(r){
+						$(".login-btn").removeClass("disabled").val("登录");
 						var json = JSON.parse(r);
 						if(json.statu == 1){
 							window.location.href="accountOverview/accountOverview.html";

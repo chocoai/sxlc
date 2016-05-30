@@ -37,7 +37,8 @@ public class HandleQuickRechargeFeeDaoImpl extends SqlSessionDaoSupport implemen
 	@Override
 	public Map<String, Object> updateQuickRechargeFee(Map<String, Object> map) {
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().selectOne("QuickRechargeFeeXML.updateQuickRechargeFee", map);
+		getSqlSession().selectOne("QuickRechargeFeeXML.updateQuickRechargeFee", map);
+		return map;
 	}
 	
 	

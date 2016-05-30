@@ -1,6 +1,7 @@
 package cn.springmvc.controller; 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +20,11 @@ import product_p2p.kit.datatrans.IntegerAndString;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
  
+import cn.springmvc.model.QuickRechargeFeeEntity;
 import cn.springmvc.service.ManagedInterfaceServerTestI;
+import cn.springmvc.service.QuickRechargeFeeService;
 import cn.springmvc.util.MemberSessionMng; 
 import cn.sxlc.account.manager.model.RechargeEntity;
 
@@ -30,6 +35,34 @@ public class LoanRechargeColltroller {
 	//第三方接口
 	@Resource(name="managedInterfaceTestIImpl")
 	ManagedInterfaceServerTestI managedInterfaceServer; 
+	
+	@Autowired
+	QuickRechargeFeeService quickRechargeFeeService;
+	/**
+	 * 获取充值手续费率
+	* loadRechargeFee
+	* @author 邱陈东  
+	* * @Title: loadRechargeFee 
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-26 下午5:40:25
+	* @throws
+	 */
+	@RequestMapping(value="/loadRechargeFee",produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadRechargeFee(){
+		Map<String, Object>map = new HashMap<String, Object>();
+		
+		List<QuickRechargeFeeEntity> list = quickRechargeFeeService.findAllQuickRechargeFee();
+		for (QuickRechargeFeeEntity entity : list) {
+			if(entity.getPaymentMemberType()==0){
+				map.put("data", entity);
+				return JSONObject.toJSONString(map);
+			}
+		}
+		map.put("data", null);
+		return JSONObject.toJSONString(map);
+	}
 	
 	/**
 	 * 双乾充值
@@ -63,8 +96,9 @@ public class LoanRechargeColltroller {
 		recharge.setRechargeType(rechargeType);
 		recharge.setAmount(amount);
 		recharge.setRemark3(remark);
-		recharge.setIsApp(0);
-		
+		recharge.setIsApp(0); 
+		recharge.setNotifyURL("loanRecharge/loanRechargeNotify.html");
+		recharge.setReturnURL("loanRecharge/loanRechargeReturn.html");
 		recharge =managedInterfaceServer.testLoanRecharge(recharge,request);
 	
 		request.setAttribute("rechange", recharge);

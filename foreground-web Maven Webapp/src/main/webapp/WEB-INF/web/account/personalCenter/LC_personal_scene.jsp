@@ -80,7 +80,7 @@
 		   				    <div class="previewPictureDiv">
 		   				    <div class="wdateSelect" <c:if test="${t==2||t==3 || t==4 || t==5 || t==6 || t==9||t==11 ||t==1136091|| t==16 || t==17 || t==20 || t==21 || t==24 }"> style="display:block" </c:if> >
 	   							<span>有效期：</span>
-	   							<input class="inputText dateSelect Wdate" onfocus="WdatePicker({readOnly:true,ychanged:showSubmit,Mchanged:showSubmit,dchanged:showSubmit})" type="text"  lang="请选择有效期"/>
+	   							<input class="inputText dateSelect Wdate" onfocus="WdatePicker({readOnly:true,ychanged:showSubmit,Mchanged:showSubmit,dchanged:showSubmit,minDate:'%y-%M-%d'})" type="text" />
 		   					</div>
 		   					<div class="previewPicture previewPicture_f" id="file" >
 		   						<img class="previewImg"   src="resource/img/account/common/opacity.png">

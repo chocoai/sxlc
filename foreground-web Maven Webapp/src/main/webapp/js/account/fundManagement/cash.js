@@ -19,6 +19,15 @@ $(function(){
 	$(".cashInput1").blur(function(){
 		$(this).parent().parent().find(".tip").remove();
 	});
+	$(".cashInput1").on("keyup",function(){
+		var feeType = $(".feeType").val();
+		var fee = $(".fee").val();
+		if(feeType==0){
+			fee = fee*$(this).val()/100;
+		}
+		$(".feeAmount").html(fee.toFixed(2));
+		$('.moneyZhang').text(parseFloat(($(this).val() + '').replace(/\,/g, '')-fee).toFixed(2));
+	})
 });
 /* 获取动态验证码的弹出提示层js代码  */
 jQuery.fn.layoutCode = function(str){
@@ -32,31 +41,32 @@ jQuery.fn.layoutCode = function(str){
 $(function(){
 	/* 验证码提示层      */
 	$(".codeGet").click(function(){
-		if($(this).parent().parent().find(".dynamicVerificationSpan").length > 0){
+		getPhoneCode();
+		/*if($(this).parent().parent().find(".dynamicVerificationSpan").length > 0){
 			return false;
 		}else{
 			
 			var flag=getPhoneCode();
 			if(flag){
 				$(this).parent().layoutCode("已发送，3分钟后可重新获取");
-				$(this).parent().parent().find(".tipError").remove();				
+				//$(this).parent().parent().find(".tipError").remove();				
 			}
 		}
 		setTimeout(function(){
 			$(".codeGet").parent().parent().find(".dynamicVerificationSpan").remove();
 			$(".codeGet").html("重新获取");
-		},30000);
+		},30000);*/
 	});
 	$(".cashCodeGet").blur(function(){
 		var str = this.value;
 		var reg = new RegExp("^[0-9]{5,6}$");
-		if(reg.test(str)){
+/*		if(reg.test(str)){
 			$(this).parent().layoutSuccess();
 			$(this).css("border-color","#ddd");
 			$(".codeGet").parent().parent().find(".dynamicVerificationSpan").remove();
 		}else{
 			$(".codeGet").parent().parent().find(".dynamicVerificationSpan").remove();
-		}
+		}*/
 	});
 	
 	/*...输入的金额大小...*/
@@ -64,6 +74,9 @@ $(function(){
 	var cashInput2;
 	var minMoney = 1;//最小提现金额
 	$('.cashInput1').focus(function(){//输入金额
+		if(this.value!="请输入提现金额" &&this.value!="" ){
+			this.value =parseFloat((this.value + '').replace(/\,/g, ''));
+		}
 		$(this).parent().layoutClean();
 		cashSpan1=$('.cashSpan').text();//最大金额获取
 		cashSpan1 = parseFloat((cashSpan1 + '').replace(/\,/g, ''));
@@ -71,26 +84,35 @@ $(function(){
 	});
 	$('.cashInput1').blur(function(){
 		cashInput2=$('.cashInput1').val();//提现金额
-		if(Number(cashInput2)>=0){
-		var cashInput3=$('.cashInput1').attr("lang");//lang
-		if(this.value == cashInput3)return;
-		if(parseFloat((cashInput2 + '').replace(/\,/g, '')) > cashSpan1){
-			this.value = parseFloat(cashSpan1).toFixed(2);
-			this.value = $('.cashInput1').format(this.value);	
-			cashInput2=cashSpan1;
-		}
-		if(parseFloat((cashInput2 + '').replace(/\,/g, '')) < minMoney){
-			this.value = parseFloat(minMoney).toFixed(2);
-			this.value = $('.cashInput1').format(this.value);			
-		}
-		if(Number(cashInput2)>=2){
-			/*...实际到账金额...*/
-			var moneyFormat2=$('.moneyFormat1').text();//手续费
-			//实际到账
-			var moneyZhang1=$('.moneyZhang').text((cashInput2 + '').replace(/\,/g, '')-moneyFormat2);			
-		}else{
-			$('.moneyZhang').text("0");
-		}
+		if(Number(parseFloat((cashInput2 + '').replace(/\,/g, '')))>=0){
+			var cashInput3=$('.cashInput1').attr("lang");//lang
+			if(this.value == cashInput3)
+				return;
+			if(parseFloat((cashInput2 + '').replace(/\,/g, '')) > cashSpan1){
+				this.value = parseFloat(cashSpan1).toFixed(2);
+				this.value = $('.cashInput1').format(this.value);	
+				cashInput2=cashSpan1;
+			}
+			if(parseFloat((cashInput2 + '').replace(/\,/g, '')) < minMoney){
+				this.value = parseFloat(minMoney).toFixed(2);
+				this.value = $('.cashInput1').format(this.value);			
+			}
+			if(Number(parseFloat((cashInput2 + '').replace(/\,/g, '')))>=2){
+				this.value = parseFloat(cashInput2).toFixed(2);
+				//重新设置手续费
+				var feeType = $(".feeType").val();
+				var fee = $(".fee").val();
+				if(feeType==0){
+					fee = fee*$(this).val()/100;
+				}
+				$(".feeAmount").html(fee.toFixed(2));
+				/*...实际到账金额...*/
+				var moneyFormat2=$('.moneyFormat1').text();//手续费
+				//实际到账
+				var moneyZhang1=$('.moneyZhang').text(parseFloat((cashInput2 + '').replace(/\,/g, '')-moneyFormat2).toFixed(2));			
+			}else{
+				$('.moneyZhang').text("0");
+			}
 		}else{
 			$('.moneyZhang').text("0");
 		}

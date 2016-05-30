@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>充值失败</title>
+	<title>操作失败</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -34,9 +34,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<div class="failBox">
-					<div class="failNotice">放款失败！</div>
-					<div class="">返回码：${auditReturnEntity.resultCode}&nbsp;&nbsp;${auditReturnEntity.message}</div>
-					
+					<div class="failNotice">
+						操作失败！<br/>
+						原因：${auditReturnEntity.message}
+					</div>
 				</div>
 			</div>
 			<!-- 公用js -->

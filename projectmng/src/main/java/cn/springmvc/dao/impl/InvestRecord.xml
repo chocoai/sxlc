@@ -33,7 +33,7 @@
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{sKey})) using utf8) end 
             as membername, 
 	    CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{sKey})) as signed) Invest_Amount ,
-	    ir.Invest_Date,ir.IsAuto,ir.Invest_Type,mi.Member_No ,investType.name1 as investTypes
+	    ir.Invest_Date,ir.IsAuto,ir.Invest_Type,mi.Member_No ,investType.name1 as investTypes,mi.logName
 	    from Creditor_Trans ct
         left join  Invest_Record ir on ir.Invest_Id = ct.Invest_Id
         left join DICT investType on   investType.code1= ir.Invest_Type  and investType.tcode = 'DICT_TZLX' 

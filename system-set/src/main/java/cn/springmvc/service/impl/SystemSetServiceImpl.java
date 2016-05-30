@@ -115,7 +115,7 @@ public class SystemSetServiceImpl implements
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("PriceDatum", IntegerAndString.StringToInt(PriceDatum, 0)*10000);
-		map=handleSystemSetDaoImpl.setInterestMngFee(map);
+		handleSystemSetDaoImpl.setInterestMngFee(map);
 		int i=IntegerAndString.StringToInt(map.get("rulet").toString(),0);
 		// TODO Auto-generated method stub return 0;
 		return i;

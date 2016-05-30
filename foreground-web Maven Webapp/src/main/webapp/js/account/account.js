@@ -45,6 +45,25 @@ $(function(){
 			this.value = this.value.replace(/[^0-9.]/g,'');
 		});
 	});
+	$(".formatNum").each(function(){
+		$(this).focus(function(){
+			this.value = (this.value + '').replace(/\,/g, '');
+			$(this).keyup(function(){
+				if(this.value.length > 0){
+					this.value = this.value.replace(/[^0-9.]/g,'');
+				}
+			});
+		});
+		$(this).blur(function(){
+			if(this.value != ""){
+				this.value = parseFloat(this.value);
+				this.value = (this.value + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+			}
+		});
+		$(this).change(function(){
+			this.value = this.value.replace(/[^0-9.]/g,'');
+		});
+	});
 });
 
 /*  胥福星    2016-04-07  弹出提示层   */
@@ -115,6 +134,24 @@ $(function(){
 		$(this).layoutHover2("包括投资、取现和预约等过程中的冻结现金");
 	});
 	$(".whatever2").mouseout(function(){
+		$(this).parent().find(".tipDown").remove();
+	});
+	$(".whatever3").mouseover(function(){
+		$(this).layoutHover2("已投资，但还未收取还款的本金");
+	});
+	$(".whatever3").mouseout(function(){
+		$(this).parent().find(".tipDown").remove();
+	});
+	$(".whatever4").mouseover(function(){
+		$(this).layoutHover2("已投资，但还未收取还款的利息");
+	});
+	$(".whatever4").mouseout(function(){
+		$(this).parent().find(".tipDown").remove();
+	});
+	$(".whatever5").mouseover(function(){
+		$(this).layoutHover2("包含借款的未还部分的本金和利息的金额");
+	});
+	$(".whatever5").mouseout(function(){
 		$(this).parent().find(".tipDown").remove();
 	});
 });
@@ -227,6 +264,7 @@ function inputText(str){
 				$(this).val($(this).attr("lang"));
 				$(this).css('color','#999');
 			}
+			
 		});
 	});	
 }

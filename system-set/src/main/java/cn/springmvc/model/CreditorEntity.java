@@ -1,6 +1,8 @@
 
 package cn.springmvc.model; 
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /** 
  * 债权转让设置
 * @author ZZY 
@@ -12,6 +14,7 @@ public class CreditorEntity {
 	private int rangeDay;//	债权距到期日大于天数
 	private int interestDay;//	转让日在付息日前天数
 	private int mngFee;	//债权转让手续费 （百万分之 / 分
+	private String mngFees;	//债权转让手续费 （百万分之 / 分
 	private int mngType;//	手续费收取方向（0：转让人:1：购买人:2：全部）
 	private int checkType;//	是否需要审核 0：否 1：是
 	private int loanType;	// 放款方式 0：自动放款 1：手动放款
@@ -39,6 +42,7 @@ public class CreditorEntity {
 	}
 	public void setMngFee(int mngFee) {
 		this.mngFee = mngFee;
+		this.setMngFees(IntegerAndString.IntToString(mngFee));
 	}
 	public int getMngType() {
 		return mngType;
@@ -63,6 +67,12 @@ public class CreditorEntity {
 	}
 	public void setInterestType(int interestType) {
 		this.interestType = interestType;
+	}
+	public String getMngFees() {
+		return mngFees;
+	}
+	public void setMngFees(String mngFees) {
+		this.mngFees = mngFees;
 	}
 	
 

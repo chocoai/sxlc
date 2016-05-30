@@ -24,7 +24,7 @@ body{
 .longinTopFont span{
 	font-size:30px;
 	color:#444;
-	font-weight:bold;
+	font-weight:500;
 	border-right: 1px solid #D8D8D8;
     padding-right: 7%;
 }
@@ -41,10 +41,10 @@ body{
 	padding-left:78px;
 }
 .productLogo{
-	background:url(../resources/img/productLogo.jpg) no-repeat left center;
+	background:url(../resources/img/productLogo.png) no-repeat left center;
 }
 .eXingLogo{
-	background:url(../resources/img/eXingLogo.jpg) no-repeat left center;
+	background:url(../resources/img/eXingLogo.png) no-repeat left center;
 }
 .longinTopStyle h2{
 	font-size:26px;
@@ -59,7 +59,7 @@ body{
 }
 .longinContent{
 	height:600px;
-	background:#1e70c9;
+	background:#1e70c9 url("../resources/img/login-bg.png") no-repeat center;
 	position:relative;
 }
 .longinBottom {
@@ -85,6 +85,16 @@ body{
 	right:12%;
 	top:100px;
 	height:410px;
+	text-align:center;
+}
+.administratorLoginCunt.forget{
+	background:#fff;
+	width:365px;
+	position:absolute;
+	z-index:2;
+	right:12%;
+	top:60px;
+	height:485px;
 	text-align:center;
 }
 .loginW{
@@ -253,7 +263,7 @@ input[type=text]:focus, input[type=password]:focus{
     	height: 550px;
     }
     .administratorLoginCunt {
-    	top: 75px;
+    	top: 60px;
     }
 	.longinContent .administratorLoginCunt{
 		background:#fff;

@@ -47,7 +47,7 @@ int typeId = IntegerAndString.StringToInt(request.getParameter("start"),1);
 						<jsp:include page="../common/mc-table.jsp"></jsp:include> 
 						<div class="w-content ishow detailAuthen realnameAuthen">
 							<fieldset>
-								<legend class="titleLen"></legend>
+								<legend class="titleLen">婚姻认证</legend>
 								<div class="introduce">
 								<input type="hidden" id="hostPath" value="${ImgProfix}"/>
 									<span><samp>姓名：</samp><label id="realName"></label></span>

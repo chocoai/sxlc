@@ -28,7 +28,7 @@ $(function () {
 
 /** 修改红包代金卷到期天数 **/
 function addRedV () {
-	validform5("btn","red",true,"3");
+	validform5("btn","red",true,"5");
 	var days = $("#days").val();
 	//加密操作
 	var encrypt = new JSEncrypt();

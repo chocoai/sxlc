@@ -88,14 +88,15 @@
 		LEFT JOIN Admin_Role ar ON ar.Admin_ID=a.Admin_ID
 		LEFT JOIN Role_Info ri ON  ri.roleId =ar.Role_ID
 		<where>
-			<if test="map!=null and map.adminName != null">
-				a.adminName LIKE '%${map.adminName}%' 
+			1=1
+			<if test="map!=null and map.adminName != null and map.adminName != ''">
+				and a.adminName LIKE '%${map.adminName}%' 
 			</if>
-			<if test="map!=null and map.userName != null">
-				pbi.Personal_Name =LIKE '%${HEX(AES_ENCRYPT(#{map.userName},#{sKey}))}%'
+			<if test="map!=null and map.userName != null and  map.userName != ''">
+				and pbi.Personal_Name =LIKE '%${HEX(AES_ENCRYPT(#{map.userName},#{sKey}))}%'
 			</if>	
-			<if test="map!=null and map.startTime != null">
-				add_Date between #{map.startTime} and #{map.endTime}
+			<if test="map!=null and map.startTime != null and map.map.startTime!='' and map.endTime!='' ">
+				and add_Date between #{map.startTime} and #{map.endTime}
 			</if>
 		</where>
 	</select>

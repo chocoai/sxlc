@@ -47,7 +47,7 @@
     						<div class="list1">积分总数</div>
     					</div>
     					<div class="contentList">
-    						<div class="imgList"><img id="commoditySmallIcon" class="goodsImg" src="${info.commoditySmallIcon}"></div><!-- resource/img/integralMall/jfsc_small.png -->
+    						<div class="imgList"><img id="commoditySmallIcon" class="goodsImg" src="${imgProfix }${info.commoditySmallIcon}"></div><!-- resource/img/integralMall/jfsc_small.png -->
     						<div id="commodityName" class="contentLi">${info.commodityName}<!-- 可爱卡通U型枕头 --></div>
     						<div id="" class="contentLiNum exchangeNum"><!-- 2 --></div>
     						<input type="hidden" id="singlePoint" value="${info.needPoint}" />

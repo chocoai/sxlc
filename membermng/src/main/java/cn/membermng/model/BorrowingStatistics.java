@@ -18,6 +18,10 @@ public class BorrowingStatistics {
 	private int					investmentCount;			//成功投资
 	private int					overdueRepaymentCount;		//逾期还款
 	private int					yZOverdueRepaymentCount;	//严重逾期
+	private int					yuQiWeiHuan;				//逾期未还
+	private int					tiQianHuanKuan;				//提前还款笔数
+	
+	
 	public int getLoanCount() {
 		return loanCount;
 	}
@@ -48,9 +52,18 @@ public class BorrowingStatistics {
 	public void setyZOverdueRepaymentCount(int yZOverdueRepaymentCount) {
 		this.yZOverdueRepaymentCount = yZOverdueRepaymentCount;
 	}
-	
-	
-	
+	public int getYuQiWeiHuan() {
+		return yuQiWeiHuan;
+	}
+	public void setYuQiWeiHuan(int yuQiWeiHuan) {
+		this.yuQiWeiHuan = yuQiWeiHuan;
+	}
+	public int getTiQianHuanKuan() {
+		return tiQianHuanKuan;
+	}
+	public void setTiQianHuanKuan(int tiQianHuanKuan) {
+		this.tiQianHuanKuan = tiQianHuanKuan;
+	}
 	
 	
 	

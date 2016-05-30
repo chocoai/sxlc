@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-finance.jsp">
-				<jsp:param value="" name="_index_m2"/>
+				<jsp:param value="406" name="_index_m2"/>
 				<jsp:param value="" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
@@ -103,6 +103,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/finance/fn-withdraw.js"></script>
 	<script type="text/javascript">
 		var publicKey_common = '<%=session.getAttribute("publicKey") %>';
+		function pAdd(){
+			$(".right_col").load("web/recommend/re-add/acc-withdraw.jsp");
+		}
 	</script>
 </body>
 

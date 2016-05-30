@@ -85,7 +85,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  <form action="javascript:addData();" id="dataForm" method="post">
 			<table >
 				<tr>
-					<td class="tt"><label>借款类型：</label></td>
+					<td class="tt"><label class="ineed">借款类型：</label></td>
 					<td class="con">
 						<select id="projectID" class="con-repayment">
 							<c:forEach var="item" items="${proTypes}">
@@ -95,7 +95,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</td>
 				</tr>
 				<tr>
-					<td class="tt"><label>借款人：</label></td>
+					<td class="tt"><label class="ineed">借款人：</label></td>
 					<td class="con">
 						<input type="hidden" id="memberType">
 						<input type="hidden" id="memberID">
@@ -104,16 +104,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</td>
 				</tr>
 				<tr>
-					<td class="tt"><label>借款金额：</label></td>
+					<td class="tt"><label class="ineed">借款金额：</label></td>
 					<td class="con">
-						<input type="text" id="amount" class="inputWidtn" datatype="nNum" maxlength="8" >
+						<input type="text" id="amount" class="inputWidtn" datatype="acountM" maxlength="13" >
 						<span>元</span>
 					</td>
 				</tr>
 				<tr>
-					<td class="tt">项目期限：</td>
+					<td class="tt ineed">项目期限：</td>
 					<td class="con">
-						<input id="deadline" type="text" class="inputWidtn" datatype="nNum" maxlength="4" >
+						<input id="deadline" type="text" class="inputWidtn" datatype="nNum1" maxlength="3" >
 						<select id="deadlineType" class="con-trim">
 							<option value="2">年</option>
 							<option value="1">月</option>
@@ -122,14 +122,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</td>					
 				</tr>
 				<tr>
-					<td class="tt"><label>年化利率：</label></td>
+					<td class="tt"><label class="ineed">年化利率：</label></td>
 					<td class="con">
-						<input id="yearRate" type="text" class="inputWidtn" datatype="hundredNum" maxlength="6">
+						<input id="yearRate" type="text" class="inputWidtn" datatype="hundredNum" maxlength="8">
 						<span>%</span>
 					</td>
 				</tr>
 				<tr>
-					<td class="tt"><label>还款方式：</label></td>
+					<td class="tt"><label class="ineed">还款方式：</label></td>
 					<td class="con">
 						<select id="repayWay" class="con-repayment" disabled="disabled">
 							<option value="3">等额本金</option>
@@ -140,19 +140,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</td>
 				</tr>
 				<tr>
-					<td class="tt"><label>借款用途：</label></td>
+					<td class="tt"><label class="ineed">借款用途：</label></td>
 					<td class="con">
 						<textarea id="uses" datatype="rolemarkC"></textarea>
 					</td>
 				</tr>
 				<tr>
-					<td class="tt"><label>还款来源：</label></td>
+					<td class="tt"><label class="ineed">还款来源：</label></td>
 					<td class="con">
 						<textarea id="repaySource" datatype="rolemarkC"></textarea>
 					</td>
 				</tr>
 				<tr>
-					<td class="tt"><label>借款描述：</label></td>
+					<td class="tt"><label class="ineed">借款描述：</label></td>
 					<td class="con" >
 						<textarea id="projectDescript" datatype="rolemarkC"></textarea>
 					</td>
@@ -164,8 +164,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="borrower" style="display:none">
 			<div class="panel-body">
 				<form id="" class="" action="">
-					<span class="con-item"><span>会员编号</span><input id="memberNo" type="text" class="notspecial"></span>
-					<span class="con-item"><span>会员用户名</span><input id="memberName" type="text" class="notspecial"></span>
+					<span class="con-item"><span>会员编号</span><input id="memberNoA" type="text" class="notspecial"></span>
+					<span class="con-item"><span>会员用户名</span><input id="memberNameA" type="text" class="notspecial"></span>
 					<span class="con-item"><span>手机号</span><input id="personalPhone" type="text" class="notspecial"></span>
 					<button  type="button" id="memberQuery" class="obtn obtn-query glyphicon glyphicon-search" >查询</button>
 				</form>

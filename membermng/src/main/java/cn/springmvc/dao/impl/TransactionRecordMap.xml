@@ -28,6 +28,7 @@
 		<result column="Account_Deal_Statu" 	    		property="accountDealStatu" /> 
 		<result column="Trade_Object_Type" 					property="tradeObjectType" />
 		<result column="Trade_Object_Id" 					property="tradeObjectId" /> 
+		<result column="Trade_Object_Name"					property="tradeObjectName"/>
 		<result column="Statu" 								property="statu" />  
 		
 		<result column="WillRec_Principal" 	    		    property="willRecPrincipal" /> 

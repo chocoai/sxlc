@@ -63,10 +63,29 @@
 	   CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{sKey})) as signed) Repay_Overdue,
 	   CAST((AES_DECRYPT(UNHEX(lrr.Repay_Penalty),#{sKey})) as signed) Repay_Penalty,
 	   lrr.Repay_Time,
-	   (ifnull(lrr.Repay_Principal,0)+ifnull(lrr.Repay_Interest,0)+ifnull(lrr.Repay_Overdue_Interest,0)+
-	   ifnull(lrr.Repay_Overdue,0)+ifnull(lrr.Repay_Penalty,0)) as replayTotal
+	   (ifnull(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{sKey})) as signed),0)+
+	   ifnull(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{sKey})) as signed),0)+
+	   ifnull(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{sKey})) as signed),0)+
+	   ifnull(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{sKey})) as signed),0)+
+	   ifnull(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Penalty),#{sKey})) as signed),0)) as replayTotal
 	   from  Loan_Real_Repay  lrr 
 	   left  join Loan_Repay lr on lr.Repay_ID = lrr.Real_Repay_ID 
 	   where  lr.Apply_Id=#{projectID}  
+    </select>  
+    
+       <!--  根据项目申请ID查询实际还款-->  
+	<select id="selectLoanRealReplayprocess"  parameterType="map" resultType="cn.springmvc.model.LoanRepayEntity" >
+	   select lr.Indexs as indexs,  
+	   (select ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Principal),#{sKey})) as signed)),0)+
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Interest),#{sKey})) as signed)),0)+
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue_Interest),#{sKey})) as signed)),0)+
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Overdue),#{sKey})) as signed)),0)+
+	   ifnull(sum(CAST((AES_DECRYPT(UNHEX(lrr.Repay_Penalty),#{sKey})) as signed)),0)  
+	   from Loan_Real_Repay lrr where lr.Repay_ID = lrr.Real_Repay_ID  ) as replayTotal,
+	   (select lrr.Repay_Time  from Loan_Real_Repay lrr where lrr.Repay_ID =lr.Repay_ID and  lr.Statu >=3
+	   order by  lrr.Repay_Time desc limit 1
+	   ) as repayTime
+	   from  Loan_Repay  lr
+	   where  lr.Apply_Id=#{projectID}  and lr.IsValid=0 and lr.Statu >=3
     </select>  
 </mapper>

@@ -75,7 +75,7 @@ $(function () {
 });
 
 $(function () {
-	validform5(".commonbtn0","bankAdd",false,"3");
+	validform5(".commonbtn0","bankAdd",false,"5");
 	$("#add").bind('click', function () {
 		$("#bankAdd").submit();
 	});
@@ -216,5 +216,5 @@ $(function(){
 		"border":"1px solid #ccc",
 		"cursor":"pointer"
 	});
-	validform5(".commonbtn0","card_id",false,"3");
+	validform5(".commonbtn0","card_id",false,"5");
 });

@@ -45,7 +45,7 @@
 	    </property>
 	    <!-- 连接池最大空闲 -->
 	    <property name="maxIdle">
-	      <value>20</value>
+	      <value>10</value>
 	    </property>
 	    <!-- 连接池最小空闲 -->
 	    <property name="minIdle">
@@ -64,6 +64,7 @@
 	      <value>clientEncoding=UTF-8</value>
 	    </property>
   </bean>
+   
     <!-- mybatis文件配置，扫描所有mapper文件 -->
 	<bean id="sqlSessionFactoryR" class="org.mybatis.spring.SqlSessionFactoryBean"
 	    p:dataSource-ref="dataSourceR"
@@ -75,9 +76,31 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
         p:basePackage="cn.springmvc.dao"
         p:sqlSessionFactoryBeanName="sqlSessionFactoryR"/>
-	<!-- 对数据源进行事务管理 -->
-	<bean id="transactionManager"	
-	class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
-	p:dataSource-ref="dataSource"
-	/>
+	
+	
+	<!-- 对数据源进行事务管理器 -->
+	<bean id="readTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceR"></property>
+	</bean>
+	
+<!-- 	
+	事物性质
+	<tx:advice id="readAdvice" transaction-manager="readTransactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" read-only="true"/>			
+		</tx:attributes>
+	</tx:advice>
+	
+	事物切入点
+	<aop:config>    
+    	<aop:pointcut id="pc" expression="execution(* cn.springmvc.service.impl..*.*(..))" /> 把事务控制在Service层
+    	<aop:advisor pointcut-ref="pc" advice-ref="readAdvice" />
+  	</aop:config>
+	
+	
+	
+ -->	
+	
+	
+	
 </beans>

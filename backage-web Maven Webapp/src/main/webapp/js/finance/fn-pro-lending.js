@@ -12,16 +12,23 @@ $(function () {
 		if (rowdata.length <= 0) {
 			layer.alert("请选择需要进行操作的项目！",{icon:0});
 			return;
-		}else {
-			var projectId = rowdata[0].applyID;
-			projectId = encrypt.encrypt(projectId + "");
-			var stype = encrypt.encrypt(1 + "");
-			var auditType = encrypt.encrypt(1 + "");
-			$("#stype").val(stype);
-			$("#auditType").val(auditType);
-			$("#projectId").val(projectId);
-			$("#form1").submit();
 		}
+		if (rowdata[0].investStatu == 1) {
+			layer.alert("该项目已流标！",{icon:0});
+			return;
+		}
+		if (rowdata[0].investStatu == 3) {
+			layer.alert("该项目已放款！",{icon:0});
+			return;
+		}
+		var projectId = rowdata[0].applyID;
+		projectId = encrypt.encrypt(projectId + "");
+		var stype = encrypt.encrypt(1 + "");
+		var auditType = encrypt.encrypt(1 + "");
+		$("#stype").val(stype);
+		$("#auditType").val(auditType);
+		$("#projectId").val(projectId);
+		$("#form1").submit();
 	});
 	
 	$("#pass").bind('click', function () {
@@ -29,23 +36,30 @@ $(function () {
 		if (rowdata.length <= 0) {
 			layer.alert("请选择需要进行操作的项目！",{icon:0});
 			return;
-		}else {
-			var projectId = rowdata[0].applyID;
-			projectId = encrypt.encrypt(projectId + "");
-			var stype = encrypt.encrypt(1 + "");
-			var auditType = encrypt.encrypt(2 + "");
-			$("#stype").val(stype);
-			$("#auditType").val(auditType);
-			$("#projectId").val(projectId);
-			$("#form1").submit();
 		}
+		if (rowdata[0].investStatu == 1) {
+			layer.alert("该项目已流标！",{icon:0});
+			return;
+		}
+		if (rowdata[0].investStatu == 3) {
+			layer.alert("该项目已放款！",{icon:0});
+			return;
+		}
+		var projectId = rowdata[0].applyID;
+		projectId = encrypt.encrypt(projectId + "");
+		var stype = encrypt.encrypt(1 + "");
+		var auditType = encrypt.encrypt(2 + "");
+		$("#stype").val(stype);
+		$("#auditType").val(auditType);
+		$("#projectId").val(projectId);
+		$("#form1").submit();
 	});
 });
 //表格初始化
 $(function() {
 	$('#table_pro_lending').DataTable({
         ajax: {  
-            "url": appPath + "/lending/lendingList.do",   
+            "url": appPath + "/finance/lendingList.do",   
             "dataSrc": "results", 
             "data": function ( d ) {  
             	var projectNo = $("#projectNo").val();
@@ -150,10 +164,11 @@ $(function() {
       processing: true, //打开数据加载时的等待效果  
       serverSide: true,//打开后台分页  
       scrollCollapse: true,
+      searching: false,
       scrollX : "100%",
-	  scrollXInner : "100%",
+      scrollXInner : "100%",scrollY:500,
       rowCallback:function(row,data){//添加单击事件，改变行的样式      
-      },
+      }
 });
 	//表格单选效果(有复选框)
 	 $('#table_pro_lending tbody').on( 'click', 'tr', function () {
@@ -175,7 +190,6 @@ $(function() {
 	  */
 	 $(".glyphicon-search").on("click",function(){
 		$('#table_pro_lending').DataTable().ajax.reload();
-		
 	 });
 
 	

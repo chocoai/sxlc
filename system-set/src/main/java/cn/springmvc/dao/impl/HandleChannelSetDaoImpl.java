@@ -1,6 +1,7 @@
 
 package cn.springmvc.dao.impl; 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -98,6 +99,17 @@ public class HandleChannelSetDaoImpl extends SqlSessionDaoSupport implements Han
 		// TODO Auto-generated method stub return 0;
 		return getSqlSession().update("ChannelSetXML.SetEnableDisable",map);
 	}
-
+	@Override
+	public long selectCountThreeInterface(int interfaceID) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("interfaceID", interfaceID);
+		Long reLong=getSqlSession().selectOne("ChannelSetXML.selectCountThreeInterface",map);
+		long retu=0;
+		if (reLong!=null) {
+			retu=reLong;
+		}
+		// TODO Auto-generated method stub return 0;
+		return retu;
+	}
 }
 

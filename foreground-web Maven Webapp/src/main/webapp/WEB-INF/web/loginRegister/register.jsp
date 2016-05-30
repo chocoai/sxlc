@@ -66,7 +66,7 @@
 						</div>
 						<div class="inputPassword2 clearfix">
 							<div class="left-title"><span>*</span>确认密码:</div>
-			    			<input type="password" class="input-password2" recheck="input-password" datatype="*" maxlength="16" >
+			    			<input type="password" class="input-password2" recheck="input-password" datatype="regpass" maxlength="16" >
 			    			<span class="hint hint2">请确认您的帐号密码</span>
 						</div>
 						<div class="inputInviteCode clearfix">
@@ -99,7 +99,7 @@
 						<div class="checkbox-link clearfix" >
 							<div class="checkBox" id="checkRule1">
 					        	<label>
-					          		<input type="checkbox" class="check-box">我已阅读并同意使用条款和隐私条款
+					          		<input type="checkbox" class="check-box"><label class="XYdetail">我已阅读并同意使用条款和隐私条款</label>
 					       		</label>
 					       	</div>		     		      		
 				      	</div>
@@ -170,7 +170,7 @@
 						<div class="checkbox-link clearfix">
 							<div class="checkBox"  id="checkRule2">
 					        	<label>
-					          		<input type="checkbox" checked class="check-box">我已阅读并同意使用条款和隐私条款
+					          		<input type="checkbox" checked class="check-box"><label class="XYdetail">我已阅读并同意使用条款和隐私条款</label>
 					       		</label>
 					       	</div>		     		      		
 				      	</div>
@@ -184,6 +184,13 @@
    		<div class="photo">
 			<img src="resource/img/loginRegister/grzc1_01.png" class="image1">
 			<img src="resource/img/loginRegister/grzc1_04.png" class=image2>
+		</div>
+		
+		<div class="addXY" style="display:none">
+			<h1>${agreement.agreementTitle }</h1>
+			<div>
+				${agreement.agreementDetail }
+			</div>
 		</div>
    	</div>
    	<jsp:include page="../common/bottom.jsp"></jsp:include>

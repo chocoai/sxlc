@@ -61,7 +61,7 @@ public class RepaymentOfBorrowings {
 		return lendingTime;
 	}
 	public void setLendingTime(String lendingTime) {
-		this.lendingTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(nextRepaymentTime));
+		this.lendingTime = TimestampAndString.TimestampToString2(Timestamp.valueOf(lendingTime));
 	}
 	public long getPrincipal() {
 		return principal;

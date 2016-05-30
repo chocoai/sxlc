@@ -34,7 +34,7 @@ $(function() {
  */
 function addOrModify(type){
 	//清除数据
-	validform5(".layui-layer-btn0","dataForm",true,3);
+	validform5(".layui-layer-btn0","dataForm",false,5);
 	//清除数据
 	document.getElementById("dataForm").reset();
 	if(type==0){
@@ -94,6 +94,7 @@ function addRecruitments(){
 	name = encrypt.encrypt(name);
 	jobR = encrypt.encrypt(jobR);
 	jobRe = encrypt.encrypt(jobRe);
+	 $(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		 url:appPath+"/RecruitmentController/insertRecruitments.do",
 		data:{
@@ -109,10 +110,12 @@ function addRecruitments(){
 			 if(data==1){
 				layer.alert("添加成功",{icon:1});
 				$(".layui-layer-btn1").click();
-				setTimeout('location.reload()',500);
+				var table = $('#teamTb').DataTable();
+				 table.ajax.reload();
 			}else if(data==-1){
 				layer.alert("该名称的已存在",{icon:2});  
 			}
+			 $(".layui-layer-btn0").removeClass("disabled");
 		},  
 		error : function() {  
 			layer.alert("服务器异常",{icon:2});  
@@ -153,6 +156,7 @@ function addRecruitments(){
 		name = encrypt.encrypt(name);
 		jobR = encrypt.encrypt(jobR);
 		jobRe = encrypt.encrypt(jobRe);
+		 $(".layui-layer-btn0").addClass("disabled");
 		$.ajax( {  
 			url:appPath+"/RecruitmentController/updateRecruitments.do",
 			data:{
@@ -169,10 +173,12 @@ function addRecruitments(){
 				if(data==1){
 					layer.alert("修改成功",{icon:1});
 					$(".layui-layer-btn1").click();
-					setTimeout('location.reload()',500);
+					var table = $('#teamTb').DataTable();
+					 table.ajax.reload();
 				}else{
 					layer.alert("修改失败",{icon:2});  
 				}
+				 $(".layui-layer-btn0").removeClass("disabled");
 			},  
 			error : function() {  
 				layer.alert("操作失败!",{icon:2});  
@@ -295,7 +301,7 @@ function getInviteList(){
 	        	  }
 	          },
 	          { title:"招聘id","data": "id"},
-	          { title:"添加时间","data": "createTime"},  
+	          { title:"添加时间","data": "sCreateTime"},  
 	          { title:"招聘职位","data": "name" },  
 	          { title:"工作地区","data": "area" },  
 	          { title:"岗位职责","data": "jobResponsibilities", 

@@ -161,10 +161,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                          ],
 		          pagingType: "simple_numbers",//设置分页控件的模式  
 		          processing: true, //打开数据加载时的等待效果  
-		          serverSide: true,//打开后台分页  
+		          serverSide: true,//打开后台分页
+		          searching: false,
 		          scrollCollapse: true,
 		          scrollX : "100%",
-				  scrollXInner : "100%",
+		          scrollXInner : "100%",scrollY:500,
 		          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 		          },
 		});//表格初始化完毕
@@ -196,11 +197,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var mc = UE.getEditor('msgcontent');
 		/* 发送消息 */
 		$(".obtn-sendmsg").on('click',function(){
-			 var rdata = $('#table_id').DataTable().rows('.selected').data();
-// 			 if(rdata.length<1){
-// 					layer.alert("请选择项目！",{icon:0});
-// 					return;
-// 			 }
+			 var rdata = $('#table_id').DataTable().rows('.selected').data();
+			 if(rdata.length<1){
+					layer.alert("请选择项目！",{icon:0});
+					return;
+			 }
 			layer.open({
 			    type: 1,
 			    area: ['800px', '580px'], //高宽

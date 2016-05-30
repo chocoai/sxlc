@@ -12,7 +12,7 @@ encrypt.setPublicKey(publicKey_common);
 *//**
  * 启用
  */
-function enableOrdisEnable(){
+function enableOrdisEnable(type){
 	
 	layer.confirm('确定执行该操作？', {
 		btn: ['确定', '取消']
@@ -24,7 +24,7 @@ function enableOrdisEnable(){
 			url : appPath + "/guarant/ofOrOpen.do", 
 			data : {
 				guaranteeId : encrypt.encrypt("" + rowdata[0].guaranteeID), 
-				recordStatus : encrypt.encrypt("" + rowdata[0].recordStatus)
+				recordStatus : encrypt.encrypt("" + type)
 			},
 			success : function (msg) {
 				if (msg == 0) {
@@ -186,7 +186,7 @@ $(function() {
                   { title:"注册资本","data": "companyCapital" },
                   { title:"注册地址","data": "companyAddress" },
                   { title:"法人姓名","data": "personalName" },
-                  { title:"法人身份证号","data": "personalIdCard" },
+                  { title:"法人身份证号","data": "personalIDCard" },
                   { title:"法人手机号","data": "personalPhone" },
                   { title:"联系人姓名","data": "contactName" },  
                   { title:"联系人手机号","data": "contactPhone" },
@@ -201,7 +201,7 @@ $(function() {
                   },  
                   { title:"操作","data": "statu",
                   	"mRender": function (data, type, full) {
-                		  return "<a onclick=\"enableOrdisEnable();\" href=\"javascript:void(0);\">启用</a>" + "<a onclick=\"enableOrdisEnable();\" href=\"javascript:void(0);\">停用</a>";
+                		  return "<a onclick=\"enableOrdisEnable(1);\" href=\"javascript:void(0);\">启用</a>" + "<a onclick=\"enableOrdisEnable(0);\" href=\"javascript:void(0);\">停用</a>";
                 	  } 
                   }
         ],
@@ -218,8 +218,20 @@ $(function() {
  var table = $('#table_id').DataTable();
 //设置选中change颜色
  $('#table_id tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });
 
 /**

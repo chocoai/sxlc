@@ -61,6 +61,16 @@ $(function(){
 		$(".backTop").click( function(){
 	         rt();
 	     });
+		
+//		不能输入空格的input
+		$("input").each(function(){
+			$(this).on("keypress",function(event){
+				if(event.keyCode == 32){
+					return false
+				}
+			})
+		})
+		
 });
 function rt() {
     var d = document,
@@ -136,4 +146,16 @@ jQuery.fn.layoutCleanAll = function(){
 	$(".tip").remove();
 	$(".tipOk").remove();
 	$(".dynamicVerificationSpan").remove();
+}
+jQuery.fn.errorPrompt = function(str){
+	var html = '<span class="arrow">'+
+				'<em></em><span></span>'+
+				'</span>'+
+				'<span class="Validform_checktip">'+str+'</span>';
+	this.next().removeClass("Validform_right").addClass("Validform_wrong").html(html);
+	this.css("border","1px solid #f00");
+}
+jQuery.fn.rightPrompt = function(){
+	this.next().removeClass("Validform_wrong").addClass("Validform_right").html("");
+	this.css("border","1px solid #d2d2d2");
 }

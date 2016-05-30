@@ -62,9 +62,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 							  	<div class="action_item">
-							  		<button id="" class="obtn glyphicon glyphicon-plus obtn-bill-detail">账单详情</button>
-						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-send-phonemsg">催收</button>
-						  			<button id="" class="obtn glyphicon glyphicon-plus obtn-loan-prodetail">借款标详情</button>
+							  		<button id="" class="obtn glyphicon  glyphicon-list obtn-bill-detail">账单详情</button>
+						  			<button id="" class="obtn glyphicon glyphicon-envelope obtn-send-phonemsg">催收</button>
+						  			<button id="" class="obtn glyphicon  glyphicon-list obtn-loan-prodetail">借款标详情</button>
 								</div>
 							</div>
 							<div class="panel-body">

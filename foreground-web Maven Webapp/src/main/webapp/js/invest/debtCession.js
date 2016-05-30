@@ -127,7 +127,7 @@ $(function(){
 			var pagesize = pagesize;
 			//总页数
 			var totalPage = Math.ceil(totalRecords/pagesize);
-			pager.generPageHtml({
+			pager6.generPageHtml({
 				pno : pageNo,
 				//总页码
 				total : totalPage,
@@ -154,7 +154,7 @@ $(function(){
 					return false;
 					
 				}
-			});
+			},true);
 		}
 	}
 	

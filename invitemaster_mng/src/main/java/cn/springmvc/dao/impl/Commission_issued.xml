@@ -325,6 +325,7 @@
 			  AND IF(#{Hold_Date_Min} IS NULL OR #{Hold_Date_Min} = '', 1=1, pap.Hold_Date>=#{Hold_Date_Min})
 			  AND IF(#{Hold_Date_Max} IS NULL OR #{Hold_Date_Max} = '', 1=1, pap.Hold_Date&lt;=#{Hold_Date_Max})
 			  AND IF(#{Service_No} IS NULL OR #{Service_No} = '', 1=1, far.FA_ID=(SELECT fa.FA_ID FROM Financial_Advisor fa where fa.Service_No = #{Service_No}))
+			  AND far.member_ID = #{memberID}
 		  ORDER BY (case upper(#{ordercolumn})  <!--根据传入参数值选择排序条件-->
 				WHEN 'HOLD_DATE' THEN pap.Hold_Date
 				ELSE pap.Hold_Date

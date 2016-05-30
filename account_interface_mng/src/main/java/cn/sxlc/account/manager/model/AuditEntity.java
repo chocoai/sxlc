@@ -22,6 +22,8 @@ public class AuditEntity {
 	private String returnURL;//页面返回网址
 	private String notifyURL;//后台通知网址
 	private String signInfo;//签名信息
+	
+	private int statu=1;//信息处理返回： 1：处理成功  -1：无投资流标成功
 	public String getLoanNoList() {
 		return loanNoList;
 	}
@@ -105,6 +107,12 @@ public class AuditEntity {
 	}
 	public void setStype(int stype) {
 		this.stype = stype;
+	}
+	public int getStatu() {
+		return statu;
+	}
+	public void setStatu(int statu) {
+		this.statu = statu;
 	}
 	
 }

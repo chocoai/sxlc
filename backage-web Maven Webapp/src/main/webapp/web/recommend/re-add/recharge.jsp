@@ -40,7 +40,7 @@
 						</tr>
 						<tr>
 							<td class="tt">输入金额</td>
-							<td class="con" id="inputMoney"><input type="text" datatype="amcountM"/></td>
+							<td class="con" id="inputMoney"><input type="text" datatype="acountM"/></td>
 						</tr>
 						<tr>
 							<td class="tt">充值备注</td>

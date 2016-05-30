@@ -36,7 +36,6 @@
 	       </if>  
 	         Opt_Date=now(), 
 	   </set>   
-	   where Introduce_ID=#{id}   
     </update>   
     <!-- 删除产品介绍 -->  
 	<delete id="deleteProductIntroduceByID"  parameterType="int">

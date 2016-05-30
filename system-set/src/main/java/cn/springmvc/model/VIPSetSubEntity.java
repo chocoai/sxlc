@@ -69,10 +69,15 @@ public class VIPSetSubEntity {
 		this.borrowMngRate = borrowMngRate;
 		this.borrowMngRates = IntegerAndString.IntToString(borrowMngRate);
 	}
+	
+	public void setInvestMngRates(String investMngRates) {
+		this.investMngRates = investMngRates;
+	}
 
 	public String getBorrowMngRates() {
 		return borrowMngRates;
 	}
+
 
 	public int getInvestMngRate() {
 		return investMngRate;
@@ -83,10 +88,9 @@ public class VIPSetSubEntity {
 		this.investMngRates = IntegerAndString.IntToString(investMngRate);
 	}
 
-	public String getinvestMngRates() {
+	public String getInvestMngRates() {
 		return investMngRates;
 	}
-
 
 	public int getVipTerm() {
 		return vipTerm;

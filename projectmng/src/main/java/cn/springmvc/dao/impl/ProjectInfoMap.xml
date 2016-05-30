@@ -45,6 +45,8 @@
 		<result property = "repayMaxTime"       column = "Repay_MaxTime" />
 		<result property = "sdRepayPrincipal"   column = "SDRepay_Principal" /> 
         <result property = "sdRepayInterest"    column = "SDRepay_Interest" /> 
+        <result property = "repayID"            column = "Repay_ID" /> 
+        <result property = "applyId"            column = "Apply_Id" /> 
 	</resultMap>	
 	  <!--  逾期还款统计 -->
 	<resultMap type="cn.springmvc.model.ReplayStatisticsEntity" id="LatePayments">   

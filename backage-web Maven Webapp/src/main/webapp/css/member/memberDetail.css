@@ -311,6 +311,7 @@ img{
   list-style: none;
   hight:30px;
   line-height:30px;
-  width: 150px;
+  margin-left:10px;
+  width: 155px;
   float: left;
 }

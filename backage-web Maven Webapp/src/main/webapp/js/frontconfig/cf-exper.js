@@ -48,7 +48,7 @@ $(function() {
  */
 function addOrModify(type){
 	//清除数据
-	validform5(".layui-layer-btn0","dataForm",true,3);
+	validform5(".layui-layer-btn0","dataForm",true,5);
 	//清除数据
 	document.getElementById("dataForm").reset();
 	$("#portrait").attr("src","");
@@ -98,7 +98,7 @@ function addOrModify(type){
  */
 function expMod(){
 	//清除数据
-	validform5(".layui-layer-btn0","dataForm",true,3);
+	validform5(".layui-layer-btn0","dataForm",true,5);
 	document.getElementById("dataForm").reset();
 	
 	$("#portrai").attr("src","");
@@ -169,6 +169,7 @@ function updateExpertTeamByID(){
 	portraitUrl = encrypt.encrypt(portraitUrl);
 	profile =encrypt.encrypt(profile);
 	id =encrypt.encrypt(id+"");
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url: appPath+"/ExpertsController/updateExpertTeamByID.do",
 		data:{
@@ -191,6 +192,7 @@ function updateExpertTeamByID(){
 				}else if(data==0){
 					layer.alert("失败",{icon:2});  
 				}
+			 $(".layui-layer-btn0").removeClass("disabled");
 		},  
 		error : function() {  
 			layer.alert("操作失败!",{icon:2});  
@@ -215,7 +217,7 @@ function addMngTeam(){
 	portraitUrl = encrypt.encrypt(portraitUrl);
 	profile =encrypt.encrypt(profile);
 	
-	
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		 url:appPath+"/ExpertsController/insertExpertTeam.do",
 		data:{
@@ -235,6 +237,7 @@ function addMngTeam(){
 			 }else if(data==-1){
 				layer.alert("该名称的专家顾问已存在",{icon:2});  
 			 }
+			 $(".layui-layer-btn0").removeClass("disabled");
 		},  
 		error : function() {  
 			layer.alert("服务器异常",{icon:2});  

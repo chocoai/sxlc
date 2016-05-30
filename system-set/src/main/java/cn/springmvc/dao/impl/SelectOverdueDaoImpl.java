@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.dao.SelectOverdueDao;
@@ -51,9 +52,14 @@ public class SelectOverdueDaoImpl extends SqlSessionDaoSupport implements Select
 	}
 
 	@Override
-	public Integer findMaxOverdue() {
+	public int findMaxOverdue() {
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().selectOne("OverdueXML.findMaxOverdue");
+		Long result=getSqlSession().selectOne("OverdueXML.findMaxOverdue");
+		int res=0;
+		if (result!=null) {
+			res=IntegerAndString.StringToInt(result.toString(), 0);
+		}
+		return res;
 	}
 	
 	

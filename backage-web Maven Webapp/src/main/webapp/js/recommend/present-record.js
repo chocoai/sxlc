@@ -1,5 +1,11 @@
 var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
+/**
+ * 提现
+ */
+function pAdd(){
+	$(".right_col").load("web/recommend/re-add/acc-withdraw.jsp");
+}
 //表格初始化
 $(function() {
 	var appPath = getRootPath();//项目根路径
@@ -87,11 +93,6 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#table_id').DataTable();
-//设置选中change颜色
- $('#table_id tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
 });
 
 /**
@@ -100,4 +101,23 @@ $(function() {
 $(".glyphicon-search").on("click",function(){
 	$('#table_id').DataTable().ajax.reload();
 	
+});
+
+$(function() {
+	//单选
+	$('#table_id tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

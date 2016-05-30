@@ -9,6 +9,8 @@ $(function(){
 			$(this).addClass("tdAuthen");
 		}else if($(this).html().match("未验证") || $(this).html().match("未开通")  || $(this).html().match("未绑定")  || $(this).html().match("未设置")  || $(this).html().match("未选择")){
 			$(this).addClass("tdUnauth");
+		}else{
+			$(this).addClass("tdUnauth");
 		}
 //		if($(".certification").html().match("已验证") && $(".account").html().match("未开通")){
 //			$(this).parent().find(".certificationSpan").show();

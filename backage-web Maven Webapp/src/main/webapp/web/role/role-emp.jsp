@@ -13,7 +13,7 @@
 
 <head>
 <base href="<%=basePath%>">
-<title>角色管理</title>
+<title>角色管理-员工管理</title>
 <!-- 公用meta -->
 <jsp:include page="../common/top-meta.jsp"></jsp:include>
 <!-- 公用css -->
@@ -28,12 +28,12 @@
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="1" name="top_menu_index" />
-				<jsp:param value="角色管理" name="loc1" />
+				<jsp:param value="1" name="_index_m1" />
 			</jsp:include>
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-left-menu.jsp">
-				<jsp:param value="role-2" name="role-index" />
+			<jsp:include page="../common/cm-role.jsp">
+				<jsp:param value="103" name="_index_m2" />
+				<jsp:param value="" name="_index_m3" />
 			</jsp:include>
 			<!-- 头部导航 -->
 
@@ -82,37 +82,40 @@
 						</div>
 						<div class="w-content emp-add">
 							<form action="javascript:addStaff()" id="dataForm" method="post">
+							<input type="hidden" id="errorMsg" value="${errorMsg}"/>
 								<table>
-									<input type="hidden" id="errorMsg" value="${errorMsg}"/>
 									<tr>
 										<td class="tt"><label class="ineed">姓名：</label></td>
 										<td class="con">
-											<input type="text" name="baseInfo.personalName" id="personalName" placeholder="" datatype="z2_8" errormsg="错误！"/>
+											<input type="text" name="baseInfo.personalName" id="personalName" placeholder="" datatype="realName"/>
 										</td>
-										<td class="tt"><label class="ineed">性别：</label></td>
+										
+										<td class="tt"><label class="ineed">身份证号：</label></td>
 										<td class="con">
-											<input id="man" type="radio" checked="checked" name="baseInfo.sexId" value="0"/>男 &nbsp;&nbsp;&nbsp;
-											<input id="man" type="radio"  name="baseInfo.sexId" value="1" />女
+											<input type="text" name="baseInfo.personalIDCard" id="personalIDCard" class="idCard" datatype="IDCard"/>
 										</td>
 									</tr>
 									<tr>
-										<td class="tt"><label class="ineed">身份证号：</label></td>
-										<td class="con">
-											<input type="text" name="baseInfo.personalIDCard" id="personalIDCard" class="idCard" datatype="idcard"/>
-										</td>
 										<td class="tt"><label class="">出生日期：</label></td>
 										<td class="con">
 											<input type="text" name="" id="birthday" disabled="disabled" class="" placeholder="" />
 										</td>
-									</tr>
-									<tr>
 										<td class="tt"><label class="">民族：</label></td>
 										<td class="con">
-											 <select name="baseInfo.nationId" class="" id="nationId">
+											 <select name="baseInfo.nationId" style="width:170px;height:30px" class="" id="nationId">
 												<c:forEach var="nation" items="${nations}">
 													<option value="${nation.iId}">${nation.sName}</option>
 												</c:forEach>
 							                  </select>
+										</td>
+									</tr>
+									<tr>
+										<td class="tt"><label class="">职务：</label></td>
+										<td class="con">
+											<input type="text" disabled="disabled" style="width:130px" name="" id="postName" class="postId" />
+											<button class="btn btn-primary btn-xs deptSelect" type="button">选择</button>
+							                  <input type="hidden" name="id" id="staffId"/>
+							                  <input type="hidden" name="baseInfo.id" id="personalId"/>
 										</td>
 										<td class="tt"><label class="ineed">联系电话：</label></td>
 										<td class="con">
@@ -122,11 +125,11 @@
 									<tr>
 										<td class="tt"><label class="">QQ：</label></td>
 										<td class="con">
-											<input type="text" name="baseInfo.qq" id="qq" class="" datatype="qq" placeholder="" />
+											<input type="text" name="baseInfo.qq" id="qq" class="" ignore="ignore" datatype="qq" placeholder="" />
 										</td>
 										<td class="tt"><label class="">Email：</label></td>
 										<td class="con">
-											<input type="text" name="baseInfo.personalEmail" id="personalEmail" class="" datatype="email" placeholder="" />
+											<input type="text" name="baseInfo.personalEmail" ignore="ignore" id="personalEmail" class="" datatype="email" placeholder="" />
 										</td>
 									</tr>
 									<tr>
@@ -142,7 +145,7 @@
 									<tr>
 										<td class="tt"><label class="education">学历：</label></td>
 										<td class="con">
-											 <select name="baseInfo.education" class="" id="education">
+											 <select name="baseInfo.education" style="width:170px;height:30px" class="" id="education">
 												<c:forEach var="education" items="${educations}">
 													<option value="${education.iId}">${education.sEducationName}</option>
 												</c:forEach>
@@ -150,29 +153,19 @@
 										</td>
 										<td class="tt"><label class="ineed">毕业时间：</label></td>
 										<td class="con">
-											<input type="text" name="graduatedDate" id="graduatedDate"  class="" onfocus="WdatePicker({isShowWeek:true})"  placeholder="" />
+											<input type="text" name="graduatedDate" id="graduatedDate"  class="" onfocus="WdatePicker({minDate: '#F{$dp.$D(\'birthday\')}',maxDate: '%y-%M-%d',isShowWeek:true })"  placeholder="" />
 										</td>
 									</tr>
 									<tr>
 										<td class="tt"><label class="ineed	">紧急联系人姓名：</label></td>
 										<td class="con">
-											<input type="text" name="emerName" id="emerName" class="" datatype="z2_8" placeholder="" />
+											<input type="text" name="emerName" id="emerName" class="" datatype="realName" placeholder="" />
 										</td>
 										<td class="tt"><label class="ineed">紧急联系人电话：</label></td>
 										<td class="con">
 											<input type="text" name="emerPhone" id="emerPhone" class="" datatype="zPhone" placeholder="" />
 										</td>
 									</tr>
-									<tr>
-										<td class="tt"><label class="">职务：</label></td>
-										<td class="con">
-											<input type="text" disabled="disabled" style="width:130px" name="" id="postName" class="postId" />
-											<button class="btn btn-primary btn-xs deptSelect" type="button">选择</button>
-							                  <input type="hidden" name="id" id="staffId"/>
-							                  <input type="hidden" name="baseInfo.id" id="personalId"/>
-										</td>
-									</tr>
-									
 								</table>
 								</form>
 						</div>

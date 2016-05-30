@@ -159,7 +159,53 @@ public class ProjectDetailServiceImpl  implements projectDetailService {
 	@Override
 	public ProjectDetailTYEntity selectProjectdetailByIDbc(long applyId) {
 		
-		return projectDetailListDaoImpl.selectProjectdetailByIDbc(applyId);
+		ProjectDetailTYEntity entity = projectDetailListDaoImpl
+				.selectProjectdetailByIDbc(applyId);
+		if(entity == null) {
+			return null;
+		}
+		//项目为发布管理费计算
+		if(entity.getCheckStatu() !=1 ) {
+			if(entity.getRiskMarginType() == 0) {
+				entity.setRiskMarginFee(entity.getAmount()*entity.getRiskMarginRate()/1000000);
+			}
+			long mngFeeAmount = 0;//借款管理费
+			if(entity.getDeadlineType() == 0) { 
+				mngFeeAmount=entity.getAmount()*(entity.getMngFeeRate()+entity.getMngFeeRateIncreace()*entity.getDeadline())/1000000;
+				//该会员是VIP会员
+				if(entity.getIsVip() > 0 && entity.getVipBorrowMngRate() !=0) {
+					mngFeeAmount = mngFeeAmount*entity.getVipBorrowMngRate()/1000000;
+				}
+				entity.setMngFeeAmount(mngFeeAmount);
+			}else if(entity.getDeadlineType() == 1) { 
+				mngFeeAmount=entity.getAmount()*entity.getMngFeeRate()*entity.getDeadline()/1000000;
+				//该会员是VIP会员
+				if(entity.getIsVip() > 0 && entity.getVipBorrowMngRate() !=0) {
+					mngFeeAmount = mngFeeAmount*entity.getVipBorrowMngRate()/1000000;
+				}
+				entity.setMngFeeAmount(mngFeeAmount);
+			}else if(entity.getDeadlineType() == 1) { 
+				mngFeeAmount=entity.getAmount()*entity.getMngFeeRate()*entity.getDeadline()/1000000;
+				//该会员是VIP会员
+				if(entity.getIsVip() > 0 && entity.getVipBorrowMngRate() !=0) {
+					mngFeeAmount = mngFeeAmount*entity.getVipBorrowMngRate()/1000000;
+				}
+				entity.setMngFeeAmount(mngFeeAmount);
+			}
+		}
+		return entity;
+		
+	}
+
+
+
+	@Override
+	public List<LoanRepayEntity> selectLoanRealReplayprocess(long applyID) {
+		
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("keys", DbKeyUtil.GetDbCodeKey());
+		map.put("projectID", applyID);
+		return projectDetailListDaoImpl.selectLoanRealReplayprocess(map);
 		
 	}
   

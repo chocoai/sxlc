@@ -11,7 +11,10 @@
 		</div>
 		<div class="info-label">
 			<div class="left-title">性别：</div>
-			<label>男</label>
+			<label>
+			<c:if test="${projectMemberInfo.sexID == 0 }">男</c:if>
+			<c:if test="${projectMemberInfo.sexID == 1 }">女</c:if>
+			</label>
 		</div>
 		<div class="info-label">
 			<div class="left-title">手机号：</div>
@@ -19,39 +22,39 @@
 		</div>
 		<div class="info-label">
 			<div class="left-title">年龄：</div>
-			<label>26</label>
+			<label>${projectMemberInfoAge }</label>
 		</div>
 		<div class="info-label">
 			<div class="left-title">学历：</div>
-			<label>${educationName  }</label>
+			<label>${projectMemberInfo.educationName  }</label>
 		</div>
 		<div class="info-label">
 			<div class="left-title">婚姻：</div>
-			<label>${maritalName  }</label>
+			<label>${projectMemberInfo.maritalName  }</label>
 		</div>
 		<div class="info-label">
 			<div class="left-title">月收入：</div>
-			<label>${monthlyIncome  }以上</label>
+			<label>${projectMemberInfo.monthlyIncome  }以上</label>
 		</div>
 		<div class="info-label">
 			<div class="left-title">公司规模：</div>
-			<label>${companySize }人</label>
+			<label>${projectMemberInfo.companySize }人</label>
 		</div>
 		<div class="info-label">
 			<div class="left-title">公司行业：</div>
-			<label>${companyIndustry }</label>
+			<label>${projectMemberInfo.companyIndustry }</label>
 		</div>
 		<div class="info-label">
 			<div class="left-title">职位：</div>
-			<label>${position }</label>
+			<label>${projectMemberInfo.position }</label>
 		</div>
 		<div class="info-label">
 			<div class="left-title">工作时间：</div>
-			<label>${workYear }以上</label>
+			<label>${projectMemberInfo.workYear }以上</label>
 		</div>
 		<div class="info-label">
 			<div class="left-title">所在地区：</div>
-			<label>${provinceName }${cityName }</label>
+			<label>${projectMemberInfo.provinceName }${projectMemberInfo.cityName }</label>
 		</div>
 	</div>		
 </div>

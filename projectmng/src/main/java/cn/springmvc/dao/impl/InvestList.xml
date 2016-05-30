@@ -46,7 +46,7 @@
                  par.Check_Statu = 1 and par.Publish_Statu = 2 
                  <!-- 项目编号或名称--> 
 	            <if test = "map.projectinfo != null and map.projectinfo != ''">  
-	              and ( pbi.Project_Title   like '%${map.projectinfo}%' or par.Project_No  like '%${map.projectinfo}%' ) 
+	              and ( pbi.Project_Title like CONCAT(CONCAT('%', #{map.projectinfo}), '%') or par.Project_No  like CONCAT(CONCAT('%', #{map.projectinfo}), '%') ) 
 	            </if> 
 	            <!-- 项目状态 还款中  -->
 	            <if test = " map.investStatu ==  3">  

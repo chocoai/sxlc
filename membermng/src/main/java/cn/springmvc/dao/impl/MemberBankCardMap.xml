@@ -33,6 +33,13 @@
 		<result column="Logname"        property="logname" /> 
     </resultMap>    
    
+   	<!-- 双乾银行卡所属地区表 -->
+   	<resultMap type="cn.membermng.model.CityInfoEntity" id="cityInfo">
+   		<id column="ID"							property="id"/>
+   		<result column="CITYNAME"		property="cityName" />
+		<result column="PARENTID"   		property="parentId" /> 
+		<result column="Type_Statu"     		property="typeStatu" />
+   	</resultMap>
      <!--     市信息 -->
      <resultMap type="cn.membermng.model.CityDictionaryEntity" id="resultCityDictionary">
         <id column="City_Id"         property="cityId" />

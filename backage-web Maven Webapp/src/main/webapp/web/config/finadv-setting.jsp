@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心--财务设置</title>
+	<title>配置中心-财务设置-理财顾问提奖设置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -24,12 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-config.jsp">
-				<jsp:param value="config-0" name="config-index" />
+				<jsp:param value="601" name="_index_m2"/>
+				<jsp:param value="60107" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -43,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 					<input type="hidden" id="setId" value="${rewards.id}"  >
 			 					<label for="firstname" class="col3 i-fl control-label">推荐VIP提奖金额：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="vIPReward" placeholder="" value = "${rewards.vIPReward}" datatype="amcountM">
+			 						<input type="text" class="form-control" id="vIPReward" placeholder="" value = "${rewards.vIPReward}" datatype="acountM">
 			 					</div>
 			 					<!-- <div class="i-fl">
 									<span class="sign i-fl">*N%(N是期限，年)<i>*</i></span>
@@ -109,18 +110,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="js/config/config.js"></script>
 	<!-- 私用js -->
 	<script>
-	//加密设置
-	var encrypt = new JSEncrypt();
-	encrypt.setPublicKey(publicKey_common);
-	
 	$(function(){
-			validform5(".btn-default","dataForm",false,"3");
+			validform5(".btn-default","dataForm",false,"5");
 			//保存按钮
 			$("#submit").on("click",function(){
 					if($("#dataForm").find(".Validform_error").length>0){
 							return;					
 					}
-					var id =  encrypt.encrypt($("#setId").val());
+					var id =  $("#setId").val();
+					var handType = "";//操作类型 0：增加  1：修改
+					if(id==""){
+						handType="0";
+					}else{
+						handType="1";
+					}
 					var vIPReward =  encrypt.encrypt($("#vIPReward").val());
 					var borrowReward = encrypt.encrypt($("#borrowReward").val());
 					var repayReward =  encrypt.encrypt($("#repayReward").val());
@@ -128,7 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 					NetUtil.ajax(
 							  appPath+"/config/updateRewarSet.do",
-							  {"id":id,"vIPReward":vIPReward,"borrowReward":borrowReward,"repayReward":repayReward,"investReward":investReward,"type":encrypt.encrypt("1")},
+							  {"id":encrypt.encrypt(id),"handType":encrypt.encrypt(handType),"vIPReward":vIPReward,"borrowReward":borrowReward,"repayReward":repayReward,"investReward":investReward,"type":encrypt.encrypt("1")},
 							  function(data) { 
 									if(data==1){
 										layer.alert("保存成功",{icon:1});

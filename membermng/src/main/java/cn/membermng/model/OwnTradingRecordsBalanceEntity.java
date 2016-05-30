@@ -12,6 +12,8 @@
  
 package cn.membermng.model;  
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 /** 
  * @author 刘利 
  * @Description: 会员交易记录余额实体类 
@@ -90,6 +92,7 @@ public class OwnTradingRecordsBalanceEntity {
 	}
 	public void setUserBalance(long userBalance) {
 		this.userBalance = userBalance;
+		this.userBalances = IntegerAndString.LongToString(userBalance);
 	}
 	public long getFrozenBalance() {
 		return frozenBalance;

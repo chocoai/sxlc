@@ -132,14 +132,11 @@ public class MemberAttestTypeEntity {
 	public void setStatu(int statu) {
 		this.statu = statu;
 	} 
-	
+
 	public long getOptId() {
 		return optId;
 	}
 	public void setOptId(long optId) {
-		this.optId = optId;
-	}
-	public void setOptId(int optId) {
 		this.optId = optId;
 	}
 	public String getAdminName() {

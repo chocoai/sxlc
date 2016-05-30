@@ -59,6 +59,7 @@ public class ProjectCheckRecordEntity {
 	 * 审批点名称
 	 */
 	private String apName;
+	private String projectName;//项目名称
 	public String getAdminName() {
 		return adminName;
 	}
@@ -118,6 +119,12 @@ public class ProjectCheckRecordEntity {
 	}
 	public void setCheckRemark(String checkRemark) {
 		this.checkRemark = checkRemark;
+	}
+	public String getProjectName() {
+		return projectName;
+	}
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	} 	
 
 }

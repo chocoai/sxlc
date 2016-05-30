@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心</title>
+	<title>配置中心-短信设置-短信内容配置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -25,11 +25,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-config.jsp"></jsp:include>
+			<jsp:include page="../common/cm-config.jsp">
+				<jsp:param value="603" name="_index_m2"/>
+				<jsp:param value="60301" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -75,6 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 			</div>
 		</div>
+	</div>
 	<!-- 尾部 -->
 	<!-- 公用js -->
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>

@@ -51,11 +51,11 @@
 	display:table;
 	overflow: hidden; 
     text-overflow: ellipsis;
-    white-space: nowrap; 
     width: 81px;
     vertical-align:middle;   
 }
 .divIntside{
+	width:110px;
 	display:table-cell;
 	vertical-align:middle;
 	font-size: 12px;   
@@ -147,8 +147,8 @@
 }
 .layerWindowM{
 	padding:30px;
-	width: 465px;
-    height: 350px;
+	width: 535px;
+    height: 250px;
     border-bottom:1px solid #ececec;
 }
 
@@ -161,7 +161,7 @@
 	margin-top: 5%;
 	cursor:pointer;
 }
-.layerWindowM>div{
+.layerWindowM>form>div{
 	margin:15px auto;
 }
 .layerWindowBtn{

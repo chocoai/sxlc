@@ -18,7 +18,7 @@ function getRootPath(){
 $(function () {
 	var appPath = getRootPath();//项目根路径
 	//验证
-	validform5("layui-layer-btn0","saveNotice",true,"3");
+	validform5("layui-layer-btn0","saveNotice",true,"5");
 	$(".obtn-notice-add").on("click touchstart",function(){
 		//初始化
 		var ue1 = UE.getEditor('editor');
@@ -70,7 +70,7 @@ function addNotice() {
 $(function () {
 	var appPath = getRootPath();//项目根路径
 	//验证
-	validform5("layui-layer-btn0","modNotice",true,"3");
+	validform5("layui-layer-btn0","modNotice",true,"5");
 	$(".obtn-notice-mod").on("click",function(){
 		var ue2 = UE.getEditor('meditor');
 		var rowdata = $('#table_id').DataTable().rows('.selected').data();

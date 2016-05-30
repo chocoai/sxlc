@@ -58,8 +58,8 @@ function changePg(type){
  */
 function saveData(){
 	var data={};
-	var type = encrypt.encrypt($("#title").attr("submitType"));
-	data.type=type;
+	var type = $("#title").attr("submitType");
+	data.type= encrypt.encrypt(type);
 	var ids="";
 	$(".optionDiv").each(function () {
 		var $this = $(this);
@@ -69,7 +69,7 @@ function saveData(){
 			ids +=id+",";
 		}
 	});
-	data.ids = encrypt.encrypt(ids.substring(0, ids.length-1));
+	data.content = ids.substring(0, ids.length-1);
 	
 	$.ajax( {  
 		url:appPath+"/config/updateMsgSet.do",
@@ -78,8 +78,11 @@ function saveData(){
 		cache:false,  
 		dataType:'json',  
 		success:function(data) { 
-			layer.alert("操作成功",{icon:1}); 
-			
+			if(data==-2){
+				layer.alert("用户未登录",{icon:2}); 
+			}else{
+				layer.alert("操作成功",{icon:1}); 
+			}
 		},  
 		error : function() {  
 			layer.alert("服务器异常",{icon:2}); 

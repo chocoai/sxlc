@@ -148,13 +148,14 @@ function submitEditCompanlyInfo(){
 	var scountyId	= $(".county").parent().find(".selectValue").attr("value");
 	
 	
+	
+	companyIndo = "12312312312312312123";
+	
 	var encrypt = new JSEncrypt();
 	encrypt.setPublicKey(publicKey);
 	
 	contactName = encrypt.encrypt(contactName);
-	contactPhone= encrypt.encrypt(contactPhone);
 	contactQq	= encrypt.encrypt(contactQq);
-	contactEmail= encrypt.encrypt(contactEmail);
 	companyIndo	= encrypt.encrypt(companyIndo);
 	sprovinceId	= encrypt.encrypt(sprovinceId);
 	scityId		= encrypt.encrypt(scityId);
@@ -188,7 +189,7 @@ function submitEditCompanlyInfo(){
 /* 验证     */
 $(function(){
 	var app = $("#testbox").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".preserve", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		//btnReset:"#btnreset1",
 		datatype:extdatatype,//扩展验证类型

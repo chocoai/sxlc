@@ -14,18 +14,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
-import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
+import cn.membermng.model.MemberThirdAuthInfoEntity;
 import cn.springmvc.model.Admin;
 import cn.springmvc.model.OverdueCompensationEntity;
 import cn.springmvc.service.CompensatoryInterfaceServer;
 import cn.springmvc.service.GuaranteeAgenciesService;
 import cn.springmvc.service.GuaranteeInfoService;
 import cn.springmvc.service.ManagedInterfaceServerTestI;
+import cn.springmvc.service.RecordsBalanceService;
 import cn.springmvc.util.HttpSessionUtil;
 import cn.sxlc.account.manager.model.LoanTransferEntity;
-import cn.sxlc.account.manager.model.RepayInterfaceEntity;
+import cn.sxlc.account.manager.model.WithdrawsInterdaceEntity;
 /**
  * 
 * @author 杨翰林 
@@ -48,6 +49,13 @@ public class GuaCompensatoryController {
 	
 	@Resource(name="compensatoryInterfaceServiceImpl")
 	private CompensatoryInterfaceServer compensatoryInterfaceServer;
+	
+	@Resource(name="recordsBalanceServiceImpl")
+	RecordsBalanceService recordsBalanceService;
+	
+	//第三方提现接口
+	@Resource(name="managedInterfaceTestIImpl")
+	ManagedInterfaceServerTestI managedInterfaceServer;
 	/**
 	 * 
 	* historyRecordList查询代偿历史记录 
@@ -300,6 +308,122 @@ public class GuaCompensatoryController {
 	@RequestMapping("/backServerURL")
 	public void notifyURL(HttpServletRequest request, HttpServletResponse response) {
 		compensatoryInterfaceServer.CompensatoryNotify(request, response);
+	}
+	
+	/**
+	 * 
+	* selectMemberThirdAuthInfo查询提现账户信息 
+	* TODO查询提现账户信息
+	* @author 杨翰林  
+	* * @Title: selectMemberThirdAuthInfo 
+	* @Description: 查询提现账户信息 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return MemberThirdAuthInfoEntity 返回类型 
+	* @date 2016-5-20 下午3:43:37
+	* @throws
+	 */
+	@RequestMapping("/queryThird")
+	@ResponseBody
+	public MemberThirdAuthInfoEntity selectMemberThirdAuthInfo(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		req.put("memberID", userInfo.getStaffId());
+		req.put("memberType", userInfo.getStaffType());
+		
+		MemberThirdAuthInfoEntity memberThirdAuthInfoEntity = 
+				recordsBalanceService.selectMemberThirdAuthInfo(req);
+		
+		return memberThirdAuthInfoEntity;
+	}
+	
+	/**
+	 * 
+	* loanWithdraw担保机构提现 
+	* TODO担保机构提现
+	* @author 杨翰林  
+	* * @Title: loanWithdraw 
+	* @Description: 担保机构提现 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-20 下午4:41:40
+	* @throws
+	 */
+	@RequestMapping("/present")
+	public String loanWithdraw(HttpServletRequest request) {
+		
+		WithdrawsInterdaceEntity withdraw = new WithdrawsInterdaceEntity();
+		HttpSession session = HttpSessionUtil.getSession(request);
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String bankCardId = request.getParameter("bankCardId");
+		String amount = request.getParameter("amount");
+		String remark = request.getParameter("remark");
+		
+		withdraw.setMemberId(userInfo.getStaffId());
+		withdraw.setMemberType(userInfo.getStaffType());
+		withdraw.setCardId(Long.parseLong(bankCardId));
+		withdraw.setAmount(amount);
+		withdraw.setRemark3(remark);
+		
+		withdraw.setSubmitURL("http://218.4.234.150:88/main/loan/toloanwithdraws.action");
+		//获取访问来源路径（ip+端口+项目名）
+		String path = request.getContextPath();
+		String basePath = request.getScheme() + "://" + request.getServerName()
+				+ ":" + request.getServerPort() + path + "/";
+		withdraw.setReturnURL(basePath+"bankCard/backURL.do");
+		
+		withdraw.setNotifyURL(basePath+"bankCard/backServerURL.do");
+		
+		withdraw = managedInterfaceServer.testLoanWithdraws(withdraw);
+		request.setAttribute("draws", withdraw);
+		
+		return "dryLot/loanwithdrawstest";
+	}
+	
+	/**
+	 * 
+	* returnURL第三方回调 提现页面返回地址 
+	* TODO第三方回调 页面返回地址
+	* @author 杨翰林  
+	* * @Title: returnURL 
+	* @Description: 第三方回调 页面返回地址 
+	* @param  设定文件 
+	* @return void 返回类型 
+	* @date 2016-5-17 上午11:02:50
+	* @throws
+	 */
+	@RequestMapping("/pbackURL")
+	public String preturnURL(HttpServletRequest request, HttpServletResponse response) {
+		
+		String isSuccess = managedInterfaceServer.testLoanWithdrawsReturn(request, response);
+		
+		if ("SUCCESS".equals(isSuccess)) {
+			return "recommend/success";
+		}else {
+			return "recommend/fail";
+		}
+	}
+	
+	/**
+	 * 
+	* notifyURL第三方回调提现 服务器返回地址 
+	* TODO第三方回调 服务器返回地址
+	* @author 杨翰林  
+	* * @Title: notifyURL 
+	* @Description: 第三方回调 服务器返回地址 
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-17 上午11:06:01
+	* @throws
+	 */
+	@RequestMapping("/pbackServerURL")
+	public void pnotifyURL(HttpServletRequest request, HttpServletResponse response) {
+		managedInterfaceServer.testLoanWithdrawsNotify(request, response);
 	}
 }
 

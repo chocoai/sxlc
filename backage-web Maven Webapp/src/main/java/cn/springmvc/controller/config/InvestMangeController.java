@@ -87,7 +87,7 @@ public class InvestMangeController {
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
 		if (priceDatum != null && priceDatum != "") {
-			int num = systemSetService.setInterestMngFee(priceDatum, null, null);
+			int num = systemSetService.setInterestMngFee(priceDatum, entity, sIpInfo);
 			return num;
 		}else {
 			return 0;

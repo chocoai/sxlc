@@ -75,22 +75,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<!-- 添加贷后信息 -->
 						<div class="w-content addmsg">
-						   <form id="dataForm">
+						   <form id="dataForm" action="javascript:addMsg();">
 							<table>
 								<tr>
 									<td class="tt"><label>摘要：</label></td>
 									<td class="con">
-										<textarea id="abstractMain" cols="20" rows="5"></textarea>
+										<textarea id="abstractMain" cols="20" rows="5" maxlength="200"></textarea>
 									</td>
 								</tr>
 								<tr>
 									<td class="tt"><label>详细描述：</label></td>
 									<td class="con">
-										<textarea id="details" cols="20" rows="5"></textarea>
+										<textarea id="details" cols="20" rows="5" maxlength="300"></textarea>
 									</td>
 								</tr>
 								<tr>
-									<td class="tt"><label >附件名称：</label></td>
+									<td class="tt ineed"><label >附件名称：</label></td>
 									<td class="col"><input class="notspecial" id="fileName" datatype="enterNameR"></td>
 								</tr>
 								<tr>

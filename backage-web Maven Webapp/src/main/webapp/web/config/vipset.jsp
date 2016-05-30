@@ -46,7 +46,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 			 	<!-- VIP设置 -->
 			 	<div class="config">
-			 	<form class="form-horizontal config-form vipseetingform" role="form" name="" action="" id="vipForm">
+			 	<form class="form-horizontal config-form vipseetingform" role="form" name="" action="javascript:submitVipCofig()" id="vipForm">
 			 		<fieldset class="vipsetting">
 			 			<legend>VIP获取</legend>
 			 			
@@ -54,7 +54,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 			 					<label for="firstname" class="i-fl control-label col3 formsettinglabel">VIP购买年金额：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="vip_Attest" name="vip_Attest" maxlength="8"  datatype="amcountM" placeholder="">
+			 						<input type="text" class="form-control" id="vip_Attest" name="vip_Attest" maxlength="8"  datatype="acountM" placeholder="">
 								</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">元<i>*</i></span>
@@ -64,7 +64,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 			 					<label for="lastname" class="i-fl control-label col3 formsettinglabel">上个VIP截止日起累计有效投资：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" id="invest_total" name="invest_total" maxlength="8" datatype="amcountM" placeholder="">
+			 						<input type="text" class="form-control" id="invest_total" name="invest_total" maxlength="8" datatype="acountM" placeholder="">
 								</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">元<i>*</i></span>
@@ -83,7 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 			 					<label for="firstname" class="i-fl control-label col3 formsettinglabel">投资收取投资管理费：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" name="invest_Fee" id="invest_Fee" placeholder="">
+			 						<input type="text" class="form-control" name="invest_Fee" id="invest_Fee" maxlength="8" datatype="hundredNum" placeholder="">
 
 			 					</div>
 			 					<div class="i-fl">
@@ -94,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 			 					<label for="lastname" class="i-fl control-label col3 formsettinglabel">借款收取借款管理费：</label>
 			 					<div class="i-fl">
-			 						<input type="text" class="form-control" name="borrow_Fee" datatype="hundredNum"  id="borrow_Fee" placeholder="">
+			 						<input type="text" class="form-control" name="borrow_Fee" datatype="hundredNum" maxlength="8"  id="borrow_Fee" placeholder="">
 			 					</div>
 			 					<div class="i-fl">
 			 						<span class="sign i-fl">%<i>*</i></span>
@@ -107,7 +107,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								for(int i = 0;i < operations.size(); i++){
 									if(operations.get(i).getOptID() == 60901){
 						%>				
-									<button type="submit" class="btn btn-default" onclick="submitVipCofig()">保存</button>
+									<button type="button" class="btn btn-default layui-layer-btn0">保存</button>
 						<%      
 					      			}
 						  		 }
@@ -131,10 +131,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<script>
 		$(function(){
-			validform5("layui-layer-btn0","vip_Attest",false,"3");
-			validform5("layui-layer-btn0","invest_total",false,"3");
-			validform5("layui-layer-btn0","borrow_Fee",false,"3");
-			validform5("layui-layer-btn0","invest_Fee",false,"3");
+			validform5("layui-layer-btn0","vip_Attest",false,"5");
+			validform5("layui-layer-btn0","invest_total",false,"5");
+			validform5("layui-layer-btn0","borrow_Fee",false,"5");
+			validform5("layui-layer-btn0","invest_Fee",false,"5");
 		});
 	</script>
 

@@ -26,7 +26,9 @@ import product_p2p.kit.HttpIp.AddressUtils;
 import product_p2p.kit.RSA.RSAPlugn;
 import product_p2p.kit.StringUtil.StringUtils;
 import product_p2p.kit.constant.Constant;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.redisPlug.Core;
+import cn.membermng.model.Agreement;
 import cn.membermng.model.MemberInfo;
 import cn.membermng.model.PersonalBaseInfo;
 import cn.springmvc.dao.impl.sms.SendSmsUtil;
@@ -62,7 +64,11 @@ public class LoginRegisterController {
 	* @date 2016-4-14 下午2:18:38
 	*/
 	@RequestMapping(value="register",method=RequestMethod.GET)
-	public String toRegPage(){return "loginRegister/register";}
+	public String toRegPage(HttpServletRequest request){
+		Agreement agreement = memberService.agreement();
+		request.setAttribute("agreement", agreement);
+		return "loginRegister/register";
+	}
 	
 	
 	/***
@@ -102,6 +108,12 @@ public class LoginRegisterController {
 			message = "请输入短信验证码";
 		}else if(!phoneCheckCode.equals("100100") && !phoneCheckCode.equals(Core.getRegisterPhoneCode(personalPhone))){							
 			message = "短信验证码错误";
+		}else if(memberService.countName(logname) != 0){
+			message = "用户名已被注册";
+		}else if(memberService.chechPhone(personalPhone) != 0){
+			message = "手机号已被注册";
+		}else if(beinvitateCode != null && !beinvitateCode.trim().equals("") && memberService.countInvitateCode(beinvitateCode) != 1){
+			message = "邀请码无效";
 		}
 		
 		if(!message.equals("")){
@@ -130,20 +142,22 @@ public class LoginRegisterController {
 			message = "注册成功";
 			MemberInfo memberinfo = memberService.findMemberInfoByParam(logname, memberPwd, memberType);	//获取信息
 			if(memberinfo != null){
+				memberinfo.setLogname(logname.charAt(0)+"***"+logname.charAt(logname.length()-1));
 				request.getSession().setAttribute(Constant.LOGINUSER, memberinfo);
 				KeyPair keyPair =  RSAPlugn.GetKeyPair();
 				request.getSession().setAttribute(Constant.publicKey, RSAPlugn.PublicKeyToString((RSAPublicKey)keyPair.getPublic()));
 				request.getSession().setAttribute(Constant.privateKey, RSAPlugn.PrivateKeyToString((RSAPrivateKey)keyPair.getPrivate()));
-				String loginCookieValue;
+				
 				try {
-					loginCookieValue = URLEncoder.encode(logname+"-"+memberType,"utf-8");
-					Cookie cookie = new Cookie("rememberMeInfo", loginCookieValue);
-					cookie.setMaxAge(30*24*60*60);
-					response.addCookie(cookie);
+					Cookie name = new Cookie("mName", URLEncoder.encode(logname,"utf-8"));
+					Cookie type = new Cookie("mType", memberType+"");
+					name.setMaxAge(30*24*60*60);
+					type.setMaxAge(30*24*60*60);
+					response.addCookie(name);
+					response.addCookie(type);
 				} catch (UnsupportedEncodingException e) {
 					logger.error("用户登录:"+logname+"登录出现设置Cookie错误"+e.getLocalizedMessage());
 				}
-				
 			}
 		}
 		param.put("statu",optionCode);
@@ -205,23 +219,26 @@ public class LoginRegisterController {
 	
 	
 	/*** 
-	 * 检查邀请码是否存在
+	 * 检查是否存在
 	 * @return
 	 */
-	@RequestMapping(value="countInvitateCode")
+	@RequestMapping(value="countInvitateCode",produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String countInvitateCode(HttpServletRequest request){
 		String invitateCode = request.getParameter("param");
 		Map<String,Object> message = new HashMap<String, Object>();
 		if(invitateCode == null || invitateCode.trim().length() != 12){
 			message.put("message", "邀请码无效");
-			message.put("statu", 1);
+			message.put("statu", "0");
 			return JSONObject.toJSONString(message);
 		}
 		int result = memberService.countInvitateCode(invitateCode);
-		if(result == 0){
-			message.put("statu", 0);
+		if(result == 1){
+			message.put("statu", "1");
 			message.put("message", "可以使用该邀请码");
+		}else{
+			message.put("statu", "0");
+			message.put("message", "邀请码无效");
 		}
 		return JSONObject.toJSONString(message);
 	}
@@ -299,7 +316,7 @@ public class LoginRegisterController {
 			int iresult = Core.putRegisterPhoneCode(codePhone, code);
 			if(iresult == 1){
 				String[] result = sendSmsUtil.SendSms(param,0,0,null);//
-				if(result[0].equals("0")){
+				if(IntegerAndString.StringToInt(result[0],-1) >= 0){
 					logger.debug("用户注册手机短信验证码发送成功："+codePhone+" : "+code);
 					message.put("statu", 1);
 					message.put("message", "验证码发送成功,请注意查收");
@@ -355,9 +372,10 @@ public class LoginRegisterController {
 			int rememberMe,@RequestHeader String referer){
 		logger.debug("会员登录:memberName(用户名)="+memberName+",password(登录密码)="+password+",memberType(会员类型)="+memberType+",checkCode(验证码)="+checkCode+"rememberMe(记住我)="+rememberMe);
 		
+
 		Map<String,Object> param = new HashMap<String, Object>();
 		boolean isExit = false;
-		if(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION").toString() == null ){
+		if(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION") == null ){
 			param.put("message", "请刷新页面再试");
 		}else if(memberType > 1){
 			isExit = true;
@@ -397,23 +415,24 @@ public class LoginRegisterController {
 			param.put("statu", "1");
 			param.put("message", "登录成功");
 			MemberInfo memberinfo = memberService.findMemberInfoByParam(memberName, password, memberType);
-			memberinfo.setLogname(memberName.charAt(0)+"***"+memberName.charAt(memberName.length()-1));
-			if(rememberMe == 1 || memberinfo != null){
+			if(memberinfo != null){
+				memberinfo.setLogname(memberName.charAt(0)+"***"+memberName.charAt(memberName.length()-1));
 				request.getSession().setAttribute(Constant.LOGINUSER, memberinfo);
 				KeyPair keyPair =  RSAPlugn.GetKeyPair();
 				request.getSession().setAttribute(Constant.publicKey, RSAPlugn.PublicKeyToString((RSAPublicKey)keyPair.getPublic()));
 				request.getSession().setAttribute(Constant.privateKey, RSAPlugn.PrivateKeyToString((RSAPrivateKey)keyPair.getPrivate()));
 				
-				try {
-					System.out.println(URLEncoder.encode(memberName,"utf-8"));
-					Cookie name = new Cookie("mName", URLEncoder.encode(memberName,"utf-8"));
-					Cookie type = new Cookie("mType", memberType+"");
-					name.setMaxAge(30*24*60*60);
-					type.setMaxAge(30*24*60*60);
-					response.addCookie(name);
-					response.addCookie(type);
-				} catch (UnsupportedEncodingException e) {
-					logger.error("用户登录:"+memberName+"登录出现设置Cookie错误"+e.getLocalizedMessage());
+				if(rememberMe == 1){
+					try {
+						Cookie name = new Cookie("mName", URLEncoder.encode(memberName,"utf-8"));
+						Cookie type = new Cookie("mType", memberType+"");
+						name.setMaxAge(30*24*60*60);
+						type.setMaxAge(30*24*60*60);
+						response.addCookie(name);
+						response.addCookie(type);
+					} catch (UnsupportedEncodingException e) {
+						logger.error("用户登录:"+memberName+"登录出现设置Cookie错误"+e.getLocalizedMessage());
+					}
 				}
 			}else{
 				param.put("statu", "0");
@@ -480,7 +499,7 @@ public class LoginRegisterController {
 			message.put("statu", "2");
 			message.put("message", "请输入有效手机号");
 		}
-		System.out.println(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD").toString());
+		//System.out.println(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD").toString());
 		if(imgCode == null ){
 			message.put("statu", "3");
 			message.put("checkCode", "请输入图片验证码");
@@ -496,7 +515,7 @@ public class LoginRegisterController {
 		if(result!=1){
 			message.put("statu", 0);
 			message.put("message", "您的用户名或手机号错误");
-			return message;
+			return JSONObject.toJSONString(message);
 		}
 		String code = StringUtils.varCode();
 		Core.putForgetPWDPhoneCode(phone, code);
@@ -566,7 +585,7 @@ public class LoginRegisterController {
 			message.put("message", "请输入有效手机号");
 		}
 		System.out.println(imgCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD").toString()));
-		if(imgCode == null ){
+		if(imgCode == null){
 			message.put("statu", "3");
 			message.put("checkCode", "请输入图片验证码");
 		}else if(!imgCode.equals(request.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD").toString())){
@@ -603,6 +622,18 @@ public class LoginRegisterController {
 		
 		return JSONObject.toJSONString(message);
 	}
+
 	
+	
+	
+	@RequestMapping("testTransaction")
+	@ResponseBody
+	public String testTransaction(){
+		boolean exit = false;
+		while (!exit) {
+			memberService.TestTransaction(exit);
+		}
+		return "OK";
+	}
 }
 

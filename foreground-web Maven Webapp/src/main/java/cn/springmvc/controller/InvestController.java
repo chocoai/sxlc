@@ -1,5 +1,6 @@
 package cn.springmvc.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.Upload.FtpClientUtil;
 import product_p2p.kit.constant.Constant;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.dbkey.DbKeyUtil;
@@ -27,6 +29,7 @@ import cn.membermng.model.MemberInfo;
 import cn.springmvc.model.CreditorTransferListEntity;
 import cn.springmvc.model.InvestEntity;
 import cn.springmvc.model.LoanMemberInfoEntity;
+import cn.springmvc.model.LoanRealRepayEntity;
 import cn.springmvc.model.LoanRepayEntity;
 import cn.springmvc.model.ProjectAfterLoanAttachmentEntity;
 import cn.springmvc.model.ProjectAfterLoanInfoEntity;
@@ -110,6 +113,8 @@ public class InvestController {
 	@Autowired
 	private CreditorTransInvestService creditorTransInvestService;
 	
+	private SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");
+	
 	
 //===================================================================================
 //
@@ -133,6 +138,10 @@ public class InvestController {
 		//查询出借款类型
 		List<ProjectBaseInfoEntity> project = baseInfoService.selectProjectBaseInfoCombox();
 		req.setAttribute("projectBaseInfos", project);
+		
+		String hostPath = FtpClientUtil.getFtpFilePath();
+		hostPath = hostPath.substring(0, hostPath.length()-1);
+		req.getSession().setAttribute("imgProfix", hostPath);//图片前缀
 		return "invest/investmentZone";
 	}
 
@@ -194,7 +203,7 @@ public class InvestController {
 		result.put("infos", list);
 		return JSONObject.toJSONString(result,SerializerFeature.WriteMapNullValue);
 	}
-	
+
 	
 	/***
 	* 投资详细信息
@@ -205,11 +214,18 @@ public class InvestController {
 	 */
 	@RequestMapping("/investmentDetail/{sprojectId:[0-9]+}")
 	public String investmentDetail(HttpServletRequest request,@PathVariable long sprojectId){
+		Date cTime 		= new Date();										//系统当前时间
 		//借款项目信息
 		ProjectAppRecordEntity appRecordEntity = detailService.selectProjectDetailByID(sprojectId);
+		if(appRecordEntity == null){return null;}					//借款项目为空
 		request.setAttribute("appRecordEntity", appRecordEntity);
+		
+		String hostPath = FtpClientUtil.getFtpFilePath();
+		hostPath = hostPath.substring(0, hostPath.length()-1);
+		request.getSession().setAttribute("imgProfix", hostPath);//图片前缀
+		
 		MemberInfo memberInfo = (MemberInfo) request.getSession().getAttribute(Constant.LOGINUSER);
-		if(memberInfo != null){//------------已登录
+		if(memberInfo != null){//------------已登录	
 			//查询出可投金额
 			long sumAount = projectInvestService.GetMaxInvestAmount(sprojectId, memberInfo.getId(), DbKeyUtil.GetDbCodeKey(),(short)0);
 			
@@ -223,15 +239,41 @@ public class InvestController {
 			//查询红包使用比例
 			int proportion = projectInvestService.GetRedpacketsInvestRate();
 		
-			request.setAttribute("sSumAount", sumAount);
+			request.setAttribute("sSumAount", IntegerAndString.LongToString(sumAount));
 			request.setAttribute("userBalances", IntegerAndString.LongToString(memberService.getRemainderTotal(memberInfo.getId())));
 			request.setAttribute("sVouchers", sVouchers); 
 			request.setAttribute("redPackList", redPackList);
 			request.setAttribute("redPackCount", redPackList.size());
 			request.setAttribute("proportion", proportion);
 		}
-		//借款人基本信息
+		//借款人基本信息、处理借款人信息
 		LoanMemberInfoEntity projectMemberInfo = projectDetailService.selectMemberInfo(sprojectId);
+		if(projectMemberInfo != null && projectMemberInfo.getPersonalName() != null && projectMemberInfo.getPersonalName().length() > 0){
+			projectMemberInfo.setPersonalName(projectMemberInfo.getPersonalName().substring(0,1)+"**");
+		}
+		if(projectMemberInfo != null && projectMemberInfo.getPersonalPhone() != null && projectMemberInfo.getPersonalPhone().length() >= 11){
+			projectMemberInfo.setPersonalPhone(projectMemberInfo.getPersonalPhone().substring(0,3)+" **** "+projectMemberInfo.getPersonalPhone().substring(8, 11));
+		}
+		if(projectMemberInfo != null && projectMemberInfo.getPersonalIdCard() != null){
+			if(projectMemberInfo.getPersonalIdCard().length() == 18){
+				String years  = projectMemberInfo.getPersonalIdCard().substring(6,10);
+				String mothd  = projectMemberInfo.getPersonalIdCard().substring(10,12);
+				String day	  = projectMemberInfo.getPersonalIdCard().substring(12,14);
+				Date userBirthDay = null;
+				try {
+					userBirthDay = yyyy_MM_dd.parse(years+"-"+mothd+"-"+day);
+				} catch (ParseException e) {
+					logger.info("投资详情：计算借款人生日出现异常");
+				}
+				if(userBirthDay != null){
+					long time = cTime.getTime()-userBirthDay.getTime();
+					int age = (int) ((time)/1000/60/60/24/365);
+					request.setAttribute("projectMemberInfoAge", age);
+				}else{
+					request.setAttribute("projectMemberInfoAge", 0);
+				}
+			}
+		}
 		request.setAttribute("projectMemberInfo", projectMemberInfo);
 		
 		//统计信息
@@ -245,11 +287,9 @@ public class InvestController {
 		//获取系统时间
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		request.setAttribute("sysTime", sdf.format(new Date()));
-		
 		//判断项目状态、如果项目融资状态为0、开标时间大于当前时间即为预热中，就会有个预热倒计时
 		try {
 			Date startTime 	= sdf.parse(appRecordEntity.getStartDate());		//项目开标时间
-			Date cTime 		= new Date();										//系统当前时间
 			Date endTime 	= sdf.parse(appRecordEntity.getEndDate());			//投资最晚时间
 			
 			logger.debug("项目开标时间："+sdf.format(startTime)+", 项目结束时间："+sdf.format(endTime)+",系统当前时间："+sdf.format(cTime));
@@ -273,6 +313,8 @@ public class InvestController {
 				request.setAttribute("endTime", "");
 				if(appRecordEntity.getHoldDate()!=null){
 					request.setAttribute("endTime",sdf.format(sdf.parse(appRecordEntity.getHoldDate())));	//放款时间
+				}else{
+					request.setAttribute("endTime",sdf.format(endTime));									//放款时间
 				}
 			}else if(appRecordEntity.getInvestStatu() == 1 || appRecordEntity.getInvestStatu() == -3){
 				//流标
@@ -285,7 +327,9 @@ public class InvestController {
 			}else if(appRecordEntity.getInvestStatu() == 3 || appRecordEntity.getInvestStatu() == 4){
 				//还款中 Or 已结清
 				request.setAttribute("investmentStatus", appRecordEntity.getInvestStatu());
-				request.setAttribute("endTime",sdf.format(sdf.parse(appRecordEntity.getHoldDate())));	//放款时间
+				if(appRecordEntity.getHoldDate() != null){
+					request.setAttribute("endTime",sdf.format(sdf.parse(appRecordEntity.getHoldDate())));	//放款时间
+				}
 			}else{
 				request.setAttribute("investmentStatus", appRecordEntity.getInvestStatu());
 				request.setAttribute("endTime",sdf.format(sdf.parse(appRecordEntity.getHoldDate())));	//放款时间
@@ -334,7 +378,7 @@ public class InvestController {
 			
 			//查询红包使用比例
 			int proportion = projectInvestService.GetRedpacketsInvestRate();
-			result.put("sSumAount", sumAount);
+			result.put("sSumAount", IntegerAndString.LongToString(sumAount));
 			result.put("sVouchers", sVouchers);
 			result.put("redPackList", redPackList);
 			result.put("userBalances", IntegerAndString.LongToString(memberService.getRemainderTotal(memberInfo.getId())));
@@ -404,11 +448,18 @@ public class InvestController {
 		}
 		List<InvestEntity> list = detailService.selectInvestRecordByProjectID(projectId);
 		ProjectAppRecordEntity appRecordEntity = projectDetailService.selectInvestAvailableaAmount(projectId);
+		String logName = "";
+		for (int i = 0; i < list.size(); i++) {
+			logName = list.get(i).getLogname();
+			list.get(i).setLogname(logName.charAt(0)+" *** "+logName.charAt(logName.length()-1));
+			list.get(i).setMemberNo("");
+			list.get(i).setMembername("");
+		}
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("info", list);
-		param.put("availableAmount", appRecordEntity.getAvailableaAmounts());
+		param.put("availableAmount", appRecordEntity.getProjectBaseInfoentity().getAmounts());
 		param.put("investTotals", appRecordEntity.getInvestTotals());
-		param.put("shenYuKeTou", IntegerAndString.LongToString(appRecordEntity.getAvailableaAmount()-appRecordEntity.getInvestTotal()));
+		param.put("shenYuKeTou", appRecordEntity.getAvailableaAmounts());
 		return JSONObject.toJSONString(param,SerializerFeature.WriteMapNullValue);
 	}
 	
@@ -433,6 +484,21 @@ public class InvestController {
 		ProjectAppProcessEntity appProcessEntity = projectDetailService.selectProjectAppProcess(projectId);
 		return JSONObject.toJSONString(appProcessEntity,SerializerFeature.WriteMapNullValue);
 	}
+	
+	/***
+	* 项目历程-项目还款
+	* 
+	* @author 李杰
+	* @return
+	* @date 2016-5-19 下午5:51:07
+	 */
+	@RequestMapping(value="projectCourseRepayment/{projectId:[0-9]+}",method=RequestMethod.GET,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String projectCourseRepayment(HttpServletRequest request,@PathVariable long projectId){
+		List<LoanRepayEntity> list = projectDetailService.selectLoanRealReplayprocess(projectId);
+		return JSONObject.toJSONString(list,SerializerFeature.WriteMapNullValue);
+	}
+	
 	
 	/***
 	* 贷后监管
@@ -508,7 +574,7 @@ public class InvestController {
 			if(entity.getStatu() == 0){		//成功
 				return "dryLot/loantransfertest";
 			}else{							//失败
-				request.setAttribute("message", entity.getMassage());
+				request.setAttribute("loanTransferReturnEntity", entity);
 				return "invest/investFalse";
 			}
 		} catch (Exception e) {//转换参数出错!不响应
@@ -569,6 +635,10 @@ public class InvestController {
 		//查询出借款类型
 		List<ProjectBaseInfoEntity> project = baseInfoService.selectProjectBaseInfoCombox();
 		request.setAttribute("projectBaseInfos", project);
+		
+		String hostPath = FtpClientUtil.getFtpFilePath();
+		hostPath = hostPath.substring(0, hostPath.length()-1);
+		request.getSession().setAttribute("imgProfix", hostPath);//图片前缀
 		return "invest/debtCession";
 	}
 	
@@ -642,10 +712,20 @@ public class InvestController {
 	*/
 	@RequestMapping("/debtDetail/{ctaId:[0-9]+}")
 	public String debtDetail(HttpServletRequest request,@PathVariable long ctaId){
+		Date now 		= new Date();
 		CreditorTransferListEntity creditorTransferListEntity =	creditorTransferService.selectCreditorTransferDetail(ctaId);
+		
+		String hostPath = FtpClientUtil.getFtpFilePath();
+		hostPath = hostPath.substring(0, hostPath.length()-1);
+		request.getSession().setAttribute("imgProfix", hostPath);//图片前缀
+		
 		if(creditorTransferListEntity == null){
 			return "invest/debtDetail";
 		}else{
+			//查询出原借款信息
+			ProjectAppRecordEntity appRecordEntity = detailService.selectProjectDetailByID(creditorTransferListEntity.getApplyId());
+			
+			request.setAttribute("appRecordEntity", appRecordEntity);
 			request.setAttribute("creditorTransferListEntity", creditorTransferListEntity);
 			//借款人基本信息
 			LoanMemberInfoEntity projectMemberInfo = projectDetailService.selectMemberInfo(creditorTransferListEntity.getApplyId());
@@ -653,6 +733,32 @@ public class InvestController {
 			
 			//统计信息
 			LoanCreditStatisticsEntity creditStatisticsEntity =	balanceService.selectLoanCreditStatistics(projectMemberInfo.getMemberID());
+				if(projectMemberInfo.getPersonalName() != null && projectMemberInfo.getPersonalName().length() > 0){
+					projectMemberInfo.setPersonalName(projectMemberInfo.getPersonalName().substring(0,1)+"**");
+				}
+				if(projectMemberInfo.getPersonalPhone() != null && projectMemberInfo.getPersonalPhone().length() >= 11){
+					projectMemberInfo.setPersonalPhone(projectMemberInfo.getPersonalPhone().substring(0,3)+" **** "+projectMemberInfo.getPersonalPhone().substring(8, 11));
+				}
+				if(projectMemberInfo.getPersonalIdCard() != null){
+					if(projectMemberInfo.getPersonalIdCard().length() == 18){
+						String years  = projectMemberInfo.getPersonalIdCard().substring(6,10);
+						String mothd  = projectMemberInfo.getPersonalIdCard().substring(10,12);
+						String day	  = projectMemberInfo.getPersonalIdCard().substring(12,14);
+						Date userBirthDay = null;
+						try {
+							userBirthDay = yyyy_MM_dd.parse(years+"-"+mothd+"-"+day);
+						} catch (ParseException e) {
+							logger.info("投资详情：计算借款人生日出现异常");
+						}
+						if(userBirthDay != null){
+							long time = now.getTime()-userBirthDay.getTime();
+							int age = (int) ((time)/1000/60/60/24/365);
+							request.setAttribute("projectMemberInfoAge", age);
+						}else{
+							request.setAttribute("projectMemberInfoAge", 0);
+						}
+					}
+				}
 			request.setAttribute("creditStatisticsEntity", creditStatisticsEntity);
 			
 			//认证信息
@@ -682,11 +788,11 @@ public class InvestController {
 			}
 			
 			try {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-				Date maxTime 	= sdf.parse(creditorTransferListEntity.getEndDate());						//债权到期时间
-				Date now 		= new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				request.setAttribute("sysTime", sdf.format(new Date()));
+				Date maxTime 	= sdf.parse(creditorTransferListEntity.getTransMaxTime());						//债权到期时间
 				//重新定义债权状态
-				if(creditorTransferListEntity.getTransStatu() == 0){
+				if(creditorTransferListEntity.getTransStatu() == 0 && creditorTransferListEntity.getCtaInvestRate() < 1000000 && maxTime.before(now)){
 					//投标中
 					request.setAttribute("investmentStatus", "0");
 					request.setAttribute("endTime", sdf.format(maxTime));
@@ -695,7 +801,7 @@ public class InvestController {
 					request.setAttribute("investmentStatus", "1");
 					request.setAttribute("endTime", sdf.format(maxTime));
 				}else if(creditorTransferListEntity.getTransStatu() == 2 || 
-							(creditorTransferListEntity.getTransStatu() == 0 && (creditorTransferListEntity.getCtaInvestRate() >= 1000000 || (maxTime.after(now) || maxTime.equals(now))))){
+							(creditorTransferListEntity.getTransStatu() == 0 && (creditorTransferListEntity.getCtaInvestRate() >= 1000000 || (maxTime.before(now) || maxTime.equals(now))))){
 					//投标完成
 					request.setAttribute("investmentStatus", "2");
 					request.setAttribute("endTime", sdf.format(maxTime));
@@ -707,13 +813,11 @@ public class InvestController {
 					request.setAttribute("investmentStatus", creditorTransferListEntity.getTransStatu());
 					request.setAttribute("endTime", sdf.format(maxTime));
 				}
-				
 			} catch (Exception e) {
 				request.setAttribute("investmentStatus", 2);
-				logger.error("投标计算债权到期时间(结束)时间异常->债券名为："+creditorTransferListEntity.getProjectTitle()+",结束时间为："+creditorTransferListEntity.getEndDate());
+				logger.error("投标计算债权到期时间(结束)时间异常->债券名为："+creditorTransferListEntity.getProjectTitle()+",结束时间为："+creditorTransferListEntity.getTransMaxTime());
 				request.setAttribute("investmentStatus", 0);
 			}		
-			
 			return "invest/debtDetail";
 		}
 	}
@@ -808,13 +912,19 @@ public class InvestController {
 	@ResponseBody
 	public String debtsInvestmentRecord(HttpServletRequest request,@PathVariable long ctaId){
 		List<InvestEntity> list = creditorTransferService.selectCreditorInvestRecordByctaId(ctaId);
-		
+		String logName = "";
+		for (int i = 0; i < list.size(); i++) {
+			logName = list.get(i).getLogname();
+			list.get(i).setLogname(logName.charAt(0)+" *** "+logName.charAt(logName.length()-1));
+			list.get(i).setMemberNo("");
+			list.get(i).setMembername("");
+		}
 		CreditorTransferListEntity appRecordEntity = creditorTransferService.selectCreditorAvailableaAmount(ctaId);
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("info", list);
-		param.put("availableAmount", appRecordEntity.getAvailableaAmounts());
+		param.put("availableAmount", appRecordEntity.getTransPrincipals());
 		param.put("investTotals", appRecordEntity.getInvestTotals());
-		param.put("shenYuKeTou", IntegerAndString.LongToString(appRecordEntity.getAvailableaAmount()-appRecordEntity.getInvestTotal()));
+		param.put("shenYuKeTou", appRecordEntity.getAvailableaAmounts());
 		return JSONObject.toJSONString(param,SerializerFeature.WriteMapNullValue);
 	}
 	
@@ -827,4 +937,5 @@ public class InvestController {
 	public String investFalse(){
 		return "invest/investFalse";
 	}
+
 }

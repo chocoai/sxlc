@@ -27,11 +27,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="5" name="top_menu_index"/>
+				<jsp:param value="5" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-frontconfig.jsp"></jsp:include>
+			<jsp:include page="../common/cm-frontconfig.jsp">
+				<jsp:param value="514" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -100,16 +103,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</script>
 	<script type="text/javascript">
 		$(function(){
-			validform5("layui-layer-btn0","addlinkname",false,"3");
+			validform5("layui-layer-btn0","addlinkname",false,"5");
 		});
 		$(function(){
-			validform5("layui-layer-btn0","addlinkaddress",false,"3");
+			validform5("layui-layer-btn0","addlinkaddress",false,"5");
 		});
 		$(function(){
-			validform5("layui-layer-btn0","modlinkname",false,"3");
+			validform5("layui-layer-btn0","modlinkname",false,"5");
 		});
 		$(function(){
-			validform5("layui-layer-btn0","modlinkaddress",false,"3");
+			validform5("layui-layer-btn0","modlinkaddress",false,"5");
 		});
 	</script>
 	

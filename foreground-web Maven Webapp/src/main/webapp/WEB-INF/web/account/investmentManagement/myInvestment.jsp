@@ -243,7 +243,7 @@
 		   						</div>
 		   						<div class="annualInterestRate divOutside">
 		   							<div class="divIntside">
-		   								<div>{{infos.yearRate}}%</div>
+		   								<div>{{infos.yearRates}}%</div>
 		   							</div>
 		   						</div>
 		   						<div class="investmentProgress divOutside">

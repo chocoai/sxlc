@@ -44,6 +44,22 @@
    		</where>
    		limit 1
   </select>
+  
+  <!-- 查询担保机构会员开户所需基本信息 -->
+  <select id="selectbAccountById" resultMap="sAccountInterface" parameterType="Map" >
+   	select CONVERT(AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey}) using utf8) AS Logname,
+   	CONVERT(AES_DECRYPT(UNHEX(gi.Contact_Phone),#{skey}) using utf8) AS pphone,
+   	CONVERT(AES_DECRYPT(UNHEX(gi.Contact_Email),#{skey}) using utf8) AS pemail,
+   CONVERT(AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{skey}) using utf8) AS pname,
+   CONVERT(AES_DECRYPT(UNHEX(gi.Companye_BLN),#{skey}) using utf8) AS pidcard
+   	 from Guarantee_Info gi 
+   		<where>
+   			gi.Guarantee_ID=(select Guarantee_ID from Guarantee_Manage_Info where Admin_ID=#{memberId} and Status=1 limit 1) 
+   		</where>
+   		limit 1
+  </select>
+  
+  
   <!-- 查询平台账号信息 -->
   <select id="findThirdPartyMark" resultType="String" parameterType="Map">
   	select ThirdParty_Mark from Own_Account_Info 
@@ -62,7 +78,7 @@
 				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
 				#{backDetailEncrypt,	 mode=IN,	jdbcType=VARCHAR},
 				#{backDetail,	 mode=IN,	jdbcType=VARCHAR},
-				#{type,	 mode=IN,	jdbcType=INTEGER},
+				#{atype,	 mode=IN,	jdbcType=INTEGER},
 				#{memberid,	 mode=IN,	jdbcType=BIGINT},
 				#{account ,	 mode=IN,	jdbcType=VARCHAR},
 				#{thirdPartymark ,	 mode=IN,	jdbcType=VARCHAR},
@@ -117,7 +133,7 @@
   <!-- 授权成功处理 -->
   <select id="authorizeBack" resultType="Map" statementType="CALLABLE">
   		<![CDATA[{call AuthorizeBack(
-				#{merbillno,	 mode=IN,	jdbcType=VARCHAR},
+				#{merbillNo,	 mode=IN,	jdbcType=VARCHAR},
 				#{memberType,	 mode=IN,	jdbcType=INTEGER},
 				#{memberID,	 mode=IN,	jdbcType=BIGINT},
 				#{statu,	 mode=IN,	jdbcType=INTEGER},
@@ -138,9 +154,10 @@
   </resultMap>
   <!-- 根据项目id查询所有放款或流标操作流水号 -->
   <select id="GetInvestListByProId" resultMap="sLoanTransaction" parameterType="Map">
-  	select Invest_Id,Bill_No,GiftBill_No,Member_ID,
-  	CAST(((AES_DECRYPT(UNHEX(Invest_Amount),#{skey}))) as signed)  Invest_Amount
-  	from Invest_Record where Apply_Id=#{applyId} and IsValid=0
+  	select ir.Invest_Id,ir.Bill_No,ir.GiftBill_No,ir.Member_ID,
+  	CAST(((AES_DECRYPT(UNHEX(ir.Invest_Amount),#{skey}))) as signed)  Invest_Amount
+  	from Invest_Record ir where Apply_Id=#{applyId} and IsValid=0
+  	and not exists (select 1 from Invest_Record_FangKuan irf where irf.invest_id = ir.invest_id)
   </select>
   
   <!-- 流标返回处理 -->
@@ -176,13 +193,13 @@
    <resultMap id="sWithdraws" type="cn.sxlc.account.manager.model.WithdrawsEntity" >
     <result column="Bank_No" property="sCardNo"/>
     <result column="BankCode" property="sBankCode"/>
-    <result column="Branch_Address" property="sBankName" />
+    <result column="Branch" property="sBankName" />
     <result column="Card_City" property="iCity" />
     <result column="Card_Province" property="iProvince" />
   </resultMap>
   <!-- 根据银行卡id查询银行信息 -->
   <select id="finBankCode" resultMap="sWithdraws" parameterType="Map">
-  	SELECT Bank_No,Branch_Address,BankCode,Card_Province,Card_City FROM
+  	SELECT Bank_No,Branch,BankCode,Card_Province,Card_City FROM
  		Bank_Card_Info bci LEFT JOIN Bank_Code bc ON bci.Bank_Id=bc.Bank_ID 
  		WHERE bci.Bank_Card_Id=#{bankCardId} limit 1
   </select>
@@ -314,7 +331,7 @@
   
   <!-- 查询出提前还款 单个投资会员最近一期未收收益 -->
   <select id="findInterestByMember" resultType="LONG" parameterType="Map">
-  	select CAST(((AES_DECRYPT(UNHEX(SDRecv_Interest),#{skey}))) as signed) from Invest_Income where Invest_Id=#{investId} and IsValid=0 and Statu=0 order by SDRecv_MaxTime desc limit 1
+  	select IFNULL(CAST(((AES_DECRYPT(UNHEX(SDRecv_Interest),#{skey}))) as signed),0) from Invest_Income where Invest_Id=#{investId} and IsValid=0 and Statu=0 order by SDRecv_MaxTime asc limit 1
   </select>
   
    <!-- 查询还款 单个投资会员未收总利息 -->
@@ -334,16 +351,17 @@
   
   <!-- 查询出提前还款 单个投资会员最近一期应收收益时间，月标 -->
   <select id="findTimesByMember" resultType="LONG" parameterType="Map">
-  	select IFNULL(datediff(SDRecv_MaxTime, NOW()),0)  from Invest_Income where Invest_Id=#{investId} and IsValid=0 and Statu=0 order by SDRecv_MaxTime desc limit 1
+  	select IFNULL(datediff(SDRecv_MaxTime, NOW()),0)  from Invest_Income where Invest_Id=#{investId} and IsValid=0 and Statu=0 order by SDRecv_MaxTime asc limit 1
   </select>
   
   <!-- 查询提前还款违约金设置 -->
   <select id="findPenaltyRate" resultType="Map">
-  	select IFNULL(Penalty_Invest_Rate,0),IFNULL(Penalty_PingTai_Rate,0) from System_Set limit 1
+  	select IFNULL(Penalty_Invest_Rate,0) Penalty_Invest_Rate
+  	,IFNULL(Penalty_PingTai_Rate,0) Penalty_PingTai_Rate from System_Set limit 1
   </select>
   <!-- 查询出该项目的期限类型 -->
-  <select id="projectDurationType" resultType="LONG" parameterType="Map">
-  	select Deadline from Project_App_Record par left join Project_Base_Info pbi on par.Project_Base_ID=pbi.Project_Base_ID where par.Apply_Id=#{applyId} limit 1
+  <select id="projectDurationType" resultType="INTEGER" parameterType="Map">
+  	select Deadline_Type from Project_App_Record par left join Project_Base_Info pbi on par.Project_Base_ID=pbi.Project_Base_ID where par.Apply_Id=#{applyId} limit 1
   </select>
   
   
@@ -511,15 +529,18 @@
   	select Interest_Type from Trans_Setting limit 1
   </select>
   <!-- 查询债权转让原项目的还款方式 -->
-  <select id="getRepaymentByCTAId" resultType="INTEGER" parameterType="Map">
+  <select id="getRepaymentByCTAId" resultType="Map" parameterType="Map">
   	<!-- 0	等额本息 1	先息后本 2	到期还本付息  3等额本金
   	 -->
-  	 select pbi.Deadline_Type,pi.Apply_Id from Project_App_Record pi LEFT JOIN Project_Base_Info pbi ON pbi.Project_Base_ID=pi.Project_Base_ID where Apply_Id = (select Apply_Id from Invest_Record where
+  	 select pbi.Deadline_Type,pi.Apply_Id,pbi.Repay_way from Project_App_Record pi LEFT JOIN Project_Base_Info pbi ON pbi.Project_Base_ID=pi.Project_Base_ID where Apply_Id = (select Apply_Id from Invest_Record where
 				Invest_Id = (select Invest_Id from Creditor_Trans_App where CTA_Id = #{ctaId}))
   </select>
   <!-- 查询债权转让原投资的剩余期限以及期限类型 -->
   <select id="getDateInstallments" resultType="Map" parameterType="Map">
-  	 select Surplus_Time,Surplus_Time_Type from Creditor_Trans_App where CTA_Id = #{ctaId})) limit 1
+  	 select 
+  	 (SELECT count(*) FROM Invest_Income ii left join Creditor_Trans_App ct on ii.Invest_Id=ct.Invest_Id
+  	 WHERE  ii.Statu in (0 , 1) AND ii.IsValid=0 and ct.CTA_Id=#{ctaId}) Surplus_Time,
+  	 Surplus_Time_Type from Creditor_Trans_App where CTA_Id = #{ctaId} limit 1
   </select>
   
   <!-- 查询出最近一次回款时间（作为生成收益计划的投标结束时间） 如果一次都未还则为原项目放款时间 -->
@@ -530,7 +551,7 @@
 				#{yearRate ,	 mode=OUT,	jdbcType=BIGINT},
 				#{timNum ,	 mode=OUT,	jdbcType=INTEGER},
 				#{memberId ,	 mode=OUT,	jdbcType=BIGINT},
-				#{InvId ,	 mode=OUT,	jdbcType=BIGINT},
+				#{InvId ,	 mode=OUT,	jdbcType=BIGINT}
     		)}
     	]]>
   </select>
@@ -550,12 +571,18 @@
 	</select>
 	
 	<!-- 根据项目申请id查询所有未还还款计划id -->
-	<select id="selectLoanId" resultType="List">
-		select ID from Loan_Repay where Apply_Id =#{applyId}  and Statu=0 and IsCompensatory=0 order by Repay_MaxTime asc
+	<select id="selectLoanId" resultType="cn.sxlc.account.manager.model.LoanRepayEntity" parameterType="Map">
+		select Repay_ID as repayID from Loan_Repay where Apply_Id =#{applyId}  and Statu=0 and IsCompensatory=0 order by Repay_MaxTime asc
 	</select>
 	<!-- 修改债权转让项目状态为还款中 -->
 	<update id="updateProjrctTransStatu" parameterType="Map">
 		UPDATE Creditor_Trans_App SET Statu = 3 WHERE CTA_Id =#{ctaId}
+	</update>
+	<!-- 设置转让人未收收益计划为无效 -->
+	<update id="updateIsvi" parameterType="Map">
+		UPDATE invest_income iin SET iin.IsValid=1 
+      WHERE iin.Invest_Id =(SELECT ctt.Invest_Id FROM creditor_trans_app ctt WHERE ctt.CTA_Id=#{ctaId} LIMIT 1) 
+            AND iin.Statu IN(0,1)
 	</update>
 	
 	<!-- 债权转让流标返回处理 -->
@@ -646,7 +673,7 @@
   <!--好友转账 判断出账好友余额是否满足当前转账金额 -->
   <select id="AccountBalance" resultType="Map" statementType="CALLABLE">
   	<!-- -1 余额不足 -->
-  		<![CDATA[{call ReturnOfDeposit(
+  		<![CDATA[{call AccountBalance(
 				#{inMemberId,	 mode=IN,	jdbcType=BIGINT},
 				#{amount,	 	 mode=IN,	jdbcType=BIGINT},
 				#{skey ,	 mode=IN,	jdbcType=VARCHAR},
@@ -855,6 +882,31 @@
   	select IFNULL(CAST((AES_DECRYPT(UNHEX(Price_Datum),#{skey})) as signed),0) 
   	from Interest_Mng_Fee limit 1
   </select> 
+  <update id="TranFailNotInve" parameterType="Map">
+  	UPDATE Creditor_Trans_App SET Statu=1 WHERE CTA_Id=#{traId};
+  </update>
+  
+    <!-- 代偿返回处理 -->
+  <select id="ProjectFailNotInve" resultType="Map" statementType="CALLABLE">
+  <!-- -->
+  		<![CDATA[{call ProjectFailNotInve(
+				#{applyId,	 mode=IN,	jdbcType=BIGINT},
+				#{result,	 mode=OUT,	jdbcType=INTEGER}
+    		)}
+    	]]>
+  </select>
   
   
+  <!-- 根据债权转让人投资记录ID查询现有有效投资 -->
+  <select id="GetEndMoneyByInv" parameterType="Map" resultType="LONG">
+  	select CAST(((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{skey}))) as signed)
+  	-(select IFNULL(SUM(CAST(((AES_DECRYPT(UNHEX(iri.Recv_Principal),#{skey}))) as signed)),0) from Invest_Income ii 
+		left join Invest_Real_Income iri on iri.Income_Id= ii.Income_Id
+			where ii.Invest_Id=ir.Invest_Id) investAmountValid
+		from Invest_Record ir where ir.Invest_Id=#{investId} limit 1
+  </select>
+  
+  <select id="loanMemberId" parameterType="Map" resultType="LONG">
+  	select Member_ID from Project_App_Record where Apply_Id = #{lApplyId} limit 1
+  </select>
 </mapper>

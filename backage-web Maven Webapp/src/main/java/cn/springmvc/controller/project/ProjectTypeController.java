@@ -214,15 +214,35 @@ public class ProjectTypeController {
 		param.put("minRate",IntegerAndString.StringToInt(minRate));
 		String maxRate = req.getParameter("maxRate");
 		param.put("maxRate",IntegerAndString.StringToInt(maxRate));
-		Integer minDaytimeY = Integer.parseInt(req.getParameter("minDaytimeY"));
-		param.put("minDaytimeY",minDaytimeY);
-		Integer maxDaytimeY = Integer.parseInt(req.getParameter("maxDaytimeY"));
-		param.put("maxDaytimeY",maxDaytimeY);
+		String minDaytimeY =  req.getParameter("minDaytimeY");
+		if(minDaytimeY !=null && !"".equals(minDaytimeY)){
+			Integer temp = Integer.parseInt(minDaytimeY);
+			param.put("minDaytimeY",temp);
+		}else{
+			param.put("minDaytimeY",null);
+		}
+		String maxDaytimeY =  req.getParameter("maxDaytimeY");
+		if(maxDaytimeY !=null && !"".equals(maxDaytimeY)){
+			Integer temp = Integer.parseInt(maxDaytimeY);
+			param.put("maxDaytimeY",temp);
+		}else{
+			param.put("maxDaytimeY",null);
+		}
 		param.put("unitY", 0);
-		Integer minDaytimeM = Integer.parseInt(req.getParameter("minDaytimeM"));
-		param.put("minDaytimeM",minDaytimeM );
-		Integer maxDaytimeM = Integer.parseInt(req.getParameter("maxDaytimeM"));
-		param.put("maxDaytimeM",maxDaytimeM);
+		String minDaytimeM =  req.getParameter("minDaytimeM");
+		if(minDaytimeM !=null && !"".equals(minDaytimeM)){
+			Integer temp = Integer.parseInt(minDaytimeM);
+			param.put("minDaytimeM",temp);
+		}else{
+			param.put("minDaytimeM",null);
+		}
+		String maxDaytimeM =  req.getParameter("maxDaytimeM");
+		if(maxDaytimeM !=null && !"".equals(maxDaytimeM)){
+			Integer temp = Integer.parseInt(maxDaytimeM);
+			param.put("maxDaytimeM",temp);
+		}else{
+			param.put("maxDaytimeM",null);
+		}
 		param.put("unitM", 1);
 		Integer minDaytimeD = Integer.parseInt(req.getParameter("minDaytimeD"));
 		param.put("minDaytimeD",minDaytimeD);
@@ -239,11 +259,11 @@ public class ProjectTypeController {
 		param.put("picIcon",picIcon);
 		String picUrl = req.getParameter("picUrl");
 		param.put("picUrl",picUrl);
-		String briefIntroduction = req.getParameter("briefIntroduction");
+		String briefIntroduction = req.getParameter("content");//百度编辑器内容不加密
 		param.put("briefIntroduction",briefIntroduction);
-		String contentg = req.getParameter("contentg");
+		String contentg = req.getParameter("start");//百度编辑器内容不加密
 		param.put("contentg",contentg);
-		String contentr = req.getParameter("contentr");
+		String contentr = req.getParameter("length");//百度编辑器内容不加密
 		param.put("contentr",contentr);
 		
 		int result=0;

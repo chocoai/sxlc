@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import product_p2p.kit.datatrans.IntegerAndString;
+import product_p2p.kit.dbkey.DbKeyUtil;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 import product_p2p.kit.pageselect.PageUtil;
@@ -229,6 +230,7 @@ public class CertificationAuditServiceImpl implements CertificationAuditService{
 			long memberID) {
 		Map<String, Object> Map = new HashMap<>();
 		Map.put("memberID", memberID);
+		Map.put("skey", DbKeyUtil.GetDbCodeKey());
 		page.setMap(Map);
 		// TODO Auto-generated method stub return null;
 		List<ExistingFinancialAdvisorEntity> list =  selectCertificationAuditDaoImpl.ChangeHistory(page);

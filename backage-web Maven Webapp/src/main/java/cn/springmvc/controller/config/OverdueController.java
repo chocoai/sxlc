@@ -55,8 +55,8 @@ public class OverdueController {
 	 * @date 2016-4-13 上午11:32:29
 	 * @throws 
 	 */
-	@RequestMapping("/toOverdueList")
-	public String toOverdueList(){
+	@RequestMapping("/tolateFeePg")
+	public String tolateFeePg(){
 		return "config/late-fee";
 	}
 	
@@ -191,6 +191,27 @@ public class OverdueController {
 		int result=0;
 		result = overdueService.insertOverdue(overdueEntity,logEntity,sIpInfo);
 		return result;
+	}
+	
+	/**
+	 * 
+	* findMaxOverdue查询目前最大的逾期时间设置 
+	* TODO查询目前最大的逾期时间设置 
+	* @author 杨翰林  
+	* * @Title: findMaxOverdue 
+	* @Description: 查询目前最大的逾期时间设置  
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-27 下午2:09:45
+	* @throws
+	 */
+	@RequestMapping("/findMax")
+	@ResponseBody
+	public int findMaxOverdue() {
+		
+		int num = overdueService.findMaxOverdue();
+		
+		return num; 
 	}
 	
 }

@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 
 import cn.springmvc.model.Admin;
+import cn.springmvc.model.QuickRechargeFeeEntity;
 import cn.springmvc.model.WithdrawalsFeeEntity;
 import cn.springmvc.service.FinancialSettingService;
 import cn.springmvc.service.QuickRechargeFeeService;
@@ -87,12 +89,12 @@ public class WithdrawController {
 		String withdrawal_Fee_Pingtai = request.getParameter("withdrawal_Fee_Pingtai");
 		String withdrawal_Fee_Third = request.getParameter("withdrawal_Fee_Third");
 		
-			withdrawalsFeeEntity.setPayment_Member_Type(Integer.valueOf(payment_Member_Type));
+			withdrawalsFeeEntity.setPayment_Member_Type(IntegerAndString.StringToInt(payment_Member_Type,0));
 		if (withdrawal_Fee_Pingtai != null && withdrawal_Fee_Pingtai != "") {
-			withdrawalsFeeEntity.setWithdrawal_Fee_Pingtai(Integer.valueOf(withdrawal_Fee_Pingtai));
+			withdrawalsFeeEntity.setWithdrawal_Fee_Pingtai(IntegerAndString.StringToInt(withdrawal_Fee_Pingtai));
 		}
 		if (withdrawal_Fee_Third != null && withdrawal_Fee_Third != "") {
-			withdrawalsFeeEntity.setWithdrawal_Fee_Third(Integer.valueOf(withdrawal_Fee_Third));
+			withdrawalsFeeEntity.setWithdrawal_Fee_Third(IntegerAndString.StringToInt(withdrawal_Fee_Third));
 		}
 		
 		String [] sIpInfo = new String[5];
@@ -144,6 +146,7 @@ public class WithdrawController {
 			req.put("feePaymentMethod", feePaymentMethod);
 		}
 		req.put("rechargeTypeThird", 0);
+		req.put("rechargeFeeThird", 0);
 		
 		String [] sIpInfo = new String[5];
 		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
@@ -160,6 +163,28 @@ public class WithdrawController {
 		int num = quickRechargeFeeService.updateQuickRechargeFee(req, entity, sIpInfo);
 		return num;
 	}
+	
+	/**
+	 * 
+	* findAllQuickRechargeFee查询充值手续费设置 
+	* TODO查询充值手续费设置
+	* @author 杨翰林  
+	* * @Title: findAllQuickRechargeFee 
+	* @Description: 查询充值手续费设置
+	* @param @return 设定文件 
+	* @return List<QuickRechargeFeeEntity> 返回类型 
+	* @date 2016-5-24 下午3:36:16
+	* @throws
+	 */
+	@RequestMapping("/feeList")
+	@ResponseBody
+	public List<QuickRechargeFeeEntity> findAllQuickRechargeFee() {
+		
+		List<QuickRechargeFeeEntity> list = quickRechargeFeeService.findAllQuickRechargeFee();
+		
+		return list;
+	}
+	
 	
 }
 

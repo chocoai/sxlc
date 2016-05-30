@@ -91,6 +91,10 @@ input:focus{
 	width:100px;
 	height:40px;
 	margin-left:20px;
+	vertical-align : middle;
+}
+.forgetPWDCode{
+	padding-top: 10px;
 }
 .fogetPWD-btn{
 	margin:10px 170px;

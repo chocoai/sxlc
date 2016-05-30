@@ -28,14 +28,19 @@
             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.keys})) using utf8) end 
        as memberName,
        mi.Logname              as logname, 
-	   pbi.Amount              as amount,
-	   pbi.Real_Amount         as realAmount,
+	   pbi.Amount              as amount, 
+	   ifnull((select sum(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.keys})) as signed))  
+	   from Invest_Record ir where ir.Apply_Id = pap.Apply_Id
+	   ),0) as  realAmount,
 	   par.Invest_Rate         as investRate,
 	   pam.RiskMargin_Fee      as riskMarginFee,
 	   (pam.RiskMargin_Fee + pam.Guarantee_Fee + MngFee_Amount ) as platformDirect,
 	   
 	   pam.MngFee_Amount       as  mngFeeAmount,
-	   (pbi.Real_Amount -  pam.RiskMargin_Fee - pam.Guarantee_Fee - pam.MngFee_Amount )  as realLoanmoney,
+	   (
+	   ifnull((select sum(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount_Valid),#{map.keys})) as signed))  
+	   from Invest_Record ir where ir.Apply_Id = pap.Apply_Id
+	   ),0) -  pam.RiskMargin_Fee - pam.Guarantee_Fee - pam.MngFee_Amount )  as realLoanmoney,
 	   pap.Hold_Date           as holdDate,
 	   par.Invest_Statu        as investStatu
 	   from   Project_App_Record par  
@@ -47,10 +52,10 @@
 	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id and mi.Member_Type=0
 	   left join Company_Info  ci        on ci.Company_ID=mi.Company_ID and mi.Member_Type=1
 	   where   par.Publish_Statu = 2 and par.Check_Statu = 1 and (par.Invest_Statu = 2 or (par.Invest_Statu = 0 and par.Invest_Rate>=1000000) or 
-	          (par.Invest_Statu = 0 and pap.End_Date&lt;=now()) or par.Invest_Statu >=3)
+	          (par.Invest_Statu = 0 and pap.End_Date&lt;=now()) or par.Invest_Statu >=3 or  par.Invest_Statu =1)
 	   <!-- 项目编号--> 
        <if test = "map.projectNo != null and map.projectNo != ''">  
-         and   par.Project_No  like '%${map.projectinfo}%'  
+         and   par.Project_No  like '%${map.projectNo}%'  
        </if> 
           <!--                      会员用户名 -->
         <if test = "map.Logname !=  null and map.Logname !=  ''"> 
@@ -98,7 +103,7 @@
 	      <if test = "map.statu !=  null and map.statu == 3"> 
 	       and  par.Invest_Statu > 3
 	     </if>    
-	     order by pap.Hold_Date  desc
+	     order by par.Invest_Statu asc, pap.Hold_Date  desc
     </select>
     
 </mapper>

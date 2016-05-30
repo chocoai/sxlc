@@ -23,6 +23,7 @@ left join Message_Format mf on mt.Type_ID=mf.Type_ID
 left JOIN SmsSend_Set ss ON mt.Type_ID=ss.Type_ID
 LEFT JOIN LetterSend_Set ls ON mt.Type_ID=ls.Type_ID
 LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
+order by mt.Type_ID
   </select>
   
   <!-- 分页查看消息类型设置 -->
@@ -187,8 +188,12 @@ LEFT JOIN EmailSend_Set es ON mt.Type_ID=es.Type_ID
   <!-- 添加第三方接口路径 -->
   <insert id="insertThreeInterface" parameterType="Map">
   	insert into QianDuoDuo_Url_Set(Escrow_ID,Interface_ID,Interface_Url)
-  		values(#{escrowID},#{interfaceID},#{interfaceUrl});
+  		values(#{escrowID},#{interfaceID},#{interfaceUrl})
   </insert>
+  
+  <select id="selectCountThreeInterface" parameterType="Map" resultType="LONG">
+  	select count(*) from QianDuoDuo_Url_Set where Interface_ID=#{interfaceID}
+  </select>
   <resultMap id="MailHistoryEntity" type="cn.springmvc.model.MailHistoryEntity" >
   	 <result column="Personal_Email" property="personalEmail"/>
   	 <result column="Personal_Name" property="personalName"/>

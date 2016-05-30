@@ -11,7 +11,6 @@ $(function () {
 		url : appPath + "/guarant/query4select.do",
 		data : {guaranteeId : result},
 		success : function (msg) {
-			console.log(msg.compensationStatisticsEntity);
 			$("#guaranteeName").text(msg.guaranteeInfoEntity.guaranteeName);
 			$("#companyeBLN").text(msg.guaranteeInfoEntity.companyeBLN);
 			$("#companyOC").text(msg.guaranteeInfoEntity.companyOC);

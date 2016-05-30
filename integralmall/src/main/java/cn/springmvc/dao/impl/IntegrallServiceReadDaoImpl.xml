@@ -16,7 +16,7 @@
 		Status							as	status				,
 		Add_Time						as	addTime				,
 		Delete_Flag						as	deleteFlag			
-		from Commodity_Type where Delete_Flag = 1
+		from Commodity_Type where status = 1 
 	</select>
 	
 	
@@ -45,7 +45,7 @@
 		End_Date						as	endDate				,
 		Delete_Flag						as	deleteFlag			
 		from Commodity_Info 
-		where Delete_Flag = 1 and Commodity_Type_ID = #{commodityTypeId} order by Add_Time desc limit 0,4
+		where Delete_Flag = 1 and Commodity_Statu = 1 and Commodity_Type_ID = #{commodityTypeId} order by Add_Time desc limit 0,4
 	</select>
 
 
@@ -79,10 +79,10 @@
 	
 	
 	<!-- 获取商品列表 -->
-	<select id="goods" parameterType="Map" resultType="cn.integralmall.model.CommodityInfo">
+	<select id="goods" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.integralmall.model.CommodityInfo">
 		select
 		Commodity_ID					as	commodityId			,	
-		Commodity_Type_ID				as	commodityTypeId		,
+		ci.Commodity_Type_ID			as	commodityTypeId		,
 		Commodity_NO					as	commodityNO			,
 		Commodity_Name					as	commodityName		,
 		Brand							as	brand				,
@@ -96,26 +96,33 @@
 		VIP_Discount					as	vIPDiscount			,
 		Commodity_large_Icon			as	commodityLargeIcon	,
 		Commodity_Small_Icon			as	commoditySmallIcon	,
-		Add_Time						as	addTime				,
+		ci.Add_Time						as	addTime				,
 		Commodity_Statu					as	commodityStatu		,
 		Is_Active						as	isActive			,
 		Active_Type						as	activeType			,
 		End_Date						as	endDate				,
-		Delete_Flag						as	deleteFlag		    ,
+		ci.Delete_Flag					as	deleteFlag		    ,
 		Quantity						as	quantity			
-		from Commodity_Info where Delete_Flag = 1 
+		from Commodity_Info ci 
+		left join Commodity_Type ct on ci.Commodity_Type_ID = ct.Commodity_Type_ID
 		<where>
-			<if test="minPoint != null">
-				Need_Point >= ${minPoint}
+			ci.Delete_Flag = 1 and ci.Commodity_Statu = 1 and ct.status = 1
+			<if test="map.minPoint != null and map.minPoint != ''">
+				Need_Point >= ${map.minPoint}
 			</if>
-			<if test="maxPoint != null">
-				Need_Point &lt; ${maxPoint} 
+			<if test="map.maxPoint != null and map.maxPoint != ''">
+				Need_Point &lt; ${map.maxPoint} 
 			</if>
-			<if test="commodityTypeId != null">
-				Commodity_Type_ID = ${commodityTypeId}
+			<if test="map.commodityTypeId != null and map.commodityTypeId != ''">
+				Commodity_Type_ID = ${map.commodityTypeId}
+			</if>
+			<if test="map.order == 1">
+				order by Need_Point desc
+			</if>
+			<if test="map.order == 2">
+				order by Need_Point asc
 			</if>
 		</where>
-		
 	</select>	
 	
 	

@@ -61,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				columns: [  
 				          { title:"还款期数","data": "indexs"},  
-				          { title:"合约还款日","data": "retrieveDateTime"},  
+				          { title:"合约还款日","data": "loanTime"},  
 				          { title:"应还本金","data": "sLoanAmount"},  
 				          { title:"应还利息","data": "sLoanInterest"},  
 				          { title:"是否逾期","data": "isYuQi", 
@@ -96,15 +96,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          aoColumnDefs : [
 	                          {
 	                        	  "orderable" : false,
-	                        	  "aTargets" : [0, 1, 2, 3, 4, 5, 6, 7, 8]
+	                        	  "aTargets" : [0, 1, 2, 3, 4, 5, 6, 7]
 	                          } // 制定列不参与排序
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
-	          serverSide: true,//打开后台分页  
+	          serverSide: true,//打开后台分页
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕

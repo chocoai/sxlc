@@ -97,6 +97,11 @@
 	</select>
 	
 	
+	<!-- 统计当前邮箱的个数 -->
+	<select id="countEmail" parameterType="Map" resultType="Integer">
+		select count(1) from Member_Info mi left join Personal_Base_Info pbi on pbi.Personal_ID = mi.Personal_ID where pbi.Personal_Email = HEX(AES_ENCRYPT(#{email},#{skey}));
+	</select>
+	
 	<!-- 统计会员名称的个数 -->
 	<select id="countName" parameterType="String" resultType="Integer">
 		select count(1) from Member_Info mi where mi.Logname = #{userName}
@@ -115,6 +120,7 @@
 		<id column="member_id"				property="id"/>
 		<result	column="Personal_Name"		property="baseInfo.personalName"/>
 		<result	column="Nation_Id"			property="baseInfo.nationId"/>
+		<result	column="nationName"			property="baseInfo.nationName"/>
 		<result	column="SexID"				property="baseInfo.sexId"/>
 		<result	column="Personal_IDCard"	property="baseInfo.personalIDCard"/>
 		<result	column="Education"			property="baseInfo.education"/>
@@ -138,6 +144,7 @@
 		select 
 		mi.member_id,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),	#{skey}) using utf8) as Personal_Name,
+		(select NationName from Nation_Info ni where ni.Nation_Id = pbi.Nation_Id) as nationName,
 		pbi.Nation_Id,
 		pbi.SexID,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_IDCard),	#{skey}) using utf8) as Personal_IDCard,
@@ -146,7 +153,7 @@
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Phone),	#{skey}) using utf8) as Personal_Phone,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.QQ),				#{skey}) using utf8) as QQ,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Email),	#{skey}) using utf8) as Personal_Email,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.Census),			#{skey}) using utf8) as Census,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Home_Town),		#{skey}) using utf8) as Census,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.House_Address),	#{skey}) using utf8) as House_Address,
 		mi.Province_Id,
 		mi.City_Id,
@@ -258,7 +265,6 @@
 			#{companyProfile,			mode=IN,			jdbcType=VARCHAR},
 			#{skey,						mode=IN,			jdbcType=VARCHAR},
 			#{result,					mode=OUT,			jdbcType=INTEGER}
-			
 		)
 	</select>
 	
@@ -359,9 +365,9 @@
 	<!-- 我的红包 -->
 	<select id="myRedPackage" parameterType="Map" resultType="cn.membermng.model.MyRedPackage">
 		select 
-		(select sum(Gift_Amount) from Member_Redpackets where member_id = mi.member_id) as sRedPackageSum,
-		(select sum(Gift_Amount) from Member_Redpackets where member_id = mi.member_id and End_Date > now()) as sExpiredSum,
-		(select sum(mru.Gift_Amount) from Member_Redpackets_UseRecord mru left join Member_Redpackets mr on mr.Member_RP_ID = mru.Member_RP_ID where member_id = mi.member_id ) as sUseRedPackageSum 
+		IFNULL((select sum(Gift_Amount) from Member_Redpackets where member_id = mi.member_id),0) as redPackageSum,
+		IFNULL((select sum(Gift_Amount) from Member_Redpackets where member_id = mi.member_id and End_Date > now()),0) as expiredSum,
+		IFNULL((select sum(mru.Gift_Amount) from Member_Redpackets_UseRecord mru left join Member_Redpackets mr on mr.Member_RP_ID = mru.Member_RP_ID where member_id = mi.member_id ),0) as useRedPackageSum 
 		from Member_Info mi where mi.member_id = #{memberId}
 	</select>
 	
@@ -390,13 +396,13 @@
 		from Member_Redpackets mr
 		left join Member_Redpackets_UseRecord mru on mru.Member_RP_ID = mr.Member_RP_ID
 		left join Invest_Record ir on ir.Invest_Id = mru.Invest_Id 
-		where mr.Member_ID = #{memberId}
+		where mr.Member_ID = #{map.memberId}
 	</select>
 	
 	
 	<!--  获取我的代金券信息 -->
 	<select id="myVouchers" parameterType="Map" resultType="cn.membermng.model.MemberVouchers">
-		select sum(Gift_Amount) as sGiftAmount from Member_Vouchers where Member_ID = #{memberId}
+		select IFNULL(sum(Gift_Amount),0) as sGiftAmount from Member_Vouchers where Member_ID = #{memberId}
 	</select>
 	
 	<!-- 获取我的代金券获取记录 -->
@@ -544,4 +550,44 @@
 		Member_Sign_Record(Member_ID	,Record_Date,Get_Integral)
 		VALUES(#{memberId},now(),(select sign_points from manager_regpoints_rule limit 1))
 	</insert>
+	
+	
+	<!-- 查询注册协议 -->
+	<select id="agreement" resultType="cn.membermng.model.Agreement">
+		SELECT 
+			Agreement_Type		agreementType,
+			Agreement_Detail	agreementDetail,
+			Agreement_Statu		agreementStatu,
+			Agreement_Title 	agreementTitle
+		FROM System_Agreement_Set WHERE Agreement_Type = 0 AND Agreement_Statu = 1		
+	</select>
+	
+	<!-- 测试事物 -->
+	<select id="testTransaction" parameterType="map" statementType="CALLABLE">
+		call addTestTransaction(
+			#{userName,				mode=IN,			jdbcType=VARCHAR},
+			#{userAge,				mode=IN,			jdbcType=INTEGER},
+			#{result,				mode=OUT,			jdbcType=INTEGER}
+		)
+	</select>
+	
+	
+	<!-- 获取会员第三方授权信息 -->
+	<select id="getAutoGiroStatu" parameterType="Map" resultType="cn.membermng.model.MemberThirdAuthInfo">
+		select 
+			mtai.Account_Id					as accountId,
+			Open_Auto_Recharge				as openAutoRecharge,
+			Is_Auto_Recharge				as isAutoRecharge,
+			Open_Auto_Pay					as openAutoPay,
+			Is_Auto_Pay						as isAutoPay,
+			Open_Auto_Invest				as openAutoInvest,
+			Is_Auto_Invest					as isAutoInvest,
+			Open_Second_Distribute			as openSecondDistribute
+		from Member_Third_Info mti 
+		left join Member_Third_Auth_Info mtai on mti.Account_Id = mtai.Account_Id
+		where mti.Member_ID = #{memberId} and mti.Member_Type = #{memberType}
+	</select>
+	
+	
+	
 </mapper>

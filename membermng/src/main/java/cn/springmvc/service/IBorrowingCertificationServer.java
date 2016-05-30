@@ -192,7 +192,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-23 下午6:21:29
 	 */
-	public int authHousing(Long mid,String iaddress,String iArea,String ivalue,String endTime,String enclosure);
+	public int authHousing(Long mid,int memberType,String iaddress,String iArea,String ivalue,String endTime,String enclosure);
 	
 	/***
 	* 查看个人会员房产认证信息
@@ -201,7 +201,6 @@ public interface IBorrowingCertificationServer {
 	* @Title: showAuthHousing
 	* @param memberId						会员编号
 	* @return
-	* @Description: TODO
 	* @date 2016-3-25 上午9:13:39
 	 */
 	public  List<CurrencyAuth>  showAuthHousing(long memberId);
@@ -233,7 +232,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 上午9:35:29
 	*/
-	public int editAuthHousing(long memberId, long cid, String iaddress,String iArea, String ivalue, String endTime, String enclosure);
+	public int editAuthHousing(long memberId,int memberType, long cid, String iaddress,String iArea, String ivalue, String endTime, String enclosure);
 
 
 	
@@ -255,7 +254,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-23 下午6:30:54
 	 */
-	public int authProduction(Long mid,String iBrand,String iModel,String iLicensePlate,String ivalue,String endTime,String enclosure);
+	public int authProduction(Long mid,int memberType,String iBrand,String iModel,String iLicensePlate,String ivalue,String endTime,String enclosure);
 	
 	/***
 	* 查看个人会员车产认证
@@ -298,7 +297,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 上午11:21:07
 	*/
-	public int editAuthProduction(long memberId, long cid, String iBrand,String iModel, String iLicensePlate, String ivalue, String endTime,String enclosure);
+	public int editAuthProduction(long memberId, int memberType, long cid, String iBrand,String iModel, String iLicensePlate, String ivalue, String endTime,String enclosure);
 	
 	
 	
@@ -364,7 +363,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 下午2:47:30
 	 */
-	public int authEducation(long memberId, int education, String enclosure);
+	public int authEducation(long memberId, int education, String enclosure ,String endTime);
 
 	/***
 	* 查看个人会员学历认证信息
@@ -390,7 +389,7 @@ public interface IBorrowingCertificationServer {
 	* @Description: TODO
 	* @date 2016-3-24 下午3:27:52
 	 */
-	public int editAuthEducation(long memberId, int education, String enclosure);
+	public int editAuthEducation(long memberId, int education, String enclosure,String endTime);
 
 	
 

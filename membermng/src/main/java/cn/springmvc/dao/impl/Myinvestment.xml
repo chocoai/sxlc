@@ -211,7 +211,7 @@
 		+ ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{map.sKey})) as signed)),0)) 
 		from invest_real_income iri where iri.Income_Id =  ii.Income_Id) as totalincome,
 		
-		(select iri.Recv_Time from invest_real_income iri order by iri.Recv_Time desc limit 1) Recv_Time
+		(select iri.Recv_Time from invest_real_income iri where iri.Income_Id= ii.Income_Id order by iri.Recv_Time desc limit 1) Recv_Time
 		from invest_income ii
 		left join  loan_repay lr on lr.Repay_ID = ii.Repay_ID 
 		where ii.Invest_Id = #{map.investID} and ii.Statu = 2 and ii.IsValid = 0
@@ -231,7 +231,7 @@
 				ifnull(sum(CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{map.sKey})) as signed)),0)
 			) from invest_real_income iri where iri.Income_Id =  ii.Income_Id
 		) as totalincome,
-		(select iri.Recv_Time from invest_real_income iri order by iri.Recv_Time desc limit 1) Recv_Time
+		(select iri.Recv_Time from invest_real_income iri where iri.Income_Id= ii.Income_Id  order by iri.Recv_Time desc limit 1) Recv_Time
 		from invest_income ii
 		left join  loan_repay lr on lr.Repay_ID = ii.Repay_ID 
 		left join DICT replaystatu on   replaystatu.code1= ii.Statu  and replaystatu.tcode = 'DICT_HKJD'

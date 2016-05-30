@@ -54,7 +54,7 @@ public class IntegrallServiceReadDaoImpl extends SqlSessionDaoSupport implements
 	
 	public List<CommodityInfo> goods(PageEntity entity) {
 		
-		return getSqlSession().selectList("IntegrallServiceReadDaoImpl.goods", entity.getMap(),new RowBounds(entity.getPageNum(), entity.getPageSize()));
+		return getSqlSession().selectList("IntegrallServiceReadDaoImpl.goods", entity,new RowBounds(entity.getPageNum(), entity.getPageSize()));
 	}
 	
 	

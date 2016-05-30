@@ -61,10 +61,11 @@ $(function() {
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
-	          serverSide: true,//打开后台分页  
+	          serverSide: true,//打开后台分页
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕
@@ -115,6 +116,11 @@ $(function(){
 				  var ctaId = rdata[0].ctaId;//债权转让申请ID
 				  var checkstatu = $("input[name='checkstatu']:checked").val();//-1:审核打回 1:审核通过
 				  var transMaxTime = $("#transMaxTime").val();//最迟转让时间
+				  if(transMaxTime == ""){
+					  layer.alert("请选择结束时间！",{icon:0});
+					  return;
+				  }
+				  
 				  var checkRemark = "";//审核意见
 				  if(checkstatu==-1){
 					  checkRemark="拒绝";
@@ -134,7 +140,10 @@ $(function(){
 					  dataType:'json',  
 					  success:function(data) { 
 						  if(data==1){
-							  layer.alert("操作成功!",{icon:1});  
+							  layer.alert("操作成功!",{icon:1}); 
+							  var table = $('#table_id').DataTable();
+							  table.ajax.reload();
+							  layer.close(index);
 						  }else if(data == -1){
 							  layer.alert("该债权已审核!",{icon:2});  
 						  }
@@ -167,9 +176,13 @@ $(function(){
 				  var data={};
 				  var ctaId = rdata[0].ctaId;//债权转让申请ID
 				  var transMaxTime = $("#transMaxTime").val();//最迟转让时间
+				  if(transMaxTime == ""){
+					  layer.alert("请选择结束时间！",{icon:0});
+					  return;
+				  }
 				  data.transMaxTime = encrypt.encrypt(transMaxTime);
 				  data.ctaId =  encrypt.encrypt(ctaId+"");
-
+				  
 				  $.ajax( {  
 					  url:appPath+"/project/updateTransMaxTime",
 					  data: data,  
@@ -179,6 +192,9 @@ $(function(){
 					  success:function(data) { 
 						  if(data > 0){
 							  layer.alert("操作成功!",{icon:1});  
+							  var table = $('#table_id').DataTable();
+							  table.ajax.reload();
+							  layer.close(index);
 						  }else if(data == 0){
 							  layer.alert("未找到要延迟的项目!",{icon:2});  
 						  }

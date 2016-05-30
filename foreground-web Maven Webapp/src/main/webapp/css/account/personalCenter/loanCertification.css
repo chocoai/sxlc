@@ -232,6 +232,10 @@
 	display:inline-block;
 	margin-left:320px;
 }
+.btn_mr_l{
+	display:inline-block;
+	margin-left:130px;
+}
 
 .previewPictureDiv{
 	position: relative;
@@ -284,7 +288,7 @@
 
 .authen{
 	padding-bottom:50px;
-	min-height:280px;
+	min-height:0px;
 }
 
 #file{
@@ -296,6 +300,7 @@
 	width: 620px;
 	margin-left: 10px;
 	margin-top: 45px;
+	margin-bottom:20px
 }
 
 .authPreviDiv{
@@ -412,3 +417,25 @@
 .subPicture-Area button:hover{
 	background: url("../../resources/images/discoverProject/discoverIndex/fx-sum.png") no-repeat -3px -47px ;
 } */
+#vo_table{
+	text-align:center
+}
+#vo_table thead{
+	border-top: 1px solid #ececec;
+    background: #f5f5f5;
+    height: 45px;
+    line-height: 45px;
+    margin-top: 10px;
+}
+#vo_table tbody td{
+	font-size:12px;
+	padding-top:4px;
+	padding-bottom:4px;
+}
+#vo_table tbody a{
+	color:#ff8200;
+}
+.selectUL {
+	max-height: 300px;
+	overflow: auto;
+}

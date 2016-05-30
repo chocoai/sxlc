@@ -40,7 +40,7 @@
   </insert>
   
   <!-- 设置利息管理费-->
-  <select id="setInterestMngFee"  resultType="Map" parameterType="Map">
+  <select id="setInterestMngFee"  resultType="Map"  statementType="CALLABLE">
   	<![CDATA[{call setInterestMngFee(
 				#{PriceDatum,	 mode=IN,	jdbcType=INTEGER},
 				#{rulet,	 mode=OUT,	jdbcType=INTEGER}

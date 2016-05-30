@@ -363,5 +363,50 @@ public interface HandleThreePartyDao {
 	* @throws 
 	*/
 	public int CompensatoryRepayBack(Map<String,Object> map );
+	
+	
+	/** 
+	* TranFailNotInve 债权转让流标 （无投资）
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: TranFailNotInve 
+	* @Description: TODO 
+	* @param @param traId
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-25 下午5:07:36
+	* @throws 
+	*/
+	public int TranFailNotInve(long traId);
+	
+	
+	/** 
+	* ProjectFailNotInve 项目流标（无投资）
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: ProjectFailNotInve 
+	* @Description: TODO 
+	* @param @param applyId
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-25 下午5:34:24
+	* @throws 
+	*/
+	public int ProjectFailNotInve(long applyId);
+	
+	
+	/** 
+	* updateIsvi 设置转让人未收收益计划为无效
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: updateIsvi 
+	* @Description: TODO 
+	* @param @param ctaId 债权转让id
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-27 下午3:59:16
+	* @throws 
+	*/
+	public int updateIsvi(long ctaId);
 }
 

@@ -271,8 +271,8 @@ public class LoanCheckController {
 		InvestmentstatisticsEntity  invest = recordsBalanceService.selectInvestmentstatistics(memberInfo.getMemberID());
 		req.setAttribute("invest", invest);
 		//根据项目类型ID查询项目类型所需认证项
-		List<MemberAttestTypeEntity> authentication =  projectBaseInfoService.selectMemberAttestByprojectType(proRecord.getProjectID());
-		req.setAttribute("authentication", authentication);
+//		List<MemberAttestTypeEntity> authentication =  projectBaseInfoService.selectMemberAttestByprojectType(proRecord.getProjectID());
+//		req.setAttribute("authentication", authentication);
 		//根据申请id获取附件
 		List<ProjectAppAttachmentEntity> attaches = projectAppRecordService.selectProjectAppAttachmentById(param);
 		req.setAttribute("attaches", attaches);
@@ -454,7 +454,7 @@ public class LoanCheckController {
 		param.put("startDate", startDate);
 		String endDate = req.getParameter("endDate");
 		param.put("endDate2", endDate);
-		String affix = req.getParameter("affix");
+		String affix = req.getParameter("content");
 		param.put("affix", affix);
 		String ImageUrl = req.getParameter("ImageUrl");
 		param.put("ImageUrl", ImageUrl);
@@ -621,7 +621,7 @@ public class LoanCheckController {
 //		param.put("startDate", startDate);
 //		String endDate = req.getParameter("endDate");
 //		param.put("endDate", endDate);
-		String affix = req.getParameter("affix");
+		String affix = req.getParameter("content");
 		param.put("affix", affix);
 //		String ImageUrl = req.getParameter("ImageUrl");
 //		param.put("ImageUrl", ImageUrl);

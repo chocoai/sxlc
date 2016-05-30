@@ -2,7 +2,7 @@
 var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
 $(function(){
-	validform5(".alert","presentReturn",false,3);
+	validform5(".alert","presentReturn",false,5);
 });
 
 $(function() {

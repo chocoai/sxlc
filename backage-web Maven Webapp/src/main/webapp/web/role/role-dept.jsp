@@ -27,12 +27,12 @@
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="1" name="top_menu_index" />
-				<jsp:param value="角色管理" name="loc1" />
+				<jsp:param value="1" name="_index_m1" />
 			</jsp:include>
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-left-menu.jsp">
-				<jsp:param value="role-0" name="role-index" />
+			<jsp:include page="../common/cm-role.jsp">
+				<jsp:param value="101" name="_index_m2" />
+				<jsp:param value="" name="_index_m3" />
 			</jsp:include>
 			<!-- 头部导航 -->
 
@@ -75,11 +75,13 @@
 											</span>
 											<span class="con-item">
 												<span>状态</span>
-												<select class="">
-													<option>全部</option>
+												<select class="" style="width:140px">
+													<option value="-1">请选择</option>
+													<option value="1">有效</option>
+													<option value="0">无效</option>
 												</select>
 											</span>
-											<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
+											<button class="obtn obtn-query glyphicon glyphicon-search" type="button">查询</button>
 										</form>
 									</div>
 								</div>
@@ -109,27 +111,29 @@
 													</td>
 												</tr>
 												<tr>
-													<td class="tt"><label>部门负责人：</label></td>
+													<td class="tt"><label class="ineed">部门负责人：</label></td>
 													<td class="con">
 														<input type="text" id="sprincipalName" name="principalName" datatype="enterperson" class="" placeholder="" />
 													</td>
 												</tr>
 												<tr>
-													<td class="tt"><label>负责人电话：</label></td>
+													<td class="tt"><label class="ineed">负责人电话：</label></td>
 													<td class="con">
-														<input type="text" id="sprincipalPhone" name="principalPhone" datatype="zPhone" class="" placeholder="" />
+														<input type="text" id="sprincipalPhone" maxlength="11"  name="principalPhone" datatype="zPhone" class="" placeholder="" />
 													</td>
 												</tr>
 												<tr>
-													<td class="tt"><label>上级部门ID：</label></td>
+													<td class="tt"><label >上级部门：</label></td>
 													<td class="con">
-														<input type="text" id="spreDeptId" name="preDeptId" class="" placeholder="" />
+														<select id="spreDeptId" class="" style="width:170px;height:30px">
+														</select>
+														<input type="hidden" id="deptIds">
 													</td>
 												</tr>
 												<tr>
-													<td class="tt"><label>部门描述：</label></td>
+													<td class="tt"><label class="ineed">部门描述：</label></td>
 													<td class="con">
-														<input type="text" id="sdeptRemark" name="deptRemark" datatype="reMarks" class="" placeholder="" />
+														<textarea id="sdeptRemark" name="sdeptRemark" datatype="reMarks"  ></textarea>
 													</td>
 												</tr>
 											</table>
@@ -147,21 +151,21 @@
 													</td>
 												</tr>
 												<tr>
-													<td class="tt"><label>部门负责人：</label></td>
+													<td class="tt"><label class="ineed">部门负责人：</label></td>
 													<td class="con">
 														<input id="dpName" type="text" name="principalName" datatype="enterperson" class="" placeholder="" />
 													</td>
 												</tr>
 												<tr>
-													<td class="tt"><label>负责人电话：</label></td>
+													<td class="tt"><label class="ineed">负责人电话：</label></td>
 													<td class="con">
 														<input id="dpPhone" type="text" name="principalPhone" datatype="zPhone" class="" placeholder="" />
 													</td>
 												</tr>
 												<tr>
-													<td class="tt"><label>部门描述：</label></td>
+													<td class="tt"><label class="ineed">备注：</label></td>
 													<td class="con">
-														<input id="dRemark" type="text" name="deptRemark" datatype="reMarks" class="" placeholder="" />
+														<textarea id="dRemark" name="deptRemark" datatype="reMarks"  ></textarea>
 													</td>
 												</tr>
 											</table>
@@ -196,7 +200,7 @@
 						dataType:"json",
 						success:function(data){
 							// 如果返回数据不为空，加载"业务模块"目录
-							if(data != null){
+							if(data != null && data.length>0){
 								// 将返回的数据赋给zTree
 							 	$.fn.zTree.init($("#"+treeObj), setting, data);
 							 	zTree = $.fn.zTree.getZTreeObj(treeObj);

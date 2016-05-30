@@ -55,7 +55,19 @@ $(function(){
 				          { title:"借款人用户名","data": "logname"},  
 				          { title:"借款人名称","data": "memberName"},  
 				          { title:"产品类型","data": "projectName"},  
-				          { title:"借款期限","data": "projectBaseInfoentity.deadline"},  
+				          { title:"借款期限","data": "projectBaseInfoentity", 
+				        	  "mRender": function (data, type, full) {
+				        		  	if(data.deadlineType == 0){
+				        	    		return data.deadline+"天";
+				        	    	}else if(data.deadlineType == 1){
+				        	    		return data.deadline+"月";
+				        	    	}else if(data.deadlineType == 2){
+				        	    		return data.deadline+"年";
+				        	    	}else{
+				        	    		return "";
+				        	    	}  
+				        	  }
+				          },  
 				          { title:"借款金额(元)","data": "projectBaseInfoentity.amounts"},  
 				          { title:"年化利率(%)","data": "projectBaseInfoentity.yearRates"},  
 				          { title:"状态","data": "checkStatu", 
@@ -83,9 +95,10 @@ $(function(){
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
 	          serverSide: true,//打开后台分页  
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕
@@ -123,6 +136,10 @@ $(function(){
 			layer.alert("请选择项目！",{icon:0});
 			return;
 		}
+		if(rdata[0].checkStatu == 1){
+			layer.alert("该项目已发布！",{icon:0});
+			return;
+		}
 		layer.confirm('你确定要拒绝吗？', {
 			  btn: ['确定','取消'] //按钮
 			},function(){
@@ -157,6 +174,10 @@ $(function(){
 		var rdata = $('#table_id').DataTable().rows('.selected').data();
 		if(rdata.length<1){
 			layer.alert("请选择项目！",{icon:0});
+			return;
+		}
+		if(rdata[0].checkStatu != 1){
+			layer.alert("该项目还未发布！",{icon:0});
 			return;
 		}
 		layer.open({

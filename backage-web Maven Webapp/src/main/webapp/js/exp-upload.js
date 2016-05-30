@@ -3,17 +3,30 @@ var uploadUrl = "";//服务器图片保存路径,全局变量
  * 图片上传公共方法
  * @param urlBtn 服务器返回路径保存的隐藏input元素
  */
+
+var IMG_WIDTH=100;   //图片宽度
+var IMG_HEIGHT =100; //图片高度
 function expUpload(urlBtn) {
 			//上传初始化 
+			if($(".rec-dimensions")!='undefined'){
+				var widthOrHeight= $(".rec-dimensions").text();
+				if(widthOrHeight!=null){
+					var Width = widthOrHeight.substring(5,widthOrHeight.length);
+					var arr = Width.split("*");
+					IMG_WIDTH = arr[0];
+					IMG_HEIGHT = arr[1];
+				}
+			}
+			//var IMG_WIDTH = 
 			var uploader = WebUploader.create({
 				auto: true,														//选完文件后，是否自动上传。
 			    swf: 'plugs/webuploader/0.1.5/Uploader.swf',					//swf文件路径
 			    server: appPath+'/UpdateBsnLicense',	//文件接收服务端。
 			    // 选择文件的按钮。可选。
 			    pick: '#filePicker',											//内部根据当前运行是创建，可能是input元素，也可能是flash.
-			    fileNumLimit: 1,												//个数限制
-				//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
-				fileSingleSizeLimit: 1024*512,
+			    fileNumLimit: 300,  
+		        fileSizeLimit: 50*1024*1024,//5M  
+		        fileSingleSizeLimit: 5*1024*1024, //1M  
 			    accept: {														//只允许选择图片文件
 			        title: 'Images',
 			        extensions: 'gif,jpg,jpeg,bmp,png',
@@ -67,15 +80,14 @@ function expUpload(urlBtn) {
 			    // thumbnailWidth x thumbnailHeight 为 100 x 100
 			    // 优化retina, 在retina下这个值是2
 		        ratio = window.devicePixelRatio || 1,
-		        thumbnailWidth = 100 * ratio,
-		        thumbnailHeight = 100 * ratio,
+		        thumbnailWidth = IMG_WIDTH * ratio,
+		        thumbnailHeight = IMG_HEIGHT * ratio,
 			    
 			    uploader.makeThumb( file, function( error, src ) {
 			        if ( error ) {
 			            $img.replaceWith('<span>不能预览</span>');
 			            return;
 			        }
-			
 			        $img.attr( 'src', src );
 			    }, thumbnailWidth, thumbnailHeight );
 			});

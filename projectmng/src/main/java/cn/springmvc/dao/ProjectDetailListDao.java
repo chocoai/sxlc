@@ -162,5 +162,16 @@ public interface ProjectDetailListDao {
      * @date 2016-5-11 下午3:59:37
      */
     public ProjectDetailTYEntity selectProjectdetailByIDbc(long applyId);
+    
+    /**
+     * 项目历程里的还款计划
+     * @author 刘利   
+     * @Description: TODO 
+     * @param @param map
+     * @param @return 设定文件 
+     * @return List<LoanRepayEntity> 返回类型 
+     * @date 2016-5-19 下午8:21:22
+     */
+    public List<LoanRepayEntity> selectLoanRealReplayprocess(Map<String,Object> map);
 }
 

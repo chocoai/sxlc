@@ -18,11 +18,14 @@ $(function(){
 		datatype:extdatatype,
 		ajaxPost:true,
 		beforeSubmit:function(){
+			$(".btn1").attr("disabled","true");
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
 			var url = "personalCenter/personalRealName.html";
 			//必填
 			var data={};
+			var editType  = $(".editType").val();
+			data.editType = encrypt.encrypt(editType+"");
 			var userName=$(".realName").val();
 			data.userName=encrypt.encrypt(userName+"");
 			var idCard = $(".personId").val();
@@ -49,6 +52,7 @@ $(function(){
 					url,
 					data,
 					function(r){
+						$(".btn1").attr("disabled","false");
 						//console.log(r)
 						var json = JSON.parse(r)
 						if (json.status == 0){
@@ -99,15 +103,15 @@ function dealRealName(data){
 		var personalIDCard = data.personalIDCard;
 		var sexId =data.sexId;
 		var sex ="";
-		if(sexId=0){
-			sex="女";
-		}else{
+		if(sexId==0){
 			sex="男";
+		}else{
+			sex="女";
 		}
 		var homeTown = data.homeTown;
 		var aationId = data.aationId;//民族Id
 		var nationName = data.nationName;
-		var endDate = data.endDate;
+		var endDate = data.sEndDate;
 		if(data.positive!=undefined){
 			var img1 = data.attachPrefix+data.positive;
 			$("#previewImg1").attr("src",img1);

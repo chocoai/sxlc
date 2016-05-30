@@ -42,7 +42,9 @@
 							<div id="uploader">
 							    <!--用来存放item-->
 							    <div id="filePicker">选择图片</div>
-							    <span class="rec-dimensions">建议尺寸：580*280</span>
+							     <span class="rec-dimensions">建议尺寸：580*280</span>
+							     <input type="hidden" name="portraitUrl" id="portraitUrl" />
+							     <input type="hidden" name="bannerId" id="bannerId" />
 							</div>
 						</td>
 					</tr>

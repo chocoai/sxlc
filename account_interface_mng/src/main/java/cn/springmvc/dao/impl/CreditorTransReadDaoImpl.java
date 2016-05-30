@@ -24,7 +24,7 @@ import cn.sxlc.account.manager.utils.InterfaceConstant;
 @Repository("creditorTransReadDaoImpl")
 public class CreditorTransReadDaoImpl extends AccountDaoSupport implements CreditorTransReadDao {
 
-    public static final String REMARK_FORMAT = "%dA%dA%dA%dA%dA%dA%d";
+    public static final String REMARK_FORMAT = "%dA%dA%dA%dA%dA%dA%dA%d";
     public static final String FORMAT = "%dA%dA%d";
     public static final String REMARK2_FORMAT = FORMAT;
 
@@ -119,7 +119,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
      * @param sIsAuto     自动投标	0：否 1：是
      * @param lMemberId   会员ID
      * @param lProjectId  项目ID
-     * @param lAmount     投资总金额
+     * @param lAmount     投资总金额(本金)
      * @param lRedPackets 使用红包金额
      * @param lVouchers   使用代金券
      * @param sClient     使用客户端：0：pc 1：app 2：微信端
@@ -136,8 +136,17 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
         } else {
             entity.setAction(TransferSubmitEntity.ACTION_TYPE_AUTO);
         }
+        
+        //债权转让人第三方账户,转让总金额,债权转让编号
+        InvestAccountFeeEntity feeEntity = GetCreditorTransAccount(lCreditorTransAppId);
+        // 最大投资金额
+        long lFullAmount = feeEntity.getlAmountTotal()*feeEntity.getiRewardRate()/1000000;
+        
+        // 实际使用金额
+        long lRateAmount = lAmount * feeEntity.getiRewardRate()/1000000;
+        
         //计算实际投资金额
-        long lRealAmount = lAmount - lRedPackets - lVouchers;
+        long lRealAmount = lRateAmount - lRedPackets - lVouchers;
 
         InterfaceUtil interfaceUtil = InterfaceUtil.GetInterfaceUtilInstance();
         //获取投资人帐户信息
@@ -149,8 +158,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
         entity.setSubmitURL(interfaceUtil.GetInterfaceUrl(InterfaceConstant.IZHAIQUANTOUBIAO));
 
 //        InvestAccountFeeEntity feeEntity = getGuaranteeInfo(lProjectId);
-        //债权转让人第三方账户,转让总金额,债权转让编号
-        InvestAccountFeeEntity feeEntity = GetCreditorTransAccount(lCreditorTransAppId);
+        
         //债权转让管理费比例
         long lMngFeeRate = GetTransMngFeeRate();
 
@@ -161,10 +169,10 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
         if (lMngFeeRate > 0) {
             lTotalManageFee = lAmount * lMngFeeRate / feeEntity.getlAmountTotal();
             if (lRedPackets > 0) {
-                lRedPacketsManageFee = lRedPackets * lTotalManageFee / lAmount;
+                lRedPacketsManageFee = lRedPackets * lTotalManageFee / lRateAmount;
             }
             if (lVouchers > 0) {
-                lVouchersManageFee = lVouchers * lTotalManageFee / lAmount;
+                lVouchersManageFee = lVouchers * lTotalManageFee / lRateAmount;
             }
             lInvestManageFee = lTotalManageFee - lRedPacketsManageFee - lVouchersManageFee;
         }
@@ -183,7 +191,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
             orderNoIndex++;
             beanEntity.setBatchNo(feeEntity.getsProjectNo());
             beanEntity.setAmount(IntegerAndString.LongToString2(lRedPacketsAndVouchersCost));
-            beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
+            beanEntity.setFullAmount(IntegerAndString.LongToString2(lFullAmount));
             beanEntity.setTransferName("平台支付给转让人");
             beanEntity.setRemark("ACTCT平台支付给借款人，金额:" + IntegerAndString.LongToString2(lRedPacketsAndVouchersCost));
             List<LoanInfoSecondaryBean> secondList = new ArrayList<LoanInfoSecondaryBean>();
@@ -210,7 +218,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
             orderNoIndex++;
             beanEntity.setBatchNo(feeEntity.getsProjectNo());
             beanEntity.setAmount(IntegerAndString.LongToString2(lRealAmount));
-            beanEntity.setFullAmount(IntegerAndString.LongToString2(feeEntity.getlAmountTotal()));
+            beanEntity.setFullAmount(IntegerAndString.LongToString2(lFullAmount));
             beanEntity.setTransferName("投资人支付给转让人");
             beanEntity.setRemark("BCTCT投资人支付给借款人，金额:" + IntegerAndString.LongToString2(lRealAmount));
 
@@ -233,7 +241,7 @@ public class CreditorTransReadDaoImpl extends AccountDaoSupport implements Credi
 
         //使用红包，使用代金券
         String remark = String.format(REMARK_FORMAT, lMemberId, lCreditorTransAppId,
-                lRealAmount, lRedPackets, lVouchers, sIsAuto, sClient);
+                lRealAmount, lRedPackets, lVouchers, sIsAuto, sClient,lAmount);
 
         entity.setRemark1(remark);
         //支付管理费

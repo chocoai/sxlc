@@ -13,7 +13,7 @@ function getFinancing(curr,length){
 		url:"loanManagement/financing.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 1	//每页条数为预留数据，后台有默认值
+			"length":length || 10	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
@@ -105,7 +105,7 @@ function creatFinancing(data){
 						'<div class="c-content">'+data.results[i].startTime+'<br>--<br>'+data.results[i].endTime+'</div>'+
 					'</div>'+
 					'<div class="contentOut4">'+
-						'<div class="c-content" title="'+data.results[i].sInvestRate+'">'+data.results[i].sInvestRate+'<br><span class="invRecord" data-loanId="'+data.results[i].loanId+'">投资记录</span></div>'+
+						'<div class="c-content" title="'+data.results[i].sInvestRate+'">'+data.results[i].sInvestRate+'%<br><span class="invRecord" data-loanId="'+data.results[i].loanId+'">投资记录</span></div>'+
 					'</div>'+
 				'</li>';
 		}
@@ -124,7 +124,7 @@ function getFinanced(curr,length){
 		url:"loanManagement/financed.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 1	//每页条数为预留数据，后台有默认值
+			"length":length || 10	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
@@ -215,7 +215,7 @@ function creatFinanced(data){
 						'<div class="c-content">'+data.results[i].startTime+'<br>--<br>'+data.results[i].endTime+'</div>'+
 					'</div>'+
 					'<div class="contentOut4 w88">'+
-						'<div class="c-content" title="'+data.results[i].sInvestRate+'">'+data.results[i].sInvestRate+'<br><span class="invRecord" data-loanId="'+data.results[i].loanId+'">投资记录</span></div>'+
+						'<div class="c-content" title="'+data.results[i].sInvestRate+'">'+data.results[i].sInvestRate+'%<br><span class="invRecord" data-loanId="'+data.results[i].loanId+'">投资记录</span></div>'+
 					'</div>'+
 					'<div class="contentOut4 w88">'+
 						'<div class="c-content" title="'+data.results[i].realEndDate+'">'+data.results[i].realEndDate+'</div>'+
@@ -238,7 +238,7 @@ function getRepay(curr,length){
 		url:"loanManagement/RepaymentIn.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 1	//每页条数为预留数据，后台有默认值
+			"length":length || 10	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
@@ -346,13 +346,13 @@ function getFailure(curr,length){
 		url:"loanManagement/flowLabelS.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 1	//每页条数为预留数据，后台有默认值
+			"length":length || 10	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
 		timeout:10000,
 		success:function(data){
-			//console.log(data);
+			console.log(data);
 			$(".my-loan-table .data-item").remove();
 			if(data.results.length > 0){
 				creatFailure(data);//拼接数据
@@ -403,10 +403,10 @@ function creatFailure(data){
 		for(var i=0;i<data.results.length;i++){
 			_html+='<li class="data-item">'+
 					'<div class="contentOut1">'+
-						'<div class="c-content" title="'+data.results[i].projectNo+'">'+data.results[i].projectNo+'XMBH-00000001</div>'+
+						'<div class="c-content" title="'+data.results[i].projectNo+'">'+data.results[i].projectNo+'</div>'+
 					'</div>'+
 					'<div class="contentOut1">'+
-						'<div class="c-content" title="'+data.results[i].projectName+'">'+data.results[i].projectName+'借款信用贷<br>买房急需钱</div>'+
+						'<div class="c-content" title="'+data.results[i].projectName+'">'+data.results[i].projectName+'</div>'+
 					'</div>'+
 					'<div class="contentOut1">'+
 						'<div class="c-content" title="'+data.results[i].projectTypeName+'">'+data.results[i].projectTypeName+'</div>'+
@@ -455,7 +455,7 @@ function getClearing(curr,length){
 		url:"loanManagement/cleared.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 1	//每页条数为预留数据，后台有默认值
+			"length":length || 10	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
@@ -573,6 +573,9 @@ function creatClearing(data){
 //!!!!!!!!!!公用:融资中、融资结束、已流标!!!!!!!!!!!!
 //我的账户-借款管理-我的借款：投资记录
 function getInvestRecord(curr,length){
+	var encrypt = new JSEncrypt();//加密
+	encrypt.setPublicKey(publickey);
+
 	$('.invRecord').on('click', function(){
 		//项目申请id
 		var loanId = $(this).attr("data-loanId");
@@ -581,12 +584,42 @@ function getInvestRecord(curr,length){
 			return;
 		}
 		var data = {};
-		data.applyId = loanId;
+		if(loanId != undefined){
+			data.applyId = encrypt.encrypt(loanId+"");
+		}
 		data.start = curr || 1;
-		data.length = length || 1;
+		data.length = length || 5;
 		
     	var url1 = "loanManagement/investRecord.html";
-    	$.ajax({
+    	NetUtil.ajax(
+			url1,
+			data,
+			function(r){
+				var data = JSON.parse(r);
+				console.log(data);
+				$("#investRecordTop").siblings().remove();
+				if(data.results.length > 0){
+					var html = template("investRecordList", data);
+					$("#investRecordUl").append(html);
+					pager1.generPageHtml({
+						pno: data.pageNum,					//当前页
+						total: data.totalPage,				//总页码
+						totalRecords: data.recordsTotal,	//总数据条数
+						mode: 'click', //默认值是link，可选link或者click
+						click: function(n) {
+							getInvestRecord(n,length);
+							this.selectPage(n);
+							return false;
+						}
+					});
+					
+				}else{
+					$("#investRecordUl").append(noData);
+				}
+			}
+		);
+    	
+    	/*$.ajax({
 			url:url1,
 			type:"get",
 			data:data,
@@ -617,13 +650,13 @@ function getInvestRecord(curr,length){
 			error:function(){
 				layer.alert("请求异常，请稍后再试",{icon:2});
 			}
-		});
+		});*/
 		
 		layer.open({
 			title :'查看投资记录',//标题
 			skin: 'layer-ext-myskin',//皮肤
 	        type: 1,
-	        area: ['645px', '470px'],//大小宽*高
+	        area: ['645px', '500px'],//大小宽*高
 	        shadeClose: true, //点击遮罩关闭
 	        content: $('.inv-record')//内容，里边是包含内容的div的class
 	    });
@@ -637,7 +670,7 @@ function getApplyRecord(curr,length){
 		url:"loanManagement/loanApplyRecord.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 1	//每页条数为预留数据，后台有默认值
+			"length":length || 10	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
@@ -744,7 +777,7 @@ function getApply(curr,length){
 		url:"loanManagement/TBCapply.html",
 		data:{
 			"start": curr || 1,		//当前页
-			"length":length || 5	//每页条数为预留数据，后台有默认值
+			"length":length || 10	//每页条数为预留数据，后台有默认值
 		},
 		type:"get",
 		dataType:"json",
@@ -1001,6 +1034,9 @@ function TBCConfirm(projectId){
 function getRepayRecord(curr,length){
 	var temp = window.location.href;
 	projectId = temp.split("projectId=")[1];
+	
+	var encrypt = new JSEncrypt();//加密
+	encrypt.setPublicKey(publickey);
 	////console.log(projectId);
 	/*if(projectId == null || isNaN(projectId)){
 		//console.log("参数异常");
@@ -1008,11 +1044,45 @@ function getRepayRecord(curr,length){
 	}*/
 	
 	var data = {};
-	data.applyId = projectId;
-	data.start = curr || 1;//当前页
-	data.length = length || 1;//每页条数为预留数据，后台有默认值
 	
-	$.ajax({
+	if(projectId != undefined){
+		data.applyId = encrypt.encrypt(projectId+"");
+	}
+	data.start = curr || 1;//当前页
+	data.length = length || 10;//每页条数为预留数据，后台有默认值
+	
+	var url1 = 'loanManagement/loanRepayend.html';
+	
+	NetUtil.ajax(
+		url1,
+		data,
+		function(r){
+			var data = JSON.parse(r);
+			console.log(data);
+			$("#loanRepayendTop").siblings().remove();
+			if(data.results.length > 0){
+				var html = template("loanRepayendList", data);
+				$("#loanRepayendUl").append(html);
+				
+				pager.generPageHtml({
+					pno: data.pageNum,			//当前页
+					total: data.totalPage,		//总页码
+					totalRecords: data.recordsTotal,//总数据条数
+					mode: 'click', //默认值是link，可选link或者click
+					click: function(n) {
+						getRepayRecord(n,length);
+						this.selectPage(n);
+						return false;
+					}
+				});
+				
+			}else{
+				$("#loanRepayendUl").append(noData);
+			}
+		}
+	);
+	
+	/*$.ajax({
 		url:"loanManagement/loanRepayend.html",
 		data:data,
 		type:"get",
@@ -1044,5 +1114,5 @@ function getRepayRecord(curr,length){
 		error:function(){
 			layer.alert("请求异常，请稍后再试",{icon:2});
 		}
-	});
+	});*/
 }

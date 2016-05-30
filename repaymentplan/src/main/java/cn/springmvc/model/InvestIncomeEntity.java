@@ -24,15 +24,15 @@ public class InvestIncomeEntity {
 	public long      repayId; //还款计划ID		
 	public long      investId;	// 投资ID		
 	public long      memberID;// 	会员ID		
-	public int       sdRecvPrincipal;// 	应收本金(单位：分)		
-	public int       sdRecvInterest;// 应收收益(单位：分)	
+	public long       sdRecvPrincipal;// 	应收本金(单位：分)		
+	public long       sdRecvInterest;// 应收收益(单位：分)	
 	public String    sdRecvPrincipals;// 	应收本金(单位：分)		
 	public String    sdRecvInterests;// 应收收益(单位：分)	
 	public String    sdRecvMaxTime;//	应收时间		
 	public int    	 statu;//	还款状态 0：未还 1：部分还款 2：还清		
 	public int       isValid;// 是否有效（-1:提前还款处理过程状态  0：有效，1：无效）		
 	public long      thirdTradeId;// 第三方交易记录ID																					
-	public int       incomeId;//	 收益计划ID		
+	public long      incomeId;//	 收益计划ID		
 	public int       recvPrincipal;// 实收本金(单位：分)		
 	public int       recvInterest;//	 实收收益(单位：分)		
 	public int       repayOverdueInterest;// 逾期利息(单位：分)		
@@ -79,14 +79,14 @@ public class InvestIncomeEntity {
 	public void setMemberID(long memberID) {
 		this.memberID = memberID;
 	}
-	public int getSdRecvPrincipal() {
+	public long getSdRecvPrincipal() {
 		return sdRecvPrincipal;
 	}
 	public void setSdRecvPrincipal(int sdRecvPrincipal) {
 		this.sdRecvPrincipal = sdRecvPrincipal;
 		this.sdRecvPrincipals= IntegerAndString.LongToString(sdRecvPrincipal);
 	}
-	public int getSdRecvInterest() {
+	public long getSdRecvInterest() {
 		return sdRecvInterest;
 	}
 	public void setSdRecvInterest(int sdRecvInterest) {
@@ -129,7 +129,7 @@ public class InvestIncomeEntity {
 	public void setThirdTradeId(long thirdTradeId) {
 		this.thirdTradeId = thirdTradeId;
 	}
-	public int getIncomeId() {
+	public long getIncomeId() {
 		return incomeId;
 	}
 	public void setIncomeId(int incomeId) {

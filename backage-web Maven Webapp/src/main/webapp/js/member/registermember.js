@@ -28,6 +28,10 @@ $(function(){
  */
 function showMemberRegList(){
 	var memberType = $("#memberType").val();
+	var arr=[];
+	if(memberType ==0){
+		arr=[6];
+	}
 	var Name = "姓名";
 	var Phone = "联系电话";
 	if(memberType ==1){
@@ -79,8 +83,8 @@ function showMemberRegList(){
 		            	startDate = encrypt.encrypt(startDate);
 		            	d.memberType =memberType;
 		            	d.memberName=member_Name;
-		            	d.personalName=user_Name;
-		            	d.personalPhone=phone_Num;
+		            	d.userName=user_Name;
+		            	d.phone=phone_Num;
 		            	d.idcard=id_card;
 		            	d.startDate=startDate;
 		            	d.endDate=endDate;
@@ -97,7 +101,8 @@ function showMemberRegList(){
 		                  { title:"用户名","data": "logname" },
 		                  { title:"注册时间","data": "sRegDate" },
 		                  { title:Phone,"data": "personalPhone"},   
-		                  { title:"身份证号","data": "personalIdCard"},   
+		                  { title:"身份证号","data": "personalIdCard"}, 
+		                  { title:"营业执照号","data": "companyeBLN"},
 		                  { title:"电子邮箱","data": "personalEmail"}, 
 		                  { title:"邀请码","data": "invitateCode" },
 		                  { title:"所属地区","mRender": function(data, type, full){
@@ -120,7 +125,7 @@ function showMemberRegList(){
 		                  { title:"注册客户端","data": "regClient" },
 		        ],
 		        aoColumnDefs : [
-		        				// {"bVisible": false, "aTargets": [ 3 ]}, //控制列的隐藏显示
+		        				{"bVisible": false, "aTargets": arr}, //控制列的隐藏显示
 		        				{
 		        						"orderable" : false,
 		        						"aTargets" : [0,1,2,3]

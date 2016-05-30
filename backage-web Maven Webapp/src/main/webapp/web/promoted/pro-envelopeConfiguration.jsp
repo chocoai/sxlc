@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>平台推广-关系年限</title>
+	<title>平台推广管理-红包赠送配置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -43,10 +43,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<form id="conForm" action="javascript:firstOption()" type="post">
 								<div class="conInput">
-									<span class="conInputList"><label>注册开户：</label><input id="openAcount" datatype="logName" type="text"></span>
+									<span class="conInputList"><label>注册开户：</label><input id="openAcount" datatype="logname" type="text"></span>
 									<span class="conInputList"><label>首次充值：</label><input id="firstRecharge" datatype="acountM" type="text"></span>
 									<div class="btnSubmit">
-										<button id="first" class="okBtn">确定</button>
+										<button type="button" id="first" class="okBtn">确定</button>
 										<a class="cancelBtn">取消</a>
 									</div>
 								</div>
@@ -78,7 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<span class="col"><input id="scale" datatype="hundredNum">%</span>
 							</div>
 							<div class="btnAdd">
-								<button id="add" class="addBtn">添加</button>
+								<button type="button" id="add" class="addButton">添加</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>
@@ -97,7 +97,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<span class="col"><input id="mscale" datatype="hundredNum"></span>
 							</div>
 							<div class="btnAdd">
-								<button id="mod" class="alertBtn">修改</button>
+								<button type="button" id="mod" class="alertBtn">修改</button>
 								<a class="cancelBtn">取消</a>
 							</div>
 						</form>

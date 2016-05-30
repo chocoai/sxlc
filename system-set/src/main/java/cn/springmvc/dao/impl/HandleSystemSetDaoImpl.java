@@ -70,7 +70,8 @@ public class HandleSystemSetDaoImpl extends SqlSessionDaoSupport implements Hand
 	public Map<String, Object> setInterestMngFee(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("SystemSetXML.setInterestMngFee",map);
+		getSqlSession().selectOne("SystemSetXML.setInterestMngFee",map);
+		return map;
 	}
 }
 

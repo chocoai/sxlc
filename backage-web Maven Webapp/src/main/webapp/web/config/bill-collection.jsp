@@ -65,7 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 			<legend>催收账单配置</legend>
 			 			<div class="collectbill">
 			 				<!-- <script id="collectbill" type="text/plain" style="height:260px;width:98%;margin-left:2%;"></script> -->
-			 				<textarea rows="8" cols="" placeholder="" name="content" id="content" class="billtextarea"></textarea>
+			 				<textarea rows="8" cols="" placeholder="" name="content" id="content" class="billtextarea" datatype="commonInLengthCheck" minNum="5" maxNum="500"   ></textarea>
 			 			</div>
 			 			<div class="form-group">
 			 				<div class="offset-col3 billbtn">
@@ -74,7 +74,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							for(int i = 0;i < operations.size(); i++){
 								if(operations.get(i).getOptID() == 61101){
 					%>				
-								<button type="submit" class="btn btn-default" >保存</button>
+								<button type="submit" type="button" class="btn btn-default layui-layer-btn0" >保存</button>
 					<%      
 				      			}
 					  		 }

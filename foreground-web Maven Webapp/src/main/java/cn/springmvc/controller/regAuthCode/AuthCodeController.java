@@ -59,7 +59,7 @@ public class AuthCodeController {
 	@RequestMapping("/authImage")
 	public void authImage(HttpServletRequest request,
 			HttpServletResponse response) {
-		Integer type = IntegerAndString.StringToInt(request.getParameter("type"),0);//0 登录等地方  1忘记密码    
+		Integer type = IntegerAndString.StringToInt(request.getParameter("type"),0);//0 登录等地方  1忘记密码   2发送站内信  3好友转账
 		try {
 	        BufferedImage image = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, BufferedImage.TYPE_INT_RGB);  
 	        //画笔
@@ -103,6 +103,12 @@ public class AuthCodeController {
 	        }else if(type==1){//忘记密码
 	        	session.removeAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD");
 	        	session.setAttribute("AUTH_IMG_CODE_IN_SESSION_FORGETPWD", xyresult);
+	        }else if(type==2){
+	        	session.removeAttribute("AUTH_IMG_CODE_IN_SESSION_SENDMAIL");
+	        	session.setAttribute("AUTH_IMG_CODE_IN_SESSION_SENDMAIL", xyresult);
+	        }else if(type==3){
+	        	session.removeAttribute("AUTH_IMG_CODE_IN_SESSION_FRIENDTRANSFER");
+	        	session.setAttribute("AUTH_IMG_CODE_IN_SESSION_FRIENDTRANSFER", xyresult);
 	        }else{
 	        	session.removeAttribute("AUTH_IMG_CODE_IN_SESSION");
 	        	session.setAttribute("AUTH_IMG_CODE_IN_SESSION", xyresult);
@@ -195,9 +201,9 @@ public class AuthCodeController {
 			//字体
 			g.setFont(font);  
 	        //颜色
-	        int rc = random.nextInt(255);  
-	        int gc = random.nextInt(255);  
-	        int bc = random.nextInt(255);  
+	        int rc = random.nextInt(125);  
+	        int gc = random.nextInt(125);  
+	        int bc = random.nextInt(125);  
 	        g.setColor(new Color(rc, gc, bc));  
 	        //设置画笔的起点
 	        int x = random.nextInt(3);  
@@ -243,11 +249,18 @@ public class AuthCodeController {
 	                 suChinese.append("+");  
 	                 suChinese.append(xx);  
 	             }  
-	         }else if(Randomoperands ==2){  
-	                 this.xyresult = yy - xx;  
-	                 suChinese.append(yy);  
-	                 suChinese.append("-");  
-	                 suChinese.append(xx);  
+	         }else if(Randomoperands ==2){ 
+	        	 	if(yy >= xx){
+	        	 		this.xyresult = yy - xx;  
+	        	 		suChinese.append(yy);  
+	        	 		suChinese.append("-");  
+	        	 		suChinese.append(xx);  
+	        	 	}else{
+	        	 		this.xyresult = yy + xx;  
+	        	 		suChinese.append(yy);  
+	        	 		suChinese.append("+");  
+	        	 		suChinese.append(xx);  
+	        	 	}
 	         }else{  
 	                 this.xyresult = yy + xx;  
 	                 suChinese.append(yy);  

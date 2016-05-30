@@ -42,9 +42,9 @@
 					<div class="tab-content">
 						<div class="c-content <c:if test="${type == 1 }">content-active</c:if>">
 							<div class="integral">
-								<div class="integral-sum">累计积分：<span>${myPoint.sCumulativeIntegral }</span></div><!--添加背景图  -->
-								<div class="usable-integral">可使用积分：<span class="orange">${myPoint.sAvailableIntegral }</span></div>
-								<div class="used-integral">已使用积分：<span>${myPoint.sUsedIntegral }</span></div>
+								<div class="integral-sum">累计积分：<span>${myPoint.cumulativeIntegral }</span></div><!--添加背景图  -->
+								<div class="usable-integral">可使用积分：<span class="orange">${myPoint.availableIntegral }</span></div>
+								<div class="used-integral">已使用积分：<span>${myPoint.usedIntegral }</span></div>
 							</div>
 							<ul class="my-integral-table">
 			   					<li>
@@ -98,9 +98,9 @@
 						</div>
 						<div class="c-content <c:if test="${type == 2 }">content-active</c:if>">
 							<div class="integral">
-								<div class="integral-sum">累计积分：<span>${myPoint.sCumulativeIntegral }</span></div><!--添加背景图  -->
-								<div class="usable-integral">可使用积分：<span class="orange">${myPoint.sAvailableIntegral }</span></div>
-								<div class="used-integral">已使用积分：<span>${myPoint.sUsedIntegral }</span></div>
+								<div class="integral-sum">累计积分：<span>${myPoint.cumulativeIntegral }</span></div><!--添加背景图  -->
+								<div class="usable-integral">可使用积分：<span class="orange">${myPoint.availableIntegral }</span></div>
+								<div class="used-integral">已使用积分：<span>${myPoint.usedIntegral }</span></div>
 							</div>
 							<ul class="my-integral-table">
 			   					<li>

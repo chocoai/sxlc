@@ -18,7 +18,7 @@
 	    <result column="Statu" property="prostatu"/>
 	 </resultMap>
 	 <sql id="proIntegralRule_Column_List" >
-	    ID,Invest_Amount,Invest_Points,Statu
+	    MPR_ID AS ID,Invest_Amount,Invest_Points,Statu
 	 </sql>
 	<!-- 债权转让投资积分规则 -->
 	<resultMap id="traIntegralRule" type="cn.springmvc.model.IntegralRuleEntity" >
@@ -28,7 +28,7 @@
 	    <result column="Statu" property="traStatu"/>
 	 </resultMap>
 	 <sql id="traIntegralRule_Column_List" >
-	    ID,Invest_Amount,Invest_Points,Statu
+	   STR_ID AS ID,Invest_Amount,Invest_Points,Statu
 	 </sql>
 	<!-- 充值积分规则 -->
   	<resultMap id="recIntegralRule" type="cn.springmvc.model.IntegralRuleEntity" >
@@ -55,13 +55,13 @@
 	  <select id="selectloaIntegralRule" resultMap="loaIntegralRule" parameterType="Map" >
 	  	<!-- 0:推荐达人  1:理财顾问 2:会员 -->
 	    <if test="membertype==0">
-	    	select <include refid="loaIntegralRule_Column_List"></include> from Planner_LoanPoints_Rule
+	    	select PLR_ID AS ID,Loan_Amount,Loan_Points,Statu from Planner_LoanPoints_Rule
 	    </if>
 	    <if test="membertype==1">
-	    	select <include refid="loaIntegralRule_Column_List"></include> from Service_LoanPoints_Rule
+	    	select SLR_ID AS ID,Loan_Amount,Loan_Points,Statu from Service_LoanPoints_Rule
 	    </if>
 	    <if test="membertype==2">
-	    	select <include refid="loaIntegralRule_Column_List"></include> from Manager_LoanPoints_Rule
+	    	select  MLR_ID AS ID,Loan_Amount,Loan_Points,Statu from Manager_LoanPoints_Rule
 	    </if>
 	    where Statu=1
 	  </select>
@@ -71,13 +71,13 @@
 	  <select id="selectrecIntegralRule" resultMap="recIntegralRule" parameterType="Map" >
 	  	<!-- 0:推荐达人  1:理财顾问 2:会员 -->
 	    <if test="membertype==0">
-	    	select <include refid="recIntegralRule_Column_List"></include> from Planner_RechargePoints_Rule
+	    	select PRR_ID AS ID,Recharge_Amount,Recharge_Points,Statu  from Planner_RechargePoints_Rule
 	    </if>
 	    <if test="membertype==1">
-	    	select <include refid="recIntegralRule_Column_List"></include> from Service_RechargePoints_Rule
+	    	select SRR_ID AS ID,Recharge_Amount,Recharge_Points,Statu  from Service_RechargePoints_Rule
 	    </if>
 	    <if test="membertype==2">
-	    	select <include refid="recIntegralRule_Column_List"></include> from Manager_RechargePoints_Rule
+	    	select MRR_ID AS ID,Recharge_Amount,Recharge_Points,Statu  from Manager_RechargePoints_Rule
 	    </if>
 	    where Statu=1
 	  </select>
@@ -85,13 +85,13 @@
 	  <select id="selecttraIntegralRule" resultMap="traIntegralRule" parameterType="Map" >
 	  	<!-- 0:推荐达人  1:理财顾问 2:会员 -->
 	    <if test="membertype==0">
-	    	select <include refid="traIntegralRule_Column_List"></include> from Planner_TransInvestPoints_Rule
+	    	SELECT  PTR_ID AS ID,Invest_Amount,Invest_Points,Statu FROM Planner_TransInvestPoints_Rule
 	    </if>
 	    <if test="membertype==1">
-	    	select <include refid="traIntegralRule_Column_List"></include> from Service_TransInvestPoints_Rule
+	    	SELECT  STR_ID AS ID,Invest_Amount,Invest_Points,Statu FROM Service_TransInvestPoints_Rule
 	    </if>
 	    <if test="membertype==2">
-	    	select <include refid="traIntegralRule_Column_List"></include> from Manager_TransInvestPoints_Rule
+	    	SELECT  MTR_ID AS ID,Invest_Amount,Invest_Points,Statu FROM Manager_TransInvestPoints_Rule
 	    </if>
 	    where Statu=1
 	  </select>
@@ -107,7 +107,7 @@
 	    	select <include refid="proIntegralRule_Column_List"></include> from Service_ProInvestPoints_Rule
 	    </if>
 	    <if test="membertype==2">
-	    	select <include refid="proIntegralRule_Column_List"></include> from Manager_ProInvestPoints_Rule
+	    	select  MPR_ID AS ID,Invest_Amount,Invest_Points,Statu from Manager_ProInvestPoints_Rule
 	    </if>
 	    where Statu=1
 	  </select>
@@ -133,46 +133,46 @@
   			<if test="membertype==0">
   				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
   				<if test="type==2">
-  					Planner_ProInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  					Planner_ProInvestPoints_Rule(PPR_ID,Invest_Amount,Invest_Points)
   				</if>
   				<if test="type==3">
-  					Planner_TransInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  					Planner_TransInvestPoints_Rule(PTR_ID,Invest_Amount,Invest_Points)
   				</if>
   				<if test="type==4">
-  					Planner_RechargePoints_Rule(ID,Recharge_Amount,Recharge_Points)
+  					Planner_RechargePoints_Rule(PRR_ID,Recharge_Amount,Recharge_Points)
   				</if>
   				<if test="type==5">
-  					Planner_LoanPoints_Rule(ID,Loan_Amount,Loan_Points)
+  					Planner_LoanPoints_Rule(PLR_ID,Loan_Amount,Loan_Points)
   				</if>
   			</if>
   			<if test="membertype==1">
   				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
   				<if test="type==2">
-  					Service_ProInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  					Service_ProInvestPoints_Rule(SPR_ID,Invest_Amount,Invest_Points)
   				</if>
   				<if test="type==3">
-  					Service_TransInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  					Service_TransInvestPoints_Rule(STR_ID,Invest_Amount,Invest_Points)
   				</if>
   				<if test="type==4">
-  					Service_RechargePoints_Rule(ID,Recharge_Amount,Recharge_Points)
+  					Service_RechargePoints_Rule(SRR_ID,Recharge_Amount,Recharge_Points)
   				</if>
   				<if test="type==5">
-  					Service_LoanPoints_Rule(ID,Loan_Amount,Loan_Points)
+  					Service_LoanPoints_Rule(SLR_ID,Loan_Amount,Loan_Points)
   				</if>
   			</if>
   			<if test="membertype==2">
   				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
   				<if test="type==2">
-  					Manager_ProInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  					Manager_ProInvestPoints_Rule(MPR_ID,Invest_Amount,Invest_Points)
   				</if>
   				<if test="type==3">
-  					Manager_TransInvestPoints_Rule(ID,Invest_Amount,Invest_Points)
+  					Manager_TransInvestPoints_Rule(MTR_ID,Invest_Amount,Invest_Points)
   				</if>
   				<if test="type==4">
-  					Manager_RechargePoints_Rule(ID,Recharge_Amount,Recharge_Points)
+  					Manager_RechargePoints_Rule(MRR_ID,Recharge_Amount,Recharge_Points)
   				</if>
   				<if test="type==5">
-  					Manager_LoanPoints_Rule(ID,Loan_Amount,Loan_Points)
+  					Manager_LoanPoints_Rule(MLR_ID,Loan_Amount,Loan_Points)
   				</if>
   			</if>
   			values(#{id},#{amount},#{points})
@@ -192,50 +192,102 @@
   			<if test="membertype==0">
   				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
   				<if test="type==2">
-  					Planner_ProInvestPoints_Rule
+  					Planner_ProInvestPoints_Rule set Statu=0 where PPR_ID=#{id}
   				</if>
   				<if test="type==3">
-  					Planner_TransInvestPoints_Rule
+  					Planner_TransInvestPoints_Rule set Statu=0 where PTR_ID=#{id}
   				</if>
   				<if test="type==4">
-  					Planner_RechargePoints_Rule
+  					Planner_RechargePoints_Rule set Statu=0 where PRR_ID=#{id}
   				</if>
   				<if test="type==5">
-  					Planner_LoanPoints_Rule
+  					Planner_LoanPoints_Rule set Statu=0 where PLR_ID=#{id}
   				</if>
   			</if>
   			<if test="membertype==1">
   				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
   				<if test="type==2">
-  					Service_ProInvestPoints_Rule
+  					Service_ProInvestPoints_Rule set Statu=0 where SPR_ID=#{id}
   				</if>
   				<if test="type==3">
-  					Service_TransInvestPoints_Rule
+  					Service_TransInvestPoints_Rule set Statu=0 where STR_ID=#{id}
   				</if>
   				<if test="type==4">
-  					Service_RechargePoints_Rule
+  					Service_RechargePoints_Rule set Statu=0 where SRR_ID=#{id}
   				</if>
   				<if test="type==5">
-  					Service_LoanPoints_Rule
+  					Service_LoanPoints_Rule set Statu=0 where SLR_ID=#{id}
   				</if>
   			</if>
   			<if test="membertype==2">
   				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
   				<if test="type==2">
-  					Manager_ProInvestPoints_Rule
+  					Manager_ProInvestPoints_Rule set Statu=0 where MPR_ID=#{id}
   				</if>
   				<if test="type==3">
-  					Manager_TransInvestPoints_Rule
+  					Manager_TransInvestPoints_Rule set Statu=0 where MTR_ID=#{id}
   				</if>
   				<if test="type==4">
-  					Manager_RechargePoints_Rule
+  					Manager_RechargePoints_Rule set Statu=0 where MRR_ID=#{id}
   				</if>
   				<if test="type==5">
-  					Manager_LoanPoints_Rule
+  					Manager_LoanPoints_Rule set Statu=0 where MLR_ID=#{id}
   				</if>
   			</if>
-  			<set>Statu=0</set> where ID=#{id}
   		</update>
+  		
+  		
+  		<!-- 根据id修改积分规则 -->
+  		<update id="updateIntegralRule" parameterType="Map">
+  			update
+  			<if test="membertype==0">
+  				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则
+  				 -->
+  				<if test="type==2">
+  					Planner_ProInvestPoints_Rule set Invest_Amount=#{amount}, Invest_Points=#{points} where PPR_ID=#{id}
+  				</if>
+  				<if test="type==3">
+  					Planner_TransInvestPoints_Rule set Invest_Amount=#{amount}, Invest_Points=#{points}  where PTR_ID=#{id}
+  				</if>
+  				<if test="type==4">
+  					Planner_RechargePoints_Rule set Recharge_Amount=#{amount}, Recharge_Points=#{points}  where PRR_ID=#{id}
+  				</if>
+  				<if test="type==5">
+  					Planner_LoanPoints_Rule set Loan_Amount=#{amount}, Loan_Points=#{points} where PLR_ID=#{id}
+  				</if>
+  			</if>
+  			<if test="membertype==1">
+  				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
+  				<if test="type==2">
+  					Service_ProInvestPoints_Rule set  Invest_Amount=#{amount}, Invest_Points=#{points} where SPR_ID=#{id}
+  				</if>
+  				<if test="type==3">
+  					Service_TransInvestPoints_Rule set Invest_Amount=#{amount}, Invest_Points=#{points} where STR_ID=#{id}
+  				</if>
+  				<if test="type==4">
+  					Service_RechargePoints_Rule set Recharge_Amount=#{amount}, Recharge_Points=#{points} where SRR_ID=#{id}
+  				</if>
+  				<if test="type==5">
+  					Service_LoanPoints_Rule set Loan_Amount=#{amount}, Loan_Points=#{points}  where SLR_ID=#{id}
+  				</if>
+  			</if>
+  			<if test="membertype==2">
+  				<!-- type 1:邀请注册积分规则 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 -->
+  				<if test="type==2">
+  					Manager_ProInvestPoints_Rule set Invest_Amount=#{amount}, Invest_Points=#{points} where MPR_ID=#{id}
+  				</if>
+  				<if test="type==3">
+  					Manager_TransInvestPoints_Rule set Invest_Amount=#{amount}, Invest_Points=#{points} where MTR_ID=#{id}
+  				</if>
+  				<if test="type==4">
+  					Manager_RechargePoints_Rule set Recharge_Amount=#{amount}, Recharge_Points=#{points} where MRR_ID=#{id}
+  				</if>
+  				<if test="type==5">
+  					Manager_LoanPoints_Rule set Loan_Amount=#{amount}, Loan_Points=#{points} where MLR_ID=#{id}
+  				</if>
+  			</if>
+  		</update>
+  		
   		
   		<!-- 修改邀请注册积分规则 -->
   		<update id="updateRegPointsIntegralRule" parameterType="Map">

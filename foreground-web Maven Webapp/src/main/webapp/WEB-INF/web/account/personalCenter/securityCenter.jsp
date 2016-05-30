@@ -126,7 +126,7 @@
    						</li>
    						<li class="tdSecurity">
    							<span class="tdFirst">登录密码重置</span>
-   							<span class="tdSpan">--</span>
+   							<span class="tdSpan"></span>
    							<span class="tdContent"></span>
    							<span class="link linkAlert"><a href="personalCenter/SC_resetPWD.html">修改</a></span>
    						</li>

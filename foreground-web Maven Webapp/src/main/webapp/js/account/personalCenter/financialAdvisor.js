@@ -86,9 +86,6 @@ $(function(){
 					data,
 					function(r){ 
 					    var data = JSON.parse(r);
-					    ////console.log("测试返回：")
-					    ////console.log(data);
-					    //*+Top
 					 	$("#financialAwardTop").siblings().remove();//除标题外的内容移除
 						if(data.recordsTotal > 0) {
 							var html = template("financialAwardList",data);//模板生成 
@@ -96,7 +93,7 @@ $(function(){
 							var totalPage    = Math.ceil(data.recordsTotal/data.pageSize);
 							var totalRecords = data.recordsTotal;
 							var pageNo       = data.pageNum;
-							pager.generPageHtml({//调用分页
+							pager.generPageHtml({			//调用分页
 								pno : pageNo,				//当前页
 								total : totalPage,			//总页码
 								totalRecords : totalRecords,//总数据条数
@@ -127,10 +124,10 @@ $(function(){
 				data.month = encrypt.encrypt(month+"");
 			}; 
 			if (start!=undefined){
-				data.start = start;
+				data.start = start || 1;
 			};
 			if (length!=undefined){
-				data.length = length;
+				data.length = length || 10;
 			}; 
 			//访问链接：历史返现
 			var url = "financialAdvisortc/financialHistoryBack.html";  
@@ -184,19 +181,14 @@ $(function(){
 			if (order!=undefined){
 				data.order = encrypt.encrypt(order+"");
 			}; 
-			if (start!=undefined){
-				data.start = start;
-			};
-			if (length!=undefined){
-				data.length = length;
-			}; 
+			data.start = start || 1;
+			data.length = length || 10;
 			var url = "financialAdvisortc/financialInvitation.html"; 
 			NetUtil.ajax(
 					url,
 					data,
 					function(r){ 
 					    var data = JSON.parse(r);
-					    //console.log(data);
 					    $("#financialInvitationTop").siblings().remove();
 						if(data.recordsTotal > 0) {
 							var html = template("financialInvitationList",data); 
@@ -204,6 +196,7 @@ $(function(){
 							var totalPage    = Math.ceil(data.recordsTotal/data.pageSize);
 							var totalRecords = data.recordsTotal;
 							var pageNo       = data.pageNum;
+							order = data.map.order;
 							pager2.generPageHtml({
 								pno : pageNo,
 								//总页码
@@ -211,12 +204,14 @@ $(function(){
 								//总数据条数
 								totalRecords : totalRecords,
 								mode : 'click',//默认值是link，可选link或者click
-								click : function(n) {
+								click : function(n) { 
 									financialAdvisor.financialInvitation(startDate,endDate,name,isopenThird,order,n);
 									this.selectPage(n);
 									return false;
 									}
 								});
+							//重新绑定排序查询事件
+							//invitationOrder(pageNo,length);
 						}else{
 							$("#inviteRecordUl").append(noData);
 						}
@@ -243,10 +238,10 @@ $(function(){
 				data.projectTitle = encrypt.encrypt(projectTitle+"");
 			}; 
 			if (start!=undefined){
-				data.start = start;
+				data.start = start || 1;
 			};
 			if (length!=undefined){
-				data.length = length;
+				data.length = length || 10;
 			}; 
 			var url = "financialAdvisortc/financialBorrowing.html";   
 			NetUtil.ajax(
@@ -505,16 +500,16 @@ $(function(){
 		var isopenThird   = $("#isopenThird").val(); 
 		var startTime     = $("#startTimeInvit").val() == "请选择" ? "" : $("#startTimeInvit").val();
 		var endTime       = $("#endDateInvit").val() == "请选择" ? "" : $("#endDateInvit").val();
-		var name          = $("#memberName").val();
-		financialAdvisor.financialInvitation(startDate,endDate,name,isopenThird);
+		var name          = $("#memberName").val() == "请输入会员/用户名" ? "" : $("#memberName").val();
+		financialAdvisor.financialInvitation(startTime,endTime,name,isopenThird);
 	});
 	
 	//借款明细
 	$("#SearchBorrow").on("click",function(){ 
 	 var startTime     = $("#startTimeBorrow").val() == "请选择" ? "" : $("#startTimeBorrow").val();
 	 var endTime       = $("#endTimeBorrow").val() == "请选择" ? "" : $("#endTimeBorrow").val();  
-	 var name          = $("#memberNameBrow").val(); 
-	 var projectTitle  = $("#projectTitleBrow").val(); 
+	 var name          = $("#memberNameBrow").val() == "请输入会员/用户名" ? "" : $("#memberNameBrow").val(); 
+	 var projectTitle  = $("#projectTitleBrow").val() == "输入借款名称" ? "" : $("#projectTitleBrow").val(); 
 	 financialAdvisor.financialBorrowing(startTime,endTime,name,projectTitle);
 	});
 	
@@ -522,8 +517,8 @@ $(function(){
 	$("#SearchInvest").on("click",function(){ 
 	 var startTime     = $("#startTimeInvest").val() == "请选择" ? "" : $("#startTimeInvest").val();
 	 var endTime       = $("#endTimeInvest").val() == "请选择" ? "" : $("#endTimeInvest").val();  
-	 var name          = $("#memberNameInvest").val(); 
-	 var projectTitle  = $("#projectTitleInvest").val(); 
+	 var name          = $("#memberNameInvest").val() == "请输入会员/用户名" ? "" : $("#memberNameInvest").val(); 
+	 var projectTitle  = $("#projectTitleInvest").val() == "输入借款名称" ? "" : $("#projectTitleInvest").val(); 
 	 financialAdvisor.financialInvest(startTime,endTime,name,projectTitle);
 	});
 	
@@ -531,9 +526,9 @@ $(function(){
 	$("#SearchReplay").on("click",function(){ 
 	 var startTime     = $("#startTimeReplay").val() == "请选择" ? "" : $("#startTimeReplay").val();
 	 var endTime       = $("#endTimeReplay").val() == "请选择" ? "" : $("#endTimeReplay").val();  
-	 var name          = $("#memberNameReplay").val(); 
+	 var name          = $("#memberNameReplay").val() == "请输入会员/用户名" ? "" : $("#memberNameReplay").val();
 	 var over          = $("#isover").val(); 
-	 var projectTitle  = $("#projectTitleReplay").val(); 
+	 var projectTitle  = $("#projectTitleReplay").val() == "输入借款名称" ? "" : $("#projectTitleReplay").val();
 	 financialAdvisor.repaymentfinancial(startTime,endTime,name,projectTitle,over);
 	});
 	
@@ -541,7 +536,7 @@ $(function(){
 	$("#SearchVIPpay").on("click",function(){ 
 	 var startTime     = $("#startTimeVIP").val() == "请选择" ? "" : $("#startTimeVIP").val();
 	 var endTime       = $("#endTimeVIP").val() == "请选择" ? "" : $("#endTimeVIP").val();  
-	 var name          = $("#memberNameVIP").val();  
+	 var name          = $("#memberNameVIP").val() == "请输入会员/用户名" ? "" : $("#memberNameVIP").val();
 	 financialAdvisor.financialVipPay(startTime,endTime,name);
 	});
 	
@@ -557,7 +552,7 @@ $(function(){
 		var dateStarts = $(".chooseTime span.active").attr("data-time");
 		var startTime2 = encrypt.encrypt(startTime+"");
 		var endTime2   = encrypt.encrypt(endTime+"");
-		var dateStart2 = encrypt.encrypt(dateStarts+""); 
+		var dateStart2 = encrypt.encrypt(dateStarts+"");
 		 $("#startTimeatz").val(startTime2);
 	     $("#endTimeatz").val(endTime2);
 	     $("#dateStartatz").val(dateStart2);  
@@ -577,6 +572,70 @@ $(function(){
 	     document.financialHistory.submit(); 
 	});
 	//=======数据导出e=======
+	
+	//=======排序查询s=======
+	//邀请记录-注册时间-升序-降序
+	$("#registerRecord em").on("click",function(){
+		 var isopenThird   = $("#isopenThird").val();   
+		 var name          = $("#memberName").val() == "请输入会员/用户名" ? "" : $("#memberName").val(); 
+		 var startTime     = $("#startTimeInvit").val() == "请选择" ? "" : $("#startTimeInvit").val(); 
+	     var endTime       = $("#endDateInvit").val() == "请选择" ? "" : $("#endDateInvit").val();  
+		if ($(this).attr("class")=="iconUp"){
+			 financialAdvisor.financialInvitation(startTime,endTime,name,isopenThird,1);
+		}else{
+			 financialAdvisor.financialInvitation(startTime,endTime,name,isopenThird,2);
+		}
+	});
+	function invitationOrder(start,length){
+		$("#registerRecord em").off("click");
+	}
+	
+	//借款明细-放款时间升序-降序
+	$("#lendingTime em").on("click",function(){ 
+		 var startTime     = $("#startTimeBorrow").val() == "请选择" ? "" : $("#startTimeBorrow").val(); 
+	     var endTime       = $("#endTimeBorrow").val() == "请选择" ? "" : $("#endTimeBorrow").val();  
+	     var name          = $("#memberNameBrow").val() == "请输入会员/用户名" ? "" : $("#memberName").val(); 
+	     var projectTitle  = $("#projectTitleBrow").val() == "输入借款名称" ? "" : $("#projectTitleBrow").val();  
+		if ($(this).attr("class")=="iconUp"){ 
+			 financialAdvisor.financialBorrowing(startTime,endTime,name,projectTitle,1);  
+		}else{
+
+			 financialAdvisor.financialBorrowing(startTime,endTime,name,projectTitle,2); 
+			
+		}
+	});
+	
+	//投资明细-预期收益时间升序-降序
+	$("#expectProfitTime em").on("click",function(){ 
+		 var startTime     = $("#startTimeInvest").val() == "请选择" ? "" : $("#startTimeInvest").val(); 
+	     var endTime       = $("#endTimeInvest").val() == "请选择" ? "" : $("#endTimeInvest").val();  
+	     var name          = $("#memberNameInvest").val() == "请输入会员/用户名" ? "" : $("#memberNameInvest").val(); 
+	     var projectTitle  = $("#projectTitleInvest").val() == "输入借款名称" ? "" : $("#projectTitleInvest").val(); 
+
+		if ($(this).attr("class")=="iconUp"){ 
+			 financialAdvisor.financialInvest(startTime,endTime,name,projectTitle,1);
+		}else{ 
+			 financialAdvisor.financialInvest(startTime,endTime,name,projectTitle,2); 
+		}
+	});
+	
+	//还本明细-还款时间升序降序
+	$("#repaymentTime em").on("click",function(){ 
+		 var over          = $("#isover").val();   
+		 var startTime     = $("#startTimeReplay").val() == "请选择" ? "" : $("#startTimeReplay").val(); 
+	     var endTime       = $("#endTimeReplay").val() == "请选择" ? "" : $("#endTimeReplay").val();  
+	     var name          = $("#memberNameReplay").val() == "请输入会员/用户名" ? "" : $("#memberNameReplay").val(); 
+	     var projectTitle  = $("#projectTitleReplay").val() == "输入借款名称" ? "" : $("#projectTitleReplay").val(); 
+
+		if ($(this).attr("class")=="iconUp"){ 
+			 financialAdvisor.repaymentfinancial(startTime,endTime,name,projectTitle,over,1);
+		}else{ 
+			 financialAdvisor.repaymentfinancial(startTime,endTime,name,projectTitle,over,2);
+		}
+	});
+	
+	//=======排序查询e=======
+	
 	
 });
 

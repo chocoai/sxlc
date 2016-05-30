@@ -14,10 +14,6 @@ public class SystemAgreementSetEntity {
 	 */
 	private String agreementDetail;
 	/**
-	 * 协议名称
-	 */
-	private String agreementTitle;
-	/**
 	 * 状态 0：无效 1：有效
 	 */
 	private int agreementStatu;
@@ -39,11 +35,5 @@ public class SystemAgreementSetEntity {
 	public void setAgreementType(int agreementType) {
 		this.agreementType = agreementType;
 	}
-	public String getAgreementTitle() {
-		return agreementTitle;
-	}
-	public void setAgreementTitle(String agreementTitle) {
-		this.agreementTitle = agreementTitle;
-	}			
 
 }

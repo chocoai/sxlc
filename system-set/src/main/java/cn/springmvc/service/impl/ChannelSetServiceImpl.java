@@ -188,7 +188,14 @@ ChannelSetService {
 		
 		entity.setsDetail("添加第三方接口:"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
-		return handleChannelSetDaoImpl.insertThreeInterface(map);
+		long cou=handleChannelSetDaoImpl.selectCountThreeInterface(IntegerAndString.StringToInt(map.get("interfaceID").toString(), 0));
+		int retule=0;
+		if (cou>0) {//已存在
+			retule=-1;
+		}else {
+			retule=handleChannelSetDaoImpl.insertThreeInterface(map);
+		}
+		return retule;
 	}
 
 	@Override

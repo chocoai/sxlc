@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.HttpIp.AddressUtils;
+import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
 
@@ -52,7 +53,9 @@ public class RewardSetController {
 		param.put("type", 1);
 		pager.setMap(param);
 		List<RewardSetEntity> rewards = rewarSetService.selectRewarSetByType(pager);
-		req.setAttribute("rewards", rewards.get(0));
+		if(rewards.size()>0){
+			req.setAttribute("rewards", rewards.get(0));
+		}
 		return "config/finadv-setting";
 	}
 	
@@ -84,9 +87,8 @@ public class RewardSetController {
 		
 		RewardSetEntity entity = new RewardSetEntity();
 		//获取解密参数
-		Long id = Long.parseLong(req.getParameter("id"));
-		entity.setId(id);
-		int vIPReward = Integer.parseInt(req.getParameter("vIPReward"));
+		Integer handType = Integer.parseInt(req.getParameter("handType"));
+		int vIPReward = IntegerAndString.StringToInt(req.getParameter("vIPReward"));
 		entity.setvIPReward(vIPReward);
 		int borrowReward = Integer.parseInt(req.getParameter("borrowReward"));
 		entity.setBorrowReward(borrowReward);
@@ -97,7 +99,14 @@ public class RewardSetController {
 		int type = Integer.parseInt(req.getParameter("type"));
 		entity.setType(type);//提奖设置类型 1:理财顾问 0：推荐达人
 		int result=0;
-		result = rewarSetService.updateRewarSet(entity, logEntity, sIpInfo);
+		if(handType == 0){
+			entity.setGradeName("0");//暂时写死，页面没有这个参数的填写地方
+			result = rewarSetService.insertRewarSet(entity, logEntity, sIpInfo);
+		}else if(handType == 1){
+			Long id = Long.parseLong(req.getParameter("id"));
+			entity.setId(id);
+			result = rewarSetService.updateRewarSet(entity, logEntity, sIpInfo);
+		}
 		return result;
 	}
 	

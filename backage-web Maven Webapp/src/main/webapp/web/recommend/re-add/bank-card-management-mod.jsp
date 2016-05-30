@@ -61,15 +61,15 @@ String content = request.getParameter("content");
 							</tr>
 							<tr>
 								<td class="tt">银行卡卡号</td> 
-								<td class="con" id=""><input id="cardNo" type="text" datatype="bankNum" /></td>
+								<td class="con" id=""><input id="cardNo" type="text" datatype="bankNum" name="bankNum" name="bankNum" /></td>
 							</tr>
 							<tr>
 								<td class="tt">确认银行卡卡号</td>
-								<td class="con" id=""><input id="cardNo2" type="text" datatype="bankNum" /></td>
+								<td class="con" id=""><input id="cardNo2" type="text" datatype="*" recheck="bankNum" recheck="bankNum" /></td>
 							</tr>
 							<tr>
 								<td class="tt">开户手机号</td>
-								<td class="con" id=""><input id="phone" type="text" datatype="zphone" /></td>
+								<td class="con" id=""><input id="phone" type="text" datatype="zPhone" /></td>
 							</tr>
 						</table>
 					</form>

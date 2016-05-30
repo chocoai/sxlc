@@ -22,7 +22,17 @@ $(function(){
 				                  },
 						          { title:"消息类型id","data": "typeID"},  
 						          { title:"短信类型","data": "typeName"},  
-						          { title:"短信内容","data": "msgDetail"},  
+						          { title:"短信内容","data": "msgDetail", 
+						        	  "mRender": function (data, type, full) {
+						        		  	if(data==null){
+						        		  		return "";
+						        	  		}else if(data.length>98){//当内容长度大于98时隐藏详细信息
+						        	    		return ' <a href="javascript:;" onclick="showText(this)" title="短信内容">'+data.substring(0,97)+'...</a>';
+						        	    	}else {
+						        	    		return data;
+						        	    	} 
+						        	  }
+						          },  
 						          { title:"状态","data": "statu", 
 						        	  "mRender": function (data, type, full) {
 						        		  if(data==0){
@@ -52,9 +62,10 @@ $(function(){
 			          pagingType: "simple_numbers",//设置分页控件的模式  
 			          processing: true, //打开数据加载时的等待效果  
 			          serverSide: true,//打开后台分页 
+			          searching: false,
 			          scrollCollapse: true,
 			          scrollX : "100%",
-					  scrollXInner : "100%",
+			          scrollXInner : "100%",scrollY:500,
 			          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 			          }
 			});//表格初始化完毕
@@ -93,7 +104,7 @@ function addOrUpdate(type){
 		title="添加";
 	}else if(type==2){
 		title="修改";
-		vae data = $('#table_id').DataTable().rows('.selected').data();
+		var data = $('#table_id').DataTable().rows('.selected').data();
 		if(data.length<1){
 			layer.alert("请选择要修改的数据！",{icon:0});
 			return;
@@ -157,7 +168,7 @@ function enableOrDisable(type,id){
 	}, function(index, layero){
 		$.ajax( {  
 			url:appPath+"/config/enableMsgContent.do",
-			data:{"statu":encrypt.encrypt(""+type),"typeID":encrypt.encrypt(id)},
+			data:{"statu":encrypt.encrypt(""+type),"typeID":encrypt.encrypt(id+"")},
 			type:'post',  
 			cache:false,  
 			dataType:'json',  
@@ -231,3 +242,21 @@ function enableOrDisable(type,id){
 		});
 	}
 	/* 修改短信接口地址部分结束 */
+
+	
+	/**
+	 * 简介弹出框显示
+	 */
+	function showText(btn){
+		var data = $('#table_id').DataTable().row($(btn).parents('tr')).data();
+		layer.open({
+		    type: 1,
+		    area: ['400px', '300px'], //高宽
+		    title: "短信内容",
+		    content: data.msgDetail,//DOM或内容
+		    btn:['关闭']
+			  ,cancel: function(index){
+			  	//取消的回调
+			  }
+		});
+	};

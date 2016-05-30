@@ -177,5 +177,7 @@ public interface HandleChannelSetDao {
 	* @throws 
 	*/
 	public int SetEnableDisable(Map<String, Object> map);
+	
+	public long selectCountThreeInterface(int interfaceID);
 }
 

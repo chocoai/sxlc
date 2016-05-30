@@ -25,11 +25,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="5" name="top_menu_index"/>
+				<jsp:param value="5" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-frontconfig.jsp"></jsp:include>
+			<jsp:include page="../common/cm-frontconfig.jsp">
+				<jsp:param value="517" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
 				<!-- 地址导航 -->
@@ -49,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/frontconfig/fc-copyright.js"></script>
 	<script type="text/javascript">
 		 $(function(){
-			validform5("layui-layer-btn0","copyrightinfo",false,"3");
+			validform5("layui-layer-btn0","copyrightinfo",false,"5");
 		});
 	</script>
 	<script type="text/javascript">

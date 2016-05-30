@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html lang="zh-CN">
 
 <head>
-	<base href="<%=basePath%>">
+	<base href="<%=basePath%>" />
 	<title>财务管理-项目放款管理</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
@@ -82,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							  		<button id="loan" class="obtn glyphicon glyphicon-plus obtn-export">放款</button>
 						  			<button id="pass" class="obtn glyphicon glyphicon-plus tobe_lending_invest_record">流标</button>
 								</div>
-								<form id="form1" action="lending/loan.do" type="post">
+								<form id="form1" action="finance/loan.do" method="post">
 									<input id="stype" name="stype" type="hidden" value="" />
 									<input id="projectId" name="projectId" type="hidden" value="" />
 									<input id="auditType" name="auditType" type="hidden" value="" />
@@ -96,11 +96,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			<!-- 公用js -->
-			<jsp:include page="../common/cm-js.jsp"></jsp:include>
-			<!-- 私用js -->
-			<script type="text/javascript" src="js/finance/fn-pro-lending.js"></script>
-			<script src=""></script>
 		</div>
 	</div>
+	<!-- 公用js -->
+	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<!-- 私用js -->
+	<script type="text/javascript" src="js/finance/fn-pro-lending.js"></script>
 </body>			

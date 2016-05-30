@@ -11,6 +11,7 @@ import cn.springmvc.model.ProjectDetailEntity;
 import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 import cn.sxlc.account.manager.model.AwardEntity;
 import cn.sxlc.account.manager.model.InvestRecordEntity;
+import cn.sxlc.account.manager.model.LoanRepayEntity;
 import cn.sxlc.account.manager.model.LoanTransactionEntity;
 import cn.sxlc.account.manager.model.ProjectEntity;
 import cn.sxlc.account.manager.model.RepayDetailEntity;
@@ -561,7 +562,7 @@ public interface SelectThreePartyDao {
 	* @date 2016-4-14 上午11:12:45
 	* @throws 
 	*/
-	public Map<String, Integer> getRepaymentByCTAId(Map<String, Object> map);
+	public Map<String, Object> getRepaymentByCTAId(Map<String, Object> map);
 	
 	
 	/** 
@@ -606,7 +607,7 @@ public interface SelectThreePartyDao {
 	* @date 2016-4-14 下午3:59:07
 	* @throws 
 	*/
-	public List<Integer> selectLoanId(Map<String, Object> map);
+	public List<LoanRepayEntity> selectLoanId(Map<String, Object> map);
 	
 	
 	/** 
@@ -759,19 +760,18 @@ public interface SelectThreePartyDao {
 	
 	
 	/** 
-	* BlackMemberJudgmentOne  判断是否是黑名单 且能否执行下一步 
-	* TODO(描述)
-	* @author 朱祖轶  
-	* * @Title: BlackMemberJudgmentOne 
+	* BlackMemberJudgmentOne   
+	* TODO 判断是否是黑名单并能否执行下一步 
+	* @author ZZY  
+	* @Title: BlackMemberJudgmentOne
 	* @Description: TODO 
-	* @param @param memberId
-	* @param @param mType
-	* @param @return 设定文件 
-	* @return int 返回类型 
+	* @param memberId 会员id
+	* @param mType 黑名单禁止项类型
+	* @return int 返回类型  -1：该会员已存在于黑名单限制禁止操作 ；非-1：允许继续操作
 	* @date 2016-5-11 下午3:26:56
 	* @throws 
 	*/
-	public int BlackMemberJudgmentOne(long memberId, int mType);
+	int BlackMemberJudgmentOne(long memberId, int mType);
 	
 	/**
 	 * 根据项目ID查询该项目的投资记录
@@ -844,5 +844,49 @@ public interface SelectThreePartyDao {
 	* @throws 
 	*/
 	public long findInterestMngFee();
+	
+	/** 
+	* selectcAccountById 查询担保机构开户所需基本信息 
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: selectcAccountById 
+	* @Description: TODO 
+	* @param @param map
+	* @param @return 设定文件 
+	* @return AccountInterfaceEntity 返回类型 
+	* @date 2016-3-28 下午1:38:25
+	* @throws 
+	*/
+	public AccountInterfaceEntity selectbAccountById(Map<String, Object> map);
+	
+	
+	/** 
+	* GetEndMoneyByInv 根据债权转让人投资记录ID查询现有有效投资
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: GetEndMoneyByInv 
+	* @Description: TODO 
+	* @param @param investId
+	* @param @return 设定文件 
+	* @return long 返回类型 
+	* @date 2016-5-25 下午6:51:55
+	* @throws 
+	*/
+	public long GetEndMoneyByInv(long investId);
+	
+	
+	/** 
+	* loanMemberId 查询借款会员id
+	* TODO(描述)
+	* @author 朱祖轶  
+	* * @Title: loanMemberId 
+	* @Description: TODO 
+	* @param @param lApplyId
+	* @param @return 设定文件 
+	* @return long 返回类型 
+	* @date 2016-5-27 下午5:48:48
+	* @throws 
+	*/
+	public long loanMemberId(long lApplyId);
 }
 

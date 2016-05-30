@@ -16,6 +16,10 @@ function addRedE(){
 /*  修改SEO设置     */
 function alertRedE(){
 	var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择需要操作的记录！", {icon : 0});
+		return;
+	}
 	var affairID = rowdata[0].affairID;
 	affairID = encrypt.encrypt(affairID + "");
 	$.ajax({
@@ -26,6 +30,19 @@ function alertRedE(){
 		},
 		success : function (msg) {
 			
+			if (msg != null) {
+				$("#mstartDate").val(msg.startDate);
+				$("#mendDate").val(msg.endDate);
+				$("#maffairName").val(msg.affairName);
+				$("#muserendDate").val(msg.userendDate);
+				var list = msg.redpacketsDetail;
+				for (var i = 0; i < list.length; i++) {
+					$("#RMC"+i+"").attr("class", "redEContent isActive2");
+					$("#RMC"+i+"").find("input.money").val(list[i].giftAmount);
+					$("#RMC"+i+"").find("input.num").val(list[i].quantity);
+					$("#RMC"+i+"").find("input.detail").val(list[i].rpDetailID);
+				}
+			}
 		}
 	});
 	
@@ -54,6 +71,7 @@ function addRecord() {
 	var userendDate = encrypt.encrypt($("#userendDate").val() + "");
 	var giftAmount = "";
 	var quantity = "";
+	
 	$("#redMany .isActive").each(function () {
 		if($(this).next().length == 0){
 			var money = $(this).find(".money").val();
@@ -95,6 +113,35 @@ function addRecord() {
 	});
 	
 }
+
+/**
+ * 发布红包
+ */
+$(function () {
+	$("#fb").bind('click', function () {
+		var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+		if (rowdata.length <= 0) {
+			layer.alert("请选择需要操作的记录！", {icon : 0});
+			return;
+		}
+		var affairID = rowdata[0].affairID;
+		$.ajax({
+			type : 'post',
+			url : appPath + "/red/publish.do",
+			data : {
+				affairID : encrypt.encrypt(affairID + "")
+			},
+			success : function (msg) {
+				if (msg == 1) {
+					layer.alert("操作成功",{icon:1});
+					setTimeout('location.reload()',2000);
+				}else {
+					layer.alert("操作失败",{icon:2});
+				}
+			}
+		});
+	});
+});
 
 
 $(function(){
@@ -141,8 +188,8 @@ $(function(){
 });
 
 $(function(){
-	validform5("#addRecord","addRedEForm",false,3);
-	validform5("#modRed","alertRedEForm",false,3);
+	validform5("#addRecord","addRedEForm",false,5);
+	validform5("#modRed","alertRedEForm",false,5);
 	$(".cancelBtn").bind("click",function(){
 		layer.closeAll();
 	});
@@ -158,52 +205,61 @@ $(function () {
 });
 
 function modRed () {
-//	var startDate = encrypt.encrypt($("#startDate").val() + "");
-//	var endDate = encrypt.encrypt($("#endDate").val() + "");
-//	var affairName = encrypt.encrypt($("#affairName").val() + "");
-//	var userendDate = encrypt.encrypt($("#userendDate").val() + "");
+	var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+	var affairID = rowdata[0].affairID;
+	affairID = encrypt.encrypt(affairID + "");
+	var startDate = encrypt.encrypt($("#mstartDate").val() + "");
+	var endDate = encrypt.encrypt($("#mendDate").val() + "");
+	var affairName = encrypt.encrypt($("#maffairName").val() + "");
+	var userendDate = encrypt.encrypt($("#muserendDate").val() + "");
 	var giftAmount = "";
 	var quantity = "";
+	var detailId = "";
 	$("#redChange .isActive2").each(function () {
 		if($(this).next().length == 0){
 			var money = $(this).find(".money").val();
 			var num = $(this).find(".num").val();
+			var detail = $(this).find(".detail").val();
 			giftAmount += money;
 			quantity += num;
+			detailId += detail;
 			return;
 		}
 		if($(this).find(".money").val() != "" && $(this).find(".num").val() != ""){
 			var money = $(this).find(".money").val();
 			var num = $(this).find(".num").val();
+			var detail = $(this).find(".detail").val();
 			giftAmount += money + ",";
 			quantity += num + ",";
+			detailId += detail + ",";
 		}
 	});
 
 	giftAmount = encrypt.encrypt(giftAmount + "");
 	quantity = encrypt.encrypt(quantity + "");
-	console.log(giftAmount);
-//	$.ajax({
-//		type : 'post',
-//		url : appPath + "/red/addRedRecord.do",
-//		data : {
-//			startDate : startDate,
-//			endDate : endDate,
-//			affairName : affairName,
-//			userendDate : userendDate,
-//			giftAmount : giftAmount,
-//			quantity : quantity
-//		},
-//		success : function (msg) {
-//			if (msg == 1) {
-//				layer.alert("操作成功",{icon:1});
-//				day = null;
-//				setTimeout('location.reload()',2000);
-//			}else {
-//				layer.alert("操作失败",{icon:2});
-//			}
-//		}
-//	});
+	detailId = encrypt.encrypt(detailId + "");
+	$.ajax({
+		type : 'post',
+		url : appPath + "/red/modRedRecord.do",
+		data : {
+			startDate : startDate,
+			endDate : endDate,
+			affairName : affairName,
+			userendDate : userendDate,
+			giftAmount : giftAmount,
+			quantity : quantity,
+			affairID : affairID,
+			detailId : detailId
+		},
+		success : function (msg) {
+			if (msg == 1) {
+				layer.alert("操作成功",{icon:1});
+				setTimeout('location.reload()',2000);
+			}else {
+				layer.alert("操作失败",{icon:2});
+			}
+		}
+	});
 }
 //表格初始化
 $(function() {
@@ -283,7 +339,7 @@ $(function() {
                 		 if (data == 0) {
                 			 return "未发布";
                 		 }else if (data == 1){
-                			 return "有效";
+                			 return "已发布";
                 		 }else {
                 			 return "已结束";
                 		 }
@@ -300,11 +356,6 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#applicationAudit').DataTable();
-//设置选中change颜色
- $('#applicationAudit tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
 });
 
 /**
@@ -313,4 +364,24 @@ $(function() {
 $(".glyphicon-search").on("click",function(){
 	$('#applicationAudit').DataTable().ajax.reload();
 	
+});
+
+
+$(function() {
+	//单选
+	$('#applicationAudit tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

@@ -15,9 +15,9 @@ public class LoanTransferEntity {
 	private String transferType;//转账方式 1.桥连 2.直连
 	private String needAudit;//通过是否需要审核  空.需要审核 1.自动通过
 	private String delayTransfer;//是否半自动批处理(暂不可用)
-	private String randomTimeStamp;//
-	private String remark1;//
-	private String remark2;//
+	private String randomTimeStamp="";//
+	private String remark1="";//
+	private String remark2="";//
 	private String remark3="";//
 	private String submitURL;//提交地址
 	private String returnURL;//页面返回网址

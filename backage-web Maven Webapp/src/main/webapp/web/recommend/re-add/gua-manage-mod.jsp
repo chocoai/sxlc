@@ -24,15 +24,15 @@ String content = request.getParameter("content");
 				</tr>
 				<tr>
 					<td class="addmanagetd"><label class="ineed">组织机构代码</label></td>
-					<td class="addmanageinput"><input id="companyOC" type="text" class="" placeholder="" datatype="orgcodefmt" /></td>
+					<td class="addmanageinput"><input id="companyOC" type="text" class="" placeholder="" datatype="orgcode" /></td>
 					<td class="addmanagetd"><label class="ineed">税务登记号</label></td>
 					<td class="addmanageinput"><input id="taxRegNo" type="text" class="" placeholder="" datatype="businessNum"/></td>
 				</tr>
 				<tr>
 					<td class="addmanagetd"><label>经营场所</label></td>
 					<td class="addmanageinput"><input id="establishments" type="text" class="" placeholder="" datatype="z2_20" ignore="ignore"/></td>
-					<td class="addmanagetd"><label>注册资金</label></td>
-					<td class="addmanageinput"><input id="companyCapital" type="text" class="" placeholder="" datatype="amcountM" ignore="ignore"/></td>
+					<td class="addmanagetd"><label>注册资金(元)</label></td>
+					<td class="addmanageinput"><input id="companyCapital" type="text" class="" placeholder="" datatype="acountM" ignore="ignore"/></td>
 				</tr>
 				<tr>
 					<td class="addmanagetd"><label class="ineed">法人姓名</label></td>
@@ -56,7 +56,7 @@ String content = request.getParameter("content");
 					<td class="addmanagetd"><label>公司简介</label></td>
 					<td class="addmanageinput"><input id="companyProfile" type="text" class="" placeholder="" datatype="rolemarkC" ignore="ignore"/></td>
 					<td class="addmanagetd"><label>联系人姓名</label></td>
-					<td class="addmanageinput"><input id="contactName" type="text" class="" placeholder="" datatype="z2_12" ignore="ignore"/></td>
+					<td class="addmanageinput"><input id="contactName" type="text" class="" placeholder="" datatype="realName" ignore="ignore"/></td>
 				</tr>
 				<tr>
 					<td class="addmanagetd"><label>联系人手机号</label></td>
@@ -79,7 +79,7 @@ String content = request.getParameter("content");
 	<script type="text/javascript" src="js/recommend/gua-mod.js"></script>
 	<script type="text/javascript">
 		$(function(){
-			validform5(".layui-layer-btn0","asset-mod",false,"3");
+			validform5(".layui-layer-btn0","asset-mod",false,"5");
 		});
 	</script>
 	<script type="text/javascript">

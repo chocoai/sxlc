@@ -39,7 +39,7 @@
 					</tr>
 					<tr>
 						<td class="tt"><label>提现金额：</label></td>
-						<td class="con" id="inputMoney"><input type="text" class="" datatype="amcountM" /></td>
+						<td class="con" id="inputMoney"><input type="text" class="" datatype="acountM" /></td>
 					</tr>
 					<tr>
 						<td class="tt"><label>提现备注：</label></td>
@@ -47,7 +47,7 @@
 					</tr>
 					<tr>
 						<td class="tt"><label>手机验证：</label></td>
-						<td class="con" id="inputZ6"><input type="text" class="telCheck" datatype="z6" /><button class="getCode">获取验证码</button></td>
+						<td class="con" id="inputZ6"><input type="text" class="telCheck" datatype="Z6" /><button class="getCode">获取验证码</button></td>
 					</tr>																
 				</table>
 			</div>
@@ -65,13 +65,13 @@
 	<!-- 私用js -->
 	<script type="text/javascript">
 	$(function(){
-		validform5("layui-layer-btn0","inputMoney",false,"3");
+		validform5("layui-layer-btn0","inputMoney",false,"5");
 	});
 	$(function(){
-		validform5("layui-layer-btn0","inputRemarks",false,"3");
+		validform5("layui-layer-btn0","inputRemarks",false,"5");
 	});
 	$(function(){
-		validform5("layui-layer-btn0","inputZ6",false,"3");
+		validform5("layui-layer-btn0","inputZ6",false,"5");
 	});
 	</script>
 </body>

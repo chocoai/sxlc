@@ -1,4 +1,64 @@
 $(function(){
+	//旧邮箱是否正确
+	$(".emailOriginal").on("blur",function(){
+		var $this = $(this);
+		if ($(this).next().hasClass("Validform_right")){
+			//url待改
+			var url = "personalCenter/checkOldEmail.html";
+			var encrypt = new JSEncrypt();
+			encrypt.setPublicKey(publickey);
+			var email = encrypt.encrypt($(this).val()+"");
+			NetUtil.ajax(
+					url,
+					{email:email},
+					function(r){
+						var data = JSON.parse(r);
+						if (data.status == "1"){
+							$(".emailNew").removeProp("disabled");
+						}else{
+//							layer.alert(data.message,function(index){
+//								layer.close(index);
+//								$(".emailNew").prop("disabled",true);
+//								$(".codeBtn").addClass("disabled")
+//							});
+							$this.errorPrompt(data.message);
+							$(".emailNew").prop("disabled",true);
+							$(".codeBtn").addClass("disabled")
+						}
+					}
+			)
+		}
+	})
+	
+	//新邮箱是否存在
+	$(".emailNew").on("blur",function(){
+		var $this = $(this);
+		if ($(this).next().hasClass("Validform_right")){
+			var url = "personalCenter/checkEmail.html";
+			var encrypt = new JSEncrypt();
+			encrypt.setPublicKey(publickey);
+			var email = encrypt.encrypt($(this).val()+"");
+			NetUtil.ajax(
+					url,
+					{email:email},
+					function(r){
+						var data = JSON.parse(r);
+						if (data.status == "1"){
+							$(".codeBtn").removeClass("disabled")
+						}else{
+//							layer.alert(data.message,function(index){
+//								layer.close(index);
+//								$(".codeBtn").addClass("disabled")
+//							});
+							$this.errorPrompt(data.message);
+							$(".codeBtn").addClass("disabled")
+						}
+					})
+			}
+	})
+	
+	
+	
 	//发送邮箱验证码
 	$(".codeBtn").on("click",function(){
 		var entryEmail = $(".emailNew").val();
@@ -16,6 +76,7 @@ $(function(){
 			entryEmail = encrypt.encrypt(entryEmail+"");
 			var str_Url = "personalCenter/sendBindEmailCheckCode.html";
 			var json_Data = {email:entryEmail,imgCheckCode:encrypt.encrypt(imgCode+"")};
+			$item.addClass("disabled").html("发送中");
 			NetUtil.ajax(
 				str_Url, 
 				json_Data, 
@@ -26,7 +87,6 @@ $(function(){
 						layer.alert("发送成功",function(index){
 							layer.close(index);
 							var setTime = 60 ; //60秒
-							$item.addClass("disabled");
 							var run = setInterval(function(){
 								$item.html(setTime+"s");
 								setTime--;
@@ -40,7 +100,7 @@ $(function(){
 					}else{
 						layer.alert(json.message,function(index){
 							layer.close(index);
-							$(".codeBtn").html("重新发送");
+							$(".codeBtn").html("重新发送").removeClass("disabled");
 							$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
 						})
 						
@@ -56,12 +116,19 @@ $(function(){
 	});
 	//修改邮箱
 	$("#securityCheck1").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".email-btn", //#btn_sub是该表单下要绑定点击提交表单事件的按钮;如果form内含有submit按钮该参数可省略;
 		//btnReset:"#btnreset1",
 		datatype:extdatatype,//扩展验证类型
 		//showAllError:true,//提交前验证显示所有错误
 		ajaxPost:true,
+		beforeCheck:function(){
+			if ($(".Validform_wrong").size()>0){
+				return false
+			}else{
+				return true
+			}
+		},
 		beforeSubmit:function(){
 			var encrypt = new JSEncrypt();
 			encrypt.setPublicKey(publickey);
@@ -79,6 +146,7 @@ $(function(){
 			dynamicCode = encrypt.encrypt(dynamicCode+"");
 			
 			var str_Url = "personalCenter/editBindEmail.html";
+			$(".email-btn").html("修改中").addClass("disabled");
 			NetUtil.ajax(
 				str_Url,
 				{oldEmail:emailOriginal,newEmail:emailNew,checkCode:e_imgCode,emailCode:dynamicCode},
@@ -91,6 +159,7 @@ $(function(){
 					}else{
 						layer.alert(r.message,function(index){
 							layer.close(index);
+							$(".email-btn").html("确定").removeClass("disabled");
 							$(".codeImg").attr("src","authImage.html?parma="+Math.random() * 10);
 						})
 					}

@@ -27,7 +27,7 @@
 		function zTreeOnClick(event, treeId, treeNode) {
 			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 			//
-			showListOfDataTable(treeNode.resourceID); //显示datatable 
+			showListOfDataTable(treeNode.resourceID,treeNode.resourceName); //显示datatable 
 			// 如果节点路径为空或者为"#"，不允许单击操作
 			if(treeNode.accessPath=="" || treeNode.accessPath=="#"){
 				//alert("节点路径为空或者为'#'哦...");

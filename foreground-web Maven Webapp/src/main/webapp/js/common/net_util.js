@@ -79,6 +79,5 @@ var NetUtil = {
         }else{
 	        NetUtil.getRequest(url,data,sign, fnOnSuccess,fnBefore, fnComplete);
         }
-        
     }
 };

@@ -250,6 +250,17 @@
 						$(this).parent().append("<span class='Validform_checktip' />");
 						$(this).parent().next().find(".Validform_checktip").remove();
 					}
+				}else if(tiptype == 5){//自定提示
+					if($(this).siblings(".tag").find(".arrow").length==0){
+						var _html= '<span class="tag">'+
+										'<span class="arrow">'+
+											'<em></em><span></span>'+
+										'</span>'+
+										'<span class="Validform_checktip"></span>'+
+									'</span>';
+						$(this).parent().append(_html);
+						$(this).parent().next().find(".tag").remove();
+					}
 				}
 			})
 			
@@ -697,12 +708,12 @@
 				return;
 			}
 			
-			if(type==1 || triggered=="byajax" && type!=4){
+			if(type==1 || triggered=="byajax" && type!=4 && type!=5){
 				msgobj.find(".Validform_info").html(msg);
 			}
 			
 			//tiptypt=1时，blur触发showmsg，验证是否通过都不弹框，提交表单触发的话，只要验证出错，就弹框;
-			if(type==1 && triggered!="bycheck" && o.type!=2 || triggered=="byajax" && type!=4){
+			if(type==1 && triggered!="bycheck" && o.type!=2 || triggered=="byajax" && type!=4 && type!=5){
 				msghidden=false;
 				msgobj.find(".iframe").css("height",msgobj.outerHeight());
 				msgobj.show();
@@ -715,25 +726,69 @@
 			}
 			
 			if((type==3 || type==4) && o.obj){
-				o.obj.siblings(".Validform_checktip").html(msg);
+				o.obj.siblings(".tag").html(msg);
 				Validform.util.cssctl(o.obj.siblings(".Validform_checktip"),o.type);
+			}
+			
+			//自定提示
+			if(type==5 && o.obj){
+				//判断尖角和提示信息0523
+				//判断修改0526
+				if(o.obj.siblings(".tag").find(".arrow").length == 0){
+					var _html= '<span class="arrow">'+
+									'<em></em><span></span>'+
+								'</span>';
+//									+
+//								'<span class="Validform_checktip"></span>';
+					o.obj.siblings(".tag").prepend(_html);
+				}
+				
+				o.obj.siblings(".tag").find(".Validform_checktip").html(msg);
+				Validform.util.cssctl(o.obj.siblings(".tag").find(".Validform_checktip"),o.type,o.obj.siblings(".tag"));
+				//console.log(o.obj);
 			}
 
 		},
 
-		cssctl:function(obj,status){
-			switch(status){
-				case 1:
-					obj.removeClass("Validform_right Validform_wrong").addClass("Validform_checktip Validform_loading");//checking;
-					break;
-				case 2:
-					obj.removeClass("Validform_wrong Validform_loading").addClass("Validform_checktip Validform_right");//passed;
-					break;
-				case 4:
-					obj.removeClass("Validform_right Validform_wrong Validform_loading").addClass("Validform_checktip");//for ignore;
-					break;
-				default:
-					obj.removeClass("Validform_right Validform_loading").addClass("Validform_checktip Validform_wrong");//wrong;
+		cssctl:function(obj,status,boxobj){
+			if(boxobj){
+				//console.log("自定cssctl");
+				switch(status){
+					case 1:
+						boxobj.removeClass("Validform_right Validform_wrong").addClass("tag Validform_loading");//checking;
+						break;
+					case 2:
+						boxobj.find(".arrow").remove();//先移除尖角0523
+						boxobj.removeClass("Validform_wrong Validform_loading").addClass("tag Validform_right");//passed;
+						break;
+					case 4:
+						boxobj.removeClass("Validform_right Validform_wrong Validform_loading").addClass("tag");//for ignore;
+						break;
+					default:
+						/*debugger;
+						if(obj.siblings(".tag").find(".arrow").length == 0){
+							var _html= '<span class="arrow">'+
+											'<em></em><span></span>'+
+										'</span>';
+							console.log(obj.siblings(".tag").find(".Validform_checktip").length);
+							obj.siblings(".tag").find(".Validform_checktip").before(_html);
+						}*/
+						boxobj.removeClass("Validform_right Validform_loading").addClass("tag Validform_wrong");//wrong;
+				}
+			}else{
+				switch(status){
+					case 1:
+						obj.removeClass("Validform_right Validform_wrong").addClass("Validform_checktip Validform_loading");//checking;
+						break;
+					case 2:
+						obj.removeClass("Validform_wrong Validform_loading").addClass("Validform_checktip Validform_right");//passed;
+						break;
+					case 4:
+						obj.removeClass("Validform_right Validform_wrong Validform_loading").addClass("Validform_checktip");//for ignore;
+						break;
+					default:
+						obj.removeClass("Validform_right Validform_loading").addClass("Validform_checktip Validform_wrong");//wrong;
+				}
 			}
 		},
 		

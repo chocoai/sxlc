@@ -4,10 +4,10 @@ $(function(){
 	$('#table_id').DataTable(
 			{	
 				ajax: {  
-					"url": appPath+"/project/getProAfterLoanListData",   
-					"dataSrc": "results", 
-					"type": "POST",
-					"data": function ( d ) {
+					url: appPath+"/project/getProAfterLoanListData",   
+					dataSrc: "results", 
+					type: "POST",
+					data: function ( d ) {
 						//加密
 						var startTime = $("#startDate").val();
 						var endTime = $("#endDate").val();
@@ -39,7 +39,9 @@ $(function(){
 				          },  
 				          { title:"详细描述","data": "detail", 
 				        	  "mRender": function (data, type, full) {
-				        		  	if(data.length>8){//当内容长度大于8时隐藏详细信息
+				        			if(data==null){
+				        		  		return "";
+				        	  		}else if(data.length>8){//当内容长度大于8时隐藏详细信息
 				        	    		return ' <a href="javascript:;" onclick="showText1(this)" title="详细描述">'+data.substring(0,7)+'...</a>';
 				        	    	}else {
 				        	    		return data;
@@ -61,10 +63,11 @@ $(function(){
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
-	          serverSide: true,//打开后台分页  
+	          serverSide: true,//打开后台分页
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕
@@ -92,7 +95,7 @@ $(function(){
 		
 	 });
 	
-	validform5(".layui-layer-btn0","dataForm",false,"3");
+	validform5(".layui-layer-btn0","dataForm",false,"5");
 	 
 	/*添加贷后信息*/
 	$(".obtn-addmsg").on("click touchstart",function(){
@@ -110,42 +113,13 @@ $(function(){
 		    content: $(".addmsg"),//DOM或内容
 		    btn:['确定', '取消']
 			  ,yes: function(index, layero){ //或者使用btn1
-				  //确定的回调
-				  var updateData = {};
-				  var applyID = $("#projectID").val();
-				  var abstractMain = $("#abstractMain").val();
-				  var details = $("#details").val();
-				  var affix = $("#affix").val();
-				  updateData.applyID=encrypt.encrypt(applyID);
-				  updateData.abstractMain=encrypt.encrypt(abstractMain);
-				  updateData.details=encrypt.encrypt(details);
-				  updateData.affix=encrypt.encrypt(affix);
-
-				  $.ajax( {  
-					  url:appPath+"/project/insertProjectAfterLoanInfo",
-					  data:updateData,
-					  type:'post',  
-					  cache:false,  
-					  dataType:'json',  
-					  success:function(data) {
-						  if(data==1){
-							  layer.alert("操作成功",{icon:1});
-							  var table = $('#table_id').DataTable();
-							  table.ajax.reload();
-							  $(".layui-layer-btn1").click();
-						  }else if(data==0){
-							  layer.alert("操作失败",{icon:2});  
-						  }
-					  },  
-					  error : function() {  
-						  layer.alert("服务器异常",{icon:2});  
-					  }  
-				  });
+				$("#dataForm").submit();
 			  },cancel: function(index){//或者使用btn2（concel）
 			  	//取消的回调
 			  }
 		});
 	});
+	
 	/*贷后信息查询*/
 	$(".obtn-searchmsg").on("click touchstart",function(){
 		 var data = $('#table_id').DataTable().rows('.selected').data();
@@ -251,7 +225,7 @@ function UploadImg(filePicker,fileListObj,imgNum,inputObj,imgWidth,imgHeight) {
 		    pick: piker,											//内部根据当前运行是创建，可能是input元素，也可能是flash.
 		    fileNumLimit: imgNum,												//个数限制
 			//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
-			/*fileSingleSizeLimit: 1024*512,*/
+		    fileSingleSizeLimit: 5*1024*1024, //1M  
 		    accept: {														//只允许选择图片文件
 		        title: 'Images',
 		        extensions: 'gif,jpg,jpeg,bmp,png',
@@ -441,3 +415,40 @@ function deleteData(param){
 		});
 }
 
+function addMsg(){
+	  //确定的回调
+	  var updateData = {};
+	  var applyID = $("#projectID").val();
+	  var abstractMain = $("#abstractMain").val();
+	  var details = $("#details").val();
+	  var affix = $("#affix").val();
+	  if(affix ==""){
+		  layer.alert("请上传附件",{icon:0});
+		  return;
+	  }
+	  updateData.applyID=encrypt.encrypt(applyID);
+	  updateData.abstractMain=encrypt.encrypt(abstractMain);
+	  updateData.details=encrypt.encrypt(details);
+	  updateData.affix=encrypt.encrypt(affix);
+
+	  $.ajax( {  
+		  url:appPath+"/project/insertProjectAfterLoanInfo",
+		  data:updateData,
+		  type:'post',  
+		  cache:false,  
+		  dataType:'json',  
+		  success:function(data) {
+			  if(data==1){
+				  layer.alert("操作成功",{icon:1});
+				  var table = $('#table_id').DataTable();
+				  table.ajax.reload();
+				  $(".layui-layer-btn1").click();
+			  }else if(data==0){
+				  layer.alert("操作失败",{icon:2});  
+			  }
+		  },  
+		  error : function() {  
+			  layer.alert("服务器异常",{icon:2});  
+		  }  
+	  });
+}

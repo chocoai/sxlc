@@ -119,8 +119,10 @@ public class IntegerAndString {
 			if(sInfos.length>1){
 				if(sInfos[1] == null || sInfos[1].equals("")){
 					sInfos[1] = "00";
-				}else if(sInfos[1].length()==1){
-					sInfos[1] = sInfos[1] + "0";
+				}else if(sInfos[1].length()<4){
+					while(sInfos[1].length()<4){
+						sInfos[1] = sInfos[1] + "0";
+					}
 				}else if(sInfos[1].length()>4){
 					sInfos[1] = sInfos[1].substring(0, 4);
 				}

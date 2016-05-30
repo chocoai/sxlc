@@ -312,7 +312,7 @@ $(function(){
 		var commodityID = encrypt.encrypt(data[0].commodityID+"");
 		 layer.confirm('确定推荐该商品到商城首页？', {
 			  btn: ['确定', '取消'],
-			  s:function(){
+			  yes:function(){
 				  var url = "commodityManager/configGood.do";
 				  var data = {goodId:commodityID}
 				  NetUtil.ajax(
@@ -325,7 +325,7 @@ $(function(){
 										$('#teamTb').DataTable().ajax.reload();
 									})
 								}else if(data.status=="0"){
-									layer.alert("操作失败",function(index){
+									layer.alert(data.message,function(index){
 										layer.close(index);
 									})
 								}

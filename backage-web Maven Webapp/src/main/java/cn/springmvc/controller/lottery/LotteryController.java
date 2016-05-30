@@ -151,15 +151,15 @@ public class LotteryController {
 		if (userInfo != null) {
 			entity.setiAdminId(userInfo.getId());
 		}
-		entity.setlOptId(1101);
-		entity.setlModuleId(2);
+		entity.setlOptId(110104);
+		entity.setlModuleId(1101);
 		entity.setsDetail("");
 		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
 		entity.setsMac(null);
 		entity.setsUrl(LoadUrlUtil.getFullURL(request));
 		
 		int num = luckyDrawService.
-				PrizeDelete(IntegerAndString.StringToLong(prizeID), entity, sIpInfo);
+				PrizeDelete(IntegerAndString.StringToLong(prizeID, -1), entity, sIpInfo);
 		return num;
 	}
 	
@@ -224,6 +224,164 @@ public class LotteryController {
 		List<PrizeInformationEntity> list = luckyDrawService.selectPrizeTypes();
 		
 		return list;
+	}
+	
+	/**
+	 * 
+	* PrizeSet添加奖品 
+	* TODO添加奖品
+	* @author 杨翰林  
+	* * @Title: PrizeSet 
+	* @Description: 添加奖品 
+	* @param @param request
+	* @param @param req
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-19 下午5:37:53
+	* @throws
+	 */
+	@RequestMapping("/addAward")
+	@ResponseBody
+	public int PrizeSet(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String grade = request.getParameter("grade");
+		String prizeType = request.getParameter("prizeType");
+		String prizeName = request.getParameter("prizeName");
+		String prizeWorths = request.getParameter("prizeWorths");
+		String prizeQuantity = request.getParameter("prizeQuantity");
+		String winningOdds = request.getParameter("winningOdds");
+		String content = request.getParameter("content");
+		
+		req.put("prizename", prizeName);
+		req.put("prizeWorth", prizeWorths);
+		req.put("prizeQuantity", prizeQuantity);
+		req.put("prizeUrl", content);
+		req.put("prizetype", prizeType);
+		req.put("grade", grade);
+		req.put("WinningOdds", winningOdds);
+		req.put("lId", 0);
+		
+		
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(110102);
+		entity.setlModuleId(1101);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		Long PrizeID = luckyDrawService.PrizeSet(req, entity, sIpInfo);
+		if (PrizeID != null) {
+			req.put("PrizeID", PrizeID);
+			req.put("lID", 0);
+		}
+		int num = luckyDrawService.LotteryManageSet(req, entity, sIpInfo);
+		return num;
+	}
+	
+	/**
+	 * 
+	* selectLotteryActivitylimit查询最近一期 抽奖活动  
+	* TODO查询最近一期 抽奖活动 
+	* @author 杨翰林  
+	* * @Title: selectLotteryActivitylimit 
+	* @Description: 查询最近一期 抽奖活动 
+	* @param @return 设定文件 
+	* @return LotteryActivityEntity 返回类型 
+	* @date 2016-5-19 下午4:42:50
+	* @throws
+	 */
+	@RequestMapping("/query4set")
+	@ResponseBody
+	public  LotteryActivityEntity selectLotteryActivitylimit() {
+		
+		LotteryActivityEntity lotteryActivityEntity = luckyDrawService
+				.selectLotteryActivitylimit();
+		return lotteryActivityEntity;
+	}
+	
+	/**
+	 * 
+	* LotterySet抽奖活动设置 
+	* TODO抽奖活动设置
+	* @author 杨翰林  
+	* * @Title: LotterySet 
+	* @Description: 抽奖活动设置 
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-19 下午4:51:47
+	* @throws
+	 */
+	@RequestMapping("/set")
+	@ResponseBody
+	public  int LotterySet(HttpServletRequest request, Map<String, Object> req) {
+		
+		HttpSession session = HttpSessionUtil.getSession(request);
+		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
+		String integra = request.getParameter("integra");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		String status = request.getParameter("status");
+		String lotteryID = request.getParameter("lotteryID");
+		
+		
+		req.put("statu", status);
+		req.put("startDate", startDate);
+		req.put("endDate", endDate);
+		req.put("integra", integra);
+		req.put("adminID", userInfo.getId());
+		
+		if (!"".equals(lotteryID)) {
+			req.put("lId", lotteryID);
+		}
+		
+		String [] sIpInfo = new String[6];
+		if (userInfo != null) {
+			entity.setiAdminId(userInfo.getId());
+		}
+		entity.setlOptId(110101);
+		entity.setlModuleId(1007);
+		entity.setsDetail("");
+		entity.setsIp(AddressUtils.GetRemoteIpAddr(request, sIpInfo));
+		entity.setsMac(null);
+		entity.setsUrl(LoadUrlUtil.getFullURL(request));
+		
+		int num = luckyDrawService.LotterySet(req, entity, sIpInfo);
+		return num;
+	}
+	
+	/**
+	 * 
+	* selectPrizeInformationByID根据id查询奖品信息 
+	* TODO根据id查询奖品信息
+	* @author 杨翰林  
+	* * @Title: selectPrizeInformationByID 
+	* @Description: 根据id查询奖品信息 
+	* @param @param request
+	* @param @return 设定文件 
+	* @return PrizeInformationEntity 返回类型 
+	* @date 2016-5-19 下午7:55:05
+	* @throws
+	 */
+	@RequestMapping("/query4prize")
+	@ResponseBody
+	public PrizeInformationEntity selectPrizeInformationByID(HttpServletRequest request) {
+		
+		String prizeID = request.getParameter("prizeID");
+		
+		PrizeInformationEntity prizeInformationEntity = luckyDrawService.
+				selectPrizeInformationByID(IntegerAndString.StringToLong(prizeID, -1));
+		
+		return prizeInformationEntity;
 	}
 	
 	

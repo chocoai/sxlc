@@ -85,6 +85,8 @@ public class ProjectPurposeEntity {
 	private List<ProjectInvestRedPackageEntity> pEntities2;//项目惊喜红包配置 
 	private ProjectAppAutoSetEntity pAppAutoSetEntity;//项目自动投标设置
 	private ProjectAppMngFeeEntity projectAppMngFeeEntity;//查询项目费用设置
+	private String projectName;//项目类型名
+	private String projectId;//项目类型id
 	
 	/**
 	 * 积分处理时间
@@ -272,6 +274,18 @@ public class ProjectPurposeEntity {
 	}
 	public void setYearRates(String yearRates) {
 		this.yearRates = yearRates;
+	}
+	public String getProjectName() {
+		return projectName;
+	}
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+	public String getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	} 
 
 	

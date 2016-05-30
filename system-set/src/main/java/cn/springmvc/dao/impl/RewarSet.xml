@@ -41,9 +41,9 @@
   		InviteMaster_Reward_Set(Grade_ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward)
   	</if>
   	<if test="type==1">
-  		FinancialAdvisor_Reward_Set(Reward_ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward)
+  		FinancialAdvisor_Reward_Set(Reward_ID,Grade_Name,Total_Invest,Grade_Remark,VIP_Reward,Borrow_Reward,Repay_Reward,Invest_Reward,Invest_Income_Reward)
   	</if>
-  	values(#{id},#{gradeName},#{totalInvest},#{gradeRemark},#{vIPReward},#{borrowReward},#{repayReward},#{investReward});
+  	values(#{id},#{gradeName},#{totalInvest},#{gradeRemark},#{vIPReward},#{borrowReward},#{repayReward},#{investReward},#{investIncomeReward});
   </insert>
   <!-- 根据id修改提奖设置 -->
   <update id="updateRewarSet" parameterType="cn.springmvc.model.RewardSetEntity">
@@ -62,6 +62,9 @@
 		  </if>
 		<if test="gradeRemark != null">
   				Grade_Remark=#{gradeRemark},
+		  </if>
+		<if test="investIncomeReward != null">
+  				Invest_Income_Reward=#{investIncomeReward},
 		  </if>
 		VIP_Reward=#{vIPReward},Borrow_Reward=#{borrowReward},Repay_Reward=#{repayReward},Invest_Reward=#{investReward}
 	</set>

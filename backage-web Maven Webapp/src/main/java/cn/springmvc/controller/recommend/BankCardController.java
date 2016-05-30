@@ -45,6 +45,8 @@ public class BankCardController {
 	@Resource(name="memberBankCardServiceImpl")
 	private MamberBankCardService mamberBankCardService;
 	
+	 
+	
 	/**
 	 * 
 	* bankCardList查询银行卡列表 
@@ -76,7 +78,7 @@ public class BankCardController {
 			req.put("memberType", memberType);
 		}
 
-		req.put("guaranteeID", 1);
+		req.put("guaranteeID", userInfo.getStaffId());
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
@@ -181,6 +183,7 @@ public class BankCardController {
 		String bankNo = request.getParameter("cardNo");
 		String bankPhone = request.getParameter("phone");
 		String memberType = request.getParameter("memberType");
+		String bank = request.getParameter("bank");
 		
 		BankCardInfoEntity bankCard = new BankCardInfoEntity();
 		MemberBankCardEntity memberBankCard = new MemberBankCardEntity();
@@ -191,8 +194,9 @@ public class BankCardController {
 		bankCard.setCardCity(Integer.valueOf(cityId));
 		bankCard.setCardProvince(Integer.valueOf(provinceId));
 		bankCard.setBranchAddress("");
+		bankCard.setBankId(IntegerAndString.StringToInt(bank, -1));
 		
-		memberBankCard.setMemberID(userInfo.getId());
+		memberBankCard.setMemberID(userInfo.getStaffId());
 		memberBankCard.setMemberType(IntegerAndString.StringToInt(memberType, -1));
 		
 		String [] sIpInfo = new String[6];
@@ -231,12 +235,14 @@ public class BankCardController {
 		
 		HttpSession session = HttpSessionUtil.getSession(request);
 		InsertAdminLogEntity entity = new InsertAdminLogEntity();
+		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
+		
 		String bankCardId = request.getParameter("bankCardId");
 		
-		req.put("bankCardId", bankCardId);
+		req.put("receiveCard", bankCardId);
+		req.put("memberID", userInfo.getStaffId());
 		
 		String [] sIpInfo = new String[6];
-		Admin userInfo = (Admin)session.getAttribute("LoginPerson");
 		if (userInfo != null) {
 			entity.setiAdminId(userInfo.getId());
 		}
@@ -281,6 +287,7 @@ public class BankCardController {
 		String bankPhone = request.getParameter("phone");
 		String bankCardId = request.getParameter("bankCardId");
 		String memberType = request.getParameter("memberType");
+		String bank = request.getParameter("bank");
 		
 		BankCardInfoEntity bankCard = new BankCardInfoEntity();
 		
@@ -290,6 +297,8 @@ public class BankCardController {
 		bankCard.setCardCity(Integer.valueOf(cityId));
 		bankCard.setCardProvince(Integer.valueOf(provinceId));
 		bankCard.setBranchAddress("");
+		bankCard.setBankId(IntegerAndString.StringToInt(bank, -1));
+		bankCard.setBankCardId(IntegerAndString.StringToLong(bankCardId, -1));
 		
 		req.put("bankNo", bankNo);
 		req.put("receiveCard", bankCardId);
@@ -330,10 +339,11 @@ public class BankCardController {
 		
 		String bankCardId = request.getParameter("bankCardId");
 		BankCardInfoEntity bankCardInfoEntity = mamberBankCardService
-				.selectMemberBankCardByID(IntegerAndString.StringToLong(bankCardId, -1), 1);
+				.selectMemberBankCardByID(IntegerAndString.StringToLong(bankCardId, -1), userInfo.getStaffId());
 		
 		return bankCardInfoEntity;
 	}
+	
 	
 }
 

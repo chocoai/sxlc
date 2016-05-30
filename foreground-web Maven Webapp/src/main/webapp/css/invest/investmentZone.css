@@ -1,30 +1,30 @@
 /* CSS Document */
 @charset "UTF-8";
-/* ÉèÖÃ¶¥²¿Á´½ÓÑùÊ½ */
+/* ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .mainPageTop .mainPageTop2{
 	color:#72c0f3;
 }
-/*Îé³ÉÈ»2016-3-28*/
-/*main²¿·Ö  */
+/*ï¿½ï¿½ï¿½È»2016-3-28*/
+/*mainï¿½ï¿½ï¿½ï¿½  */
 body .main{
 	padding-top:0;
 	padding-bottom:20px;
 	width:1200px;
 	background-color:#f6f6f6;
 }
-/*Á´½ÓÇøÓò  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
 .link-area{
 	color:#868686;
 	height:50px;
 	line-height:50px;
 	text-align:left;
 }
-.main a:link {color:#868686;text-decoration:none;}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.main a:visited {color:#868686}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.main a:hover {text-decoration:underline}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
+.main a:link {color:#868686;text-decoration:none;}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.main a:visited {color:#868686}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.main a:hover {text-decoration:underline}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
 /* .main .dq:link{color:#656565 !important;}
-.main .dq:visited {color:#868686}  Ã»ÓÐ±ä»¯*/
-/* ÉèÖÃÂÖ²¥Í¼ÑùÊ½  start »ÆöÎ 20160327 Îé³ÉÈ»2016-4-6¸´ÖÆÐÞ¸Ä*/
+.main .dq:visited {color:#868686}  Ã»ï¿½Ð±ä»¯*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½Í¼ï¿½ï¿½Ê½  start ï¿½ï¿½ï¿½ï¿½ 20160327 ï¿½ï¿½ï¿½È»2016-4-6ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½*/
 .banner {
 	position:relative;
 	bottom:5px;
@@ -93,8 +93,8 @@ body .main{
 	background: #f8f8f8;
 	opacity: 1;
 }
-/* ÉèÖÃÂÖ²¥Í¼ÑùÊ½  end*/
-/*±êÇ©²¿·Ö  */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½Í¼ï¿½ï¿½Ê½  end*/
+/*ï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½  */
 .tab-head{
 	height:35px;
 }
@@ -122,10 +122,10 @@ body .main{
 	text-align:center;
 	margin-right:20px;
 }
-.tab-head a:link {color:#000;text-decoration:none;}/* Î´±»·ÃÎÊµÄÁ´½Ó     */
-.tab-head a:visited {color:#000}  /* ÒÑ±»·ÃÎÊ¹ýµÄÁ´½Ó    */
-.tab-head a:hover {text-decoration:underline}    /* Êó±êÐü¸¡ÔÚÉÏµÄÁ´½Ó  */
-/*É¸Ñ¡¿ò  */
+.tab-head a:link {color:#000;text-decoration:none;}/* Î´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½     */
+.tab-head a:visited {color:#000}  /* ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    */
+.tab-head a:hover {text-decoration:underline}    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½  */
+/*É¸Ñ¡ï¿½ï¿½  */
 .fliter-box{
 	height:290px;
 	width:100%;
@@ -181,7 +181,7 @@ body .main{
 	border:1px solid #72c0f3;
 	border-radius:0;
 }
-/*search-btnµã»÷ºóÐ§¹û´ý¸Ä  */
+/*search-btnï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½  */
 .search-btn:hover{
 	background-color:#31b4ff;
 	color:#fff;
@@ -204,7 +204,7 @@ body .main{
 	float:right;
 }	
 
-/*É¸Ñ¡tagsÃ¿¸öradioÑùÊ½*/
+/*É¸Ñ¡tagsÃ¿ï¿½ï¿½radioï¿½ï¿½Ê½*/
 .tags-list{
 	margin:20px 0;
 }
@@ -241,7 +241,7 @@ body .main{
     color: #666;
     padding-right: 18px;
 }
-/*ÏîÄ¿ÁÐ±í²¿·Ö */
+/*ï¿½ï¿½Ä¿ï¿½Ð±?ï¿½ï¿½ */
 .invest-list{
 	background-color:#fff;
 	padding:0 20px;
@@ -289,10 +289,11 @@ body .main{
 	background-repeat: no-repeat;
 	background-position:4px 2px;
 }
-/*info²¿·Ö  */
+/*infoï¿½ï¿½ï¿½ï¿½  */
 .inv-info{
 	width:100%;
 	padding:5px;
+	float:left;
 }
 .inv-info >div{
 	text-align:center;
@@ -335,7 +336,7 @@ body .main{
 	color:#5c5c5c;
 	font-size:16px;	
 }
-/* Í¶×ÊÊ±¼äÐÅÏ¢ */
+/* Í¶ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ï¢ */
 .inv-info .inv-time-count{
 	width:200px;
 	margin-top:30px;
@@ -351,7 +352,7 @@ body .main{
 	font-size:14px;
 	color:#8d8d8d;
 }
-/* ÒÑ½áÇåÒÑ»¹¿îÓ¡ÕÂ */
+/* ï¿½Ñ½ï¿½ï¿½ï¿½ï¿½Ñ»ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½ */
 .pro-finish{
 	width:145px;
 	height:145px;
@@ -372,7 +373,7 @@ body .main{
 	background-repeat: no-repeat;
 	background-position: 0 4px;
 }
-/* ÒÑÍê³É */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .pro-all{
 	width:145px;
 	height:145px;
@@ -383,7 +384,7 @@ body .main{
 	background-repeat: no-repeat;
 	background-position: 0 4px;
 }
-/* ÒÑÁ÷±ê */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .pro-fault{
 	width:145px;
 	height:145px;
@@ -394,8 +395,8 @@ body .main{
 	background-repeat: no-repeat;
 	background-position: 0 4px;
 }
-/* ÒÑ½áÇåÒÑ»¹¿îÓ¡ÕÂ½áÊø */
-/* µ¹¼ÆÊ± */
+/* ï¿½Ñ½ï¿½ï¿½ï¿½ï¿½Ñ»ï¿½ï¿½ï¿½Ó¡ï¿½Â½ï¿½ï¿½ï¿½ */
+/* ï¿½ï¿½ï¿½ï¿½Ê± */
 .investOpenT{
 	color: #72bff3;
     height: 38px;
@@ -433,11 +434,11 @@ body .main{
 #endTimeValue-d:hover{
 	color:#fff;
 }
-#endTimeValue-d .m-d{/*ÒþÈ¥ÌìÊý  */
+#endTimeValue-d .m-d{/*ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½  */
 	display:none;
 }
-/* µ¹¼ÆÊ±½áÊø */
-/*½ø¶ÈÌõ  */
+/* ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½  */
 .progress{
 	height:37px;
 	padding:10px 0;
@@ -465,7 +466,7 @@ body .main{
 	background-color: #72c0f3;
 	border-radius: 5px; 
 }
-/*½ø¶ÈÌõ½áÊø  */
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  */
 .inv-now{
 	background-color:#fff;
 	color:#72c0f3;
@@ -483,7 +484,7 @@ body .main{
 	background-color:#72c0f3;
 	color:#fff;
 }
-/*ÓÐÍ¼Æ¬Ê±  */
+/*ï¿½ï¿½Í¼Æ¬Ê±  */
 .inv-time-count img{
 	position:absolute;
 	right:115px;

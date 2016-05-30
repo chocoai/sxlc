@@ -7,7 +7,7 @@
 	 * 初始化
 	 */
 	$(function(){
-		validform5(".btn-default","dataForm",false,"3");
+		validform5(".btn-default","dataForm",false,"5");
 		showBillCollectionConfig();
 		//保存
 	});
@@ -34,7 +34,6 @@ function showBillCollectionConfig(){
 	});
 }
 
-
 //保存
 function submitBillCofig(){
 	var billDays = $("#overdue_day").val();
@@ -43,12 +42,12 @@ function submitBillCofig(){
 	encrypt.setPublicKey(publicKey_common);
 	//result 为加密后参数
 	var billDays = encrypt.encrypt(billDays);
-	var billContent = encrypt.encrypt(billContent);
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/loanEerge/saveLoanEerge.do",
 		data:{
 			billday:billDays,
-			billContent:billContent
+			content:billContent
 		},
 		type:'post',  
 		cache:false,  
@@ -59,6 +58,7 @@ function submitBillCofig(){
 			}else {
 				layer.alert("保存失败！",{icon:2});  
 			}
+			$(".layui-layer-btn0").removeClass("disabled");
 		},  
 		error : function() {  
 			layer.alert("服务器异常",{icon:2});  

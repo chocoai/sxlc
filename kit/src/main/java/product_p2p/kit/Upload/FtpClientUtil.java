@@ -28,7 +28,7 @@ public class FtpClientUtil {
 	public final static short sFtpServer = 0;		//0：windows 1:linux
 	
 	public static String getFtpFilePath(){
-		String sResult = "http://"+ sFtpIpAddr +":"+iHttpPort+"/";
+		String sResult = "http://www."+ sFtpIpAddr +":"+iHttpPort+"/";
 		
 		return sResult;
 	}

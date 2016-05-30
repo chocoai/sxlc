@@ -13,6 +13,9 @@ $(function () {
 		}
 	});
 	
+});
+
+$(function () {
 	$("#first").bind('click', function() {
 		$("#conForm").submit();
 	});
@@ -33,7 +36,7 @@ function firstOption() {
 		success : function (msg) {
 			if (msg == 1) {
 				layer.alert("操作成功",{icon:1});
-				setTimeout('location.reload()',2000);
+				location.reload();
 			}else {
 				layer.alert("操作失败",{icon:2});
 			}
@@ -58,6 +61,7 @@ $(function() {
 });
 
 function addRed() {
+	debugger;
 	var invsit = $("#invsit").val();
 	var scale = $("#scale").val();
 	invsit = encrypt.encrypt((invsit + ""));
@@ -71,8 +75,10 @@ function addRed() {
 		},
 		success : function (msg) {
 			if (msg == 1) {
+				layer.closeAll();
+				var table = $('#applicationAudit').DataTable();
+				table.ajax.reload();
 				layer.alert("操作成功",{icon:1});
-				setTimeout('location.reload()',2000);
 			}else {
 				layer.alert("操作失败",{icon:2});
 			}
@@ -83,6 +89,10 @@ function addRed() {
 /*  修改SEO设置     */
 function alertEnv(){
 	var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+	if (rowdata.length <= 0) {
+		layer.alert("请选择需要操作的记录！", {icon:0});
+		return;
+	}
 	$("#minvsit").val(rowdata[0].investAmounts);
 	$("#mscale").val(rowdata[0].rpRates);
 	layer.open({
@@ -140,16 +150,16 @@ $(function(){
 });
 
 $(function(){
-	validform5(".addBtn","addRedEForm",false,3);
-	validform5(".alertBtn","alertRedEForm",false,3);
-	validform5(".okBtn","conForm",false,3);
+	validform5(".addBtn","addRedEForm",false,5);
+	validform5(".alertBtn","alertRedEForm",false,5);
+	validform5(".okBtn","conForm",false,5);
 	$(".cancelBtn").bind("click",function(){
 		layer.closeAll();
 	});
 	$("#conForm").Validform({
-		tiptype:3,
+		tiptype:5,
 		btnSubmit:".okBtn", 
-		datatype:{"logName":logName,"acountM":acountM},
+		datatype:{"logname":logname,"acountM":acountM},
 		ajaxPost:{
 			
 		    },
@@ -203,11 +213,23 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#applicationAudit').DataTable();
-//设置选中change颜色
- $('#applicationAudit tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
 });
-
+$(function() {
+	//单选
+	$('#applicationAudit tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
+});
 

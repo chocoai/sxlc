@@ -67,70 +67,70 @@ public class MyAccountHomeEntity {
 	}
 	public void setUserBalance(long userBalance) {
 		this.userBalance = userBalance;
-		this.userBalances= IntegerAndString.LongToString(userBalance);
+		this.userBalances= IntegerAndString.LongToString2(userBalance);
 	}
 	public long getFrozen() {
 		return frozen;
 	}
 	public void setFrozen(long frozen) {
 		this.frozen = frozen;
-		this.frozens= IntegerAndString.LongToString(frozen);
+		this.frozens= IntegerAndString.LongToString2(frozen);
 	}
 	public long getGiftUserBalance() {
 		return giftUserBalance;
 	}
 	public void setGiftUserBalance(long giftUserBalance) {
 		this.giftUserBalance = giftUserBalance;
-		this.giftUserBalances= IntegerAndString.LongToString(giftUserBalance);
+		this.giftUserBalances= IntegerAndString.LongToString2(giftUserBalance);
 	}
 	public long getWillRecPrincipal() {
 		return willRecPrincipal;
 	}
 	public void setWillRecPrincipal(long willRecPrincipal) {
 		this.willRecPrincipal = willRecPrincipal;
-		this.willRecPrincipals= IntegerAndString.LongToString(willRecPrincipal);
+		this.willRecPrincipals= IntegerAndString.LongToString2(willRecPrincipal);
 	}
 	public long getWillRecInterest() {
 		return willRecInterest;
 	}
 	public void setWillRecInterest(long willRecInterest) {
 		this.willRecInterest = willRecInterest;
-		this.willRecInterests= IntegerAndString.LongToString(willRecInterest);
+		this.willRecInterests= IntegerAndString.LongToString2(willRecInterest);
 	}
 	public long getRepayAmount() {
 		return repayAmount;
 	}
 	public void setRepayAmount(long repayAmount) {
 		this.repayAmount = repayAmount;
-		this.repayAmounts= IntegerAndString.LongToString(repayAmount);
+		this.repayAmounts= IntegerAndString.LongToString2(repayAmount);
 	}
 	public long getTotalAmount() {
 		return totalAmount;
 	}
 	public void setTotalAmount(long totalAmount) {
 		this.totalAmount = totalAmount;
-		this.totalAmounts= IntegerAndString.LongToString(totalAmount);
+		this.totalAmounts= IntegerAndString.LongToString2(totalAmount);
 	}
 	public long getChargemoney() {
 		return chargemoney;
 	}
 	public void setChargemoney(long chargemoney) {
 		this.chargemoney = chargemoney;
-		this.chargemoneys= IntegerAndString.LongToString(chargemoney);
+		this.chargemoneys= IntegerAndString.LongToString2(chargemoney);
 	}
 	public long getWithdrawalMoney() {
 		return withdrawalMoney;
 	}
 	public void setWithdrawalMoney(long withdrawalMoney) {
 		this.withdrawalMoney = withdrawalMoney;
-		this.withdrawalMoneys= IntegerAndString.LongToString(withdrawalMoney);
+		this.withdrawalMoneys= IntegerAndString.LongToString2(withdrawalMoney);
 	}
 	public long getGiftAmount() {
 		return giftAmount;
 	}
 	public void setGiftAmount(long giftAmount) {
 		this.giftAmount = giftAmount;
-		this.giftAmounts= IntegerAndString.LongToString(giftAmount);
+		this.giftAmounts= IntegerAndString.LongToString2(giftAmount);
 	}
 	public long getFriends() {
 		return friends;
@@ -149,63 +149,63 @@ public class MyAccountHomeEntity {
 	}
 	public void setInvestAmountValid(long investAmountValid) {
 		this.investAmountValid = investAmountValid;
-		this.investAmountValids= IntegerAndString.LongToString(investAmountValid);
+		this.investAmountValids= IntegerAndString.LongToString2(investAmountValid);
 	}
 	public long getRealAmount() {
 		return realAmount;
 	}
 	public void setRealAmount(long realAmount) {
 		this.realAmount = realAmount;
-		this.realAmounts= IntegerAndString.LongToString(realAmount);
+		this.realAmounts= IntegerAndString.LongToString2(realAmount);
 	}
 	public long getBackAmount() {
 		return backAmount;
 	}
 	public void setBackAmount(long backAmount) {
 		this.backAmount = backAmount;
-		this.backAmounts= IntegerAndString.LongToString(backAmount);
+		this.backAmounts= IntegerAndString.LongToString2(backAmount);
 	}
 	public long getInvestVouchersAmount() {
 		return investVouchersAmount;
 	}
 	public void setInvestVouchersAmount(long investVouchersAmount) {
 		this.investVouchersAmount = investVouchersAmount;
-		this.investVouchersAmounts= IntegerAndString.LongToString(investVouchersAmount);
+		this.investVouchersAmounts= IntegerAndString.LongToString2(investVouchersAmount);
 	}
 	public long getInvestGiftAmount() {
 		return investGiftAmount;
 	}
 	public void setInvestGiftAmount(long investGiftAmount) {
 		this.investGiftAmount = investGiftAmount;
-		this.investGiftAmounts= IntegerAndString.LongToString(investGiftAmount);
+		this.investGiftAmounts= IntegerAndString.LongToString2(investGiftAmount);
 	}
 	public long getAmount() {
 		return amount;
 	}
 	public void setAmount(long amount) {
 		this.amount = amount;
-		this.amounts= IntegerAndString.LongToString(amount);
+		this.amounts= IntegerAndString.LongToString2(amount);
 	}
 	public long getWillRepayPrincipal() {
 		return willRepayPrincipal;
 	}
 	public void setWillRepayPrincipal(long willRepayPrincipal) {
 		this.willRepayPrincipal = willRepayPrincipal;
-		this.willRepayPrincipals= IntegerAndString.LongToString(willRepayPrincipal);
+		this.willRepayPrincipals= IntegerAndString.LongToString2(willRepayPrincipal);
 	}
 	public long getWillRepayInterest() {
 		return willRepayInterest;
 	}
 	public void setWillRepayInterest(long willRepayInterest) {
 		this.willRepayInterest = willRepayInterest;
-		this.willRepayInterests= IntegerAndString.LongToString(willRepayInterest);
+		this.willRepayInterests= IntegerAndString.LongToString2(willRepayInterest);
 	}
 	public long getOverdue() {
 		return overdue;
 	}
 	public void setOverdue(long overdue) {
 		this.overdue = overdue;
-		this.overdues= IntegerAndString.LongToString(overdue);
+		this.overdues= IntegerAndString.LongToString2(overdue);
 	}
 	public String getLastDate() {
 		return lastDate;

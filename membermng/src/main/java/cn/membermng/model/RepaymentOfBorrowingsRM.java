@@ -46,6 +46,7 @@ public class RepaymentOfBorrowingsRM {
 	}
 	public void setOverdueInterest(long overdueInterest) {
 		this.overdueInterest = overdueInterest;
+		this.sOverdueInterest = IntegerAndString.LongToString(overdueInterest);
 	}
 	public String getsOverdueInterest() {
 		return sOverdueInterest;

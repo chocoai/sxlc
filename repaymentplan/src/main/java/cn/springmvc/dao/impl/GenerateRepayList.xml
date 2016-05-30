@@ -3,7 +3,7 @@
 <mapper namespace="GenerateRepay">
     <!-- 根据项目申请ID查询项目详情 -->  
 	<select id="selectProjectdetail"  parameterType="map" resultMap="replayProjectDetail.resultProjectDetail" >
-	   select pbi.Repay_Way,pbi.Year_Rate,pbi.Amount,pbi.Deadline,
+	   select pbi.Repay_Way,(pbi.Year_Rate+par.Rate_Add_Rate) as Year_Rate,pbi.Amount,pbi.Deadline,
 	   pbi.Deadline_Type  ,par.Apply_Id
        from  Project_App_Record par
 	   left join Project_Base_Info pbi on  par.Project_Base_ID=pbi.Project_Base_ID 

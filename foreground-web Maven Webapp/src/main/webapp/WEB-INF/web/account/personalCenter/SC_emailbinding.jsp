@@ -48,7 +48,7 @@
 		   						<label>邮箱验证码：</label>
 		   						<div class="dynamicValidation">
 		   							<input class="code codeGet dynamicCode" type="text" lang="请输入验证码" datatype="Z6" maxlength="6">
-		   							<div class="codeBtn">获取验证码</div>
+		   							<div class="codeBtn disabled">获取验证码</div>
 		   						</div>
 		   					</li>
 		   					<li class="contetnList">

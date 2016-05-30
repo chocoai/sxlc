@@ -57,6 +57,9 @@ public class MyAccountHomeServiceImpl implements MyAccountHomeService{
 		if( map.get("Gift_User_Balance") != null) {
 			 myAccountHomeEntity.setGiftUserBalance(IntegerAndString.StringToLong(map.get("Gift_User_Balance").toString(),0));
 	    } 
+		if(map.get("Gift_Amount")!=null){
+			myAccountHomeEntity.setGiftAmount(IntegerAndString.StringToLong(map.get("Gift_Amount").toString(),0));
+		}
 		if( map.get("WillRec_Principal") != null) {
 			 myAccountHomeEntity.setWillRecPrincipal(IntegerAndString.StringToLong(map.get("WillRec_Principal").toString(),0));
 	    } 
@@ -82,7 +85,7 @@ public class MyAccountHomeServiceImpl implements MyAccountHomeService{
 			 myAccountHomeEntity.setFriends(IntegerAndString.StringToLong(map.get("Friends").toString(),0));
 	    } 
 		if( map.get("Integral_Residue") != null) {
-			 myAccountHomeEntity.setUserBalance(IntegerAndString.StringToLong(map.get("Integral_Residue").toString(),0));
+			 myAccountHomeEntity.setIntegralResidue(IntegerAndString.StringToLong(map.get("Integral_Residue").toString(),0));
 	    } 
 		if( map.get("Invest_Amount_Valid") != null) {
 			 myAccountHomeEntity.setInvestAmountValid(IntegerAndString.StringToLong(map.get("Invest_Amount_Valid").toString(),0));

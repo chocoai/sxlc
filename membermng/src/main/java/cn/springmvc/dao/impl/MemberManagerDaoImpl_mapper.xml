@@ -102,9 +102,9 @@
 			<if test="map!=null and map.memberNo != null and map.memberNo !='' ">
 				and mi.Member_No LIKE '%${map.memberNo}%'
 			</if>
-			<if test="map!=null and map.memberName != null and map.memberName !='' ">
+			<!-- <if test="map!=null and map.memberName != null and map.memberName !='' ">
 				and  mi.logname LIKE '%${map.memberName}%'
-			</if>
+			</if> -->
 			<if test="map!=null and map.personalName != null and map.personalName !=''">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%'
 			</if>
@@ -112,12 +112,13 @@
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
 			</if>
 			<if test="map!=null and  map.automaticBidding >-1">
-				and mtai.Is_Auto_Invest = 0
+				and mtai.Is_Auto_Invest = #{map.automaticBidding}
 			</if>
 			<if test="map!=null and map.automaticRepayment> -1">
-				and mtai.Open_Auto_Pay = 0
+				and mtai.Open_Auto_Pay =  #{map.automaticRepayment>}
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	
@@ -191,13 +192,14 @@
 			<if test="map!=null and  map.personalPhone != null and  map.personalPhone !='' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
 			</if>
-			<if test="map!=null and  map.automaticBidding>-1">
-				and mtai.Is_Auto_Invest = 0
+			<if test="map!=null and  map.automaticBidding >-1">
+				and mtai.Is_Auto_Invest = #{map.automaticBidding}
 			</if>
 			<if test="map!=null and map.automaticRepayment> -1">
-				and mtai.Open_Auto_Pay = 0
+				and mtai.Open_Auto_Pay =  #{map.automaticRepayment>}
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	
@@ -370,13 +372,14 @@
 		(
 			select  count(1) from Loan_Repay lr 
 	    	left join  Project_App_Record par  on par.Apply_Id=lr.Apply_Id 
-	   		where  par.Member_ID=#{memberId} and lr.IsValid=0  and  lr.Statu != 3 and  lr.Repay_MaxTime >now() 
-		),
+	   		where  par.Member_ID=#{memberId} and lr.IsValid=0  and  lr.Statu != 3 and  lr.Repay_MaxTime &lt; now() 
+		) as yuQiWeiHuan,
+		
 		(
-			select	count(1) from Project_App_Record par 
-	   	 	where	par.Member_ID=#{memberId} and par.Invest_Statu=4 
-	   	 	and (select count(1) from Loan_Repay lr where lr.Apply_Id=par.Apply_Id and lr.IsValid=1)>0
-	    )
+	   	 	select count(1) from Loan_Repay lr 
+	   	 	left join Project_App_Record par on par.Apply_Id = lr.Apply_Id 
+	   	 	where lr.IsValid = 1 and par.Member_ID = #{memberId}
+	    ) as tiQianHuanKuan
 		from member_info mi where member_id = #{memberId}
 	</select>
 	
@@ -465,7 +468,9 @@
 			<if test="map.startTime != null">
 				and mi.Reg_Date between #{map.startTime} and #{map.endTime}				
 			</if>
+			
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	<!-- 会员拉黑 -->
@@ -514,16 +519,17 @@
 		<where>
 			mi.Member_Type=0 and
 		    (select count(1) from Member_VIP_App_Record mvar where Certify_EDate > now() and Member_ID = mi.Member_ID) >= 1	
-			<if test="memberName != null and memberName != '' ">
+			<if test="map.memberName != null and map.memberName != '' ">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName != '' ">
+			<if test="map.userName != null and map.userName != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	<!-- 企业会员VIP列表 -->
@@ -562,16 +568,17 @@
 		<where>
 			mi.Member_Type=1 and 
 		    (select count(1) from Member_VIP_App_Record mvar where Certify_EDate > now() and Member_ID = mi.Member_ID) >= 1	
-			<if test="memberName != null and memberName != '' ">
+			<if test="map.memberName != null and map.memberName != '' ">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName != '' ">
+			<if test="map.userName != null and map.userName != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	
@@ -581,6 +588,7 @@
 		<result		column="Personal_Name"			property="personalName"/>
 		<result		column="logname"				property="logname"/>
 		<result		column="Reg_Date"				property="regDate"/>
+		<result		column="Companye_BLN"			property="companyeBLN"/>
 		<result		column="personal_phone"			property="personalPhone"/>
 		<result		column="Personal_IDCard"		property="personalIdCard"/>
 		<result		column="Personal_Email"			property="personalEmail"/>
@@ -593,7 +601,7 @@
 	<!-- 注册会员列表 -->
 	<select id="registers" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="regMemberis">
 		select mi.member_Id,mi.member_No,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_name),#{map.skey}) using utf8) as personal_name,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) using utf8) as Personal_Name,
 		mi.logname,
 		mi.Reg_Date,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personal_phone,
@@ -613,19 +621,19 @@
 		<where>
 			mi.Member_Type=0  and 
 			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 0) = 0
-			<if test="memberName != null and memberName!=''">
+			<if test="map.memberName != null and map.memberName!=''">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
+			<if test="map.userName != null and map.userName !='' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
-			<if test="idCard != null and idcard != '' ">
+			<if test="map.idCard != null and map.idcard != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
 			</if>
-			<if test="regDate != null and regDate != '' and endDate !='' ">
+			<if test="map.regDate != null and map.regDate != '' and map.endDate !='' ">
 				and mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
 			</if>
 		</where>
@@ -635,7 +643,8 @@
 	<!-- 企业注册会员列表 -->
 	<select id="companlyRegisters" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="regMemberis">
 		select mi.member_Id,mi.member_No,
-		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey}) using utf8) as personal_name,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey}) using utf8) as Personal_Name,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Companye_BLN),#{map.skey}) using utf8) as Companye_BLN,
 		mi.logname,
 		mi.Reg_Date,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personal_phone,
@@ -656,19 +665,19 @@
 		<where>
 			mi.Member_Type=1 and
 			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 2) = 0
-			<if test="memberName != null and memberName!=''">
+			<if test="map.memberName != null and map.memberName!=''">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
+			<if test="map.userName != null and map.userName !='' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
-			<if test="idCard != null and idcard != '' ">
+			<if test="map.idCard != null and map.idcard != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
 			</if>
-			<if test="regDate != null and regDate != '' and endDate !='' ">
+			<if test="map.regDate != null and map.regDate != '' and map.endDate !='' ">
 				and mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
 			</if>
 		</where>
@@ -695,7 +704,7 @@
 		select 
 		mi.member_id,
 		mi.member_no,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_name),#{map.skey}) using utf8) as personal_name,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) using utf8) as Personal_Name,
 		mi.logname,
 		mi.Reg_Date,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personal_phone,
@@ -717,30 +726,30 @@
 			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 2) > 0 and 
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id) = 0 and 
 			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id ) = 0
-			<if test="memberName != null and memberName!=''">
+			<if test="map.memberName != null and map.memberName!=''">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
+			<if test="map.userName != null and map.userName !='' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
-			<if test="idCard != null and idcard != '' ">
+			<if test="map.idCard != null and map.idcard != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
 			</if>
-			<if test="regDate != null and regDate != '' and endDate !='' ">
+			<if test="map.regDate != null and map.regDate != '' and map.endDate !='' ">
 				and mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
 			</if>
 		</where>
-		order by mi.Reg_Date desc
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	<!-- 企业会员认证列表 -->
 	<select id="companlyAuthenticationMember" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="authMembers">
 		select 
 		mi.member_id,
 		mi.member_no,
-		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey}) using utf8) as personal_name,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey}) using utf8) as Personal_Name,
 		mi.logname,
 		mi.Reg_Date,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personal_phone,
@@ -763,23 +772,23 @@
 			(select count(1) from Member_Attest_Info mai where mai.Member_Type = mi.Member_Type and mai.member_id = mi.member_id and mai.Status = 0) > 0 and 
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id) = 0 and 
 			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id ) = 0
-			<if test="memberName != null and memberName!=''">
+			<if test="map.memberName != null and map.memberName!=''">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
+			<if test="map.userName != null and map.userName !='' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
-			<if test="idCard != null and idcard != '' ">
+			<if test="map.idCard != null and map.idcard != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) like '%${map.idCard}%'
 			</if>
-			<if test="regDate != null and regDate != '' and endDate !='' ">
+			<if test="map.regDate != null and map.regDate != '' and map.endDate !='' ">
 				and mi.Reg_Date betten #{map.regDate} and #{map.endDate} 
 			</if>
 		</where>
-		order by mi.Reg_Date desc
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	
@@ -814,7 +823,7 @@
 	<select id="loanMember" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="loanMembers">
 		select mi.member_id,
 		mi.member_no,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_Name),#{map.skey}) using utf8) as personal_Name,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) using utf8) as Personal_Name,
 		mi.logname,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personal_phone,
 		pd.Province_Name,cd.City_Name,cod.County_Name,td.Town_Name,
@@ -845,23 +854,24 @@
 		<where>
 			mi.Member_Type=0 and
 			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND  par.Invest_Statu>=3) > 0  
-			<if test="memberName != null and memberName!=''">
+			<if test="map.memberName != null and map.memberName!=''">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
+			<if test="map.userName != null and map.userName !='' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	<!-- 企业借款会员 -->
 	<select id="complanyLoanMember" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="loanMembers">
 		select mi.member_id,
 		mi.member_no,
-		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey}) using utf8) as personal_Name,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey}) using utf8) as Personal_Name,
 		mi.logname,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personal_phone,
 		pd.Province_Name,cd.City_Name,cod.County_Name,td.Town_Name,
@@ -893,16 +903,17 @@
 		<where>
 			mi.Member_Type=1 and
 			(select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND  par.Invest_Statu>=3) > 0  
-			<if test="memberName != null and memberName!=''">
+			<if test="map.memberName != null and map.memberName!=''">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
+			<if test="map.userName != null and map.userName !='' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	
@@ -934,7 +945,7 @@
 	<select id="investmentMember" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="inveMembers">
 		select mi.member_id,
 		mi.member_no,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_name),#{map.skey}) using utf8) as personal_name,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) using utf8) as Personal_Name,
 		mi.logname,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personal_phone,
 		mti.ThirdParty_Account,
@@ -963,23 +974,24 @@
 		<where>
 			mi.Member_Type=0 and
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
-			<if test="memberName != null and memberName!=''">
+			<if test="map.memberName != null and map.memberName!=''">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
+			<if test="map.userName != null and map.userName !='' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	<!-- 投资会员 -->
 	<select id="complanyInvestmentMember" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="inveMembers">
 		select mi.member_id,
 		mi.member_no,
-		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey}) using utf8) as personal_name,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey}) using utf8) as Personal_Name,
 		mi.logname,
 		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personal_phone,
 		mti.ThirdParty_Account,
@@ -1009,46 +1021,47 @@
 		<where>
 			mi.Member_Type=1 and
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
-			<if test="memberName != null and memberName!=''">
+			<if test="map.memberName != null and map.memberName!=''">
 				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
+			<if test="map.userName != null and map.userName !='' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
+			<if test="map.phone != null and map.phone != '' ">
 				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	<!--  pengr加 =============================================-->
 	<!-- 复合会员 -->
 	<select id="componentMember" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.MemberInfo">
-		select mi.member_id,
-		mi.member_no,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_name),#{skey}) using utf8) as personal_name,
+		select mi.member_id as id,
+		mi.member_no as memberNo,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey}) using utf8) as personalName,
 		mi.logname,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{skey}) using utf8) as personal_phone,
-		mti.ThirdParty_Account,
-		mi.InvitateCode,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personalPhone,
+		mti.ThirdParty_Account as thirdPartyAccount,
+		mi.InvitateCode invitateCode,
 		CAST((AES_DECRYPT(UNHEX(mti.User_Balance),#{map.skey})) as signed)				as userBalance,
 		CAST((AES_DECRYPT(UNHEX(mti.Frozen),#{map.skey})) as signed)					as frozen,
-		pd.Province_Name,
-		cd.City_Name,
-		cod.County_Name,
-		td.Town_Name,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as recharge,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay   ),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeept,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr	where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeehy,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount	),	#{skey})) as signed)) from Invest_Record 			ir 	where ir.Member_ID 	= mi.Member_Id and IsValid = 0) as investments,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_MngFee	),	#{skey})) as signed)) from Invest_Real_Income 			iri left  join Invest_Income ii on ii.Income_Id = iri.Income_Id where ii.Member_ID = mi.member_id) as managerFee,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawals,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay	),	#{skey})) as signed)) from Member_Withdrawal_Recharge	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalspt,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalshy,
+		pd.Province_Name as provinceName,
+		cd.City_Name as cityName,
+		cod.County_Name as countyName,
+		td.Town_Name as townName,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as recharge,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay   ),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeept,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr	where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeehy,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount	),	#{map.skey})) as signed)) from Invest_Record 			ir 	where ir.Member_ID 	= mi.Member_Id and IsValid = 0) as investments,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_MngFee	),	#{map.skey})) as signed)) from Invest_Real_Income 			iri left  join Invest_Income ii on ii.Income_Id = iri.Income_Id where ii.Member_ID = mi.member_id) as managerFee,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawals,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay	),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalspt,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalshy,
 		(select count(Amount) from Project_App_Record par left join Project_Base_Info prbi on prbi.Project_Base_ID = par.Project_Base_ID where par.Invest_Statu in (3,4)) as loan,
-		(select sum(CAST((AES_DECRYPT(UNHEX(MngFee_Amount),#{skey})) as signed)) from Project_App_MngFee pam left join Project_App_Record par on par.Apply_Id = pam.Apply_Id where par.member_id = mi.member_id) as loanManager,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txplatform,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txmember
+		(select sum(CAST((AES_DECRYPT(UNHEX(MngFee_Amount),#{map.skey})) as signed)) from Project_App_MngFee pam left join Project_App_Record par on par.Apply_Id = pam.Apply_Id where par.member_id = mi.member_id) as loanManager,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{map.skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txplatform,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee),#{map.skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txmember
 		from member_info mi 
 		left join personal_base_info 	pbi 	on pbi.Personal_Id 	= mi.Member_ID
 		left join Member_Third_Info 	mti 	on mti.member_type 	= mi.member_type and mti.member_id = mi.member_id
@@ -1060,46 +1073,47 @@
 			mi.Member_Type=0 and
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
 			AND  (select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND par.Invest_Statu>=3) > 0  
-			<if test="memberName != null and memberName!=''">
-				and mi.logname like '%${memberName}%'
+			<if test="map.memberName != null and map.memberName!=''">
+				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
-				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
+			<if test="map.userName != null and map.userName !='' ">
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
-				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
+			<if test="map.phone != null and map.phone != '' ">
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>	
 	<!--   =============================================-->
 	
 	<!-- 复合会员 -->
 	<select id="complanyComponentMember" parameterType="product_p2p.kit.pageselect.PageEntity" resultType="cn.membermng.model.MemberInfo">
-		select mi.member_id,
-		mi.member_no,
-		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{skey}) using utf8) as personal_name,
+		select mi.member_id  as id,
+		mi.member_no as memberNo,
+		CONVERT(AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey}) using utf8) as personalName,
 		mi.logname,
-		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{skey}) using utf8) as personal_phone,
-		mti.ThirdParty_Account,
-		mi.InvitateCode,
+		CONVERT(AES_DECRYPT(UNHEX(pbi.personal_phone),#{map.skey}) using utf8) as personalPhone,
+		mti.ThirdParty_Account as thirdPartyAccount,
+		mi.InvitateCode invitateCode,
 		CAST((AES_DECRYPT(UNHEX(mti.User_Balance),#{map.skey})) as signed)				as userBalance,
 		CAST((AES_DECRYPT(UNHEX(mti.Frozen),#{map.skey})) as signed)					as frozen,
-		pd.Province_Name,
-		cd.City_Name,
-		cod.County_Name,
-		td.Town_Name,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as recharge,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay   ),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeept,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr	where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeehy,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount	),	#{skey})) as signed)) from Invest_Record 			ir 	where ir.Member_ID 	= mi.Member_Id and IsValid = 0) as investments,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_MngFee	),	#{skey})) as signed)) from Invest_Real_Income 			iri left  join Invest_Income ii on ii.Income_Id = iri.Income_Id where ii.Member_ID = mi.member_id) as managerFee,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawals,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay	),	#{skey})) as signed)) from Member_Withdrawal_Recharge	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalspt,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalshy,
+		pd.Province_Name as provinceName,
+		cd.City_Name as cityName,
+		cod.County_Name as countyName,
+		td.Town_Name as townName,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as recharge,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay   ),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeept,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr	where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 0) as rechargefeehy,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_Amount	),	#{map.skey})) as signed)) from Invest_Record 			ir 	where ir.Member_ID 	= mi.Member_Id and IsValid = 0) as investments,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Invest_MngFee	),	#{map.skey})) as signed)) from Invest_Real_Income 			iri left  join Invest_Income ii on ii.Income_Id = iri.Income_Id where ii.Member_ID = mi.member_id) as managerFee,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Withdrawal_Money),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawals,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay	),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalspt,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee	),	#{map.skey})) as signed)) from Member_Withdrawal_Recharge 	mwr where mwr.member_ID = mi.member_id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as withdrawalshy,
 		(select count(Amount) from Project_App_Record par left join Project_Base_Info prbi on prbi.Project_Base_ID = par.Project_Base_ID where par.Invest_Statu in (3,4)) as loan,
-		(select sum(CAST((AES_DECRYPT(UNHEX(MngFee_Amount),#{skey})) as signed)) from Project_App_MngFee pam left join Project_App_Record par on par.Apply_Id = pam.Apply_Id where par.member_id = mi.member_id) as loanManager,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txplatform,
-		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee),#{skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txmember
+		(select sum(CAST((AES_DECRYPT(UNHEX(MngFee_Amount),#{map.skey})) as signed)) from Project_App_MngFee pam left join Project_App_Record par on par.Apply_Id = pam.Apply_Id where par.member_id = mi.member_id) as loanManager,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Mng_Fee_Repay),#{map.skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txplatform,
+		(select sum(CAST((AES_DECRYPT(UNHEX(Third_Mng_Fee),#{map.skey})) as signed)) from Member_Withdrawal_Recharge mwr where mwr.Member_ID = mi.Member_Id and mwr.member_Type = mi.Member_Type and mwr.Deal_Type = 1) as txmember
 		from member_info mi 
 		left join Company_Info		 	ci  	on ci.Company_ID	= mi.Company_ID
 		left join personal_base_info 	pbi 	on pbi.Personal_Id 	= mi.Member_ID
@@ -1112,16 +1126,17 @@
 			mi.Member_Type=1 and
 			(select count(1) from Invest_Record ir where ir.Member_ID = mi.member_id and ir.IsValid = 0) > 0
 			AND  (select count(1) from Project_App_Record par where par.Member_ID = mi.member_id AND par.Invest_Statu>=3) > 0  
-			<if test="memberName != null and memberName!=''">
-				and mi.logname like '%${memberName}%'
+			<if test="map.memberName != null and map.memberName!=''">
+				and mi.logname like '%${map.memberName}%'
 			</if>
-			<if test="userName != null and userName !='' ">
-				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${userName}%'
+			<if test="map.userName != null and map.userName !='' ">
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.userName}%'
 			</if>
-			<if test="phone != null and phone != '' ">
-				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${phone}%'
+			<if test="map.phone != null and map.phone != '' ">
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.phone}%'
 			</if>
 		</where>
+		ORDER BY mi.Reg_Date DESC
 	</select>
 	
 	
@@ -1139,7 +1154,7 @@
 		<result		column="Personal_Email"			property="personalEmail"/>
 	</resultMap>
 	<!-- 会员黑名单 -->
-	<select id="blackList" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="blackMembers">
+	<select id="blackList" parameterType="Map" resultMap="blackMembers">
 		select mi.member_id,mi.member_no,mi.logname,mi.Reg_Date,(select Record_Date from Member_BlackList where Member_ID = mi.member_id order by Record_Date desc limit 0,1) as latelyTime,(select count(1) from Member_BlackList where Member_ID = mi.member_id ) as count,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) as Personal_Name,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_phone),#{map.skey})) using utf8) as Personal_phone,
@@ -1167,7 +1182,7 @@
  	</select>
  	
  	<!-- 企业会员黑名单 -->
- 	<select id="complanyBlackList" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="blackMembers">
+ 	<select id="complanyBlackList" parameterType="Map" resultMap="blackMembers">
  		select mi.member_id,mi.member_no,mi.logname,mi.Reg_Date,(select Record_Date from Member_BlackList where Member_ID = mi.member_id order by Record_Date desc limit 0,1) as latelyTime,(select count(1) from Member_BlackList where Member_ID = mi.member_id ) as count,
 		CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) as Personal_Name,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_phone),#{map.skey})) using utf8) as Personal_phone,

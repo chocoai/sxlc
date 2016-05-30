@@ -32,11 +32,12 @@
     </resultMap> 
     <!-- 查询会员账户信息-->  
 	<select id="selectMemberBalance" parameterType="map"  resultMap="resultTradingRecordsBalance">
-       select  otrb.User_Balance,otrb.User_Gift
+       select  IFNULL(AES_DECRYPT(UNHEX(otrb.User_Balance),#{sKey}),0) AS User_Balance,
+       AES_DECRYPT(UNHEX(otrb.User_Gift),#{sKey}) as User_Gift
 	   from  Own_Trading_Records_Balance   otrb  
-	   left join Member_Trading_Records mtr on  otrb.Own_Trading_ID=mtr.Trade_ID
+	   inner join Member_Trading_Records mtr on  otrb.Own_Trading_ID=mtr.Trade_ID
        where mtr.Member_ID=#{memberID} and mtr.Member_Type=#{memberType}
-       order by  mtr.Member_ID  desc limit 1;
+       order by  mtr.Member_ID  desc limit 1
     </select> 
     <!-- 查询会员第三方账户信息 -->  
 	<select id = "selectMemberTradeInfo" parameterType = "Map"  resultMap = "resultMemberThirdAuthInfo">

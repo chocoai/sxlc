@@ -13,7 +13,7 @@ String btn = request.getParameter("draw");
 
 <head>
 	<base href="<%=basePath%>">
-	<title>开户许可认证与查看</title>
+	<title>税务登记认证与查看</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -47,7 +47,7 @@ String btn = request.getParameter("draw");
 						<jsp:include page="../common/mc-companyTable.jsp"></jsp:include> 
 						<div class="w-content ishow detailAuthen realnameAuthen">
 							<fieldset>
-								<legend class="titleLen"></legend>
+								<legend class="titleLen">税务登记认证</legend>
 								<div class="introduce">
 								<input type="hidden" id="hostPath" value="${ImgProfix}"/>
 									<span><samp>企业名称：</samp><label id="company"></label></span>

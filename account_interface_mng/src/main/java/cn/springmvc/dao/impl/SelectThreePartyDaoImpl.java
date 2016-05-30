@@ -22,6 +22,7 @@ import cn.springmvc.model.ProjectDetailEntity;
 import cn.sxlc.account.manager.model.AccountInterfaceEntity;
 import cn.sxlc.account.manager.model.AwardEntity;
 import cn.sxlc.account.manager.model.InvestRecordEntity;
+import cn.sxlc.account.manager.model.LoanRepayEntity;
 import cn.sxlc.account.manager.model.LoanTransactionEntity;
 import cn.sxlc.account.manager.model.ProjectEntity;
 import cn.sxlc.account.manager.model.RepayDetailEntity;
@@ -99,7 +100,8 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 	public Map<String, Object> EarlyRepayment(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("ThreePartyXML.EarlyRepayment",map);
+		getSqlSession().selectOne("ThreePartyXML.EarlyRepayment",map);
+		return map;
 	}
 
 	@Override
@@ -128,7 +130,12 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 	public long findInterestByMember(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().selectOne("ThreePartyXML.findInterestByMember",map);
+		Long los=getSqlSession().selectOne("ThreePartyXML.findInterestByMember",map);
+		long retur=0;
+		if (los!=null) {
+			retur=los;
+		}
+		return retur;
 	}
 	@Override
 	public Map<String, Object> findPenaltyRate(Map<String, Object> map) {
@@ -140,13 +147,25 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 	public long findTimesByMember(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().selectOne("ThreePartyXML.findTimesByMember",map);
+		Long los=getSqlSession().selectOne("ThreePartyXML.findTimesByMember",map);
+		long retur=0;
+		if (los!=null) {
+			retur=los;
+		}
+		return retur;
 	}
 	@Override
 	public int projectDurationType(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return 0;
-		return getSqlSession().selectOne("ThreePartyXML.projectDurationType",map);
+		Integer ints=getSqlSession().selectOne("ThreePartyXML.projectDurationType",map);
+		int res=0;
+		if (ints==null) {
+			res=0;
+		}else {
+			res=ints;
+		}
+		return res;
 	}
 
 	@Override
@@ -270,10 +289,10 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 		return getSqlSession().selectOne("ThreePartyXML.InterestType");
 	}
 	@Override
-	public Map<String, Integer> getRepaymentByCTAId(Map<String, Object> map) {
+	public Map<String, Object> getRepaymentByCTAId(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("ThreePartyXML.InterestType",map);
+		return getSqlSession().selectOne("ThreePartyXML.getRepaymentByCTAId",map);
 	}
 	@Override
 	public Map<String, Object> getDateInstallments(Map<String, Object> map) {
@@ -285,10 +304,11 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 	public Map<String, Object> GetProdateTrans(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
-		return getSqlSession().selectOne("ThreePartyXML.GetProdateTrans",map);
+		getSqlSession().selectOne("ThreePartyXML.GetProdateTrans",map);
+		return map;
 	}
 	@Override
-	public List<Integer> selectLoanId(Map<String, Object> map) {
+	public List<LoanRepayEntity> selectLoanId(Map<String, Object> map) {
 		
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("ThreePartyXML.selectLoanId",map);
@@ -367,11 +387,13 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 	}
 	@Override
 	public int BlackMemberJudgmentOne(long memberId, int mType) {
+		//数据封装
 		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("memberId", memberId);
-		map.put("mType", mType);
-		// TODO Auto-generated method stub return 0;
+		map.put("memberId", memberId);//会员id
+		map.put("mType", mType);//黑名单禁止项类型
+		//调用操作数据库 ThreeParty.xml
 		getSqlSession().selectOne("ThreePartyXML.BlackMemberJudgmentOne",map);
+		//操作完成返回 -1：该会员已存在于黑名单限制禁止操作 ；非-1：允许继续操作
 		int result = IntegerAndString.StringToInt(map.get("result").toString(), 0);
 		return result;
 	}
@@ -423,6 +445,40 @@ public class SelectThreePartyDaoImpl extends SqlSessionDaoSupport implements Sel
 //		map.put("memberType", memberType);
 		map.put("skey", DbKeyUtil.GetDbCodeKey());
 		Long sdsLong=getSqlSession().selectOne("ThreePartyXML.findInterestMngFee",map);
+		long retu=0;
+		if (sdsLong==null) {
+			retu=0;
+		}else {
+			retu=sdsLong;
+		}
+		return retu;
+	}
+	@Override
+	public AccountInterfaceEntity selectbAccountById(Map<String, Object> map) {
+		
+		// TODO Auto-generated method stub return null;
+		return getSqlSession().selectOne("ThreePartyXML.selectbAccountById",map);
+	}
+	@Override
+	public long GetEndMoneyByInv(long investId) {
+		// TODO Auto-generated method stub return 0;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("investId", investId);
+		map.put("skey", DbKeyUtil.GetDbCodeKey());
+		Long sdsLong=getSqlSession().selectOne("ThreePartyXML.GetEndMoneyByInv",map);
+		long retu=0;
+		if (sdsLong==null) {
+			retu=0;
+		}else {
+			retu=sdsLong;
+		}
+		return retu;
+	}
+	@Override
+	public long loanMemberId(long lApplyId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("lApplyId", lApplyId);
+		Long sdsLong=getSqlSession().selectOne("ThreePartyXML.loanMemberId",map);
 		long retu=0;
 		if (sdsLong==null) {
 			retu=0;

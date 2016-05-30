@@ -36,7 +36,7 @@ $(function(){
 	 * 红包
 	 */
 	var award = {
-			loadRedPackageList:function(order,cpage,pageSize){
+			loadRedPackageList:function(cpage,pageSize){
 				//order
 				//cpage 当前页数
 				//pageSize 每页条数
@@ -76,7 +76,7 @@ $(function(){
 									totalRecords : totalRecords,
 									mode : 'click',//默认值是link，可选link或者click
 									click : function(n) {
-										award.loadRedPackageList(needOrder,n);
+										award.loadRedPackageList(n);
 										this.selectPage(n);
 										return false;
 									}

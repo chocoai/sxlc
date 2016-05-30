@@ -1,6 +1,6 @@
-/* ×Ê½ð¹ÜÀí-ÔùËÍ½±Àø-ÎÒµÄºì°ü */
+/* ï¿½Ê½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½Í½ï¿½ï¿½ï¿½-ï¿½ÒµÄºï¿½ï¿½ */
 /* 2016-03-31 */
-/* ÀîÀöÃ· */
+/* ï¿½ï¿½ï¿½ï¿½Ã· */
 
 i{
 	font-style:normal;
@@ -74,8 +74,8 @@ i{
 	float:left;
 }
 
-/* ÎÒµÄºì°ü¡¢µç×Ó„» */
-/*±êÇ©ÇÐ»»  */
+/* ï¿½ÒµÄºï¿½ï¿½ï¿½ï¿½Ó„ï¿½ */
+/*ï¿½ï¿½Ç©ï¿½Ð»ï¿½  */
 .awardHead{
 	height:67px;
 	width:100%;
@@ -118,7 +118,7 @@ i{
 	display:none;
 }
 
-/*±êÇ©ÇÐ»»  ½áÊø*/
+/*ï¿½ï¿½Ç©ï¿½Ð»ï¿½  ï¿½ï¿½ï¿½ï¿½*/
 
 .awardListInfo{
 	height:70px;
@@ -152,7 +152,7 @@ i{
 	border-bottom:1px solid #ebebeb;
 }
 
-/* ½±ÀøÉèÖÃ-ÎÒµÄºì°ü */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ÒµÄºï¿½ï¿½ */
 
 .awardTableHeadAb .awardTableHead1 ,
 .awardTableHeadAb .awardTableHead1 ,
@@ -216,12 +216,18 @@ i{
 	color:#575757;
 	text-align:center;
 }
+.awardTableRegister .awardTabCuA4-2{
+	float:left;
+	font-size:12px;
+	color:#575757;
+	text-align:center;
+}
 .awardTableRegister .awardTableHead5a{
 	float:left;
 	font-size:12px;
 	color:#575757;
 	text-align:center;
-	line-height:70px;
+	/*line-height:70px;*/
 }
 .awardTableRegister .awardTableHead6a{
 	float:left;
@@ -239,6 +245,25 @@ i{
 	display:table-cell;
 }
 .awardTabCuA3-1 .contentA{
+	vertical-align:middle;    
+	padding-left:10px;
+	padding-top:18px;
+	text-align:center;
+	padding-right:17px;
+}
+.awardTabCuA4-2{
+	height:70px;
+	width:128px;
+	display:table-cell;
+}
+.awardTabCuA4-2 .contentA{
+	vertical-align:middle;    
+	padding-left:10px;
+	padding-top:18px;
+	text-align:center;
+	padding-right:17px;
+}
+.awardTableHead5a .contentA{
 	vertical-align:middle;    
 	padding-left:10px;
 	padding-top:18px;
@@ -312,9 +337,9 @@ i{
 	width:91px;
 	height:63px;
 }
-/* ×Ê½ð¹ÜÀí-ÔùËÍ½±Àø-µç×Ó„» */
+/* ï¿½Ê½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½Í½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½Ó„ï¿½ */
 /* 2016-03-31 */
-/* ÀîÀöÃ· */
+/* ï¿½ï¿½ï¿½ï¿½Ã· */
 .awardElectronicCouponsCunt{
 	width:100%;
 	height:100%;
@@ -375,7 +400,7 @@ i{
 	text-align:center;
 }
 
-/* µç×Ó„»´ú½ð„»»ñÈ¡ */
+/* ï¿½ï¿½ï¿½Ó„ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ */
 .awardTableCunt{
 	clear:both;
 	border:1px solid #eee;
@@ -427,7 +452,7 @@ i{
 	width:100%;
 	border-bottom:1px solid #ececec;
 }
-/* µç×Ó„»Ê¹ÓÃ¼ÇÂ¼ */
+/* ï¿½ï¿½ï¿½Ó„ï¿½Ê¹ï¿½Ã¼ï¿½Â¼ */
 .awardTableCu{
 	clear:both;
 	border:1px solid #eee;
@@ -436,14 +461,14 @@ i{
 	height:340px;
 	display:none !important;
 }
-/* µç×Ó„»»ñÈ¡¡£Ê¹ÓÃ¼ÇÂ¼ */
+/* ï¿½ï¿½ï¿½Ó„ï¿½ï¿½ï¿½È¡ï¿½ï¿½Ê¹ï¿½Ã¼ï¿½Â¼ */
 
 .awardTable{
 	width:868px;
 	padding-top:10px;
 	border:1px solid #ececec;
 }
-/*±êÇ©ÇÐ»»  */
+/*ï¿½ï¿½Ç©ï¿½Ð»ï¿½  */
 .awardBtn{
 	margin-top:27px;
 	width:868px;
@@ -480,9 +505,9 @@ i{
 .awardContenta{
 	display:none;
 }
-/*±êÇ©ÇÐ»»  ½áÊø*/
+/*ï¿½ï¿½Ç©ï¿½Ð»ï¿½  ï¿½ï¿½ï¿½ï¿½*/
 
-/* ·ÖÒ³±êÇ© */
+/* ï¿½ï¿½Ò³ï¿½ï¿½Ç© */
 .pagerCu{
 	margin:40px 0 !important;
 	width:868px !important;

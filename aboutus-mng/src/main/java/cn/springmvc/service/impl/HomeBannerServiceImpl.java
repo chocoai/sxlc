@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
   
 
 import cn.springmvc.dao.HomeBannerDao;
@@ -117,9 +118,9 @@ public class HomeBannerServiceImpl implements HomeBannerService {
 	@Override
 	public List<HomeBannerEntity> selectHomeBannerListpage(PageEntity pageEntity) {
 		
-		List<HomeBannerEntity> homeBannerList = null;    
-	 	homeBannerList = homeBannerListDaoImpl.selectHomeBannerAllpage(pageEntity);   
-		return homeBannerList; 
+		List<HomeBannerEntity> homeBannerList = homeBannerListDaoImpl.selectHomeBannerAllpage(pageEntity);   
+		PageUtil.ObjectToPage(pageEntity, homeBannerList);
+	 	return homeBannerList; 
 	}
 
 	@Override

@@ -1,9 +1,10 @@
+var uploadUrl = "";//服务器图片保存路径,全局变量
 $(function(){
 	//上传初始化
 	var uploader = WebUploader.create({
 		auto: true,														//选完文件后，是否自动上传。
 	    swf: 'plugs/webuploader/0.1.5/Uploader.swf',					//swf文件路径
-	    server: '',	//文件接收服务端。
+	    server: appPath+'/UpdateBsnLicense',	//文件接收服务端。
 	    // 选择文件的按钮。可选。
 	    pick: '#filePicker',											//内部根据当前运行是创建，可能是input元素，也可能是flash.
 	    //fileNumLimit: 1,												//个数限制
@@ -90,8 +91,10 @@ $(function(){
 	});
 	
 	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
-	uploader.on( 'uploadSuccess', function( file ) {
+	uploader.on( 'uploadSuccess', function( file, imgUrl) {
 	    $( '#'+file.id ).addClass('upload-state-done');
+	    var result = imgUrl._raw;
+		uploadUrl += result.split(",")[1] + ",";
 	});
 	
 	// 文件上传失败，显示上传出错。
@@ -111,6 +114,24 @@ $(function(){
 	uploader.on( 'uploadComplete', function( file ) {
 	    $( '#'+file.id ).find('.progress').remove();
 	});
-	
-	
+});
+
+$(function () {
+	$("#add").bind('click', function () {
+		$.ajax({
+			type : 'post',
+			url : appPath + "/guarant/addcertificate.do",
+			data : {
+				content : uploadUrl
+			},
+			success : function (msg) {
+				if(msg == 1){  
+					layer.alert("设置成功!",{icon:1});
+					setTimeout('location.reload()',2000);
+				}else {  
+					layer.alert("设置失败!",{icon:2});  
+				}
+			}
+		});
+	});
 });

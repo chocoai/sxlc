@@ -101,6 +101,7 @@ function quryLiveBroadcast(){
 		success:function(r){
 			var object=JSON.parse(r);
 			if(object.code == 200){
+				var data = object.data;
 				if(data!=null){
 					var html = template('broadcastList', object);
 			        document.getElementById('indemo').innerHTML = html;		
@@ -268,11 +269,11 @@ function quryNewbieExperience(){
 		url:"selectNewbieExperienceSetIndex.html",
 		success:function(r){
 			var object=JSON.parse(r);
-			if(object.code == 200){
+			if(object.code == 200 && object.data!=null){
 				var html = template('newMemberList',object);
 		        document.getElementById('newMemberL').innerHTML=html;
 			}else{
-				
+				$("#newMemberL").remove();
 			}
 		}
 	});	

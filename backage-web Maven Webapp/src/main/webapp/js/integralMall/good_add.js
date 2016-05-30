@@ -26,7 +26,7 @@ $(function(){
 	serachByType();
 	
 	$("#good_add").Validform({
-		tiptype:3,
+		tiptype:5,
 		btnSubmit:".queding", 
 		datatype:{"enterAddress":enterAddress,"acountM":acountM,"img":img,"time":time},
 		ajaxPost:true,
@@ -48,7 +48,7 @@ $(function(){
 				data.endTime = encrypt.encrypt($("#endTime").val()+"");
 				data.manufactor = encrypt.encrypt($("#manufactor").val()+"");
 				data.specifications = encrypt.encrypt($("#specifications").val()+"");
-				data.stock = encrypt.encrypt($("#stock").val()+"");
+//				data.stock = encrypt.encrypt($("#stock").val()+"");
 				data.isVip = encrypt.encrypt($("#isVip").val()+"");
 				data.isActivity = encrypt.encrypt($("#isActivity").val()+"");
 				data.denominationVouchers = encrypt.encrypt($("#denominationVouchers").val()+"");

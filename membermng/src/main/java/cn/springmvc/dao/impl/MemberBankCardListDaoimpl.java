@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import cn.membermng.model.BankCardInfoEntity;
 import cn.membermng.model.BankCodeEntity;
 import cn.membermng.model.CityDictionaryEntity;
+import cn.membermng.model.CityInfoEntity;
 import cn.membermng.model.MemberBankCardEntity;
 import cn.membermng.model.ProvinceDictionaryEntity;
 import cn.springmvc.dao.MamberBankCardListDao;
@@ -58,7 +59,20 @@ public class MemberBankCardListDaoimpl extends SqlSessionDaoSupport implements M
 		return  getSqlSession().selectList("bankInfo.selectCityDictionary",provinceId);
 		
 	}
+	@Override
+	public List<CityInfoEntity> selectBankProvinceDictionary() {
+		
+		return getSqlSession().selectList("bankInfo.selectBankProvinceDictionary"); 
+		
+	}
 
+	@Override
+	public List<CityInfoEntity> selectBankCityDictionary(int provinceId) {
+		
+		return  getSqlSession().selectList("bankInfo.selectBankCityDictionary",provinceId);
+		
+	}
+	
 	@Override
 	public int selectMemberBankCardByNo(Map<String, Object> map) {
 		

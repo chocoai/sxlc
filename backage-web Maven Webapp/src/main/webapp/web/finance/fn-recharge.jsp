@@ -82,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="panel panel-success">
 					<div class="panel-heading">
 						<div class="action_item">
-							<button class="obtn glyphicon glyphicon-plus" onclick="picAdd('充值','web/recommend/re-add/acc-recharge.jsp?content=3','1')">充值</button>
+							<button class="obtn glyphicon glyphicon-plus" onclick="javascript:window.location.href='<%=path%>/web/finance/fn-recharge-todo.jsp?content=3'">充值</button>
 							<!-- onclick="accRecharge() -->
 						</div>
 					</div>

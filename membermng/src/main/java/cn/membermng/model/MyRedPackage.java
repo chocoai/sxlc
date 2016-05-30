@@ -30,6 +30,7 @@ public class MyRedPackage {
 	}
 	public void setRedPackageSum(long redPackageSum) {
 		this.redPackageSum = redPackageSum;
+		this.sRedPackageSum = IntegerAndString.LongToString(redPackageSum);
 	}
 	
 	public String getsRedPackageSum() {
@@ -37,47 +38,46 @@ public class MyRedPackage {
 	}
 	public void setsRedPackageSum(String sRedPackageSum) {
 		this.sRedPackageSum = sRedPackageSum;
-		this.redPackageSum	= IntegerAndString.StringToLong(sRedPackageSum);
 	}
 	public long getExpiredSum() {
 		return expiredSum;
 	}
 	public void setExpiredSum(long expiredSum) {
 		this.expiredSum = expiredSum;
+		this.sExpiredSum = IntegerAndString.LongToString(expiredSum);
 	}
 	public String getsExpiredSum() {
 		return sExpiredSum;
 	}
 	public void setsExpiredSum(String sExpiredSum) {
 		this.sExpiredSum = sExpiredSum;
-		this.expiredSum  = IntegerAndString.StringToLong(sExpiredSum);
 	}
 	public long getUseRedPackageSum() {
 		return useRedPackageSum;
 	}
 	public void setUseRedPackageSum(long useRedPackageSum) {
 		this.useRedPackageSum = useRedPackageSum;
+		this.sUseRedPackageSum = IntegerAndString.LongToString(useRedPackageSum);
 	}
 	public String getsUseRedPackageSum() {
 		return sUseRedPackageSum;
 	}
 	public void setsUseRedPackageSum(String sUseRedPackageSum) {
 		this.sUseRedPackageSum = sUseRedPackageSum;
-		this.useRedPackageSum  = IntegerAndString.StringToLong(sUseRedPackageSum);
 	}
 	public long getCanUseRedPackageSum() {
 		return canUseRedPackageSum;
 	}
 	public void setCanUseRedPackageSum(long canUseRedPackageSum) {
-		this.sCanUseRedPackageSum = IntegerAndString.LongToString(canUseRedPackageSum);
 		this.canUseRedPackageSum = canUseRedPackageSum;
+		this.sCanUseRedPackageSum = IntegerAndString.LongToString(canUseRedPackageSum);
 	}
 	public String getsCanUseRedPackageSum() {
 		return sCanUseRedPackageSum;
 	}
 	public void setsCanUseRedPackageSum(String sCanUseRedPackageSum) {
 		this.sCanUseRedPackageSum = sCanUseRedPackageSum;
-		this.canUseRedPackageSum  = IntegerAndString.StringToLong(sCanUseRedPackageSum);
+		//this.canUseRedPackageSum  = IntegerAndString.StringToLong(sCanUseRedPackageSum);
 	}					
 	
 	

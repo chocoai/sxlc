@@ -34,11 +34,11 @@ $(function() {
 				          { title:"借款项目编号","data": "projectNo"},  
 				          { title:"借款项目名称","data": "projectTitle"},  
 				          { title:"借款人","data": "memberName"},  
-				          { title:"账单金额","data": "amounts"},  
+				          { title:"账单金额(元)","data": "amounts"},  
 				          { title:"账单期数","data": "indexs"},  
-				          { title:"还款时间","data": "repayTime"},
+				          { title:"还款时间","data": "repayMaxTime"},
 				          { title:"逾期时长","data": "overDay"},
-				          { title:"逾期费用","data": "overdueAmounts"}
+				          { title:"逾期费用(元)","data": "overdueAmounts"}
 				          ],
  			  aaSorting :[[ 6, "desc"],[ 7, "desc"]],//默认第几个排序
 	          aoColumnDefs : [
@@ -49,10 +49,11 @@ $(function() {
 	                          ],
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
-	          serverSide: true,//打开后台分页  
+	          serverSide: true,//打开后台分页
+	          searching: false,
 	          scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          },
 	});//表格初始化完毕
@@ -108,23 +109,27 @@ $(function(){
 			  cache:false,  
 			  dataType:'json',  
 			  success:function(data) { 
-				  $("#projectNo").val(data.projectNo);
-				  $("#merbillNo").val(data.merbillNo);
-				  $("#projectTitle").val(data.projectTitle);
-				  $("#memberName").val(data.memberName);
-				  $("#amounts").val(data.amounts);
-				  $("#indexs").val(data.indexs);
-				  $("#repayTime").val(data.repayTime);
-				  $("#overDay").val(data.overDay);
-				  $("#overdueAmounts").val(data.overdueAmounts);
+				  if(data.projectBill == -1){
+					  layer.alert("查询账单异常:"+data.sPrincipal,{icon:2});
+					  return;
+				  }
+				  $("#projectNo").html(data.projectNo);
+				  $("#merbillNo").html(data.repayID);
+				  $("#projectTitle").html(data.projectTitle);
+				  $("#memberName").html(data.memberName);
+				  $("#amounts").html(data.amounts);
+				  $("#indexs").html(data.indexs);
+				  $("#repayTime").html(data.repayMaxTime);
+				  $("#overDay").html(data.overDay);
+				  $("#overdueAmounts").html(data.overdueAmounts);
 				  $("#projectBill").html(data.projectBill);
 				  
 				  layer.open({
 			            type: 1,
 			            title: '账单详情',
-			            maxmin: true,
+			            maxmin: false,
 			            shadeClose: true, //点击遮罩关闭层
-			            area : ['500px' , '300px'],
+			            area : ['700px' , '400px'],
 			            content: $(".bill_detail")
 			        });
 				  
@@ -154,7 +159,7 @@ $(function(){
 				  layer.open({
 					  type: 1,
 					  title: '生成账单',
-					  maxmin: true,
+					  maxmin: false,
 					  shadeClose: true, //点击遮罩关闭层
 					  area : ['500px' , '300px'],
 					  content: $(".generate_bill"),//DOM或内容
@@ -162,6 +167,10 @@ $(function(){
 						  //确定的回调
 						  var data={};
 						  var urgedDetail = $("#msgcontent").val();
+						  if(urgedDetail.length >100){
+							  layer.alert("请输入不超过100字的内容",{icon:0});
+							  return;
+						  }
 						  data.urgedType = encrypt.encrypt("0");//0:电话 
 						  data.content = urgedDetail; 
 						  data.applyID = encrypt.encrypt(rdata[0].applyId+"");
@@ -206,7 +215,7 @@ $(function(){
     	layer.open({
             type: 1,
             title: '电话回访',
-            maxmin: true,
+            maxmin: false,
             shadeClose: true, //点击遮罩关闭层
             area : ['500px' , '300px'],
             content: $(".callback"),//DOM或内容

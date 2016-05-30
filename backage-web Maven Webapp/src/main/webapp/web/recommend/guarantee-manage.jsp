@@ -71,8 +71,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<span>状态</span>
 										<select id="statu" value="" class="stateSelect">
 											<option value="">请选择</option>
-											<option value="1">启用</option>
-											<option value="0">停用</option>
+											<option value="1">有效</option>
+											<option value="0">无效</option>
 										</select>
 									</span>
 									<span class="">

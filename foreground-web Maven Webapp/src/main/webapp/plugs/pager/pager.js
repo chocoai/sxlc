@@ -2027,6 +2027,8 @@ var pager5 = {
 				this.init(config);
 			}
 			
+			this.init(config);
+			
 			var str_first='',str_prv='',str_next='',str_last='';
 			if(this.isShowFirstPageBtn){
 				if(this.hasPrv){
@@ -2398,7 +2400,7 @@ var pager6 = {
 		//不刷新页面直接手动调用选中某一页码
 		selectPage : function(n){
 			this._config['pno'] = n;
-			this.generPageHtml(this._config,true);
+			this.generPageHtml(this._config,false);
 		},
 		//生成控件代码
 		generPageHtml : function(config,enforceInit){

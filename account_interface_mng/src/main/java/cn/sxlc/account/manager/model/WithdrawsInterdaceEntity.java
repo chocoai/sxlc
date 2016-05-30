@@ -16,20 +16,20 @@ public class WithdrawsInterdaceEntity {
 	private String PlatformMoneymoremore;//平台乾多多标识
 	private String OrderNo;//平台的提现订单号
 	private String Amount;//金额
-	private String FeeQuota;//用户承担的定额手续费
-	private String sPtRate;			//平台支付第三方手续费比例
-	private String sUserFee;		//用户承担的最高手续费
-	private String sFeeRate;		//上浮费率
+	private String FeeQuota="";//用户承担的定额手续费
+	private String sPtRate="";			//平台支付第三方手续费比例
+	private String sUserFee="";		//用户承担的最高手续费
+	private String sFeeRate="";		//上浮费率
 	private String CardNo;//银行卡号
 	private String CardType;//银行卡类型
 	private String BankCode;//银行代码
 	private String BranchBankName;//开户行支行名称
 	private String Province;//开户行省份
 	private String City;//开户行城市
-	private String RandomTimeStamp;
-	private String Remark1;
-	private String Remark2;
-	private String Remark3;
+	private String RandomTimeStamp="";
+	private String Remark1="";
+	private String Remark2="";
+	private String Remark3="";
 	private String SubmitUrl;//提交第三方提现网址
 	private String ReturnURL;//页面返回网址
 	private String NotifyURL;//后台通知网址

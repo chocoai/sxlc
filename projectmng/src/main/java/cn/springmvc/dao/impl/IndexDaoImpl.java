@@ -59,7 +59,7 @@ public class IndexDaoImpl extends SqlSessionDaoSupport implements IndexDao{
 	@Override
 	public List<InvestEntity> selectInvestRecordIndex(Map<String, Object> map) {
 		
-		return getSqlSession().selectList("Index.selectInvestRecordIndex");
+		return getSqlSession().selectList("Index.selectInvestRecordIndex",map);
 		
 	}
 

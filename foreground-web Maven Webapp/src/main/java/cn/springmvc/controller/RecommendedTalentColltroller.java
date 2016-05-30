@@ -224,6 +224,7 @@ public class RecommendedTalentColltroller {
 		param.put("projectTitle", projectTitle);
 		param.put("name",                 name);
 		param.put("order",               order);
+		param.put("skey",              DbKeyUtil.GetDbCodeKey());
 		pageEntity.setPageNum(start);
 		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);

@@ -76,13 +76,13 @@
 	<!-- 私用js -->
 	<script type="text/javascript">
 		$(function(){
-			validform5("layui-layer-btn0","fullAdLink1",false,"3");
+			validform5("layui-layer-btn0","fullAdLink1",false,"5");
 		});
 		$(function(){
-			validform5("layui-layer-btn0","fullAdLink2",false,"3");
+			validform5("layui-layer-btn0","fullAdLink2",false,"5");
 		});
 		$(function(){
-			validform5("layui-layer-btn0","fullAdLink3",false,"3");
+			validform5("layui-layer-btn0","fullAdLink3",false,"5");
 		});
 	</script>
 </body>

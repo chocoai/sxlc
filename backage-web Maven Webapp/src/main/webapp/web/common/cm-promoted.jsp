@@ -1,11 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
 			<script type="text/javascript">
 				_index.m2 = '<%=request.getParameter("_index_m2")%>';
 				_index.m3 = '<%=request.getParameter("_index_m3")%>';
@@ -15,10 +8,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	<div class="navbar nav_title">
                         <a href="javascript:;" class="site_title">
                         	<i class="fa fa-cog"></i>
-                        	<span>产品后台管理</span>
+                        	<span>平台推广管理</span>
                         </a>
                     </div>
-                    <div class="clearfix"></div>
                 
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
@@ -37,20 +29,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <!-- /sidebar menu -->
 
                     <!-- /menu footer buttons -->
-                    <div class="sidebar-footer hidden-small">
-                        <a data-toggle="tooltip" data-placement="top" title="Settings">
-                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                        </a>
-                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-                        </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Lock">
-                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                        </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Logout">
-                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                        </a>
-                    </div>
                     <!-- /menu footer buttons -->
                 </div>
             </div>

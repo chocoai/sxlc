@@ -38,21 +38,22 @@
 	   					<div class="authen">
 	   						<p class="toolTips">请填写您本人真实有效的身份信息，一旦认证成功，信息将不可更改。</p>
 	   						<form id="shiMing1">
+	   							<input type="hidden" class="editType" value="0">
 		   						<ul class="inputArea">
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>姓名：</span></div>
-				   						<input class="inputText realName" type="text" datatype="enterperson" lang="请输入姓名" maxlength="20"/>
+				   						<input class="inputText realName" type="text" datatype="enterperson" lang="请输入姓名" maxlength="8" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;" errMsg="请输入2-8位汉字"/>
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>身份证号：</span></div>
-				   						<input class="inputText personId" datatype="IDCard" type="text" lang="请输入您的身份证号" maxlength="18"/>
+				   						<input class="inputText personId" datatype="IDCard" type="text" lang="请输入您的身份证号" maxlength="18" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;"/>
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp></samp>民族：</span></div>
 				   						<div class="selectArea nationSelect">
 				   							<input class="selectValue" value="0">
 				   							<input class="selectInput" type="text" lang="请选择民族" readOnly="true">
-				   							<ul class="select" onselectstart="return false">
+				   							<ul class="select selectUL" onselectstart="return false">
 				   								<c:forEach items="${nationList }" var="nat">
 				   									<li class="selectOption" value="${nat.iId }">${nat.sName }</li>
 				   								</c:forEach>
@@ -61,7 +62,7 @@
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp></samp>籍贯：</span></div>
-				   						<input class="inputText homeTown" type="text" lang="请输入籍贯" maxlength="20"/>
+				   						<input class="inputText homeTown"  type="text" maxlength="20" />
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp></samp>性别：</span></div>
@@ -69,7 +70,7 @@
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp></samp>有效期：</span></div>
-				   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker()" type="text" lang="请选择有效期"/>
+				   						<input class="inputText dateSelect Wdate" onclick="WdatePicker({minDate:'%y-%M-%d'})" type="text" />
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp></samp>附件：</span></div>

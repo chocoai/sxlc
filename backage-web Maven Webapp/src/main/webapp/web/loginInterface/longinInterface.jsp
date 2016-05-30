@@ -20,10 +20,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		if(svalue==null){
 			svalue="";
 		} 
+		if(session.getAttribute("LoginPerson")!=null){
+			System.out.print(session.getAttribute("LoginPerson"));
+			pageContext.forward("../../web/index/index.jsp");
+				return;
+		}
 		svalue = URLDecoder.decode(svalue, "utf-8");
 %>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" onkeydown="keyLogin(event)">
 
 <head>
 	<base href="<%=basePath%>">
@@ -53,7 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="loginTopR i-fl">
 					<div class="longinTopStyle longinTopImage productLogo">
 						<h2>四象金融系统</h2>
-						<span>-中国最安全的互联网金融系统服务商-</span>
+						<span>—中国最安全的互联网金融系统服务商—</span>
 					</div>
 				</div>
 			</div>
@@ -64,17 +69,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="administratorLogin">管理员登录</div>
 					<form action="">
 						<div class="admUser">
-							<i class="loginIcon user"></i>
-							<input type="text" placeholder="用户名" name="adminName" id="adminName" value="<%=svalue %>" >
+							<i class="loginIcon user"></i> 
+							<input type="text" placeholder="用户名"  name="adminName" id="adminName" datatype="unNormal" maxlength="16" value="<%=svalue %>" onblur="nameIdenty()" >
 						</div>
 						<div class="admPasword">
 							<i class="loginIcon pwd"></i>
-							<input type="password"  name="adminPwd" id="adminPwd" placeholder="密码" >
+							<input type="password"  name="adminPwd" id="adminPwd" maxlength="25"   placeholder="密码" >
 						</div>
 						<div class="admPhoneCode">
 							<i class="loginIcon phone"></i>
 							<input type="text" name="code" id="code" name="code" maxlength="4" placeholder="验证码">
-							<img alt="点击刷新" id="vCodeImg" style="width: 90px;height:30px" class="img" title="点击刷新" src="authImage.do?tt=<%=System.currentTimeMillis()%>" onclick="refreshImg('vCodeImg');">
+							<img alt="点击刷新" id="vCodeImg" style="width: 90px;height:40px;vertical-align: middle;" class="img" title="点击刷新" src="authImage.do?tt=<%=System.currentTimeMillis()%>" onclick="refreshImg('vCodeImg');">
 						</div>
 						<div class="admForgetPassword">
 							<a href="web/loginInterface/forget_password.jsp">忘记密码？</a>

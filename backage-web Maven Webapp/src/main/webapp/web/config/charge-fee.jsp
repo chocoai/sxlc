@@ -61,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				</div>
 			 				<div class="form-group">
 				 				<div class="cmbtncontainer chargefeebtn">
-									<a class="commonbtn0">保存</a>
+									<a id="memberMod" class="commonbtn0">保存</a>
 								</div>
 				 			</div>
 			 			</form>		
@@ -88,7 +88,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				</div>
 			 				<div class="form-group">
 				 				<div class="cmbtncontainer chargefeebtn">
-									<a class="commonbtn0">保存</a>
+									<a id="orgMod" class="commonbtn0">保存</a>
 								</div>
 				 			</div>
 			 			</form>		
@@ -115,7 +115,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				</div>
 			 				<div class="form-group">
 				 				<div class="cmbtncontainer chargefeebtn">
-									<a class="commonbtn0">保存</a>
+									<a id="platMod" class="commonbtn0">保存</a>
 								</div>
 				 			</div>
 			 			</form>		

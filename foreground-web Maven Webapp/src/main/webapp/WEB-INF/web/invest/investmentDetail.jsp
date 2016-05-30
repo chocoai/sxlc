@@ -21,7 +21,10 @@
    	<script type="text/javascript">
     	var publickey 		= '<%=session.getAttribute("publicKey")%>';
     	var minStarts 		= '${appRecordEntity.minStarts}';//起投金额
+
     	var increaseRanges 	= '${appRecordEntity.increaseRanges}';//加价幅度
+
+  		var imgProfix = '${imgProfix}';
     </script>
     <!-- 此处加入代码 -->
     <!--伍成然2016-3-28  -->
@@ -45,7 +48,7 @@
 		<div class="inv-box clearfix">
 			<div class="inv-top-box">
 				<div class="inv-head clearfix">
-					<img src="${appRecordEntity.picIcon}">
+					<img src="${imgProfix}${appRecordEntity.picIcon}"  style="width:20px;height:20px">
 					<label>${appRecordEntity.projectBaseInfoentity.projectTitle }</label>
 					<span>【${appRecordEntity.projectNo }】</span>
 				</div>
@@ -120,7 +123,6 @@
 					</div>																
 				</div>
 			</div><!--top-box结束  -->
-			
  			<!-- 还款中 -->
 			<c:if test="${investmentStatus == 3}">
 				<div class="inv-deal-box repaying">
@@ -165,7 +167,6 @@
 					<img src="resource/img/invest/wytzyjq.png">		
 				</div>
 			</c:if> 
-			
 			<!-- 投标中 -->
 			<c:if test="${investmentStatus == 2}"> 
 				<!-- 未登录 -->
@@ -174,11 +175,11 @@
 						<div class="inv-deal-box not-logined">
 							<div class="login-remind"><a href="login.html">登录</a>&nbsp;&nbsp;后可查看可用余额</div>
 							<div class="input-group">
-							    <input type="text" class="charge-input" datatype="acountM" maxlength="10" value="50元起投且金额为整数" 
-								onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
-								onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
+							    <input type="text" class="charge-input" datatype="acountM" maxlength="10"
 								style="color:#bfbfbf">
 							    <div class="charge-addon1">元</div>
+							    <!-- onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
+								onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}"  -->
 							 </div>
 							 <input type="button" class="login-now" onclick="window.location='<%=path%>/login.html'" value="立即登录">
 						</div>
@@ -192,10 +193,8 @@
 						<div class="inv-available">本次可投金额<div class="right"><span>${sSumAount }</span>元</div></div>
 						<div class="amount-available">可用余额<div class="right"><span>${userBalances }</span>元</div></div>
 						<div class="input-group" style="height:50px;">
-						    <input type="text" class="charge-input" datatype="acountM" maxlength="10" value="50元起投且金额为整数" 
+						    <input type="text" class="charge-input" datatype="acountM" maxlength="10" 
 						   	id="investMoney"
-							onFocus="if(value==defaultValue){value='';this.style.color='#000';}" 
-							onBlur="if(!value){value=defaultValue;this.style.color='#bfbfbf';}" 
 							style="color:#bfbfbf">
 						    <div class="charge-addon">元</div>
 						    <input class="charge-btn" type="button"  onclick="window.location='<%=path%>/fundManagement/recharge.html'" value="充值">
@@ -248,10 +247,10 @@
 			
 		</div>
 		<c:if test="${appRecordEntity.isDirect == 1 }">
-				<div class="info clearfix" id="codeContent">
-					<div class="leftTitle">定向标密码:</div>
-					<input type="text" id="directionalCode" class="inputDJJ1">
-				</div>
+			<div class="info clearfix" id="codeContent">
+				<div class="leftTitle" style="width:130px">定向标密码:</div>
+				<input type="text" id="directionalCode" class="inputDJJ1">
+			</div>
 		</c:if>
 		<div class="red-packets-bottom clearfix">
 			<div class="label">本次投资总金额：<label  id="nowInvestNum">1,000.00</label>元</div>
@@ -282,23 +281,25 @@
 			<div class="info">
 				<div class="leftTitle">本次投资总金额:</div>
 				<label><span class="orange" id="orangeNum">{{num}}</span>元</label>
-				<label>(预期收益：<span class="orange">{{$toFixed profit}}</span>元)</label>
+				<label>(预期收益：<span class="orange">{{profit}}</span>元)</label>
 			</div>
-			{{if sVouchers!="0.00"}}
+			{{if sVouchers!=='0'&&sVouchers!=='0.00'&&sVouchers!=='0.0000'}}
 			<div class="info">
 				<div class="leftTitle" style="display:block">使用代金券:</div>
 				<input type="text" id="useVouchers" class="inputDJJ format" maxlength="6">
 				<span class="djj">元&nbsp;&nbsp;剩余代金券：{{sVouchers}}元</span>
 			</div>
 			{{/if}}
+			{{if redPackList.length>0}}
 			<div class="info1 select clearfix">
 				<div class="leftTitle">剩余红包:</div>
-					<div style="width:325px;float:right" id="red_list">
-						{{each redPackList as value index}}
-							<label class="input1"><input  type="checkbox" value={{value.lId}}>{{$toFixed value.sUnUsedAmount}}元</label>
-						{{/each}}
-					</div>
+				<div style="width:325px;float:right" id="red_list">
+					{{each redPackList as value index}}
+						<label class="input1" data-userNum={{value.sUnUsedAmount}}><input  type="checkbox" value={{value.lId}}>{{$toFixed value.sUnUsedAmount}}元</label>
+					{{/each}}
+				</div>
 			</div>
+			{{/if}}
 	</script>
 	<script type="text/javascript" src="js/invest/investmentDetail.js"></script>
 	<script type="text/javascript" src="js/common/countdown.js"></script>

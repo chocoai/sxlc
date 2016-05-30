@@ -126,7 +126,7 @@ public class StaffController  {
 	@ResponseBody
 	public int addStaff(HttpServletRequest req){
 		//操作日志参数
-		HttpSession session = HttpSessionUtil.getSession(req);
+		HttpSession session = req.getSession();
 		Admin admin = (Admin)session.getAttribute("LoginPerson");
 		//moduleID=103(员工管理)
 		//optID=10301(添加) 10302(修改)
@@ -143,8 +143,8 @@ public class StaffController  {
 		PersonalBaseInfo baseInfo = new PersonalBaseInfo();
 		String personalName = req.getParameter("personalName");
 		baseInfo.setPersonalName(personalName);
-		Long sexId = Long.parseLong(req.getParameter("sexId"));
-		baseInfo.setId(sexId);
+		Integer sexId = Integer.parseInt(req.getParameter("sexId"));
+		baseInfo.setSexId(sexId);
 		String personalIDCard = req.getParameter("personalIDCard");
 		baseInfo.setPersonalIDCard(personalIDCard);
 		Integer nationId = Integer.parseInt(req.getParameter("nationId"));
@@ -168,8 +168,7 @@ public class StaffController  {
 		info.setEmerPhone(emerPhone);
 		
 		info.setBaseInfo(baseInfo);
-		String postId = req.getParameter("postId");
-		String deptId= req.getParameter("deptId");
+		String postId = req.getParameter("content");
 		String graduatedDate = req.getParameter("graduatedDate");
 		String type = req.getParameter("type");
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -183,10 +182,12 @@ public class StaffController  {
 			Date joinDate = new Date(); 
 			if(type.equals("1")){//增加操作
 				logEntity.setlOptId(10301);
-				result = iStaffInfoService.saveStaff(info, deptId, postId, joinDate,logEntity,sIpInfo);
+				result = iStaffInfoService.saveStaff(info, null, postId, joinDate,logEntity,sIpInfo);
 			}else if(type.equals("2")){//修改操作
 				logEntity.setlOptId(10302);
-				result = iStaffInfoService.editStaff(info, deptId, postId, joinDate,logEntity,sIpInfo);
+				Long id = Long.parseLong(req.getParameter("id"));
+				info.setId(id);
+				result = iStaffInfoService.editStaff(info, null, postId, joinDate,logEntity,sIpInfo);
 			}
 			return result;
 		} catch (Exception e) {

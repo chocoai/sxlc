@@ -3,6 +3,7 @@ package cn.springmvc.controller.financialmanagement;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import cn.sxlc.account.manager.model.LoanTransferEntity;
 /**
  * 
 * @author 杨翰林 
-* @Description: 佣金发放控制层 
+* @Description: 平台佣金发放控制层 
 * @since 
 * @date 2016-5-5 上午10:41:36
  */
@@ -69,13 +70,26 @@ public class CommissionPaymentController {
 		String personalName = request.getParameter("personalName");
 		String personalPhone = request.getParameter("personalPhone");
 		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
 		String payStatu = request.getParameter("payStatu");
+		String stype = request.getParameter("stype");
 		
 		req.put("memberNo", memberNo);
 		req.put("PersonalName", personalName);
 		req.put("PersonalPhone", personalPhone);
-		req.put("startDate", startDate);
+		if (startDate != null && startDate != "") {
+			req.put("startDate", startDate);
+		}else {
+			req.put("startDate", "2016-01-01");
+		}
+		if (endDate != null && endDate != "") {
+			req.put("endDate", "2016-06-01");
+		}else {
+			req.put("endDate", new Date());
+		}
 		req.put("payStatu", payStatu);
+		req.put("stype", stype);
+		
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
@@ -144,6 +158,7 @@ public class CommissionPaymentController {
 	public PageEntity loanDetailList(HttpServletRequest request, Map<String, Object> req) {
 		
 		PageEntity pager = new PageEntity();
+		List<BorrowingDetailedEntity> list = null;
 		
 		//String commissionId = request.getParameter("commissionId");
 		String projectTitle = request.getParameter("projectTitle");
@@ -153,6 +168,7 @@ public class CommissionPaymentController {
 		String endDate = request.getParameter("endDate");
 		String start = request.getParameter("start");
 		String length = request.getParameter("length");
+		String stype = request.getParameter("stype");
 		
 		req.put("Project_Title", projectTitle);
 		//req.put("", commissionId);
@@ -165,8 +181,11 @@ public class CommissionPaymentController {
 		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
 		
-		List<BorrowingDetailedEntity> list = commissionissuedService
-				.getBorrowingAdvisor(pager);
+		if (stype == "2") {
+			list = commissionissuedService.getBorrowingAdvisor(pager);
+		}else {
+			list = commissionissuedService.getBorrowingInvite(pager);
+		}
 		pager.setResults(list);
 		
 		return pager;
@@ -191,6 +210,7 @@ public class CommissionPaymentController {
 	public PageEntity investList(HttpServletRequest request, Map<String, Object> req) {
 		
 		PageEntity pager = new PageEntity();
+		List<InvestDetailedEntity> list = null;
 		
 		//String memberID = request.getParameter("memberID");
 		String projectTitle = request.getParameter("projectTitle");
@@ -200,6 +220,7 @@ public class CommissionPaymentController {
 		String endDate = request.getParameter("endDate");
 		String start = request.getParameter("start");
 		String length = request.getParameter("length");
+		String stype = request.getParameter("stype");
 		
 		req.put("Project_Title", projectTitle);
 		//req.put("", memberID);
@@ -212,8 +233,11 @@ public class CommissionPaymentController {
 		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
 		
-		List<InvestDetailedEntity> list = commissionissuedService
-				.getInvestAdvisor(pager);
+		if (stype == "2") {
+			list = commissionissuedService.getInvestAdvisor(pager);
+		}else {
+			list = commissionissuedService.getInvestInvite(pager);
+		}
 		pager.setResults(list);
 		
 		return pager;
@@ -238,6 +262,7 @@ public class CommissionPaymentController {
 	public PageEntity vipList(HttpServletRequest request, Map<String, Object> req) {
 		
 		PageEntity pager = new PageEntity();
+		List<BayVIPEntity> list = null;
 		
 		//String memberID = request.getParameter("memberID");
 		String personalName = request.getParameter("personalName");
@@ -246,6 +271,7 @@ public class CommissionPaymentController {
 		String endDate = request.getParameter("endDate");
 		String start = request.getParameter("start");
 		String length = request.getParameter("length");
+		String stype = request.getParameter("stype");
 		
 		//req.put("", memberID);
 		req.put("Personal_Name", personalName);
@@ -257,8 +283,11 @@ public class CommissionPaymentController {
 		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
 		
-		List<BayVIPEntity> list = commissionissuedService
-				.getBayVIPAdvisor(pager);
+		if (stype == "2") {
+			list = commissionissuedService.getBayVIPAdvisor(pager);
+		}else {
+			list = commissionissuedService.getBayVIPInvite(pager);
+		}
 		pager.setResults(list);
 		
 		return pager;
@@ -283,6 +312,7 @@ public class CommissionPaymentController {
 	public PageEntity repaymentList(HttpServletRequest request, Map<String, Object> req) {
 		
 		PageEntity pager = new PageEntity();
+		List<InvestRepaymentEntity> list = null;
 		
 		//String memberID = request.getParameter("memberID");
 		String projectTitle = request.getParameter("projectTitle");
@@ -293,6 +323,7 @@ public class CommissionPaymentController {
 		String start = request.getParameter("start");
 		String length = request.getParameter("length");
 		String type = request.getParameter("type");
+		String stype = request.getParameter("stype");
 		
 		//req.put("", memberID);
 		req.put("Project_Title", projectTitle);
@@ -306,8 +337,12 @@ public class CommissionPaymentController {
 		pager.setPageSize(Integer.valueOf(length));
 		pager.setMap(req);
 		
-		List<InvestRepaymentEntity> list = commissionissuedService
-				.getRepaymentAdvisor(pager);
+		if (stype == "2") {
+			list = commissionissuedService.getRepaymentAdvisor(pager);
+		}else {
+			list = commissionissuedService.getRepaymentInvite(pager);
+		}
+		
 		pager.setResults(list);
 		
 		return pager;

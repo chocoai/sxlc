@@ -52,7 +52,7 @@
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>公司类型：</span></div>
-				   						<input class="inputText companyType" type="text" datatype="enteraddr" lang="请输入公司类型" maxlength="20"/>
+				   						<input class="inputText companyType" type="text" datatype="z2_20" lang="请输入公司类型" maxlength="20"/>
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>实收资本：</span></div>
@@ -65,14 +65,14 @@
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span><samp>*</samp>成立日期：</span></div>
-				   						<input class="inputText dateSelect Wdate regDate " onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择成立日期"/>
+				   						<input class="inputText dateSelect Wdate regDate " onfocus="WdatePicker({maxDate:'%y-%M-%d',readOnly:true})" type="text" />
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span>有效期：</span></div>
-				   						<input class="inputText dateSelect Wdate endTime" onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择有效期"/>
+				   						<input class="inputText dateSelect Wdate endTime" onfocus="WdatePicker({minDate:'%y-%M-%d',readOnly:true})" type="text" />
 				   					</li>
 				   					<li class="inputList">
-					   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
+					   					<div class="mustLabel"><span><samp></samp>附件：</span></div>
 					   					<div class="previewPicture" id="file" style="float: none;" >
 					   						<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
 											<input type='hidden' class='previewHide' id="0" >

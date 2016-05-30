@@ -97,7 +97,7 @@ function jump(typeId,btn,url){
 		return;
 	}
 	var content = rowdata[0].memberID;
-	if(typeId==7 || typeId ==8){//由于会员一对多，所以要传认证记录id
+	if(typeId==7 || typeId ==8 ||typeId == 2 || typeId ==3 ||typeId ==5 ||typeId ==6 ||typeId ==9 ||typeId >11 ){//由于会员一对多，所以要传认证记录id,加上其他认证
 		content = rowdata[0].certificationID;
 	}
 	location.href = url + '?start='+typeId+'&content='+content+'&draw='+btn;
@@ -113,19 +113,22 @@ function IdentyList(attestTypeId){
 	}
 	var  arr =[];//控制需要隐藏的列
 	if(attestTypeId==1||attestTypeId==0){//实名认证
-		arr =[7,8,9,10,11,12,13,14,15];
+		arr =[7,8,9,10,11,12,13,14,15,16];
 	}else if(attestTypeId==2||attestTypeId==3||attestTypeId==5||attestTypeId==6||attestTypeId==9||attestTypeId==12 || attestTypeId==26 ){//其他一般认证
-		arr =[3,4,5,6,7,8,9,10,11,12,13,14,15];
+		arr =[3,4,5,6,7,8,9,10,11,12,13,14,15,16];
 	}else if(attestTypeId==4){//住址认证
-		arr =[3,4,5,6,8,9,10,11,12,13,14,15];
+		arr =[3,4,5,6,8,9,10,11,12,13,14,15,16];
 	}else if(attestTypeId==7){//房产认证
-		arr =[3,4,5,6,7,10,11,12,14,15];
+		arr =[3,4,5,6,7,10,11,12,14,15,16];
 	}else if(attestTypeId==8){//车产认证
-		arr =[3,4,5,6,7,8,9,14,15];
+		arr =[3,4,5,6,7,8,9,14,15,16];
 	}else if(attestTypeId==10){//婚姻认证
-		arr =[3,4,5,6,7,8,9,10,11,12,13,15];
+		arr =[3,4,5,6,7,8,9,10,11,12,13,15,16];
 	}else if(attestTypeId==11){//学历认证
-		arr =[3,4,5,6,7,8,9,10,11,12,13,14];
+		arr =[3,4,5,6,7,8,9,10,11,12,13,14,16];
+	}
+	if(attestTypeId>11){
+		arr =[3,4,5,6,7,8,9,10,11,12,13,14,15];
 	}
 	$('#table_id').DataTable(
 			{	autoWidth : false,
@@ -206,6 +209,7 @@ function IdentyList(attestTypeId){
 		                  { title:"价值（元）","data": "value" },//13
 		                  { title:"婚姻状况","data": "homeTown" },//14
 		                  { title:"最高学历","data": "homeTown" },//15
+		                  { title:"认证类型","data": "attestTypeName" },//15
 		                  { title:"申请时间","data": "sRecordDate" },
 		                  { title:"有效期","mRender":function(data, type, full){
 		                	  var sReturn ="";

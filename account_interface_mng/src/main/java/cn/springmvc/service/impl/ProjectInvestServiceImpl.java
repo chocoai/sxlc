@@ -54,7 +54,7 @@ public class ProjectInvestServiceImpl implements ProjectInvestService{
 	public TransferSubmitEntity GetInvestInfo(short sIsAuto, long lMemberId,
 			long lProjectId, long lAmount, long lRedpackets, long lVouchers,
 			short sClient,String sKey,String sRedpackets) {
-		long lId = IdGeneratorUtil.GetIdGeneratorInstance().GetId();
+		long lId = IdGeneratorUtil.GetIdGeneratorInstance().GetId(); 
 		String sOrderNo = null;
 		String sSubOrderNo = null;
 		TransferSubmitEntity entity = projectInvestReadDaoImpl.GetInvestInfo(sIsAuto, lMemberId, lProjectId, lAmount, lRedpackets, lVouchers, sClient);
@@ -74,7 +74,7 @@ public class ProjectInvestServiceImpl implements ProjectInvestService{
 				sSubOrderNo = handleThreePartyDaoImpl.generateorderNo("PI");
 				submitEntity.setOrderNo(sOrderNo);
 			}
-		}
+		} 
 		projectInvestWriteDaoImpl.InsertProjectInvestTmp(lId,(short)0, lProjectId, lMemberId, sOrderNo,sSubOrderNo, lAmount, lRedpackets, sRedpackets, lVouchers, sIsAuto, sKey);
 		return entity;
 		

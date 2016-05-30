@@ -33,7 +33,7 @@
     select <include refid="Overdue_Column_List"></include> from Overdue_Fees order by Overdue_Min asc
   </select>
   <!-- 查询目前最大的逾期天数设置 -->
-  <select id="findMaxOverdue" resultType="Int">
+  <select id="findMaxOverdue" resultType="LONG">
   	select Overdue_Max from Overdue_Fees order by Overdue_Max desc limit 1
   </select>
   <!--添加逾期设置 -->

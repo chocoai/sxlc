@@ -46,7 +46,7 @@ public class StationLetterController {
 	 * @author 邱陈东
 	 * @date 2016年4月25日15:08:53
 	 */
-	@RequestMapping(value="/loadStationMessageList",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/loadStationMessageList",produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String loadStationMessageList(HttpServletRequest req){
 		int start = IntegerAndString.StringToInt(req.getParameter("start"),1) ;
@@ -61,7 +61,7 @@ public class StationLetterController {
 		param.put("readStatu", Read_Statu);
 		PageEntity pager = new PageEntity();
 		pager.setMap(param);
-		pager.setPageNum(start/length+1);
+		pager.setPageNum(start);
 		pager.setPageSize(length);
 		List<MemberMsgRecordEntity> list = memberMsgRecordService.selectMemberMsgList(pager);
 		PageUtil.ObjectToPage(pager, list);
@@ -83,7 +83,6 @@ public class StationLetterController {
 		long[] lMemberInfo = new long[2] ;
 		MemberSessionMng.GetLoginMemberInfo(req,lMemberInfo); 
 		map.put("memberID", lMemberInfo[0]);
-		//map.put("memberID", 1);
 		map.put("recordDate", recordDate.substring(0,recordDate.length()-2));
 		map.put("msgType", 2);
 		int result = memberMsgRecordService.updateMemberMsgIsRead(map);
@@ -103,7 +102,7 @@ public class StationLetterController {
 	 * 读取站内信  发件箱列表（会员发送给会员）
 	 * @return
 	 */
-	@RequestMapping(value="loadSendLetterList",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="loadSendLetterList",produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String loadSendLetterList(HttpServletRequest req){
 		int start = IntegerAndString.StringToInt(req.getParameter("start"),1);//第几页
@@ -112,12 +111,11 @@ public class StationLetterController {
 		MemberSessionMng.GetLoginMemberInfo(req,lMemberInfo); 
 		
 		Map<String,Object> param=new HashMap<String,Object>();
-		
+		param.put("keys", DbKeyUtil.GetDbCodeKey());//加密解密用的秘钥
 		param.put("memberID", lMemberInfo[0]);
-		//param.put("memberID", 1);
 		PageEntity pager = new PageEntity();
 		pager.setMap(param);
-		pager.setPageNum(start/length+1);
+		pager.setPageNum(start);
 		pager.setPageSize(length);
 		List<MemberStationLetterEntity> list = memberStationService.selectSendLetter(pager);
 		PageUtil.ObjectToPage(pager, list);
@@ -129,7 +127,7 @@ public class StationLetterController {
 	 * 读取站内信 收件箱列表（会员发送给会员）
 	 * @return
 	 */
-	@RequestMapping(value="loadRecLetterList",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="loadRecLetterList",produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String loadRecLetterList(HttpServletRequest req){
 		int start = IntegerAndString.StringToInt(req.getParameter("start"),1);//第几页
@@ -142,11 +140,10 @@ public class StationLetterController {
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("keys", DbKeyUtil.GetDbCodeKey());//加密解密用的秘钥
 		param.put("memberID", lMemberInfo[0]);
-		//param.put("memberID", 1);
 		param.put("isRead", isRead);
 		PageEntity pager = new PageEntity();
 		pager.setMap(param);
-		pager.setPageNum(start/length+1);
+		pager.setPageNum(start);
 		pager.setPageSize(length);
 		List<MemberStationLetterEntity> list = memberStationService.selectRecLetter(pager);
 		PageUtil.ObjectToPage(pager, list);
@@ -167,7 +164,7 @@ public class StationLetterController {
 	* @date 2016-4-26 下午2:13:11
 	* @throws
 	 */
-	@RequestMapping(value="selectSendLetterDetail",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="selectSendLetterDetail",produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String selectSendLetterDetail(HttpServletRequest req){
 		long[] lMemberInfo = new long[2] ;
@@ -197,7 +194,7 @@ public class StationLetterController {
 	* @date 2016-4-26 下午2:18:37
 	* @throws
 	 */
-	@RequestMapping(value="selectRecLetterDetail",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="selectRecLetterDetail",produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String selectRecLetterDetail(HttpServletRequest req){
 		long[] lMemberInfo = new long[2] ;
@@ -322,12 +319,22 @@ public class StationLetterController {
 	 */
 	@RequestMapping(value="addStationLetter",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public String addStationLetter(HttpServletRequest req,String title,String detail,String memberName){
+	public String addStationLetter(HttpServletRequest req){
+		Map<String,Object> message = new HashMap<String, Object>();
+		
+		String title = req.getParameter("title");
+		String detail = req.getParameter("content");
+		String memberName = req.getParameter("recName");
+		Integer imgCode= IntegerAndString.StringToInt(req.getParameter("imgCode"), 0);
+		//验证图片验证码
+		if(!imgCode.equals(req.getSession().getAttribute("AUTH_IMG_CODE_IN_SESSION_SENDMAIL"))){
+			message.put("statu", "-1");
+			message.put("message", "图片验证码错误");
+			return JSONObject.toJSONString(message);
+		}
 		
 		long[] lMemberInfo = new long[2] ;
 		MemberSessionMng.GetLoginMemberInfo(req,lMemberInfo); 
-		Map<String,Object> message = new HashMap<String, Object>();
-		
 		
 		MemberStationLetterEntity entity = new MemberStationLetterEntity();
 		entity.setMemberID(lMemberInfo[0]);
@@ -366,7 +373,7 @@ public class StationLetterController {
 		for(int i=0;i<strs.length;i++){
 			list.add(IntegerAndString.StringToInt(strs[i],0));
 		}
-		int result =memberStationService.deleteSendStationLetter(list);
+		int result =memberStationService.deleteSendStationLetter(list,lMemberInfo[0]);
 		
 		message.put("statu", result);
 		message.put("message", "已经成功的把这些站内信删除");

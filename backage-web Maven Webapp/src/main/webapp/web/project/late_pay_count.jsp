@@ -148,17 +148,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					          },
 					          { title:"项目编号","data": "projectNo"},  
 					          { title:"项目名称","data": "projectTitle"},  
-					          { title:"借款金额","data": "investAmountValids"},  
+					          { title:"借款金额(元)","data": "investAmountValids"},  
 					          { title:"借款人用户名","data": "logname"},  
 					          { title:"借款人姓名","data": "personalName"},  
 					          { title:"担保机构","data": "guaranteeName"},  
 					          { title:"应还日期","data": "repayMaxTime"},  
 					          { title:"逾期天数","data": "overdueDays"},  
 					          { title:"期次","data": "indexs"},  
-					          { title:"当期应还总额","data": "amounts"},  
-					          { title:"当期应还本金","data": "sdRepayPrincipals"},  
-					          { title:"当期应还利息","data": "sdRepayInterests"},
-					          { title:"当期应还罚息","data": "overdueAmounts"}
+					          { title:"当期应还总额(元)","data": "amounts"},  
+					          { title:"当期应还本金(元)","data": "sdRepayPrincipals"},  
+					          { title:"当期应还利息(元)","data": "sdRepayInterests"},
+					          { title:"当期应还罚息(元)","data": "overdueAmounts"}
 					          ],
 	 			  aaSorting :[[ 7, "desc"],[ 8, "desc"],[ 10, "desc"],[ 13, "desc"]],//默认第几个排序
 		          aoColumnDefs : [
@@ -169,10 +169,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                          ],
 		          pagingType: "simple_numbers",//设置分页控件的模式  
 		          processing: true, //打开数据加载时的等待效果  
-		          serverSide: true,//打开后台分页  
+		          serverSide: true,//打开后台分页
+		          searching: false,
 		          scrollCollapse: true,
 		          scrollX : "100%",
-				  scrollXInner : "100%",
+		          scrollXInner : "100%",scrollY:500,
 		          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 		          },
 		});//表格初始化完毕
@@ -204,7 +205,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var mc = UE.getEditor('msgcontent');
 		/* 发送消息 */
 		$(".obtn-sendmsg").on('click',function(){
-			 var rdata = $('#table_id').DataTable().rows('.selected').data();
+			 var rdata = $('#table_id').DataTable().rows('.selected').data();
 			 if(rdata.length<1){
 					layer.alert("请选择项目！",{icon:0});
 					return;

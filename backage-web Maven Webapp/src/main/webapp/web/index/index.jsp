@@ -12,7 +12,7 @@
 
 <head>
 <base href="<%=basePath%>">
-<title>产品后台首页</title>
+<title>首页</title>
 <!-- 公用meta -->
 <jsp:include page="../common/top-meta.jsp"></jsp:include>
 <!-- 私用meta -->
@@ -235,6 +235,7 @@
 	   									var dayList = [];
 	   									var weekList = [];
 	   									var monthList = [];
+	   									var num = 0;
 	   									// 路径配置
 								        require.config({
 								            paths: {
@@ -250,7 +251,11 @@
 	   												dayList[0] = msg.countMember;
 	   												dayList[1] = msg.countInvestMember;
 	   												dayList[2] = msg.countLoanMember;
-	   												
+	   												num = num + 1;
+	   												if (num == 3) {
+	   													echartsWork();
+	   													num = 0;
+	   												}
 	   											}
 	   										});
 	   										
@@ -261,7 +266,11 @@
 	   												weekList[0] = msg.countMember;
 	   												weekList[1] = msg.countInvestMember;
 	   												weekList[2] = msg.countLoanMember;
-	   												
+	   												num = num + 1;
+	   												if (num == 3) {
+	   													echartsWork();
+	   													num = 0;
+	   												}
 	   											}
 	   										});
 	   										
@@ -272,61 +281,71 @@
 	   												monthList[0] = msg.countMember;
 	   												monthList[1] = msg.countInvestMember;
 	   												monthList[2] = msg.countLoanMember;
-	   												
+	   												num = num + 1;
+	   												if (num == 3) {
+	   													echartsWork();
+	   													num = 0;
+	   												}
 	   											}
+	   											
 	   										});
-	   									 // 使用
-									        require(
-									            [
-									                'echarts',
-									                //'echarts/theme/roma',
-									                //'echarts/chart/pie', //饼图
-									                'echarts/chart/line',//走势图
-									                'echarts/chart/bar'//柱状图
-									            ],
-											 function (ec,theme) {	
-											 var myChart2 = ec.init(document.getElementById('chartBox2'),theme);
-											 var option2 = {
-											    tooltip : {
-											        trigger: 'axis'
-											    },
-											    legend: {
-											        data:['今日','本周','本月']
-											    },
-											    calculable : true,
-											    xAxis : [
-											        {
-											            type : 'category',
-											            data : ['新增会员','新增投资会员','新增借款会员']
-											        }
-											    ],
-											    yAxis : [
-											        {
-											            type : 'value'
-											        }
-											    ],
-											    series : [
-											        {
-											            name:'今日',
-											            type:'bar',
-											            data:dayList,
-											        },
-											        {
-											            name:'本周',
-											            type:'bar',
-											            data:weekList,
-											        },
-											        {
-											            name:'本月',
-											            type:'bar',
-											            data:monthList,
-											        }
-											    ]
-											};
-											 //   为echarts对象加载数据 
-													myChart2.setOption(option2);
-							                 });
+	   										
+	   									 
 	   									});
+	   									
+	   									function echartsWork() {
+	   									// 使用
+										        require(
+										            [
+										                'echarts',
+										                //'echarts/theme/roma',
+										                //'echarts/chart/pie', //饼图
+										                'echarts/chart/line',//走势图
+										                'echarts/chart/bar'//柱状图
+										            ],
+												 function (ec,theme) {	
+												 var myChart2 = ec.init(document.getElementById('chartBox2'),theme);
+												 var option2 = {
+												    tooltip : {
+												        trigger: 'axis'
+												    },
+												    legend: {
+												        data:['今日','本周','本月']
+												    },
+												    calculable : true,
+												    xAxis : [
+												        {
+												            type : 'category',
+												            data : ['新增会员','新增投资会员','新增借款会员']
+												        }
+												    ],
+												    yAxis : [
+												        {
+												            type : 'value'
+												        }
+												    ],
+												    series : [
+												        {
+												            name:'今日',
+												            type:'bar',
+												            data:dayList,
+												        },
+												        {
+												            name:'本周',
+												            type:'bar',
+												            data:weekList,
+												        },
+												        {
+												            name:'本月',
+												            type:'bar',
+												            data:monthList,
+												        }
+												    ]
+												};
+												 //   为echarts对象加载数据 
+														myChart2.setOption(option2);
+								                 });
+	   									}
 								       
 	   								</script>
    								</div>

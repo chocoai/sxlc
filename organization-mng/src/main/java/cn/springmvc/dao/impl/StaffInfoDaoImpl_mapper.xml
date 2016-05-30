@@ -15,6 +15,7 @@
 		<result column="Staff_Statu"		property="staffStatu"/>
 		<result column="Post_Id"		property="postId"/>
 		<result column="Post_Name"		property="postName"/>
+		<result column="Dept_Id"		property="deptId"/>
 		<association property="baseInfo" 	resultMap="personalBaseInfo"/>
 	</resultMap>
 	
@@ -54,7 +55,9 @@
 		select si.Staff_Id,CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey})) using utf8) as Personal_Name,
 		pbi.SexID,pbi.Personal_Id pid,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.sKey})) using utf8) as Personal_IDCard,
-		pbi.Nation_Id,pi.Post_Id,pi.Post_Name,
+		pbi.Nation_Id,
+		(select GROUP_CONCAT(CONCAT(sp.Dept_Id,':',sp.Post_Id)) from Staff_Post sp left join Post_Info pi on pi.Post_Id = sp.Post_Id where Staff_Id = si.Staff_Id and pi.Post_Statu = 1) as Post_Id,
+		(SELECT GROUP_CONCAT(pi.Post_Name) FROM Staff_Post sp LEFT JOIN Post_Info pi ON pi.Post_Id = sp.Post_Id WHERE Staff_Id = si.Staff_Id AND pi.Post_Statu = 1) AS Post_Name,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.sKey})) using utf8) as Personal_Phone,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.qq),#{map.sKey})) using utf8) as qq,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{map.sKey})) using utf8) as Personal_Email,
@@ -66,7 +69,6 @@
 		from Staff_Info si 
 		left join Personal_Base_Info pbi on pbi.Personal_Id = si.Personal_Id
 		left join Staff_Post sp on sp.Staff_Id = si.Staff_Id
-		left join post_info pi on pi.Post_Id = sp.Post_Id
 		where si.Staff_Statu != 1
 		<if test="map != null and map.personalName != null and map.personalName !='' ">
 			and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.sKey})) using utf8) like '%${map.personalName}%'
@@ -112,8 +114,7 @@
 			#{staffNo,									mode=IN,							jdbcType=VARCHAR},
 			#{startDate,								mode=IN,							jdbcType=VARCHAR},
 			#{endDate,									mode=IN,							jdbcType=VARCHAR},
-			#{deptId,									mode=IN,							jdbcType=BIGINT},
-			#{postId,									mode=IN,							jdbcType=BIGINT},
+			#{postId,									mode=IN,							jdbcType=VARCHAR},
 			#{joinDate,									mode=IN,							jdbcType=VARCHAR},
 			#{result,									mode=OUT,							jdbcType=INTEGER}
 		)
@@ -126,6 +127,7 @@
 			#{sKey,										mode=IN,							jdbcType=VARCHAR},
 			#{id,										mode=IN,							jdbcType=BIGINT},
 			#{personalName,								mode=IN,							jdbcType=VARCHAR},
+			#{sexId,								    mode=IN,							jdbcType=INTEGER},
 			#{personalIdCard,							mode=IN,							jdbcType=VARCHAR},
 			#{nationId,									mode=IN,							jdbcType=INTEGER},
 			#{personalPhone,							mode=IN,							jdbcType=VARCHAR},
@@ -163,7 +165,9 @@
 		select si.Staff_Id,CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{sKey})) using utf8) as Personal_Name,
 		pbi.SexID,pbi.Personal_Id pid,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{sKey})) using utf8) as Personal_IDCard,
-		pbi.Nation_Id,pi.Post_Id,pi.Post_Name,
+		pbi.Nation_Id,
+		(select GROUP_CONCAT(CONCAT(sp.Dept_Id,':',sp.Post_Id)) from Staff_Post sp left join Post_Info pi on pi.Post_Id = sp.Post_Id where Staff_Id = si.Staff_Id and pi.Post_Statu = 1) as Post_Id,
+		(SELECT GROUP_CONCAT(pi.Post_Name) FROM Staff_Post sp LEFT JOIN Post_Info pi ON pi.Post_Id = sp.Post_Id WHERE Staff_Id = si.Staff_Id AND pi.Post_Statu = 1) AS Post_Name,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{sKey})) using utf8) as Personal_Phone,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.qq),#{sKey})) using utf8) as qq,
 		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Email),#{sKey})) using utf8) as Personal_Email,
@@ -174,8 +178,6 @@
 		CONVERT((AES_DECRYPT(UNHEX(si.Emer_Phone),#{sKey})) using utf8) as Emer_Phone,si.Start_Date
 		from Staff_Info si 
 		left join Personal_Base_Info pbi on pbi.Personal_Id = si.Personal_Id
-		left join Staff_Post sp on sp.Staff_Id = si.Staff_Id
-		left join post_info pi on pi.Post_Id = sp.Post_Id
 		where si.Staff_Statu != 1  and si.staff_id = #{sid}
 	</select>
 	

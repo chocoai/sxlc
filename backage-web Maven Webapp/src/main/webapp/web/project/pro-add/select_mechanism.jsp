@@ -113,6 +113,7 @@
 			          pagingType: "simple_numbers",//设置分页控件的模式  
 			          processing: true, //打开数据加载时的等待效果  
 			          serverSide: true,//打开后台分页  
+			          searching: false,
 			//          info:false,
 			          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 			          },
@@ -155,6 +156,8 @@
 	         parent.$(".guaranteeID").val(guaranteeID);
 	         parent.$(".guaranteeName").val(guaranteeName);
 	         parent.$(".showAndHide").show();
+	         var $input = parent.$(".guaranteeValue");
+	         $input.attr("datatype",$input.attr("dataTyValue"));//增加验证类型
 		     parent.layer.close(index);
 		}
 		

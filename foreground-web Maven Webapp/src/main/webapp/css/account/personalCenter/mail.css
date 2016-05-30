@@ -50,6 +50,9 @@
 .selectAllClick{
 	background:url(../../../resource/img/account/personalCenter/grzx_7.png) no-repeat !important;
 }
+.selectClick{
+	background:url(../../../resource/img/account/personalCenter/grzx_7.png) no-repeat !important;
+}
 .checkbox{
 	display:none;
 }
@@ -302,6 +305,8 @@
 .codeImg{
 	vertical-align:middle;
 	margin-left:20px;
+	width: 146px;
+	height: 42px;
 }
 .codeDiv{
 	padding-bottom:60px;

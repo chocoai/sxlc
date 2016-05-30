@@ -44,59 +44,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="container add_type_contianer">
 						<div class="w-content ishow">
 						<!-- 认证信息 -->
+							<input type="hidden" id="memberID" value="${proPurpose.memberID}"/>
+							<input type="hidden" id="riskRateMax" value="${sysInfo.riskMarginRateMax}"/>
 							<fieldset class="personAuthentication">
-								<legend>借款会员认证信息——个人</legend>
+								<c:if test="${proPurpose.memberType ==0 }">
+									<legend>借款会员认证信息——个人</legend>
+								</c:if>
+								<c:if test="${proPurpose.memberType ==1 }">
+									<legend>借款会员认证信息——企业</legend>
+								</c:if>
+								<c:if test="${proPurpose.memberType != 0 && proPurpose.memberType != 1}">
+									<legend>无法确定的会员类型</legend>
+								</c:if>
 								<div class="w-content ishow">
-									<table>
-										<tr>
-											<td class="tt"><a>实名认证</a></td>
-											<td class="tt"><a>手机认证</a></td>
-											<td class="tt"><a>征信认证</a></td>
-											<td class="tt"><a>住址认证</a></td>
-											<td class="tt"><a>婚姻认证</a></td>
-											<td class="tt"><a>工作认证</a></td>
-											<td class="tt"><a>学历认证</a></td>
-											<td class="tt"><a>股权认证</a></td>
-										</tr>
-										<tr>
-											<td class="tt"><a>职称认证</a></td>
-											<td class="tt"><a>社保认证</a></td>
-											<td class="tt"><a>房产认证</a></td>
-											<td class="tt"><a>车产认证</a></td>
-											<td class="tt"><a>银行流水认证</a></td>
-											<td class="tt"><a>其它</a></td>
-										</tr>
-									</table>
-								</div>
-							</fieldset>
-							<fieldset class="enterproiseAuthentication" style="display:none">
-								<legend>借款会员认证信息——企业</legend>
-								<div class="w-content ishow">
-									<table>
-										<tr>
-											<td class="ts"><a>营业执照认证</a></td>
-											<td class="ts"><a>工商执照认证</a></td>
-											<td class="ts"><a>组织机构代码认证</a></td>
-											<td class="ts"><a>开户许可证认证</a></td>
-											<td class="ts"><a>企业银行流水认证</a></td>
-											<td class="ts"><a>实地考察认证</a></td>
-											<td class="ts"><a>税务登记认证</a></td>
-											<td class="ts"><a>批文认证认证</a></td>
-										</tr>
-										<tr>
-											<td class="ts"><a>财务资料认证</a></td>
-											<td class="ts"><a>监管单位认证</a></td>
-											<td class="ts"><a>房产认证</a></td>
-											<td class="ts"><a>车产认证</a></td>
-											<td class="ts"><a>担保考察认证</a></td>
-											<td class="ts"><a>法人身份认证</a></td>
-											<td class="ts"><a>其它</a></td>
-										</tr>
+									<table id="identy_types">
 									</table>
 								</div>
 							</fieldset>
 							<!-- 借款详细信息展示 -->
-							<fieldset class="infoDisplay">
+							<fieldset class="modInfo">
 								<legend>借款详细信息</legend>
 								<input type="hidden" id="ppid" value="${proPurpose.id}" >
 								<input type="hidden" id="pbiid" value="${proRecord.projectBaseInfoentity.id}" >
@@ -122,8 +88,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</tr>
 									<tr class="col-md-6">
 										<td class="tt"><label>借款项目类型：</label></td>
+										<input type="hidden" id="projectId" value="${proPurpose.projectId}"/>
 										<td class="con">
-											<span >${proRecord.projectName}</span>
+											<span >${proPurpose.projectName}</span>
 										</td>
 									</tr>
 									<tr class="col-md-6">
@@ -185,10 +152,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td class="con">
 										<c:choose>
 											<c:when test="${not empty proRecord.projectBaseInfoentity.amount && proRecord.projectBaseInfoentity.amount != proPurpose.amount}">
-												<input type="text" class="loanMoney numberReg" value="${proRecord.projectBaseInfoentity.amounts}" datatype="amcountM" maxlength="8">
+												<input type="text" class="loanMoney chkInput" value="${proRecord.projectBaseInfoentity.amounts}" datatype="acountM" maxlength="13">
 											</c:when>
 											<c:otherwise>
-												<input type="text" class="loanMoney numberReg" value="${proPurpose.amountStr}" datatype="amcountM" maxlength="8">
+												<input type="text" class="loanMoney chkInput" value="${proPurpose.amountStr}" datatype="acountM" maxlength="13">
 											</c:otherwise>
 										</c:choose>
 									</td>
@@ -196,7 +163,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<tr class="col-md-6">
 									<td class="tt"><label>借款期限：</label></td>
 									<td class="con">
-										<input type="text" class="con-term numberReg" value="${proPurpose.deadline}" datatype="nNum0" maxlength="6">
+										<input type="text" class="con-term deadline" value="${proPurpose.deadline}" datatype="nNum1" maxlength="6">
 										<select class="conT" id="typeChange">
 											<c:if test="${proPurpose.deadlineType == 0}">
 												<option value="0" selected="selected">天</option>
@@ -224,28 +191,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<tr class="col-md-6">
 									<td class="tt ttMax"><label>最大投资比例：</label></td>
 									<td class="con">
-										<input type="text" class="con-PP numberReg" value="${proRecord.investMaxs}" datatype="hundredNum" maxlength="3">
+										<input type="text" class="con-PP chkInput" value="${proRecord.investMaxs}" datatype="hundredNum" maxlength="8">
 										<span>%</span>
 									</td>
 								</tr>
 								<tr class="col-md-6">
 									<td class="tt"><label>年化利率：</label></td>
 									<td class="con">
-										<input type="text" class="startTY numberReg" value="${proRecord.projectBaseInfoentity.yearRates}" datatype="hundredNum" maxlength="3">
+										<c:choose>
+											<c:when test="${not empty proRecord.projectBaseInfoentity.yearRates && proRecord.projectBaseInfoentity.yearRates != proPurpose.yearRates}">
+												<input type="text" class="startTY " value="${proRecord.projectBaseInfoentity.yearRates}" datatype="hundredNum" maxlength="8">
+											</c:when>
+											<c:otherwise>
+												<input type="text" class="startTY " value="${proPurpose.yearRates}" datatype="hundredNum" maxlength="8">
+											</c:otherwise>
+										</c:choose>
 										<span>%</span>
 									</td>
 								</tr>
 								<tr class="col-md-6">
 									<td class="tt"><label>起投金额：</label></td>
 									<td class="con">
-										<input type="text" class="startingIA numberReg" value="${proRecord.minStarts}" datatype="amcountM" maxlength="8">
+										<input type="text" class="startingIA chkInput" value="${proRecord.minStarts}" datatype="acountM0" maxlength="13">
 										<span>元</span>
 									</td>
 								</tr>
 								<tr class="col-md-6">
 									<td class="tt"><label>加价幅度：</label></td>
 									<td class="con">
-										<input type="text" class="conIncrease numberReg" value="${proRecord.increaseRanges}" datatype="amcountM" maxlength="8">
+										<input type="text" class="conIncrease chkInput" value="${proRecord.increaseRanges}" datatype="acountM0" maxlength="13">
 										<span>元</span>
 									</td>
 								</tr>
@@ -329,7 +303,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<tr class="col-md-12">
 									<td class="tt"><label>项目描述：</label></td>
 									<td class="con" id="con-Increase">
-										<textarea cols="20" rows="3" name=""  class="projectDescript" maxlength="200">${proRecord.projectBaseInfoentity.projectDescript}</textarea>
+										<c:choose>
+											<c:when test="${not empty proRecord.projectBaseInfoentity.projectDescript && proRecord.projectBaseInfoentity.projectDescript != proPurpose.projectDescript}">
+												<textarea cols="20" rows="3" name=""  class="projectDescript" maxlength="200">${proRecord.projectBaseInfoentity.projectDescript}</textarea>
+											</c:when>
+											<c:otherwise>
+												<textarea cols="20" rows="3" name=""  class="projectDescript" maxlength="200">${proPurpose.projectDescript}</textarea>
+											</c:otherwise>
+										</c:choose>
 									</td>
 								</tr>
 								<tr class="col-md-12">
@@ -360,23 +341,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td class="tt auto_bid"><label>自动投标：</label></td>
 										<td class="con">
 											<span>投标开始后</span>
-											<c:choose>
-												<c:when test="${proPurpose.pAppAutoSetEntity.autoStart>0}">
-													<input type="text" class="autoBid numberReg autoStart" value="${proPurpose.pAppAutoSetEntity.autoStart}" maxlength="6">
-												</c:when>
-												<c:otherwise>
-													<input type="text" class="autoBid numberReg autoStart" value="" maxlength="6">
-												</c:otherwise>
-											</c:choose>
+												<input type="text" class="autoBid  autoStart" datatype="nNum0" value="" maxlength="6">
 											<span>分钟开始执行自动投标，自动投标总金额占比</span>
-											<c:choose>
-												<c:when test="${proPurpose.pAppAutoSetEntity.autoInvestMax > 0}">
-													<input type="text" class="autoBid numberReg auotInvestMax" value="${proPurpose.pAppAutoSetEntity.autoInvestMaxs}" maxlength="3">
-												</c:when>
-												<c:otherwise>
-													<input type="text" class="autoBid numberReg auotInvestMax" value="" maxlength="3">
-												</c:otherwise>
-											</c:choose>
+												<input type="text" class="autoBid  auotInvestMax" datatype="hundredNum" value="" maxlength="8">
 											<span>%</span>
 										</td>
 									</tr><!-- 自动投标结束 -->
@@ -384,14 +351,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td class="tt"><input type="checkbox" class="check_select isAddRates">是否为加息标：</td>
 										<td class="con con-width">
 											<span>添加利息：</span>
-											<c:choose>
-												<c:when test="${proRecord.rateAddRate > 0}">
-													<input type="text" value="${proRecord.rateAddRates}" class="select_able numberReg rateAddRates" dataTyValue="hundredNum" disabled='disabled' maxlength="6">
-												</c:when>
-												<c:otherwise>
-													<input type="text" value="" class="select_able numberReg rateAddRates" dataTyValue="hundredNum" disabled='disabled' maxlength="6">
-												</c:otherwise>
-											</c:choose>
+												<input type="text" value="" class="select_able  rateAddRates" datatype="hundredNum" ignore="ignore" disabled='disabled' maxlength="8">
 											<span>%</span>
 										</td>
 									</tr>
@@ -399,21 +359,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td class="tt"><input type="checkbox" class="check_select isDirect" value="${proRecord.isDirect}">是否为定向标：</td>
 										<td class="con con-width">
 											<span>投资密码：</span>
-											<input type="password" class="select_able directPwd" value="${proRecord.directPwd}" disabled='disabled' dataTyValue="newpass" maxlength="16">
+											<input type="password" class="select_able directPwd" value="${proRecord.directPwd}" disabled='disabled' datatype="newpass" ignore="ignore" maxlength="16">
 										</td>
 									</tr>
 									<tr class="col-md-12">
 										<td class="tt"><input type="checkbox" class="check_select isRewardRate">是否为奖励标：</td>
 										<td class="con con-width">
 											<span>填写返现：</span>
-											<c:choose>
-												<c:when test="${proRecord.rewardRate > 0}">
-													<input type="text" value="${proRecord.rewardRates}" class="select_able numberReg rewardRates" disabled='disabled' dataTyValue="hundredNum" maxlength="6">
-												</c:when>
-												<c:otherwise>
-													<input type="text" value="" class="select_able numberReg rewardRates" disabled='disabled' dataTyValue="hundredNum" maxlength="6">
-												</c:otherwise>
-											</c:choose>
+												<input type="text" value="" class="select_able  rewardRates" disabled='disabled' datatype="hundredNum" ignore="ignore"  maxlength="8">
 											<span>%*本金</span>
 										</td>
 									</tr>
@@ -428,21 +381,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 													<c:if test="${fn:length(proPurpose.pEntities2) > 0}">
 														<c:forEach var="item" items="${proPurpose.pEntities2}">
 															<span>投资达到</span>
-															<input class="redPack numberReg investRedPackageMin" value="${item.investRedPackageMin}" disabled='disabled' maxlength="8">
+															<input class="redPack  investRedPackageMin" datatype="nNum1"  ignore="ignore" value="${item.investRedPackageMin}" disabled='disabled' maxlength="8">
 															<span>元的前</span>
-															<input class="redPack numberReg investNum" value="${item.investNum}" disabled='disabled' maxlength="8">
+															<input class="redPack  investNum"   datatype="nNum1" value="${item.investNum}"  ignore="ignore" disabled='disabled' maxlength="8">
 															<span>个，平台代付</span>
-															<input class="redPack numberReg redPackage" value="${item.redPackage}" disabled='disabled' maxlength="8">
+															<input class="redPack  redPackage"  datatype="acountM"  value="${item.redPackage}" ignore="ignore" disabled='disabled' maxlength="13">
 															<span>元红包</span>
 														</c:forEach>
 													</c:if>		
 													<c:if test="${fn:length(proPurpose.pEntities2) == 0}">
 															<span>投资达到</span>
-															<input class="redPack numberReg investRedPackageMin"  disabled='disabled' maxlength="8">
+															<input class="redPack  investRedPackageMin" datatype="nNum1"  ignore="ignore"  disabled='disabled' maxlength="8">
 															<span>元的前</span>
-															<input class="redPack numberReg investNum"  disabled='disabled' maxlength="8">
+															<input class="redPack  investNum"  datatype="nNum1"  ignore="ignore" disabled='disabled' maxlength="8">
 															<span>个，平台代付</span>
-															<input class="redPack numberReg redPackage"  disabled='disabled' maxlength="8">
+															<input class="redPack  redPackage" datatype="acountM"  ignore="ignore"  disabled='disabled' maxlength="13">
 															<span>元红包</span>
 													</c:if>		
 												</li>
@@ -454,13 +407,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td class="con con-width">
 											<button type="button" class="add_mechanism" onclick="select_mechanism()">选择担保机构</button>
 											<input type="hidden" class="guaranteeID">
-											<input type="text" class="select_input2 select_able numberReg guaranteeName" disabled='disabled' maxlength="8">
+											<input type="text" class="select_input2 select_able  guaranteeName" disabled='disabled' maxlength="8">
 										</td>
 									</tr>	
 									<tr class="col-md-12 showAndHide" style="display: none">
 										<td>
 											<span class="mechanism">担保费率：</span>
-											<input type="text" class="autoBid guaranteeValue">
+											<input type="text" datatype="hundredNum"  ignore="ignore" class="autoBid guaranteeValue" maxlength="13">
 											<select class="unit_select guaranteeType">
 												<option value="0">%</option>
 												<option value="1">元</option>
@@ -471,63 +424,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td class="con con-width">
 											<button type="button" class="add_assetManagement" onclick="select_assetManagement()">选择资产管理方</button>
 											<input type="hidden" class="assetManagerID">
-											<input type="text" class="select_input2 select_able numberReg managementName" disabled='disabled' maxlength="8">
+											<input type="text" class="select_input2 select_able  managementName" disabled='disabled' maxlength="8">
 										</td>
 									</tr>	
 									<tr class="col-md-12">
 										<td class="tt"><input type="checkbox" class="check_select isRiskMargin">项目风险保证金：</td>
 										<td class="con con-width" id="conProM">
-											<c:choose> 
-												<c:when test="${proPurpose.projectAppMngFeeEntity.riskMarginType == 0 && proPurpose.projectAppMngFeeEntity.riskMarginRate > 0}">
-													<input type="text" value="${proPurpose.projectAppMngFeeEntity.riskMarginRates}" class="select_able numberReg riskMarginValue" disabled='disabled' maxlength="8">
-												</c:when> 
-												<c:when test="${proPurpose.projectAppMngFeeEntity.riskMarginType == 1 && proPurpose.projectAppMngFeeEntity.riskMarginFee > 0}">
-													<input type="text" value="${proPurpose.projectAppMngFeeEntity.riskMarginFees}" class="select_able numberReg riskMarginValue" disabled='disabled' maxlength="8">
-												</c:when> 
-												<c:otherwise>
-													<input type="text" value="" class="select_able numberReg riskMarginValue" disabled='disabled' maxlength="8">
-												</c:otherwise>
-											</c:choose>
+											<input type="text" value="" datatype="hundredNum" ignore="ignore" class="select_able riskMarginValue" disabled='disabled' maxlength="13">
 											<select class="unit_select riskMarginType">
-												<c:if test="${proPurpose.projectAppMngFeeEntity.riskMarginType == 0}">
-													<option value="0" selected="selected">%</option>
-													<option value="1">元</option>
-												</c:if>
-												<c:if test="${proPurpose.projectAppMngFeeEntity.riskMarginType == 1}">
-													<option value="0" >%</option>
-													<option value="1" selected="selected">元</option>
-												</c:if>
-												<c:if test="${proPurpose.projectAppMngFeeEntity.riskMarginType != 1 && proPurpose.projectAppMngFeeEntity.riskMarginType != 0 }">
 													<option value="0">%</option>
 													<option value="1">元</option>
-												</c:if>
 											</select>
 										</td>
 									</tr>				
 									<tr class="col-md-12">
 										<td class="tt"><input type="checkbox" class="check_select isMngFeeRate">收取借款管理费 ：</td>
 										<td class="con con-width" id="conSQJKF">
-											<c:choose>
-												<c:when test="${proPurpose.projectAppMngFeeEntity.mngFeeRate > 0}">
-													<input type="text" class="select_able mngFeeRate" value="${proPurpose.projectAppMngFeeEntity.mngFeeRates}" disabled='disabled' maxlength="6"><span>%</span>
-												</c:when>
-												<c:otherwise>
-													<input type="text" class="select_able mngFeeRate" value="" disabled='disabled' maxlength="6"><span>%</span>
-												</c:otherwise>
-											</c:choose>
+											<input type="text" class="select_able mngFeeRate" value="" datatype="hundredNum" ignore="ignore" disabled='disabled' maxlength="8"><span>%</span>
 										</td>
 									</tr>				
 									<tr class="col-md-12">
-										<td class="tt"><label>允许投标人数 ：</label></td>
+										<td class="tt"><label>单人最大投资笔数 ：</label></td>
 										<td class="con con-width" id="numberOF">
-											<c:choose>
-												<c:when test="${proRecord.investCountMax > 0}">
-													<input type="text" class="select_able numberReg investCountMax" value="${proRecord.investCountMax}" datatype="nNum0" maxlength="8"><span>人</span>
-												</c:when>
-												<c:otherwise>
-													<input type="text" class="select_able numberReg investCountMax" value="" datatype="nNum0" maxlength="8"><span>人</span>
-												</c:otherwise>
-											</c:choose>
+											<input type="text" class="select_able  investCountMax" value="" datatype="nNum1" maxlength="8"><span>笔</span>
 										</td>
 									</tr>
 									<tr class="col-md-8 col-md-offset-4">
@@ -580,7 +499,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<td class="tt"><label>申请附件类型：</label></td>
 										<td class="con">
 											<select class="doc attachInfoType">
-												<option value="">==选择==</option>
 												<option value="1">借款方信息</option>
 												<option value="2">抵押信息</option>
 												<option value="3">现场调查信息</option>
@@ -629,6 +547,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
 				<script type="text/javascript" src="js/project/loanapply-upload.js"></script>
 				<script type="text/javascript" src="js/project/add_info.js"></script>
+				<script type="text/javascript" src="js/member/memberDetail.js"></script>
 			</div>
 		</div>
 	</div>

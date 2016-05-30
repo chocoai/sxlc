@@ -28,11 +28,12 @@ public class OperationItemStatisticsEntity {
 	private int Settled; //已结清借款
 	private int successLoan;//累计成功借款项目数
 	private int successRepay; //累计成功还款
-	private int cumulative; //累计成交总额
+	private long cumulative; //累计成交总额
 	private long notRepayPrincipal;//待还本金
 	private long notRepayTotal; //待还本金+利息
 	private String notRepayPrincipals;//待还本金
 	private String notRepayTotals; //待还本金+利息
+	private String cumulatives; //累计成交总额
 	private int  checking;//审核中
 	private int  willhold;//待放款
     private long   sumInvestD;//新增投资今天
@@ -92,11 +93,12 @@ public class OperationItemStatisticsEntity {
 	public void setSuccessRepay(int successRepay) {
 		this.successRepay = successRepay;
 	}
-	public int getCumulative() {
+	public long getCumulative() {
 		return cumulative;
 	}
-	public void setCumulative(int cumulative) {
+	public void setCumulative(long cumulative) {
 		this.cumulative = cumulative;
+		this.cumulatives= (IntegerAndString.LongToString(cumulative));
 	}
 	public int getNotDeal() {
 		return notDeal;
@@ -165,6 +167,13 @@ public class OperationItemStatisticsEntity {
 	}
 	public void setWillhold(int willhold) {
 		this.willhold = willhold;
+	}
+	public String getCumulatives() {
+		return cumulatives;
+	}
+	public void setCumulatives(String cumulatives) {
+		this.cumulatives = cumulatives;
+
 	}
 }
 

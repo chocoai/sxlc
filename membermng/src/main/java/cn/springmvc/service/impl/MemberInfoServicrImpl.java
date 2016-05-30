@@ -11,18 +11,17 @@
 * @version V5.0 */
  
 package cn.springmvc.service.impl; 
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import product_p2p.kit.pageselect.PageEntity; 
-import cn.membermng.model.CompanyInfoEntity;
-import cn.membermng.model.MemberInfoEntity;
-import cn.membermng.model.PersonalBaseInfoEntity;
+import product_p2p.kit.dbkey.DbKeyUtil;
+import product_p2p.kit.pageselect.PageEntity;  
+import cn.membermng.model.MemberAll;
+import cn.membermng.model.MemberInfoEntity; 
 import cn.springmvc.dao.impl.MemberInfoListDaoimpl;
 import cn.springmvc.service.MemberInfoService;
 
@@ -41,6 +40,13 @@ public class MemberInfoServicrImpl implements MemberInfoService {
     	 List<MemberInfoEntity> memberInfoList = null;
   		 memberInfoList=memberInfoListDaoimpl.selectMemberInfoAllpage(pageEntity);  
          return memberInfoList;
+	}
+
+	@Override
+	public List<MemberAll> getMemberList(PageEntity pageEntity) {
+		pageEntity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
+		return memberInfoListDaoimpl.getMemberList(pageEntity);  
+		
 	}
 
 }

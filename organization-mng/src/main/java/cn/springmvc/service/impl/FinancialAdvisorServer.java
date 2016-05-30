@@ -77,15 +77,15 @@ public class FinancialAdvisorServer implements IFinancialAdvisorServer{
 		param.put("financialNo", id+ IntegerAndString.getRandomNum(6));
 		param.put("skey", DbKeyUtil.GetDbCodeKey());
 		
-		StaffInfo info = staffInfoReadDao.findById(param);
+		//StaffInfo info = staffInfoReadDao.findById(param);
 		
 		int result = financialAdvisorDaol.saveFinancialAdvisor(param);
 		if(result == 0){
 			generatorUtil.SetIdUsed(id);
-			entity.setsDetail("添加理财师:"+info.getBaseInfo().getPersonalName()+",成功");
+			entity.setsDetail("添加理财师:员工id为"+id+",成功");
 		}else{
 			generatorUtil.SetIdUsedFail(id);
-			entity.setsDetail("添加理财师:"+info.getBaseInfo().getPersonalName()+",失败");
+			entity.setsDetail("添加理财师:员工id为"+id+",失败");
 		}
 		recordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		return result;

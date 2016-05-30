@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心--财务配置</title>
+	<title>配置中心-财务设置-债权转让设置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -24,12 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="6" name="top_menu_index"/>
+				<jsp:param value="6" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../common/cm-config.jsp">
-				<jsp:param value="config-0" name="config-index" />
+				<jsp:param value="601" name="_index_m2"/>
+				<jsp:param value="60104" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
 			<div class="right_col" role="main">
@@ -40,11 +41,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	<div class="config">
 			 		<fieldset>
 			 			<legend>债权转让设置手续费设置</legend>
-			 			<form class="form-horizontal" role="form" name="" action="" id="">
+			 			<form class="form-horizontal" role="form" name="" action="javascript:submitBtn(0);" id="dataForm">
 			 				<div class="form-group">
 			 					<label for="holdDay" class="col3 i-fl control-label">债权持有时间大于：</label>
 			 					<div class="i-fl">
-			 						<input type="text"  class="form-control" id="holdDay" value="${creditorEntity.holdDay}" placeholder="债权持有时间大于">
+			 						<input type="text"  class="form-control" id="holdDay" datatype="nNum1" maxlength="3" value="${creditorEntity.holdDay}" placeholder="债权持有时间大于">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">天<i>*</i></span>
@@ -56,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="rangeDay" class="i-fl control-label col3">债权距到期时间大于：</label>
 			 					<div class="i-fl">
-			 						<input type="text"  class="form-control" value="${creditorEntity.rangeDay}" id="rangeDay" placeholder="债权距到期时间大于">
+			 						<input type="text"  class="form-control" value="${creditorEntity.rangeDay}" datatype="nNum1" maxlength="3" id="rangeDay" placeholder="债权距到期时间大于">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">天<i>*</i></span>
@@ -68,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="interestDay" class="col3 i-fl control-label">债权日在还款日前：</label>
 			 					<div class="i-fl">
-			 						<input type="text"  class="form-control" value="${creditorEntity.interestDay}" id="interestDay" placeholder="债权日在还款日前">
+			 						<input type="text"  class="form-control" value="${creditorEntity.interestDay}" datatype="nNum1" maxlength="3" id="interestDay" placeholder="债权日在还款日前">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">天<i>*</i></span>
@@ -80,7 +81,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group">
 			 					<label for="mngFee" class="i-fl control-label col3">债权转让手续费费率：</label>
 			 					<div class="i-fl">
-			 						<input type="text"  class="form-control" value="${creditorEntity.mngFee}" id="mngFee" placeholder="债权转让手续费费率">
+			 						<input type="text"  class="form-control" value="${creditorEntity.mngFees}" datatype="hundredNum" maxlength="8" id="mngFee" placeholder="债权转让手续费费率">
 			 					</div>
 			 					<div class="i-fl">
 									<span class="sign i-fl">%<i>*</i></span>
@@ -106,7 +107,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				</div>
 			 				<div class="form-group">
 			 					<div class="offset-col3">
-			 						<button type="button" id="saveBtn" onclick="submitBtn(0)" class="btn btn-default">保存</button>
+			 						<button type="button" id="saveBtn" class="btn btn-default">保存</button>
 			 					</div>
 			 				</div>
 			 			</form>		
@@ -196,10 +197,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<jsp:include page="../common/cm-js.jsp"></jsp:include>
 	<!-- 私用js -->
 	<script type="text/javascript">
-			//加密设置
-			var encrypt = new JSEncrypt();
-			encrypt.setPublicKey(publicKey_common);
-			
+			/* 验证 */
+			$(function(){
+				validform5("#saveBtn","dataForm",false,"5");
+			});
 			//页面初始化
 			$(function(){
 				var mngType = $("#mngType").val();
@@ -212,31 +213,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("input[name='interestType'][value="+interestType+"]").attr('checked','true');
 				
 				//天数有有效性检验
-				$(".form-control").on("change",function(){
-					var $this = $(this);
-				    var reg = new RegExp("^[1-9][0-9]{0,2}$");  
-					var value = $this.val();
-				    if(!reg.test(value)){  
-				    	$this.parent().nextAll(".input-alert").html("请输入3位数的正整数");
-				    	$("#saveBtn").attr("disabled",true);
-				    }else{
-				    	$this.parent().nextAll(".input-alert").html("");
-				    	$("#saveBtn").attr("disabled",false);
-				    }
-				});
+// 				$(".form-control").on("change",function(){
+// 					var $this = $(this);
+// 				    var reg = new RegExp("^[1-9][0-9]{0,2}$");  
+// 					var value = $this.val();
+// 				    if(!reg.test(value)){  
+// 				    	$this.parent().nextAll(".input-alert").html("请输入3位数的正整数");
+// 				    	$("#saveBtn").attr("disabled",true);
+// 				    }else{
+// 				    	$this.parent().nextAll(".input-alert").html("");
+// 				    	$("#saveBtn").attr("disabled",false);
+// 				    }
+// 				});
 				// 费率检验
-				$("#mngFee").on("change",function(){
-					var $this = $(this);
-				    var reg = new RegExp("^(\\d|[1-9]\\d|100)$");  
-					var value = $this.val();
-				    if(!reg.test(value)){  
-				    	$("#saveBtn").attr("disabled",true);
-				    	$this.parent().nextAll(".input-alert").html("请输入0-100的整数");
-				    }else{
-				    	$this.parent().nextAll(".input-alert").html("");
-				    	$("#saveBtn").attr("disabled",false);
-				    }
-				});
+// 				$("#mngFee").on("change",function(){
+// 					var $this = $(this);
+// 				    var reg = RE.hundrednum;  
+// 					var value = $this.val();
+// 				    if(!reg.test(value)){  
+// 				    	$("#saveBtn").attr("disabled",true);
+// 				    	$this.parent().nextAll(".input-alert").html("请输入0.0000-100.0000之间的数字");
+// 				    }else{
+// 				    	$this.parent().nextAll(".input-alert").html("");
+// 				    	$("#saveBtn").attr("disabled",false);
+// 				    }
+// 				});
 			});
 	
 			//保存按钮

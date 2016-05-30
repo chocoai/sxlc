@@ -89,9 +89,9 @@ $(function(){
 			 
 			$("#goodName").val(r.commodityName);
 			$("#point").val(r.needPoint);
-			$("#endTime").val(r.endDate.substr(0,r.endDate.indexOf(" ")));
+			$("#endTime").val(r.endDate);
 			$("#manufactor").val(r.manufacturer);
-			$("#marketValue").val(r.marketPrice);
+//			$("#marketValue").val(r.marketPrice);
 			$("#specifications").val(r.specificationsmodels);
 			$("#stock").val(r.quantity);
 			$("#denominationVouchers").val(r.vouchersAmount);
@@ -105,7 +105,7 @@ $(function(){
 	
 	
 	$("#good_add").Validform({
-		tiptype:3,
+		tiptype:5,
 		btnSubmit:".queding", 
 		datatype:{"enterAddress":enterAddress,"acountM":acountM,"img":img,"time":time},
 		ajaxPost:true,
@@ -129,7 +129,7 @@ $(function(){
 				data.isVip = encrypt.encrypt($("#isVip").val()+"");
 				data.isActivity = encrypt.encrypt($("#isActivity").val()+"");
 				data.denominationVouchers = encrypt.encrypt($("#denominationVouchers").val()+"");
-				data.marketValue = encrypt.encrypt($("#marketValue").val()+"");
+//				data.marketValue = encrypt.encrypt($("#marketValue").val()+"");
 				data.maxPicPath = encrypt.encrypt($("#urlBigImg").val()+"");
 				data.minPicPath = encrypt.encrypt($("#urlSmallImg").val()+"");
 				data.commodDetail = encrypt.encrypt(ue.getContent()+"");

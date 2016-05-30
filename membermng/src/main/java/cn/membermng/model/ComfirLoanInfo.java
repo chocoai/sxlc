@@ -1,5 +1,7 @@
 package cn.membermng.model; 
 
+import product_p2p.kit.datatrans.IntegerAndString;
+
 
 /***
 * 待确认的借款信息
@@ -50,13 +52,14 @@ public class ComfirLoanInfo {
 		return loanAmount;
 	}
 	public void setLoanAmount(long loanAmount) {
-		this.loanAmount = loanAmount;
+		this.loanAmount = loanAmount; 
+		this.sLoanAmount = IntegerAndString.LongToString(loanAmount); 
 	}
 	public String getsLoanAmount() {
 		return sLoanAmount;
 	}
 	public void setsLoanAmount(String sLoanAmount) {
-		this.sLoanAmount = sLoanAmount;
+		this.sLoanAmount = sLoanAmount;  
 	}
 	public int getDeadline() {
 		return deadline;

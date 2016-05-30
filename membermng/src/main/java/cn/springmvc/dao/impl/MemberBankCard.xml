@@ -12,6 +12,16 @@
 	   from   City_Dictionary  cd
 	   where  Province_Id =#{provinceId}
     </select>  
+     <!-- 查询省信息 银行卡专用 -->  
+	<select id="selectBankProvinceDictionary"    resultMap="bankInfoMap.cityInfo">
+	   select  ci.ID, ci.CityName
+	   from  cityinfo ci WHERE ci.Type_Statu=1 AND PARENTID=0
+    </select> 
+    <!-- 查询市信息 银行卡专用 -->  
+	<select id="selectBankCityDictionary" parameterType="int"   resultMap="bankInfoMap.cityInfo">
+	  select  ci.ID, ci.CityName
+	   from  cityinfo ci WHERE ci.Type_Statu=1 AND PARENTID=#{provinceId}
+    </select>  
      <!-- 查询银行信息-->  
 	<select id="selectBankInfo"    resultMap="bankInfoMap.resultBankInfo">
 	   select bc.BankCode,bi.BankName,bi.Bank_ID from 
@@ -90,7 +100,7 @@
 	 select count(bci.Bank_No) 
 	 from Member_Bank_Card mbc
 	 left join Bank_Card_Info bci on mbc.Bank_Card_Id= bci.Bank_Card_Id
-	 where  mbc.Statu=1  and mbc.Member_type = #{membertype}  and  bci.Bank_No = #{bankNo} and  mbc.Receive_Card !=#{receiveCard} 
+	 where  mbc.Statu=1  and mbc.Member_type != #{membertype}  and  bci.Bank_No = #{bankNo} and  mbc.Receive_Card !=#{receiveCard} 
     </select> 
     <!-- 根据银行卡ID查询会员银行卡信息 用于信息修改-->  
 	<select id="selectMemberBankCardByID"  parameterType="map"   resultMap="bankInfoMap.resultBankCardInfo">

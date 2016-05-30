@@ -344,6 +344,14 @@
 		       CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  like '%${map.name}%'
 		    )
 		 </if>
+		   <!-- 		     根据注册时间降序 -->
+		  <if test="map.order != null and map.order == 1">
+		    order by   bmi.Reg_Date desc
+		 </if>
+		  <!-- 		     根据注册时间升序 -->
+		  <if test="map.order != null and map.order == 2">
+		    order by   bmi.Reg_Date asc
+		 </if>
     </select>
     
     <!--  理财顾问推荐借款明细 -->
@@ -450,7 +458,8 @@
 		    and (Logname like '%${map.name}%' or 
 		        Personal_Name like '%${map.name}%' 
 		    )
-		 </if>
+		 </if> 
+		</where>
 		  <!-- 		     预期收益时间降序 -->
 		  <if test="map.order != null and map.order == 1">
 		    order by   nextReplayDay desc
@@ -459,7 +468,6 @@
 		  <if test="map.order != null and map.order == 2">
 		    order by  nextReplayDay asc
 		 </if> 
-		</where>
     </select>
     
     <!--           理财顾问VIP购买明细 -->
@@ -474,7 +482,7 @@
 		  END Personal_Name,	
 		  mvr.Certify_SDate,
 		  mvr.Certify_EDate,
-		  ifnull(sum(CAST((AES_DECRYPT(UNHEX(mvp.Amount),#{map.skey})) as signed)),0) Amount,
+		  ifnull(CAST((AES_DECRYPT(UNHEX(mvp.Amount),#{map.skey})) as signed),0) Amount,
 		  mvp.Record_Date
 		  FROM Member_VIP_Pay_Record mvp
 		  join FinancialAdvisor_Award_Record far ON mvp.MV_Pay_ID = far.Project_Id AND far.Award_Type = 3
@@ -526,6 +534,7 @@
     SELECT
 	  pa.Apply_Id,
 	  prbi.Project_Title,
+	  prbi.Amount,
 	  mi.Logname,
 	  CASE
 		  WHEN mi.Member_Type = 0 THEN CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)

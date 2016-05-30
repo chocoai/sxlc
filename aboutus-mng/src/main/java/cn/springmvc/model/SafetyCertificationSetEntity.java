@@ -1,4 +1,9 @@
 package cn.springmvc.model;
+
+import java.util.Date;
+
+import product_p2p.kit.datatrans.TimestampAndString;
+
 /**
  * 首页全屏弹出框配置实体类
  * @author 刘利
@@ -20,15 +25,18 @@ public class SafetyCertificationSetEntity {
 	/**
 	 * 公告弹出开始时间
 	 */
-	private String certificationStartTime;
+	private Date certificationStartTime;
+	private String  certificationStartTimes;
 	/**
 	 * 公告弹出结束时间
 	 */
-	private String certificationEndTime;
+	private Date certificationEndTime;
+	private String certificationEndTimes;
 	/**
 	 * 弹出公告添加时间
 	 */
-	private String certificationAddTime;
+	private Date certificationAddTime;
+	private String certificationAddTimes;
 	/**
 	 * 最近一次操作管理员ID
 	 */
@@ -59,23 +67,36 @@ public class SafetyCertificationSetEntity {
 	public void setCertificationUrl(String certificationUrl) {
 		this.certificationUrl = certificationUrl;
 	}
-	public String getCertificationStartTime() {
+	
+	public Date getCertificationStartTime() {
 		return certificationStartTime;
 	}
-	public void setCertificationStartTime(String certificationStartTime) {
+	public void setCertificationStartTime(Date certificationStartTime) {
 		this.certificationStartTime = certificationStartTime;
+		this.certificationStartTimes = TimestampAndString.DateToString(certificationStartTime);
 	}
-	public String getCertificationEndTime() {
+	public String getCertificationStartTimes() {
+		return certificationStartTimes;
+	}
+	public Date getCertificationEndTime() {
 		return certificationEndTime;
 	}
-	public void setCertificationEndTime(String certificationEndTime) {
+	public void setCertificationEndTime(Date certificationEndTime) {
 		this.certificationEndTime = certificationEndTime;
+		this.certificationEndTimes = TimestampAndString.DateToString(certificationEndTime);
 	}
-	public String getCertificationAddTime() {
+	public String getCertificationEndTimes() {
+		return certificationEndTimes;
+	}
+	public Date getCertificationAddTime() {
 		return certificationAddTime;
 	}
-	public void setCertificationAddTime(String certificationAddTime) {
+	public void setCertificationAddTime(Date certificationAddTime) {
 		this.certificationAddTime = certificationAddTime;
+		this.certificationAddTimes = TimestampAndString.DateToString(certificationAddTime);
+	}
+	public String getCertificationAddTimes() {
+		return certificationAddTimes;
 	}
 	public long getAdminId() {
 		return adminId;

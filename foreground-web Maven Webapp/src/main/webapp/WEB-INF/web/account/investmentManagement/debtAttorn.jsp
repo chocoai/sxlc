@@ -103,7 +103,6 @@
 					   				<div class="operations">操作</div>
 		   						</div>
    							</li>
-
    						</ul>
    						<script id="transferAbleList" type="text/html">
    								{{each infos as value index}}
@@ -125,7 +124,7 @@
 		   						</div>
 		   						<div class="ResidualMaturity divOutside">
 		   							<div class="divIntside">
-		   								<div>{{value.cou}}{{value.deadlineTypeName}}</div>
+		   								<div>{{value.cou}} 期</div>
 		   							</div>
 		   						</div>
 		   						<div class="nextRepaymentTime divOutside">
@@ -147,7 +146,6 @@
    							</li>
    							{{/each}}
    							<li class="page"><div id="pager1"></div></li>
-						
 						</script>
    						
    						
@@ -346,21 +344,24 @@
    	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
    	<!--弹出层修改伍成然2016-4-6  -->
-   	<div class="layerWindow">
+   	<div class="layerWindow" style="display:none">
+   	<form id="form1">
 		<div class="layerWindowM">
-			<input type="hidden" value="" id="inputInvestId">	
-			<div>可转让金额：<span class="moneyFormat" id="transferableMoney">10000</span>元</div>
-			<div><label>转让金额：</label><input class="format" id="getTransNum" type="text" lang="请输入转让金额" maxlength="10">元</div>
-			<div><label>转让折扣：</label><input class="numberReg" id="getSaleNum" type="text" lang="请输入转让折扣(%)" maxlength="10"></div>
-			<div>
-				<label>最晚转出时间：</label>
-				<input type="text" class="select-time Wdate" id="maxTime" onfocus="WdatePicker({minDate: '%y-%M-%d' })" lang="请选择最晚转让时间">
-			</div>
-			<div class="attornProfit">转让成功预计所得收益：<span id="shouyi">0</span>元</div>
+			
+				<input type="hidden" value="" id="inputInvestId">	
+				<div>可转让金额：<span class="moneyFormat" id="transferableMoney">10000</span>元</div>
+				<div><label>转让金额：</label><input datatype="acountM" id="getTransNum" type="text" lang="请输入转让金额" maxlength="10">元</div>
+				<div><label>转让折扣：</label><input class="numberReg" id="getSaleNum" datatype="acountM1" type="text" lang="请输入转让折扣(%)" maxlength="10">%</div>
+				<div>
+					<label>最晚转出时间：</label>
+					<input type="text" class="select-time Wdate" id="maxTime" onfocus="WdatePicker({minDate: '%y-%M-%d' })"  lang="请选择最晚转出时间">
+				</div>
+			
 		</div>
 		<div class="layerWindowBtn">
 			<div class="btn"  id="sureBtn">确定</div>
 		</div>
+		</form>
 	</div>
 	<script type="text/javascript" src="/foreground-web/plugs/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="js/account/account.js"></script>

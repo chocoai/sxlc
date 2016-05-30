@@ -26,8 +26,11 @@ function mangeAdd() {
 		},
 		success : function (msg) {
 			if (msg == 1) {
-				layer.alert("添加成功",{icon:1});  
-				setTimeout('location.reload()',2000);
+				document.getElementById("addMange").reset();
+				var table = $('#assetadmaintable').DataTable();
+				table.ajax.reload();
+				layer.closeAll();
+				layer.alert("添加成功",{icon:1}); 
 			}else {
 				layer.alert("服务器异常",{icon:2});
 			}
@@ -194,6 +197,18 @@ $(function() {
  var table = $('#assetadmaintable').DataTable();
 //设置选中change颜色
  $('#assetadmaintable tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

@@ -24,6 +24,9 @@
 		<result column="Financial" property="financial" />
 		<result column="sendrecordDate" property="sendrecordDate" />
 		<result column="Apply_Id" property="applyid" />
+		<result property = "memberType" column = "Member_Type" />  
+		<result property = "projectName"        column = "Project_Name" />
+		<result property = "projectId"        column = "Project_ID" />
    </resultMap>
    <!-- 借款意向分页条件查询 -->
    <select id="selectAllProjectPurpose" parameterType="product_p2p.kit.pageselect.PageEntity" resultMap="ProjectPurpose">
@@ -58,7 +61,7 @@
    </select>
    <!-- 根据借款意向id查询借款信息 -->
    <select id="selectProjectPurposeById" resultMap="ProjectPurpose" parameterType="Map">
-   		select pp.*,mi.Member_No,mi.Logname,paar.Apply_Id,
+   		select pp.*,mi.Member_No,mi.Logname,paar.Apply_Id,mi.Member_Type,pty.Project_Name,pty.Project_ID,
    		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
    		CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,
    		(select count(*) from Member_Financial_Advisor where Member_ID = pp.Member_ID and (Remove_Date>now() or Remove_Date is null) ) Financial
@@ -69,6 +72,7 @@
    		left join Member_Info mi on pp.Member_ID = mi.Member_ID 
    		left join Personal_Base_Info pbi on pbi.Personal_ID = mi.Personal_ID 
    		left join Project_App_Record paar on paar.Purpose_ID = pp.Purpose_ID
+   		left join ProjectBaseInfo pty on  pp.Project_ID=pty.Project_ID 
    		where pp.Purpose_ID = #{id}
    </select>
    <!-- 借款意向打回 -->

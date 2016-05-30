@@ -36,7 +36,7 @@
 						</tr>
 						<tr>
 							<td class="tt">借款金额范围</td>
-							<td class="con" id="loanScope"><input type="text" datatype="amcountM"/><span class="line"></span><input type="text" datatype="amcountM"/></td>
+							<td class="con" id="loanScope"><input type="text" datatype="acountM"/><span class="line"></span><input type="text" datatype="acountM"/></td>
 						</tr>
 						<tr>
 							<td class="tt"><label>年化利率范围</label></td>

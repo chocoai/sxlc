@@ -21,15 +21,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</tr>
 				<tr>
 					<td class="addmanagetd"><label class="ineed">组织机构代码</label></td>
-					<td class="addmanageinput"><input id="orgNum" type="text" class="" placeholder="46650460-6" datatype="orgcodefmt" /></td>
+					<td class="addmanageinput"><input id="orgNum" type="text" class="" placeholder="46650460-6" datatype="orgcode" /></td>
 					<td class="addmanagetd"><label class="ineed">税务登记号</label></td>
 					<td class="addmanageinput"><input id="taxNum" type="text" class="" placeholder="110108681211312" datatype="businessNum"/></td>
 				</tr>
 				<tr>
 					<td class="addmanagetd"><label>经营场所</label></td>
 					<td class="addmanageinput"><input id="local" type="text" class="" placeholder="" datatype="z2_20" ignore="ignore"/></td>
-					<td class="addmanagetd"><label>注册资金</label></td>
-					<td class="addmanageinput"><input id="money" type="text" class="" placeholder="" datatype="amcountM" ignore="ignore"/></td>
+					<td class="addmanagetd"><label>注册资金(元)</label></td>
+					<td class="addmanageinput"><input id="money" type="text" class="" placeholder="" datatype="acountM" ignore="ignore"/></td>
 				</tr>
 				<tr>
 					<td class="addmanagetd"><label class="ineed">法人姓名</label></td>
@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</tr>
 				<tr>
 					<td class="addmanagetd"><label class="ineed">法人身份证号</label></td>
-					<td class="addmanageinput"><input id="personIDcard" type="text" class="" placeholder="" datatype="idcard" ignore="ignore"/></td>
+					<td class="addmanageinput"><input id="personIDcard" type="text" class="" placeholder="" datatype="IDCard" ignore="ignore"/></td>
 					<td class="addmanagetd"><label>注册地址</label></td>
 					<td class="addmanageinput"><input id="address" type="text" class="" placeholder="" datatype="enterAddress" ignore="ignore"/></td>
 				</tr>
@@ -53,7 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<td class="addmanagetd"><label>公司简介</label></td>
 					<td class="addmanageinput"><input id="intro" type="text" class="" placeholder="" datatype="rolemarkC" ignore="ignore"/></td>
 					<td class="addmanagetd"><label class="ineed">联系人姓名</label></td>
-					<td class="addmanageinput"><input id="contactName" type="text" class="" placeholder="" datatype="z2_12"/></td>
+					<td class="addmanageinput"><input id="contactName" type="text" class="" placeholder="" datatype="realName"/></td>
 				</tr>
 				<tr>
 					<td class="addmanagetd"><label class="ineed">联系人手机号</label></td>
@@ -77,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/recommend/gua-add.js"></script>
 	<script type="text/javascript">
 		$(function(){
-			validform5("layui-layer-btn0","manageAdd",false,"3");
+			validform5("layui-layer-btn0","manageAdd",false,"5");
 		});
 	</script>
 	<script type="text/javascript">

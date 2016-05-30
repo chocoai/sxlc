@@ -11,7 +11,7 @@ int content = IntegerAndString.StringToInt(request.getParameter("content"),0);
 
 <head>
 	<base href="<%=basePath%>">
-	<title>营业执照认证</title>
+	<title>会员管理-企业会员-资料认证-营业执照认证</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->

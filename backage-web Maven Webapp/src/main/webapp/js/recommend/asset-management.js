@@ -210,6 +210,26 @@ $(function() {
  var table = $('#assettable').DataTable();
 //设置选中change颜色
  $('#assettable tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
+});
+
+/**
+ * 查询按钮
+ */
+$(".glyphicon-search").on("click",function(){
+	$('#checkpaymenttable').DataTable().ajax.reload();
+	
 });

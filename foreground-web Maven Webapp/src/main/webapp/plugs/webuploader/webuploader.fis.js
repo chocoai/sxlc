@@ -375,7 +375,7 @@ return (function( root, factory ) {
              */
             log: (function() {
                 if ( window.console ) {
-                    return bindFn( //console.log, console );
+                    return bindFn( console.log, console );
                 }
                 return noop;
             })(),

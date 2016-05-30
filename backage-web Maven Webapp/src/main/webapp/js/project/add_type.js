@@ -7,19 +7,19 @@ var contentG = $("#applyguideValue").html();
 var contentR = $("#payguideValue").html();
 $(function(){
 	//上传插件初始化
-	UploadImg('filePicker',$("#fileList"),1,$("#picUrl"),100,110);
+	UploadImg('filePicker',$("#fileList"),1,$("#picUrl"),120,120);
 	UploadImg('filePicker1',$("#fileList1"),1,$("#picIcon"),100,100);
 	
-	validform5(".btn-success","dataForm",false,"3");
+	validform5(".btn-success","dataForm",false,"5");
 		
 	//初始化图片预览
 	var picIcon = $("#picIcon").val();
 	if(picIcon!=null && picIcon!= ""){
-		$("#fileList").html('<img height="100" width="100" src="'+$("#hostPath").val()+picIcon+'">');
+		$("#fileList").html('<img style="max-height: 100px;max-width: 100px;" src="'+$("#hostPath").val()+picIcon+'">');
 	}
 	var picUrl = $("#picUrl").val();
 	if(picUrl!=null && picUrl!= ""){
-		$("#fileList1").html('<img height="50" width="50" src="'+$("#hostPath").val()+picUrl+'">');
+		$("#fileList1").html('<img style="max-height: 50px;max-width: 50px;" src="'+$("#hostPath").val()+picUrl+'">');
 	}
 	
 	//初始化editor插件数据
@@ -95,9 +95,10 @@ $(function(){
 		var $this = $(this);
 		var begin = $this.val();
 		var end = $this.parent().find(".endNum").val();
-		if(Number(begin)>Number(end)){
+		if(end!="" && begin !="" && Number(begin)>Number(end)){
 			$this.parent().find(".errorMsg").html("*请输入正确的数据范围！");
-			$this.parent().find(".Validform_checktip").removeClass("Validform_right");
+			$this.addClass("Validform_error");
+			setTimeout(function(){$this.parent().find(".Validform_checktip").removeClass("Validform_right");},50);
 		}else{
 			$this.parent().find(".errorMsg").html("");
 		}
@@ -106,9 +107,10 @@ $(function(){
 		var $this = $(this);
 		var end = $this.val();
 		var begin = $this.parent().find(".beginNum").val();
-		if(Number(begin)>Number(end)){
+		if(end!="" && begin !="" && Number(begin)>Number(end)){
 			$this.parent().find(".errorMsg").html("*请输入正确的数据范围！");
-			$this.parent().find(".Validform_checktip").removeClass("Validform_right");
+			$this.addClass("Validform_error");
+			setTimeout(function(){$this.parent().find(".Validform_checktip").removeClass("Validform_right");},50);
 		}else{
 			$this.parent().find(".errorMsg").html("");
 		}
@@ -130,12 +132,18 @@ $(function(){
 function addOrModify(){
 	//验证数据范围是否正确
 	$(".beginNum").change();
+	var flag = true;
 	$(".errorMsg").each(function(){
 		var text = $(this).html();
 		if(text!=""){
+			$(".Validform_error").focus();
+			flag = false;
 			return;
 		}
 	});
+	if(!flag){
+		return;
+	}
 	//获取修改数据
 	var projectName = $(".proKindName").val();
 	var minAmount = $(".minAmount").val();
@@ -148,6 +156,27 @@ function addOrModify(){
 	var maxDaytimeM = $(".maxDaytimeM").val();
 	var minDaytimeD = $(".minDaytimeD").val();
 	var maxDaytimeD = $(".maxDaytimeD").val();
+	var dayFlag = false;//判断是否至少有一对合法期限数据
+	var sinFlag = true;//判断是否是只填写了最小或最大期限
+	$(".minDayTime").each(function(){
+		var minDayTime = $(this).val();
+		var maxDayTime = $(this).parent().find(".maxDayTime").val();
+		if(minDayTime!="" && maxDayTime !=""){
+			dayFlag = true;
+		}else if(minDayTime != "" && maxDayTime == ""){
+			sinFlag = false;
+		}else if(maxDayTime != "" && minDayTime == ""){
+			sinFlag = false;
+		}
+	});
+	if(!sinFlag){
+		layer.alert("不能只填写最小或最大期限",{icon:0});  
+		return;
+	}
+	if(!dayFlag){
+		layer.alert("请至少填写一种项目期限",{icon:0});  
+		return;
+	}
 	var isMortgage = $(".assettype").val();
 	var applyMember = $(".identitySelection").val();
 	var Datum="";//借款所需认证项拼接
@@ -169,20 +198,66 @@ function addOrModify(){
 	data.maxAmount = encrypt.encrypt(maxAmount);
 	data.minRate = encrypt.encrypt(minRate);
 	data.maxRate = encrypt.encrypt(maxRate);
-	data.minDaytimeY = encrypt.encrypt(minDaytimeY);
-	data.maxDaytimeY = encrypt.encrypt(maxDaytimeY);
-	data.minDaytimeM = encrypt.encrypt(minDaytimeM);
-	data.maxDaytimeM = encrypt.encrypt(maxDaytimeM);
-	data.minDaytimeD = encrypt.encrypt(minDaytimeD);
-	data.maxDaytimeD = encrypt.encrypt(maxDaytimeD);
-	data.isMortgage = encrypt.encrypt(isMortgage);
-	data.applyMember = encrypt.encrypt(applyMember);
-	data.Datum = encrypt.encrypt(Datum);
-	data.picIcon = encrypt.encrypt(picIcon);
-	data.picUrl = encrypt.encrypt(picUrl);
-	data.briefIntroduction = encrypt.encrypt(briefIntroduction);
-	data.contentg = encrypt.encrypt(contentg);
-	data.contentr = encrypt.encrypt(contentr);
+	if(minDaytimeY != ""){
+		data.minDaytimeY = encrypt.encrypt(minDaytimeY);
+	}
+	if(maxDaytimeY != ""){
+		data.maxDaytimeY = encrypt.encrypt(maxDaytimeY);
+	}
+	if(minDaytimeM != ""){
+		data.minDaytimeM = encrypt.encrypt(minDaytimeM);
+	}
+	if(maxDaytimeM != ""){
+		data.maxDaytimeM = encrypt.encrypt(maxDaytimeM);
+	}
+	if(minDaytimeD != ""){
+		data.minDaytimeD = encrypt.encrypt(minDaytimeD);
+	}
+	if(maxDaytimeD != ""){
+		data.maxDaytimeD = encrypt.encrypt(maxDaytimeD);
+	}
+	if(isMortgage!=null && isMortgage != ""){
+		data.isMortgage = encrypt.encrypt(isMortgage);
+	}else{
+		layer.alert("请选择是否需要抵押！",{icon:0});  
+		return;
+	}
+	if(applyMember!=null && applyMember != ""){
+		data.applyMember = encrypt.encrypt(applyMember);
+	}else{
+		layer.alert("请选择产品认证项！",{icon:0});  
+		return;
+	}
+	if(Datum!=null && Datum != ""){
+		data.Datum = encrypt.encrypt(Datum);
+	}
+	if(picIcon!=null && picIcon != ""){
+		data.picIcon = encrypt.encrypt(picIcon);
+	}else{
+		layer.alert("请上传产品小图标！",{icon:0});  
+		return;
+	}
+	if(picUrl!=null && picUrl != ""){
+		data.picUrl = encrypt.encrypt(picUrl);
+	}else{
+		layer.alert("请上传展示图片！",{icon:0}); 
+		return;
+	}
+	if(briefIntroduction!=null && briefIntroduction != ""){
+		data.content = briefIntroduction;//百度编辑器内容不加密
+	}
+	if(contentg!=null && contentg != ""){
+		data.start = contentg;//百度编辑器内容不加密
+	}else{
+		layer.alert("请填写申请指南！",{icon:0}); 
+		return;
+	}
+	if(contentr!=null && contentr != ""){
+		data.length = contentr;//百度编辑器内容不加密
+	}else{
+		layer.alert("请填写还款指南！",{icon:0}); 
+		return;
+	}
 	if(projectId != "" && projectId != null){//修改
 		data.type = encrypt.encrypt("2");
 		data.lId = encrypt.encrypt(projectId);
@@ -199,6 +274,7 @@ function addOrModify(){
 		success:function(data) { 
 			if(data==1){
 				layer.alert("操作成功",{icon:1});
+				window.location.href=appPath+"/project/toProTypePg";
 			}else if(data==0){
 				layer.alert("操作失败",{icon:2});  
 			}else if(data==-1){
@@ -218,19 +294,12 @@ function addOrModify(){
 
 $(function(){
 	
-/* 类型名称 */
-$(".proKindName").blur(function(){
-	var rn = $(".proKindName").val();
-	if(rn == " " || rn == ""){
-		alert("错误");
-	}
-});
 /* 项目融资范围 */
 	$(".endAccount").blur(function(){
 		var ba =$(".beginAccount").val();
 		var ea =$(".endAccount").val();
 		if(ea<=ba){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}else{
 		}
 	});
@@ -238,7 +307,7 @@ $(".proKindName").blur(function(){
 		var ba =$(".beginAccount").val();
 		var ea =$(".endAccount").val();
 		if(ea<=ba){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	/* 年化利率范围 */
@@ -246,14 +315,14 @@ $(".proKindName").blur(function(){
 		var sty =$(".startTheYear").val();
 		var ety =$(".endTheYear").val();
 		if(ety<=sty){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	$(".endTheYear").blur(function(){
 		var sty =$(".startTheYear").val();
 		var ety =$(".endTheYear").val();
 		if(ety<=sty){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	
@@ -263,7 +332,7 @@ $(".proKindName").blur(function(){
 		var be =$(".bgTime").val();
 		var ee =$(".edTime").val();
 		if(ee<=be){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	
@@ -271,7 +340,7 @@ $(".proKindName").blur(function(){
 		var be =$(".bgTime").val();
 		var ee =$(".edTime").val();
 		if(ee<=be){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	/* 年 */
@@ -279,7 +348,7 @@ $(".proKindName").blur(function(){
 		var beY =$(".bgTimeY").val();
 		var eeY =$(".edTimeY").val();
 		if(eeY<=beY){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	
@@ -287,7 +356,7 @@ $(".proKindName").blur(function(){
 		var beY =$(".bgTimeY").val();
 		var eeY =$(".edTimeY").val();
 		if(eeY<=beY){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	/* 月 */
@@ -295,7 +364,7 @@ $(".proKindName").blur(function(){
 		var beM =$(".bgTimeM").val();
 		var eeM =$(".edTimeM").val();
 		if(eeM<=beM){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	
@@ -303,7 +372,7 @@ $(".proKindName").blur(function(){
 		var beM =$(".bgTimeM").val();
 		var eeM =$(".edTimeM").val();
 		if(eeM<=beM){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	/* 天*/
@@ -311,7 +380,7 @@ $(".proKindName").blur(function(){
 		var beD =$(".bgTimeD").val();
 		var eeD =$(".edTimeD").val();
 		if(eeD<=beD){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	
@@ -319,7 +388,7 @@ $(".proKindName").blur(function(){
 		var beD =$(".bgTimeD").val();
 		var eeD =$(".edTimeD").val();
 		if(eeD<=beD){
-			alert("错误");
+			layer.alert("数据范围错误！",{icon:0});  
 		}
 	});
 	

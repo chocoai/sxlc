@@ -28,20 +28,20 @@
     <result column="Personal_Phone" property="personalPhone"/>
   </resultMap>
   <sql id="GuaranteeInfo_Column_List" >
-    	Guarantee_ID,pbi.Personal_Id,Guarantee_NO,
-    	CONVERT((AES_DECRYPT(UNHEX(Guarantee_Name),#{map.skey})) using utf8) Guarantee_Name,
-    	CONVERT((AES_DECRYPT(UNHEX(Companye_BLN),#{map.skey})) using utf8) Companye_BLN,
-    	CONVERT((AES_DECRYPT(UNHEX(Company_OC),#{map.skey})) using utf8) Company_OC,
-    	CONVERT((AES_DECRYPT(UNHEX(Tax_RegNo),#{map.skey})) using utf8) Tax_RegNo,
-    	CONVERT((AES_DECRYPT(UNHEX(Establishments),#{map.skey})) using utf8) Establishments,
+    	gi.Guarantee_ID,pbi.Personal_Id,gi.Guarantee_NO,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{map.skey})) using utf8) Guarantee_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Companye_BLN),#{map.skey})) using utf8) Companye_BLN,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Company_OC),#{map.skey})) using utf8) Company_OC,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Tax_RegNo),#{map.skey})) using utf8) Tax_RegNo,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Establishments),#{map.skey})) using utf8) Establishments,
     	Company_Capital,
-    	CONVERT((AES_DECRYPT(UNHEX(Company_Address),#{map.skey})) using utf8) Company_Address,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Company_Address),#{map.skey})) using utf8) Company_Address,
     	Company_Source,
-    	CONVERT((AES_DECRYPT(UNHEX(Company_Business),#{map.skey})) using utf8) Company_Business,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Company_Business),#{map.skey})) using utf8) Company_Business,
     	Company_Profile,
-    	CONVERT((AES_DECRYPT(UNHEX(Contact_Name),#{map.skey})) using utf8) Contact_Name,
-    	CONVERT((AES_DECRYPT(UNHEX(Contact_Phone),#{map.skey})) using utf8) Contact_Phone,
-    	CONVERT((AES_DECRYPT(UNHEX(Contact_Email),#{map.skey})) using utf8) Contact_Email,Add_Time,Record_Status,Delete_Flag,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Contact_Name),#{map.skey})) using utf8) Contact_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Contact_Phone),#{map.skey})) using utf8) Contact_Phone,
+    	CONVERT((AES_DECRYPT(UNHEX(gi.Contact_Email),#{map.skey})) using utf8) Contact_Email,Add_Time,Record_Status,Delete_Flag,
     	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) Personal_Name,
     	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) Personal_IDCard,
     	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) Personal_Phone
@@ -86,11 +86,16 @@
   	<where>
   		<!-- 编号、担保机构名称、营业执照号、联系人姓名、联系人手机号、状态 -->
   		<if test="map.guaranteeNo!=null and map.guaranteeNo!=''">and gi.Guarantee_NO like '%${map.guaranteeNo}%'</if>
-  		<if test="map.guaranteeName != null  and map.guaranteeName!=''">and gi.Guarantee_Name like '%${map.guaranteeName}%'</if>
-  		<if test="map.companyeBLN != null  and map.companyeBLN!=''">and gi.Companye_BLN like '%${map.companyeBLN}%'</if>
-  		<if test="map.contactName != null  and map.contactName!=''">and gi.Contact_Name like '%${map.contactName}%'</if>
-  		<if test="map.contactPhone !=null  and map.contactPhone!=''">and gi.Contact_Phone like '%${map.contactPhone}%'</if>
-  		<if test="map.recordStatus != -1">and gi.Record_Status=#{map.recordStatus}</if>
+  		<if test="map.guaranteeName != null  and map.guaranteeName!=''">
+  		and CONVERT((AES_DECRYPT(UNHEX(gi.Guarantee_Name),#{map.skey})) using utf8) like '%${map.guaranteeName}%'</if>
+  		<if test="map.companyeBLN != null  and map.companyeBLN!=''">
+  		and CONVERT((AES_DECRYPT(UNHEX(gi.Companye_BLN),#{map.skey})) using utf8) like '%${map.companyeBLN}%'</if>
+  		<if test="map.contactName != null  and map.contactName!=''">
+  		and CONVERT((AES_DECRYPT(UNHEX(gi.Contact_Name),#{map.skey})) using utf8) like '%${map.contactName}%'</if>
+  		<if test="map.contactPhone !=null  and map.contactPhone!=''">
+  		and CONVERT((AES_DECRYPT(UNHEX(gi.Contact_Phone),#{map.skey})) using utf8) like '%${map.contactPhone}%'</if>
+  		<if test="map.recordStatus != -1 and map.recordStatus !=null and map.recordStatus!=''">
+  		and gi.Record_Status=#{map.recordStatus}</if>
   	</where>
   	 order by gi.Add_Time desc
   </select>
@@ -166,7 +171,7 @@
 	  </foreach>
   </insert>
   <!-- 根据担保机构id删除所有证件信息 -->
-  <delete id="deleteGuaranteeCertificate">
+  <delete id="deleteGuaranteeCertificate" parameterType="Map">
   	delete from Guarantee_Certificate 
   	<where>
   		Guarantee_ID=#{guaranteeID}
@@ -205,7 +210,23 @@
   
   <!-- 根据资产管理方id 查询资产管理方信息 -->
   <select id="selectManagementInfoById" resultMap="ManagementInfo" parameterType="Map" >
-   	select mi.*,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone,mti.ThirdParty_Account from Management_Info mi
+   	select Management_ID,pbi.Personal_Id,Management_NO,
+    	CONVERT((AES_DECRYPT(UNHEX(Management_Name),#{skey})) using utf8) Management_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(Companye_BLN),#{skey})) using utf8) Companye_BLN,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_OC),#{skey})) using utf8) Company_OC,
+    	CONVERT((AES_DECRYPT(UNHEX(Tax_RegNo),#{skey})) using utf8) Tax_RegNo,
+    	CONVERT((AES_DECRYPT(UNHEX(Establishments),#{skey})) using utf8) Establishments,
+    	Company_Capital,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_Address),#{skey})) using utf8) Company_Address,
+    	Company_Source,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_Business),#{skey})) using utf8) Company_Business,
+    	Company_Profile,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Name),#{skey})) using utf8) Contact_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Phone),#{skey})) using utf8) Contact_Phone,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Email),#{skey})) using utf8) Contact_Email,Add_Time,Record_Status,Delete_Flag,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{skey})) using utf8) Personal_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{skey})) using utf8) Personal_IDCard,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{skey})) using utf8) Personal_Phone,mti.ThirdParty_Account from Management_Info mi
    		left join personal_base_info pbi on mi.Personal_Id=pbi.Personal_Id
    		left join Member_Third_Info mti on mti.Member_ID=mi.Management_ID and mti.Member_Type = 1
    		where Management_ID=#{managementID};
@@ -213,7 +234,24 @@
   
   <!-- 分页查询所有资产管理方信息 -->
   <select id="selectAllManagementInfo" resultMap="ManagementInfo" parameterType="product_p2p.kit.pageselect.PageEntity">
-  	select mi.*,pbi.Personal_Name,pbi.Personal_IDCard,pbi.Personal_Phone,mti.ThirdParty_Account 
+  	select Management_ID,
+	CONVERT((AES_DECRYPT(UNHEX(Management_Name),#{map.skey})) using utf8) Management_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(Companye_BLN),#{map.skey})) using utf8) Companye_BLN,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_OC),#{map.skey})) using utf8) Company_OC,
+    	CONVERT((AES_DECRYPT(UNHEX(Tax_RegNo),#{map.skey})) using utf8) Tax_RegNo,
+    	CONVERT((AES_DECRYPT(UNHEX(Establishments),#{map.skey})) using utf8) Establishments,
+    	Company_Capital,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_Address),#{map.skey})) using utf8) Company_Address,
+    	Company_Source,
+    	CONVERT((AES_DECRYPT(UNHEX(Company_Business),#{map.skey})) using utf8) Company_Business,
+    	Company_Profile,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Name),#{map.skey})) using utf8) Contact_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Phone),#{map.skey})) using utf8) Contact_Phone,
+    	CONVERT((AES_DECRYPT(UNHEX(Contact_Email),#{map.skey})) using utf8) Contact_Email,Add_Time,Record_Status,Delete_Flag,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) Personal_Name,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_IDCard),#{map.skey})) using utf8) Personal_IDCard,
+    	CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) Personal_Phone,
+	mti.ThirdParty_Account 
   	from Management_Info mi
   	left join personal_base_info pbi on mi.Personal_Id=pbi.Personal_Id
   	left join Member_Third_Info mti on mti.Member_ID=mi.Management_ID and mti.Member_Type = 1
@@ -270,6 +308,7 @@
 				#{personalIDCard,	 mode=IN,	jdbcType=VARCHAR},
 				#{personalId,	 mode=IN,	jdbcType=BIGINT},
 				#{types,	 mode=IN,	jdbcType=INTEGER},
+				#{skey,	 mode=IN,	jdbcType=VARCHAR},
 				#{result,	 mode=OUT,	jdbcType=INTEGER}
     		)}
     	]]>
@@ -364,18 +403,24 @@
   	</where>
   </select>
    <!-- 添加担保机构期限范围 -->
-  <insert id="insertGuaranteePeriod" parameterType="Map">
+  <insert id="insertGuaranteePeriod" parameterType="java.util.List">
   	insert into Guarantee_Period(Guarantee_ID,Min_Deadline,Max_Deadline,Deadline_Type)
-  		values(#{guaranteeID},#{minDeadline},#{maxDeadline},#{deadlineType})
+  	values
+	  	<foreach collection="list" item="item" index="index"
+	  separator=",">
+	  (#{item.guaranteeID}, #{item.minDeadline}, #{item.maxDeadline},
+	  #{item.deadlineType})
+	  </foreach>
   </insert>
    <!-- 根据保荐机构id,期限类型修改担保机构担保借款范围 -->
-  <update id="updateGuaranteePeriodByID" parameterType="Map">
-  	update Guarantee_Period
-  		<set>
-  			Min_Deadline=#{minDeadline},Max_Deadline=#{maxDeadline}
-  		</set>
-  		where Guarantee_ID=#{guaranteeID} and Deadline_Type=#{deadlineType}
-  </update>
+  <delete id="updateGuaranteePeriodByID" parameterType="Map">
+<!--   	update Guarantee_Period -->
+<!--   		<set> -->
+<!--   			Min_Deadline=#{minDeadline},Max_Deadline=#{maxDeadline} -->
+<!--   		</set> -->
+<!--   		where Guarantee_ID=#{guaranteeID} and Deadline_Type=#{deadlineType} -->
+		delete from Guarantee_Period where Guarantee_ID=#{guaranteeID}
+  </delete>
   
   
   
@@ -399,7 +444,7 @@
   		values
   		<foreach collection="list" item="item" index="index"
 	  separator=",">
-	  ( #{item.guaranteeID}, #{item.projectID}})
+	  ( #{item.guaranteeID}, #{item.projectID})
 	  </foreach>
   </insert>
    <!-- 根据担保机构id删除担保机构担保类型 -->
@@ -457,7 +502,7 @@
   
   <resultMap id="GuaranteeInfoToRaiseCashRecords" type="cn.springmvc.model.InstitutionsRecordsEntity" >
   	 <result column="RealMoney" property="realAmount"/>
-  	 <result column="amount" property="WithdrawalMoney"/>
+  	 <result column="amount" property="amount"/>
   	 <result column="feeAmount" property="feeAmount"/>
   	 <result column="Receive_Date" property="dealTime"/>
   	 <result column="Mer_Billno" property="orderNumber"/>
@@ -482,15 +527,16 @@
   			and #{map.enddealTime}>=Receive_Date
   		</if>
   		<if test="map.merBillno!=null and map.merBillno!=''">
-  			and Mer_Billno like '%#{map.merBillno}%'
+  			and Mer_Billno like '%${map.merBillno}%'
   		</if>
   		<if test="map.thirdMerBillno!=null and map.thirdMerBillno!=''">
-  			and Third_Mer_Billno like '%#{map.thirdMerBillno}%'
+  			and Third_Mer_Billno like '%${map.thirdMerBillno}%'
   		</if>
-  		<if test="map.statu!=-1">
+  		<if test="map.statu!=-1 and map.statu!=null and map.statu!=''">
   			and Statu = #{map.statu}
   		</if>
   	</where>
+  	order by Receive_Date desc
   	<!-- <if test="#{map.amountStatu}==1">
   		order by amount desc
   	</if>
@@ -526,6 +572,7 @@
   	 <result column="cgdbbs" property="numberOfSuccessful"/>
   	 <result column="dcbs" property="successfulCompensation"/>
   	 <result column="dchkbs" property="compensatoryPaymentNumber"/>
+  	 <result column="sxf" property="sxfee"/>
   </resultMap>
 	
 	
@@ -544,7 +591,9 @@
   		)  from Member_Trading_Records where Member_Type=1 and Member_ID = #{GuaranteeID} and Trade_Type_Id=408) dchkje,
   		(select count(*) from Project_App_Record where Guarantee_ID = #{GuaranteeID} and Invest_Statu=4) cgdbbs,
   		(select count(*) from Instead_RePay_Record where Repay_Type= 0 and Guarantee_ID = #{GuaranteeID}) dcbs,
-  		(select count(*) from Member_Trading_Records where Member_Type=1 and Member_ID = #{GuaranteeID} and Trade_Type_Id=408) dchkbs
+  		(select count(*) from Member_Trading_Records where Member_Type=1 and Member_ID = #{GuaranteeID} and Trade_Type_Id=408) dchkbs,
+  		(select IFNULL(SUM(CAST(((AES_DECRYPT(UNHEX(pam.Guarantee_Fee),#{skey}))) as signed)),0) 
+  			from Project_App_Record par left join Project_App_MngFee pam on par.Apply_Id = pam.Apply_Id where par.Guarantee_ID = #{GuaranteeID}) sxf
   	</select>
   	
   	<resultMap type="cn.membermng.model.MemberThirdAuthInfoEntity" id="resultMemberThirdAuthInfoone">
@@ -765,12 +814,12 @@
     
     <!-- 查询担保机构银行卡信息 -->
     <select id="findbankcardforguaranteeID" resultType="cn.springmvc.model.GuaranteeBankCard" parameterType="product_p2p.kit.pageselect.PageEntity">
-    	SELECT mbc.Bank_Card_Id bankCardId,
+    	SELECT mbc.Bank_Card_Id bankCardId,mbc.Receive_Card receiveCard,
     	bci.Branch bankBranch,bci.Bank_No bankNo,bi.BankName bankName,cd.City_Name bankCity FROM Member_Bank_Card mbc
 			LEFT JOIN Bank_Card_Info bci ON bci.Bank_Card_Id = mbc.Bank_Card_Id
 			LEFT JOIN Bank_Info bi ON bi.Bank_ID = bci.Bank_Id
 			LEFT JOIN City_Dictionary cd on cd.City_Id = bci.Card_City
-			WHERE mbc.Member_Type = #{map.memberType}  
+			WHERE mbc.Member_Type = #{map.memberType} and mbc.Statu = 1
 			<if test="map.guaranteeID != -1 and map.guaranteeID !=null and map.guaranteeID!=''">
 				AND Member_ID = #{map.guaranteeID}
 			</if>

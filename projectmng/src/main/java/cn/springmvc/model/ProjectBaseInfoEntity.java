@@ -146,14 +146,14 @@ public class ProjectBaseInfoEntity {
 	}
 	public void setMinAmount(long minAmount) {
 		this.minAmount = minAmount;
-		this.minAmounts = IntegerAndString.LongToString(minAmount);
+		this.minAmounts = IntegerAndString.LongToString2(minAmount);
 	}
 	public long getMaxAmount() {
 		return maxAmount;
 	}
 	public void setMaxAmount(long maxAmount) {
 		this.maxAmount = maxAmount;
-		this.maxAmounts = IntegerAndString.LongToString(maxAmount);
+		this.maxAmounts = IntegerAndString.LongToString2(maxAmount);
 		
 	}
 	public int getMinRate() {

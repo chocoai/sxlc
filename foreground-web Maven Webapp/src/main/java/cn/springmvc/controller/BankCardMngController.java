@@ -19,6 +19,7 @@ import product_p2p.kit.datatrans.IntegerAndString;
 import cn.membermng.model.BankCardInfoEntity;
 import cn.membermng.model.BankCodeEntity;
 import cn.membermng.model.CityDictionaryEntity;
+import cn.membermng.model.CityInfoEntity;
 import cn.membermng.model.MemberBankCardEntity;
 import cn.membermng.model.ProvinceDictionaryEntity;
 import cn.springmvc.service.MamberBankCardService;
@@ -69,7 +70,7 @@ public class BankCardMngController {
 	@RequestMapping(value="/selectProvinceDictionary",produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String selectProvinceDictionary(){
-		List<ProvinceDictionaryEntity> list= bankCardService.selectProvinceDictionary();
+		List<CityInfoEntity> list= bankCardService.selectBankProvinceDictionary();
 		Map<String,Object> message = new HashMap<String, Object>();
 		message.put("code", 200);
 		message.put("message", "读取成功");
@@ -91,7 +92,7 @@ public class BankCardMngController {
 	@ResponseBody
 	public String selectCityDictionary(HttpServletRequest request){
 		Integer provinceId = IntegerAndString.StringToInt(request.getParameter("provinceId"),0);
-		List<CityDictionaryEntity>list = bankCardService.selectCityDictionary(provinceId);
+		List<CityInfoEntity>list = bankCardService.selectBankCityDictionary(provinceId);
 		Map<String,Object> message = new HashMap<String, Object>();
 		message.put("code", 200);
 		message.put("message", "读取成功");
@@ -124,16 +125,53 @@ public class BankCardMngController {
 			Integer bankId = IntegerAndString.StringToInt(request.getParameter("bankId"),0);
 			Integer cardProvince = IntegerAndString.StringToInt(request.getParameter("cardProvince"),0);
 			Integer cardCity = IntegerAndString.StringToInt(request.getParameter("cardCity"),0);
-			String branch = request.getParameter("branch");
+			String branch = request.getParameter("branch");//支行
 			String branchAddress = request.getParameter("branchAddress");
 			String bankPhone = request.getParameter("bankPhone");
 			
-			if(bankNo==null || bankId==0 || cardProvince ==0 || cardCity==0 || branch==null || branchAddress==null||bankPhone==null){
+ 			if(bankNo==null){
 				//参数错误
 				message.put("code", 404);
-				message.put("message", "参数错误");
+				message.put("message", "请输入银行卡号");
 				return JSONObject.toJSONString(message);
 			}
+			if(bankId==0){
+				//参数错误
+				message.put("code", 404);
+				message.put("message", "请选择开户银行");
+				return JSONObject.toJSONString(message);
+			}
+			if(cardProvince ==0){
+				//参数错误
+				message.put("code", 404);
+				message.put("message", "请选择开户行所在省份");
+				return JSONObject.toJSONString(message);
+			}
+			if(cardCity==0){
+				//参数错误
+				message.put("code", 404);
+				message.put("message", "请选择开户行所在城市");
+				return JSONObject.toJSONString(message);
+			}
+			if(branch==null){
+				//参数错误
+				message.put("code", 404);
+				message.put("message", "请输入开户支行");
+				return JSONObject.toJSONString(message);
+			}
+/*			if(branchAddress==null){
+				//参数错误
+				message.put("code", 404);
+				message.put("message", "请输入开户支行所在地址");
+				return JSONObject.toJSONString(message);
+			}*/  //这个参数去掉了
+			if(bankPhone==null){
+				//参数错误
+				message.put("code", 404);
+				message.put("message", "请输入开户手机号");
+				return JSONObject.toJSONString(message);
+			}
+			
 			
 			bankCardInfoEntity.setBankId(bankId);
 			bankCardInfoEntity.setBankNo(bankNo);

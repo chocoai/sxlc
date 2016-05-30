@@ -155,13 +155,13 @@ public class CompensatoryInterfaceServiceImpl implements CompensatoryInterfaceSe
 					long as=linver*lmng/100;
 					lMngFee+=as;
 					liDetailEntities.get(i).setlMngFee(as);
-					liDetailEntities.get(i).setsMngFee(IntegerAndString.LongToString(as));
+					liDetailEntities.get(i).setsMngFee(IntegerAndString.LongToString2(as));
 					//计算出平台收取提前还款违约金
 					if (pingTaiRate>0) {
 						long pTaiRate=0;
 						linver+=pTaiRate;
 						liDetailEntities.get(i).setlPenalty(pTaiRate);
-						liDetailEntities.get(i).setsPenalty(IntegerAndString.LongToString(pTaiRate));
+						liDetailEntities.get(i).setsPenalty(IntegerAndString.LongToString2(pTaiRate));
 						lPenalty+=pTaiRate;
 					}
 					//计算出投资人收取提前还款违约金
@@ -169,12 +169,12 @@ public class CompensatoryInterfaceServiceImpl implements CompensatoryInterfaceSe
 						long ir=0;
 						linver+=ir;
 						liDetailEntities.get(i).setlPenaltyInvest(ir);
-						liDetailEntities.get(i).setsPenaltyInvest(IntegerAndString.LongToString(investRate));
+						liDetailEntities.get(i).setsPenaltyInvest(IntegerAndString.LongToString2(investRate));
 						lPenalty+=ir;
 					}
 					linver+=liDetailEntities.get(i).getlPrincipal();//收益总金额
 					liDetailEntities.get(i).setlAmount(linver);
-					liDetailEntities.get(i).setsAmount(IntegerAndString.LongToString(linver));
+					liDetailEntities.get(i).setsAmount(IntegerAndString.LongToString2(linver));
 					//计算逾期费
 					//long allOverdue=0;//总应收逾期费
 					//查询出逾期天数
@@ -193,13 +193,13 @@ public class CompensatoryInterfaceServiceImpl implements CompensatoryInterfaceSe
 						mapday.put("incomeId", incomeId);
 						Map<String, Object> mapOvder = selectThreePartyDaoImpl
 									.InvestIncomeOverdueFee(mapday);
-						long repayOverdueInterest=Long.parseLong(mapOvder.get("Repay_Overdue_Interest").toString());
-						long repayOverdue=Long.parseLong(mapOvder.get("Repay_Overdue").toString());
+						long repayOverdueInterest=IntegerAndString.StringToLong(mapOvder.get("Repay_Overdue_Interest").toString(), 0);
+						long repayOverdue=IntegerAndString.StringToLong(mapOvder.get("Repay_Overdue").toString(),0);
 						//查询出之前投资人已收的所有罚金和罚息
 						Map<String, Object> mapallOvder = selectThreePartyDaoImpl
 								.allInvestRealIncome(mapday);
-						long secrepayOverdueInterest=Long.parseLong(mapOvder.get("Repay_Overdue_Interest").toString());
-						long secrepayOverdue=Long.parseLong(mapOvder.get("Repay_Overdue").toString());
+						long secrepayOverdueInterest=IntegerAndString.StringToLong(mapOvder.get("Repay_Overdue_Interest").toString(),0);
+						long secrepayOverdue=IntegerAndString.StringToLong(mapOvder.get("Repay_Overdue").toString(),0);
 						//计算出部分还款过后未还完的罚息和罚金
 						liDetailEntities.get(i).setlOverdue(secrepayOverdue-repayOverdue);
 						liDetailEntities.get(i).setlOverdueInterest(secrepayOverdueInterest-repayOverdueInterest);
@@ -236,8 +236,8 @@ public class CompensatoryInterfaceServiceImpl implements CompensatoryInterfaceSe
 							liDetailEntities.get(i).setlThisOverdue(lOverdue1[1]);
 							liDetailEntities.get(i).setlOverdue(liDetailEntities.get(i).getlOverdue() + lOverdue1[1]);
 							liDetailEntities.get(i).setlOverdueInterest(liDetailEntities.get(i).getlOverdueInterest() + lOverdue1[0]);
-							liDetailEntities.get(i).setsOverdue(IntegerAndString.LongToString(liDetailEntities.get(i).getlOverdue()));
-							liDetailEntities.get(i).setsOverdueInterest(IntegerAndString.LongToString(liDetailEntities.get(i).getlOverdueInterest()));
+							liDetailEntities.get(i).setsOverdue(IntegerAndString.LongToString2(liDetailEntities.get(i).getlOverdue()));
+							liDetailEntities.get(i).setsOverdueInterest(IntegerAndString.LongToString2(liDetailEntities.get(i).getlOverdueInterest()));
 							lOverdue += liDetailEntities.get(i).getlOverdue();
 							lOverdueInterest += liDetailEntities.get(i).getlOverdueInterest();
 						}
@@ -245,14 +245,17 @@ public class CompensatoryInterfaceServiceImpl implements CompensatoryInterfaceSe
 					long iAmount = (liDetailEntities.get(i).getlPrincipal() + liDetailEntities.get(i).getlInterest() + liDetailEntities.get(i).getlOverdue() + liDetailEntities.get(i).getlOverdueInterest() 
 							+ liDetailEntities.get(i).getlPenalty() );
 					liDetailEntities.get(i).setlAmount(iAmount);
-					liDetailEntities.get(i).setsAmount(IntegerAndString.LongToString(iAmount));
-					liDetailEntities.get(i).setsOrderNo(handleThreePartyDaoImpl.generateorderNo("ZCHK"));//随机订单号生成
+					liDetailEntities.get(i).setsAmount(IntegerAndString.LongToString2(iAmount));
+					liDetailEntities.get(i).setsOrderNo(handleThreePartyDaoImpl.generateorderNo("DC"));//随机订单号生成
 					
 					liDetailEntities.get(i).setId(selectThreePartyDaoImpl.findIncomeId(mapday));
 					
 					sInfo = liDetailEntities.get(i).getsDetail();
+					if (sInfo==null) {
+						sInfo="";
+					}
 					// 投资记录id+本金+利息+总逾期费+平台收取违约金+投资人收取违约金+投资管理费+0+投资人收取逾期费+预期利息+投资会员id+投资会员类型+该笔平台订单号
-					sInfo = sInfo + liDetailEntities.get(i).getId() + "A" 
+					sInfo = sInfo + liDetailEntities.get(i).getiInvestId() + "A" 
 								+ liDetailEntities.get(i).getlPrincipal() + "A" 
 								+ liDetailEntities.get(i).getlInterest() + "A" 
 								+ liDetailEntities.get(i).getlOverdue() + "A" 
@@ -261,9 +264,6 @@ public class CompensatoryInterfaceServiceImpl implements CompensatoryInterfaceSe
 								+ as + "A" + "1" + "A"+ liDetailEntities.get(i).getlOverdue()
 								+ "A"+ liDetailEntities.get(i).getlOverdueInterest() + "A" + liDetailEntities.get(i).getiMemberId() + "A" + liDetailEntities.get(i).getiMemberType()+"A"+liDetailEntities.get(i).getsOrderNo();
 					liDetailEntities.get(i).setsDetail(sInfo);
-					
-					// 逾期天数idays，代偿方id daicangId，代偿方类型 daicangtype 
-					
 				}
 				
 				
@@ -290,6 +290,7 @@ public class CompensatoryInterfaceServiceImpl implements CompensatoryInterfaceSe
 					lomap.put("memberType", daicangtype);//会员类型
 					lomap.put("memberID", daicangId);//代偿机构id
 					repayInterfaceEntity.setsMark(selectThreePartyDaoImpl.findMemberThirdPartyMark(lomap));
+					repayInterfaceEntity.setRemark2(daicangId+"A1");
 				}else {
 					//获得平台乾多多标识
 					String pmark="";
@@ -297,8 +298,8 @@ public class CompensatoryInterfaceServiceImpl implements CompensatoryInterfaceSe
 					maps.put("accountTypeID", daicangId);//平台账号类型
 					pmark=selectThreePartyDaoImpl.findThirdPartyMark(maps);
 					repayInterfaceEntity.setsMark(pmark);
+					repayInterfaceEntity.setRemark2(daicangId+"A2");
 				}
-				repayInterfaceEntity.setRemark2(daicangId+"A"+daicangtype);
 				repayInterfaceEntity.setRemark3(repalyId+"A"+appplyId);
 			}
 			LoanTransferEntity loanTransferEntity=earlyRepaymentSubm(repayInterfaceEntity, request, returnURL, notifyURL);
@@ -319,7 +320,7 @@ public class CompensatoryInterfaceServiceImpl implements CompensatoryInterfaceSe
 			//转账提交列表
 			List<LoanInfoBean> loanReturnInfoBeans=new ArrayList<LoanInfoBean>();
 			LoanInfoBean loanInfoBean = new LoanInfoBean();
-			String ordernumber = handleThreePartyDaoImpl.generateorderNo("DC");;
+			String ordernumber = handleThreePartyDaoImpl.generateorderNo("DC");
 			RepayDetailEntity repayDetailEntity = new RepayDetailEntity();
 			if(repayInterfaceEntity.getDetailList().size()>0){
 				for (int i = 0; i < repayInterfaceEntity.getDetailList().size(); i++) {

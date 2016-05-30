@@ -40,14 +40,14 @@
 			   					<li class="inputList">
 			   						<div class="mustLabel"><span><samp>*</samp>婚姻状况：</span></div>
 			   						<input class="radio" value="1" checked="checked"><label class="radioLabel checked">已婚</label>
-			   						<input class="radio" value="0"><label class="radioLabel">未婚</label>
+			   						<input class="radio" value="0"><label class="radioLabel">离婚</label>
 			   					</li>
 			   					<li class="inputList">
-			   						<div class="mustLabel"><span><samp>*</samp>登记日期：</span></div>
-			   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择登记日期"/>
+			   						<div class="mustLabel"><span><samp></samp>登记日期：</span></div>
+			   						<input class="inputText dateSelect Wdate" onfocus="WdatePicker({maxDate:'%y-%M-%d',readOnly:true})" type="text" />
 			   					</li>
 			   					<li class="inputList clearfix">
-			   						<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
+			   						<div class="mustLabel"><span><samp></samp>附件：</span></div>
 			   					
 			   						<div class="previewPicture" id="file" style="float: none;" >
 			   							<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">

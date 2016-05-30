@@ -21,6 +21,7 @@
    			<div class="successBox">
    				<div class="congratulation">恭喜您投资成功！</div>
    				<div class="tiss">您可以在<a href="investmentManagement/myInvestment.html">个人中心</a>中查看本次投资进度</div>
+   				<div class="tiss">恭喜您在项目投资时获得惊喜红包:${investRedPackage }元,红包将在项目放款后发放。</div>
    			</div>
    		</div>
    	</div>

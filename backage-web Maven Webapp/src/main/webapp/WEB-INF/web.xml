@@ -25,6 +25,18 @@
   	<param-name>webAppRootKey</param-name>
     <param-value>springmvc.root</param-value>
   </context-param>
+  
+  <!-- 自定义检查用户登录Filter -->
+	<filter>
+		<filter-name>loginCheckFilter</filter-name>
+		<filter-class>cn.springmvc.filter.LoginCheckFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginCheckFilter</filter-name>
+		<url-pattern>/web/*</url-pattern>
+	</filter-mapping>
+  
+  
   <!-- Spring字符集过滤器 -->
   <filter>
   	<filter-name>SpringEncodingFilter</filter-name>

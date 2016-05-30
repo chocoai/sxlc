@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import product_p2p.kit.Upload.FtpClientUtil;
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
 import cn.integralmall.model.CommodityInfo;
 import cn.integralmall.model.CommodityType;
 import cn.integralmall.model.CommodityTypeEntity;
@@ -59,6 +61,7 @@ public class IntegralMallController {
 	@ResponseBody
 	public String mallIndexselect(HttpServletRequest request) { 
 		List<CommodityType> list = iIntegrallService.indexList();
+		
 	    return JSONObject.toJSONString(list);
 	}
 	
@@ -100,16 +103,20 @@ public class IntegralMallController {
 		String minPoint              = request.getParameter("minPoint") ;
 		String maxPoint              =  request.getParameter("maxPoint")  ; 
 		String commodityTypeId       =  request.getParameter("commodityTypeId")  ;
+		//1降序 2升序 
+		int order                    =  IntegerAndString.StringToInt(request.getParameter("order"),0);
 		PageEntity pageEntity = new PageEntity();
 		Map<String,Object> param =  new HashMap<String, Object>();  
 		param.put("minPoint",                 minPoint);
 		param.put("maxPoint",                 maxPoint);
 		param.put("commodityTypeId",   commodityTypeId);
+		param.put("order",   order);
 		pageEntity.setPageNum(start);
 		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);
 		List<CommodityInfo> list = iIntegrallService.goods(pageEntity); 
-	    return JSONObject.toJSONString(list);
+		PageUtil.ObjectToPage(pageEntity, list); 
+		return JSONObject.toJSONString(pageEntity); 
 	}
 	
 	
@@ -255,6 +262,10 @@ public class IntegralMallController {
 		List<ShippingAddress>  Address =  iIntegrallService.ShippingAddressList(lMemberInfo[0]);
 		request.setAttribute("info", info);
 		request.setAttribute("addr", Address);
+		
+		String hostPath = FtpClientUtil.getFtpFilePath();
+		hostPath = hostPath.substring(0, hostPath.length()-1);
+		request.setAttribute("imgProfix", hostPath);//图片前缀
 		return "integralMall/exchangeDetail";
 	}
 	
@@ -336,16 +347,23 @@ public class IntegralMallController {
 	}
 	
 	@RequestMapping("/mallIndex")
-	public String mallIndex(){
+	public String mallIndex(HttpServletRequest request){
+		String hostPath = FtpClientUtil.getFtpFilePath();
+		hostPath = hostPath.substring(0, hostPath.length()-1);
+		request.setAttribute("imgProfix", hostPath);//图片前缀
 		return "integralMall/mallIndex";
 	}
 	
  
 	@RequestMapping(value="/itemList",method=RequestMethod.GET)
 	public String itemList(HttpServletRequest request){
+		String hostPath = FtpClientUtil.getFtpFilePath();
 		//商品类型列表
 		List<CommodityTypeEntity> list = commodityTypeService.selectCommodityTypeFront(); 
-	    request.setAttribute("CommodityTypeList", list);
+	    request.setAttribute("CommodityTypeList", list); 
+		
+		hostPath = hostPath.substring(0, hostPath.length()-1);
+		request.setAttribute("imgProfix", hostPath);//图片前缀
 		return "integralMall/itemList";
 	}
 	

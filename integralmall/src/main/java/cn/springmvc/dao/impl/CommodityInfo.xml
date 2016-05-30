@@ -17,8 +17,7 @@
 		<result column="Discount" 			property="discount" /> 
 		<result column="VIP_Discount"   	property="vipDiscount" /> 
 		<result column="Is_Active" 			property="isActive" />
-		
-		
+		 
 		<result column="sumQuantity" 		property="sumQuantity" />
 		<result column="backorder" 			property="backorder" />
 		
@@ -99,11 +98,31 @@
      #{vouchersAmount},#{backAmount},#{endDate},#{isPush})
     </insert> 
      <!--            根据商品ID查询商品基本信息 -->
-    <select id="selectCommodityInfoByID" parameterType="long" resultMap="resultCommodityInfo">
-     select ci.Commodity_ID, ci.Commodity_Type_ID,ci.Commodity_NO,ci.Commodity_Name,Brand,ci.Manufacturer,
-     ci.Specifications_models,ci.Commodity_Describe,ci.Market_Price,ci.Need_Point,ci.Is_VIP_Exclusive,
-     ci.Discount,ci.VIP_Discount,ci.Commodity_large_Icon,ci.Commodity_Small_Icon,ci.Is_Active,ci.Active_Type,
-     ci.End_Date, ct.Commodity_Type,ct.Super_ID,ci.Vouchers_Amount,ci.Back_Amount,ci.IS_Push
+    <select id="selectCommodityInfoByID" parameterType="long" resultType="cn.integralmall.model.CommodityInfoEntity">
+     select 
+	     ci.Commodity_ID  				as commodityID, 
+	     ci.Commodity_Type_ID 			as commodityTypeID,
+	     ci.Commodity_NO 				as commodityNO,
+	     ci.Commodity_Name 				as commodityName ,
+	     Brand 							as brand,
+	     ci.Manufacturer 				as manufacturer,
+	     ci.Specifications_models 		as specificationsmodels,
+	     ci.Commodity_Describe 			as commodityDescribe,
+	     ci.Market_Price 				as marketPrice,
+	     ci.Need_Point 					as needPoint,
+	     ci.Is_VIP_Exclusive 			as isVIPExclusive,
+	     ci.Discount 					as discount,
+	     ci.VIP_Discount 				as vipDiscount,
+	     ci.Commodity_large_Icon 		as commoditylargeIcon,
+	     ci.Commodity_Small_Icon 		as commoditySmallIcon,
+	     ci.Is_Active 					as isActive,
+	     ci.Active_Type 				as activeType,
+	     ci.End_Date 					as endDate, 
+	     ct.Commodity_Type 				as commodityType,
+	     ct.Super_ID 					as superID,
+	     ci.Vouchers_Amount 			as vouchersAmount,
+	     ci.Back_Amount 				as backAmount,
+	     ci.IS_Push 					as isPush
 	 from Commodity_Info ci
      left join Commodity_Type ct on ct.Commodity_Type_ID = ci.Commodity_Type_ID  
 	 where 	 ci.Commodity_ID = #{commodityID}    

@@ -172,8 +172,28 @@ public class MyLoanServiceImpl implements IMyLoanService {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("applyId",               applyId);
 		map.put("skey", DbKeyUtil.GetDbCodeKey());
-		return myLoanReadDao.getAdvanceReplay(map);
-		
+		AdvanceEntity advanceEntity =  myLoanReadDao.getAdvanceReplay(map);
+		long linver = advanceEntity.getRepayInterest();//应付利息
+		if (advanceEntity.getDeadlineType()==1) {//月标
+			linver=linver-(linver/30*advanceEntity.getRemaintimes());
+		}
+		if (advanceEntity.getDeadlineType()==2) {//年标
+			linver=linver-(linver/365*advanceEntity.getRemaintimes());
+		}
+		if (linver<100) {
+			linver=0;
+		}
+		advanceEntity.setRepayInterest(linver);
+		//平台收取违约金
+		advanceEntity.setPenaltyPingTai(advanceEntity.getRepayPrincipal()*advanceEntity.getPenaltyPingTaiRate()/1000000); 
+		//投资人收取违约金
+		advanceEntity.setPenaltyInvest(advanceEntity.getRepayPrincipal()*advanceEntity.getPenaltyInvestRate()/1000000);
+		//总的违约金
+		advanceEntity.setPenaltyTotal(advanceEntity.getPenaltyPingTai()+advanceEntity.getPenaltyInvest());
+		//总的还款金额
+		advanceEntity.setReplayTotal(advanceEntity.getRepayInterest()+advanceEntity.getRepayPrincipal()
+				+advanceEntity.getPenaltyTotal()); 
+		return advanceEntity;
 	}
 
 
@@ -220,8 +240,8 @@ public class MyLoanServiceImpl implements IMyLoanService {
 		//是否满足还罚息
 		if(entity.getOverdueInterest() <= userBalance) {
 			
-			entity.setPaidOverdueInterest(userBalance);
-			userBalance = userBalance - entity.getOberdueFine();
+			entity.setPaidOverdueInterest(entity.getOverdueInterest());
+			userBalance = userBalance - entity.getOverdueInterest();
 		} else {
 			entity.setPaidOverdueInterest(userBalance);
 			userBalance = 0L;

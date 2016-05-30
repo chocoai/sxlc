@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity;
+import product_p2p.kit.pageselect.PageUtil;
  
 
 import cn.springmvc.dao.SafetyCertificationDao;
@@ -115,7 +116,8 @@ public class SafetyCertificationServiceImpl implements SafetyCertificationServic
 		
 		List<SafetyCertificationEntity> safetyCertificationList = null;    
 	 	safetyCertificationList = safetyCertificationListDaoImpl.selectSafetyCertificationList(pageEntity);   
-		return safetyCertificationList; 
+		PageUtil.ObjectToPage(pageEntity, safetyCertificationList);
+	 	return safetyCertificationList; 
 	}
  
 	@Override

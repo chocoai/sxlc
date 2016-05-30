@@ -63,7 +63,7 @@ $(function() {
                   { title:"交易时间","data": "dealTime" }, 
                   { title:"平台交易编号","data": "orderNumber" },
                   { title:"第三方交易流水号","data": "loanNumber" },
-                  { title:"交易金额","data": "amount" },
+                  { title:"交易金额","data": "samount" },
                   { title:"支付手续费","data": "feeAmount" },
                   { title:"状态","data": "statu", 
                 	  "mRender": function (data, type, full) {
@@ -87,11 +87,6 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#table_id').DataTable();
-//设置选中change颜色
- $('#table_id tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
 });
 
 /**
@@ -100,4 +95,23 @@ $(function() {
 $(".glyphicon-search").on("click",function(){
 	$('#table_id').DataTable().ajax.reload();
 	
+});
+
+$(function() {
+	//单选
+	$('#table_id tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

@@ -160,7 +160,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 上午11:35:48
 	* @throws 
 	*/
-	public int insertGuaranteeCertificate(List<ManagementCertificateEntity> list,InsertAdminLogEntity entity,String[] sIpInfo);
+	public int insertGuaranteeCertificate(long guaranteeID,List<ManagementCertificateEntity> list,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	
 	/** 
@@ -292,7 +292,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 下午5:11:37
 	* @throws 
 	*/
-	public int insertGuaranteeBorrowing(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	public int insertGuaranteeBorrowing(long guaranteeID,List<GuaranteeRelationalEntity> list,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* updateGuaranteeBorrowingByID(根据保荐机构id修改担保机构担保借款范围) 
@@ -320,7 +320,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 下午5:13:26
 	* @throws 
 	*/
-	public int insertGuaranteePeriod(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	public int insertGuaranteePeriod(long guaranteeID,List<GuaranteePeriodEntity> list,InsertAdminLogEntity entity,String[] sIpInfo);
 	
 	/** 
 	* updateGuaranteePeriodByID(根据保荐机构id,期限类型修改担保机构担保借款范围) 
@@ -349,7 +349,7 @@ public interface GuaranteeInfoService {
 	* @date 2016-3-21 下午5:15:46
 	* @throws 
 	*/
-	public int insertGuaranteeRelational(List<GuaranteeRelationalEntity> list,InsertAdminLogEntity entity,String[] sIpInfo);
+	public int insertGuaranteeRelational(List<GuaranteeRelationalEntity> list,InsertAdminLogEntity entity,String[] sIpInfo, Map<String, Object> map);
 	
 	
 	/** 

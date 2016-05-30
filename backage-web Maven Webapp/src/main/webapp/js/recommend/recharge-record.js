@@ -21,7 +21,7 @@ function picAdd(title,page,type){
 	    area: ['530px', '350px'], //宽高
 	    title: title,
 	    maxmin: true,
-	    content: page,//DOM或内容
+	    content: page//DOM或内容
 	    /*btn:['确定', '取消']
 		  ,yes: function(index, layero){ //或者使用btn1
 		    //确定的回调
@@ -44,9 +44,7 @@ function picAdd(title,page,type){
 * 		1:
 * }
 */
-function pAdd(){
-	$(".right_col").load("web/recommend/re-add/acc-withdraw.jsp");
-}
+
 	//参数判断，自己写全
 	//console.log(title+","+page+","+type);
 	/*if(title == "" || page == "" || type == ""){
@@ -102,6 +100,6 @@ function picMod(title,page,type,id){
 	});
 }
 /*$(function(){
-	validform5(".commonbtn0","rechargeform",false,"3");
+	validform5(".commonbtn0","rechargeform",false,"5");
 });*/
 

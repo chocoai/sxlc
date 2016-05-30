@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service; 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
 import product_p2p.kit.pageselect.PageEntity; 
+import product_p2p.kit.pageselect.PageUtil;
 import cn.springmvc.dao.PartnersDao;
 import cn.springmvc.dao.PartnersListDao;
 import cn.springmvc.dao.impl.IdGeneratorUtil;
@@ -85,8 +86,7 @@ public class PartnersServiceImpl implements PartnersService {
 		int result = partnerDaoImpl.updatePartnerByID(entity);
 		
 		if(result == 1) {
-			
-			logentity.setsDetail("修改合作伙伴 :"+entity.getName());
+			logentity.setsDetail("修改合作伙伴 id:"+entity.getId());
 			optRecordWriteDaoImpl.InsertAdminOptRecord(logentity, sIpInfo);
 			
 		}
@@ -99,11 +99,6 @@ public class PartnersServiceImpl implements PartnersService {
 		
 		if(entity == null) {
 			return 0;
-		}
-		if(entity.isStatu()) {
-			entity.setStatu(false);
-		}else {
-			entity.setStatu(true);
 		}
 		PartnersEntity partnersEntity = partnerListDaoImpl.selectPartnerByID(entity.getId());
 		int result = partnerDaoImpl.updatePartnerStatuByID(entity);
@@ -125,7 +120,8 @@ public class PartnersServiceImpl implements PartnersService {
 		
 		List<PartnersEntity> partnersList = null;    
 	 	partnersList = partnerListDaoImpl.selectPartnerList(pageEntity);   
-		return partnersList;  
+		PageUtil.ObjectToPage(pageEntity, partnersList);
+	 	return partnersList;  
 		
 	}
 	 

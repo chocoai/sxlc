@@ -30,7 +30,7 @@ String content = request.getParameter("content");
 							<form id="rechargeform" class="accrechargeform" action="account/recharge.do">
 								<span class="con-item">
 									<span class="con-item-word">充值金额：</span>
-									<input id="amounts" type="text" class="rechargeinput" placeholder="" datatype="amcountM"/>
+									<input id="amounts" type="text" class="rechargeinput" placeholder="" datatype="acountM"/>
 									<label class="unit">元</label>
 									<input id="amount" type="hidden" name="amount" />
 								</span>
@@ -51,10 +51,10 @@ String content = request.getParameter("content");
 									<input id="remark" type="hidden" name="remark" />
 								</span>
 								<span class="rechargecost">
-									<span>支付充值费用：</span><label id="rechargeC" class="cost moneyFormat">20</label>元
+									<span>支付充值费用：</span><label id="rechargeC" class="cost moneyFormat">0</label>元
 								</span>
 								<span class="acturallymoney">
-									<span>实际到账金额：</span><label id="realMoney" class="creditedactually moneyFormat">1000</label>元
+									<span>实际到账金额：</span><label id="realMoney" class="creditedactually moneyFormat">0</label>元
 								</span>
 							</form>
 							<div class="cmbtncontainer accrechargecon">
@@ -73,7 +73,7 @@ String content = request.getParameter("content");
 	<script type="text/javascript" src="js/recommend/acc-recharge.js"></script>
 	<script type="text/javascript">
 	$(function(){
-		validform5(".commonbtn0","rechargeform",false,"3");
+		validform5(".commonbtn0","rechargeform",false,"5");
 	});
 	$(".commonbtn1").click(function(){
 		var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

@@ -27,12 +27,9 @@ $(function(){
 	});
 	/*同意条款*/	
 	$(".check-box").click(function(){
-		if($(".checkBox").hasClass("active"))
-			{
+		if($(".checkBox").hasClass("active")){
 				$(".checkBox").removeClass("active");
-			}
-		else
-			{
+			}else{
 				$(".checkBox").addClass("active");	
 			}
 	});
@@ -71,9 +68,32 @@ $(function(){
 		}
 	});
 });	
+/*
+协议弹出框*/
+function getXY(){
+	layer.open({
+		 type: 1,
+		 area: ['500px', '600px'], 
+		 title: " ",
+		 maxmin: true,
+		 content: $(".addXY"),
+		 btn:['同意协议', '取消'],
+		 yes:function(){
+			 if(!$(".checkBox").hasClass("active")){
+					$(".checkBox").addClass("active");	
+				};
+				layer.closeAll();
+		 }
+	})
+}
 
 /* 手机动态验证码      */
 $(function(){
+	$(".XYdetail").on("click",function(){
+		getXY()
+	})
+	
+	
 	$(".get-tel-check").on("click",function(){
 		$item = $(this);
 		var phone = $(this).parent().parent().parent().find(".input-tel-num").val();
@@ -88,7 +108,7 @@ $(function(){
 		}
 		var data = {codePhone:phone,imgCheckCode:imgCode};
 		var vsign = sendBef(data);
-		$item.addClass("disabled");
+		$item.addClass("disabled").val("发送中");
 		$.ajax({
 			url:"sendRegisterPhoneVarCode.html",
 			type:"post",
@@ -134,9 +154,11 @@ $(function(){
 					function(r){
 						var data = JSON.parse(r);
 						if (data.status == "y"){
-							$that.next().removeClass("Validform_wrong").addClass("Validform_right").html("")
+//							$that.next().removeClass("Validform_wrong").addClass("Validform_right").html("");
+							$that.rightPrompt();
 						}else{
-							$that.next().removeClass("Validform_right").addClass("Validform_wrong").html(data.info)
+//							$that.next().removeClass("Validform_right").addClass("Validform_wrong").html(data.info)
+							$that.errorPrompt(data.info);
 						}
 					}
 			)
@@ -152,9 +174,11 @@ $(function(){
 					function(r){
 						var data = JSON.parse(r);
 						if (data.status == "y"){
-							$that.next().removeClass("Validform_wrong").addClass("Validform_right").html("")
+//							$that.next().removeClass("Validform_wrong").addClass("Validform_right").html("")
+							$that.rightPrompt();
 						}else{
-							$that.next().removeClass("Validform_right").addClass("Validform_wrong").html(data.info)
+//							$that.next().removeClass("Validform_right").addClass("Validform_wrong").html(data.info)
+							$that.errorPrompt(data.info);
 						}
 					}
 			)
@@ -163,17 +187,19 @@ $(function(){
 	
 	$(".yaoqing").blur(function(){
 		var $that = $(this);
-		if ($(this).val()!=""&&$(this).val()!="请输入邀请码"){
+		if ($that.next().hasClass("Validform_right")){
 			NetUtil.ajax(
 					"countInvitateCode.html",
 					{param:$(this).val()},
 					function(r){
-//						console.log(r);
+						console.log(r);
 						var data = JSON.parse(r);
 						if (data.status == "y"){
-							$that.next().removeClass("Validform_wrong").addClass("Validform_right").html("")
+//							$that.next().removeClass("Validform_wrong").addClass("Validform_right").html("")
+							$that.rightPrompt();
 						}else{
-							$that.next().removeClass("Validform_right").addClass("Validform_wrong").html(data.info)
+//							$that.next().removeClass("Validform_right").addClass("Validform_wrong").html(data.info)
+							$that.errorPrompt(data.message);
 						}
 					}
 			)
@@ -184,12 +210,19 @@ $(function(){
 	
 	var data = {};
 	var app = $("#testbox").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".ctntRegisterSub", 
 		datatype:extdatatype,//扩展验证类型
 		//showAllError:true,//提交前验证显示所有错误
 		timeout:1000,
 		ajaxPost:true, 
+		beforeCheck:function(){
+			if ($("#testbox .Validform_wrong").size()>0){
+				return false
+			}else{
+				return true
+			}
+		},
 		beforeSubmit:function(curform){
 			/*getData();
 			app.config({
@@ -245,12 +278,15 @@ $(function(){
 			
 			var vsign = sendBef(sendDate);
 			sendDate.sign = vsign;
+			
+			$(".ctntRegisterSub").val("注册中").addClass("disabled");
 			$.ajax({
 				url:"register.html",
 				type:"post",
 				dataType:"json",
 				data:sendDate,
 				success:function(json){
+					$(".ctntRegisterSub").val("立即注册").removeClass("disabled");
 					if(json.statu == 0){
 						layer.alert("注册成功",function(){
 							window.location.href="accountOverview/accountOverview.html";
@@ -287,12 +323,18 @@ $(function(){
 
 $(function(){
 	var app2 = $("#companyCheck").Validform({
-		tiptype:3,//提示信息类型
+		tiptype:5,//提示信息类型
 		btnSubmit:".companySubmit", 
 		datatype:extdatatype,//扩展验证类型
 		ajaxPost:true,
+		beforeCheck:function(){
+			if ($("#companyCheck .Validform_wrong").size()>0){
+				return false
+			}else{
+				return true
+			}
+		},
 		beforeSubmit:function(){
-			
 			if (!$("#checkRule2").hasClass("active")){
 				layer.alert("请同意注册协议条款")
 				return false
@@ -326,6 +368,7 @@ $(function(){
 			
 			var vsign = sendBef(sendDate);
 			sendDate.sign = vsign;
+			$(".companySubmit").val("注册中").addClass("disabled");
 			$.ajax({
 				url:"register.html",
 				type:"post",
@@ -338,7 +381,8 @@ $(function(){
 						});
 					}else{
 						layer.alert(json.message,function(index){
-							layer.close(index)
+							layer.close(index);
+							$(".companySubmit").val("立即注册").removeClass("disabled");
 							$(".imgCode").attr("src","authImage.html?parma="+Math.random() * 10);
 						});
 					}

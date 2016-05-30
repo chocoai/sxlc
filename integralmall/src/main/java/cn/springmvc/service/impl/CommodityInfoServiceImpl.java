@@ -154,8 +154,7 @@ public class CommodityInfoServiceImpl implements CommodityInfoService {
 		map.put("isPush",           isPush);
 		int result = commodityInfoDao.updateCommodityISPush(map);
 		
-		CommodityInfoEntity commodityInfoEntity = commodityInfoListDao.
-				selectCommodityInfoByID(commodityID);
+		CommodityInfoEntity commodityInfoEntity = commodityInfoListDao.selectCommodityInfoByID(commodityID);
 		
 		if(result == 1&& isPush == 1) {
 			logentity.setsDetail("推送商品:"+commodityInfoEntity.getCommodityName()+"到商城首页");

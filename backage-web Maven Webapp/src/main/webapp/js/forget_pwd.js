@@ -98,7 +98,7 @@ function userNameval(){
 	var adminPwd = $("#adminPwd").val();
 	var adminPwds =/^\d{6}$/;
 	if (adminPwd == "" || adminPwd == null) {
-		layer.alert("手机验证码不能为空！",{icon:0});
+		layer.alert("请输入手机号！",{icon:0});
 		return false;
 	}
 	if (!adminPwds.exec(adminPwd)) {
@@ -141,12 +141,12 @@ function Yanzheng(){
 	}
 	var phone = $("#adminPhone").val();//电话号码
 	if(phone=="" || phone==null ){
-		layer.alert("请输入手机号码。",{icon:0});
+		layer.alert("请输入手机号。",{icon:0});
 		return ;
 	}
 	var code = $("#Yancode").val();
 	if(code == "" || code==null){
-		layer.alert("请输入验证码",{icon:0});
+		layer.alert("请输入验证码。",{icon:0});
 		return ;
 	}else{
 		$.ajax({
@@ -185,7 +185,7 @@ function Yanzheng(){
 					});
 					
 				} else if (data == 0) {
-					
+					layer.alert("验证码错误!",{icon:2});
 				}
 			}
 		});
@@ -194,17 +194,17 @@ function Yanzheng(){
 
 var wait=180;  
 function time() { 
-	$img= $("#yanzheng");
+	$div= $("#yanzheng");
     if (wait == 0) {  
-    	$img.attr("alt",("重新发送验证码")); 
-    	$img.css({
+    	$div.text("alt",("重新发送验证码")); 
+    	$div.css({
     		"background-color":"rgb(65,149,242)",
     		"color":"#fff"
     	});
         wait = 180;  
     } else {  
-    	$img.attr("alt",("重新发送(" + wait + ")"));
-    	$img.css({
+    	$div.text("重新发送(" + wait + ")");
+    	$div.css({
     		"background-color":"#B1C1FE",
     		"color":"#666"
     	});

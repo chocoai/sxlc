@@ -27,22 +27,21 @@
    					<!-- 收件箱详情信息 -->
    					<div class="th" onselectstart="return false">
    						<span onclick="window.location.href='personalCenter/mail.html'">收件箱</span>
-   						<span class="thClick">发件箱</span>
+   						<span onclick="window.location.href='personalCenter/M_sent.html'" class="thClick">发件箱</span>
    						<a class="write" href="personalCenter/M_write.html">写信息</a>
    					</div>
    					<div class="inboxDetail">
    						<div class="sendDetail">
-   							<div class="send"><samp>发件人：</samp>理财达人小张</div>
+   							<div class="send"><samp>发件人：</samp>${mail.membername }</div>
    							<div class="date">
-   								<samp>时间：</samp>2015-12-12 20:12:20
+   								<samp>时间：</samp>${mail.sendDate }
    							</div>
    							<div class="titleTip">
-   								<samp>标题：</samp>秒变土豪不是梦
+   								<samp>标题：</samp>${mail.title }
    								<a class="backBtn" href="javascript:history.back();">返回</a>
    							</div>
    							<div class="messageDetail">
-   								<p class="bold">Hi,xxx：</p>
-   								<p>不会理财？你还敢称土豪！上四象金融，秒变土豪不是梦！</p>
+   								${mail.detail }
    							</div>
    						</div>
    					</div>
@@ -52,6 +51,5 @@
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" src="js/account/personalCenter/mail.js"></script>
 </body>
 </html>

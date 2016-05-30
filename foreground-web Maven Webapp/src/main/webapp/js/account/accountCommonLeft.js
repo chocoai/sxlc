@@ -13,10 +13,12 @@ function loadMemberInfo(){
 			$(".creditLevelName").html(data.creditLevelName);
 			$(".integral_score").html(data.integral+"积分");
 			if(data.thirdPartyAccount!=undefined && data.thirdPartyAccount!=""){
+				$("#thirdStatu").attr("value","0");
 				$(".mark5").attr("openThird","0");//已开通
 				$(".mark5 img").attr("src","resource/img/account/common/wdzh_14.png");
 				$(".thirdPartyAccount").html(data.thirdPartyAccount);
 			}else{
+				$("#thirdStatu").attr("value","1");
 				$(".mark5").attr("openThird","1");//已开通
 				$(".thirdPartyAccount").parent().remove();
 			}

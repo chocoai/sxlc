@@ -25,12 +25,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="main_container">
 			<!-- 头部 -->
 			<jsp:include page="../../common/cm-top.jsp">
-				<jsp:param value="3" name="_index_m1"/>
+				<jsp:param value="" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../../common/cm-project.jsp">
-				<jsp:param value="302" name="_index_m2"/>
+				<jsp:param value="" name="_index_m2"/>
 				<jsp:param value="" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
@@ -39,54 +39,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<jsp:include page="../../common/cm-addr.jsp"></jsp:include>
 			  	<div class="w-content ishow">
 				<!-- 认证信息 -->
+					<!-- 认证信息 -->
+					<input type="hidden" id="memberId" value="${proDetail.memberId}"/>
 					<fieldset class="personAuthentication">
-						<legend>借款会员认证信息——个人</legend>
+						<c:if test="${proDetail.memberType ==0 }">
+							<legend>借款会员认证信息——个人</legend>
+						</c:if>
+						<c:if test="${proDetail.memberType ==1 }">
+							<legend>借款会员认证信息——企业</legend>
+						</c:if>
+						<c:if test="${proDetail.memberType != 0 && proDetail.memberType != 1}">
+							<legend>无法确定的会员类型</legend>
+						</c:if>
 						<div class="w-content ishow">
-							<table>
-								<tr>
-									<td class="tt"><a>实名认证</a></td>
-									<td class="tt"><a>手机认证</a></td>
-									<td class="tt"><a>征信认证</a></td>
-									<td class="tt"><a>住址认证</a></td>
-									<td class="tt"><a>婚姻认证</a></td>
-									<td class="tt"><a>工作认证</a></td>
-									<td class="tt"><a>学历认证</a></td>
-									<td class="tt"><a>股权认证</a></td>
-								</tr>
-								<tr>
-									<td class="tt"><a>职称认证</a></td>
-									<td class="tt"><a>社保认证</a></td>
-									<td class="tt"><a>房产认证</a></td>
-									<td class="tt"><a>车产认证</a></td>
-									<td class="tt"><a>银行流水认证</a></td>
-									<td class="tt"><a>其它</a></td>
-								</tr>
-							</table>
-						</div>
-					</fieldset>
-					<fieldset class="enterproiseAuthentication" style="display:none">
-						<legend>借款会员认证信息——企业</legend>
-						<div class="w-content ishow">
-							<table>
-								<tr>
-									<td class="ts"><a>营业执照认证</a></td>
-									<td class="ts"><a>工商执照认证</a></td>
-									<td class="ts"><a>组织机构代码认证</a></td>
-									<td class="ts"><a>开户许可证认证</a></td>
-									<td class="ts"><a>企业银行流水认证</a></td>
-									<td class="ts"><a>实地考察认证</a></td>
-									<td class="ts"><a>税务登记认证</a></td>
-									<td class="ts"><a>批文认证认证</a></td>
-								</tr>
-								<tr>
-									<td class="ts"><a>财务资料认证</a></td>
-									<td class="ts"><a>监管单位认证</a></td>
-									<td class="ts"><a>房产认证</a></td>
-									<td class="ts"><a>车产认证</a></td>
-									<td class="ts"><a>担保考察认证</a></td>
-									<td class="ts"><a>法人身份认证</a></td>
-									<td class="ts"><a>其它</a></td>
-								</tr>
+							<table id="identy_types">
 							</table>
 						</div>
 					</fieldset>
@@ -154,43 +120,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									投标开始后<span>${proDetail.autoStart}</span>分钟开始执行自动投标，自动投标总金额占比<span>${proDetail.autoInvestMaxs}</span>%
 								</td>
 							</tr><!-- 自动投标结束 -->
-							<!-- 附件信息修改 -->
-							<div class="detailTitle">
-								<c:forEach var="item" items="${attaches}">
-									<tr class="col-md-6">					
-										<td class="tt"><label>申请附件类型：</label></td>
-										<td class="con">							
-											<c:if test="${item.attachInfoType == 0}">
-												 其他
-											</c:if>
-											<c:if test="${item.attachInfoType == 1}">
-												 借款方资料
-											</c:if>
-											<c:if test="${item.attachInfoType == 2}">
-												 抵押资料
-											</c:if>
-											<c:if test="${item.attachInfoType == 3}">
-												 现场调查资料
-											</c:if>
-										</td>
-									</tr>
-									<tr class="col-md-6">
-										<td class="tt"><label>附件标题：</label></td>
-										<td class="con">
-											${item.attachTitle}
-										</td>
-									</tr>	
-									<tr class="col-md-6">
-										<td class="tt"><label>申请附件：</label></td>
-										<td class="con">
-											<div id="logo">
-											  <img src="${hostPath}${item.attachUrl}">
-											</div>
-										</td>
-									</tr>
-								</c:forEach>
-							</div>
-							
 							<tr class="col-md-6">
 								<td class="tt">加息标利息：</td>
 								<td class="con">
@@ -217,16 +146,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<tr class="col-md-12">
 								<td class="tt">红包惊喜标：</td>
 								<c:if test="${fn:length(redPackage) > 0}">
-									<c:forEach var="item" items="${redPackage}">
 										<td class="con">
-											投资达到<span>${item.investRedPackageMin}</span>
-											元的前<span>${item.investNum}</span>
-											个，平台代付<span>${item.redPackage}</span>元红包
+											<c:forEach var="item" items="${redPackage}">
+												<div>
+													投资达到<span>${item.investRedPackageMin}</span>
+													元的前<span>${item.investNum}</span>
+													个，平台代付<span>${item.redPackage}</span>元红包
+												</div>
+											</c:forEach>
 										</td>
-									</c:forEach>
 								</c:if>		
 							</tr>	
-							<tr class="col-md-6">
+							<tr class="col-md-12">
 								<!-- 选择担保机构 -->
 								<td class="tt">担保机构：</td>
 								<td class="con">
@@ -242,11 +173,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<tr class="col-md-6">
 								<td class="tt">项目风险保证金：</td>
 								<td class="con">
-									<span>${proDetail.riskMarginFees}</span>
 									<c:if test="${proDetail.riskMarginType == 0}">
+									<span>${proDetail.riskMarginRates}</span>
 										%
 									</c:if>		
 									<c:if test="${proDetail.riskMarginType == 1}">
+									<span>${proDetail.riskMarginFees}</span>
 										元
 									</c:if>		
 								</td>
@@ -263,14 +195,53 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<span>${proDetail.investCountMax}</span>人
 								</td>
 							</tr>
+							<tr class="col-md-6">
+								<td class="tt"><label>申请附件：</label></td>
+							</tr>
 						</table>
+						</div>
+						<!-- 附件信息修改 -->
+						<div class="detailTitle">
+							<div>	
+								<span style="display:inline-block;width: 300px;">				
+									<c:forEach var="item" items="${attaches}" varStatus="status">
+											<c:if test="${item.attachInfoType == 0}">
+												 其他：
+											</c:if>
+											<c:if test="${item.attachInfoType == 1}">
+												 借款方资料：
+											</c:if>
+											<c:if test="${item.attachInfoType == 2}">
+												 抵押资料：
+											</c:if>
+											<c:if test="${item.attachInfoType == 3}">
+												 现场调查资料：
+											</c:if>
+											${item.attachTitle}
+										   <img style="max-height: 150px;max-width: 150px;" src="${hostPath}${item.attachUrl}">
+										   </span>
+										   <span style="display:inline-block;width: 300px;">
+											<c:if test="${status.index !=0 && (status.index+1) %3 ==0}">
+												</span>
+												 </div>
+												 <div>
+												 <span style="display:inline-block;width: 300px;">
+											</c:if>
+									</c:forEach>
+								</span>
+							</div>	
 						</div>
 					</fieldset>
 				</div>
 			</div>
 		    <!-- 公用js -->
 			<jsp:include page="../../common/cm-js.jsp"></jsp:include>
+			<script type="text/javascript" src="js/member/memberDetail.js"></script>
 			<!-- 私用js -->
+			<script type="text/javascript">
+				var memberId = $("#memberId").val();
+				showMemberIdentyInfo(memberId);//展示会员认证
+			</script>
 		</div>
 	</div>	
 </body>

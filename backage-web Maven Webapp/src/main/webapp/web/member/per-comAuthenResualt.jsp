@@ -68,7 +68,7 @@ int typeId = IntegerAndString.StringToInt(request.getParameter("start"),1);
 								%>
 								<legend>银行流水认证</legend>
 								<%	
-									}else if(typeId ==12){
+									}else if(typeId >11){
 								%>
 								<legend>其他认证</legend>
 								<%	

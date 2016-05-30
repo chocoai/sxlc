@@ -66,7 +66,7 @@ public class OverdueServiceImpl implements OverdueService {
 	/* * 
 	 * 查询最大的逾期天数 *  * @return * @see cn.springmvc.service.OverdueService#findMaxOverdue() */
 	@Override
-	public Integer findMaxOverdue() {
+	public int findMaxOverdue() {
 		
 		// TODO Auto-generated method stub return null;
 		return selectOverdueDaoImpl.findMaxOverdue();
@@ -80,6 +80,9 @@ public class OverdueServiceImpl implements OverdueService {
 	/* *  *  * @return * @see cn.springmvc.service.OverdueService#insertOverdueLimit(java.util.Map) */
 	@Override
 	public int insertOverdueLimit(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo) {
+		
+		
+		
 		entity.setsDetail("添加逾期程度 :"+map.toString());
 		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		// TODO Auto-generated method stub return 0;
@@ -108,17 +111,25 @@ public class OverdueServiceImpl implements OverdueService {
 	/* *  *  * @return * @see cn.springmvc.service.OverdueService#insertOverdue(cn.springmvc.model.OverdueEntity) */
 	@Override
 	public int insertOverdue(OverdueEntity overdueEntity,InsertAdminLogEntity entity,String[] sIpInfo) {
-		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
-		long id = generatorUtil.GetId();
-		overdueEntity.setId((int)id);
-		int result =  handleOverdueDaoImpl.insertOverdue(overdueEntity);
-		if(result == 0) {
-			generatorUtil.SetIdUsedFail(id);
-		}else{
-			generatorUtil.SetIdUsed(id);
+		 int bigDay=selectOverdueDaoImpl.findMaxOverdue();
+		 int result=0;
+		if (bigDay>overdueEntity.getOverdueMin()) {
+			result=-1;
+		}else if(overdueEntity.getOverdueMin()==overdueEntity.getOverdueMax()) {
+			result=-2;
+		}else {
+			IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
+			long id = generatorUtil.GetId();
+			overdueEntity.setId((int)id);
+			result =  handleOverdueDaoImpl.insertOverdue(overdueEntity);
+			if(result == 0) {
+				generatorUtil.SetIdUsedFail(id);
+			}else{
+				generatorUtil.SetIdUsed(id);
+			}
+			entity.setsDetail("添加逾期天数设置 :"+overdueEntity.toString());
+			optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		}
-		entity.setsDetail("添加逾期天数设置 :"+overdueEntity.toString());
-		optRecordWriteDaoImpl.InsertAdminOptRecord(entity, sIpInfo);
 		return result;
 	}
 

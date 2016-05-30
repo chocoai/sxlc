@@ -55,12 +55,11 @@ $(function(){
 			$("#memberName").text(rowdata[0].personalName);
 		}
 		
-		var memberId= rowdata[0].memberID;
+		var memberIds= rowdata[0].memberID;
 		if(STAFF_NUM ==0){
 			showPlanerList();//显示理财师顾问列表
 			STAFF_NUM++;
 		}
-		
 		layer.open({
 		    type: 1,
 		    area: ['950px', '600px'], //高宽
@@ -80,7 +79,7 @@ $(function(){
 					var encrypt = new JSEncrypt();
 			    	encrypt.setPublicKey(publicKey_common);
 			    	//result 为加密后参数
-			    	memberId = encrypt.encrypt(memberId+"");
+			    	memberId = encrypt.encrypt(memberIds+"");
 			    	planerId = encrypt.encrypt(planerId+"");
 			    	oldplanerId = encrypt.encrypt(oldplanerId+"");
 				  $.ajax({
@@ -99,13 +98,13 @@ $(function(){
 						},
 						success : function(data) {
 							//1：失败 ， 0：成功 ，-1：部门信息不存在，-2:职务名称已存在，-3：职务信息不存在、-4：职务信息已存在、-5：上级职务不属于同一部门
-							if(data == 0){
+							if(data == 1){
 								//执行完关闭
 								layer.alert("分配成功",{icon:1});  
 							  	layer.close(index);
-							  	setTimeout('location.reload()',500);
+							    $('#table_id').DataTable().ajax.reload();
 							}else if(data == -1){
-								layer.alert("添加失败， 该员工未注册前台会员！",{icon:0});  
+								layer.alert("已存在理财顾问！",{icon:0});  
 							}
 						 }
 					});  

@@ -1,8 +1,15 @@
+<%@page import="cn.springmvc.model.Operation"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%
 request.setCharacterEncoding("UTF-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	/* 登录人操作权限 */
+	List<Operation> operations = null;
+	if(session.getAttribute("operationList") != null){
+		operations = (List<Operation>)session.getAttribute("operationList");
+
+	}
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -15,121 +22,62 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 私用meta -->
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
-	<!-- 私用css -->
 	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
+	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css" />
+	<link rel="stylesheet" href="css/upload.css" />
+	<!-- 私用css -->	
+	<link rel="stylesheet" href="css/frontconfig/fc-platformSecurity.css" type="text/css"/>	
 </head>
 
 <body class="nav-md">
 	<div class="container body">
-		<div class="main_container">
-			<!-- 头部 -->
+		<!-- 头部 -->
 			<jsp:include page="../common/cm-top.jsp">
-				<jsp:param value="5" name="top_menu_index"/>
+				<jsp:param value="5" name="_index_m1"/>
 			</jsp:include>
 			
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-frontconfig.jsp"></jsp:include>
-			<!-- 主要内容 -->
-			<div class="right_col" role="main">
-				<!-- 地址导航 -->
-				<jsp:include page="../common/cm-addr.jsp"></jsp:include>
-				
-				<!-- <div class="search">
-					<div class="panel panel-success">
-						<div class="panel-heading">
-							<div class="i-fl search_title">条件查询</div>
-							<div class="i-fr action_item">
-								<ul class="list_item list-inline">
-									<li><a class="state">展开&nbsp;<span
-											class="glyphicon glyphicon-chevron-down"></span> </a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="panel-body">
-							<form id="" class="" action="">
-								<span class="con-item">
-									<span>添加时间</span><input type="text" class="" placeholder="" />
-								</span>
-								<span class="con-item">
-									<span>姓名</span><input type="text" class="" placeholder="" />
-								</span>
-								<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
-							</form>
-						</div>
-					</div>
-				</div> -->
-			
-			
-				<div class="data_display">
-					<div class="panel panel-success">
-						<div class="panel-heading">
-							<div class="action_item">
-								<button class="obtn glyphicon glyphicon-plus obtn-proInfo-add" onclick="proInfoAdd('添加产品介绍','web/frontconfig/fc-add/fc-proIntroAdd.jsp','1')">添加</button>
-								<button class="obtn glyphicon glyphicon-pencil obtn-proInfo-mod" onclick="proInfoAlert('修改产品介绍','web/frontconfig/fc-add/fc-proIntroAdd.jsp','1','id')">修改</button>
-							</div>
-						</div>
-						
-						<div class="panel-body">
-							<table id="table_id" class="display">
-								<thead>
-									<tr>
-										<th class="table-checkbox"></th>
-										<th>添加时间</th>
-										<th>产品名称</th>
-										<th>借款金额范围</th>
-										<th>年化利率范围</th>
-										<th>借款时间范围</th>
-										<th>产品介绍</th>
-										<th>产品展示图片</th>
-										<th>最近一次操作员</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-										for (int i = 0; i < 15; i++) {
-									%>
-									<tr>
-										<td><input type="checkbox" /></td>
-										<td>添加时间</td>
-										<td>产品名称</td>
-										<td>借款金额范围</td>
-										<td>年化利率范围</td>
-										<td>借款时间范围</td>
-										<td>产品介绍</td>
-										<td>产品展示图片</td>
-										<td>最近一次操作员</td>
-										<td>
-											<a href="javascript:;" class="btn-enable" onclick="enable()">启用</a>
-											<a href="javascript:;" class="btn-disable"onclick="disable()">停用</a>
-										</td>
-									</tr>
-									<%
-										}
-									%>
-								</tbody>
-							</table>
-						</div>
-						
-					</div>
+			<jsp:include page="../common/cm-frontconfig.jsp">
+				<jsp:param value="509" name="_index_m2"/>
+				<jsp:param value="" name="_index_m3"/>
+			</jsp:include>
+		<!-- 主要内容 -->
+		<div class="right_col" role="main">	
+			<!-- 地址导航 -->
+			<jsp:include page="../common/cm-addr.jsp"></jsp:include>
+			<div class="panel-body">
+				<table>
+					<tr>			
+						<td class="con">							
+					  		<script id="introduceDetail" type="text/plain" style="height:260px;width:100%;"></script>					  		
+						</td>
+					</tr>																	
+				</table>
+				<div class="psAdd">
+					<%
+						if(operations.size()>0){
+							for(int i = 0;i < operations.size(); i++){
+								if(operations.get(i).getOptID() == 50901){
+					%>				
+								<button type="submit" class="btn"  onclick="savaOrUpdate()">保存</button>
+					<%      
+				      			}
+					  		 }
+						 }
+				     %>	
 				</div>
-				
-				
-			</div>
+			</div>		
 		</div>
 	</div>
-	<!-- 尾部 -->
-	
-	
-	
-	
 	<!-- 公用js -->
-	<jsp:include page="../common/cm-js.jsp"></jsp:include>
-	<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
-	<script type="text/javascript" src="js/upload.js"></script>
-	<!-- 私用js -->
-	<script type="text/javascript" src="js/frontconfig/fc-proIntro.js"></script>
 	
+		<!-- 公用js -->
+	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" src="plugs/ueditor/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript" src="js/exp-upload.js"></script>	
+	<script type="text/javascript" src="js/valid.js"></script>	
+	<script type="text/javascript" src="js/frontconfig/fc-proIntro.js"></script>
 </body>
 </html>

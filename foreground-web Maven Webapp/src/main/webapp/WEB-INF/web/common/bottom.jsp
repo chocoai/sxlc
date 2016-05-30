@@ -21,8 +21,8 @@
 					<div class="linkAreaLine">
 						<div class="linkAreaTh">帮助中心</div>
 						<div class="linkAreaTd"><a href="aboutUs/newbieGuide.html">新手指引</a></div>
-						<div class="linkAreaTd"><a href="aboutUs/investmentZone.html">我要投资</a></div>
-						<div class="linkAreaTd"><a href="aboutUs/loan.html">我要借款</a></div>
+						<div class="linkAreaTd"><a href="invest/investmentZone.html">我要投资</a></div>
+						<div class="linkAreaTd"><a href="loan/loan.html">我要借款</a></div>
 						<div class="linkAreaTd"><a href="aboutUs/commonProblem.html">常见问题</a></div>
 					</div>				
 				</div>

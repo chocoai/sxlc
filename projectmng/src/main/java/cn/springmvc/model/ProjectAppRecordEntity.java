@@ -90,7 +90,7 @@ public class ProjectAppRecordEntity {
 	 */
 	private int publishStatu;	
 	/**
-	 * 融资状态 项目状态 -3：待流标 -2：待第三方登记 -1：登记中 0：投标中 1：流标 2：投标完成 3：还款中 4：结清  5:债务转让中	
+	 * 融资状态 项目状态 -3：待流标    -2：待第三方登记 -1：登记中     0：投标中    1：流标    2：投标完成   3：还款中   4：结清    5:预热中	
 	 */
 	private int investStatu;
 	/**

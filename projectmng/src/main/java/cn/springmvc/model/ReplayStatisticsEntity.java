@@ -39,7 +39,20 @@ public class ReplayStatisticsEntity {
 	private int 		overdueAmount;		//当期应还罚息
 	private String 		overdueAmounts;		//当期应还罚息
 	private int 		overdueDays;		//逾期天数
-	
+	private long        repayID;//还款计划ID
+	private long        applyId;//还款计划ID
+	public long getRepayID() {
+		return repayID;
+	}
+	public void setRepayID(long repayID) {
+		this.repayID = repayID;
+	}
+	public long getApplyId() {
+		return applyId;
+	}
+	public void setApplyId(long applyId) {
+		this.applyId = applyId;
+	}
 	public String getLogname() {
 		return logname;
 	}

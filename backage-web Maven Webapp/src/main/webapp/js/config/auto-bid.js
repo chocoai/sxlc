@@ -29,7 +29,7 @@ $(function () {
 
 /** 修改自动投标返回百分比 **/
 function updateAuto () {
-	validform5("btn","auto",true,"3");
+	validform5("btn","auto",true,"5");
 	var percent = $("#firstname").val();
 	var encrypt = new JSEncrypt();
     encrypt.setPublicKey(publicKey_common);

@@ -9,7 +9,6 @@
 			+ path + "/";
 	long memberId = IntegerAndString.StringToLong(request.getParameter("content"), 0);
 	String index3 = request.getParameter("_index_m3");
-	String index2 = request.getParameter("_index_m2");
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -36,7 +35,7 @@
 			
 			<!-- 左侧菜单 -->
 			<jsp:include page="../../common/cm-member.jsp">
-				<jsp:param value="<%=index2 %>" name="_index_m2"/>
+				<jsp:param value="202" name="_index_m2"/>
 				<jsp:param value="<%=index3 %>" name="_index_m3"/>
 			</jsp:include>
 			<!-- 主要内容 -->
@@ -119,23 +118,6 @@
 				<!--   开通时在notOpen上面添加类ishow,未开通时在notOpen上面添加类ishow  -->
 			</fieldset>
 				
-		<!-- 	第三方帐户信息           --> 
-			<fieldset class="thirdInformation">
-				<legend>会员第三方帐户信息</legend>
-				<div class="w-content ishow">
-					<table>
-						<tr>
-							<td class="tt"><label>第三方数字帐户：</label><span id="thirdPartyAccount"></span></td>
-							<td class="tt"><label>第三方标识：</label><span id="thirdPartyMark"></span></td>
-							<td class="tt"><label>帐户可用余额：</label><span id="userBalance"></span></td>
-							<td class="tt"><label>帐户冻结金额：</label><span id="frozen"></span></td>
-						</tr>
-					</table>
-				</div>
-				<div class="w-content notOpen">未开通</div>
-				<!--   开通时在notOpen上面添加类ishow,未开通时在notOpen上面添加类ishow  -->
-			</fieldset>
-				
 		<!-- 	会员认证资料           --> 
 			<fieldset class="cerfiedRange">
 				<legend>会员认证资料</legend>
@@ -158,8 +140,8 @@
 							<td class="tt">严重逾期还款<samp id="yZOverdueRepaymentCount"></samp>笔</td>
 						</tr>
 						<tr>
-							<td class="tt">逾期未还<samp id="suc_b"></samp>笔</td>
-							<td class="tt">提前还款<samp id="suc_b"></samp>笔</td>
+							<td class="tt">逾期未还<samp id="overdueNonReturn"></samp>笔</td>
+							<td class="tt">提前还款<samp id="advanceReturn"></samp>笔</td>
 						</tr>
 					</table>
 				</div>
@@ -170,14 +152,14 @@
 				<div class="w-content ishow">
 					<table>
 						<tr>
-							<td class="tt"><label>成功投资笔数：</label><span id="investmentCount"></span></td>
-							<td class="tt"><label>成功投资金额：</label><span class="moneyFormat" id="sInvestmentSum"></span><samp>元</samp></td>
-							<td class="tt"><label>累计已收本金：</label><span class="moneyFormat" id="sRecvPrincipal"></span><samp>元</samp></td>
-							<td class="tt"><label>累计已收利息：</label><span class="moneyFormat" id="sRecvInterest"></span><samp>元</samp></td>
+							<td class="tt"><label>成功投资笔数：</label><samp id="investCount"></samp>笔</td>
+							<td class="tt"><label>成功投资金额：</label><samp class="moneyFormat" id="sInvestmentSum"></samp>元</td>
+							<td class="tt"><label>累计已收本金：</label><samp class="moneyFormat" id="sRecvPrincipal"></samp>元</td>
+							<td class="tt"><label>累计已收利息：</label><samp class="moneyFormat" id="sRecvInterest"></samp><samp>元</samp></td>
 						</tr>
 						<tr>
-							<td class="tt"><label>待收本金：</label><span class="moneyFormat" id="sExpectRecvPrincipal"></span><samp>元</samp></td>
-							<td class="tt"><label>待收收益：</label><span class="moneyFormat" id="sIncomeReceived"></span><samp>元</samp></td>
+							<td class="tt"><label>待收本金：</label><samp class="moneyFormat" id="sExpectRecvPrincipal"></samp>元</td>
+							<td class="tt"><label>待收收益：</label><samp class="moneyFormat" id="sIncomeReceived"></samp>元</td>
 						</tr>
 					</table>
 				</div>
@@ -192,6 +174,7 @@
 	<script type="text/javascript">
 		var memberId = <%=memberId %>;
 		
+		var mid = memberId ;
 		var encrypt = new JSEncrypt();
 		encrypt.setPublicKey(publicKey_common);
 		//result 为加密后参数
@@ -199,7 +182,7 @@
 		showVipRecord(memberId); //会员vip记录
 		showCompanyDetail(memberId);//会员基本信息
 		showMemberThirdInfo(memberId);//第三方信息
-		showMemberIdentyInfo(memberId);//会员认证项基本信息
+		showMemberIdentyInfo(mid);//会员认证项基本信息
 		showMemberBorrowStatic(memberId);//会员借款统计基本信息
 		showMemberInvestStatic(memberId);//会员投资统计基本信息 */
 		

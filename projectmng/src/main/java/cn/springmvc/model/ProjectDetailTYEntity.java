@@ -53,6 +53,40 @@ public class ProjectDetailTYEntity {
     private int     riskMarginType;
     private long    mngFeeAmount;//借款管理费
     private String  mngFeeAmounts;//借款管理费
+    private long    mngFeeRate;//借款管理费率
+    private String  mngFeeRates;//借款管理费率
+    private int     memberType;
+    private long    memberId;
+    private int     isVip;//借款会员是否是VIP会员，大于0是，等于0不是
+    private int     vipBorrowMngRate;//VIP会员折扣
+    private int     checkStatu;//审核状态申请状态 0：未审核 1：通过 -1：打回
+    private int     mngFeeRateIncreace;//管理费比例、天标起收比例 单位：百万分之
+    public int getIsVip() {
+		return isVip;
+	}
+	public void setIsVip(int isVip) {
+		this.isVip = isVip;
+	}
+	public int getVipBorrowMngRate() {
+		return vipBorrowMngRate;
+	}
+	public void setVipBorrowMngRate(int vipBorrowMngRate) {
+		this.vipBorrowMngRate = vipBorrowMngRate;
+	}
+	public long getMngFeeRate() {
+		return mngFeeRate;
+	}
+	public void setMngFeeRate(long mngFeeRate) {
+		this.mngFeeRate = mngFeeRate;
+		this.mngFeeRates = IntegerAndString.LongToString(mngFeeRate);
+	}
+	public String getMngFeeRates() {
+		return mngFeeRates;
+	}
+	public void setMngFeeRates(String mngFeeRates) {
+		this.mngFeeRates = mngFeeRates;
+	}
+	
 	public long getMngFeeAmount() {
 		return mngFeeAmount;
 	}
@@ -253,6 +287,30 @@ public class ProjectDetailTYEntity {
 	}
 	public void setAutoStart(String autoStart) {
 		this.autoStart = autoStart;
+	}
+	public int getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(int memberType) {
+		this.memberType = memberType;
+	}
+	public long getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(long memberId) {
+		this.memberId = memberId;
+	}
+	public int getCheckStatu() {
+		return checkStatu;
+	}
+	public void setCheckStatu(int checkStatu) {
+		this.checkStatu = checkStatu;
+	}
+	public int getMngFeeRateIncreace() {
+		return mngFeeRateIncreace;
+	}
+	public void setMngFeeRateIncreace(int mngFeeRateIncreace) {
+		this.mngFeeRateIncreace = mngFeeRateIncreace;
 	}
 	
 }

@@ -78,7 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<tr>
 							<td class="tt"><label class="ineed">债权转让时间延长：</label></td>
 							<td class="con">
-								<input type="text" class="Wdate" value=""  onFocus="WdatePicker()"/>
+								<input type="text" class="Wdate"  id="transMaxTime" value=""  onFocus="WdatePicker({})"/>
 							</td>
 						</tr>
 					</table>

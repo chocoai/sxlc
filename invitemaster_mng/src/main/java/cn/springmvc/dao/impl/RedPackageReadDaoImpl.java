@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import product_p2p.kit.datatrans.IntegerAndString;
 import product_p2p.kit.pageselect.PageEntity;
+import cn.invitemastermng.model.AffairInfo;
 import cn.invitemastermng.model.LotteryManage;
 import cn.invitemastermng.model.LotteryRecords;
 import cn.invitemastermng.model.PrizeInformation;
@@ -61,15 +62,20 @@ public class RedPackageReadDaoImpl extends SqlSessionDaoSupport implements IRedP
 	@Override
 	public int BlackMemberJudgmentTow(long memberId, int mType) {
 		
-		// TODO Auto-generated method stub return 0;
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("memberId", memberId);
 		map.put("mType", mType);
-		// TODO Auto-generated method stub return 0;
 		getSqlSession().selectOne("redPackageDao.BlackMemberJudgmentTow",map);
 		int result = IntegerAndString.StringToInt(map.get("result").toString(), 0);
 		return result;
 	}
+	
+	@Override
+	public AffairInfo findLatelyInfo() {
+		
+		return getSqlSession().selectOne("redPackageDao.findLatelyInfo");
+	}
+	
 	@Autowired
 	@Override
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {

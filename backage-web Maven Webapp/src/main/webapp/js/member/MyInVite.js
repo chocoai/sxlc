@@ -69,9 +69,8 @@ function modifyInvite(){
 		return;
 	}
     var	inviteId=rowdata[0].memberId;
-	alert(memberId);
     inviteId = encrypt.encrypt(inviteId+"");
-    layer.confirm('确定拉黑该会员？', {
+    layer.confirm('确定修改我的邀请人？', {
 		btn:['确定', '取消']
 	  ,yes: function(index, layero){ //或者使用btn1
 		$.ajax( {  
@@ -79,7 +78,7 @@ function modifyInvite(){
 			data:{
 				inviteId:inviteId,
 				memberId:memberId
-				},
+			},
 			type:'post',  
 			cache:false,  
 			dataType:'text',  

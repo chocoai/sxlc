@@ -50,7 +50,7 @@ function  showMemberDetail(memberId){
 			success:function(data) { 
 				if(data!=null){
 					var str="";
-					console.log(JSON.stringify(data));
+					//console.log(JSON.stringify(data));
             		 if(data.provinceName!=null &&data.provinceName!=""){
             			str = data.provinceName;
             		 }
@@ -325,7 +325,7 @@ function  showMemberIdentyInfo(memberId){
 							url +="organizationResualt.jsp?start="+type+"&content="+rid+"&draw=3";
 						}else if(type == 15){//开户许可证
 							url +="accountOpeningResualt.jsp?start="+type+"&content="+rid+"&draw=3";
-						}else if(type ==16 || type == 17 || type == 19 || type == 20 || type == 21  ){//其他 
+						}else if(type ==16 || type == 17 || type == 19 || type == 20 || type == 21 || type==24 ||type ==25 ){//其他 
 							url +="companyComResualt.jsp?start="+type+"&content="+rid+"&draw=3";
 						}else if(type ==18 ){
 							url +="taxRegistrationResualt.jsp?start="+type+"&content="+rid+"&draw=3";
@@ -364,14 +364,18 @@ function  showMemberBorrowStatic(memberId){
 			cache:false,  
 			dataType:'json',   
 			success:function(data) { 
+				//console.log(JSON.stringify(data));
 				if(data!=null && data!=""){
-					$("#loanCount").val(data.loanCount);	//成功借款
-					$("#repaymentCount").val(data.repaymentCount);//成功还款
-					$("#investmentCount").val(data.investmentCount);//成功投资
-					$("#overdueRepaymentCount").val(data.overdueRepaymentCount); //逾期还款
-					$("#yZOverdueRepaymentCount").val(data.yZOverdueRepaymentCount);//严重逾期
+					$("#loanCount").text(data.loanCount);	//成功借款
+					$("#repaymentCount").text(data.repaymentCount);//成功还款
+					$("#investmentCount").text(data.investmentCount);//成功投资
+					$("#overdueRepaymentCount").text(data.overdueRepaymentCount); //逾期还款
+					$("#yZOverdueRepaymentCount").text(data.yZOverdueRepaymentCount);//严重逾期
+					$("#overdueNonReturn").text(data.yuQiWeiHuan);
+					$("#advanceReturn").text(data.tiQianHuanKuan);
 				}
 			},  
+			
 			error : function() {  
 				layer.alert("服务器异常",{icon:2});  
 			}  
@@ -392,13 +396,33 @@ function  showMemberInvestStatic(memberId){
 			cache:false,  
 			dataType:'json',   
 			success:function(data) { 
+				//console.log(JSON.stringify(data));
 				if(data!=null && data!=""){
-					$("#investmentCount").val(data.investmentCount);	//成功投资笔数
-					$("#sInvestmentSum").val(data.sInvestmentSum);//成功投资金额
-					$("#sRecvPrincipal").val(data.sRecvPrincipal);//累计已还本金
-					$("#sRecvInterest").val(data.sRecvInterest); //累计已还利息
-					$("#sExpectRecvPrincipal").val(data.sExpectRecvPrincipal); //代收本金
-					$("#sIncomeReceived").val(data.sIncomeReceived);//代收利息
+					$("#investCount").text(data.investmentCount);	//成功投资笔数
+					if(data.sInvestmentSum!=null){
+						$("#sInvestmentSum").text(data.sInvestmentSum);//成功投资金额
+					}else{
+						$("#sInvestmentSum").text(0);
+					}
+					if(data.sRecvPrincipal!=null){
+						$("#sRecvPrincipal").text(data.sRecvPrincipal);//累计已还本金
+					}else{
+						$("#sRecvPrincipal").text(0);//累计已还本金
+					}
+					if(data.sRecvInterest!=null){
+						$("#sRecvInterest").text(data.sRecvInterest); //累计已还利息
+					}else{
+						$("#sRecvInterest").text(0); //累计已还利息
+					}
+					if(data.sExpectRecvPrincipal!=null){
+						$("#sExpectRecvPrincipal").text(data.sExpectRecvPrincipal); //代收本金
+					}else{
+						$("#sExpectRecvPrincipal").text(0); //代收本金
+					}
+					if(data.sIncomeReceived!=null){
+						$("#sIncomeReceived").text(data.sIncomeReceived);//代收利息
+					}
+					$("#sIncomeReceived").text(0);//代收利息
 				}
 			},  
 			error : function() {  

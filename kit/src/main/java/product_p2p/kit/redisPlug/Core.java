@@ -1,48 +1,21 @@
 package product_p2p.kit.redisPlug;
 
+import product_p2p.kit.spring.SpringUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 
 public class Core {
 	private static final int JEDIS_EXPIRE = 60 * 60;
-	private static Jedis jedis;
-	private static JedisPool pool = null;  
+	private static JedisPool pool;
 	
-	static{
-		jedis = new Jedis("192.168.2.14");
-		if (pool == null) {
-			// 建立连接池配置参数
-            JedisPoolConfig config = new JedisPoolConfig();
-            // 设置最大连接数
-            config.setMaxIdle(500);
-            // 设置最大阻塞时间，记住是毫秒数milliseconds
-            config.setMaxWaitMillis(1000 * 100);
-            // 设置空间连接
-            config.setMaxIdle(5);  
-            
-            config.setTestOnBorrow(true);
-            // 创建连接池
-            pool = new JedisPool(config, "192.168.2.8", 6379);  
-        }  
+	
+	
+	private static Jedis getJedis(){
+		if(pool == null){
+			pool = (JedisPool) SpringUtil.getBean(JedisPool.class);
+		}
+		return pool.getResource();
 	}
-	
-	 /** 
-     * 返还到连接池 
-     *  
-     * @param pool  
-     * @param redis 
-     */  
-    public static void returnResource(Jedis redis) {  
-        if (redis != null) {  
-            pool.returnResource(redis);
-        }  
-    }
-    
-    
-    
-    
-    
 	
 	/****
 	 * 写入一个字符串
@@ -50,8 +23,10 @@ public class Core {
 	 * @return 受影响的行数
 	 */
 	public static Long putString(String key,String value){
+		Jedis jedis = getJedis();
 		String l = jedis.set(key,value);
 		jedis.expire(key, JEDIS_EXPIRE);
+		jedis.close();
 		if(l.equals("OK")){
 			return 1L;
 		}else{
@@ -65,7 +40,10 @@ public class Core {
 	 * @return
 	 */
 	public static String getString(String key){
-		return jedis.get(key);
+		Jedis jedis = getJedis();
+		String result = jedis.get(key);
+		jedis.close();
+		return result;
 	}
 	
 	/***
@@ -74,7 +52,10 @@ public class Core {
 	 * @return  删除掉的行数
 	 */
 	public static Long delObject(String key){
-		return jedis.del(key);
+		Jedis jedis = getJedis();
+		Long result = jedis.del(key);
+		jedis.close();
+		return result;
 	}
 	
 	/***
@@ -83,7 +64,10 @@ public class Core {
 	 * @return
 	 */
 	public static Boolean exists(String key){
-		return jedis.exists(key);
+		Jedis jedis = getJedis();
+		boolean result = jedis.exists(key);
+		jedis.close();
+		return result;
 	}
 	
 	/***
@@ -94,7 +78,10 @@ public class Core {
 	 * @return 受影响的行数
 	 */
 	public static Long expire(String key,int s){
-		return jedis.expire(key, s);
+		Jedis jedis = getJedis();
+		long result = jedis.expire(key, s);
+		jedis.close();
+		return result;
 	}
 	
 	/***
@@ -104,7 +91,10 @@ public class Core {
 	 * @return
 	 */
 	public static Long expireat(String key,long time){
-		return jedis.expireAt(key, time);
+		Jedis jedis = getJedis();
+		long result = jedis.expireAt(key, time);
+		jedis.close();
+		return result;
 	}
 	
 	/***
@@ -112,7 +102,10 @@ public class Core {
 	 * @return	key
 	 */
 	public static String randomKey(){
-		return jedis.randomKey();
+		Jedis jedis = getJedis();
+		String result = jedis.randomKey();
+		jedis.close();
+		return result;
 	}
 	
 	/***
@@ -122,7 +115,10 @@ public class Core {
 	 * @return 返回OK标示修改成功
 	 */
 	public static String reNmae(String oldKey,String newKey){
-		return jedis.rename(oldKey, oldKey);
+		Jedis jedis = getJedis();
+		String result = jedis.rename(oldKey, oldKey);
+		jedis.close();
+		return result;
 	}
 	
 	/***
@@ -133,7 +129,10 @@ public class Core {
 	 * @return
 	 */
 	public static String getRange(String key,int start,int end){
-		return jedis.getrange(key, start, end);
+		Jedis jedis = getJedis();
+		String result = jedis.getrange(key, start, end);
+		jedis.close();
+		return result;
 	}
 	
 	
@@ -141,10 +140,13 @@ public class Core {
 	 * 讲一个对象放入Redis中的
 	 * @param key				主键
 	 * @param object			值
-	 * @return 
+	 * @return
 	 */
 	public static String setObject(String key,Object object){
-		return jedis.set(key.getBytes(), SerializeUtil.serialize(object));
+		Jedis jedis = getJedis();
+		String result = jedis.set(key.getBytes(), SerializeUtil.serialize(object));
+		jedis.close();
+		return result;
 	}
 	
 
@@ -154,10 +156,13 @@ public class Core {
 	 * @return 
 	 */
 	public static Object getObject(String key){
+		Jedis jedis = getJedis();
 		byte[] bInfo = jedis.get(key.getBytes());
 		if(bInfo == null){
+			jedis.close();
 			return null;
 		}else{
+			jedis.close();
 			return SerializeUtil.unserialize(bInfo);
 		}
 	}
@@ -170,6 +175,7 @@ public class Core {
 	 * @return 
 	 */
 	public static int putRsa(String apply_id,Object plugn){
+		Jedis jedis = getJedis();
 		int result = 0;
 		try {
 			byte[] bInfo = apply_id.getBytes();
@@ -179,8 +185,10 @@ public class Core {
 			result = 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			jedis.close();
 			result = 0;
 		}
+		jedis.close();
 		return result;
 	}
 
@@ -192,7 +200,10 @@ public class Core {
 	 * @return
 	 */
 	public static Object getVerCodeByUserLognName(String userName) {
-		return jedis.get(userName+"dl");
+		Jedis jedis = getJedis();
+		Object result = jedis.get(userName+"dl");
+		jedis.close();
+		return result;
 	}
 	
 	
@@ -207,7 +218,10 @@ public class Core {
 	* @date 2016-3-21 上午9:26:03
 	 */
 	public static Object getVerCodeByPhone(String phone){
-		return jedis.get(phone+"dl");
+		Jedis jedis = getJedis();
+		Object result = jedis.get(phone+"dl");
+		jedis.close();
+		return result;
 	}
 	
 	
@@ -221,11 +235,14 @@ public class Core {
 	* @throws
 	 */
 	public static int putVerCodeByPhone(String phone,String code){
+		Jedis jedis = getJedis();
 		if(getString(phone+"register")==null){
 			jedis.set(phone+"dl", code);
 			jedis.expire(phone+"dl", 180);
+			jedis.close();
 			return 1;
 		}
+		jedis.close();
 		return 0;
 	}
 
@@ -242,9 +259,11 @@ public class Core {
 	* @date 2016-4-15 上午9:48:39
 	 */
 	public static int putRegisterPhoneCode(String phone,String code){
-			long result = putString(phone+"register", code);
-			jedis.expire(phone+"register", 180);
-			return 1;
+		long result = putString(phone+"register", code);
+		Jedis jedis = getJedis();
+		jedis.expire(phone+"register", 180);
+		jedis.close();
+		return 1;
 	}
 	
 	/***
@@ -257,7 +276,8 @@ public class Core {
 	* @date 2016-4-15 上午11:05:27
 	 */
 	public static String getRegisterPhoneCode(String phone){
-		return getString(phone+"register");
+		String result = getString(phone+"register");
+		return result;
 	}
 	
 	/***
@@ -269,7 +289,10 @@ public class Core {
 	* @date 2016-5-13 上午11:03:33
 	 */
 	public static long removeRegisterPhoneCode(String phone){
-		return jedis.del(phone+"register");
+		Jedis jedis = getJedis();
+		long result = jedis.del(phone+"register");
+		jedis.close();
+		return result;
 	}
 	
 	
@@ -287,11 +310,14 @@ public class Core {
 	 * @throws
 	 */
 	public static int putWithdrawPhoneCode(String phone,String code){
+		Jedis jedis = getJedis();
 		if(getString(phone+"Withdraw")==null){
 			putString(phone+"Withdraw", code);
 			jedis.expire(phone+"Withdraw", 180);
+			jedis.close();
 			return 1;
 		}
+		jedis.close();
 		return 0;
 	}
 	
@@ -300,11 +326,14 @@ public class Core {
 	}
 	
 	public static int putForgetPWDPhoneCode(String phone,String code){
+		Jedis jedis = getJedis();
 		if(getString(phone+"ForgetPWD")==null){
 			putString(phone+"ForgetPWD", code);
 			jedis.expire(phone+"ForgetPWD", 180);
+			jedis.close();
 			return 1;
 		}
+		jedis.close();
 		return 0;
 	}
 	/**
@@ -323,11 +352,14 @@ public class Core {
 	}
 	
 	public static int putForgetPWDStatu(String phone,String statu){
+		Jedis jedis = getJedis();
 		if(getString(phone+"ForgetPWDStatu")==null){
 			putString(phone+"ForgetPWDStatu", statu);
 			jedis.expire(phone+"ForgetPWDStatu", 180);
+			jedis.close();
 			return 1;
 		}
+		jedis.close();
 		return 0;
 	}
 	/**
@@ -355,8 +387,10 @@ public class Core {
 	* @date 2016-4-26 下午8:54:57
 	 */
 	public static int putEditBindPhoneCode(String phone,String code){
+		Jedis jedis = getJedis();
 		putString(phone+"editBindPhone", code);
 		jedis.expire(phone+"editBindPhone", 180);
+		jedis.close();
 		return 1;
 	}
 	
@@ -380,8 +414,10 @@ public class Core {
 	* @date 2016-4-27 上午11:24:32
 	 */
 	public static int putBindEmailCode(String email,String code) {
+		Jedis jedis = getJedis();
 		putString(email+"bindEmail", code);
 		jedis.expire(email+"bindEmail", 180);
+		jedis.close();
 		return 1;
 	}
 	
@@ -398,6 +434,43 @@ public class Core {
 	}
 	
 	
+	/**
+	 * 好友转账-发送短信验证码
+	* putFriendTransferPhoneCode
+	* @author 邱陈东  
+	* * @Title: putFriendTransferPhoneCode 
+	* @param @param phone
+	* @param @param code
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @date 2016-5-23 上午10:32:41
+	* @throws
+	 */
+	public static int putFriendTransferPhoneCode(String phone,String code){
+		if(getString(phone+"FriendTransfer")==null){
+			Jedis jedis = getJedis();
+			putString(phone+"FriendTransfer", code);
+			jedis.expire(phone+"FriendTransfer", 180);
+			jedis.close();
+			return 1;
+		}
+		return 0;
+	}
+
+	/**
+	 * 好友转账 - 获取已发送的验证码
+	* getFriendTransferPhoneCode
+	* @author 邱陈东  
+	* * @Title: getFriendTransferPhoneCode 
+	* @param @param phone
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-23 上午10:33:17
+	* @throws
+	 */
+	public static String getFriendTransferPhoneCode(String phone){
+		return getString(phone+"FriendTransfer");
+	}
 	
 	
 }

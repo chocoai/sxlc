@@ -112,6 +112,7 @@
 	          and  YEARWEEK(date_format(ir.Invest_Date,'%Y-%m-%d')) = YEARWEEK(now());
 	        </if> 
 	     </where>
+	     order by Invest_Amount
 	     limit 6
     </select>    
 </mapper>

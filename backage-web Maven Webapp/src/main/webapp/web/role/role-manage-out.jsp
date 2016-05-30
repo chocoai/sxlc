@@ -30,7 +30,7 @@
 				<jsp:param value="角色管理" name="loc1" />
 			</jsp:include>
 			<!-- 左侧菜单 -->
-			<jsp:include page="../common/cm-left-menu.jsp">
+			<jsp:include page="../common/cm-role.jsp">
 				<jsp:param value="role-4" name="role-index" />
 			</jsp:include>
 			<!-- 头部导航 -->

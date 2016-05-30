@@ -37,7 +37,7 @@ public class RedpacketsAffairEntity {
 	private long   remainingAffair;//剩余活动红包总金额
 	private String receiveAffairs;//已领取活动红包总金额	
 	private String remainingAffairs;//剩余活动红包总金额
-	private List<RedpacketsDetailRecordEntity> RedpacketsDetail;//红包活动明细
+	private List<RedpacketsDetailRecordEntity> redpacketsDetail;//红包活动明细
 	public long getAffairID() {
 		return affairID;
 	}
@@ -135,11 +135,13 @@ public class RedpacketsAffairEntity {
 		this.remainingAffairs = remainingAffairs;
 	}
 	public List<RedpacketsDetailRecordEntity> getRedpacketsDetail() {
-		return RedpacketsDetail;
+		return redpacketsDetail;
 	}
-	public void setRedpacketsDetail(List<RedpacketsDetailRecordEntity> redpacketsDetail) {
-		RedpacketsDetail = redpacketsDetail;
+	public void setRedpacketsDetail(
+			List<RedpacketsDetailRecordEntity> redpacketsDetail) {
+		this.redpacketsDetail = redpacketsDetail;
 	}
+	
 	 
 }
 

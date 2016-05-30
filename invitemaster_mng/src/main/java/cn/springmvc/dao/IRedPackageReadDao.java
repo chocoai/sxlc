@@ -3,6 +3,7 @@ package cn.springmvc.dao;
 import java.util.List;
 
 import product_p2p.kit.pageselect.PageEntity;
+import cn.invitemastermng.model.AffairInfo;
 import cn.invitemastermng.model.LotteryManage;
 import cn.invitemastermng.model.LotteryRecords;
 import cn.invitemastermng.model.PrizeInformation;
@@ -87,6 +88,16 @@ public interface IRedPackageReadDao {
 	* @throws 
 	*/
 	public int BlackMemberJudgmentTow(long memberId, int mType);
+
+
+	/***
+	 * 获取最新一条活动信息
+	 * 
+	 * @author 李杰
+	 * @return
+	 * @date 2016-5-27 下午2:13:08
+	 */
+	public AffairInfo findLatelyInfo();
 	
 }
 

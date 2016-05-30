@@ -14,6 +14,7 @@ $(function(){
 function insertCertification(){
 	
 	$(".btn_u").click(function(){
+		$(".btn_u").attr("disabled","true");
 		var type=$(this).attr("id");//认证类型
 		var editType=$(".editType").val();//0-新增  1-修改 
 		var endTime=$(".dateSelect").val();
@@ -44,6 +45,7 @@ function insertCertification(){
 				str_url,
 				{editType:editType,type:type,endTime:endTime,annex:annex},
 				function(r){
+					$(".btn_u").attr("disabled","false");
 					//console.log(r);
 					var r = JSON.parse(r);
 					if (r.status == 0){
@@ -62,7 +64,7 @@ function insertCertification(){
  * 查询认证资料附件
  */
 function quryCertification(){
-	var type=$(".btn_u").attr("id");
+	var type=$(".authType").val();
 	var encrypt = new JSEncrypt();
 	encrypt.setPublicKey(publickey);
 	type=encrypt.encrypt(type+"");
@@ -77,7 +79,7 @@ function quryCertification(){
 					//console.log(data);
 					if(data!=null && data!=""){
 						var statu = data.status;
-						if(statu=="0" || statu=="3" || statu=="4"){
+						if(statu=="0"){
 							$(".editType").val("0");
 						}else if(statu==1){
 							$(".editType").val("1");

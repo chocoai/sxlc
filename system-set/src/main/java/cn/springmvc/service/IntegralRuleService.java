@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import product_p2p.kit.optrecord.InsertAdminLogEntity;
+import product_p2p.kit.pageselect.PageEntity;
 
 import cn.springmvc.model.CreditorEntity;
 import cn.springmvc.model.IntegralRuleEntity;
@@ -34,7 +35,7 @@ public interface IntegralRuleService {
 	* @return List<IntegralRuleEntity> 返回类型 
 	* @throws 
 	*/
-	public List<IntegralRuleEntity> findAllIntegralRule(Map<String, Object> map);
+	public List<IntegralRuleEntity> findAllIntegralRule(PageEntity entity);
 	
 	/** 
 	* updateRegPointsIntegralRule 修改邀请注册积分规则 
@@ -101,5 +102,19 @@ public interface IntegralRuleService {
 	* @throws 
 	*/
 	public int insertIntegralRule(Map<String, Object> map,InsertAdminLogEntity entity,String[] sIpInfo);
+	/** 
+	* deleteIntegralRule 根据id修改积分规则
+	* TODO 
+	* TODO(这里描述这个方法的执行流程 – 可选) 
+	* TODO(这里描述这个方法的使用方法 – 可选) 
+	* TODO(这里描述这个方法的注意事项 – 可选) 
+	* * @Title: deleteIntegralRule 
+	* @Description: TODO 
+	* @param @param map type 2:项目投资积分规则 3:债权转让投资积分规则 4:充值积分规则 5:借款积分规则 ;id;membertype
+	* @param @return 设定文件 
+	* @return int 返回类型 
+	* @throws 
+	*/
+	public int updateIntegralRule(int membertype,int type,long amount,long points,long id,InsertAdminLogEntity entity,String[] sIpInfo);
 }
 

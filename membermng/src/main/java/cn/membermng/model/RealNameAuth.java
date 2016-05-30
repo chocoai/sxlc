@@ -1,5 +1,9 @@
 package cn.membermng.model; 
 
+import java.util.Date;
+
+import product_p2p.kit.datatrans.TimestampAndString;
+
 /***
 * 实名认证信息
 * 
@@ -17,7 +21,8 @@ public class RealNameAuth {
 	private String				homeTown;		//籍贯
 	private int					aationId;		//民族
 	private String              nationName;		//民族
-	private String				endDate;		//有效期
+	private Date 				endDate;		//有效期
+	private String              sEndDate;		//有效期
 	private String				positive;		//身份证图片
 	private String				reverse;		//身份证图片
 	private int					status;			//认证状态
@@ -106,13 +111,19 @@ public class RealNameAuth {
 	}
 
 
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+		this.sEndDate = TimestampAndString.DateToString(endDate);
+	}
+
+
+	public String getsEndDate() {
+		return sEndDate;
 	}
 
 

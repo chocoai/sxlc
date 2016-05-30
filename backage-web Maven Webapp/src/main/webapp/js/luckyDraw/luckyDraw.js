@@ -1,35 +1,55 @@
 var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
 var uploadUrl = "";//服务器图片保存路径,全局变量
-/*  添加抽奖设置      */
-function addLuckyDraw(){
+
+$(function () {
 	$.ajax({
 		type : 'post',
-		url : appPath + "/lottery/selectGrade.do",
+		url : appPath + "/lottery/query4set.do",
 		success : function (msg) {
-			var str = "";
-			$.each(msg, function(i, item) {
-				str += "<option value=\""+item.grade+"\">"+item.grade+"</option>";
-			});
-			$("#grade").html(str);
+			if (msg != null) {
+				$("#period").text(msg.period);
+				$("#integra").val(msg.integra);
+				$("#startDate").val(msg.startDate);
+				$("#endDate").val(msg.endDate);
+				$("#status option").each(function () {
+					if ($(this).val == msg.status) {
+						$(this).attr('selected', 'selected');
+					}
+				});
+				$("#lotteryID").val(msg.lotteryID);
+			}
 		}
 	});
 	
-	$.ajax({
-		type : 'post',
-		url : appPath + "/lottery/selectPrizeTypes.do",
-		success : function (msg) {
-			var str = "";
-			$.each(msg, function(i, item) {
-				str += "<option value=\""+item.prizeType+"\">"+item.prizeType+"</option>";
-			});
-			$("#prizeType").html(str);
-		}
+	$("#set").bind('click', function () {
+		$.ajax({
+			type : 'post',
+			url : appPath + "/lottery/set.do",
+			data : {
+				lotteryID : encrypt.encrypt($("#lotteryID").val() + ""),
+				integra : encrypt.encrypt($("#integra").val() + ""),
+				startDate : encrypt.encrypt($("#startDate").val() + ""),
+				endDate : encrypt.encrypt($("#endDate").val() + ""),
+				status : encrypt.encrypt($("#status").val() + "")
+			},
+			success : function (msg) {
+				if (msg == 1) {
+		  			layer.alert("操作成功!",{icon:1});
+		  			setTimeout('location.reload()',2000);
+		  		}else {
+		  			layer.alert("操作失败!",{icon:0});
+		  		}
+			}
+		});
 	});
+});
+/*  添加抽奖设置      */
+function addLuckyDraw(){
 	layer.open({
 		type: 1,
 		area: ['550px', '420px'], //高宽
-		title: "修改附件",
+		title: "添加奖品",
 		maxmin: true,
 		content: $("#addluckyDraw")//DOM或内容
 	});
@@ -39,7 +59,34 @@ $("#add").bind('click', function () {
 	$("#addluckyInfo").submit();
 });
 function addDraw() {
+	var grade = encrypt.encrypt($("#grade").val());
+	var prizeType = encrypt.encrypt($("#prizeType").val());
+	var prizeName = encrypt.encrypt($("#prizeName").val());
+	var prizeWorths = encrypt.encrypt($("#prizeWorths").val());
+	var prizeQuantity = encrypt.encrypt($("#prizeQuantity").val());
+	var winningOdds = encrypt.encrypt($("#winningOdds").val());
 	
+	$.ajax({
+		type : 'post',
+		url : appPath + "/lottery/addAward.do",
+		data : {
+			grade : grade,
+			prizeType : prizeType,
+			prizeName : prizeName,
+			prizeWorths : prizeWorths,
+			prizeQuantity : prizeQuantity,
+			winningOdds : winningOdds,
+			content : uploadUrl
+		},
+		success : function (msg) {
+			if (msg == 1) {
+	  			layer.alert("删除成功!",{icon:1});
+	  			setTimeout('location.reload()',2000);
+	  		}else {
+	  			layer.alert("服务器异常!",{icon:0});
+	  		}
+		}
+	});
 }
 $(function(){
 	//上传初始化
@@ -160,7 +207,7 @@ $(function(){
 	
 });
 $(function(){
-	validform5(".addBtn","addluckyInfo",false,3);
+	validform5(".addBtn","addluckyInfo",false,5);
 	$(".cancelBtn").bind("click",function(){
 		layer.closeAll();
 	});
@@ -175,27 +222,29 @@ $(function () {
 	//删除部门
 	$(".obtn-dept-del").on("click touchstart",function(){
 		//获得选取的对象
-		
+		var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
+		if (rowdata.length <= 0) {
+			layer.alert("请选择需要删除的奖品！",{icon:0});
+			return;
+		}
 		layer.confirm('确定删除该奖品？', {
 		  btn: ['确定', '取消']
 		}, function(index, layero){
 		  //确定的回调
-		  var rowdata = $('#applicationAudit').DataTable().rows('.selected').data();
 		  //加密操作
 		  var result = encrypt.encrypt(rowdata[0].prizeID + "");
 		  $.ajax({
 		  	type : 'post',
-		  	url : appPath + "/role/delete.do",
-		  	data : {deptId : result},
+		  	url : appPath + "/lottery/delete.do",
+		  	data : {prizeID : result},
 		  	success : function (msg) {
 		  		if (msg == 1) {
 		  			layer.alert("删除成功!",{icon:1});
 		  			setTimeout('location.reload()',2000);
+		  		}else {
+		  			layer.alert("删除失败!",{icon:0});
 		  		}
-		  	},
-		  	error : function() {  
-		           layer.alert("操作失败!",{icon:2});  
-		    } 
+		  	}
 		  });
 			
 			layer.close(index);
@@ -254,9 +303,23 @@ $(function() {
         rowCallback:function(row,data){//添加单击事件，改变行的样式      
         }
 });
- var table = $('#applicationAudit').DataTable();
-//设置选中change颜色
- $('#applicationAudit tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-  });
+});
+
+$(function() {
+	//单选
+	$('#applicationAudit tbody').on( 'click', 'tr', function () {
+		var $this = $(this);
+		var $checkBox = $this.find("input:checkbox");
+		 if ( $(this).hasClass('selected') ) {
+			 $checkBox.prop("checked",false);
+				$(this).removeClass('selected');
+			}
+			else {
+				$('tr.selected').removeClass('selected');
+				$this.siblings().find("input:checkbox").prop("checked",false);
+				$checkBox.prop("checked",true);
+				$(this).addClass('selected');
+			}
+		
+	} );
 });

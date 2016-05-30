@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>平台推广-关系年限</title>
+	<title>平台推广管理-推荐达人申请审核</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -90,36 +90,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<tr class="col-md-12">
 						<td class="tt"><label>会员编号：</label></td>
 						<td class="con">
-							<span>100001</span>
+							<span id="memberNo1"></span>
 						</td>
 					</tr>
 					<tr class="col-md-12">	
 						<td class="tt"><label>会员用户名：</label></td>
 						<td class="con">
-							<span>用户名</span>
+							<span id="logname1"></span>
 						</td>
 					</tr>	
 					<tr class="col-md-12">
 						<td class="tt"><label>姓名：</label></td>
 						<td class="con">
-							<span>姓名</span>
+							<span id="personalName1"></span>
 						</td>
 					</tr>	
 					<tr class="col-md-12">	
 						<td class="tt"><label>手机号：</label></td>
 						<td class="con">
-							<span>18322224444</span>
+							<span id="personalPhone1"></span>
 						</td>
 					</tr>	
 					<tr class="col-md-12">	
 						<td class="tt"><label>审核结果：</label></td>
 						<td class="con">
-							<select class="w3">
-								<option>请选择</option>
-								<option>通过</option>
-								<option>拒绝</option>
-								<option>踢出</option>
+							<select class="w3" id="checkStatu">
+								<option value="">请选择</option>
+								<option value="1">通过</option>
+								<option value="-1">拒绝</option>
+								<!-- <option value="-1">踢出</option> -->
 							</select>
+						</td>
+					</tr>
+					<tr class="col-md-12">	
+						<td class="tt"><label>审核意见：</label></td>
+						<td class="con">
+							<textarea id="remark" rows="2" cols="" class="ta-noresize"></textarea>
 						</td>
 					</tr>	
 				</table>

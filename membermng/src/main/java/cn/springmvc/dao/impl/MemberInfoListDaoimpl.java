@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import product_p2p.kit.pageselect.PageEntity;
 
 import cn.membermng.model.CompanyInfoEntity;
+import cn.membermng.model.MemberAll;
 import cn.membermng.model.MemberInfoEntity;
 import cn.membermng.model.PersonalBaseInfoEntity;
 import cn.springmvc.dao.MemberInfoList;
@@ -65,6 +66,13 @@ public class MemberInfoListDaoimpl extends SqlSessionDaoSupport  implements Memb
 		CompanyInfoEntity companyInfoEntity = getSqlSession().
 				selectOne("memberInfo.selectMemberInfoCompanByID",personID);
 		return companyInfoEntity;
+		
+	}
+	@Override
+	public List<MemberAll> getMemberList(PageEntity pageEntity) {
+		
+		return getSqlSession().selectList("memberInfo.getMemberList",pageEntity,
+ 				new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 		
 	}
 

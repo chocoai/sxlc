@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	$('#table_id').DataTable(
 			{	
 				ajax: {  
-					"url": appPath+"/project/getChkRecordData",   
+					"url": appPath+"/project/getProChkRecordData",   
 					"dataSrc": "results", 
 					"type": "POST",
 					"data": function ( d ) {
@@ -43,12 +43,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}  
 				},
 				columns: [
-				          { title:"项目名称","data": "MemberNo"},  
-				          { title:"审核管理员名称","data": "Logname"},  
-				          { title:"审核点","data": "PersonalName"},  
-				          { title:"审核时间","data": "PersonalPhone"},  
-				          { title:"审核状态","data": "amountStr"},  
-				          { title:"审核意见","data": "deadline"}
+				          { title:"项目名称","data": "projectName"},  
+				          { title:"审核管理员名称","data": "adminName"},  
+				          { title:"审核点","data": "apName"},  
+				          { title:"审核时间","data": "checkDate"},  
+				          { title:"审核状态","data": "checkStatus"},  
+				          { title:"审核意见","data": "checkRemark"}
 				          ],
 	          aoColumnDefs : [
 	                          {
@@ -59,10 +59,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          pagingType: "simple_numbers",//设置分页控件的模式  
 	          processing: true, //打开数据加载时的等待效果  
 	          serverSide: true,//打开后台分页  
+	          searching: false,
 // 	          info:false,
 	          rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	          }
-	 
 	});//表格初始化完毕
 	 
 	//表格单选效果

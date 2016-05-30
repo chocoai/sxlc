@@ -110,7 +110,6 @@
 }
 .cashBank ul li{
 	float:left;
-	width:130px;
 	height:35px;
 	line-height:35px;
 	list-style:none;
@@ -123,11 +122,11 @@
 .cashBankLiOne{
 	display:inline-block;
 	border:1px solid #bfbfbf;
-	width:130px;
 	height:35px;
 	line-height:35px;
 	cursor: pointer;
     -moz-user-select: none;
+    padding: 0 10px;
 }
 .cashBankLiOne>span,.cashBankLiSolid>span{
 	margin-left:20px;

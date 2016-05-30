@@ -15,11 +15,13 @@ import cn.dictionaries.model.CityInfoEntity;
 import cn.dictionaries.model.CountyInfoEntity;
 import cn.dictionaries.model.NationInfoEntity;
 import cn.dictionaries.model.ProvinceInfoEntity;
+import cn.membermng.model.Agreement;
 import cn.membermng.model.CompanyInfo;
 import cn.membermng.model.ExchangeRecords;
 import cn.membermng.model.Friends;
 import cn.membermng.model.IntegralGETRecord;
 import cn.membermng.model.MemberInfo;
+import cn.membermng.model.MemberThirdAuthInfo;
 import cn.membermng.model.MemberVouchers;
 import cn.membermng.model.MyPoint;
 import cn.membermng.model.MyRedPackage;
@@ -274,8 +276,6 @@ public class MemberInfoServiceImpl implements IMemberService{
 			}
 		}
 		
-		
-		
 		PageUtil.ObjectToPage(entity, list);
 		return list;
 	}
@@ -421,6 +421,51 @@ public class MemberInfoServiceImpl implements IMemberService{
 		
 		return memberDao.loadUntreatedMessage(param);
 		
+	}
+	
+	
+	
+	@Override
+	public int countEmail(String email) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("skey", DbKeyUtil.GetDbCodeKey());
+		param.put("email", email);
+		return memberDao.countEmail(param);
+	}
+	
+	@Override
+	public Agreement agreement() {
+		
+		return memberDao.agreement();
+	}
+	
+	
+	@Override
+	public int TestTransaction(boolean exit) {
+		int chars = (int)(Math.random()*26+97);
+		char param = (char)chars;
+		char param2 = (char)(chars+1);
+		int couunt = memberDao.countName("张三");
+		System.out.println("查询张三的总个数："+couunt);
+		int result = memberWriteDao.TestTransaction(param,chars);
+		int result2 = memberWriteDao.TestTransaction(param2,chars);
+		if(chars %3 == 0){
+			exit = true;
+		}
+		if(chars %4 == 0){
+			
+			throw new RuntimeException("跑忙了,"+param+"_"+param+" ,事物回滚");
+		}
+		return result;
+	}
+	
+	
+	@Override
+	public MemberThirdAuthInfo getAutoGiroStatu(Long memberId,int memberType) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("memberId", 	memberId);
+		param.put("memberType", memberType);
+		return memberDao.getAutoGiroStatu(param);
 	}
 	
 }

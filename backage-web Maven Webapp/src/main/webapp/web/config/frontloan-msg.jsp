@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心--财务配置</title>
+	<title>配置中心-前台借款信息填写配置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -96,7 +96,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 				</div>
 		 				</form>	
 	 					<div class="frontinfobtn">
-	 						<button type="submit" class="btn btn-default" onclick="submitPlatCofig()">保存</button>
+	 						<button type="submit" class="btn btn-default layui-layer-btn0" onclick="submitPlatCofig()">保存</button>
 	 					</div>	
 			 		</fieldset>
 			 	</div>	

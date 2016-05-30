@@ -288,13 +288,14 @@ public interface IMemberManangerService {
 
 
 	/***
-	* @author 李杰
-	* @Title: borrowers
-	* @param memberId					会员编号
-	* @param memberType					会员类型
-	* @return
-	* @Description: TODO
-	* @date 2016-4-7 下午8:29:39
+	 * 借款统计
+	 * 
+	 * @author 李杰
+	 * @Title: borrowers
+	 * @param memberId					会员编号
+	 * @param memberType					会员类型
+	 * @return
+	 * @date 2016-4-7 下午8:29:39
 	 */
 	public BorrowingStatistics borrowers(long memberId, int memberType);
 	

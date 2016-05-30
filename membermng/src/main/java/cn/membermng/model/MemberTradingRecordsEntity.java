@@ -148,6 +148,12 @@ public class MemberTradingRecordsEntity {
 	 * 交易对方类型 0：平台 1：会员 2：担保机构会员	
 	 */
 	private int tradeObjectType;
+	
+	//2016-5-24 15:42:12 增加 交易对方名称  邱陈东
+	/**
+	 * 交易对方名称
+	 */
+	private String tradeObjectName;
 	/**
 	 * 交易对方id	
 	 */
@@ -621,6 +627,17 @@ public class MemberTradingRecordsEntity {
 	}
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
+	}
+	public String getTradeObjectName() {
+		return tradeObjectName;
+	}
+	public void setTradeObjectName(String tradeObjectName) {
+		//case 语句中输出汉字时乱码
+		//case when mtr.Trade_Object_Type=2 then gi.Guarantee_Name when mtr.Trade_Object_Type=1 then mi.logname else '平台' end) as  Trade_Object_Name
+		if(tradeObjectName.equals("1")){
+			tradeObjectName = "平台";
+		}
+		this.tradeObjectName = tradeObjectName;
 	}  	
 
 }

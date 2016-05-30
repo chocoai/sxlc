@@ -3,18 +3,18 @@
 var encrypt = new JSEncrypt();
 encrypt.setPublicKey(publicKey_common);
 
-/**
- * 放款
- */
 
 $(function () {
+	/**
+	 * 放款
+	 */
 	$("#loan").bind('click', function () {
 		var rowdata = $('#table_pro_lending').DataTable().rows('.selected').data();
 		if (rowdata.length <= 0) {
 			layer.alert("请选择需要进行操作的项目！",{icon:0});
 			return;
 		}else {
-			var projectId = rowdata[0].applyID;
+			var projectId = rowdata[0].tranId;
 			projectId = encrypt.encrypt(projectId + "");
 			var stype = encrypt.encrypt(2 + "");
 			var auditType = encrypt.encrypt(1 + "");
@@ -31,7 +31,7 @@ $(function () {
 			layer.alert("请选择需要进行操作的项目！",{icon:0});
 			return;
 		}else {
-			var projectId = rowdata[0].applyID;
+			var projectId = rowdata[0].tranId;
 			projectId = encrypt.encrypt(projectId + "");
 			var stype = encrypt.encrypt(2 + "");
 			var auditType = encrypt.encrypt(2 + "");
@@ -48,61 +48,40 @@ $(function() {
 	$('#table_pro_lending').DataTable(
 	{
         ajax: {  
-            "url": appPath + "/lending/translendingList.do",   
+            "url": appPath + "/finance/translendingList.do",   
             "dataSrc": "results", 
             "data": function ( d ) {  
-            	var projectNo = $("#projectNo").val();
-            	var logname = $("#logname").val();
-            	var memberName = $("#memberName").val();
-            	var startDate = $("#startDate").val();
-            	var endDate = $("#endDate").val();
-            	var dealine = $("#dealine").val();
-            	var deadlineType = $("#deadlineType").val();
-            	var minAmount = $("#minAmount").val();
-            	var maxAmount = $("#maxAmount").val();
-            	var statu = $("#statu").val();
+            	var projectName = $(".projectName").val();
+            	var loanMemberName = $(".loanMemberName").val();
+            	var transferMemberName = $(".transferMemberName").val();
+            	var startfangkuanTime = $("#loanStartDate").val();
+            	var endfangkuanTime = $("#loanEndDate").val();
+            	var status = $(".status").val();
             	
-            	if (projectNo != null && projectNo != "") {
-            		projectNo = encrypt.encrypt((projectNo + ""));
+            	if (projectName != null && projectName != "") {
+            		projectName = encrypt.encrypt((projectName + ""));
                 }
-            	if (logname != null && logname != "") {
-            		logname = encrypt.encrypt((logname + ""));
+            	if (loanMemberName != null && loanMemberName != "") {
+            		loanMemberName = encrypt.encrypt((loanMemberName + ""));
                 }
-            	if (memberName != null && memberName != "") {
-            		memberName = encrypt.encrypt((memberName + ""));
+            	if (transferMemberName != null && transferMemberName != "") {
+            		transferMemberName = encrypt.encrypt((transferMemberName + ""));
                 }
-            	if (startDate != null && startDate != "") {
-            		startDate = encrypt.encrypt((startDate + ""));
+            	if (startfangkuanTime != null && startfangkuanTime != "") {
+            		startfangkuanTime = encrypt.encrypt((startfangkuanTime + ""));
                 }
-            	if (endDate != null && endDate != "") {
-            		endDate = encrypt.encrypt((endDate + ""));
+            	if (endfangkuanTime != null && endfangkuanTime != "") {
+            		endfangkuanTime = encrypt.encrypt((endfangkuanTime + ""));
                 }
-            	if (dealine != null && dealine != "") {
-            		dealine = encrypt.encrypt((dealine + ""));
+            	if (status != null && status != "") {
+            		status = encrypt.encrypt((status + ""));
                 }
-            	if (deadlineType != null && deadlineType != "") {
-            		deadlineType = encrypt.encrypt((deadlineType + ""));
-                }
-            	if (minAmount != null && minAmount != "") {
-            		minAmount = encrypt.encrypt((minAmount + ""));
-                }
-            	if (maxAmount != null && maxAmount != "") {
-            		maxAmount = encrypt.encrypt((maxAmount + ""));
-                }
-            	if (statu != null && statu != "") {
-            		statu = encrypt.encrypt((statu + ""));
-                }
-                	d.projectNo = projectNo;
-                	d.logname = logname;
-                	d.memberName = memberName;
-                	d.startDate = startDate;
-                	d.endDate = endDate;
-                	d.dealine = dealine;
-                	d.deadlineType = deadlineType;
-                	d.minAmount = minAmount;
-                	d.maxAmount = maxAmount;
-                	d.statu = statu;
-                	
+                	d.projectName = projectName;
+                	d.loanMemberName = loanMemberName;
+                	d.transferMemberName = transferMemberName;
+                	d.startfangkuanTime = startfangkuanTime;
+                	d.endfangkuanTime = endfangkuanTime;
+                	d.status = status;
             } 
         },
         columns: [  
@@ -118,27 +97,39 @@ $(function() {
                   { title:"转让价格(元)","data": "mounts" },
                   { title:"转让金额(元)","data": "transferMounts" },
                   { title:"转让折扣（%）","data": "transferzks" },
-                  { title:"融资进度（%）","data": "investSe" },
-                  { title:"投标结束时间","data": "invEndtime" },
-                  { title:"项目状态","data": "statusName"},
+                  { title:"融资进度（%）","data": "investSes" },
+                  { title:"项目状态","data": "status", 
+                	  "mRender": function (data, type, full) {
+                 		 if (data == -1 || data==0 || data==2) {
+                 			 return "待放款";
+                 		 }else if (data == 1){
+                 			 return "已流标";
+                 		 }else if (data == 3 || data == 4) {
+                 			 return "已完成";
+                 		 }else{
+                 			 return "";
+                 		 }
+                 	  } 
+                   },
                   { title:"放款时间","data": "fangkuanTime" },
                   { title:"流标时间","data": "fangkuanTime" }
                   
                   
         ],
-		  aaSorting : [[ 8, "desc"],[ 10, "desc"],[ 11, "desc"]],//默认第几个排序
+		  aaSorting : [[ 9, "desc"],[ 10, "desc"]],//默认第几个排序
 	      aoColumnDefs : [
 	                      {
 	                    	  "orderable" : false,
-	                    	  "aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 7, 9]
+	                    	  "aTargets" : [ 0, 1, 2, 3, 4, 5, 6, 7]
 	                      } // 制定列不参与排序
 	                      ],
 	      pagingType: "simple_numbers",//设置分页控件的模式  
 	      processing: true, //打开数据加载时的等待效果  
 	      serverSide: true,//打开后台分页  
 	      scrollCollapse: true,
+	      searching: false,
 	      scrollX : "100%",
-		  scrollXInner : "100%",
+	      scrollXInner : "100%",scrollY:500,
 	      rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	      },
 });

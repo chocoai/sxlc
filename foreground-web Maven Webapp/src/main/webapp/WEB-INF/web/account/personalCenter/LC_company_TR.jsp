@@ -47,10 +47,10 @@
 				   					</li>
 				   					<li class="inputList">
 				   						<div class="mustLabel"><span>有效期：</span></div>
-				   						<input class="inputText dateSelect Wdate endTime " onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择有效期"/>
+				   						<input class="inputText dateSelect Wdate endTime " onfocus="WdatePicker({readOnly:true,maxDate:'%y-%M-%d'})" type="text"/>
 				   					</li>
 				   					<li class="inputList">
-					   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
+					   					<div class="mustLabel"><span><samp></samp>附件：</span></div>
 					   					<div class="previewPicture" id="file" style="float: none;" >
 					   						<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
 											<input type='hidden' class='previewHide' id="0" >	
@@ -60,7 +60,7 @@
 				   					<li class="inputList">
 				   						<div class="btn saveSubmit "  id="${requestScope.type}" >确认并保存</div>
 				   						<input type="hidden" value="0" class="editType" />
-				   						<input type="hidden" value="0" class="cid" 				   						
+				   						<input type="hidden" value="0" class="cid" />
 				   					</li>
 				   				</ul>
 			   				</form>

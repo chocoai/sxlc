@@ -85,7 +85,6 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
 	 
 	@Override
 	public List<LoanRepayEntity> selectReplayByProjectID(Map<String,Object> map) {
-		
 		List<LoanRepayEntity> loanReplayList = null;
 		loanReplayList = getSqlSession().selectList("replay.selectReplayByProjectID",map);
 		return loanReplayList;
@@ -168,6 +167,14 @@ public class ProjectDetailListDaoImpl extends SqlSessionDaoSupport implements Pr
 	public ProjectDetailTYEntity selectProjectdetailByIDbc(long applyId) {
 		
 		return getSqlSession().selectOne("projectDetail.selectProjectdetailByIDbc",applyId);
+		
+	}
+
+	@Override
+	public List<LoanRepayEntity> selectLoanRealReplayprocess(
+			Map<String, Object> map) {
+		
+		return getSqlSession().selectList("replay.selectLoanRealReplayprocess",map);
 		
 	}
 

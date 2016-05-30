@@ -35,12 +35,13 @@
 	   				</div>
    					<div class="authenContent">
 	   					<div class="clearfix"><div class="addAuthen" onselectstart="return false">添加房产认证</div></div>
-	   					<div class="cloneDiv">
+	   					
+	   					<!-- 添加修改窗口 -->
+	   					<div class="cloneDiv" style="display:none">
 		   					<div class="authen">
-		   						<div class="authenScale">
-		   							<p class="authenScaleBtn" onselectstart="return false" onclick="scale(this);">房产认证</p>
-		   						</div>
-		   						<form class="person_Renzheng">
+		   						<form class="house" id="house">
+		   							<input class="editType" type="hidden">
+		   							<input class="cid" type="hidden">
 					   				<ul class="inputArea">
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>房产位置：</span></div>
@@ -48,8 +49,8 @@
 					   					</li>
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>面积：</span></div>
-					   						<input class="inputText area" datatype="acountM"  type="text" lang="请输入房产面积" maxlength="10"/>
-					   						<span class="unitPrice">米<sup>2</sup></span>
+					   						<input class="inputText area" datatype="acountNum1"  type="text" lang="请输入房产面积" maxlength="10"/>
+					   						<span class="unitPrice">平方米</span>
 					   					</li>
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>市场价值：</span></div>
@@ -58,12 +59,12 @@
 					   					</li>
 					   					<li class="inputList">
 					   						<div class="mustLabel"><span><samp>*</samp>登记时间：</span></div>
-					   						<input class="inputText dateSelect Wdate " onfocus="WdatePicker({readOnly:true})" type="text" lang="请选择登记时间"/>
+					   						<input class="inputText dateSelect Wdate " onfocus="WdatePicker({maxDate:'%y-%M-%d',readOnly:true})" type="text" />
 					   					</li>
 					   					<li class="inputList">
-						   					<div class="mustLabel"><span><samp>*</samp>附件：</span></div>
-						   					<div class="previewPicture" id="file" style="float: none;" >
-						   						<img class="previewImg" id="previewImg" src="resource/img/account/common/opacity.png">
+						   					<div class="mustLabel"><span><samp></samp>附件：</span></div>
+						   					<div class="file" style="float: none;">
+						   						<img class="previewImg previewPicture"  src="resource/img/account/common/opacity.png">
 						   					</div>
 						   					<div class="authPreviDiv_u"></div>
 						   					<!-- <span class="hint">（请上传附件图片）</span> -->
@@ -77,6 +78,71 @@
 				   				</form>
 		   					</div>
 	   					</div>
+	   					<div class="cloneDiv_show" style="display:none">
+		   					<div class="authen">
+		   						<form class="house_show">
+					   				<ul class="inputArea">
+					   					<li class="inputList">
+					   						<div class="mustLabel"><span><samp>*</samp>房产位置：</span></div>
+					   						<input readonly="readonly" class="inputText address" datatype="enteraddr" type="text" lang="请输入房产位置" maxlength="25"/>
+					   					</li>
+					   					<li class="inputList">
+					   						<div class="mustLabel"><span><samp>*</samp>面积：</span></div>
+					   						<input readonly="readonly" class="inputText area" datatype="acountM"  type="text" lang="请输入房产面积" maxlength="10"/>
+					   						<span class="unitPrice">平方米</span>
+					   					</li>
+					   					<li class="inputList">
+					   						<div class="mustLabel"><span><samp>*</samp>市场价值：</span></div>
+					   						<input readonly="readonly" class="inputText value" datatype="acountM" type="text" lang="请输入房产市场价值" maxlength="10"/>
+					   						<span class="unitPrice">元</span>
+					   					</li>
+					   					<li class="inputList">
+					   						<div class="mustLabel"><span><samp>*</samp>登记时间：</span></div>
+					   						<input readonly="readonly" class="inputText dateSelect Wdate "  type="text" lang="请选择登记时间"/>
+					   					</li>
+					   					<li class="inputList">
+						   					<div class="mustLabel"><span><samp></samp>附件：</span></div>
+						   					<div class="authPreviDiv_u"></div>
+						   					<!-- <span class="hint">（请上传附件图片）</span> -->
+						   				</li>
+					   				</ul>
+				   				</form>
+		   					</div>
+	   					</div>
+	   					<table id="vo_table" cellspacing="0" style="width:100%">
+							<thead>
+								<tr>
+									<td>房产位置</td>
+									<td>面积（平方米）</td>
+									<td>市场价值（元）</td>
+									<td>登记时间</td>
+									<!-- <td>附件</td> -->
+									<td>操作</td>
+								</tr>
+							</thead>
+								<!-- 我的房产认证列表 -->
+								<script id="house_list"  type="text/html">
+								{{each data as info index}}
+								<tr class="tr_{{info.rid}}">
+									<td class="td_homeAddress">{{info.homeAddress}}</td>
+									<td class="td_area">{{info.area}}</td>
+									<td class="td_value">{{info.value}}</td>
+									<td class="td_endDate">{{info.sEndDate}}</td>
+									<td>
+										<a href="javascript:showHouse({{info.rid}});" class="see">查看</a>
+										<a href="javascript:modifyHouse({{info.rid}});" class="modify">修改</a>
+									</td>
+									<input class="td_cid" type="hidden" value="{{info.rid}}"/>
+									<input class="td_attachPath" type="hidden" value="{{info.attachPath}}"/>
+								</tr>
+								{{/each }}
+								</script>
+							<tbody id="house_body">
+								
+							</tbody>
+						</table>
+						<input class="attachPrefix" type="hidden"/>
+	   						
 	   				</div>
    				</div>
    			</div>
@@ -84,13 +150,12 @@
    	</div>
    	<jsp:include page="../../common/bottom.jsp"></jsp:include>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/plugs/My97DatePicker/WdatePicker.js"></script>
-   	<script type="text/javascript" src="plugs/webuploader/webuploader.js" ></script>
-   	<script type="text/javascript" src="js/exp-upload.js" ></script>	
+  	<script type="text/javascript" src="plugs/webuploader/webuploader.js" ></script>
+   	<script type="text/javascript" src="js/exp-upload.js" ></script>
 	<script type="text/javascript" src="js/account/account.js"></script>
-	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
-	<script type="text/javascript" src="js/account/personalCenter/loanCertification_picText.js"></script>
-	<script type="text/javascript">
-		expUpload(0);
-	</script>
+	<script type="text/javascript" src="js/account/personalCenter/addHome.js"></script>
+<!-- 	<script type="text/javascript" src="js/account/personalCenter/loanCertification.js"></script>
+	<script type="text/javascript" src="js/account/personalCenter/loanCertification_picText.js"></script> -->
+	
 </body>
 </html>

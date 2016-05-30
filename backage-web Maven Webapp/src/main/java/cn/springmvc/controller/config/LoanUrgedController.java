@@ -68,7 +68,7 @@ public class LoanUrgedController {
 		LoanRepayUrgedSetEntity setEntity = new LoanRepayUrgedSetEntity();
 		
 		int days = IntegerAndString.StringToInt(request.getParameter("billday"),0);
-		String billContent = request.getParameter("billContent");
+		String billContent = request.getParameter("content");
 		setEntity.setBillDays(days);
 		setEntity.setBillContent(billContent);
 		InsertAdminLogEntity  entity = new InsertAdminLogEntity(); //以后加

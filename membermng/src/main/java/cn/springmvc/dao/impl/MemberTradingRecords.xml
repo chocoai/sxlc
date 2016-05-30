@@ -3,7 +3,7 @@
 <mapper namespace="memberTradingMap">
      <!--             交易记录  memberTradingRecordsMap - TransactionRecordMap.xml-->
 	<select id="selectMemberTradingRecords" parameterType="product_p2p.kit.pageselect.PageEntity"   resultMap="memberTradingRecordsMap.resultMemberTradingRecords">
-	 select mtr.Trade_ID,mtr.Trade_Type_Id,tradeType.name1 as tradeType,
+	 select mtr.Trade_ID,mtr.Trade_Type_Id,tradeType.Type_Name as tradeType,
 	 CAST((AES_DECRYPT(UNHEX(mtr.Amount),#{map.sKey})) as signed)                     Amount,
 	 CAST((AES_DECRYPT(UNHEX(otrb.Frozen_Balance),#{map.sKey})) as signed)            Frozen_Balance,
  	 CAST((AES_DECRYPT(UNHEX(mtra.WillRec_Principal),#{map.sKey})) as signed)         WillRec_Principal,
@@ -18,14 +18,19 @@
 	 ifnull(CAST((AES_DECRYPT(UNHEX(otrb.Frozen_Balance),#{map.sKey})) as signed),0) + 
  	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillRec_Principal),#{map.sKey})) as signed),0) + 
  	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillRec_Interest),#{map.sKey})) as signed),0)+
- 	 ifnull(CAST((AES_DECRYPT(UNHEX(otrb.User_Balance),#{map.sKey})) as signed),0)+
+ 	 ifnull(CAST((AES_DECRYPT(UNHEX(otrb.User_Balance),#{map.sKey})) as signed),0)-
  	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Principal),#{map.sKey})) as signed),0)-   
  	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Interest),#{map.sKey})) as signed),0)-    
  	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillPay_OverdueInterest),#{map.sKey})) as signed),0)-  
  	 ifnull(CAST((AES_DECRYPT(UNHEX(mtra.WillPay_Overdue),#{map.sKey})) as signed),0)) as totalAmount,
- 	 mtr.Record_Date, mtr.Trade_Object_Type
+ 	 mtr.Record_Date,
+ 	 mi2.logName as membername,
+ 	 (case when mtr.Trade_Object_Type=2 then gi.Guarantee_Name when mtr.Trade_Object_Type=1 then mi.logname else '1' end) as  Trade_Object_Name
      from Member_Trading_Records mtr 
-     left join DICT  tradeType on mtr.Trade_Type_Id =  tradeType.code1 and  tradeType.tcode = 'DICT_JYLX'
+     left join Member_Info mi on mi.Member_ID = mtr.Trade_Object_Id
+     left join Member_info mi2 on mi2.Member_ID = mtr.Member_ID
+     left join Guarantee_Info gi on gi.Guarantee_ID = mtr.Trade_Object_Id
+     left join Trade_Type_Second tradeType  on mtr.Trade_Type_Id =  tradeType.Trade_Type_Id
      join Member_Trading_Records_Account mtra on mtra.Trade_ID =  mtr.Trade_ID
      join Own_Trading_Records_Balance otrb on otrb.Own_Trading_ID = mtr.Trade_ID 
      <where>  

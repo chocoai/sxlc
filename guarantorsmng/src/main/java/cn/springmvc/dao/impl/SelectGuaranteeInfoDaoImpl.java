@@ -93,10 +93,11 @@ public class SelectGuaranteeInfoDaoImpl extends SqlSessionDaoSupport implements 
 	
 	/* *  *  * @param pageEntity
 	/* *  *  * @return * @see cn.springmvc.dao.SelectGuaranteeInfoDao#selectAllManagementInfo(product_p2p.kit.pageselect.PageEntity) */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ManagementInfoEntity> selectAllManagementInfo(
 			PageEntity pageEntity) {
-		
+		pageEntity.getMap().put("skey", DbKeyUtil.GetDbCodeKey());
 		// TODO Auto-generated method stub return null;
 		return getSqlSession().selectList("GuaranteeInfoXML.selectAllManagementInfo", pageEntity,new RowBounds(pageEntity.getPageNum(),pageEntity.getPageSize()));
 	}

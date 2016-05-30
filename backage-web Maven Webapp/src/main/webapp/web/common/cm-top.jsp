@@ -17,7 +17,7 @@
 <!-- 顶部一级菜单 -->
 <div class="top_navigation">
 	<div class="pro-logo">
-		XX后台管理系统
+		四象金融管理系统
 		<!-- <img alt="产品LOGO" src="resoures/img/sxlclogo_icon.png"> -->
 	</div>
 	<div class="top_menu">
@@ -48,7 +48,7 @@
 				</a>
 			</li>
 			<li data-m1="4" class="f-tab">
-				<a href="web/finance/finance.jsp">
+				<a href="web/finance/fn-pro-lending.jsp">
 					<p><i class="fa fa-dollar"></i></p>
 					<p>财务管理</p>
 				</a>
@@ -107,12 +107,12 @@
 			</li>
 			
 			<!-- 测试信息 -->
-			<li class="f-tab">
+			<!-- <li class="f-tab">
 				<a href="web/test/test.jsp">
 					<p><i class="fa fa-share-alt"></i></p>
 					<p>测试</p>
 				</a>
-			</li>
+			</li> -->
 			
 		</ul>
 	</div>

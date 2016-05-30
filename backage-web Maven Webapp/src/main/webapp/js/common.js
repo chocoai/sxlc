@@ -6,71 +6,6 @@
  * @type	int 
  * 影响功能$("body").bread();
  */
-
-!(function($) {
-	$.fn.menu = function(options) {
-		var defaults = {
-			_index : 0, // 下标，默认为0
-			_referrer : document.referrer, // 来源地址
-			_loc1 : "", // 一级菜单地址
-			_loc1_name : "", // 一级菜单名字
-			_loc2 : "", // 一级菜单地址
-			_loc2_name : "" // 一级菜单名字
-		};
-		// 继承
-		options = $.extend(defaults, options);
-		$(".top_menu li").eq(options._index).addClass("tab_active").siblings()
-				.removeClass("tab_active");
-
-		options._loc1 = $(".top_menu li").eq(options._index).find("a")
-				.attr("href");
-		options._loc1_name = $(".top_menu li").eq(options._index).find("p")
-				.eq(1).text();
-
-		// 打印
-		/*console.log(options._index + "\n" + options._referrer + "\n"
-				+ options._loc1 + "\n" + options._loc1_name + "\n"
-				// +options.+"\n"
-				);*/
-
-		// 地址栏赋值，存在bug
-		var _loc_html = '<li>'+
-							'<div class="nav toggle">'+
-								'<a id="menu_toggle"><i class="fa fa-bars"></i> </a>'+
-							'</div>当前位置：'+
-						'</li>';
-		if (options._loc1_name) {
-			_loc_html += '<li><a href="' + options._loc1 + '">'
-					+ options._loc1_name + '</a></li>';
-			// $(".breadcrumb
-			// a:first").text(options._loc1_name).attr("href",options._loc1);
-			var $o2 = $(".side-menu li.active").find("a:first");
-			options._loc2 = $o2.attr("href");
-			options._loc2_name = $o2.text();
-			if (options._loc2_name) {
-				_loc_html += '<li><a href="' + options._loc2 + '">'
-						+ options._loc2_name + '</a></li>';
-			}
-			$(".left_col.scroll-view .nav_title span").text(options._loc1_name);
-			
-			var baseHtml = '<li class="breadTt">'+
-								'<div class="nav toggle">'+
-									'<a id="menu_toggle"><i class="fa fa-bars"></i> </a>'+
-								'</div>当前位置：'+
-							'</li>';
-			$(".breadcrumb").html(_loc_html);
-			//修改地址导航
-			modAddr();
-		}
-
-		/*
-		 * $(this).on({ click : function(){
-		 * console.log(options._index+",二级菜单查询"); } });
-		 */
-	};
-})(jQuery);
-
-
 $(function() {
 	// 路径导航
 	/*$('#sidebar-menu .side-menu>li').on('click touchstart', function() {
@@ -129,10 +64,6 @@ function mathHeight() {
 }
 
 
-//清除空格
-/*String.prototype.trim=function(){
-     return this.replace(/(^\s*)|(\s*$)/g,'');
-};*/
 //复制、剪切、粘贴
 function limitOperate() {
     $("input:password,input[limitoperate='1']").bind("copy cut paste",function(e){
@@ -158,17 +89,7 @@ function getRootPath(){
 //		}
 }
 
-//菜单（状态）切换
-//当前位置
-//即时通讯
-//在线管理
-//系统设置
-//cookie管理
-//随机码生成
-//根据所需，浏览器判断，进行相应操作
-
-
-!(function($){
+;(function($){
 	var menu = {
 		getMenu:function(){
 			//menu.selectSection();
@@ -182,11 +103,11 @@ function getRootPath(){
 			$(".top_menu li[data-m1='"+a.m1 +"']").addClass("tab_active").siblings()
 				.removeClass("tab_active");
 			var name = $(".top_menu li[data-m1='"+a.m1+"']").find("p").eq(1).text();
-			if(name){//左侧菜单主标题赋值
-				$(".left_col.scroll-view .nav_title span").text(name);
-			}else{
-				$(".left_col.scroll-view .nav_title span").text("后台管理");
-			}
+//			if(name){//左侧菜单主标题赋值
+//				$(".left_col.scroll-view .nav_title span").text(name);
+//			}else{
+//				$(".left_col.scroll-view .nav_title span").text("后台管理");
+//			}
 			var url = $(".top_menu li[data-m1='"+a.m1+"']").find("a").attr("href");
 			return menu.splitHtml(name,url) || "";
 		},
@@ -326,3 +247,8 @@ $(function(){
 		});
 	});
 });
+
+
+
+
+//function

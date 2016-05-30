@@ -16,7 +16,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 公用css -->
 	<jsp:include page="../common/cm-css.jsp"></jsp:include>
 	<!-- 私用css -->
-	<link rel="stylesheet" href="css/frontconfig/frontconfig.css" />
+	<link rel="stylesheet" href="plugs/webuploader/0.1.5/webuploader.css"/>
+	<link rel="stylesheet" href="css/upload.css" />
 </head>
 
 <body class="nav-md">
@@ -52,17 +53,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="panel-body">
 								<form id="" class="" action="">
 									<span class="con-item">
-										<span>添加时间</span><input type="text" class="Wdate" onFocus="WdatePicker()">
+										<span>添加时间</span><input type="text" id="startDate" class="dateInput Wdate" onFocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')||\'2020-10-01\'}' })" ><span class="line"></span><input type="text" id="endDate" class="dateInput Wdate"  onFocus="WdatePicker({minDate: '#F{$dp.$D(\'startDate\')}' ,maxDate:'2020-10-01' })" >
 									</span>
 									<span class="con-item">
-										<span>图片标题</span><input type="text" class=""/>
+										<span>图片标题</span><input type="text" id="bannerTitle" class=""/>
 									</span>
 									<span class="con-item">
 										<span>状态</span>
-										<select class="w3">
-											<option value="0">请选择</option>
+										<select class="w3" id="statu">
+											<option value="-1">请选择</option>
 											<option value="1">已启用</option>
-											<option value="2">已停用</option>
+											<option value="0">已停用</option>
 										</select>
 									</span>
 									<button class="obtn obtn-query glyphicon glyphicon-search">查询</button>
@@ -74,62 +75,69 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="panel panel-success">
 							<div class="panel-heading">
 								<div class="action_item">
-									<button class="obtn glyphicon glyphicon-plus obtn-pic-add">添加</button>
-									<button class="obtn glyphicon glyphicon-pencil obtn-pic-mod">修改</button>
-									<button class="obtn glyphicon glyphicon-trash obtn-pic-del">删除</button>
-									<button class="obtn glyphicon glyphicon-arrow-up obtn-pic-up">上移</button>
-									<button class="obtn glyphicon glyphicon-arrow-down obtn-pic-down">下移</button>
+									<button class="obtn glyphicon glyphicon-plus obtn-pic-add" type="button" onclick="addOrUpdate(1)">添加</button>
+									<button class="obtn glyphicon glyphicon-pencil obtn-pic-mod" type="button" onclick="addOrUpdate(2)">修改</button>
+									<button class="obtn glyphicon glyphicon-trash obtn-pic-del" type="button" onclick="deleteBanner()">删除</button>
 								</div>
 							</div>
 							<div class="panel-body">
-								<table id="table_frontconfig" class="display">
+								<table id="table_id" class="display">
 									<thead>
-										<tr>
-											<th class="table-checkbox"></th>
-											<th>添加时间</th>
-											<th>图片标题</th>
-											<th>图片展示</th>
-											<th>图片点击跳转路径</th>
-											<th>状态</th>
-											<th>最近一次操作管理员</th>
-											<th>操作</th>
-										</tr>
 									</thead>
 									<tbody>
-										<%
-											for (int i = 0; i < 15; i++) {
-										%>
-										<tr>
-											<td><input type="checkbox" /></td>
-											<td>2016-05-11</td>
-											<td>图片标题</td>
-											<td>img</td>
-											<td>图片点击跳转路径</td>
-											<td>已启用</td>
-											<td>最近一次操作管理员</td>
-											<td>
-												<a href="javascript:;" class="btn-enable">启用</a>
-												<a href="javascript:;" class="btn-disable">停用</a>
-											</td>
-										</tr>
-										<%
-											}
-										%>
 									</tbody>
 								</table>
 							</div>
 						</div>
+						
 					</div>
 				</div>
 			</div>
-			<!-- 尾部 -->
-			<!-- 公用js -->
-			<jsp:include page="../common/cm-js.jsp"></jsp:include>
-			<!-- 私用js -->
-			<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
-			<script type="text/javascript" src="js/frontconfig/frontconfig.js"></script>
+			<div class="w-content pic-add">
+			<form action="javascript:addOrModify()" id="dataForm" method="post">
+				<table>
+					<tr>
+						<td class="tt">图片标题：</td>
+						<td class="con"><input type="text" id="bannerTitlea" datatype="unNormal" maxlength="30" ></td>
+					</tr>
+					<tr>
+						<td class="tt">图片链接：</td>
+						<td class="con"><input type="text"  id="links" datatype="strRegex" maxlength="50" ></td>
+					</tr>
+					<tr>
+						<td class="tt">图片选择：</td>
+						<td class="con">
+							<!--dom结构部分-->
+							<div id="uploader">
+							    <!--用来存放item-->
+							    <div id="filePickers">选择图片</div>
+							     <span class="rec-dimensions">建议尺寸：580*280</span>
+							     <input type="hidden" name="imgPath" id="imgPath" />
+							     <input type="hidden" name="bannerId" id="bannerId" />
+							    <input type="hidden" id="hostPath" value="${ImgProfix}"/>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="tt" valign="top">图片预览：</td>
+						<td class="con" id="fileList"></td>
+					</tr>
+				 </table>
+				</form>
+			</div>
+			<div class="w-content pic-view">
+				<div class="w-content hideHtml">暂无图片</div>
+				<img id="picView" src="" style="max-height: 280px;max-width: 480px;margin-left: 20px">
+			</div>
 		</div>
 	</div>
+	<!-- 尾部 -->
+	<jsp:include page="../common/cm-js.jsp"></jsp:include>
+	<!-- 公用js -->
+		<script type="text/javascript" src="plugs/webuploader/0.1.5/webuploader.js"></script>
+		<script type="text/javascript" src="js/frontconfig/upload.js"></script>
+	<!-- 私用js -->
+		<script type="text/javascript" src="js/frontconfig/front-pcbanner.js"></script>
 </body>
 
 </html>

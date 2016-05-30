@@ -10,6 +10,13 @@ package cn.springmvc.model;
 * @date 2016-4-25 下午5:29:55  */
 public class GuaranteeBankCard {
 	private long bankCardId;//银行卡信息id
+	private long receiveCard;//会员银行卡信息id
+	public long getReceiveCard() {
+		return receiveCard;
+	}
+	public void setReceiveCard(long receiveCard) {
+		this.receiveCard = receiveCard;
+	}
 	private int carType=1;//银行卡类型（借记卡）
 	private String bankName;//，开户银行
 	private String bankCity;//，开户行城市，

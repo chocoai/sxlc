@@ -32,7 +32,7 @@ public class ProjectAppProcessEntity {
 	 */
 	private String recordDate;
 	/**
-	 * 借款发布时间
+	 * 借款发布时间.审核通过
 	 */
 	private String releaseDate;
 	/**
@@ -55,6 +55,8 @@ public class ProjectAppProcessEntity {
      * 	借款到期时间		
      */
 	private String proEndDate;
+	private String settleDate;
+	private int result;
 	public long getProjectID() {
 		return projectID;
 	}
@@ -108,6 +110,18 @@ public class ProjectAppProcessEntity {
 	}
 	public void setProjectAppRecordEntity(ProjectAppRecordEntity projectAppRecordEntity) {
 		this.projectAppRecordEntity = projectAppRecordEntity;
+	}
+	public String getSettleDate() {
+		return settleDate;
+	}
+	public void setSettleDate(String settleDate) {
+		this.settleDate = settleDate;
+	}
+	public int getResult() {
+		return result;
+	}
+	public void setResult(int result) {
+		this.result = result;
 	}	 	
 
 }

@@ -299,6 +299,7 @@
 	word-break:break-all;
 	width:100%;
 	height:auto;
+	line-height: 18px;
 }
 .awardStatisticsUl .trueName,
 .awardStatisticsUl .userName{

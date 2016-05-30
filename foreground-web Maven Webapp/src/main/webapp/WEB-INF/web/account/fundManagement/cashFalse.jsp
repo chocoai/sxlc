@@ -21,7 +21,7 @@
    		<div class="register-box">
    			<div class="successBox">
    				<div class="congratulation">提现失败！</div>
-   				<div class="tiss">您的账户余额不足</div>
+   				<div class="tiss">${withdraws.message}</div>
    			</div>
    		</div>
    	</div>

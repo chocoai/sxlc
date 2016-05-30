@@ -85,10 +85,9 @@
 		  ir.Hold_Date,
 		  (SELECT  <!--查询转让金额投资收益-->
 					SUM(IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Recv_Interest),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue_Interest),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Repay_Overdue),#{skey})) AS SIGNED),0)+IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Repay_Penalty),#{skey})) AS SIGNED),0)-IFNULL(CAST((AES_DECRYPT(UNHEX(iri.Invest_MngFee),#{skey})) AS SIGNED),0))
-				FROM Invest_Real_Income iri 
-				WHERE iri.Income_Id = (SELECT ii.Income_Id FROM Invest_Income ii 
-									WHERE  ii.Invest_Id = ir.Invest_Id 
-										   AND ii.IsValid = 0))*(IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED),0)/IFNULL(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount),#{skey})) AS SIGNED),1))-(IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED),0)-(SELECT SUM(IFNULL(ct.Trans_Amount,0)) FROM Creditor_Trans ct WHERE ct.CTA_Id = cta.CTA_Id))-IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Mng_Fee),#{skey})) AS SIGNED),0) Interest_Amount
+				FROM Invest_Real_Income iri left join Invest_Income ii 
+			    on iri.Income_Id = ii.Income_Id  AND ii.IsValid = 0
+				WHERE ii.Invest_Id = ir.Invest_Id)*(IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED),0)/IFNULL(CAST((AES_DECRYPT(UNHEX(ir.Invest_Amount),#{skey})) AS SIGNED),1))-(IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Trans_Principal),#{skey})) AS SIGNED),0)-(SELECT SUM(IFNULL(ct.Trans_Amount,0)) FROM Creditor_Trans ct WHERE ct.CTA_Id = cta.CTA_Id))-IFNULL(CAST((AES_DECRYPT(UNHEX(cta.Mng_Fee),#{skey})) AS SIGNED),0) Interest_Amount
 		FROM Creditor_Trans_App cta
 		  JOIN Invest_Record ir
 			ON cta.Invest_Id = ir.Invest_Id
@@ -143,7 +142,7 @@
 			ON ir.Apply_Id = pa.Apply_Id
 		  JOIN Project_Base_Info prbi
 			ON pa.Project_Base_ID = prbi.Project_Base_ID
-		WHERE ct.Statu between 3 and 4
+		WHERE cta.Statu between 3 and 4
 		  AND ir.Member_ID = #{Member_ID}
 		ORDER BY cta.Trans_Time DESC
 

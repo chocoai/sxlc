@@ -99,4 +99,16 @@ public interface IMemberWriteDao {
 	* @throws
 	 */
 	public int sign(Map<String, Object> param);
+
+
+	/***
+	 * 测试
+	 * 
+	 * @author 李杰
+	 * @param chars
+	 * @param chars2
+	 * @return
+	 * @date 2016-5-24 下午2:43:37
+	 */
+	public int TestTransaction(char chars, int chars2);
 }

@@ -432,6 +432,9 @@
 										{{if value.transStatu>0}}
 										<div class="debtsetting"><a class="table_operate_zhuan" href="invest/debtDetail.html">转让成功</a></div>
 										{{/if}}
+										{{if value.transStatu<0}}
+										<div class="debtsetting"><a class="table_operate_zhuan" href="invest/debtDetail.html">流标</a></div>
+										{{/if}}
 									</li>
 									{{/each}}
 								</script>
@@ -505,7 +508,7 @@
 								<script id="announcementList" type="text/html">
 								{{each data as value index}}
 									<li class="clearfix">
-										<a href="{{value.id}}" target="_blank">
+										<a href="aboutUs/webBoard.html?id={{value.id}}" target="_blank">
 											<label class="noRuleCircle"></label>{{value.title}}</a>
 										<span>{{value.createTime}}</span>
 									</li>

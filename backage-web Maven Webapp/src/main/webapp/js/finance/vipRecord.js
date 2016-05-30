@@ -25,6 +25,7 @@ $(function() {
             	var startDate = $("#startDate").val();
             	var endDate = $("#endDate").val();
             	var memberID = $("#memberID").val();
+            	var stype = $("#stype").val();
             	
             	if (personalName != null && personalName != "") {
             		var result1 = encrypt.encrypt((personalName + ""));
@@ -44,6 +45,7 @@ $(function() {
                 	d.startDate = result3;
                 	d.endDate = result4;
                 	d.memberID = result5;
+                	d.stype = encrypt.encrypt(stype);
             } 
         },
         columns: [  

@@ -80,13 +80,14 @@ public class PlatAccountOptionController {
 		String dealType = request.getParameter("dealType");
 		String memberType = request.getParameter("memberType");
 		
-		req.put("orderNumber", orderNumber);
+		req.put("merBillno", orderNumber);
 		req.put("thirdMerBillno", thirdMerBillno);
 		req.put("statu", statu);
 		req.put("startdealTime", startDate);
 		req.put("enddealTime", endDate);
 		req.put("dealType", dealType);
 		req.put("memberType", memberType);
+		req.put("statu", statu);
 		
 		pager.setPageNum(Integer.valueOf(start) / Integer.valueOf(length) + 1);
 		pager.setPageSize(Integer.valueOf(length));
@@ -166,8 +167,10 @@ public class PlatAccountOptionController {
 		recharge.setRechargeType(rechargeType);
 		recharge.setAmount(amount);
 		recharge.setRemark3(remark);
-		
+		recharge.setReturnURL("account/backURL.do");
+		recharge.setNotifyURL("account/backServerURL.do");
 		RechargeEntity rechargeEntity = managedInterfaceServerTestI.testLoanRecharge(recharge, request);
+		
 		
 		request.setAttribute("rechargeEntity", rechargeEntity);
 		return "dryLot/loanrechargetest";
@@ -188,12 +191,12 @@ public class PlatAccountOptionController {
 	@RequestMapping("/backURL")
 	public String returnURL(HttpServletRequest request, HttpServletResponse response) {
 		
-		String isSuccess = managedInterfaceServerTestI.testLoanAuthorizeReturn(request, response);
+		String isSuccess = managedInterfaceServerTestI.testLoanRechargeReturn(request);
 		
 		if ("SUCCESS".equals(isSuccess)) {
-			return "recommend/success";
+			return "finance/success-recharge";
 		}else {
-			return "recommend/fail";
+			return "finance/fail-recharge";
 		}
 	}
 	
@@ -211,7 +214,8 @@ public class PlatAccountOptionController {
 	 */
 	@RequestMapping("/backServerURL")
 	public void notifyURL(HttpServletRequest request, HttpServletResponse response) {
-		managedInterfaceServerTestI.testLoanAuthorizeNotify(request, response);
+		managedInterfaceServerTestI.testLoanRechargeNotify(request, response);
 	}
+	
 }
 

@@ -185,7 +185,7 @@
 			    		</div>
 			    		<ul class="productList clearfix">
 			    			<li class="productLi includeFlow">
-			    				<img class="typeImg" src="{{goodsList.commodityClassifyPic}}" />
+			    				<img class="typeImg" src="${imgProfix}{{goodsList.commodityClassifyPic}}" />
 			    				<div class="flowToImg">
 			    					<p class="titleFlow">{{goodsList.commodityClassify}}</p>
 			    					<p class="sloginFlow">{{goodsList.commodityClassifyDes}}</p>
@@ -195,7 +195,7 @@
 							{{each goodsList.goods as item index}}
 			    			<li class="productDetail">
 				    			<div class="productImg">
-				    				<img onclick="window.location.href='integralMall/itemDetail.html?goodsId={{item.commodityId}}'" src="{{item.commoditySmallIcon}}" />
+				    				<img onclick="window.location.href='integralMall/itemDetail.html?goodsId={{item.commodityId}}'" src="${imgProfix}{{item.commoditySmallIcon}}" />
 				    			</div>
 				    			<div class="detailProduct">
 				   					<p onclick="window.location.href='integralMall/itemDetail.html?goodsId={{item.commodityId}}'">{{item.commodityName}}</p>

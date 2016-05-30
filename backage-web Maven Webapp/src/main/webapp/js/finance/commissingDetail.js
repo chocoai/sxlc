@@ -26,6 +26,7 @@ $(function() {
             	var startDate = $("#startDate").val();
             	var endDate = $("#endDate").val();
             	var memberID = $("#memberID").val();
+            	var stype = $("#stype").val();
             	
             	if (projectTitle != null && projectTitle != "") {
             		var result1 = encrypt.encrypt((projectTitle + ""));
@@ -49,6 +50,7 @@ $(function() {
                 	d.startDate = result4;
                 	d.endDate = result5;
                 	d.memberID = result6;
+                	d.stype = encrypt.encrypt(stype);
             } 
         },
         columns: [  

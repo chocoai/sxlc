@@ -6,7 +6,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.transaction.Transaction;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
@@ -197,6 +199,8 @@ public class HandleThreePartyDaoImpl extends SqlSessionDaoSupport implements Han
 	@Override
 	public int FangKuanLoan(long lApplyId,String sMerBillNo,String sOrderNos,int iStatu,
 			String backInfoenc,String backinfo) {
+		SqlSession session = getSqlSession();
+//		Transaction ts = session.
 		IdGeneratorUtil generatorUtil = IdGeneratorUtil.GetIdGeneratorInstance();
 		long id = generatorUtil.GetId(); 
 		Map<String,Object> map =new HashMap<String,Object>();
@@ -208,7 +212,7 @@ public class HandleThreePartyDaoImpl extends SqlSessionDaoSupport implements Han
 		map.put("backInfoenc", backInfoenc);
 		map.put("backinfo", backinfo);
 		map.put("Skey",DbKeyUtil.GetDbCodeKey());
-		getSqlSession().selectOne("ThreePartyXML.FuangKuan",map);
+		session.selectOne("ThreePartyXML.FuangKuan",map);
 		int result =IntegerAndString.StringToInt(map.get("result").toString(),0);
 		if(result == 1) {
 			generatorUtil.SetIdUsed(id); 
@@ -240,6 +244,28 @@ public class HandleThreePartyDaoImpl extends SqlSessionDaoSupport implements Han
 		getSqlSession().selectOne("ThreePartyXML.CompensatoryRepayBack",map);
 		return IntegerAndString.StringToInt(map.get("result").toString(),0);  
 	}
-	
+	@Override
+	public int TranFailNotInve(long traId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("traId", traId);
+		// TODO Auto-generated method stub return 0;
+		return getSqlSession().update("ThreePartyXML.CompensatoryRepayBack",map);
+	}
+	@Override
+	public int ProjectFailNotInve(long applyId) {
+		
+		// TODO Auto-generated method stub return 0;
+		Map<String, Object> map = new HashMap<>();
+		map.put("applyId", applyId);
+		getSqlSession().selectOne("ThreePartyXML.CompensatoryRepayBack",map);
+		return IntegerAndString.StringToInt(map.get("result").toString(),0); 
+	}
+	@Override
+	public int updateIsvi(long ctaId) {
+		// TODO Auto-generated method stub return 0;
+		Map<String, Object> map = new HashMap<>();
+		map.put("ctaId", ctaId);
+		return getSqlSession().update("ThreePartyXML.updateIsvi",map);
+	}
 }
 

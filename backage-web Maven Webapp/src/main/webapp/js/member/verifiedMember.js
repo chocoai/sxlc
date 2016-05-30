@@ -49,9 +49,9 @@ function selectAuditList(memberId){
 								recordDate = obj.sRecordDate;
 							}
 							html +="<ul class='detailTitle'>"
-								+"<li >"+obj.attestName+"</li><li>"+statu+"</li>"
+								+"<li >认证类型："+obj.attestName+"</li><li>认证状态："+statu+"</li>"
 								+"<li >申请时间："+recordDate+"</li><li>有效期："+valid+"</li>"
-								+"<li><button class='identy-detail' data-mtype="+obj.memberType+" data-rid="+obj.certificationId+" data-type="+obj.attestType+">查看详情</button></li>"
+								+"<li><a class='identy-detail' data-mtype="+obj.memberType+" data-rid="+obj.certificationId+" data-type="+obj.attestType+">查看详情</a></li>"
 								+"</ul>";
 						});
 						$(".authen").append(html);

@@ -6,7 +6,7 @@
  */
 
 $(function() {
-	validform5("layui-layer-btn0","dataForm",false,"3");
+	validform5("layui-layer-btn0","dataForm",false,"5");
 	/* 自行编辑协议配置 */
 	LoanIntemsList();	//
 	 $("input[type='checkbox']").click(function() {
@@ -39,8 +39,6 @@ $(function() {
  * @returns
  */
 function addOrModify(type){
-	//清除数据
-	validform5(".layui-layer-btn0","dataForm",true,3);
 	//清除数据
 	document.getElementById("dataForm").reset();
 	//操作
@@ -97,6 +95,7 @@ function addidentyConfig(){
 	attestTypeName = encrypt.encrypt(attestTypeName); 
 	attachtype = encrypt.encrypt(attachtype); 
 	membertype = encrypt.encrypt(membertype); 
+	$(".layui-layer-btn0").addClass("disabled");
 	$.ajax( {  
 		url:appPath+"/identyConfig/saveIdenty.do",
 		data:{
@@ -109,13 +108,14 @@ function addidentyConfig(){
 		cache:false,  
 		dataType:'json',   
 		success:function(data) { 
-			 if(data==1){
+			if(data==1){
 				layer.alert("添加成功",{icon:1});
 				$(".layui-layer-btn1").click();
-				setTimeout('location.reload()',500);
+				$('#table_id').DataTable().ajax.reload();
 			}else if(data==-1){
 				layer.alert("该名称的已存在",{icon:2});  
 			}
+			$(".layui-layer-btn0").removeClass("disabled");
 		},  
 		error : function() {  
 			layer.alert("服务器异常",{icon:2});  
@@ -153,6 +153,7 @@ function addidentyConfig(){
 		attestTypeName = encrypt.encrypt(attestTypeName); 
 		attachtype = encrypt.encrypt(attachtype); 
 		membertype = encrypt.encrypt(membertype); 
+		$(".layui-layer-btn0").addClass("disabled");
 		$.ajax( {  
 			url:appPath+"/identyConfig/updateMemberIdenty.do",
 			data:{
@@ -169,17 +170,17 @@ function addidentyConfig(){
 				if(data==1){
 					layer.alert("修改成功",{icon:1});
 					$(".layui-layer-btn1").click();
-					setTimeout('location.reload()',500);
+					$('#table_id').DataTable().ajax.reload();
 				}else{
 					layer.alert("修改失败",{icon:2});  
 				}
+				$(".layui-layer-btn0").removeClass("disabled");
 			},  
 			error : function() {  
 				layer.alert("操作失败!",{icon:2});  
 			}  
 		});
 	}
- 
   
 
 /**
@@ -226,7 +227,7 @@ function stopOrStart(id,statu){
 						layer.alert("启用成功。",{icon:1});
 					}
 				  	layer.close(index);
-				  	setTimeout('location.reload()',500);
+				  	$('#table_id').DataTable().ajax.reload();
 				}else if(data == 0){
 					if(status==1){
 						layer.alert("停用失败。",{icon:2});
@@ -315,8 +316,25 @@ function LoanIntemsList(){
 				        		 return sReturn;
 				        	  }
 				          }, 
-				          { title:"默认最高信用分数","data": "creditScore" },  
-				          { title:"操作时间","data": "optDate" },  
+				          { title:"默认最高信用分数","data": "creditScore" }, 
+				          /*{ title:"操作时间","data": "sOptDate" },*/
+				          { title:"操作时间","mRender":function(data, type, full){
+		                	  var sReturn ="";
+		                	  if(full.optDate!=null){
+		                		  sReturn  = getDateByStr(full.optDate);
+		                	  }
+		                  		return sReturn;
+		                  	}
+		                  },
+				          /*{ title:"操作时间","mRender":function(data, type, full){
+		                	  var sReturn ="";
+		                	  if(full.optDate!=null){
+		                		  var a = full.optDate;
+		                		  sReturn  = a.substring(0,a.length-2);
+		                	  }
+		                  		return sReturn;
+		                  	}
+		                  }, */
 				          { title:"最近一次操作管理员","data": "adminName" },  
 		                  { title:"状态","mRender":function(data, type, full){
 		                	  var sReturn ="";
@@ -359,4 +377,19 @@ function LoanIntemsList(){
 		        },
 		        oTableTools:{"sRowSelect":"multi"}
 	});
+}
+/**
+ * 转换毫秒值字符串为日期
+ */
+function getDateByStr(data){
+	  var date = new Date(data);
+	  var month = date.getMonth()+1;
+	  var day = date.getDate();
+	  if(month<10){
+		  month ="0" +month;
+	  }
+	  if(day<10){
+		  day ="0" +day;
+	  }
+      return date.getFullYear()+"-"+month+"-"+day;
 }

@@ -87,7 +87,7 @@
 	   left join Personal_Base_Info  pbiper  on pbiper.Personal_ID=mi.Personal_Id 
 	   left join Company_Info  ci  on ci.Company_ID=mi.Company_ID
 	    <where> 
-	       ppu.Deal_Statu = 1 
+	       ppu.Deal_Statu = 1 and par.Check_Statu != -1
            and  (
 		      par.Apply_Id in
 		      (
@@ -135,18 +135,20 @@
 	      and  mi.Member_NO like '%${map.memberNo}%'
 	     </if>
 	    </where> 
+	        order by Check_Statu asc
 	      <if test = "map.order ==  1"> 
-	        order by  pbi.Amount desc
+	        , pbi.Amount desc
 	      </if>
 	       <if test = "map.order ==  -1"> 
-	        order by  pbi.Amount asc
+	       , pbi.Amount asc
 	      </if>
 	       <if test = "map.order ==  2"> 
-	        order by  pap.Release_Date desc
+	        ,  pap.Release_Date desc
 	      </if>
 	       <if test = "map.order ==  -2"> 
-	        order by  pap.Release_Date asc
+	        ,  pap.Release_Date asc
 	      </if> 
+	        
     </select>
     
     
@@ -178,10 +180,19 @@
          where Apply_Id=#{applyId}
        </select>
         <!--  修改借款结束时间 -->
-        <update id="updateEndDate" parameterType="cn.springmvc.model.ProjectAppProcessEntity">
+       <!-- <update id="updateEndDate" parameterType="cn.springmvc.model.ProjectAppProcessEntity">
           update  Project_App_Process set  End_Date= #{endDate}  
           where   Apply_Id=#{projectID} 
-         </update> 
+        </update>  -->
+        
+     <!-- 修改借款结束时间-->   
+    <select id="updateEndDate"  statementType="CALLABLE" parameterType="cn.springmvc.model.ProjectAppProcessEntity"> 
+	     {call updateEndDate(
+				#{endDate ,	     mode=IN,	jdbcType=VARCHAR},
+				#{projectID ,	 mode=IN,	jdbcType=BIGINT}, 
+		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
+    		)} 
+	</select>
         <!--  查询项目形象图  -->
        <select id="selectProjectImage" resultType="cn.springmvc.model.ProjectImageEntity" parameterType="long">
          select Apply_Id as applyId,Image_Index as imageIndex,Image_Url as imageUrl
@@ -205,7 +216,7 @@
 		    	#{result,	     mode=OUT,	jdbcType=INTEGER}
     		)} 
 	</select>
-		<update id="Refuse" parameterType = "long">
-	  UPDATE Project_App_Record SET Check_Statu=-1 where Apply_Id=#{applyId} ;
+	<update id="Refuse" parameterType = "long">
+	  UPDATE Project_App_Record SET Check_Statu=-1 where Apply_Id=#{applyId} and Check_Statu= 0 ;
 	</update>
 </mapper>

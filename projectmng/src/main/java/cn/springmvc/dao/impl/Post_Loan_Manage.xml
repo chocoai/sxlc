@@ -145,6 +145,8 @@
 	-->
 	<select id="getMaturingBillThiree" parameterType="Map" resultMap="projectInfoMap.MaturingBill">
 		SELECT
+		  pa.Apply_Id,
+		  lr.Repay_ID,
 		  pa.Project_No,
 		  prbi.Project_Title,
 		  mi.Logname,
@@ -544,11 +546,11 @@
 		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Principal),#{skey})) AS SIGNED),0) as SDRepay_Principal,
 		  IFNULL(CAST((AES_DECRYPT(UNHEX(lr.SDRepay_Interest),#{skey})) AS SIGNED),0) as SDRepay_Interest,
 		  lr.Indexs,lr.Repay_MaxTime,
-           
-		    case 
-              when lr.Statu !=3 then DATEDIFF(now(),lr.Repay_MaxTime) 
-              when lr.Statu =3  then (select DATEDIFF(lr.Repay_MaxTime,lrr.Repay_Time)  from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID order by Repay_Time desc limit 1)
-            end  overday
+		  (select lrr.Repay_Time from Loan_Real_Repay lrr where lrr.Repay_ID = lr.Repay_ID and lr.Statu =2  order by lrr.Repay_Time desc limit 1 ) Repay_Time,
+          case 
+              when lr.Statu !=2 then DATEDIFF(now(),lr.Repay_MaxTime) 
+              when lr.Statu =2  then (select DATEDIFF(lr.Repay_MaxTime,lrr.Repay_Time)  from Loan_Real_Repay lrr where   lrr.Repay_ID = lr.Repay_ID order by Repay_Time desc limit 1)
+          end  overday
           FROM Loan_Repay lr  
 		  JOIN Project_App_Record pa ON lr.Apply_Id = pa.Apply_Id 
 		  JOIN project_base_info prbi ON pa.Project_Base_ID = prbi.Project_Base_ID
@@ -587,8 +589,9 @@
 		  LEFT JOIN personal_base_info pbi	 ON mi.Personal_Id = pbi.Personal_Id
 		  LEFT JOIN Company_Info ci ON mi.Personal_Id = ci.Company_ID
           <where>
-          lr.Repay_MaxTime &lt; now() and  lr.Statu !=3 and lr.IsValid = 0 and
+          lr.Repay_MaxTime &lt; now() and  lr.Statu !=2 and lr.IsValid = 0 and
           <!-- 绑定理财师的员工只可以看自己推荐的-->
+         (
           (
 			  pa.Member_ID in 
 	         (
@@ -609,6 +612,7 @@
            ( 
              select Staff_Type from  Admin where Admin_ID =#{map.adminID} 
            ) = 2
+          )
             <if test="map.projectNo !=null and map.projectNo !='' ">
               and pa.Project_No like '%${map.projectNo}%'
             </if>

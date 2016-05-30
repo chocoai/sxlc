@@ -3,7 +3,7 @@
  * 内容介绍：
  */
 $(function() {
-	validform5(".layui-layer-btn0","dataForm",false,3);
+	validform5(".layui-layer-btn0","dataForm",false,5);
 	$('#teamTb').DataTable(
 			{	
 				ajax: {  
@@ -65,10 +65,11 @@ $(function() {
 	                          ],
               pagingType: "simple_numbers",//设置分页控件的模式  
               processing: true, //打开数据加载时的等待效果  
-              serverSide: true,//打开后台分页  
+              serverSide: true,//打开后台分页 
+              searching: false,
               scrollCollapse: true,
 	          scrollX : "100%",
-			  scrollXInner : "100%",
+	          scrollXInner : "100%",scrollY:500,
               rowCallback:function(row,data){//添加单击事件，改变行的样式      
               }
 	});//表格初始化完毕

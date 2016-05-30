@@ -90,11 +90,19 @@
 	   left join Personal_Job_Info  pji  on pji.Personal_ID=pbi.Personal_Id
 	   left join Marital_Info mif on pbi.Marital_Status=mif.Marital_ID
 	   left join Company_Info  ci  on ci.Company_ID = mi.Company_ID and mi.Member_Type =1
-           <where>  
-	            <if test="map.memberNo != null">  
-	                mi.Member_No like  '%{map.memberNo}%'  
-	            </if>    
-           </where>  
+	   left join  Member_Third_Info mti on mti.Member_Type =  mi.Member_Type and mti.Member_ID = mi.Member_ID
+       left join  Member_Third_Auth_Info  matu on matu.Account_Id = mti.Account_Id 
+	   <where>  
+            <if test="map.memberNo != null and map.memberNo != ''">  
+                mi.Member_No like  '%${map.memberNo}%'  
+            </if>  
+             <if test="map.logname != null and map.logname != ''">  
+                mi.Logname like  '%${map.memberNo}%'  
+            </if>  
+             <if test="map.isopenSecond == 1">  
+                and matu.Open_Second_Distribute  = 1 
+            </if>      
+       </where>  
     </select>  
      <!-- 查询个人会员基本信息 -->  
 	<select id="selectMemberInfoPersonByID" parameterType="java.util.Map"  resultMap="personalBaseInfo">
@@ -117,5 +125,40 @@
 	   CONVERT((AES_DECRYPT(UNHEX(ci.Establishments),#{keys})) using utf8) as Establishments
 	   from  Company_Info  ci 
 	   where  ci.Company_ID=#{companyID}
-    </select>         
+    </select>
+    
+      <!--直接意向借款 分页查询会员列表 -->  
+	<select id="getMemberList" parameterType="product_p2p.kit.pageselect.PageEntity"  resultType="cn.membermng.model.MemberAll">
+	   select  mi.Member_ID    as memberId,
+	           mi.Member_Type  as memberType,
+	           mi.Member_No    as memberNo,
+	           mi.Logname      as memberName,
+	    case when mi.Member_Type = 0 then CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8)  
+             when mi.Member_Type = 1 then CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) end 
+             as personalName,
+        CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8)  personalPhone
+	    from  Member_Info   mi 
+	    left join Personal_Base_Info  pbi  on pbi.Personal_ID = mi.Personal_ID
+	    left join Company_Info  ci  on ci.Company_ID = mi.Company_ID 
+	    join  Member_Third_Info mti on mti.Member_Type =  mi.Member_Type and mti.Member_ID = mi.Member_ID
+        join  Member_Third_Auth_Info  matu on matu.Account_Id = mti.Account_Id 
+	   <where>  
+	        matu.Open_Second_Distribute  = 1 
+            <if test="map!=null and map.memberNo != null and map.memberNo !='' ">
+				and mi.Member_No LIKE '%${map.memberNo}%'
+			</if>
+			<!-- <if test="map!=null and map.memberName != null and map.memberName !='' ">
+				and  mi.logname LIKE '%${map.memberName}%'
+			</if> -->
+			<if test="map!=null and map.personalName != null and map.personalName !=''">
+				and (CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Name),#{map.skey})) using utf8) like '%${map.personalName}%' 
+				      or
+				     CONVERT((AES_DECRYPT(UNHEX(ci.Compang_Name),#{map.skey})) using utf8) like    '%${map.personalName}%' 
+				     )
+			</if>
+			<if test="map!=null and  map.personalPhone != null and  map.personalPhone !='' ">
+				and CONVERT((AES_DECRYPT(UNHEX(pbi.Personal_Phone),#{map.skey})) using utf8) like '%${map.personalPhone}%'
+			</if>     
+       </where>  
+    </select>           
 </mapper>   

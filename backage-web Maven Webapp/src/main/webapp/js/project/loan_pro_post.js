@@ -1,4 +1,18 @@
+/* 验证 */
+$(function(){
+	validform5(".btnPreserve","modInfo",false,"5");
+});
+
 $(function() {
+	//初始化会员认证信息
+	var memberID = $("#memberID").val();
+	showMemberIdentyInfo(memberID);//展示会员认证
+	
+	var repayWayInit = $("#repayWay").attr("selectValue");
+	$("#repayWay").val(repayWayInit);
+	var deadlineTypeInit = $("#deadlineType").attr("selectValue");
+	$("#deadlineType").val(deadlineTypeInit);
+	
 	//历史审核记录表格
 	$('#table_history_record').DataTable(
 			{	
@@ -49,9 +63,12 @@ $(function() {
               info : false,//左下角信息
               processing: true, //打开数据加载时的等待效果  
               serverSide: true,//打开后台分页  
+              searching: false,
               scrollCollapse: true,
 //	          scrollX : "100%",
 //			  scrollXInner : "100%",
+              scrollY:500,
+              
               rowCallback:function(row,data){//添加单击事件，改变行的样式      
               }
 	});//表格初始化完毕
@@ -112,10 +129,12 @@ $(function() {
 	              pagingType: "simple_numbers",//设置分页控件的模式  
 	              info : false,//左下角信息
 	              processing: true, //打开数据加载时的等待效果  
-	              serverSide: true,//打开后台分页  
+	              serverSide: true,//打开后台分页 
+	              searching: false,
 	              scrollCollapse: true,
 //		          scrollX : "100%",
 //				  scrollXInner : "100%",
+//	              scrollY:500,
 	              rowCallback:function(row,data){//添加单击事件，改变行的样式      
 	              }
 		});//表格初始化完毕
@@ -172,9 +191,11 @@ $(function() {
 		              info : false,//左下角信息
 		              processing: true, //打开数据加载时的等待效果  
 		              serverSide: true,//打开后台分页  
+		              searching: false,
 		              scrollCollapse: true,
 //			          scrollX : "100%",
 //					  scrollXInner : "100%",
+//		              scrollY:500,
 		              rowCallback:function(row,data){//添加单击事件，改变行的样式      
 		              }
 			});//表格初始化完毕
@@ -215,7 +236,7 @@ $(function() {
 		 data.checkStatu= encrypt.encrypt(checkStatu);
 		 data.startDate= encrypt.encrypt(startDate);
 		 data.endDate= encrypt.encrypt(endDate);
-		 data.affix= encrypt.encrypt(affix);
+		 data.content= affix;
 		 data.ImageUrl= encrypt.encrypt(ImageUrl);
 		 $.ajax( {  
 				url:appPath+"/project/publishProject",
@@ -255,7 +276,7 @@ $(function() {
 		 data.Indexsnow= encrypt.encrypt(Indexsnow);
 		 data.checkStatu= encrypt.encrypt(checkStatu);
 		 data.CheckRemark= encrypt.encrypt(CheckRemark);
-		 data.affix= encrypt.encrypt(affix);
+		 data.content= affix;
 		 $.ajax( {  
 			 url:appPath+"/project/projectAudit",
 			 data:data,
@@ -361,6 +382,14 @@ $(function(){
 		var investMax = $("#investMax").val();
 		var investCountMax = $("#investCountMax").val();
 		var RepayGuarantee = $("#RepayGuarantee").val();
+		if(Number(increaseRange) >= Number(amount)){
+			layer.alert("加价幅度必须小于借款金额！",{icon:0});  
+			return;
+		}
+		if(Number(minStart) > Number(amount)){
+			layer.alert("起投金额不能大于借款金额！",{icon:0});  
+			return;
+		}
 		
 		data.ApplyId=encrypt.encrypt(ApplyId);
 		data.projectTitle=encrypt.encrypt(projectTitle);
@@ -421,7 +450,7 @@ $(function(){
 	    pick: '#filePicker',											//内部根据当前运行是创建，可能是input元素，也可能是flash.
 	    fileNumLimit: 1,												//个数限制
 		//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
-		fileSingleSizeLimit: 1024*512,
+	    fileSingleSizeLimit: 5*1024*1024, //1M  
 	    accept: {														//只允许选择图片文件
 	        title: 'Images',
 	        extensions: 'gif,jpg,jpeg,bmp,png',
@@ -546,7 +575,7 @@ $(function(){
 	    pick: '#filePicker1',											//内部根据当前运行是创建，可能是input元素，也可能是flash.
 	    fileNumLimit: 10,												//个数限制
 		//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
-	    fileSingleSizeLimit: 1024*512,
+	    fileSingleSizeLimit:  5*1024*1024, //1M  
 	    accept: {														//只允许选择图片文件
 	        title: 'Images',
 	        extensions: 'gif,jpg,jpeg,bmp,png',
@@ -686,7 +715,7 @@ $(function(){
 		pick: '#filePicker2',											//内部根据当前运行是创建，可能是input元素，也可能是flash.
 		fileNumLimit: 10,												//个数限制
 		//[可选] [默认值：undefined] 验证单个文件大小是否超出限制, 超出则不允许加入队列。
-		fileSingleSizeLimit: 1024*512,
+	    fileSingleSizeLimit: 5*1024*1024, //1M  
 		accept: {														//只允许选择图片文件
 			title: 'Images',
 			extensions: 'gif,jpg,jpeg,bmp,png',

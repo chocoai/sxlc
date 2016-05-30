@@ -82,7 +82,7 @@ public interface ProjectPublishService {
 	 * @author 刘利   
 	 * @Description: 修改借款结束时间
 	 * @param projectID 项目申请拒绝ID endDate  借款结束时间
-	 * @return int 返回类型 
+	 * @return int 返回类型 (1成功，0失败，-1该项目不能延期)
 	 * @date 2016-3-23 下午6:34:20
 	 */
 	public int updateEndtime(ProjectAppProcessEntity projectAppProcessEntity,InsertAdminLogEntity 

@@ -56,7 +56,7 @@
 					<div class="input-group">
 					    <input type="text" class="search show">
 					    <span class="input-group-btn">
-					        <input class="btn search-btn" type="button" value="搜索">
+					        <input class="btn search-btn" type="button" id="searchContent" value="搜索">
 					    </span>			    
 					</div><!-- /input-group -->	
 				</div>
@@ -129,16 +129,17 @@
 		<ul class="invest-list" id="debtList">
 		</ul>
 		<script id="debt_list" type="text/html">
+		{{if infos.length>0}}		
 		{{each infos as value index}}
 			<li class="inv-li">
 				<div class="inv-head clearfix">
 					<div class="inv-head-left">
-						<img src="{{value.picIcon}}"><!--担dan/抵di/信xin-->
+						<img src=${imgProfix}{{value.picIcon}}  style="width:20px;height:20px"><!--担dan/抵di/信xin-->
 						<a href="invest/debtDetail/{{value.ctaId}}.html">{{value.projectTitle}}</a>
 						<span>【{{value.projectNo}}】</span>
 					</div>
 				</div>
-				<div class="inv-info">
+				<div class="inv-info clearfix">
 					<div class="inv-rate">
 						<h1>{{value.expectYearrates}}<span>%</span>
 							{{if value.rateAddRate>0}}
@@ -171,7 +172,7 @@
 						<div class="barbox"> 
 							<div class="barline" style="width: 60%;"></div> 
 						</div>
-						<span class="progress_totle">{{value.ctaInvestRate}}%</span>
+						<span class="progress_totle">{{value.ctaInvestRates}}%</span>
 					</div>
 					<div class="inv-time-count">
 						<div class="repay-method">还款方式:<span>{{value.repalyways}}</span></div>
@@ -185,8 +186,11 @@
 				</div>
 			</li>
 		{{/each}}
+		{{else}}
+				没有更多数据
+		{{/if}}
 		</script>
-		<div id="pager"></div>		
+		<div id="pager6"></div>		
     </div><!--main  -->
    	<jsp:include page="../common/bottom.jsp"></jsp:include>
    	<script type="text/javascript" charset="utf-8" src="plugs/pager/pager.js"></script>

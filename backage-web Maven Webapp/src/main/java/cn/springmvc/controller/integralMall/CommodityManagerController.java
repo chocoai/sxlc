@@ -133,7 +133,7 @@ public class CommodityManagerController {
 		int		status			=	IntegerAndString.StringToInt(request.getParameter("status"),0);				//状态 兑换中|待上架 | 已下架
 		int		start			=	IntegerAndString.StringToInt(request.getParameter("start"), 1);				//(dataTable参数)
 		int 	length			=	IntegerAndString.StringToInt(request.getParameter("length"), 10);			//(dataTable参数)
-		int		order			=	IntegerAndString.StringToInt(request.getParameter("order"),0);				//排序
+		int		order			=	IntegerAndString.StringToInt(request.getParameter("order"),1);				//排序
 		
 		PageEntity entity = new PageEntity();
 		entity.setPageSize(length);
@@ -170,19 +170,17 @@ public class CommodityManagerController {
 	}
 	
 	/***
-	* 修改商品信息
-	* 
-	* @Title: edit
-	* @param request
-	* @return
-	* @date 2016-5-10 下午3:18:06
+	 * 修改商品信息
+	 * 
+	 * @param request
+	 * @return
+	 * @date 2016-5-10 下午3:18:06
 	 */
-	
 	@RequestMapping("/edit")
 	@ResponseBody
 	public Map<String,Object> edit(HttpServletRequest request){
 		long	goodId		=	IntegerAndString.StringToLong(request.getParameter("goodId"), -1);
-		long upId			=	IntegerAndString.StringToLong(request.getParameter("upId"), -1);			//实物还是代金券
+		long 	upId		=	IntegerAndString.StringToLong(request.getParameter("upId"), -1);			//实物还是代金券
 		long goodTypeId		=	IntegerAndString.StringToLong(request.getParameter("typeId"),0);			//商品类型编号
 		String goodName		=	request.getParameter("goodName");											//商品名称
 		int		point		=	IntegerAndString.StringToInt(request.getParameter("point"),0);				//所需积分
@@ -210,8 +208,8 @@ public class CommodityManagerController {
  		entity.setSpecificationsmodels(specifications);
  		entity.setQuantity(stock);
  		entity.setIsVIPExclusive(isVip);
- 		entity.setCommoditySmallIcon(maxPicPath);
- 		entity.setCommoditylargeIcon(minPicPath);
+ 		entity.setCommoditySmallIcon(minPicPath);
+ 		entity.setCommoditylargeIcon(maxPicPath);
  		entity.setIsActive(isActivity);
  		entity.setMarketPrice(marketValue);
  		entity.setVouchersAmount(denominationVouchers);
@@ -249,6 +247,7 @@ public class CommodityManagerController {
 	* @date 2016-5-10 下午3:18:53
 	*/
 	@RequestMapping("/configGood")
+	@ResponseBody
 	public Map<String,Object> configGood(HttpServletRequest request){
 		long	goodId		= IntegerAndString.StringToLong(request.getParameter("goodId"), 0);
 		
@@ -269,7 +268,7 @@ public class CommodityManagerController {
 			message.put("message", "每一类最多设置4件商品");
 		}else if(result == 0){
 			message.put("status", "0");
-			message.put("message", "操作失败");
+			message.put("message", "已经推送到首页了");
 		}else if(result == 1){
 			message.put("status", "1");
 			message.put("message", "设置成功");

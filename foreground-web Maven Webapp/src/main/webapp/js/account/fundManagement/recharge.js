@@ -1,7 +1,23 @@
 $(function(){
 	$(".TC").addClass("down");
 	$(".TC1").addClass("down2");
+	loadRechargeFee();
 });
+/******************/
+function loadRechargeFee(){
+	var data={};
+	var url = "loanRecharge/loadRechargeFee.html";
+	NetUtil.ajax(url,data,function(msg){
+		var r = JSON.parse(msg);
+		if(r.data!=null){
+			$("#feeNum").val(r.data.rechargeFeeThird);
+			$("#feeType").val(r.data.rechargeTypeThird);//0：百分比 1：固定金额
+		}else{
+			$("#feeNum").val(0);
+			$("#feeType").val(1);
+		}
+	});
+}
 
 jQuery.fn.changeRemarks = function(){//用来剔除特殊字符
 	var remarks2 = $(this).val() ;
@@ -13,11 +29,16 @@ function rechageDeal(){
 	var type=$(".regchType").attr("value");
 	var mount=$(".rechargeInput").val();
 	var fee=0;
-	if(type==3){
-		var sx="0.001";//千分之一手续费率
-		var fee=Number(mount)*sx;
-		fee=fee<1?1:fee;//手续费，小于1，等于1
-	}else if(type==2 || type==4){
+	//个人网银 免费  快捷支付2后台配置 （汇款充值3 企业网银4 固定值 20元）
+	if(type==2){
+		if($("#feeType").val()==0){
+			var sx=$("#feeNum").val();
+			var fee=Number(mount)*sx/10000;
+		}else{
+			var fee=$("#feeNum").val()/10000;
+		}
+		fee=fee<1&&fee>0 ? 1 : fee;//手续费，小于1，等于1
+	}else if(type==3 || type==4){
 		fee=20;
 		if(mount<20){
 			mount=20;
@@ -26,7 +47,7 @@ function rechageDeal(){
 	$(".rechargeFee").text(fee.toFixed(2));
 	var endM=Number(mount)-Number(fee);
 	if(endM>=0){
-		$(".realAccount").text(endM);	
+		$(".realAccount").text(endM.toFixed(2));	
 	}
 }
 
@@ -37,10 +58,10 @@ $(function(){
 		$(this).parent().layoutClean();
 		var minMoney = 0;//最小起充值
 		switch($(this).parent().parent().siblings().find(".rechargeMethod").prev().attr("value")){
-			case "1":minMoney=2 ;$(this).parent().layoutFocus(minMoney+"元起充");break;
-			case "2":minMoney=21;$(this).parent().layoutFocus(minMoney+"元起充");break;
+			case "":minMoney=2 ;$(this).parent().layoutFocus(minMoney+"元起充");break;
+			case "2":minMoney=2;$(this).parent().layoutFocus(minMoney+"元起充");break;
 			case "3":minMoney=2 ;$(this).parent().layoutFocus(minMoney+"元起充");break;
-			case "4":minMoney=21;$(this).parent().layoutFocus(minMoney+"元起充");break;
+			case "4":minMoney=2;$(this).parent().layoutFocus(minMoney+"元起充");break;
 		}
 		$(".rechargeInputFocus").blur(function(){
 			if(parseFloat((this.value + '').replace(/\,/g, '')) < parseFloat(minMoney)){

@@ -32,7 +32,7 @@
 #addEnv,#alertEnv{
 	display:none;
 }
-.addBtn,
+.addButton,
 .cancelBtn,
 .alertBtn,
 .okBtn{
@@ -41,14 +41,14 @@
 	border-radius:3px;
 	outline:none;
 }
-.addBtn,
+.addButton,
 .alertBtn,
 .okBtn{
 	margin-right:10px;
     background: #2e8ded;
     color: #fff;
 }
-.addBtn:hover,
+.addButton:hover,
 .alertBtn:hover,
 .okBtn:hover{
 	background:#3E75B8;

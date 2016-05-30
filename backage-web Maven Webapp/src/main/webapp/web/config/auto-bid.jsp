@@ -46,7 +46,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 				<div class="form-group autobiddiv">
 			 					<label for="firstname" class="col3 i-fl control-label">自动投标奖励：</label>
 			 					<div class="i-fl">
-			 						<input type="text" name="autoBackRate" class="form-control" id="firstname" placeholder="" datatype="hundrednum">
+			 						<input type="text" name="autoBackRate" class="form-control" id="firstname" placeholder="" datatype="hundredNum">
 				 				</div>
 				 				<div class="i-fl">
 				 					<span class="sign">%<i>*</i></span><!-- 放款时返还自动投资总金额的N% -->
@@ -75,7 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script>
 		 var publicKey_common = '<%=session.getAttribute("publicKey") %>';
 		 $(function(){
-			validform5(".commonbtn0","autobidtest",false,"3");
+			validform5(".commonbtn0","autobidtest",false,"5");
 		});
 	</script>
 </body>

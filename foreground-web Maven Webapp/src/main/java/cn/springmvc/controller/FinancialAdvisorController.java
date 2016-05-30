@@ -222,6 +222,7 @@ public class FinancialAdvisorController {
 		param.put("projectTitle", projectTitle);
 		param.put("name",                 name);
 		param.put("order",               order);
+		param.put("skey",              DbKeyUtil.GetDbCodeKey());
 		pageEntity.setPageNum(start);
 		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);
@@ -264,6 +265,7 @@ public class FinancialAdvisorController {
 		param.put("projectTitle", projectTitle);
 		param.put("name",                 name);
 		param.put("order",               order);
+		param.put("skey",              DbKeyUtil.GetDbCodeKey());
 		pageEntity.setPageNum(start);
 		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);
@@ -308,6 +310,7 @@ public class FinancialAdvisorController {
 		param.put("name",                 name);
 		param.put("order",               order);
 		param.put("over",                 over);
+		param.put("skey",              DbKeyUtil.GetDbCodeKey());
 		pageEntity.setPageNum(start);
 		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);
@@ -346,6 +349,7 @@ public class FinancialAdvisorController {
 		param.put("endTime",           endTime); 
 		param.put("name",                 name);
 		param.put("order",               order); 
+		param.put("skey",              DbKeyUtil.GetDbCodeKey());
 		pageEntity.setPageNum(start);
 		pageEntity.setPageSize(length);
 		pageEntity.setMap(param);

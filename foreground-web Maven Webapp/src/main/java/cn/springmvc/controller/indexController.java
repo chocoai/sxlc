@@ -1,5 +1,7 @@
 package cn.springmvc.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,13 +10,16 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import product_p2p.kit.datatrans.IntegerAndString;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.invitemastermng.model.NewbieExperienceSetEntity;
@@ -24,6 +29,7 @@ import cn.springmvc.model.HomeBannerEntity;
 import cn.springmvc.model.IndexStaticsEntity;
 import cn.springmvc.model.InvestEntity;
 import cn.springmvc.model.LiveBroadcastEntity;
+import cn.springmvc.model.LoanRepayEntitys;
 import cn.springmvc.model.MediaReportsEntity;
 import cn.springmvc.model.PartnersEntity;
 import cn.springmvc.model.PlatformAnnouncementEntity;
@@ -44,6 +50,7 @@ import cn.springmvc.service.PlatformBoothService;
 import cn.springmvc.service.SafetyCertificationService;
 import cn.springmvc.service.SafetyCertificationSetService;
 import cn.springmvc.service.SystemSetService;
+import cn.springmvc.utitls.RepalyUtitls;
 
 /***
  * 
@@ -473,6 +480,90 @@ public class IndexController {
 		message.put("data",entity);
 		
 		return JSONObject.toJSONString(message);
+	}
+	
+	
+	/**
+	 * 
+	* 收益计算器
+	* loadGainCalculator
+	* @author 邱陈东  
+	* * @Title: loadGainCalculator 
+	* @param @param request
+	* @param @param amount						投资金额
+	* @param @param yearRate					年化利率
+	* @param @param moreRate					加息率
+	* @param @param dateNum					投资期利限
+	* @param @param dateType					投资期限类型			1	日				2	月				3	年
+	* @param @param repaymentMethod	还款方式				0	等额本息	1	先息后本	2	到期还本付息		3	等额本金
+	* @return String 返回类型 
+	* @date 2016-5-26 下午2:38:56
+	* @throws
+	 */
+	@RequestMapping(value="loadGainCalculator",produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public String loadGainCalculator(HttpServletRequest request,
+			@RequestParam(defaultValue="0",required=true,value="amount")String amount,
+			@RequestParam(defaultValue="0",required=true,value="yearRate")int yearRate,
+			@RequestParam(defaultValue="0",required=false,value="moreRate")int moreRate,
+			@RequestParam(defaultValue="1",required=true,value="dateNum")short dateNum,
+			@RequestParam(defaultValue="1",required=true,value="dateType")short dateType,
+			@RequestParam(defaultValue="1",required=true,value="repaymentMethod")short repaymentMethod){
+		//amount = Long.parseLong(amount)*10000+"";
+		//String allRate = ((yearRate+moreRate)*10000)+"";
+		String allRate = yearRate+moreRate+"";
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+		String date = df.format(new Date());
+		dateType=(short) (dateType+1);
+		List<LoanRepayEntitys> list = RepalyUtitls.getIncomePlan2(dateType, amount, allRate, dateNum, repaymentMethod, date);
+		
+		for(int i=0;i<list.size();i++){
+			LoanRepayEntitys entity = list.get(i);
+			if(entity!=null){
+				entity.setRetrieveDateTime(entity.getRetrieveDateTime().substring(0,10));
+			}else{
+				list.remove(i);
+			}
+		}
+		
+		//预计全部收益
+		String allSy = "0.00";
+		if(list.size()>0&&list.get(0)!=null){
+			allSy = list.get(0).getAllSy().toString();
+		}
+		//预计基本收益
+		String expectedReturn =IntegerAndString.LongToString(IntegerAndString.StringToLong(allSy)*yearRate/(yearRate+moreRate));
+		//预计加息收益
+		String moreReturn = IntegerAndString.LongToString(IntegerAndString.StringToLong(allSy)-IntegerAndString.StringToLong(expectedReturn));
+		
+		//基本收益比率
+		double num = (double)(yearRate*100000/(yearRate+moreRate))/100000;
+		
+		Map<String, Object> message = new HashMap<String, Object>();
+		
+		message.put("allSy", allSy);
+		message.put("expectedReturn", expectedReturn);
+		message.put("moreReturn", moreReturn);
+		message.put("list", list);
+		message.put("num", num);
+		return JSONObject.toJSONString(message);
+	}
+	
+	/**
+	 * 收益计算器
+	* incomeCalculation(这里用一句话描述这个方法的作用) 
+	* TODO(描述)
+	* @author 邱陈东  
+	* * @Title: incomeCalculation 
+	* @Description: TODO 
+	* @param @return 设定文件 
+	* @return String 返回类型 
+	* @date 2016-5-27 上午9:03:02
+	* @throws
+	 */
+	@RequestMapping("/incomeCalculation")
+	public String incomeCalculation(){
+		return "invest/incomeCalculation";
 	}
 }
 

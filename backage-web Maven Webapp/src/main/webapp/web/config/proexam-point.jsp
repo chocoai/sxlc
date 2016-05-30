@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <head>
 	<base href="<%=basePath%>">
-	<title>配置中心</title>
+	<title>配置中心-项目审批活动点配置</title>
 	<!-- 公用meta -->
 	<jsp:include page="../common/top-meta.jsp"></jsp:include>
 	<!-- 私用meta -->
@@ -125,12 +125,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<table>
 							<tr>
 								<td class="tt"><label class="ineed">活动点名称：</label></td>
-								<td class="con" id="addactivityname"><input type="text" id="aName" class="" placeholder="" value="" datatype="enterAddress"/></td>
+								<td class="con" id="addactivityname"><input type="text" style="width: 170px" id="aName" class="" placeholder="" value="" datatype="entername"/></td>
 							</tr>
 							<tr>
 								<td class="tt"><label class="ineed">审批类型：</label></td>
 								<td class="con">
-									<select class="msginterfaceselect" id="aType">
+									<select class="msginterfaceselect" style="width: 170px" id="aType">
 										<option value="-1">请选择</option>
 										<option value="0">平台审批</option>
 										<option value="1">担保机构审批</option>
@@ -156,12 +156,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<table>
 							<tr>
 								<td class="tt"><label class="ineed">活动点名称：</label></td>
-								<td class="con" id="modactivityname"><input type="text" id="apName" class="" placeholder="" value="" datatype="enterAddress"/></td>
+								<td class="con" id="modactivityname" ><input type="text"  style="width: 170px" id="apName" class="" placeholder="" value="" datatype="entername"/></td>
 							</tr>
 							<tr>
 								<td class="tt"><label class="ineed">审批类型：</label></td>
 								<td class="con">
-									<select class="msginterfaceselect" id="apType">
+									<select class="msginterfaceselect" style="width: 170px" id="apType">
 									</select>
 								</td>
 							</tr>
